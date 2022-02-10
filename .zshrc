@@ -103,6 +103,7 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 alias oh="source ~/.zshrc"
 alias rc="lvim ~/.zshrc"
 alias trc="lvim ~/.tmux.conf"
+alias lrc="lvim ~/.config/lvim/config.lua"
 alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
