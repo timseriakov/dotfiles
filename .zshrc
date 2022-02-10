@@ -100,6 +100,7 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
+eval "$(thefuck --alias)"
 alias oh="source ~/.zshrc"
 alias rc="lvim ~/.zshrc"
 alias trc="lvim ~/.tmux.conf"
@@ -108,10 +109,15 @@ alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
-alias cmt="git add .
+alias cmt="cd ~/.dotfiles
+            git add .
             git commit -m \"add something\"
             git push"
-eval "$(thefuck --alias)"
+
+alias pull-dotfiles="cd ~/.dotfiles
+                    git pull"
+
+
 
 # Enable vi mode
 bindkey -v

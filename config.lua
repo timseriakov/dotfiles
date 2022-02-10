@@ -12,8 +12,8 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.colorscheme = "dracula"
--- lvim.colorscheme = "gruvbox"
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "nord"
+-- lvim.colorscheme = "onedarker"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -139,9 +139,10 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-    {"morhetz/gruvbox"},
     {"psliwka/vim-smoothie"},
     {"max397574/better-escape.nvim"},
+    {"antoinemadec/FixCursorHold.nvim"},
+    {"shaunsingh/nord.nvim"},
     {"booperlv/nvim-gomove"},
     {
       "folke/trouble.nvim",
