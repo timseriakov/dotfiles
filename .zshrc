@@ -108,7 +108,9 @@ alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
-
+alias cmt="git add .
+            git commit -m \"add something\"
+            git push"
 eval "$(thefuck --alias)"
 
 # Enable vi mode
