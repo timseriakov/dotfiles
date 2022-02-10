@@ -110,14 +110,15 @@ alias l.="lvim ."
 
 eval "$(thefuck --alias)"
 
-# HSTR configuration - add this to ~/.zshrc
-alias hh=hstr                    # hh to be alias for hstr
-setopt histignorespace           # skip cmds w/ leading space from history
-export HSTR_CONFIG=hicolor       # get more colors
-bindkey -s "\C-r" "\C-a hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
-
 # Enable vi mode
 bindkey -v
 bindkey -M viins 'jj' vi-cmd-mode
 
 export PATH="$PATH:$HOME/.local/bin:./node_modules/.bin:/home/tim/.npm-global/bin"
+
+# HSTR configuration - add this to ~/.zshrc
+alias hh=hstr                    # hh to be alias for hstr
+setopt histignorespace           # skip cmds w/ leading space from history
+export HSTR_CONFIG=hicolor       # get more colors
+bindkey -s "\C-r" "hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
+
