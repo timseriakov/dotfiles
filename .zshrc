@@ -105,6 +105,7 @@ alias oh="source ~/.zshrc"
 alias rc="lvim ~/.zshrc"
 alias trc="lvim ~/.tmux.conf"
 alias lrc="lvim ~/.config/lvim/config.lua"
+alias arc="lvim ~/."
 alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
@@ -130,4 +131,3 @@ alias hh=hstr                    # hh to be alias for hstr
 setopt histignorespace           # skip cmds w/ leading space from history
 export HSTR_CONFIG=hicolor       # get more colors
 bindkey -s "\C-r" "hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
-
