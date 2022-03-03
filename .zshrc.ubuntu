@@ -109,7 +109,7 @@ alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
-alias st="~/.start.sh"
+alias st="~/start.sh"
 alias cmt="cd ~/.dotfiles
             git add .
             git commit -m \"add something\"
