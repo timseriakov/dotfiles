@@ -30,7 +30,7 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'
 
 # brew install urlview
 # brew install extract_url
-set @plugin 'tmux-plugins/tmux-urlview'
+set -g @plugin 'tmux-plugins/tmux-urlview'
 
 # fastcopy
 set -g @plugin 'abhinav/tmux-fastcopy'
