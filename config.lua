@@ -13,7 +13,6 @@ lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.colorscheme = "dracula"
 lvim.colorscheme = "nord"
--- lvim.colorscheme = "onedarker"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -151,7 +150,7 @@ lvim.plugins = {
 }
 
 require("better_escape").setup {
-    mapping = {"jk", "jj"}, -- a table with mappings to use
+    mapping = {"jk", "jj", "df"}, -- a table with mappings to use
     timeout = vim.o.timeoutlen, -- the time in which the keys must be hit in ms. Use option timeoutlen by default
     clear_empty_lines = false, -- clear line after escaping if there is only whitespace
     keys = "<Esc>", -- keys used for escaping, if it is a function will use the result everytime

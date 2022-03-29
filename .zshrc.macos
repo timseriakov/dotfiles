@@ -102,21 +102,21 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 eval "$(thefuck --alias)"
 alias oh="source ~/.zshrc"
-alias rc="lvim ~/.zshrc"
+alias zrc="lvim ~/.zshrc"
 alias trc="lvim ~/.tmux.conf"
 alias lrc="lvim ~/.config/lvim/config.lua"
-alias arc="lvim ~/."
+alias rrc="lvim ~/.config/ranger/rc.conf"
 alias rr="ranger"
 alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
 alias ff="fast"
-alias cmt="cd ~/.dotfiles
+alias cmt="cd ~/dev/dotfiles
             git add .
             git commit -m \"add something\"
             git push"
 
-alias pull-dotfiles="cd ~/.dotfiles
+alias pull-dotfiles="cd ~/dev/dotfiles
                     git pull"
 
 
@@ -132,3 +132,7 @@ alias hh=hstr                    # hh to be alias for hstr
 setopt histignorespace           # skip cmds w/ leading space from history
 export HSTR_CONFIG=hicolor       # get more colors
 bindkey -s "\C-r" "hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
