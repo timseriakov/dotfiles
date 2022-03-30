@@ -19,7 +19,7 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- unmap a default keymapping
--- lvim.keys.normal_mode["<C-Up>"] = false
+-- cvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
@@ -142,7 +142,10 @@ lvim.plugins = {
     {"max397574/better-escape.nvim"},
     {"antoinemadec/FixCursorHold.nvim"},
     {"shaunsingh/nord.nvim"},
+    {"junegunn/goyo.vim"},
     {"booperlv/nvim-gomove"},
+    {"justinmk/vim-sneak"},
+    {"lukas-reineke/indent-blankline.nvim"},
     {
       "folke/trouble.nvim",
       cmd = "TroubleToggle",
@@ -168,6 +171,11 @@ require("gomove").setup {  -- whether or not to map default key bindings, (true/
   ignore_indent_lh_dup = true,
 }
 
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = true,
+}
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
