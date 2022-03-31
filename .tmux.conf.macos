@@ -43,6 +43,11 @@ set -g @plugin 'jaclu/tmux-menus'
 set -g @menus_location_x 'C'
 set -g @menus_location_y 'C'
 
+# NeoVim stuff
+set-option -g focus-events on
+set-option -sg escape-time 10
+# set-option -g default-terminal "screen-256color"
+
 #
 # Theme
 #

@@ -12,7 +12,7 @@ fi
 #
 
 export EDITOR="lvim"
-alias vim="nvim"
+# alias vim="nvim"
 
 #
 # Oh-my-zsh
@@ -111,6 +111,7 @@ alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
 alias ff="fast"
+alias vtop="vtop --theme nord"
 alias cmt="cd ~/dev/dotfiles
             git add .
             git commit -m \"add something\"
@@ -132,9 +133,5 @@ alias hh=hstr                    # hh to be alias for hstr
 setopt histignorespace           # skip cmds w/ leading space from history
 export HSTR_CONFIG=hicolor       # get more colors
 bindkey -s "\C-r" "hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
-
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
