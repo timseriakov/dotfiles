@@ -32,29 +32,6 @@ linters.setup {
   },
 }
 
--- unmap a default keymapping
--- cvim.keys.normal_mode["<C-Up>"] = false
--- edit a default keymapping
--- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
-
--- Change Telescope navigation to use j and k for navigation and n and p for history in boh input and normal mode.
--- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
--- local _, actions = pcall(require, "telescope.actions")
--- lvim.builtin.telescope.defaults.mappings = {
---   -- for input mode
---   i = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---     ["<C-n>"] = actions.cycle_history_next,
---     ["<C-p>"] = actions.cycle_history_prev,
---   },
---   -- for normal mode
---   n = {
---     ["<C-j>"] = actions.move_selection_next,
---     ["<C-k>"] = actions.move_selection_previous,
---   },
--- }
-
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
@@ -296,6 +273,13 @@ lvim.plugins = {
   {
     "npxbr/glow.nvim",
     ft = {"markdown"},
+  },
+  {
+    "windwp/nvim-spectre",
+    event = "BufRead",
+    config = function()
+    require("spectre").setup()
+    end,
   },
 }
 
