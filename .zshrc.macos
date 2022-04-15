@@ -111,6 +111,8 @@ alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
 alias ff="fast"
+alias pn="pnpm"
+alias tt="taskwarrior-tui"
 alias vtop="vtop --theme nord"
 alias cmt="cd ~/dev/dotfiles
             git add .
