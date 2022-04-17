@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+. "$HOME/.fig/shell/zshrc.pre.zsh"
 #
 # Tmux
 #
@@ -111,7 +113,9 @@ alias v="vim"
 alias lv="lvim"
 alias l.="lvim ."
 alias ff="fast"
-alias pn="pnpm"
+alias p="pnpm"
+alias y="yarn"
+alias c="clear"
 alias tt="taskwarrior-tui"
 alias vtop="vtop --theme nord"
 alias cmt="cd ~/dev/dotfiles
@@ -139,3 +143,10 @@ bindkey -s "\C-r" "hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check do
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+eval "$(pyenv init --path)"
+
+# Fig post block. Keep at the bottom of this file.
+. "$HOME/.fig/shell/zshrc.post.zsh"
+
+source /Users/tim/.config/broot/launcher/bash/br

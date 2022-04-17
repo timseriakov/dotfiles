@@ -1,0 +1,1 @@
+/Users/tim/.pyenv/versions/2.7.18/lib/python2.7/site-packages/ranger_tmux/plugin.py

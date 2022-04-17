@@ -86,6 +86,7 @@ lvim.plugins = {
     {"shaunsingh/nord.nvim"},
     {"junegunn/goyo.vim"},
     {"justinmk/vim-sneak"},
+    {"github/copilot.vim"},
     {"lukas-reineke/indent-blankline.nvim"},
     {"wakatime/vim-wakatime"},
     {
