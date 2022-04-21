@@ -148,5 +148,3 @@ eval "$(pyenv init --path)"
 
 # Fig post block. Keep at the bottom of this file.
 . "$HOME/.fig/shell/zshrc.post.zsh"
-
-source /Users/tim/.config/broot/launcher/bash/br

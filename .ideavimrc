@@ -1,0 +1,174 @@
+" Tim Seryakov
+" t.seryakov@gmail.com
+
+" When 'ignorecase' and 'smartcase' are both on,
+" if a pattern contains an uppercase letter,
+" it is case sensitive, otherwise, it is not.
+set ignorecase
+set smartcase
+set scrolloff=2 " 3 lines above/below cursor when scrolling
+set relativenumber number
+
+" Copy to system clipboard as well
+set clipboard+=unnamed
+
+set multiple-cursors
+set easymotion
+set commentary
+set highlightedyank
+set surround
+set sneak
+
+" Use Idea to join lines smartly
+set ideajoin
+
+set visualbell
+set noerrorbells
+
+nnoremap yy "+yy
+vnoremap y "+y
+
+"nnoremap p "+p
+"vnoremap p "+p
+nnoremap p :action PasteMultiple<CR>
+vnoremap p :action PasteMultiple<CR>
+
+" let mapleader = <space>
+let mapleader = " "
+set timeoutlen=1000
+imap jk <Esc>
+imap jj <Esc>
+
+" key bindings for quickly moving between windows
+" h left, l right, k up, j down
+nmap <leader>1h <c-w>h
+nmap <leader>1l <c-w>l
+nmap <leader>1k <c-w>k
+nmap <leader>1j <c-w>j
+
+" Closing tabs
+nmap <leader>q :action CloseContent<cr>
+nmap <leader>Q :action ReopenClosedTab<cr>
+
+" Splits manipulation
+nmap <leader>ws :action SplitHorizontally<cr>
+nmap <leader>wv :action SplitVertically<cr>
+nmap <leader>wc :action Unsplit<cr>
+nmap <leader>wC :action UnsplitAll<cr>
+nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
+" nmap <leader>ww :action JumpToLastWindow<cr>
+
+" Navigation
+nmap <leader>n :action Back<cr>
+nmap <leader>m :action Forward<cr>
+nmap <leader>L :action RecentLocations<cr>
+nmap <leader>g :action GotoDeclaration<cr>
+nmap <leader>u :action FindUsages<cr>
+nmap <leader>; :action FileStructurePopup<cr>
+nmap <leader>M :action ActivateStructureToolWindow<cr>
+nmap <leader>d :action ShowErrorDescription<cr>
+nmap <leader>i :action GotoImplementation<cr>
+nmap <leader>I :action SelectIn<cr>
+nmap <leader>e :action RecentFiles<cr>
+nmap <leader>p :action JumpToLastWindow<cr>
+
+" Errors
+nmap <leader><leader>x :action GotoNextError<cr>
+nmap <leader><leader>X :action GotoPreviousError<cr>
+
+" Refactorings
+vmap T :action Refactorings.QuickListPopupAction<cr>
+nmap <leader>rr :action RenameElement<cr>
+nmap <leader>rg :action Generate<cr>
+nmap <leader>o :action OptimizeImports<cr>
+
+" Inspection
+nmap <leader>rc :action InspectCode<cr>
+
+" VCS operations
+nmap <leader>yy :action Vcs.Show.Local.Changes<cr>
+nmap <leader>yp :action Vcs.Push<cr>
+nmap <leader>ya :action Annotate<cr>
+nmap <leader>yl :action Vcs.Show.Log<cr>
+nmap <leader>yd :action Compare.LastVersion<cr>
+nmap <leader>yt :action Vcs.UpdateProject<cr>
+" nmap <leader>yr :action Git.ResolveConflicts<cr>
+
+" Search
+nmap <leader>/ :action Find<cr>
+nmap <leader>\ :action FindInPath<cr>
+
+" Tabs
+nnoremap [t :action PreviousTab<cr>
+nnoremap ]t :action NextTab<cr>
+
+" Moving lines
+nmap [e :action MoveLineUp<cr>
+nmap ]e :action MoveLineDown<cr>
+
+" Moving statements
+nmap [s :action MoveStatementUp<cr>
+nmap ]s :action MoveStatementDown<cr>
+
+map <leader>a :action $SelectAll<CR>
+map <leader>v :action $Paste<CR>
+map <leader>c :action $Copy<CR>
+map <leader>R :action Replace<CR>
+map <leader>x :action $Cut<CR>
+map <leader>l :action ReformatCode<CR>
+map <leader>= :action GotoFile<CR>
+map <leader>0 :action ActivateJIRAToolWindow<CR>
+map <leader>D <Esc>yyo<Esc> :action $Paste<CR>kA
+
+map <leader>- :action FoldingGroup<CR>
+map <A-x> :action ActivateTerminalToolWindow<CR>
+map = :action ExpandRegion<CR>
+map - :action CollapseRegion<CR>
+
+nnoremap <S-Left> :action EditorLeftWithSelection<CR>
+nnoremap <S-Right> :action EditorRightWithSelection<CR>
+nnoremap <S-Up> :action EditorUpWithSelection<CR>
+nnoremap <S-Down> :action EditorDownWithSelection<CR>
+
+inoremap <S-Left> <C-O>:action EditorLeftWithSelection<CR>
+inoremap <S-Right> <C-O>:action EditorRightWithSelection<CR>
+inoremap <S-Up> <C-O>:action EditorUpWithSelection<CR>
+inoremap <S-Down> <C-O>:action EditorDownWithSelection<CR>
+
+inoremap <C-d> <Esc>yypi
+
+" These create newlines like o and O but stay in normal mode
+nmap zj o<Esc>
+nmap zk O<Esc>
+nmap zJ o<Esc>k
+nmap zJ O<Esc>j
+
+" Delete (not cut)
+nnoremap d "_d
+vnoremap d "_d
+nnoremap x "_x
+vnoremap x "_x
+nnoremap D "_D
+
+" shift+arrow selection
+nnoremap <S-Left> :action EditorLeftWithSelection<CR>
+nnoremap <S-Right> :action EditorRightWithSelection<CR>
+nnoremap <S-Up> :action EditorUpWithSelection<CR>
+nnoremap <S-Down> :action EditorDownWithSelection<CR>
+
+inoremap <S-Left> <C-O>:action EditorLeftWithSelection<CR>
+inoremap <S-Right> <C-O>:action EditorRightWithSelection<CR>
+inoremap <S-Up> <C-O>:action EditorUpWithSelection<CR>
+inoremap <S-Down> <C-O>:action EditorDownWithSelection<CR>
+
+map <C-i> <Action>(Back)
+map <C-o> <Action>(Forward)
+map g; <Action>(JumpToLastChange)
+map g, <Action>(JumpToNextChange)
+
+" recursively open and close the folds under the cursor
+nnoremap zC :action CollapseRegionRecursively<CR>
+nnoremap zO :action ExpandRegionRecursively<CR>
+
+
+" TODO сделать <Leader>1 - file tree, <Leader>2 - git etc
