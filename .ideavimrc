@@ -41,10 +41,10 @@ imap jj <Esc>
 
 " key bindings for quickly moving between windows
 " h left, l right, k up, j down
-nmap <leader>1h <c-w>h
-nmap <leader>1l <c-w>l
-nmap <leader>1k <c-w>k
-nmap <leader>1j <c-w>j
+nmap <leader>wh <c-w>h
+nmap <leader>wl <c-w>l
+nmap <leader>wk <c-w>k
+nmap <leader>wj <c-w>j
 
 " Closing tabs
 nmap <leader>q :action CloseContent<cr>
@@ -73,8 +73,8 @@ nmap <leader>e :action RecentFiles<cr>
 nmap <leader>p :action JumpToLastWindow<cr>
 
 " Errors
-nmap <leader><leader>x :action GotoNextError<cr>
-nmap <leader><leader>X :action GotoPreviousError<cr>
+nmap <leader>x :action GotoNextError<cr>
+nmap <leader>X :action GotoPreviousError<cr>
 
 " Refactorings
 vmap T :action Refactorings.QuickListPopupAction<cr>
@@ -99,8 +99,8 @@ nmap <leader>/ :action Find<cr>
 nmap <leader>\ :action FindInPath<cr>
 
 " Tabs
-nnoremap [t :action PreviousTab<cr>
-nnoremap ]t :action NextTab<cr>
+nnoremap g[ :action PreviousTab<cr>
+nnoremap g] :action NextTab<cr>
 
 " Moving lines
 nmap [e :action MoveLineUp<cr>
@@ -114,7 +114,6 @@ map <leader>a :action $SelectAll<CR>
 map <leader>v :action $Paste<CR>
 map <leader>c :action $Copy<CR>
 map <leader>R :action Replace<CR>
-map <leader>x :action $Cut<CR>
 map <leader>l :action ReformatCode<CR>
 map <leader>= :action GotoFile<CR>
 map <leader>0 :action ActivateJIRAToolWindow<CR>
@@ -170,5 +169,8 @@ map g, <Action>(JumpToNextChange)
 nnoremap zC :action CollapseRegionRecursively<CR>
 nnoremap zO :action ExpandRegionRecursively<CR>
 
+
+" map <leader>1 :action ActivateProjectToolWindow<CR>
+map <leader>t :action ActivateTerminalToolWindow<CR>
 
 " TODO сделать <Leader>1 - file tree, <Leader>2 - git etc
