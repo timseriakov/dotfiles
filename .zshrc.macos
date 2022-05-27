@@ -52,7 +52,6 @@ user            # Username section
 host            # Hostname section
 git             # Git section (git_branch + git_status)
 time          # Time stampts section
-# hg            # Mercurial section (hg_branch  + hg_status)
 # package       # Package version
 node          # Node.js section
 # ruby          # Ruby section
@@ -117,6 +116,7 @@ alias ff="fast"
 alias p="pnpm"
 alias y="yarn"
 alias c="clear"
+alias how="howdoi"
 alias rf="rm -rf"
 alias tt="taskwarrior-tui"
 alias vtop="vtop --theme nord"
@@ -127,14 +127,19 @@ alias cmt="cd ~/dev/dotfiles
 
 alias pull-dotfiles="cd ~/dev/dotfiles
                     git pull"
-
+alias python="python3"
+alias pip="pip3"
 
 
 # Enable vi mode
 bindkey -v
 bindkey -M viins 'jj' vi-cmd-mode
 
+export DENO_INSTALL="/Users/tim/.deno"
 export PATH="$PATH:$HOME/.local/bin:./node_modules/.bin"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
 # HSTR configuration - add this to ~/.zshrc
 alias hh=hstr                    # hh to be alias for hstr
@@ -147,10 +152,6 @@ export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PR
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(pyenv init --path)"
-
-# Fig post block. Keep at the bottom of this file.
-. "$HOME/.fig/shell/zshrc.post.zsh"
-export PATH=$PATH:/Users/tim/.spicetify
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -167,3 +168,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# Fig post block. Keep at the bottom of this file.
+. "$HOME/.fig/shell/zshrc.post.zsh"

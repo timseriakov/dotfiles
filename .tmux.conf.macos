@@ -27,6 +27,10 @@ set -g @plugin 'tmux-plugins/tmux-sessionist'
 set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @plugin 'tmux-plugins/tmux-sidebar'
 
+set -g @scroll-speed-num-lines-per-scroll "1"
+
+set -g @plugin 'nhdaly/tmux-better-mouse-mode'
+
 # brew install urlview
 # brew install extract_url
 set -g @plugin 'tmux-plugins/tmux-urlview'
@@ -76,5 +80,5 @@ bind-key -T copy-mode-vi 'C-k' select-pane -U
 bind-key -T copy-mode-vi 'C-l' select-pane -R
 bind-key -T copy-mode-vi 'C-\' select-pane -l
 #-#-# start_of_ranger_tmux_config #-#-#
-bind-key Bspace run-shell -b '/Users/tim/.pyenv/versions/2.7.18/bin/python -m ranger_tmux.drop'
+bind-key Bspace run-shell -b '/opt/homebrew/opt/python@3.9/bin/python3.9 -m ranger_tmux.drop'
 #-#-# end_of_ranger_tmux_config #-#-#
