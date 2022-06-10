@@ -123,7 +123,8 @@ alias vtop="vtop --theme nord"
 alias cmt="cd ~/dev/dotfiles
             git add .
             git commit -m \"add something\"
-            git push"
+            git push
+            -"
 
 alias pull-dotfiles="cd ~/dev/dotfiles
                     git pull"
