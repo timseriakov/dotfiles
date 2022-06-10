@@ -124,7 +124,7 @@ alias cmt="cd ~/dev/dotfiles
             git add .
             git commit -m \"add something\"
             git push
-            && cd -"
+            cd -"
 
 alias pull-dotfiles="cd ~/dev/dotfiles
                     git pull"
