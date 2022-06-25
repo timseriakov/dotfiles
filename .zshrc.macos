@@ -1,5 +1,5 @@
 # Fig pre block. Keep at the top of this file.
-. "$HOME/.fig/shell/zshrc.pre.zsh"
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
 #
 # Tmux
 #
@@ -131,10 +131,16 @@ alias pull-dotfiles="cd ~/dev/dotfiles
 alias python="python3"
 alias pip="pip3"
 
-alias ls="exa --icons"
-alias la="ls --long"
+# ls relacement with exa
+alias ls="exa --icons --sort=type" 
+alias la="ls -all --long"
 alias l="ls -1"
 alias lt="ls --tree"
+
+# ISSA project
+alias ssh-to-issa='ssh srv-issa-p01.best.local'
+alias i="cd ~/dev/issa-rw/"
+
 
 # Enable vi mode
 bindkey -v
@@ -173,8 +179,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# Fig post block. Keep at the bottom of this file.
-. "$HOME/.fig/shell/zshrc.post.zsh"
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
