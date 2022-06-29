@@ -39,6 +39,8 @@ set timeoutlen=1000
 imap jk <Esc>
 imap jj <Esc>
 
+nnoremap <leader>si :source ~/.ideavimrc<cr>
+
 " key bindings for quickly moving between windows
 " h left, l right, k up, j down
 nmap <leader>wh <c-w>h
@@ -51,8 +53,8 @@ nmap <leader>q :action CloseContent<cr>
 nmap <leader>Q :action ReopenClosedTab<cr>
 
 " Splits manipulation
-nmap <leader>ws :action SplitHorizontally<cr>
-nmap <leader>wv :action SplitVertically<cr>
+nmap <leader>wh :action SplitHorizontally<cr>
+nmap <leader>ws :action SplitVertically<cr>
 nmap <leader>wc :action Unsplit<cr>
 nmap <leader>wC :action UnsplitAll<cr>
 nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
@@ -62,7 +64,7 @@ nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
 nmap <leader>n :action Back<cr>
 nmap <leader>m :action Forward<cr>
 nmap <leader>L :action RecentLocations<cr>
-nmap <leader>g :action GotoDeclaration<cr>
+nmap <leader>g :only<bar>vsplit<CR>gd
 nmap <leader>u :action FindUsages<cr>
 nmap <leader>; :action FileStructurePopup<cr>
 nmap <leader>M :action ActivateStructureToolWindow<cr>
@@ -168,9 +170,3 @@ map g, <Action>(JumpToNextChange)
 " recursively open and close the folds under the cursor
 nnoremap zC :action CollapseRegionRecursively<CR>
 nnoremap zO :action ExpandRegionRecursively<CR>
-
-
-" map <leader>1 :action ActivateProjectToolWindow<CR>
-map <leader>t :action ActivateTerminalToolWindow<CR>
-
-" TODO сделать <Leader>1 - file tree, <Leader>2 - git etc
