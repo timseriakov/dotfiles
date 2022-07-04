@@ -65,7 +65,8 @@ map <C-i> <Action>(Back)
 map <C-o> <Action>(Forward)
 nmap <leader>n :action Back<cr>
 nmap <leader>m :action Forward<cr>
-nmap <leader>L :action RecentLocations<cr>
+
+nmap <leader>l :action RecentLocations<cr>
 
 map g; <Action>(JumpToLastChange)
 map g, <Action>(JumpToNextChange)
@@ -122,7 +123,7 @@ map <leader>a :action $SelectAll<CR>
 map <leader>v :action $Paste<CR>
 map <leader>c :action $Copy<CR>
 map <leader>R :action Replace<CR>
-map <leader>l :action ReformatCode<CR>
+map <leader>f :action ReformatCode<CR>
 map <leader>= :action GotoFile<CR>
 map <leader>0 :action ActivateJIRAToolWindow<CR>
 map <leader>D <Esc>yyo<Esc> :action $Paste<CR>kA
