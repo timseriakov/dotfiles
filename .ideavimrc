@@ -61,9 +61,19 @@ nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
 " nmap <leader>ww :action JumpToLastWindow<cr>
 
 " Navigation
+map <C-i> <Action>(Back)
+map <C-o> <Action>(Forward)
 nmap <leader>n :action Back<cr>
 nmap <leader>m :action Forward<cr>
 nmap <leader>L :action RecentLocations<cr>
+
+map g; <Action>(JumpToLastChange)
+map g, <Action>(JumpToNextChange)
+
+" Errors
+nmap <leader>x :action GotoNextError<cr>
+nmap <leader>X :action GotoPreviousError<cr>
+
 nmap <leader>g :only<bar>vsplit<CR>gd
 nmap <leader>u :action FindUsages<cr>
 nmap <leader>; :action FileStructurePopup<cr>
@@ -73,10 +83,6 @@ nmap <leader>i :action GotoImplementation<cr>
 nmap <leader>I :action SelectIn<cr>
 nmap <leader>e :action RecentFiles<cr>
 nmap <leader>p :action JumpToLastWindow<cr>
-
-" Errors
-nmap <leader>x :action GotoNextError<cr>
-nmap <leader>X :action GotoPreviousError<cr>
 
 " Refactorings
 vmap T :action Refactorings.QuickListPopupAction<cr>
@@ -161,11 +167,6 @@ inoremap <S-Left> <C-O>:action EditorLeftWithSelection<CR>
 inoremap <S-Right> <C-O>:action EditorRightWithSelection<CR>
 inoremap <S-Up> <C-O>:action EditorUpWithSelection<CR>
 inoremap <S-Down> <C-O>:action EditorDownWithSelection<CR>
-
-map <C-i> <Action>(Back)
-map <C-o> <Action>(Forward)
-map g; <Action>(JumpToLastChange)
-map g, <Action>(JumpToNextChange)
 
 " recursively open and close the folds under the cursor
 nnoremap zC :action CollapseRegionRecursively<CR>
