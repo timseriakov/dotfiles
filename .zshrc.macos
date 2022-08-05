@@ -118,6 +118,7 @@ alias y="yarn"
 alias c="clear"
 alias how="howdoi"
 alias rf="rm -rf"
+alias npk="npx npkill"
 alias tt="taskwarrior-tui"
 alias vtop="vtop --theme nord"
 alias cmt="cd ~/dev/dotfiles
@@ -132,7 +133,7 @@ alias python="python3"
 alias pip="pip3"
 
 # ls relacement with exa
-alias ls="exa --icons --sort=type" 
+alias ls="exa --icons" 
 alias la="ls -all --long"
 alias l="ls -1"
 alias lt="ls --tree"

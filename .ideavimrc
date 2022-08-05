@@ -41,13 +41,6 @@ imap jj <Esc>
 
 nnoremap <leader>si :source ~/.ideavimrc<cr>
 
-" key bindings for quickly moving between windows
-" h left, l right, k up, j down
-nmap <leader>wh <c-w>h
-nmap <leader>wl <c-w>l
-nmap <leader>wk <c-w>k
-nmap <leader>wj <c-w>j
-
 " Closing tabs
 nmap <leader>q :action CloseContent<cr>
 nmap <leader>Q :action ReopenClosedTab<cr>
