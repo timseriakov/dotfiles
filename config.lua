@@ -228,11 +228,12 @@ lvim.plugins = {
   },
   {
     "wakatime/vim-wakatime"
-  }
-  -- {
-  --   "npxbr/glow.nvim",
-  --   ft = { "markdown" }
-  -- },
+  },
+  {
+    "npxbr/glow.nvim",
+    ft = { "markdown" }
+  },
+  { "nickeb96/fish.vim" }
 }
 
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
