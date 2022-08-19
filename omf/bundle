@@ -1,0 +1,10 @@
+package bass
+package brew
+package colored-man-pages
+package foreign-env
+package https://github.com/jhillyerd/plugin-git
+package node-binpath
+package nvm
+package wifi-password
+package z
+theme default
