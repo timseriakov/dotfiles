@@ -1,0 +1,30 @@
+# Это файл конфигурации пользователя Git.
+[user]
+	name = Tim Seriakov
+	email = t.seryakov@gmail.com
+# Пожалуйста, адаптируйте и раскомментируйте следующие строки:
+#	user = Tim Seriakov
+#	email = t.seriakov@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = master
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    side-by-side = true
+    syntax-theme = Nord
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
