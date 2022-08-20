@@ -174,9 +174,10 @@ lvim.plugins = {
           "dashboard",
           "lspinfo",
           "lsp-installer",
-          "mason"
+          "mason",
+          "packer"
         },
-        buftype_exclude = { "terminal", "packer" },
+        buftype_exclude = { "terminal" },
         bufname_exclude = { "config.lua" },
 
         show_trailing_blankline_indent = false,
