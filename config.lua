@@ -14,8 +14,17 @@ lvim.format_on_save = true
 lvim.colorscheme = "nord"
 
 -- for neovide
--- vim.opt.guifont = "ShureTechMono Nerd Font Mono:h20"
-vim.opt.guifont = "Share Tech Mono:h20"
+vim.opt.guifont = "Share Tech Mono:h21"
+
+local g = vim.g
+
+g.neovide_fullscreen = true
+g.neovide_transparency = 0.95
+g.neovide_cursor_vfx_mode = "railgun"
+g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
+-- g.neovide_cursor_vfx_particle_curl = 0.1
+-- g.neovide_cursor_vfx_particle_lifetime = 3.2
+-- g.neovide_cursor_vfx_particle_speed = 20.0
 
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -240,7 +249,8 @@ lvim.plugins = {
           package_uninstalled = "✗"
         }
       }
-    }) }
+    })
+  }
 }
 
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
