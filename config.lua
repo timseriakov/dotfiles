@@ -12,6 +12,11 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "nord"
+
+-- for neovide
+-- vim.opt.guifont = "ShureTechMono Nerd Font Mono:h20"
+vim.opt.guifont = "Share Tech Mono:h20"
+
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -157,7 +162,6 @@ lvim.plugins = {
       end, 100)
     end,
   },
-  -- { "github/copilot.vim" },
   { "zbirenbaum/copilot-cmp",
     after = { "copilot.lua", "nvim-cmp" },
   },
