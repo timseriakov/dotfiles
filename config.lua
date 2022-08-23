@@ -1,38 +1,28 @@
---[[
-lvim is the global options object
-
-Linters should be
-filled in as strings with either
-a global executable or a path to
-an executable
-]]
--- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
-
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "nord"
 
 -- for neovide
-vim.opt.guifont = "Share Tech Mono:h21"
+vim.opt.guifont = "Share Tech Mono:h20"
 
 local g = vim.g
 
 g.neovide_fullscreen = true
-g.neovide_transparency = 0.95
+-- g.neovide_transparency = 0.95
 g.neovide_cursor_vfx_mode = "railgun"
 g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
 -- g.neovide_cursor_vfx_particle_curl = 0.1
 -- g.neovide_cursor_vfx_particle_lifetime = 3.2
 -- g.neovide_cursor_vfx_particle_speed = 20.0
 
--- to disable icons and use a minimalist setup, uncomment the following
--- lvim.use_icons = false
-
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["|"] = ":vsplit<CR>"
+lvim.keys.normal_mode["-"] = ":split<CR>"
+lvim.keys.normal_mode["<esc><esc>"] = ":noh<CR>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -136,14 +126,14 @@ lvim.plugins = {
       }
     end,
   },
-  {
-    "f-person/git-blame.nvim",
-    event = "BufRead",
-    config = function()
-      vim.cmd "highlight default link gitblame SpecialComment"
-      vim.g.gitblame_enabled = 0
-    end,
-  },
+  -- {
+  --   "f-person/git-blame.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     vim.cmd "highlight default link gitblame SpecialComment"
+  --     vim.g.gitblame_enabled = 0
+  --   end,
+  -- },
   {
     "p00f/nvim-ts-rainbow",
   },
