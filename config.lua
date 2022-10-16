@@ -5,9 +5,7 @@ lvim.colorscheme = "nord"
 
 -- for neovide
 vim.opt.guifont = "Share Tech Mono:h20"
-
 local g = vim.g
-
 g.neovide_fullscreen = true
 -- g.neovide_transparency = 0.95
 g.neovide_cursor_vfx_mode = "railgun"
@@ -31,6 +29,7 @@ lvim.keys.normal_mode["<esc><esc>"] = ":noh<CR>"
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 local _, actions = pcall(require, "telescope.actions")
+
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
@@ -224,6 +223,14 @@ lvim.plugins = {
   },
   {
     "wakatime/vim-wakatime"
+  },
+  {
+    'phaazon/mind.nvim',
+    branch = 'v2',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require 'mind'.setup()
+    end
   },
   {
     "npxbr/glow.nvim",
