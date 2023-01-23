@@ -43,6 +43,9 @@ nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
 nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 
 " Navigation -------------------------------------------------------
+nnoremap gb :action Back<CR>
+nnoremap gf :action Forward<CR>
+
 nmap <leader>p :action Back<cr>
 nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
@@ -78,6 +81,10 @@ nmap <leader>- :action FoldingGroup<CR>
 nmap <leader>c :action CommentByLineComment<CR>
 nmap <leader>o :action OptimizeImports<cr>
 
+" Run ---------------------------------------------------------------
+nnoremap ,, :action RunClass<CR>
+nnoremap ,r :action Rerun<CR>
+
 " Delete (not cut) --------------------------------------------------
 nnoremap d "_d
 vnoremap d "_d
@@ -91,8 +98,8 @@ nnoremap zO :action ExpandRegionRecursively<CR>
 
 " Errors ------------------------------------------------------------
 nmap <leader>d :action ShowErrorDescription<cr>
-nmap <leader>x :action GotoNextError<cr>
-nmap <leader>X :action GotoPreviousError<cr>
+nnoremap ge :action GotoNextError<CR>
+nnoremap gE :action GotoPreviousError<CR>
 "--------------------------------------------------------------------
 
 nmap <leader>G :only<bar>vsplit<CR>gd
