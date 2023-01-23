@@ -38,6 +38,7 @@ nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
 nmap <leader>e :action RecentFiles<cr>
 
+
 " Search -----------------------------------------------------------
 nmap <leader>/ :action Find<cr>
 nmap <leader>\ :action FindInPath<cr>
@@ -65,6 +66,7 @@ nmap <leader>u :action FindUsages<cr>
 nmap <leader>i :action SelectIn<cr>
 nmap <leader>f :action ReformatCode<CR>
 nmap <leader>- :action FoldingGroup<CR>
+nmap <leader>c :action CommentByLineComment<CR>
 
 " Delete (not cut) --------------------------------------------------
 nnoremap d "_d
