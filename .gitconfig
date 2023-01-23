@@ -1,10 +1,8 @@
 # Это файл конфигурации пользователя Git.
 [user]
 	name = Tim Seriakov
-	email = t.seryakov@gmail.com
-# Пожалуйста, адаптируйте и раскомментируйте следующие строки:
-#	user = Tim Seriakov
-#	email = t.seriakov@gmail.com
+	email = t.seriakov@gmail.com
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
