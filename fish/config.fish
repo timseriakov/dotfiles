@@ -22,3 +22,6 @@ set --universal --export FZF_DEFAULT_OPTS --color fg:#5E81AC,bg:#2E3440,hl:#A3BE
 set -gx PNPM_HOME "/Users/tim/Library/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
+# Generated for envman. Do not edit.
+test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
+
