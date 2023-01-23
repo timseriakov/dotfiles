@@ -1,5 +1,5 @@
-" Tim Seryakov
-" t.seryakov@gmail.com
+" Tim Seriakov
+" t.seriakov@gmail.com
 
 " Plugins ----------------------------------------------------------
 Plug 'preservim/nerdtree'
@@ -9,7 +9,6 @@ set ignorecase
 set smartcase
 set scrolloff=2
 set clipboard+=unnamed
-" ideaput
 set multiple-cursors
 set easymotion
 set commentary
@@ -32,6 +31,16 @@ let mapleader = " "
 set timeoutlen=1000
 
 nmap <leader>si :source ~/.ideavimrc<cr>
+
+" Like cmd+n --------------------------------------------------------
+nmap <leader>1 :action ActivateProjectToolWindow<cr>
+nmap <leader>2 :action ActivateTerminalToolWindow<cr>
+nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
+nmap <leader>4 :action ActivateVersionControlToolWindow<cr>
+nmap <leader>5 :action ActivateRunToolWindow<cr>
+nmap <leader>7 :action ActivateServicesToolWindow<cr>
+nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
+nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 
 " Navigation -------------------------------------------------------
 nmap <leader>p :action Back<cr>
@@ -77,8 +86,8 @@ vnoremap x "_x
 nnoremap D "_D
 
 " recursively open and close the folds under the cursor -------------
-nmap zC :action CollapseRegionRecursively<CR>
-nmap zO :action ExpandRegionRecursively<CR>
+nnoremap zC :action CollapseRegionRecursively<CR>
+nnoremap zO :action ExpandRegionRecursively<CR>
 
 " Errors ------------------------------------------------------------
 nmap <leader>d :action ShowErrorDescription<cr>
@@ -87,6 +96,7 @@ nmap <leader>X :action GotoPreviousError<cr>
 "--------------------------------------------------------------------
 
 nmap <leader>G :only<bar>vsplit<CR>gd
+
 
 
 

@@ -1,6 +1,0 @@
-theme = "nord"
-
-[editor]
-line-number = "relative"
-[keys.insert]
-j = { j = "normal_mode" }
