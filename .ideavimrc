@@ -9,6 +9,7 @@ set ignorecase
 set smartcase
 set scrolloff=2
 set clipboard+=unnamed
+" ideaput
 set multiple-cursors
 set easymotion
 set commentary
@@ -24,7 +25,7 @@ imap jk <Esc>
 imap jj <Esc>
 
 "--------------------------------------------------------------------
-nmap yy "+yy
+nnoremap yy "+yy
 vnoremap y "+y
 
 let mapleader = " "
@@ -37,7 +38,6 @@ nmap <leader>p :action Back<cr>
 nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
 nmap <leader>e :action RecentFiles<cr>
-
 
 " Search -----------------------------------------------------------
 nmap <leader>/ :action Find<cr>
@@ -56,17 +56,18 @@ nmap <c-j> <c-w>j
 nmap <c-k> <c-w>k
 
 " Tabs --------------------------------------------------------------
-nmap <TAB> :action PreviousTab<CR>
-nmap <s-TAB> :action NextTab<CR>
 nmap <leader>q :action CloseContent<cr>
 nmap <leader>Q :action ReopenClosedTab<cr>
+nmap <TAB> :action PreviousTab<CR>
+nmap <s-TAB> :action NextTab<CR>
 
-"--------------------------------------------------------------------
+" Misc --------------------------------------------------------------
 nmap <leader>u :action FindUsages<cr>
 nmap <leader>i :action SelectIn<cr>
 nmap <leader>f :action ReformatCode<CR>
 nmap <leader>- :action FoldingGroup<CR>
 nmap <leader>c :action CommentByLineComment<CR>
+nmap <leader>o :action OptimizeImports<cr>
 
 " Delete (not cut) --------------------------------------------------
 nnoremap d "_d
@@ -93,7 +94,7 @@ nmap <leader>G :only<bar>vsplit<CR>gd
 " vmap T :action Refactorings.QuickListPopupAction<cr>
 " nmap <leader>rr :action RenameElement<cr>
 " nmap <leader>rg :action Generate<cr>
-nmap <leader>o :action OptimizeImports<cr>
+
 
 map <leader>R :action Replace<CR>
 
