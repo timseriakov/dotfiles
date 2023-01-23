@@ -7,10 +7,11 @@
 set ignorecase
 set smartcase
 set scrolloff=2 " 3 lines above/below cursor when scrolling
-" set relativenumber number
 
 " Copy to system clipboard as well
 set clipboard+=unnamed
+
+Plug 'preservim/nerdtree'
 
 set multiple-cursors
 set easymotion
@@ -27,11 +28,6 @@ set noerrorbells
 
 nnoremap yy "+yy
 vnoremap y "+y
-
-"nnoremap p "+p
-"vnoremap p "+p
-nnoremap p :action PasteMultiple<CR>
-vnoremap p :action PasteMultiple<CR>
 
 " let mapleader = <space>
 let mapleader = " "
@@ -56,13 +52,9 @@ nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
 " Navigation
 map <C-i> <Action>(Back)
 map <C-o> <Action>(Forward)
-nmap <leader>n :action Back<cr>
-nmap <leader>m :action Forward<cr>
-
+nmap <leader>p :action Back<cr>
+nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
-
-map g; <Action>(JumpToLastChange)
-map g, <Action>(JumpToNextChange)
 
 " Errors
 nmap <leader>x :action GotoNextError<cr>
@@ -70,13 +62,10 @@ nmap <leader>X :action GotoPreviousError<cr>
 
 nmap <leader>g :only<bar>vsplit<CR>gd
 nmap <leader>u :action FindUsages<cr>
-nmap <leader>; :action FileStructurePopup<cr>
-nmap <leader>M :action ActivateStructureToolWindow<cr>
 nmap <leader>d :action ShowErrorDescription<cr>
-nmap <leader>i :action GotoImplementation<cr>
-nmap <leader>I :action SelectIn<cr>
+nmap <leader>i :action SelectIn<cr>
 nmap <leader>e :action RecentFiles<cr>
-nmap <leader>p :action JumpToLastWindow<cr>
+
 
 " Refactorings
 vmap T :action Refactorings.QuickListPopupAction<cr>
@@ -122,19 +111,8 @@ map <leader>0 :action ActivateJIRAToolWindow<CR>
 map <leader>D <Esc>yyo<Esc> :action $Paste<CR>kA
 
 map <leader>- :action FoldingGroup<CR>
-map <A-x> :action ActivateTerminalToolWindow<CR>
 map = :action ExpandRegion<CR>
 map - :action CollapseRegion<CR>
-
-nnoremap <S-Left> :action EditorLeftWithSelection<CR>
-nnoremap <S-Right> :action EditorRightWithSelection<CR>
-nnoremap <S-Up> :action EditorUpWithSelection<CR>
-nnoremap <S-Down> :action EditorDownWithSelection<CR>
-
-inoremap <S-Left> <C-O>:action EditorLeftWithSelection<CR>
-inoremap <S-Right> <C-O>:action EditorRightWithSelection<CR>
-inoremap <S-Up> <C-O>:action EditorUpWithSelection<CR>
-inoremap <S-Down> <C-O>:action EditorDownWithSelection<CR>
 
 inoremap <C-d> <Esc>yypi
 
