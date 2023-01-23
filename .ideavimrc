@@ -1,145 +1,105 @@
 " Tim Seryakov
 " t.seryakov@gmail.com
 
-" When 'ignorecase' and 'smartcase' are both on,
-" if a pattern contains an uppercase letter,
-" it is case sensitive, otherwise, it is not.
-set ignorecase
-set smartcase
-set scrolloff=2 " 3 lines above/below cursor when scrolling
-
-" Copy to system clipboard as well
-set clipboard+=unnamed
-
+" Plugins ----------------------------------------------------------
 Plug 'preservim/nerdtree'
 
+"-------------------------------------------------------------------
+set ignorecase
+set smartcase
+set scrolloff=2
+set clipboard+=unnamed
 set multiple-cursors
 set easymotion
 set commentary
 set highlightedyank
 set surround
 set sneak
-
-" Use Idea to join lines smartly
 set ideajoin
-
 set visualbell
 set noerrorbells
 
-nnoremap yy "+yy
-vnoremap y "+y
-
-" let mapleader = <space>
-let mapleader = " "
-set timeoutlen=1000
+" My favorite ------------------------------------------------------
 imap jk <Esc>
 imap jj <Esc>
 
-nnoremap <leader>si :source ~/.ideavimrc<cr>
+"--------------------------------------------------------------------
+nmap yy "+yy
+vnoremap y "+y
 
-" Closing tabs
-nmap <leader>q :action CloseContent<cr>
-nmap <leader>Q :action ReopenClosedTab<cr>
+let mapleader = " "
+set timeoutlen=1000
 
-" Splits manipulation
-nmap <leader>wh :action SplitHorizontally<cr>
-nmap <leader>ws :action SplitVertically<cr>
-nmap <leader>wc :action Unsplit<cr>
-nmap <leader>wC :action UnsplitAll<cr>
-nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
-" nmap <leader>ww :action JumpToLastWindow<cr>
+nmap <leader>si :source ~/.ideavimrc<cr>
 
-" Navigation
-map <C-i> <Action>(Back)
-map <C-o> <Action>(Forward)
+" Navigation -------------------------------------------------------
 nmap <leader>p :action Back<cr>
 nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
-
-" Errors
-nmap <leader>x :action GotoNextError<cr>
-nmap <leader>X :action GotoPreviousError<cr>
-
-nmap <leader>g :only<bar>vsplit<CR>gd
-nmap <leader>u :action FindUsages<cr>
-nmap <leader>d :action ShowErrorDescription<cr>
-nmap <leader>i :action SelectIn<cr>
 nmap <leader>e :action RecentFiles<cr>
 
-
-" Refactorings
-vmap T :action Refactorings.QuickListPopupAction<cr>
-nmap <leader>rr :action RenameElement<cr>
-nmap <leader>rg :action Generate<cr>
-nmap <leader>o :action OptimizeImports<cr>
-
-" Inspection
-nmap <leader>rc :action InspectCode<cr>
-
-" VCS operations
-nmap <leader>yy :action Vcs.Show.Local.Changes<cr>
-nmap <leader>yp :action Vcs.Push<cr>
-nmap <leader>ya :action Annotate<cr>
-nmap <leader>yl :action Vcs.Show.Log<cr>
-nmap <leader>yd :action Compare.LastVersion<cr>
-nmap <leader>yt :action Vcs.UpdateProject<cr>
-" nmap <leader>yr :action Git.ResolveConflicts<cr>
-
-" Search
+" Search -----------------------------------------------------------
 nmap <leader>/ :action Find<cr>
 nmap <leader>\ :action FindInPath<cr>
 
-" Tabs
-nnoremap g[ :action PreviousTab<cr>
-nnoremap g] :action NextTab<cr>
+" Splits manipulation -----------------------------------------------
+nmap <c-\> :action SplitVertically<CR>
+nmap <c--> :action SplitHorizontally<CR>
+nmap <c-=> :action Unsplit<CR>
+nmap <c-m> :action MoveEditorToOppositeTabGroup<CR>
+sethandler <c-j> a:vim
+sethandler <c-k> a:vim
+nmap <c-h> <c-w>h
+nmap <c-l> <c-w>l
+nmap <c-j> <c-w>j
+nmap <c-k> <c-w>k
 
-" Moving lines
-nmap [e :action MoveLineUp<cr>
-nmap ]e :action MoveLineDown<cr>
+" Tabs --------------------------------------------------------------
+nmap <TAB> :action PreviousTab<CR>
+nmap <s-TAB> :action NextTab<CR>
+nmap <leader>q :action CloseContent<cr>
+nmap <leader>Q :action ReopenClosedTab<cr>
 
-" Moving statements
-nmap [s :action MoveStatementUp<cr>
-nmap ]s :action MoveStatementDown<cr>
+"--------------------------------------------------------------------
+nmap <leader>u :action FindUsages<cr>
+nmap <leader>i :action SelectIn<cr>
+nmap <leader>f :action ReformatCode<CR>
+nmap <leader>- :action FoldingGroup<CR>
 
-map <leader>a :action $SelectAll<CR>
-map <leader>v :action $Paste<CR>
-map <leader>c :action $Copy<CR>
-map <leader>R :action Replace<CR>
-map <leader>f :action ReformatCode<CR>
-map <leader>= :action GotoFile<CR>
-map <leader>0 :action ActivateJIRAToolWindow<CR>
-map <leader>D <Esc>yyo<Esc> :action $Paste<CR>kA
-
-map <leader>- :action FoldingGroup<CR>
-map = :action ExpandRegion<CR>
-map - :action CollapseRegion<CR>
-
-inoremap <C-d> <Esc>yypi
-
-" These create newlines like o and O but stay in normal mode
-nmap zj o<Esc>
-nmap zk O<Esc>
-nmap zJ o<Esc>k
-nmap zJ O<Esc>j
-
-" Delete (not cut)
+" Delete (not cut) --------------------------------------------------
 nnoremap d "_d
 vnoremap d "_d
 nnoremap x "_x
 vnoremap x "_x
 nnoremap D "_D
 
-" shift+arrow selection
-nnoremap <S-Left> :action EditorLeftWithSelection<CR>
-nnoremap <S-Right> :action EditorRightWithSelection<CR>
-nnoremap <S-Up> :action EditorUpWithSelection<CR>
-nnoremap <S-Down> :action EditorDownWithSelection<CR>
+" recursively open and close the folds under the cursor -------------
+nmap zC :action CollapseRegionRecursively<CR>
+nmap zO :action ExpandRegionRecursively<CR>
 
-inoremap <S-Left> <C-O>:action EditorLeftWithSelection<CR>
-inoremap <S-Right> <C-O>:action EditorRightWithSelection<CR>
-inoremap <S-Up> <C-O>:action EditorUpWithSelection<CR>
-inoremap <S-Down> <C-O>:action EditorDownWithSelection<CR>
+" Errors ------------------------------------------------------------
+nmap <leader>d :action ShowErrorDescription<cr>
+nmap <leader>x :action GotoNextError<cr>
+nmap <leader>X :action GotoPreviousError<cr>
+"--------------------------------------------------------------------
 
-" recursively open and close the folds under the cursor
-nnoremap zC :action CollapseRegionRecursively<CR>
-nnoremap zO :action ExpandRegionRecursively<CR>
+nmap <leader>G :only<bar>vsplit<CR>gd
+
+
+
+" Refactorings
+" vmap T :action Refactorings.QuickListPopupAction<cr>
+" nmap <leader>rr :action RenameElement<cr>
+" nmap <leader>rg :action Generate<cr>
+nmap <leader>o :action OptimizeImports<cr>
+
+map <leader>R :action Replace<CR>
+
+inoremap <C-d> <Esc>yypi
+
+
+" These create newlines like o and O but stay in normal mode
+nmap zj o<Esc>
+nmap zk O<Esc>
+nmap zJ o<Esc>k
+nmap zJ O<Esc>j
