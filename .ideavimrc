@@ -1,6 +1,3 @@
-" Tim Seriakov
-" t.seriakov@gmail.com
-
 " Plugins ----------------------------------------------------------
 Plug 'preservim/nerdtree'
 
@@ -19,9 +16,9 @@ set ideajoin
 set visualbell
 set noerrorbells
 
-" My favorite ------------------------------------------------------
-imap jk <Esc>
+" My favorites -----------------------------------------------------
 imap jj <Esc>
+map <C-c> <Esc>
 
 "--------------------------------------------------------------------
 nnoremap yy "+yy
@@ -29,6 +26,7 @@ vnoremap y "+y
 
 let mapleader = " "
 set timeoutlen=1000
+
 
 nmap <leader>si :source ~/.ideavimrc<cr>
 
