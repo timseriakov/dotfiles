@@ -34,7 +34,7 @@ nmap <leader>si :source ~/.ideavimrc<cr>
 nmap <leader>1 :action ActivateProjectToolWindow<cr>
 nmap <leader>2 :action ActivateTerminalToolWindow<cr>
 nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
-nmap <leader>4 :action ActivateVersionControlToolWindow<cr>
+nmap <leader>4 :action ActivatenpmToolWindow<cr>
 nmap <leader>5 :action ActivateRunToolWindow<cr>
 nmap <leader>7 :action ActivateServicesToolWindow<cr>
 nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
