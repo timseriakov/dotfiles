@@ -1,8 +1,8 @@
 if status is-interactive
-  # Commands to run in interactive sessions can go here
+    # Commands to run in interactive sessions can go here
 
-  and not set -q TMUX
-  exec tmux
+    and not set -q TMUX
+    exec tmux
 end
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
@@ -25,5 +25,3 @@ set -gx PATH "$PNPM_HOME" $PATH
 # Generated for envman. Do not edit.
 test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
-
-pyenv init - | source
