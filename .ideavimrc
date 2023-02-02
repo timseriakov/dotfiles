@@ -39,6 +39,7 @@ nmap <leader>5 :action ActivateRunToolWindow<cr>
 nmap <leader>7 :action ActivateServicesToolWindow<cr>
 nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
 nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
+nmap <leader>= :action GotoFile<cr>
 
 " Navigation -------------------------------------------------------
 nnoremap gb :action Back<CR>
