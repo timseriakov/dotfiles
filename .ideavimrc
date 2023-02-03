@@ -28,7 +28,7 @@ let mapleader = " "
 set timeoutlen=1000
 
 
-nmap <leader>si :source ~/.ideavimrc<cr>
+nmap <leader>so :source ~/.ideavimrc<cr>
 
 " Like cmd+n --------------------------------------------------------
 nmap <leader>1 :action ActivateProjectToolWindow<cr>
@@ -39,7 +39,7 @@ nmap <leader>5 :action ActivateRunToolWindow<cr>
 nmap <leader>7 :action ActivateServicesToolWindow<cr>
 nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
 nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
-nmap <leader>= :action GotoFile<cr>
+
 
 " Navigation -------------------------------------------------------
 nnoremap gb :action Back<CR>
@@ -51,26 +51,27 @@ nmap <leader>l :action RecentLocations<cr>
 nmap <leader>e :action RecentFiles<cr>
 
 " Search -----------------------------------------------------------
+nmap <leader>= :action GotoFile<cr>
 nmap <leader>/ :action Find<cr>
 nmap <leader>\ :action FindInPath<cr>
 
 " Splits manipulation -----------------------------------------------
-nmap <c-\> :action SplitVertically<CR>
-nmap <c--> :action SplitHorizontally<CR>
-nmap <c-=> :action Unsplit<CR>
-nmap <c-m> :action MoveEditorToOppositeTabGroup<CR>
-sethandler <c-j> a:vim
-sethandler <c-k> a:vim
-nmap <c-h> <c-w>h
-nmap <c-l> <c-w>l
-nmap <c-j> <c-w>j
-nmap <c-k> <c-w>k
+nmap <C-\> :action SplitVertically<CR>
+nmap <C--> :action SplitHorizontally<CR>
+nmap <C-=> :action Unsplit<CR>
+nmap <C-m> :action MoveEditorToOppositeTabGroup<CR>
+sethandler <C-j> a:vim
+sethandler <C-k> a:vim
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
 
 " Tabs --------------------------------------------------------------
 nmap <leader>q :action CloseContent<cr>
 nmap <leader>Q :action ReopenClosedTab<cr>
 nmap <TAB> :action PreviousTab<CR>
-nmap <s-TAB> :action NextTab<CR>
+nmap <S-TAB> :action NextTab<CR>
 
 " Misc --------------------------------------------------------------
 nmap <leader>u :action FindUsages<cr>

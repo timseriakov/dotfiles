@@ -25,5 +25,4 @@ set -gx PATH "$PNPM_HOME" $PATH
 # Generated for envman. Do not edit.
 test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
-
 pyenv init - | source
