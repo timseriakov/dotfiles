@@ -1,3 +1,4 @@
-function f --wraps=fuck --description 'alias f fuck'
-  fuck $argv; 
+function f --wraps='ug -Q' --description 'alias f ug -Q'
+  ug -Q $argv
+        
 end
