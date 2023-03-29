@@ -102,7 +102,7 @@ nnoremap ge :action GotoNextError<CR>
 nnoremap gE :action GotoPreviousError<CR>
 "--------------------------------------------------------------------
 
-nmap <leader>G :only<bar>vsplit<CR>gd
+nmap <leader>g :only<bar>vsplit<CR>gd
 
 
 
