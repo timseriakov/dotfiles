@@ -28,3 +28,4 @@ set -gx PATH "$PNPM_HOME" $PATH
 test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
 pyenv init - | source
+set -x PATH /platform-tools $PATH;

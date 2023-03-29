@@ -1,4 +1,4 @@
-function p --wraps='fx package.json' --description 'alias p fx package.json'
-  fx package.json $argv
+function P --wraps=pnpm --description 'alias P pnpm'
+  pnpm $argv
         
 end
