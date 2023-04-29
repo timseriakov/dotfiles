@@ -60,8 +60,8 @@ nmap <C-\> :action SplitVertically<CR>
 nmap <C--> :action SplitHorizontally<CR>
 nmap <C-=> :action Unsplit<CR>
 nmap <C-m> :action MoveEditorToOppositeTabGroup<CR>
-sethandler <C-j> a:vim
-sethandler <C-k> a:vim
+" sethandler <C-j> a:vim
+" sethandler <C-k> a:vim
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
