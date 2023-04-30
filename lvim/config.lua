@@ -21,7 +21,6 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
-lvim.builtin.terminal.open_mapping = "<c-t>"
 
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
