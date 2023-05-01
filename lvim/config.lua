@@ -47,7 +47,7 @@ lvim.builtin.telescope.defaults.layout_config = {
   horizontal = {
     prompt_position = "top",
     width = 0.99,
-    height = 0.99,
+    height = 0.95,
     preview_width = 0.55,
   },
 }
@@ -132,6 +132,7 @@ vim.g.nord_cursorline_transparent = false
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.float_opts = { height = 25, width = 110 }
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 
