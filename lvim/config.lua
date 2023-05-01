@@ -3,6 +3,8 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 lvim.builtin.treesitter.rainbow.enable = true
+lvim.transparent_window = true
+
 
 -- general
 lvim.log.level = "info"
@@ -11,6 +13,18 @@ lvim.format_on_save = {
   pattern = "*.lua",
   timeout = 1000,
 }
+
+-- for neovide
+vim.opt.guifont = "Share Tech Mono:h20"
+local g = vim.g
+-- g.neovide_fullscreen = true
+g.neovide_transparency = 0.95
+g.neovide_cursor_vfx_mode = "railgun"
+g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
+-- g.neovide_cursor_vfx_particle_curl = 0.1
+-- g.neovide_cursor_vfx_particle_lifetime = 3.2
+-- g.neovide_cursor_vfx_particle_speed = 20.0
+
 
 -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
@@ -42,6 +56,11 @@ vim.keymap.set({ "n" }, "<LEADER>np", require("package-info").change_version, { 
 
 -- -- Change theme settings
 lvim.colorscheme = "nord"
+vim.g.nord_borders = true
+vim.g.nord_bold = false
+vim.g.nord_contrast = true
+vim.g.nord_cursorline_transparent = false
+
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -99,5 +118,47 @@ lvim.plugins = {
   {
     "vuki656/package-info.nvim",
     dependencies = "MunifTanjim/nui.nvim",
-  }
+  },
+  {
+    "github/copilot.vim",
+    event = "VeryLazy",
+    config = function()
+      -- copilot assume mapped
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_no_tab_map = true
+    end,
+  },
+  {
+    "hrsh7th/cmp-copilot",
+    -- after = { "copilot.lua" },
+    config = function()
+      lvim.builtin.cmp.formatting.source_names["copilot"] = "( )"
+      table.insert(lvim.builtin.cmp.sources, 2, { name = "copilot" })
+      -- require("copilot_cmp").setup()
+    end,
+  },
+  {
+    "kevinhwang91/rnvimr",
+    cmd = "RnvimrToggle",
+    config = function()
+      vim.g.rnvimr_draw_border = 1
+      vim.g.rnvimr_pick_enable = 1
+      vim.g.rnvimr_bw_enable = 1
+      -- vim.api.nvim_set_keymap("n", "-", ":RnvimrToggle<CR>", { noremap = true, silent = true })
+    end,
+  },
+  -- {
+  --   "norcalli/nvim-colorizer.lua",
+  --   config = function()
+  --     require("colorizer").setup({ "css", "scss", "html", "javascript", "cjs", "jsx", "tsx" }, {
+  --       RGB = true,      -- #RGB hex codes
+  --       RRGGBB = true,   -- #RRGGBB hex codes
+  --       RRGGBBAA = true, -- #RRGGBBAA hex codes
+  --       rgb_fn = true,   -- CSS rgb() and rgba() functions
+  --       hsl_fn = true,   -- CSS hsl() and hsla() functions
+  --       css = true,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+  --       css_fn = true,   -- Enable all CSS *functions*: rgb_fn, hsl_fn
+  --     })
+  --   end,
+  -- },
 }
