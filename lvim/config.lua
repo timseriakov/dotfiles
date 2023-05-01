@@ -132,6 +132,7 @@ vim.g.nord_cursorline_transparent = false
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.terminal.size = 30
 lvim.builtin.terminal.float_opts = { height = 25, width = 110 }
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
