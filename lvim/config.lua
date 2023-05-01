@@ -8,6 +8,7 @@ lvim.transparent_window = true
 
 -- general
 lvim.log.level = "info"
+-- vim.opt.wrap = true
 lvim.format_on_save = {
   enabled = true,
   pattern = "*.lua",
@@ -36,8 +37,74 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
 
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
+-- Telescope
+-- =========================================
+lvim.builtin.telescope.defaults.path_display = { "smart", "absolute", "truncate" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
+lvim.builtin.telescope.defaults.layout_config = {
+  horizontal = {
+    prompt_position = "top",
+    width = 0.99,
+    height = 0.99,
+    preview_width = 0.55,
+  },
+}
+lvim.builtin.telescope.defaults.file_ignore_patterns = {
+  "vendor/*",
+  "%.lock",
+  "__pycache__/*",
+  "%.sqlite3",
+  "%.ipynb",
+  "node_modules/*",
+  "%.jpg",
+  "%.jpeg",
+  "%.png",
+  "%.svg",
+  "%.otf",
+  "%.ttf",
+  ".git/",
+  "%.webp",
+  ".dart_tool/",
+  ".github/",
+  ".gradle/",
+  ".idea/",
+  ".settings/",
+  ".vscode/",
+  "__pycache__/",
+  "build/",
+  "env/",
+  "gradle/",
+  "node_modules/",
+  "target/",
+  "%.pdb",
+  "%.dll",
+  "%.class",
+  "%.exe",
+  "%.cache",
+  "%.ico",
+  "%.pdf",
+  "%.dylib",
+  "%.jar",
+  "%.docx",
+  "%.met",
+  "smalljre_*/*",
+  ".vale/",
+  "%.burp",
+  "%.mp4",
+  "%.mkv",
+  "%.rar",
+  "%.zip",
+  "%.7z",
+  "%.tar",
+  "%.bz2",
+  "%.epub",
+  "%.flac",
+  "%.tar.gz",
+}
+
+-- package-info.nvim
 require('package-info').setup()
 -- Show dependency versions
 vim.keymap.set({ "n" }, "<LEADER>ns", require("package-info").show, { silent = true, noremap = true })
