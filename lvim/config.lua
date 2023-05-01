@@ -132,7 +132,6 @@ vim.g.nord_cursorline_transparent = false
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.size = 30
 lvim.builtin.terminal.float_opts = { height = 25, width = 110 }
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
@@ -150,7 +149,7 @@ lvim.builtin.which_key.mappings["t"] = {
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
+lvim.builtin.treesitter.ignore_install = { "fish" }
 
 -- -- always installed on startup, useful for parsers without a strict filetype
 -- lvim.builtin.treesitter.ensure_installed = { "comment", "markdown_inline", "regex" }
