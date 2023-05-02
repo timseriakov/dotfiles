@@ -25,7 +25,7 @@ nnoremap yy "+yy
 vnoremap y "+y
 
 let mapleader = " "
-set timeoutlen=1000
+set timeoutlen=1500
 
 
 nmap <leader>so :source ~/.ideavimrc<cr>
