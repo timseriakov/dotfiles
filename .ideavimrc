@@ -52,8 +52,13 @@ nmap <leader>e :action RecentFiles<cr>
 
 " Search -----------------------------------------------------------
 nmap <leader>= :action GotoFile<cr>
-nmap <leader>/ :action Find<cr>
+nmap <leader>sf :action GotoFile<cr>
+
 nmap <leader>\ :action FindInPath<cr>
+nmap <leader>st :action FindInPath<cr>
+
+nmap <leader>/ :action Find<cr>
+
 
 " Splits manipulation -----------------------------------------------
 nmap <C-\> :action SplitVertically<CR>
