@@ -69,8 +69,8 @@ lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
 lvim.builtin.telescope.defaults.layout_config = {
   horizontal = {
     prompt_position = "top",
-    width = 0.99,
-    height = 0.95,
+    width = 0.9,
+    height = 0.9,
     preview_width = 0.55,
   },
 }
