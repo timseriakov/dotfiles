@@ -223,3 +223,4 @@ lvim.plugins = {
   { "junegunn/vim-peekaboo" },
   { "svermeulen/vim-cutlass" }
 }
+
