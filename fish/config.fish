@@ -22,10 +22,16 @@ set fish_key_bindings fish_user_key_bindings
 
 # pnpm
 set -gx PNPM_HOME "/Users/tim/Library/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
 # pnpm end
 # Generated for envman. Do not edit.
 test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
 pyenv init - | source
 set -x PATH /platform-tools $PATH;
+
+test -d "$HOME/.tea" && "$HOME/.tea/tea.xyz/v*/bin/tea" --magic=fish --silent | source
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH

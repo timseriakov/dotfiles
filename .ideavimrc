@@ -15,6 +15,7 @@ set sneak
 set ideajoin
 set visualbell
 set noerrorbells
+set relativenumber
 
 " My favorites -----------------------------------------------------
 imap jj <Esc>
