@@ -164,7 +164,7 @@ vim.g.peekaboo_window = 'vert bo 55new'
 
 -- -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
-lvim.builtin.treesitter.ignore_install = { "fish" }
+lvim.builtin.treesitter.ignore_install = { "fish", "java" }
 
 -- -- always installed on startup, useful for parsers without a strict filetype
 -- lvim.builtin.treesitter.ensure_installed = { "comment", "markdown_inline", "regex" }
@@ -223,4 +223,3 @@ lvim.plugins = {
   { "junegunn/vim-peekaboo" },
   { "svermeulen/vim-cutlass" }
 }
-
