@@ -35,3 +35,4 @@ set -x PATH /platform-tools $PATH;
 test -d "$HOME/.tea" && "$HOME/.tea/tea.xyz/v*/bin/tea" --magic=fish --silent | source
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
+set -gx fish_command_timeout 5000
