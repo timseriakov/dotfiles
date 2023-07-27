@@ -46,6 +46,7 @@ nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 nnoremap gb :action Back<CR>
 nnoremap gf :action Forward<CR>
 
+nmap <leader>w :action SaveAll<cr>
 nmap <leader>p :action Back<cr>
 nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
