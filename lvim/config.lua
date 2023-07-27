@@ -74,6 +74,7 @@ lvim.builtin.telescope.defaults.layout_config = {
     preview_width = 0.55,
   },
 }
+
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "vendor/*",
   "%.lock",
@@ -202,24 +203,19 @@ lvim.plugins = {
     "vuki656/package-info.nvim",
     dependencies = "MunifTanjim/nui.nvim",
   },
-  {
-    "github/copilot.vim",
-    event = "VeryLazy",
-    config = function()
-      -- copilot assume mapped
-      vim.g.copilot_assume_mapped = true
-      vim.g.copilot_no_tab_map = true
-    end,
-  },
-  {
-    "hrsh7th/cmp-copilot",
-    -- after = { "copilot.lua" },
-    config = function()
-      lvim.builtin.cmp.formatting.source_names["copilot"] = "( )"
-      table.insert(lvim.builtin.cmp.sources, 2, { name = "copilot" })
-      -- require("copilot_cmp").setup()
-    end,
-  },
   { "junegunn/vim-peekaboo" },
-  { "svermeulen/vim-cutlass" }
+  { "svermeulen/vim-cutlass" },
+  { "jxnblk/vim-mdx-js" },
 }
+
+table.insert(lvim.plugins, {
+  "zbirenbaum/copilot-cmp",
+  event = "InsertEnter",
+  dependencies = { "zbirenbaum/copilot.lua" },
+  config = function()
+    vim.defer_fn(function()
+      require("copilot").setup()     -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
+      require("copilot_cmp").setup() -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
+    end, 100)
+  end,
+})
