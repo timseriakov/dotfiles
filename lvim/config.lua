@@ -172,6 +172,11 @@ lvim.builtin.treesitter.ignore_install = { "fish", "java" }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
+  {
+    'vuki656/package-info.nvim',
+    dependencies = 'MunifTanjim/nui.nvim',
+    config = function() require('package-info').setup() end
+  },
   { "shaunsingh/nord.nvim" },
   {
     "phaazon/hop.nvim",
