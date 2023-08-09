@@ -2,6 +2,7 @@
 Plug 'preservim/nerdtree'
 
 "-------------------------------------------------------------------
+set nu 
 set ignorecase
 set smartcase
 set scrolloff=2
@@ -15,7 +16,7 @@ set sneak
 set ideajoin
 set visualbell
 set noerrorbells
-set relativenumber
+" set relativenumber
 
 " My favorites -----------------------------------------------------
 imap jj <Esc>
