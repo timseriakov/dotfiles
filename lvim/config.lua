@@ -1,7 +1,7 @@
 -- -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 lvim.builtin.treesitter.rainbow.enable = true
 lvim.transparent_window = true
 
@@ -38,6 +38,7 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- -- jj escape
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
+vim.keymap.set("i", "оо", "<Esc>", options)
 
 -- -- new line
 vim.api.nvim_set_keymap('n', 'zj', 'o<Esc>', { noremap = true })
@@ -211,6 +212,14 @@ lvim.plugins = {
   { "junegunn/vim-peekaboo" },
   { "svermeulen/vim-cutlass" },
   { "jxnblk/vim-mdx-js" },
+  {
+    'Wansmer/langmapper.nvim',
+    lazy = false,
+    priority = 1, -- High priority is needed if you will use `autoremap()`
+    config = function()
+      require('langmapper').setup({ --[[ your config ]] })
+    end,
+  }
 }
 
 table.insert(lvim.plugins, {
@@ -224,3 +233,5 @@ table.insert(lvim.plugins, {
     end, 100)
   end,
 })
+
+require('langmapper').automapping({ global = true, buffer = true })

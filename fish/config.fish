@@ -1,8 +1,8 @@
 if status is-interactive
-  # Commands to run in interactive sessions can go here
-
-  and not set -q TMUX
-  exec tmux
+  # If we're not inside of tmux and not running inside JetBrains IDE (like WebStorm)
+  if not set -q TMUX; and not set -q IDE
+    exec tmux
+  end
 end
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
