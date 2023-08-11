@@ -2,6 +2,9 @@
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99
 lvim.builtin.treesitter.rainbow.enable = true
 lvim.transparent_window = true
 
