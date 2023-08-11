@@ -32,4 +32,6 @@ pyenv init - | source
 set -x PATH /platform-tools $PATH;
 set -gx fish_command_timeout 8000
 
-test -d "$HOME/.tea" && "$HOME/.tea/tea.xyz/v*/bin/tea" --magic=fish --silent | source
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
+
