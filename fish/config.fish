@@ -26,12 +26,13 @@ if not string match -q -- $PNPM_HOME $PATH
 end
 # pnpm end
 # Generated for envman. Do not edit.
-test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
 pyenv init - | source
 set -x PATH /platform-tools $PATH;
 set -gx fish_command_timeout 8000
 
+set -gx LANG en_US.UTF-8
+set -gx LC_ALL en_US.UTF-8
+
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
-
