@@ -1,4 +1,4 @@
-function R --wraps='glow README.md' --description 'alias R glow README.md'
-  glow README.md $argv
+function r --wraps=ranger --description 'alias r ranger'
+  ranger $argv
         
 end

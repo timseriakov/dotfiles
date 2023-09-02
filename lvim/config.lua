@@ -2,6 +2,9 @@
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = false
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99
 lvim.builtin.treesitter.rainbow.enable = true
 lvim.transparent_window = true
 
@@ -212,14 +215,28 @@ lvim.plugins = {
   { "junegunn/vim-peekaboo" },
   { "svermeulen/vim-cutlass" },
   { "jxnblk/vim-mdx-js" },
-  {
-    'Wansmer/langmapper.nvim',
-    lazy = false,
-    priority = 1, -- High priority is needed if you will use `autoremap()`
-    config = function()
-      require('langmapper').setup({ --[[ your config ]] })
-    end,
-  }
+  -- {
+  --   'Wansmer/langmapper.nvim',
+  --   lazy = false,
+  --   priority = 1, -- High priority is needed if you will use `autoremap()`
+  --   config = function()
+  --     require('langmapper').setup({ --[[ your config ]] })
+  --   end,
+  -- },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       api_key_cmd = "op read op://Personal/OpenAI API Key/api key --no-newline"
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- }
 }
 
 table.insert(lvim.plugins, {
@@ -234,4 +251,4 @@ table.insert(lvim.plugins, {
   end,
 })
 
-require('langmapper').automapping({ global = true, buffer = true })
+-- require('langmapper').automapping({ global = true, buffer = true })
