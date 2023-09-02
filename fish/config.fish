@@ -5,6 +5,13 @@ if status is-interactive
   end
 end
 
+function ranger-cd
+    set tmp_dir (~/.config/ranger/ranger-cd.fish $argv)
+    if test -n "$tmp_dir"
+        cd "$tmp_dir"
+    end
+end
+
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
 set -g -x fish_greeting 'Welcome'
@@ -22,5 +29,9 @@ pyenv init - | source
 set -x PATH /platform-tools $PATH;
 set -gx fish_command_timeout 8000
 
+set -gx LANG en_US.UTF-8
+set -gx LC_ALL en_US.UTF-8
+
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
+
