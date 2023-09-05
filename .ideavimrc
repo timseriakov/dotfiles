@@ -2,21 +2,21 @@
 Plug 'preservim/nerdtree'
 
 "-------------------------------------------------------------------
-set nu 
+" set nu 
+set relativenumber
 set ignorecase
 set smartcase
 set scrolloff=2
 set clipboard+=unnamed
-set multiple-cursors
+" set multiple-cursors
 set easymotion
-set commentary
+" set commentary
 set highlightedyank
-set surround
+" set surround
 set sneak
 set ideajoin
 set visualbell
 set noerrorbells
-set relativenumber
 
 " My favorites -----------------------------------------------------
 imap jj <Esc>
