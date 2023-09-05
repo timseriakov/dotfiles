@@ -2,6 +2,7 @@
 Plug 'preservim/nerdtree'
 
 "-------------------------------------------------------------------
+set nu 
 set ignorecase
 set smartcase
 set scrolloff=2
@@ -29,15 +30,15 @@ let mapleader = " "
 set timeoutlen=1500
 
 
-nmap <leader>so :source ~/.ideavimrc<cr>
+nmap <leader>r :source ~/.ideavimrc<cr>
 
 " Like cmd+n --------------------------------------------------------
 nmap <leader>1 :action ActivateProjectToolWindow<cr>
 nmap <leader>2 :action ActivateTerminalToolWindow<cr>
 nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
-nmap <leader>4 :action ActivatenpmToolWindow<cr>
-nmap <leader>5 :action ActivateRunToolWindow<cr>
-nmap <leader>7 :action ActivateServicesToolWindow<cr>
+" nmap <leader>5 :action ActivatenpmToolWindow<cr>
+nmap <leader>4 :action ActivateRunToolWindow<cr>
+nmap <leader>5 :action ActivateServicesToolWindow<cr>
 nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
 nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 
@@ -46,9 +47,8 @@ nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 nnoremap gb :action Back<CR>
 nnoremap gf :action Forward<CR>
 
+
 nmap <leader>w :action SaveAll<cr>
-nmap <leader>p :action Back<cr>
-nmap <leader>n :action Forward<cr>
 nmap <leader>l :action RecentLocations<cr>
 nmap <leader>e :action RecentFiles<cr>
 
@@ -63,8 +63,8 @@ nmap <leader>/ :action Find<cr>
 
 
 " Splits manipulation -----------------------------------------------
-nmap <C-\> :action SplitVertically<CR>
-nmap <C--> :action SplitHorizontally<CR>
+nmap <C-\> :action MoveTabRight<CR>
+nmap <C--> :action MoveTabDown<CR>
 nmap <C-=> :action Unsplit<CR>
 nmap <C-m> :action MoveEditorToOppositeTabGroup<CR>
 " sethandler <C-j> a:vim
@@ -79,6 +79,8 @@ nmap <leader>q :action CloseContent<cr>
 nmap <leader>Q :action ReopenClosedTab<cr>
 nmap <TAB> :action PreviousTab<CR>
 nmap <S-TAB> :action NextTab<CR>
+nmap H :action PreviousTab<CR>
+nmap L :action NextTab<CR>
 
 " Misc --------------------------------------------------------------
 nmap <leader>u :action FindUsages<cr>
@@ -94,10 +96,23 @@ nnoremap ,r :action Rerun<CR>
 
 " Delete (not cut) --------------------------------------------------
 nnoremap d "_d
+nnoremap D "_D
 vnoremap d "_d
+
+nnoremap c "_c
+nnoremap C "_C
+vnoremap c "_c
+
 nnoremap x "_x
 vnoremap x "_x
-nnoremap D "_D
+
+" Cut (like c, cc and C) --------------------------------------------
+nnoremap m "+c
+nnoremap mm "+cc
+vnoremap m "+c
+
+nnoremap M "+C
+vnoremap M "+C
 
 " recursively open and close the folds under the cursor -------------
 nnoremap zC :action CollapseRegionRecursively<CR>
@@ -130,3 +145,4 @@ nmap zj o<Esc>
 nmap zk O<Esc>
 nmap zJ o<Esc>k
 nmap zJ O<Esc>j
+
