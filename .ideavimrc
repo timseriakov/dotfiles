@@ -89,6 +89,7 @@ nmap <leader>f :action ReformatCode<CR>
 nmap <leader>- :action FoldingGroup<CR>
 nmap <leader>c :action CommentByLineComment<CR>
 nmap <leader>o :action OptimizeImports<cr>
+nmap <leader>p :action ActivateStructureToolWindow<cr>
 
 " Run ---------------------------------------------------------------
 nnoremap ,, :action RunClass<CR>
