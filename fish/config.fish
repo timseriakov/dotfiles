@@ -9,16 +9,6 @@ if type -q ngrok
     ngrok completion | source
 end
 
-# set -x CLASSPATH ".:/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH"
-
-# function antlr4
-#     java -Xmx500M -cp "/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH" org.antlr.v4.Tool $argv
-# end
-
-# function grun
-#     java -Xmx500M -cp "/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig $argv
-# end
-
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
 set -g -x fish_greeting 'Welcome'
