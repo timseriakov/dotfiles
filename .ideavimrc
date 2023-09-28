@@ -106,6 +106,8 @@ vnoremap c "_c
 
 nnoremap x "_x
 vnoremap x "_x
+nnoremap X "_X
+vnoremap X "_X
 
 " Cut (like c, cc and C) --------------------------------------------
 nnoremap m "+c

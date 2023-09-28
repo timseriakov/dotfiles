@@ -1,4 +1,4 @@
-function b --wraps=brew --description 'alias b brew'
-  brew $argv
+function b --wraps=brew --wraps=bun --description 'alias b bun'
+  bun $argv
         
 end
