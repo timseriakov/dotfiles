@@ -1,4 +1,4 @@
-function bi --wraps='brew install' --description 'alias bi brew install'
-  brew install $argv
+function bi --wraps='bun i' --description 'alias bi bun i'
+  bun i $argv
         
 end
