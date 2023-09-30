@@ -10,7 +10,6 @@ test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shel
 set -g -x fish_greeting 'Welcome'
 
 starship init fish | source
-thefuck --alias | source
 
 fish_vi_key_bindings
 set fish_key_bindings fish_user_key_bindings
@@ -37,3 +36,7 @@ set -gx LC_ALL en_US.UTF-8
 
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
