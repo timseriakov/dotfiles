@@ -41,6 +41,7 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- -- jj escape
 local options = { noremap = true }
 vim.keymap.set("i", "jj", "<Esc>", options)
+vim.keymap.set("i", "оо", "<Esc>", options)
 
 -- -- new line
 vim.api.nvim_set_keymap('n', 'zj', 'o<Esc>', { noremap = true })
@@ -175,6 +176,11 @@ lvim.builtin.treesitter.ignore_install = { "fish", "java" }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
+  {
+    'vuki656/package-info.nvim',
+    dependencies = 'MunifTanjim/nui.nvim',
+    config = function() require('package-info').setup() end
+  },
   { "shaunsingh/nord.nvim" },
   {
     "phaazon/hop.nvim",

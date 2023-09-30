@@ -1,3 +1,4 @@
-function ff --wraps=speed-test --wraps=fast-cli --wraps=fast --wraps='fast -u' --description 'alias ff fast -u'
-  fast -u $argv; 
+function ff --wraps='bunx fast-cli' --wraps='npx fast-cli' --description 'alias ff npx fast-cli'
+  npx fast-cli $argv
+        
 end

@@ -1,8 +1,12 @@
 if status is-interactive
-  # Commands to run in interactive sessions can go here
+  # If we're not inside of tmux and not running inside JetBrains IDE (like WebStorm)
+  if not set -q TMUX; and not set -q IDE
+    exec tmux
+  end
+end
 
-  and not set -q TMUX
-  exec tmux
+if type -q ngrok
+    ngrok completion | source
 end
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
@@ -29,6 +33,7 @@ set --universal --export fzf_preview_file_cmd 'bat --style changes --theme Nord 
 set --universal --export fzf_fd_opts --hidden --exclude=.git
 set --universal --export FZF_DEFAULT_OPTS --color fg:#5E81AC,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#2E3440,hl+:#A3BE8C --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B --cycle --layout=reverse --border --height=90% --preview-window=wrap --marker='*'
 set -gx BAT_THEME "Nord"
+set -gx BAT_THEME "Nord"
 
 # pnpm
 set -gx PNPM_HOME "/Users/tim/Library/pnpm"
@@ -51,3 +56,7 @@ set -gx PATH "$VOLTA_HOME/bin" $PATH
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# https://github.com/ajeetdsouza/zoxide
+# keep it in the end of file
+# zoxide init fish | source
