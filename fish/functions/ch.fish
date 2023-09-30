@@ -1,3 +1,4 @@
-function ch --wraps=cheat --description 'alias ch cheat'
-  cheat $argv; 
+function ch --wraps=cheat --wraps=chafa --description 'alias ch chafa'
+  chafa $argv
+        
 end
