@@ -55,7 +55,3 @@ set -gx PATH "$VOLTA_HOME/bin" $PATH
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
-
-# https://github.com/ajeetdsouza/zoxide
-# keep it in the end of file
-zoxide init fish | source
