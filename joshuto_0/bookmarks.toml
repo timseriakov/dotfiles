@@ -2,7 +2,6 @@ bookmark = [
   { key = "r", path = "/" },
   { key = "e", path = "/etc" },
   { key = "1", path = "~/dev1" },
-  { key = "d", path = "~/dev" },
-  { key = ".", path = "~/dev/dotfiles" },
+
   { key = "h", path = "~/" },
 ]

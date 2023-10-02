@@ -58,4 +58,4 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # https://github.com/ajeetdsouza/zoxide
 # keep it in the end of file
-# zoxide init fish | source
+zoxide init fish | source
