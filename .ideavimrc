@@ -11,7 +11,7 @@ set scrolloff=2
 set clipboard+=unnamed
 " set multiple-cursors
 set easymotion
-set commentary
+" set commentary
 set highlightedyank
 " set surround
 set sneak
