@@ -1,7 +1,8 @@
 if status is-interactive
-  # If we're not inside of tmux and not running inside JetBrains IDE (like WebStorm)
-  if not set -q TMUX; and not set -q IDE
+  if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL
     exec tmux
+  else if set -q WEBSTORM_TERMINAL
+    /opt/homebrew/bin/taskwarrior-tui
   end
 end
 
