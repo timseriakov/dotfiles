@@ -2,7 +2,8 @@ if status is-interactive
   if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL
     exec tmux
   else if set -q WEBSTORM_TERMINAL
-    /opt/homebrew/bin/taskwarrior-tui
+    exec /usr/local/bin/taskwarrior-tui
+    exec /opt/homebrew/bin/taskwarrior-tui
   end
 end
 
