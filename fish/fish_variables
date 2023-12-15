@@ -3,7 +3,6 @@
 SETUVAR --export --path CAPACITOR_ANDROID_STUDIO_PATH:/Applications/Android\x20Studio\x2eapp
 SETUVAR --export EDITOR:lvim
 SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dcolor\x1efg\x3a\x235E81AC\x2cbg\x3a\x232E3440\x2chl\x3a\x23A3BE8C\x2cfg\x2b\x3a\x23D8DEE9\x2cbg\x2b\x3a\x232E3440\x2chl\x2b\x3a\x23A3BE8C\x1e\x2d\x2dcolor\x1epointer\x3a\x23BF616A\x2cinfo\x3a\x234C566A\x2cspinner\x3a\x234C566A\x2cheader\x3a\x234C566A\x2cprompt\x3a\x2381A1C1\x2cmarker\x3a\x23EBCB8B\x1e\x2d\x2dcycle\x1e\x2d\x2dlayout\x3dreverse\x1e\x2d\x2dborder\x1e\x2d\x2dheight\x3d90\x25\x1e\x2d\x2dpreview\x2dwindow\x3dwrap\x1e\x2d\x2dmarker\x3d\x2a
-SETUVAR --export JAVA_HOME:/usr/local/Cellar/openjdk\x4011/11\x2e0\x2e20\x2e1/libexec/openjdk\x2ejdk/Contents/Home
 SETUVAR --export OPENAI_API_KEY:sk\x2dVsdXPDevLQ7QOmfGlfuwT3BlbkFJJeIsiCiCs6y1gI7o0DWG
 SETUVAR --export PYENV_ROOT:/Users/tim/\x2epyenv
 SETUVAR ZO_CMD:zo
@@ -203,7 +202,7 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/Users/lifetechteam/\x2evolta/bin\x1e/usr/local/opt/openjdk\x4011/bin\x1e/usr/local/opt/libpq/bin\x1e/Users/tim/\x2ecargo/bin\x1e/Users/tim/\x2elocal/bin\x1e/Users/tim/\x2eneva/bin
+SETUVAR fish_user_paths:/opt/homebrew/opt/openjdk\x4011/bin\x1e/Users/lifetechteam/\x2evolta/bin\x1e/usr/local/opt/openjdk\x4011/bin\x1e/usr/local/opt/libpq/bin\x1e/Users/tim/\x2ecargo/bin\x1e/Users/tim/\x2elocal/bin\x1e/Users/tim/\x2eneva/bin
 SETUVAR --export fzf_fd_opts:\x2d\x2dhidden\x1e\x2d\x2dexclude\x3d\x2egit
 SETUVAR --export fzf_preview_dir_cmd:exa\x20\x2d1\x20\x2d\x2dicons
 SETUVAR --export fzf_preview_file_cmd:bat\x20\x2d\x2dstyle\x20changes\x20\x2d\x2dtheme\x20Nord\x20\x2d\x2dcolor\x3dalways
