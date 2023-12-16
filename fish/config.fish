@@ -15,9 +15,6 @@ test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shel
 
 set -g -x fish_greeting 'Welcome'
 
-set -x PATH $HOME/.jenv/bin $PATH
-eval (jenv init - | source)
-
 starship init fish | source
 
 fish_vi_key_bindings
