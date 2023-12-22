@@ -228,3 +228,18 @@ table.insert(lvim.plugins, {
     end, 100)
   end,
 })
+
+require 'lspconfig'.tailwindcss.setup({
+  settings = {
+    tailwindCSS = {
+      experimental = {
+        classRegex = {
+          "twc\\.[^`]+`([^`]*)`",
+          "twc\\(.*?\\).*?`([^)]*)",
+          { "twc\\.[^`]+\\(([^)]*)\\)",     "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+          { "twc\\(.*?\\).*?\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+        },
+      },
+    },
+  },
+})
