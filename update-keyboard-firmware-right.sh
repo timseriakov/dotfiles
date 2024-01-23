@@ -8,10 +8,6 @@
 # Optional parameters:
 # @raycast.icon ⌨️
 
-# Documentation:
-# @raycast.author timseriakov
-# @raycast.authorURL https://raycast.com/timseriakov
-
 base_dir="/Users/tim/Downloads/"
 zip_name="firmware.zip"
 zip_path="${base_dir}${zip_name}"

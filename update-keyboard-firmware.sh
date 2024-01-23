@@ -8,11 +8,7 @@
 # Optional parameters:
 # @raycast.icon ⌨️
 # @raycast.argument1 { "type": "text", "placeholder": "'left|right" }
-
-# Documentation:
-# @raycast.author timseriakov
-# @raycast.authorURL https://raycast.com/timseriakov
-
+# @raycast.needsConfirmation true
 
 base_dir="/Users/tim/Downloads/"
 zip_name="firmware.zip"
@@ -21,7 +17,6 @@ zip_path="${base_dir}${zip_name}"
 target_file="corne_$1-nice_nano_v2-zmk.uf2"
 destination="/Volumes/NICENANO"
 
-# Check if a valid argument is provided
 if [ "$1" != "left" ] && [ "$1" != "right" ]; then
     echo "Invalid argument. Please provide 'left' or 'right'."
     exit 1
