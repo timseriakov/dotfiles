@@ -228,7 +228,11 @@
     },
     "center" : {
       "keyCode" : 8,
-      "modifierFlags" : 786432
+      "modifierFlags" : 1966080
+    },
+    "centerHalf" : {
+      "keyCode" : 35,
+      "modifierFlags" : 1966080
     },
     "firstThird" : {
       "keyCode" : 16,
@@ -240,7 +244,7 @@
     },
     "larger" : {
       "keyCode" : 24,
-      "modifierFlags" : 786432
+      "modifierFlags" : 1966080
     },
     "lastThird" : {
       "keyCode" : 31,
@@ -258,6 +262,10 @@
       "keyCode" : 46,
       "modifierFlags" : 1966080
     },
+    "maximizeHeight" : {
+      "keyCode" : 41,
+      "modifierFlags" : 1966080
+    },
     "nextDisplay" : {
       "keyCode" : 117,
       "modifierFlags" : 1966080
@@ -271,8 +279,8 @@
       "modifierFlags" : 786432
     },
     "restore" : {
-      "keyCode" : 51,
-      "modifierFlags" : 786432
+      "keyCode" : 9,
+      "modifierFlags" : 1966080
     },
     "rightHalf" : {
       "keyCode" : 124,
@@ -280,7 +288,7 @@
     },
     "smaller" : {
       "keyCode" : 27,
-      "modifierFlags" : 786432
+      "modifierFlags" : 1966080
     },
     "toggleTodo" : {
       "keyCode" : 11,
