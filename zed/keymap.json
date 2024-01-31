@@ -1,0 +1,23 @@
+[
+  {
+    "context": "Editor && vim_operator == g",
+    "bindings": {
+      "d": "editor::GoToDefinition"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && (vim_operator == none || vim_operator == n) && !VimWaiting",
+    "bindings": {
+      "g d": "editor::GoToDefinition",
+      "g r": "editor::FindAllReferences",
+      "[ d": "editor::GoToPrevDiagnostic",
+      "] d": "editor::GoToDiagnostic"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "j j": "vim::NormalBefore"
+    }
+  }
+]
