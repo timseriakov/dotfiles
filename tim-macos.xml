@@ -1,15 +1,12 @@
 <keymap version="1" name="tim-macos" parent="Mac OS X 10.5+">
-  <action id="ActivateAIAssistantToolWindow">
-    <keyboard-shortcut first-keystroke="meta 0" />
-  </action>
   <action id="ActivateBookmarksToolWindow" />
   <action id="ActivateCodeiumChatToolWindow">
-    <keyboard-shortcut first-keystroke="meta 0" />
+    <keyboard-shortcut first-keystroke="meta 9" />
   </action>
   <action id="ActivateCommitToolWindow" />
   <action id="ActivateFindToolWindow" />
   <action id="ActivateGitLabMergeRequestsToolWindow">
-    <keyboard-shortcut first-keystroke="meta 9" />
+    <keyboard-shortcut first-keystroke="meta 0" />
   </action>
   <action id="ActivateNxToolWindow">
     <keyboard-shortcut first-keystroke="ctrl meta 4" />
