@@ -13,8 +13,8 @@
   "buffer_font_family": "Share Tech Mono",
   "ui_font_family": "Share Tech Mono",
   "ui_font_size": 24,
-  "buffer_font_size": 20,
-  "confirm_quit": true,
+  "buffer_font_size": 19.5,
+  "confirm_quit": false,
   "terminal": {
     "alternate_scroll": "off",
     "blinking": "terminal_controlled",
