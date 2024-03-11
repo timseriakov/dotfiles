@@ -1,7 +1,7 @@
 -- -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99
@@ -18,15 +18,19 @@ lvim.format_on_save = {
 }
 
 -- -- for neovide
-vim.opt.guifont = "Share Tech Mono:h20"
-local g = vim.g
--- g.neovide_fullscreen = true
-g.neovide_transparency = 0.95
-g.neovide_cursor_vfx_mode = "railgun"
-g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
--- g.neovide_cursor_vfx_particle_curl = 0.1
--- g.neovide_cursor_vfx_particle_lifetime = 3.2
--- g.neovide_cursor_vfx_particle_speed = 20.0
+if vim.g.neovide then
+  vim.opt.guifont = "Share Tech Mono:h20"
+
+  local g = vim.g
+  g.neovide_window_blurred = true
+  -- g.neovide_fullscreen = true
+  g.neovide_transparency = 0.95
+  g.neovide_cursor_vfx_mode = "railgun"
+  g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
+  -- g.neovide_cursor_vfx_particle_curl = 0.1
+  -- g.neovide_cursor_vfx_particle_lifetime = 3.2
+  -- g.neovide_cursor_vfx_particle_speed = 20.0
+end
 
 -- -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
