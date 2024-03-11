@@ -219,6 +219,7 @@ lvim.plugins = {
   { "junegunn/vim-peekaboo" },
   { "svermeulen/vim-cutlass" },
   { "jxnblk/vim-mdx-js" },
+  { "fladson/vim-kitty" }
 }
 
 -- table.insert(lvim.plugins, {
