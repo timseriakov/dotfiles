@@ -7,6 +7,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99
 lvim.builtin.treesitter.rainbow.enable = true
 lvim.transparent_window = true
+vim.opt.termguicolors = true
 
 -- -- general
 lvim.log.level = "info"
