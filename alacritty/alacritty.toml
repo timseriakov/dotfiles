@@ -8,3 +8,8 @@ size = 21.0
 [font.normal]
 family = "ShureTechMono Nerd Font Mono"
 
+[env]
+term = "xterm-256color"
+
+[window]
+opacity = 0.8
