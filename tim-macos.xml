@@ -88,9 +88,6 @@
     <keyboard-shortcut first-keystroke="meta alt j" />
     <keyboard-shortcut first-keystroke="ctrl meta l" />
   </action>
-  <action id="ToggleDistractionFreeMode">
-    <keyboard-shortcut first-keystroke="ctrl z" />
-  </action>
   <action id="Vcs.Log.ShowTooltip">
     <keyboard-shortcut first-keystroke="f1" />
     <mouse-shortcut keystroke="control button2" />
