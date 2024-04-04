@@ -3,7 +3,7 @@
 set NERDTree
 
 "-------------------------------------------------------------------
-"set nu 
+set nu 
 set relativenumber
 set ignorecase
 set smartcase
