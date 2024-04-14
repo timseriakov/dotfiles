@@ -138,21 +138,21 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 }
 
 -- -- https://github.com/vuki656/package-info.nvim
-require('package-info').setup()
--- Show dependency versions
-vim.keymap.set({ "n" }, "<LEADER>ns", require("package-info").show, { silent = true, noremap = true })
--- Hide dependency versions
-vim.keymap.set({ "n" }, "<LEADER>nc", require("package-info").hide, { silent = true, noremap = true })
--- Toggle dependency versions
-vim.keymap.set({ "n" }, "<LEADER>nt", require("package-info").toggle, { silent = true, noremap = true })
--- Update dependency on the line
-vim.keymap.set({ "n" }, "<LEADER>nu", require("package-info").update, { silent = true, noremap = true })
--- Delete dependency on the line
-vim.keymap.set({ "n" }, "<LEADER>nd", require("package-info").delete, { silent = true, noremap = true })
--- Install a new dependency
-vim.keymap.set({ "n" }, "<LEADER>ni", require("package-info").install, { silent = true, noremap = true })
--- Install a different dependency version
-vim.keymap.set({ "n" }, "<LEADER>np", require("package-info").change_version, { silent = true, noremap = true })
+-- require('package-info').setup()
+-- -- Show dependency versions
+-- vim.keymap.set({ "n" }, "<LEADER>ns", require("package-info").show, { silent = true, noremap = true })
+-- -- Hide dependency versions
+-- vim.keymap.set({ "n" }, "<LEADER>nc", require("package-info").hide, { silent = true, noremap = true })
+-- -- Toggle dependency versions
+-- vim.keymap.set({ "n" }, "<LEADER>nt", require("package-info").toggle, { silent = true, noremap = true })
+-- -- Update dependency on the line
+-- vim.keymap.set({ "n" }, "<LEADER>nu", require("package-info").update, { silent = true, noremap = true })
+-- -- Delete dependency on the line
+-- vim.keymap.set({ "n" }, "<LEADER>nd", require("package-info").delete, { silent = true, noremap = true })
+-- -- Install a new dependency
+-- vim.keymap.set({ "n" }, "<LEADER>ni", require("package-info").install, { silent = true, noremap = true })
+-- -- Install a different dependency version
+-- vim.keymap.set({ "n" }, "<LEADER>np", require("package-info").change_version, { silent = true, noremap = true })
 
 -- -- Change theme settings
 lvim.colorscheme = "nord"
@@ -181,11 +181,11 @@ lvim.builtin.treesitter.ignore_install = { "fish", "java" }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
-  {
-    'vuki656/package-info.nvim',
-    dependencies = 'MunifTanjim/nui.nvim',
-    config = function() require('package-info').setup() end
-  },
+  -- {
+  --   'vuki656/package-info.nvim',
+  --   dependencies = 'MunifTanjim/nui.nvim',
+  --   config = function() require('package-info').setup() end
+  -- },
   { "shaunsingh/nord.nvim" },
   {
     "phaazon/hop.nvim",
