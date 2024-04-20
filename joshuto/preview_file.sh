@@ -69,13 +69,13 @@ handle_extension() {
             a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
             rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
             tar --list -- "${FILE_PATH}" && exit 0
-            gnutar --list --file "${FILE_PATH}" && exit 0
+            gtar --list --file "${FILE_PATH}" && exit 0
             exit 1 ;;
         rar)
             unar -p- -- "${FILE_PATH}" && exit 0
             exit 1 ;;
         7z)
-            7za l -p -- "${FILE_PATH}" && exit 0
+            7zz l -p -- "${FILE_PATH}" && exit 0
             exit 1 ;;
         pdf)
             pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | \
@@ -95,6 +95,9 @@ handle_extension() {
         htm|html|xhtml)
             pandoc -s -t markdown -- "${FILE_PATH}" && exit 0
             ;;
+        # htm|html|xhtml)
+        #     w3m -dump "${FILE_PATH}" && exit 0
+        #     ;;
         json|ipynb)
             jq --color-output . "${FILE_PATH}" && exit 0
             ;;
@@ -102,7 +105,7 @@ handle_extension() {
             exiftool "${FILE_PATH}" && exit 0
             ;; 
         jpg|jpeg|png|gif|bmp)
-            chafa --symbols=block+border+space-wide -- "${FILE_PATH}" && exit 0
+            icat -- "${FILE_PATH}" && exit 0
             exit 1 ;;
         md)
             glow -s dark "${FILE_PATH}" && exit 0
