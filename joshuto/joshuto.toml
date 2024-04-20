@@ -2,9 +2,8 @@ numbered_command = false
 
 use_trash = true
 watch_files = true
-xdg_open = false
-xdg_open_fork = false
-
+xdg_open = true
+xdg_open_fork = true
 
 [display]
 # default, hsplit
@@ -14,13 +13,13 @@ automatically_count_files = false
 collapse_preview = true
 # ratios for parent view (optional), current view and preview
 column_ratio = [2, 3, 4]
-scroll_offset = 6
+scroll_offset = 3
 show_borders = false
 show_hidden = true
 show_icons = true
 tilde_in_titlebar = true
 # none, absolute, relative
-line_number_style = "none"
+line_number_style = "relative"
 
 # size, mtime, user, gourp, perm. can be combined with |. 
 # `none` to disable, `all` to enable all
@@ -35,7 +34,8 @@ directories_first = true
 reverse = false
 
 [preview]
-max_preview_size = 2097152                           # 2MB
+preview_protocol = "halfblocks"
+max_preview_size = 5097152                           # 2MB
 preview_script = "~/.config/joshuto/preview_file.sh" # make sure it's marked as executable
 
 [search]
