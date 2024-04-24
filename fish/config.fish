@@ -44,14 +44,15 @@ set --universal --export FZF_DEFAULT_OPTS --color fg:#5E81AC,bg:#2E3440,hl:#A3BE
 set -gx BAT_THEME "Nord"
 
 # pnpm
-set -gx PNPM_HOME "/Users/tim/Library/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
-end
+# set -gx PNPM_HOME "/Users/tim/Library/pnpm"
+# if not string match -q -- $PNPM_HOME $PATH
+#   set -gx PATH "$PNPM_HOME" $PATH
+# end
 # pnpm end
 # Generated for envman. Do not edit.
 
 pyenv init - | source
+thefuck --alias | source
 set -x PATH /platform-tools $PATH;
 set -gx fish_command_timeout 8000
 
