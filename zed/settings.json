@@ -7,7 +7,7 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "theme": "Gruvbox Dark Soft",
+  "theme": "Nord",
   "base_keymap": "JetBrains",
   "vim_mode": true,
   "buffer_font_family": "Share Tech Mono",
