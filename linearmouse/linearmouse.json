@@ -1,0 +1,81 @@
+{
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5",
+  "schemes" : [
+    {
+      "pointer" : {
+        "disableAcceleration" : false,
+        "acceleration" : 20,
+        "speed" : 0.0689655172413792768
+      },
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productName" : "ABall",
+          "vendorID" : "0xfeed",
+          "productID" : "0xc2f0"
+        }
+      },
+      "scrolling" : {
+        "speed" : {
+          "vertical" : 128
+        },
+        "acceleration" : {
+          "vertical" : 10
+        },
+        "distance" : {
+          "vertical" : "auto"
+        },
+        "modifiers" : {
+          "vertical" : {
+            "shift" : {
+              "type" : "preventDefault"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if" : {
+        "device" : {
+          "vendorID" : "0x1d50",
+          "category" : "mouse",
+          "productID" : "0x615e",
+          "productName" : "Chocofi White"
+        }
+      },
+      "scrolling" : {
+        "speed" : {
+          "vertical" : 1
+        }
+      },
+      "pointer" : {
+        "acceleration" : 15
+      }
+    },
+    {
+      "scrolling" : {
+        "modifiers" : {
+          "vertical" : {
+            "shift" : {
+              "type" : "preventDefault"
+            },
+            "control" : {
+              "type" : "preventDefault"
+            }
+          }
+        }
+      },
+      "buttons" : {
+        "universalBackForward" : true
+      },
+      "if" : {
+        "device" : {
+          "productID" : "0x343",
+          "vendorID" : "0x5ac",
+          "productName" : "Apple Internal Keyboard \/ Trackpad",
+          "category" : "trackpad"
+        }
+      }
+    }
+  ]
+}
