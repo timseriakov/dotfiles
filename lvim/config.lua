@@ -20,18 +20,55 @@ lvim.format_on_save = {
 
 -- -- for neovide
 if vim.g.neovide then
-  vim.opt.guifont = "Share Tech Mono:h20"
+  vim.opt.guifont = "Share Tech Mono:h22"
 
   local g = vim.g
-  g.neovide_window_blurred = true
+  -- g.neovide_window_blurred = true
   -- g.neovide_fullscreen = true
-  g.neovide_transparency = 0.95
+  -- g.neovide_transparency = 0.95
   g.neovide_cursor_vfx_mode = "railgun"
   g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
+  g.neovide_cursor_antialiasing = true
+  g.neovide_hide_mouse_when_typing = true
+  g.neovide_floating_opacity=1
+
   -- g.neovide_cursor_vfx_particle_curl = 0.1
   -- g.neovide_cursor_vfx_particle_lifetime = 3.2
   -- g.neovide_cursor_vfx_particle_speed = 20.0
+
+  -- Helper function for transparency formatting
+  local alpha = function()
+    return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
+  end
+  -- g:neovide_transparency should be 0 if you want to unify transparency of content and title bar.
+  -- g.neovide_transparency = 0.925
+  -- g.transparency = 0
+  g.neovide_background_color = "#2E3440" -- .. alpha()
+
+  -- vim.o.linespace = 2
+  -- vim.o.clipboard = 'unnamedplus'
+
+   -- Allow clipboard copy-paste
+   vim.g.neovide_input_use_logo = 1
+   vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
+   vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+   vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+   vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+
+   vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
+   vim.keymap.set('v', '<D-c>', '"+y') -- Copy
+   vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
+   vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
+   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
+   vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+
+  -- Allow clipboard copy paste in neovim
+  vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
+  vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+  vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+  vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
 end
+
 
 -- -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
