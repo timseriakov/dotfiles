@@ -1,36 +1,50 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5",
   "schemes" : [
     {
-      "pointer" : {
-        "disableAcceleration" : false,
-        "acceleration" : 20,
-        "speed" : 0.0689655172413792768
-      },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productName" : "ABall",
-          "vendorID" : "0xfeed",
-          "productID" : "0xc2f0"
-        }
-      },
       "scrolling" : {
-        "speed" : {
-          "vertical" : 128
-        },
-        "acceleration" : {
-          "vertical" : 10
-        },
         "distance" : {
           "vertical" : "auto"
         },
         "modifiers" : {
           "vertical" : {
+            "option" : {
+              "type" : "auto"
+            },
+            "control" : {
+              "type" : "auto"
+            },
+            "command" : {
+              "type" : "auto"
+            },
             "shift" : {
-              "type" : "preventDefault"
+              "type" : "auto"
             }
           }
+        },
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "speed" : {
+          "vertical" : 0
+        }
+      },
+      "if" : {
+        "device" : {
+          "productName" : "ABall",
+          "productID" : "0xc2f0",
+          "vendorID" : "0xfeed",
+          "category" : "mouse"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 20,
+        "speed" : 0.0689655172413792768,
+        "disableAcceleration" : false
+      },
+      "buttons" : {
+        "universalBackForward" : false,
+        "clickDebouncing" : {
+          "timeout" : 0
         }
       }
     },
@@ -38,21 +52,31 @@
       "if" : {
         "device" : {
           "vendorID" : "0x1d50",
-          "category" : "mouse",
           "productID" : "0x615e",
-          "productName" : "Chocofi White"
+          "productName" : "Chocofi White",
+          "category" : "mouse"
         }
+      },
+      "pointer" : {
+        "speed" : 0.0689655172413792768,
+        "acceleration" : 3,
+        "disableAcceleration" : false
       },
       "scrolling" : {
         "speed" : {
           "vertical" : 1
         }
-      },
-      "pointer" : {
-        "acceleration" : 15
       }
     },
     {
+      "if" : {
+        "device" : {
+          "productName" : "Apple Internal Keyboard \/ Trackpad",
+          "productID" : "0x343",
+          "category" : "trackpad",
+          "vendorID" : "0x5ac"
+        }
+      },
       "scrolling" : {
         "modifiers" : {
           "vertical" : {
@@ -67,15 +91,59 @@
       },
       "buttons" : {
         "universalBackForward" : true
+      }
+    },
+    {
+      "buttons" : {
+        "universalBackForward" : true
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : false
+        }
       },
       "if" : {
         "device" : {
-          "productID" : "0x343",
-          "vendorID" : "0x5ac",
-          "productName" : "Apple Internal Keyboard \/ Trackpad",
-          "category" : "trackpad"
+          "productID" : "0x1340",
+          "vendorID" : "0x30fa",
+          "productName" : "USB GAMING MOUSE ",
+          "category" : "mouse"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 2
+      }
+    },
+    {
+      "buttons" : {
+        "universalBackForward" : false
+      },
+      "pointer" : {
+        "speed" : 0.1,
+        "disableAcceleration" : false,
+        "acceleration" : 2
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : false
+        },
+        "acceleration" : {
+          "vertical" : 10
+        },
+        "speed" : {
+          "vertical" : 0
+        }
+      },
+      "if" : {
+        "device" : {
+          "serialNumber" : "No.161-0043-2",
+          "vendorID" : "0x2b89",
+          "productID" : "0x43",
+          "category" : "mouse",
+          "productName" : "UGREEN Mouse"
         }
       }
     }
-  ]
+  ],
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5"
 }
