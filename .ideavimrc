@@ -21,8 +21,6 @@ set noerrorbells
 
 " My favorites -----------------------------------------------------
 imap jj <Esc>
-imap jk <Esc>
-imap kj <Esc>
 
 map <C-c> <Esc>
 
