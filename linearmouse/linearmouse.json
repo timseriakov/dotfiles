@@ -1,66 +1,65 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5",
   "schemes" : [
     {
-      "buttons" : {
-        "clickDebouncing" : {
-          "timeout" : 0
-        },
-        "universalBackForward" : false
-      },
-      "if" : {
-        "device" : {
-          "productName" : "ABall",
-          "vendorID" : "0xfeed",
-          "productID" : "0xc2f0",
-          "category" : "mouse"
-        }
-      },
       "scrolling" : {
-        "speed" : {
-          "vertical" : 0
+        "distance" : {
+          "vertical" : "auto"
         },
         "acceleration" : {
           "vertical" : 1
         },
         "modifiers" : {
           "vertical" : {
-            "shift" : {
+            "control" : {
               "type" : "auto"
             },
             "option" : {
               "type" : "auto"
             },
-            "control" : {
+            "command" : {
               "type" : "auto"
             },
-            "command" : {
+            "shift" : {
               "type" : "auto"
             }
           }
         },
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 0
         }
       },
+      "if" : {
+        "device" : {
+          "productID" : "0xc2f0",
+          "productName" : "ABall",
+          "vendorID" : "0xfeed",
+          "category" : "mouse"
+        }
+      },
+      "buttons" : {
+        "clickDebouncing" : {
+          "timeout" : 0
+        },
+        "universalBackForward" : false
+      },
       "pointer" : {
-        "disableAcceleration" : false,
+        "acceleration" : 20,
         "speed" : 0.0689655172413792768,
-        "acceleration" : 20
+        "disableAcceleration" : false
       }
     },
     {
       "pointer" : {
-        "disableAcceleration" : false,
+        "speed" : 0.0689655172413792768,
         "acceleration" : 3,
-        "speed" : 0.0689655172413792768
+        "disableAcceleration" : false
       },
       "if" : {
         "device" : {
+          "vendorID" : "0x1d50",
           "productName" : "Chocofi White",
           "productID" : "0x615e",
-          "category" : "mouse",
-          "vendorID" : "0x1d50"
+          "category" : "mouse"
         }
       },
       "scrolling" : {
@@ -84,10 +83,10 @@
       },
       "if" : {
         "device" : {
-          "vendorID" : "0x5ac",
-          "productName" : "Apple Internal Keyboard \/ Trackpad",
           "category" : "trackpad",
-          "productID" : "0x343"
+          "productID" : "0x343",
+          "vendorID" : "0x5ac",
+          "productName" : "Apple Internal Keyboard \/ Trackpad"
         }
       },
       "buttons" : {
@@ -97,6 +96,14 @@
     {
       "buttons" : {
         "universalBackForward" : true
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x30fa",
+          "category" : "mouse",
+          "productID" : "0x1340",
+          "productName" : "USB GAMING MOUSE "
+        }
       },
       "scrolling" : {
         "reverse" : {
@@ -105,56 +112,49 @@
       },
       "pointer" : {
         "acceleration" : 2
-      },
-      "if" : {
-        "device" : {
-          "productName" : "USB GAMING MOUSE ",
-          "vendorID" : "0x30fa",
-          "category" : "mouse",
-          "productID" : "0x1340"
-        }
       }
     },
     {
       "scrolling" : {
-        "speed" : {
-          "vertical" : 11.69
-        },
-        "modifiers" : {
-          "vertical" : {
-            "control" : {
-              "type" : "changeSpeed",
-              "scale" : 0.3
-            }
-          }
+        "reverse" : {
+          "vertical" : false
         },
         "distance" : {
           "vertical" : "auto"
         },
-        "reverse" : {
-          "vertical" : false
-        },
         "acceleration" : {
           "vertical" : 0.74
-        }
-      },
-      "if" : {
-        "device" : {
-          "vendorID" : "0x2b89",
-          "serialNumber" : "No.161-0043-2",
-          "productID" : "0x43",
-          "productName" : "UGREEN Mouse",
-          "category" : "mouse"
+        },
+        "modifiers" : {
+          "vertical" : {
+            "control" : {
+              "scale" : 0.3,
+              "type" : "changeSpeed"
+            }
+          }
+        },
+        "speed" : {
+          "vertical" : 11.69
         }
       },
       "pointer" : {
         "acceleration" : 2,
-        "speed" : 0.1,
-        "disableAcceleration" : false
+        "disableAcceleration" : false,
+        "speed" : 0.1
       },
       "buttons" : {
         "universalBackForward" : false
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x2b89",
+          "productID" : "0x43",
+          "category" : "mouse",
+          "productName" : "UGREEN Mouse",
+          "serialNumber" : "No.161-0043-2"
+        }
       }
     }
-  ]
+  ],
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5"
 }
