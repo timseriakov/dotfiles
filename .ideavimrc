@@ -32,7 +32,7 @@ let mapleader = " "
 set timeoutlen=1500
 
 
-nmap <leader>r :source ~/.ideavimrc<cr>
+nmap <leader>R :source ~/.ideavimrc<cr>
 
 " Like cmd+n --------------------------------------------------------
 nmap <leader>1 :action ActivateProjectToolWindow<cr>
@@ -136,7 +136,7 @@ nmap <leader>g :only<bar>vsplit<CR>gd
 
 " Refactorings
 " vmap T :action Refactorings.QuickListPopupAction<cr>
-" nmap <leader>rr :action RenameElement<cr>
+nmap <leader>r :action RenameElement<cr>
 " nmap <leader>rg :action Generate<cr>
 
 
