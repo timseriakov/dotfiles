@@ -251,6 +251,17 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   {
+    "dustinblackman/oatmeal.nvim",
+    cmd = { "Oatmeal" },
+    keys = {
+        { "<leader>om", mode = "n", desc = "Start Oatmeal session" },
+    },
+    opts = {
+        backend = "ollama",
+        model = "codellama:latest",
+    },
+},
+  {
     "vuki656/package-info.nvim",
     dependencies = "MunifTanjim/nui.nvim",
   },
