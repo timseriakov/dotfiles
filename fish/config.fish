@@ -69,3 +69,8 @@ set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
 # proto
 set -gx PROTO_HOME "$HOME/.proto"
 set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
+
+# posting
+set -gx POSTING_PAGER moar
+set -gx POSTING_ANIMATION full
+set -gx POSTING_THEME alpine

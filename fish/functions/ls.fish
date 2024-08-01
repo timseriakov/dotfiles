@@ -1,4 +1,4 @@
-function ls --wraps='eza --icons' --description 'alias ls eza --icons'
-  eza --icons $argv
+function ls --wraps='eza --icons --group-directories-first' --description 'alias ls eza --icons'
+  eza --icons --group-directories-first $argv
         
 end

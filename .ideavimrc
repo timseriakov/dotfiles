@@ -1,8 +1,5 @@
-
-" Plugins ----------------------------------------------------------
-set NERDTree
-
 "-------------------------------------------------------------------
+set NERDTree
 set nu 
 set relativenumber
 set ignorecase
@@ -15,6 +12,7 @@ set commentary
 set highlightedyank
 " set surround
 set sneak
+set quickscope
 set ideajoin
 set visualbell
 set noerrorbells
