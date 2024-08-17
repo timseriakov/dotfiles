@@ -12,8 +12,8 @@
   "vim_mode": true,
   "buffer_font_family": "Share Tech Mono",
   "ui_font_family": "Share Tech Mono",
-  "ui_font_size": 24,
-  "buffer_font_size": 21,
+  "ui_font_size": 17,
+  "buffer_font_size": 17,
   "confirm_quit": false,
   "terminal": {
     "alternate_scroll": "off",
