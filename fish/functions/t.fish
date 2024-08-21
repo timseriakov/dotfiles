@@ -1,4 +1,4 @@
-function t --wraps=et --description 'alias t et'
-  et $argv
+function t --wraps=et --wraps=lt --description 'alias t lt'
+  lt $argv
         
 end
