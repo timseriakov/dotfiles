@@ -32,7 +32,7 @@ video_default = [
 ]
 
 text_default = [
-  { command = "lvim" },
+  { command = "nvim" },
   # { command = "lvim", fork = true, silent = true },
   { command = "bat", args = [
     "--paging=always",
@@ -117,6 +117,7 @@ html.inherit = "text_default"
 ini.inherit = "text_default"
 java.inherit = "text_default"
 js.inherit = "text_default"
+jsx.inherit = "text_default"
 json.inherit = "text_default"
 kt.inherit = "text_default"
 lua.inherit = "text_default"
@@ -132,6 +133,7 @@ sh.inherit = "text_default"
 srt.inherit = "text_default"
 svelte.inherit = "text_default"
 toml.inherit = "text_default"
+ts.inherit = "text_default"
 tsx.inherit = "text_default"
 txt.inherit = "text_default"
 vim.inherit = "text_default"
