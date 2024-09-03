@@ -1,65 +1,65 @@
 {
   "schemes" : [
     {
+      "buttons" : {
+        "universalBackForward" : false,
+        "clickDebouncing" : {
+          "timeout" : 0
+        }
+      },
+      "pointer" : {
+        "acceleration" : 20,
+        "disableAcceleration" : false,
+        "speed" : 0.0689655172413792768
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0xfeed",
+          "productID" : "0xc2f0",
+          "productName" : "ABall",
+          "category" : "mouse"
+        }
+      },
       "scrolling" : {
-        "distance" : {
-          "vertical" : "auto"
+        "speed" : {
+          "vertical" : 0
         },
         "acceleration" : {
           "vertical" : 1
         },
+        "distance" : {
+          "vertical" : "auto"
+        },
         "modifiers" : {
           "vertical" : {
-            "control" : {
+            "option" : {
               "type" : "auto"
             },
-            "option" : {
+            "shift" : {
               "type" : "auto"
             },
             "command" : {
               "type" : "auto"
             },
-            "shift" : {
+            "control" : {
               "type" : "auto"
             }
           }
-        },
-        "speed" : {
-          "vertical" : 0
         }
-      },
-      "if" : {
-        "device" : {
-          "productID" : "0xc2f0",
-          "productName" : "ABall",
-          "vendorID" : "0xfeed",
-          "category" : "mouse"
-        }
-      },
-      "buttons" : {
-        "clickDebouncing" : {
-          "timeout" : 0
-        },
-        "universalBackForward" : false
-      },
-      "pointer" : {
-        "acceleration" : 20,
-        "speed" : 0.0689655172413792768,
-        "disableAcceleration" : false
       }
     },
     {
       "pointer" : {
         "speed" : 0.0689655172413792768,
-        "acceleration" : 3,
-        "disableAcceleration" : false
+        "disableAcceleration" : false,
+        "acceleration" : 3
       },
       "if" : {
         "device" : {
-          "vendorID" : "0x1d50",
-          "productName" : "Chocofi White",
+          "category" : "mouse",
           "productID" : "0x615e",
-          "category" : "mouse"
+          "productName" : "Chocofi White",
+          "vendorID" : "0x1d50"
         }
       },
       "scrolling" : {
@@ -72,89 +72,117 @@
       "scrolling" : {
         "modifiers" : {
           "vertical" : {
-            "shift" : {
+            "control" : {
               "type" : "preventDefault"
             },
-            "control" : {
+            "shift" : {
               "type" : "preventDefault"
             }
           }
         }
+      },
+      "buttons" : {
+        "universalBackForward" : true
       },
       "if" : {
         "device" : {
           "category" : "trackpad",
-          "productID" : "0x343",
           "vendorID" : "0x5ac",
+          "productID" : "0x343",
           "productName" : "Apple Internal Keyboard \/ Trackpad"
         }
-      },
-      "buttons" : {
-        "universalBackForward" : true
       }
     },
     {
-      "buttons" : {
-        "universalBackForward" : true
-      },
-      "if" : {
-        "device" : {
-          "vendorID" : "0x30fa",
-          "category" : "mouse",
-          "productID" : "0x1340",
-          "productName" : "USB GAMING MOUSE "
-        }
-      },
       "scrolling" : {
         "reverse" : {
           "vertical" : false
         }
+      },
+      "buttons" : {
+        "universalBackForward" : true
       },
       "pointer" : {
         "acceleration" : 2
+      },
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productName" : "USB GAMING MOUSE ",
+          "productID" : "0x1340",
+          "vendorID" : "0x30fa"
+        }
       }
     },
     {
-      "scrolling" : {
-        "reverse" : {
-          "vertical" : false
-        },
-        "distance" : {
-          "vertical" : "auto"
-        },
-        "acceleration" : {
-          "vertical" : 0.74
-        },
-        "modifiers" : {
-          "vertical" : {
-            "control" : {
-              "scale" : 0.3,
-              "type" : "changeSpeed"
-            }
-          }
-        },
-        "speed" : {
-          "vertical" : 11.69
-        }
-      },
       "pointer" : {
-        "acceleration" : 2,
+        "speed" : 0.1,
         "disableAcceleration" : false,
-        "speed" : 0.1
+        "acceleration" : 2
       },
       "buttons" : {
         "universalBackForward" : false
       },
       "if" : {
         "device" : {
-          "vendorID" : "0x2b89",
+          "serialNumber" : "No.161-0043-2",
           "productID" : "0x43",
-          "category" : "mouse",
           "productName" : "UGREEN Mouse",
-          "serialNumber" : "No.161-0043-2"
+          "vendorID" : "0x2b89",
+          "category" : "mouse"
+        }
+      },
+      "scrolling" : {
+        "distance" : {
+          "vertical" : "auto"
+        },
+        "reverse" : {
+          "vertical" : false
+        },
+        "speed" : {
+          "vertical" : 11.69
+        },
+        "modifiers" : {
+          "vertical" : {
+            "control" : {
+              "type" : "changeSpeed",
+              "scale" : 0.3
+            }
+          }
+        },
+        "acceleration" : {
+          "vertical" : 0.74
+        }
+      }
+    },
+    {
+      "scrolling" : {
+        "modifiers" : {
+          "vertical" : {
+            "option" : {
+              "type" : "ignore"
+            },
+            "shift" : {
+              "type" : "ignore"
+            },
+            "control" : {
+              "type" : "ignore"
+            },
+            "command" : {
+              "type" : "ignore"
+            }
+          }
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x3554",
+          "category" : "mouse",
+          "productName" : "ProtoArc EM01",
+          "productID" : "0xf605"
         }
       }
     }
   ],
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5"
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0"
 }
