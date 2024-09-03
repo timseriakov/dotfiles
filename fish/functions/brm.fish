@@ -1,4 +1,4 @@
-function brm --wraps='bun rm' --description 'alias brm bun rm'
-  bun rm $argv
+function brm --wraps='bun remove' --description 'alias brm bun remove'
+  bun remove $argv
         
 end
