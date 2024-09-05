@@ -8,21 +8,6 @@ source ~/.intellimacs/hybrid.vim
 " (Optional) Enable which-key plugin
 source ~/.intellimacs/which-key.vim
 
-let g:WhichKey_FontFamily = "Share Tech Mono"
-let g:WhichKey_FontSize = 16
-
-let g:WhichKey_DefaultDelay = 200
-
-let g:WhichKey_KeyColor = "#88C1D0"
-let g:WhichKey_CommandColor = "#A3BE8C"
-let g:WhichKey_PrefixColor = "#EBCB8B"
-
-let g:WhichKey_KeyStyle = "bold"
-let g:WhichKey_PrefixStyle = "bold"
-let g:WhichKey_CommandStyle = "bold"
-
-let g:WhichKey_Divider = " "
-
 "-------------------------------------------------------------------
 set NERDTree
 set nu 
