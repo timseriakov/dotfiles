@@ -74,3 +74,4 @@ set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
 set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
+source /Users/tim/.config/op/plugins.sh
