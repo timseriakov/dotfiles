@@ -3,7 +3,6 @@
 SETUVAR --export --path CAPACITOR_ANDROID_STUDIO_PATH:/Applications/Android\x20Studio\x2eapp
 SETUVAR --export EDITOR:lvim
 SETUVAR --export FZF_DEFAULT_OPTS:\x2d\x2dcolor\x1efg\x3a\x235E81AC\x2cbg\x3a\x232E3440\x2chl\x3a\x23A3BE8C\x2cfg\x2b\x3a\x23D8DEE9\x2cbg\x2b\x3a\x232E3440\x2chl\x2b\x3a\x23A3BE8C\x1e\x2d\x2dcolor\x1epointer\x3a\x23BF616A\x2cinfo\x3a\x234C566A\x2cspinner\x3a\x234C566A\x2cheader\x3a\x234C566A\x2cprompt\x3a\x2381A1C1\x2cmarker\x3a\x23EBCB8B\x1e\x2d\x2dcycle\x1e\x2d\x2dlayout\x3dreverse\x1e\x2d\x2dborder\x1e\x2d\x2dheight\x3d90\x25\x1e\x2d\x2dpreview\x2dwindow\x3dwrap\x1e\x2d\x2dmarker\x3d\x2a
-SETUVAR --export OPENAI_API_KEY:sk\x2dVsdXPDevLQ7QOmfGlfuwT3BlbkFJJeIsiCiCs6y1gI7o0DWG
 SETUVAR --export PYENV_ROOT:/Users/tim/\x2epyenv
 SETUVAR ZO_CMD:zo
 SETUVAR Z_CMD:z
