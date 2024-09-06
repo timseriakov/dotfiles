@@ -1,0 +1,10 @@
+-- Disable yanking to system clipboard for certain commands
+vim.api.nvim_set_keymap('n', 'x', '"_x', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'X', '"_X', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'c', '"_c', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'C', '"_C', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'd', '"_d', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'D', '"_D', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'cc', '"_cc', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'dd', '"_dd', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'xx', '"_xx', { noremap = true, silent = true })
