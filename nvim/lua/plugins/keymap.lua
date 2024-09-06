@@ -18,3 +18,5 @@ vim.api.nvim_set_keymap("n", "m", '"*c', opts)
 vim.api.nvim_set_keymap("n", "mm", '"*cc', opts)
 vim.api.nvim_set_keymap("n", "M", '"*C', opts)
 vim.api.nvim_set_keymap("v", "m", '"*c', opts)
+
+return {}
