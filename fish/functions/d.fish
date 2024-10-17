@@ -1,3 +1,4 @@
-function d --wraps=docker --description 'alias d docker'
-  docker $argv; 
+function d --wraps=docker --wraps=deno --description 'alias d deno'
+  deno $argv
+        
 end
