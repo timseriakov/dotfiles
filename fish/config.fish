@@ -75,3 +75,6 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 source /Users/tim/.config/op/plugins.sh
+
+# Added by Windsurf
+fish_add_path /Users/tim/.codeium/windsurf/bin
