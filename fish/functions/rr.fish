@@ -1,3 +1,4 @@
-function rr --wraps=ranger --description 'alias rr ranger'
-  ranger $argv; 
+function rr --wraps=ranger --wraps=scooter --description 'alias rr scooter'
+  scooter $argv
+        
 end

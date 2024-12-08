@@ -209,7 +209,7 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/Users/tim/\x2ecodeium/windsurf/bin\x1e/opt/homebrew/bin/bin\x1e/opt/homebrew/bin\x1e/opt/homebrew/opt/openjdk\x4017/bin\x1e/opt/homebrew/opt/openjdk\x4011/bin\x1e/Users/lifetechteam/\x2evolta/bin\x1e/usr/local/opt/openjdk\x4011/bin\x1e/usr/local/opt/libpq/bin\x1e/Users/tim/\x2ecargo/bin\x1e/Users/tim/\x2elocal/bin\x1e/Users/tim/\x2eneva/bin
+SETUVAR fish_user_paths:/opt/homebrew/opt/bzip2/bin\x1e/Users/tim/\x2ecodeium/windsurf/bin\x1e/opt/homebrew/bin/bin\x1e/opt/homebrew/bin\x1e/opt/homebrew/opt/openjdk\x4017/bin\x1e/opt/homebrew/opt/openjdk\x4011/bin\x1e/Users/lifetechteam/\x2evolta/bin\x1e/usr/local/opt/openjdk\x4011/bin\x1e/usr/local/opt/libpq/bin\x1e/Users/tim/\x2ecargo/bin\x1e/Users/tim/\x2elocal/bin\x1e/Users/tim/\x2eneva/bin
 SETUVAR --export fzf_fd_opts:\x2d\x2dhidden\x1e\x2d\x2dexclude\x3d\x2egit
 SETUVAR --export fzf_preview_dir_cmd:exa\x20\x2d1\x20\x2d\x2dicons
 SETUVAR --export fzf_preview_file_cmd:bat\x20\x2d\x2dstyle\x20changes\x20\x2d\x2dtheme\x20Nord\x20\x2d\x2dcolor\x3dalways

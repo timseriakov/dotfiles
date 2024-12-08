@@ -1,1 +1,1 @@
---single-instance
+--single-instance -o allow_remote_control=yes
