@@ -7,6 +7,19 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "assistant": {
+    "default_model": {
+      "provider": "openai",
+      "model": "gpt-4o"
+    },
+    "version": "2"
+  },
+  "chat_panel": {
+    "dock": "right"
+  },
+  "features": {
+    "inline_completion_provider": "none"
+  },
   "theme": "Nord",
   "base_keymap": "JetBrains",
   "vim_mode": true,
@@ -14,17 +27,14 @@
   "ui_font_family": "Share Tech Mono",
   "ui_font_size": 17,
   "buffer_font_size": 17,
+  "buffer_line_height": { "custom": 1.6 },
   "confirm_quit": false,
   "terminal": {
     "alternate_scroll": "off",
     "blinking": "terminal_controlled",
     "copy_on_select": true,
-    "env": {
-      "IDE": "true",
-      "WEBSTORM_TERMINAL": "true"
-    },
     "font_family": "ShureTechMono Nerd Font Mono",
-    "font_size": 20,
+    "font_size": 17,
     "option_as_meta": false,
     "working_directory": "current_project_directory"
   }
