@@ -1,0 +1,5 @@
+# theme = "auto"
+maximized = true
+# frame = "full"
+frame = "none"
+# frame = "transparent"
