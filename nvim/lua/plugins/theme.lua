@@ -4,7 +4,7 @@ return {
 		opts = {
 			-- your configuration comes here
 			-- or leave it empty to use the default settings
-			transparent = true, -- Enable this to disable setting the background color
+			transparent = false, -- Enable this to disable setting the background color
 			terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
 			diff = { mode = "bg" }, -- enables/disables colorful backgrounds when used in diff mode. values : [bg|fg]
 			borders = true, -- Enable the border between verticaly split windows visible
