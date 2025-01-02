@@ -11,6 +11,6 @@ return {
 	},
 	config = function(_, opts)
 		require("noice").setup(opts)
-		vim.api.nvim_set_hl(0, "NoiceMini", { fg = "#5E81AC", bg = "#434C5E" })
+		vim.api.nvim_set_hl(0, "NoiceMini", { fg = "#88C1D0", bg = "#2E3440" })
 	end,
 }
