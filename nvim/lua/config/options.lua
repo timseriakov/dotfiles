@@ -4,6 +4,9 @@
 vim.g.lazyvim_picker = "telescope"
 -- vim.g.lazyvim_picker = "fzf"
 vim.opt.termguicolors = true
+vim.o.encoding = "utf-8"
+vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
+vim.env.TMPDIR = "/tmp/nvim"
 
 -- -- for neovide
 if vim.g.neovide then
@@ -18,6 +21,9 @@ if vim.g.neovide then
 	vim.g.neovide_padding_bottom = 0
 	vim.g.neovide_padding_right = 0
 	vim.g.neovide_padding_left = 10
+
+	-- vim.g.neovide_text_gamma = 0.1
+	-- vim.g.neovide_text_contrast = 0.7
 
 	-- scroll animation
 	-- vim.g.neovide_scroll_animation_length = 0 -- some turning this off makes scrolling smoother
