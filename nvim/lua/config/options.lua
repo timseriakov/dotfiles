@@ -10,6 +10,8 @@ vim.env.TMPDIR = "/tmp/nvim"
 
 -- -- for neovide
 if vim.g.neovide then
+	vim.env.IN_NEOVIDE = "true"
+
 	vim.o.guifont = "ShureTechMono Nerd Font:h18"
 
 	vim.g.neovide_fullscreen = true

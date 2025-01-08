@@ -1,5 +1,14 @@
+# if status is-interactive
+#     if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL
+#         exec tmux
+#     else if set -q WEBSTORM_TERMINAL
+#         exec /usr/local/bin/taskwarrior-tui
+#         exec /opt/homebrew/bin/taskwarrior-tui
+#     end
+# end
+
 if status is-interactive
-    if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL
+    if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL; and not set -q IN_NEOVIDE
         exec tmux
     else if set -q WEBSTORM_TERMINAL
         exec /usr/local/bin/taskwarrior-tui
@@ -75,6 +84,3 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 source /Users/tim/.config/op/plugins.sh
-
-# Added by Windsurf
-fish_add_path /Users/tim/.codeium/windsurf/bin
