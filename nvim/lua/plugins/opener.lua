@@ -16,7 +16,7 @@ return {
 				extensions = {
 					opener = {
 						hidden = false,
-						root_dir = "~/dev/",
+						root_dir = "~/dev",
 						respect_gitignore = true,
 					},
 				},
