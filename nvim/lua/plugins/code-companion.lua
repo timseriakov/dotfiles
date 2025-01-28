@@ -18,16 +18,17 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			{ "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
+			-- { "MeanderingProgrammer/render-markdown.nvim", ft = { "markdown", "codecompanion" } },
 		},
 		opts = {
 			strategies = {
 				chat = {
 					adapter = "openai", -- set openai as default
 					roles = {
-						llm = "CodeCompanion",
+						llm = "Jarvis",
 						user = "Me",
 					},
+					language = "Русский", -- set default language to Russian
 					slash_commands = generate_slash_commands(),
 					keymaps = {
 						close = {
@@ -46,11 +47,21 @@ return {
 							callback = "keymaps.stop",
 							description = "Stop Request",
 						},
+						send = {
+							modes = {
+								n = "<C-s>", -- Works for both Russian and English layouts
+								v = "<C-с>",
+							},
+							index = 5,
+							callback = "keymaps.send",
+							description = "Send Message",
+						},
 					},
 				},
 			},
 			inline = {
 				adapter = "openai", -- set openai as default
+				language = "ru", -- set default language to Russian
 			},
 		},
 		keys = {
