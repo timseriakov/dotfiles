@@ -75,6 +75,11 @@ end
 set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
 set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
 
+# Проверка и подключение secrets.fish
+if test -f ~/dev/dotfiles/fish/secrets.fish
+    source ~/dev/dotfiles/fish/secrets.fish
+end
+
 # proto
 set -gx PROTO_HOME "$HOME/.proto"
 set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
