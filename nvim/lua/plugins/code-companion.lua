@@ -1,28 +1,3 @@
--- return {
--- 	"olimorris/codecompanion.nvim",
--- 	dependencies = {
--- 		"nvim-lua/plenary.nvim",
--- 		"nvim-treesitter/nvim-treesitter",
--- 		"ellisonleao/dotenv.nvim", -- Плагин для работы с .env
--- 	},
--- 	config = function()
--- 		-- Подключаем dotenv
--- 		require("dotenv").setup({
--- 			enable_on_start = true, -- Загружать .env автоматически
--- 			dotenv_file = vim.fn.stdpath("config") .. "/lua/plugins/.keys", -- Указываем путь к .keys
--- 		})
---
--- 		-- Настройка Code Companion
--- 		require("codecompanion").setup({
--- 			opts = {
--- 				api_keys = {
--- 					openai = os.getenv("OPEN_API_KEY"), -- Получаем ключ из окружения
--- 				},
--- 			},
--- 		})
--- 	end,
--- }
-
 ---@diagnostic disable-next-line: unused-local
 local function generate_slash_commands()
 	local commands = {}
@@ -48,7 +23,7 @@ return {
 		opts = {
 			strategies = {
 				chat = {
-					adapter = "anthropic",
+					adapter = "openai", -- set openai as default
 					roles = {
 						llm = "CodeCompanion",
 						user = "Me",
@@ -75,7 +50,7 @@ return {
 				},
 			},
 			inline = {
-				adapter = "anthropic",
+				adapter = "openai", -- set openai as default
 			},
 		},
 		keys = {
