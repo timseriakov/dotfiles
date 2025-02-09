@@ -89,3 +89,5 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 source /Users/tim/.config/op/plugins.sh
+
+export PATH="$PATH:/Applications/screenpipe.app/Contents/MacOS"
