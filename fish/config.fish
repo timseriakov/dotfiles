@@ -20,7 +20,7 @@ if type -q ngrok
     ngrok completion | source
 end
 
-test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell_integration.fish
+#test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell_integration.fish
 
 set -g -x fish_greeting Welcome
 
@@ -53,7 +53,6 @@ set --universal --export FZF_DEFAULT_OPTS --color fg:#5E81AC,bg:#2E3440,hl:#A3BE
 set -gx BAT_THEME Nord
 
 pyenv init - | source
-thefuck --alias | source
 
 set -gx fish_command_timeout 8000
 
@@ -72,8 +71,8 @@ end
 # pnpm end
 
 # oracle instance client
-set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
-set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
+#set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
+#set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
 
 # Проверка и подключение secrets.fish
 if test -f ~/dev/dotfiles/fish/secrets.fish
@@ -88,6 +87,3 @@ set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
 set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
-source /Users/tim/.config/op/plugins.sh
-
-export PATH="$PATH:/Applications/screenpipe.app/Contents/MacOS"
