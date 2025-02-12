@@ -1,7 +1,8 @@
-bun = "1.1.15"
-pnpm = "9.7.1"
-proto = "0.40.1"
-yarn = "4.3.1"
+bun = "1.2.2"
+deno = "2.1.9"
+node = "23.7.0"
+pnpm = "10.3.0"
+yarn = "4.6.0"
 
 [settings]
 auto-install = true
@@ -9,3 +10,5 @@ telemetry = false
 
 [settings.http]
 allow-invalid-certs = true
+proxies = []
+secure-proxies = []
