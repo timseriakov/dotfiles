@@ -1,6 +1,7 @@
 bun = "1.2.2"
 deno = "2.1.9"
 node = "23.7.0"
+npm = "bundled"
 pnpm = "10.3.0"
 yarn = "4.6.0"
 
