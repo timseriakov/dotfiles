@@ -83,6 +83,8 @@ end
 set -gx PROTO_HOME "$HOME/.proto"
 set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
 
+set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
+
 # posting
 set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
