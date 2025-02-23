@@ -3,6 +3,7 @@ deno = "2.1.9"
 node = "23.7.0"
 npm = "bundled"
 pnpm = "10.3.0"
+proto = "0.46.1"
 yarn = "4.6.0"
 
 [settings]
