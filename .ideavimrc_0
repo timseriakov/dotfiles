@@ -1,3 +1,12 @@
+" source ~/.intellimacs/spacemacs.vim
+
+" (Optional) Enable other Intellimacs modules
+" source ~/.intellimacs/extra.vim
+" source ~/.intellimacs/major.vim
+" source ~/.intellimacs/hybrid.vim
+
+" (Optional) Enable which-key plugin
+" source ~/.intellimacs/which-key.vim
 source ~/.idea-lazy.vim
 
 "-------------------------------------------------------------------
@@ -35,67 +44,67 @@ set timeoutlen=1500
 nmap <leader>R :source ~/.ideavimrc<cr>
 
 " Like cmd+n --------------------------------------------------------
-" nmap <leader>1 :action ActivateProjectToolWindow<cr>
-" nmap <leader>2 :action ActivateTerminalToolWindow<cr>
-" nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
+nmap <leader>1 :action ActivateProjectToolWindow<cr>
+nmap <leader>2 :action ActivateTerminalToolWindow<cr>
+nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
 " nmap <leader>5 :action ActivatenpmToolWindow<cr>
-" nmap <leader>4 :action ActivateRunToolWindow<cr>
-" nmap <leader>5 :action ActivateServicesToolWindow<cr>
-" nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
-" nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
+nmap <leader>4 :action ActivateRunToolWindow<cr>
+nmap <leader>5 :action ActivateServicesToolWindow<cr>
+nmap <leader>8 :action Activategithub.copilotToolWindowToolWindow<cr>
+nmap <leader>0 :action ActivateGitLabMergeRequestsToolWindow<cr>
 
 
 " Navigation -------------------------------------------------------
-" nnoremap gb :action Back<CR>
-" nnoremap gf :action Forward<CR>
+nnoremap gb :action Back<CR>
+nnoremap gf :action Forward<CR>
 
 
-" nmap <leader>w :action SaveAll<cr>
-" nmap <leader>l :action RecentLocations<cr>
-" nmap <leader>e :action RecentFiles<cr>
+nmap <leader>w :action SaveAll<cr>
+nmap <leader>l :action RecentLocations<cr>
+nmap <leader>e :action RecentFiles<cr>
 
 " Search -----------------------------------------------------------
-" nmap <leader>= :action GotoFile<cr>
-" nmap <leader>sf :action GotoFile<cr>
+nmap <leader>= :action GotoFile<cr>
+nmap <leader>sf :action GotoFile<cr>
 
-" nmap <leader>\ :action FindInPath<cr>
-" nmap <leader>st :action FindInPath<cr>
+nmap <leader>\ :action FindInPath<cr>
+nmap <leader>st :action FindInPath<cr>
 
-" nmap <leader>/ :action Find<cr>
+nmap <leader>/ :action Find<cr>
 
 
 " Splits manipulation -----------------------------------------------
-" nmap <C-\> :action MoveTabRight<CR>
-" nmap <C--> :action MoveTabDown<CR>
-" nmap <C-=> :action Unsplit<CR>
-" nmap <C-m> :action MoveEditorToOppositeTabGroup<CR>
+nmap <C-\> :action MoveTabRight<CR>
+nmap <C--> :action MoveTabDown<CR>
+nmap <C-=> :action Unsplit<CR>
+nmap <C-m> :action MoveEditorToOppositeTabGroup<CR>
 " sethandler <C-j> a:vim
 " sethandler <C-k> a:vim
-" nmap <C-h> <C-w>h
-" nmap <C-l> <C-w>l
-" nmap <C-j> <C-w>j
-" nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
 
 " Tabs --------------------------------------------------------------
-" nmap <leader>q :action CloseContent<cr>
-" nmap <leader>Q :action ReopenClosedTab<cr>
-" nmap <TAB> :action PreviousTab<CR>
-" nmap <S-TAB> :action NextTab<CR>
+nmap <leader>q :action CloseContent<cr>
+nmap <leader>Q :action ReopenClosedTab<cr>
+nmap <TAB> :action PreviousTab<CR>
+nmap <S-TAB> :action NextTab<CR>
 nmap H :action PreviousTab<CR>
 nmap L :action NextTab<CR>
 
 " Misc --------------------------------------------------------------
-" nmap <leader>u :action FindUsages<cr>
-" nmap <leader>i :action SelectIn<cr>
-" nmap <leader>f :action ReformatCode<CR>
-" nmap <leader>- :action FoldingGroup<CR>
-" nmap <leader>c :action CommentByLineComment<CR>
-" nmap <leader>o :action OptimizeImports<cr>
-" nmap <leader>p :action ActivateStructureToolWindow<cr>
+nmap <leader>u :action FindUsages<cr>
+nmap <leader>i :action SelectIn<cr>
+nmap <leader>f :action ReformatCode<CR>
+nmap <leader>- :action FoldingGroup<CR>
+nmap <leader>c :action CommentByLineComment<CR>
+nmap <leader>o :action OptimizeImports<cr>
+nmap <leader>p :action ActivateStructureToolWindow<cr>
 
 " Run ---------------------------------------------------------------
-" nnoremap ,, :action RunClass<CR>
-" nnoremap ,r :action Rerun<CR>
+nnoremap ,, :action RunClass<CR>
+nnoremap ,r :action Rerun<CR>
 
 " Delete (not cut) --------------------------------------------------
 nnoremap d "_d
@@ -124,25 +133,25 @@ nnoremap zC :action CollapseRegionRecursively<CR>
 nnoremap zO :action ExpandRegionRecursively<CR>
 
 " Errors ------------------------------------------------------------
-" nmap <leader>d :action ShowErrorDescription<cr>
-" nnoremap ge :action GotoNextError<CR>
-" nnoremap gE :action GotoPreviousError<CR>
+nmap <leader>d :action ShowErrorDescription<cr>
+nnoremap ge :action GotoNextError<CR>
+nnoremap gE :action GotoPreviousError<CR>
 "--------------------------------------------------------------------
 
-" nmap <leader>g :only<bar>vsplit<CR>gd
+nmap <leader>g :only<bar>vsplit<CR>gd
 
 
 
 
 " Refactorings
 " vmap T :action Refactorings.QuickListPopupAction<cr>
-" nmap <leader>r :action RenameElement<cr>
+nmap <leader>r :action RenameElement<cr>
 " nmap <leader>rg :action Generate<cr>
 
 
-" map <leader>R :action Replace<CR>
+map <leader>R :action Replace<CR>
 
-" inoremap <C-d> <Esc>yypi
+inoremap <C-d> <Esc>yypi
 
 
 " These create newlines like o and O but stay in normal mode
