@@ -35,7 +35,7 @@ set timeoutlen=1500
 nmap <leader>R :source ~/.ideavimrc<cr>
 
 " Like cmd+n --------------------------------------------------------
-" nmap <leader>1 :action ActivateProjectToolWindow<cr>
+nmap <leader>e :action ActivateProjectToolWindow<cr>
 " nmap <leader>2 :action ActivateTerminalToolWindow<cr>
 " nmap <leader>3 :action ActivateVersionControlToolWindow<cr>
 " nmap <leader>5 :action ActivatenpmToolWindow<cr>
