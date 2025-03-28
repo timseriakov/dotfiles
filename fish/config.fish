@@ -89,3 +89,7 @@ set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
 set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
