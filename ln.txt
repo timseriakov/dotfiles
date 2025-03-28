@@ -1,0 +1,2 @@
+ln -s /Users/tim/dev/dotfiles/.aider.conf.yml ~/.aider.conf.yml
+
