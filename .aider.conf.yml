@@ -41,7 +41,7 @@ completion-menu-current-bg-color: "#4C566A" # Polar Night (Lighter)
 code-theme: nord
 
 ## Show diffs when committing changes (default: False)
-#show-diffs: false
+show-diffs: false
 
 ###############
 # Git settings:
