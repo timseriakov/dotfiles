@@ -2,38 +2,59 @@ return {
 	"nvim-lualine/lualine.nvim",
 	config = function()
 		require("lualine").setup({
+			options = {
+				globalstatus = true,
+			},
 			sections = {
-				lualine_a = { "mode" },
+				lualine_a = {
+					"mode",
+				},
 				lualine_b = {
 					{
 						"filetype",
-						colored = true, -- Отображает иконку типа файла в цвете
-						icon_only = true, -- Показывает иконку и текст
-						icon = { align = "right" }, -- Иконка справа от текста
+						colored = true,
+						icon_only = true,
+						icon = { align = "right" },
 					},
 				},
 				lualine_c = {
 					{
 						"filename",
-						file_status = true, -- Показывает статус файла (readonly, modified)
-						newfile_status = true, -- Показывает статус нового файла
-						path = 1, -- 1: Относительный путь
-						shorting_target = 70, -- Сокращает путь для экономии места
+						file_status = true,
+						newfile_status = true,
+						path = 1,
+						shorting_target = 70,
 						symbols = {
-							modified = "[+]", -- Значок для модифицированного файла
-							readonly = "[-]", -- Значок для readonly файла
-							unnamed = "[No Name]", -- Для неназванных буферов
-							newfile = "[New]", -- Для нового файла
+							modified = "[+]",
+							readonly = "[-]",
+							unnamed = "[No Name]",
+							newfile = "[New]",
 						},
 					},
 				},
-				lualine_x = { "diff", "branch" },
+				lualine_x = {
+					-- 🧠 Codeium статус — теперь САМАЯ ЛЕВАЯ часть в правом блоке
+					function()
+						local status = require("codeium.virtual_text").status()
+						if status.state == "waiting" then
+							return "󰑕"
+						end
+						if status.state == "completions" and status.total > 0 then
+							return string.format(" %d/%d", status.current, status.total)
+						end
+						return ""
+					end,
+					"diff",
+					"branch",
+				},
 				lualine_y = { "location" },
 				lualine_z = { "progress" },
 			},
-			options = {
-				globalstatus = true,
-			},
 		})
+
+		-- Обновляем статусбар при смене состояния Codeium
+		require("codeium.virtual_text").set_statusbar_refresh(function()
+			require("lualine").refresh()
+		end)
 	end,
 }

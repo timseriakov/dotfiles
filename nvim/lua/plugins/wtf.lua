@@ -12,20 +12,20 @@ return {
 	},
 	keys = {
 		{
-			"<leader>wa",
+			"<leader>wd",
 			mode = { "n", "x" },
 			function()
 				require("wtf").ai()
 			end,
-			desc = "AI assistant for debugging",
+			desc = "WTF: AI assistant for debugging",
 		},
 		{
-			"<leader>ws",
+			"<leader>wg",
 			mode = { "n" },
 			function()
 				require("wtf").search()
 			end,
-			desc = "Search WTF diagnostics online",
+			desc = "WTF: Search diagnostics online",
 		},
 		{
 			"<leader>wh",
@@ -33,15 +33,15 @@ return {
 			function()
 				require("wtf").history()
 			end,
-			desc = "Chat history",
+			desc = "WTF: Chat history",
 		},
 		{
-			"<leader>wg",
+			"<leader>wt",
 			mode = { "n" },
 			function()
 				require("wtf").grep_history()
 			end,
-			desc = "Search WTF chat history with Telescope",
+			desc = "WTF: Search chat history with Telescope",
 		},
 	},
 }
