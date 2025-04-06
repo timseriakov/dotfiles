@@ -30,15 +30,12 @@ return {
 			},
 		})
 
-		-- 🔥 Keymaps
 		vim.keymap.set("n", "<leader>gn", function()
 			neogit.open()
 		end, { desc = "Neogit: Open" })
-
 		vim.keymap.set("n", "<leader>gd", function()
 			diffview.open("HEAD")
 		end, { desc = "Neogit: Side-by-side Git Diff" })
-
 		vim.keymap.set("n", "<leader>gH", function()
 			vim.cmd("DiffviewFileHistory %")
 		end, { desc = "Neogit: Git File History (current file)" })
@@ -50,7 +47,7 @@ return {
 						local selection = action_state.get_selected_entry()
 						actions.close(bufnr)
 						if selection and selection.value then
-							diffview.open(selection.value .. "..HEAD") -- безопасный режим
+							diffview.open(selection.value .. "..HEAD")
 						end
 					end
 					map("i", "<CR>", open_diff)
@@ -128,5 +125,105 @@ return {
 				end,
 			})
 		end, { desc = "Neogit: Diff branch vs branch" })
+
+		local function run_ai_commit(git_root, desc)
+			vim.fn.jobstart({ "lazycommit" }, {
+				cwd = git_root,
+				stdout_buffered = true,
+				on_stdout = function(_, data)
+					local results = {}
+					for _, line in ipairs(data) do
+						if type(line) == "string" and line:match("^%d+%.%s*.+") then
+							local msg = line:gsub("^%d+%.%s*", "")
+							if msg and msg ~= "" then
+								table.insert(results, msg)
+							end
+						end
+					end
+
+					if vim.tbl_isempty(results) then
+						vim.notify("No AI commit suggestions found.", vim.log.levels.WARN)
+						return
+					end
+
+					local commit_file = git_root .. "/.git/COMMIT_EDITMSG"
+					pickers
+						.new({}, {
+							prompt_title = desc,
+							finder = finders.new_table({ results = results }),
+							sorter = conf.generic_sorter({}),
+							attach_mappings = function(_, map)
+								map("i", "<CR>", function(bufnr)
+									local selection = action_state.get_selected_entry()
+									actions.close(bufnr)
+									if selection then
+										vim.fn.writefile({ selection[1] }, commit_file)
+										vim.cmd("e " .. commit_file)
+
+										vim.api.nvim_create_autocmd("BufWritePost", {
+											once = true,
+											buffer = vim.api.nvim_get_current_buf(),
+											callback = function()
+												vim.fn.jobstart({ "git", "commit", "-F", commit_file }, {
+													cwd = git_root,
+													on_exit = function(_, code)
+														if code == 0 then
+															vim.notify("✅ Commit created!", vim.log.levels.INFO)
+														else
+															vim.notify("❌ Commit failed", vim.log.levels.ERROR)
+														end
+													end,
+												})
+											end,
+										})
+									end
+								end)
+								return true
+							end,
+						})
+						:find()
+				end,
+				on_stderr = function(_, err)
+					if err and err[1] and err[1] ~= "" then
+						vim.notify(table.concat(err, "\n"), vim.log.levels.ERROR)
+					end
+				end,
+			})
+		end
+
+		local function ai_commit(opts)
+			local use_all = opts.all or false
+			local desc = use_all and "AI Commit (all)" or "AI Commit (staged only)"
+			local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+
+			if use_all then
+				vim.fn.jobstart("git add -A", {
+					cwd = git_root,
+					on_exit = function()
+						local status = vim.fn.systemlist("git diff --cached")
+						if vim.tbl_isempty(status) then
+							vim.notify("No changes staged for commit", vim.log.levels.WARN)
+							return
+						end
+						run_ai_commit(git_root, desc)
+					end,
+				})
+			else
+				local status = vim.fn.systemlist("git diff --cached")
+				if vim.tbl_isempty(status) then
+					vim.notify("No changes staged for commit", vim.log.levels.WARN)
+					return
+				end
+				run_ai_commit(git_root, desc)
+			end
+		end
+
+		vim.keymap.set("n", "<leader>gA", function()
+			ai_commit({ all = true })
+		end, { desc = "Neogit: AI Commit (all changes)" })
+
+		vim.keymap.set("n", "<leader>gS", function()
+			ai_commit({ all = false })
+		end, { desc = "Neogit: AI Commit (staged only)" })
 	end,
 }
