@@ -15,7 +15,6 @@ return {
 		local finders = require("telescope.finders")
 		local conf = require("telescope.config").values
 
-		-- neogit setup
 		neogit.setup({
 			integrations = {
 				diffview = true,
@@ -23,7 +22,6 @@ return {
 			},
 		})
 
-		-- diffview setup
 		diffview.setup({
 			keymaps = {
 				view = { ["q"] = "<cmd>DiffviewClose<CR>" },
@@ -32,8 +30,10 @@ return {
 			},
 		})
 
-		-- 🔥 Горячие клавиши
-		vim.keymap.set("n", "<leader>gn", neogit.open, { desc = "Neogit: Open" })
+		-- 🔥 Keymaps
+		vim.keymap.set("n", "<leader>gn", function()
+			neogit.open()
+		end, { desc = "Neogit: Open" })
 
 		vim.keymap.set("n", "<leader>gd", function()
 			diffview.open("HEAD")
@@ -50,7 +50,7 @@ return {
 						local selection = action_state.get_selected_entry()
 						actions.close(bufnr)
 						if selection and selection.value then
-							diffview.open(selection.value)
+							diffview.open(selection.value .. "..HEAD") -- безопасный режим
 						end
 					end
 					map("i", "<CR>", open_diff)
@@ -58,14 +58,12 @@ return {
 					return true
 				end,
 			})
-		end, { desc = "Neogit: Diff selected commit (Telescope)" })
+		end, { desc = "Neogit: Diff selected commit (safe)" })
 
-		-- git stash
-		vim.keymap.set("n", "<leader>gx", telescope_builtin.git_stash, {
-			desc = "Neogit: Git Stash (Telescope)",
-		})
+		vim.keymap.set("n", "<leader>gx", function()
+			telescope_builtin.git_stash()
+		end, { desc = "Neogit: Git Stash (Telescope)" })
 
-		-- HEAD vs selected branch
 		vim.keymap.set("n", "<leader>gv", function()
 			telescope_builtin.git_branches({
 				attach_mappings = function(_, map)
@@ -83,7 +81,6 @@ return {
 			})
 		end, { desc = "Neogit: Diff HEAD vs branch" })
 
-		-- compare two branches
 		vim.keymap.set("n", "<leader>gV", function()
 			local branches = {}
 			vim.fn.jobstart("git branch --all --format='%(refname:short)'", {
