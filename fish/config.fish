@@ -63,6 +63,8 @@ set -gx LC_ALL en_US.UTF-8
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
+set -x HOMEBREW_NO_ENV_HINTS 1
+
 # pnpm
 set -gx PNPM_HOME /Users/tim/Library/pnpm
 if not string match -q -- $PNPM_HOME $PATH
@@ -93,3 +95,6 @@ set -gx POSTING_THEME alpine
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/tim/.lmstudio/bin

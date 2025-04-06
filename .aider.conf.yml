@@ -220,7 +220,7 @@ chat-language: ru
 #yes-always: false
 
 ## Enable verbose output
-#verbose: false
+# verbose: true
 
 ## Load and execute /commands from a file on launch
 #load: xxx
