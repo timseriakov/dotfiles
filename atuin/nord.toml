@@ -1,0 +1,12 @@
+[theme]
+name = "nord"
+
+[colors]
+AlertInfo = "#88C0D0"
+AlertWarn = "#EBCB8B"
+AlertError = "#BF616A"
+Annotation = "#D8DEE9"
+Base = "#ECEFF4"
+Guidance = "#81A1C1"
+Important = "#A3BE8C"
+Title = "#8FBCBB"
