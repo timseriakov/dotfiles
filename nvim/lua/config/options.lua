@@ -41,14 +41,53 @@ if vim.g.neovide then
 	vim.g.neovide_show_border = false -- true???
 
 	vim.g.neovide_cursor_vfx_mode = "railgun"
-	vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
+	-- vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
 	vim.g.neovide_cursor_antialiasing = true
 	vim.g.neovide_hide_mouse_when_typing = true
 	vim.g.neovide_floating_opacity = 1
 
-	vim.g.neovide_cursor_vfx_particle_curl = 0.1
-	vim.g.neovide_cursor_vfx_particle_lifetime = 3.2
+	-- vim.g.neovide_cursor_vfx_particle_curl = 0.1
+	-- vim.g.neovide_cursor_vfx_particle_lifetime = 3.2
+	-- vim.g.neovide_cursor_vfx_particle_speed = 20.0
+
+	-- Время жизни каждой частицы (в секундах).
+	-- Чем больше значение, тем дольше частицы остаются на экране (длиннее хвост).
+	vim.g.neovide_cursor_vfx_particle_lifetime = 2
+
+	-- Плотность (кол-во) частиц, выбрасываемых курсором.
+	-- Чем выше значение, тем ярче и насыщеннее след.
+	vim.g.neovide_cursor_vfx_particle_density = 0.7
+
+	-- Скорость, с которой частицы улетают от курсора.
+	-- Чем выше, тем дальше и быстрее они двигаются.
 	vim.g.neovide_cursor_vfx_particle_speed = 20.0
+
+	-- Фаза синусоиды движения частиц (волнообразность).
+	-- Чем выше значение, тем больше "извивов" в траектории.
+	vim.g.neovide_cursor_vfx_particle_phase = 1.5
+
+	-- Крутизна "завихрений" в траектории частиц.
+	-- Чем выше значение, тем больше частицы закручиваются.
+	vim.g.neovide_cursor_vfx_particle_curl = 0.1
+
+	-- Размер следа от курсора (0.0–1.0).
+	-- Чем больше значение, тем сильнее тянется хвост.
+	-- vim.g.neovide_cursor_trail_size = 0.3
+
+	-- Длительность анимации перемещения курсора (в секундах).
+	-- vim.g.neovide_cursor_animation_length = 0.13
+
+	-- Длительность анимации при коротком перемещении (1–2 символа).
+	-- vim.g.neovide_cursor_short_animation_length = 0.03
+
+	-- Включает/отключает анимацию курсора в режиме вставки.
+	vim.g.neovide_cursor_animate_in_insert_mode = true
+
+	-- Включает/отключает анимацию при работе с командной строкой.
+	vim.g.neovide_cursor_animate_command_line = true
+
+	-- Плавное мигание курсора (при наличии настроек в guicursor).
+	vim.g.neovide_cursor_smooth_blink = false
 
 	-- Allow clipboard copy-paste
 	vim.keymap.set("v", "<D-c>", '"+y') -- Copy
