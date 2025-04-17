@@ -89,6 +89,18 @@ if vim.g.neovide then
 	-- Плавное мигание курсора (при наличии настроек в guicursor).
 	vim.g.neovide_cursor_smooth_blink = false
 
+	-- zoom
+	vim.g.neovide_scale_factor = 1.0
+	local change_scale_factor = function(delta)
+		vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+	end
+	vim.keymap.set("n", "<C-+>", function()
+		change_scale_factor(1.25)
+	end)
+	vim.keymap.set("n", "<C-->", function()
+		change_scale_factor(1 / 1.25)
+	end)
+
 	-- Allow clipboard copy-paste
 	vim.keymap.set("v", "<D-c>", '"+y') -- Copy
 	vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
