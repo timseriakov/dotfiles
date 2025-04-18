@@ -4,7 +4,7 @@ function _fifc_preview_file -d "Preview the selected file with the right tool de
     switch $file_type
         case txt
             if type -q bat
-                bat --color=always $fifc_bat_opts "$fifc_candidate"
+                bat --color=always --decorations=never $fifc_bat_opts "$fifc_candidate"
             else
                 cat "$fifc_candidate"
             end
