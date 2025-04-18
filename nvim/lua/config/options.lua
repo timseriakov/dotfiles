@@ -81,13 +81,13 @@ if vim.g.neovide then
 	-- vim.g.neovide_cursor_short_animation_length = 0.03
 
 	-- Включает/отключает анимацию курсора в режиме вставки.
-	vim.g.neovide_cursor_animate_in_insert_mode = true
+	vim.g.neovide_cursor_animate_in_insert_mode = false
 
 	-- Включает/отключает анимацию при работе с командной строкой.
 	vim.g.neovide_cursor_animate_command_line = true
 
 	-- Плавное мигание курсора (при наличии настроек в guicursor).
-	vim.g.neovide_cursor_smooth_blink = false
+	vim.g.neovide_cursor_smooth_blink = true
 
 	-- zoom
 	vim.g.neovide_scale_factor = 1.0
@@ -101,7 +101,7 @@ if vim.g.neovide then
 		change_scale_factor(1 / 1.25)
 	end)
 
- -- Allow clipboard copy-paste
+	-- Allow clipboard copy-paste
 	vim.keymap.set("v", "<D-c>", '"+y') -- Copy
 	vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
 	vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
