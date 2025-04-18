@@ -122,7 +122,7 @@ function _fifc_help -d "Print fifc help message"
 
     __fifc_help_print -e -l2 -- "- Preview files using bat (already builtin):\n"
     __fifc_help_print -e -l2 --color=white -- \
-        '  fifc -n \'test -f "$fifc_candidate"\' -p "bat --color=always $fifc_candidate"'
+        '  fifc -n \'test -f "$fifc_candidate"\' -p "bat --decorations=never --color=always $fifc_candidate"'
 
     __fifc_help_print -e "\n"
 
