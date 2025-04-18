@@ -101,7 +101,7 @@ if vim.g.neovide then
 		change_scale_factor(1 / 1.25)
 	end)
 
-	-- Allow clipboard copy-paste
+ -- Allow clipboard copy-paste
 	vim.keymap.set("v", "<D-c>", '"+y') -- Copy
 	vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
 	vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
