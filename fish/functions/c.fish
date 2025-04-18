@@ -1,3 +1,3 @@
-function c --wraps=bat --description 'alias c bat'
-  bat $argv; 
+function c --wraps=bat --description 'alias c bat --decorations=never'
+    bat $argv
 end
