@@ -86,19 +86,32 @@ if vim.g.neovide then
 	-- Включает/отключает анимацию при работе с командной строкой.
 	vim.g.neovide_cursor_animate_command_line = true
 
-	-- Плавное мигание курсора (при наличии настроек в guicursor).
+	-- Плавное мигание курсора
 	vim.g.neovide_cursor_smooth_blink = true
 
 	-- zoom
 	vim.g.neovide_scale_factor = 1.0
+
+	local default_scale = 1.0
+
 	local change_scale_factor = function(delta)
 		vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 	end
+
+	local reset_scale_factor = function()
+		vim.g.neovide_scale_factor = default_scale
+	end
+
 	vim.keymap.set("n", "<C-+>", function()
 		change_scale_factor(1.25)
 	end)
+
 	vim.keymap.set("n", "<C-->", function()
 		change_scale_factor(1 / 1.25)
+	end)
+
+	vim.keymap.set("n", "<C-=>", function()
+		reset_scale_factor()
 	end)
 
 	-- Allow clipboard copy-paste
