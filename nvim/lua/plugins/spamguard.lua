@@ -1,0 +1,1 @@
+return { "timseriakov/spamguard.nvim" }
