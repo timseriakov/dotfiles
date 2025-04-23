@@ -1,2 +1,4 @@
 ln -s /Users/tim/dev/dotfiles/.aider.conf.yml ~/.aider.conf.yml
+ln -s /Users/tim/dev/dotfiles/yazi/ ~/.config/yazi
+
 

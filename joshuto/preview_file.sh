@@ -33,12 +33,6 @@
 ##
 
 IFS=$'\n'
-
-# Security measures:
-# * noclobber prevents you from overwriting a file with `>`
-# * noglob prevents expansion of wild cards
-# * nounset causes bash to fail if an undeclared variable is used (e.g. typos)
-# * pipefail causes a pipeline to fail also if a command other than the last one fails
 set -o noclobber -o noglob -o nounset -o pipefail
 
 FILE_PATH=""
@@ -103,24 +97,25 @@ handle_extension() {
   htm | html | xhtml)
     pandoc -s -t markdown -- "${FILE_PATH}" && exit 0
     ;;
-  # htm|html|xhtml)
-  #     w3m -dump "${FILE_PATH}" && exit 0
-  #     ;;
   json | ipynb)
     jq --color-output . "${FILE_PATH}" && exit 0
     ;;
   dff | dsf | wv | wvc)
     exiftool "${FILE_PATH}" && exit 0
     ;;
-  jpg | jpeg | png | gif | bmp)
-    icat -- "${FILE_PATH}" && exit 0
+  ## 🐱 Используем viu для предпросмотра изображений
+  jpg | jpeg | png | gif | bmp | webp)
+    if command -v viu >/dev/null 2>&1; then
+      viu -w "$PREVIEW_WIDTH" -h "$PREVIEW_HEIGHT" "$FILE_PATH"
+    else
+      echo "Установи 'viu' для предпросмотра изображений"
+    fi
     exit 1
     ;;
   md)
     glow -s dark "${FILE_PATH}" && exit 0
     exit 1
     ;;
-
   esac
 }
 
