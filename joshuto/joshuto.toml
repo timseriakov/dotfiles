@@ -34,9 +34,11 @@ directories_first = true
 reverse = false
 
 [preview]
+kitty = true
+ueberzug = false
 preview_protocol = "halfblocks"
-max_preview_size = 5097152                           # 2MB
-preview_script = "~/.config/joshuto/preview_file.sh" # make sure it's marked as executable
+max_preview_size = 5097152
+preview_script = "~/.config/joshuto/preview_file.sh"
 
 [search]
 # insensitive, sensitive, smart
