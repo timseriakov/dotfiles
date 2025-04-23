@@ -19,8 +19,8 @@ title_format   = "Yazi: {cwd}"
 [preview]
 wrap            = "no"
 tab_size        = 2
-max_width       = 600
-max_height      = 900
+max_width       = 1200
+max_height      = 1200
 cache_dir       = ""
 image_delay     = 30
 image_filter    = "triangle"
@@ -150,6 +150,22 @@ previewers = [
 	# Fallback
 	{ name = "*", run = "file" },
 ]
+prepend_previewers = [
+  { name = "*.md", run = "glow" },
+  # Archive previewer
+	{ mime = "application/*zip",            run = "ouch" },
+	{ mime = "application/x-tar",           run = "ouch" },
+	{ mime = "application/x-bzip2",         run = "ouch" },
+	{ mime = "application/x-7z-compressed", run = "ouch" },
+	{ mime = "application/x-rar",           run = "ouch" },
+  { mime = "application/x-xz",            run = "ouch" },
+	{ mime = "application/xz",              run = "ouch" },
+]
+prepend_fetchers = [
+  { id   = "git", name = "*", run  = "git" },
+  { id   = "git", name = "*/", run  = "git" },
+]
+
 
 [input]
 cursor_blink = false
