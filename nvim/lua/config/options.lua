@@ -8,6 +8,7 @@ vim.o.encoding = "utf-8"
 vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
 vim.env.TMPDIR = "/tmp/nvim"
 vim.g.lazyvim_eslint_auto_format = true
+vim.opt.spelllang = { "ru", "en" }
 
 -- -- for neovide
 if vim.g.neovide then
