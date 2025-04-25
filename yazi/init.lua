@@ -49,3 +49,4 @@ require("yatline"):setup({
 		},
 	},
 })
+require("no-status"):setup()
