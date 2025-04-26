@@ -43,5 +43,10 @@ use = "yazi-rs/plugins:no-status"
 rev = "4b027c7"
 hash = "513a23ac28e1eaa626f3a1bb6c8130d0"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "4b027c7"
+hash = "f0c4b41b5d19a3144958383333eff6e7"
+
 [flavor]
 deps = []
