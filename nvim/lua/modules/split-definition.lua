@@ -1,6 +1,6 @@
 local M = {}
 
-function M.peek_definition_split()
+function M.split_definition()
   local cur_win = vim.api.nvim_get_current_win()
 
   local params = vim.lsp.util.make_position_params(0, "utf-16")
