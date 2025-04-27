@@ -11,6 +11,7 @@ vim.g.lazyvim_eslint_auto_format = true
 vim.opt.spelllang = { "ru", "en" }
 
 vim.o.mousescroll = "ver:1,hor:1"
+vim.opt.swapfile = false
 
 -- -- for neovide
 if vim.g.neovide then
