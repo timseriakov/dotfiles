@@ -31,6 +31,6 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "gpp", "<cmd>lua require('goto-preview').close_all_win()<CR>", { desc = "Close All Peek Windows" })
 
-local peek_def = require("modules.peek_definition")
+local peek_def = require("modules.split-definition")
 
-vim.keymap.set("n", "gs", peek_def.peek_definition_split, { desc = "Peek Definition (vsplit + return focus)" })
+vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (vsplit + return focus)" })
