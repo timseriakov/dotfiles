@@ -34,3 +34,5 @@ vim.keymap.set("n", "gpp", "<cmd>lua require('goto-preview').close_all_win()<CR>
 local peek_def = require("modules.split-definition")
 
 vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (vsplit + return focus)" })
+
+vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
