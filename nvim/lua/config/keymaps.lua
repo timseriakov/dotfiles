@@ -1,7 +1,3 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
-
 -- Peek in preview window
 vim.keymap.set(
   "n",
@@ -34,6 +30,7 @@ local peek_def = require("modules.split-definition")
 
 vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (vsplit + return focus)" })
 
+-- Jump back
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
 
 -- Copy entire buffer to system clipboard
