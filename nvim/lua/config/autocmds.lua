@@ -15,3 +15,8 @@ vim.api.nvim_create_autocmd("VimEnter", {
     vim.opt.rtp:prepend(vim.fn.stdpath("config") .. "/lua")
   end,
 })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  command = [[%s/\s\+$//e]],
+})
