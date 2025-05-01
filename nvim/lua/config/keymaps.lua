@@ -2,9 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
--- Copy entire buffer to system clipboard
-vim.keymap.set("n", "<leader>yy", ":%y+<CR>", { desc = "Copy entire buffer to clipboard" })
-
+-- Peek in preview window
 vim.keymap.set(
   "n",
   "gpd",
@@ -31,8 +29,19 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "gpp", "<cmd>lua require('goto-preview').close_all_win()<CR>", { desc = "Close All Peek Windows" })
 
+-- Open definition in vsplit
 local peek_def = require("modules.split-definition")
 
 vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (vsplit + return focus)" })
 
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
+
+-- Copy entire buffer to system clipboard
+vim.keymap.set("n", "<leader>yy", ":%y+<CR>", { desc = "Copy entire buffer to clipboard" })
+vim.keymap.set("n", "<leader>bg", ":%y+<CR>", { desc = "Copy entire buffer to clipboard" })
+
+-- Replace buffer with system clipboard
+vim.keymap.set("n", "<leader>bv", function()
+  local clipboard = vim.fn.getreg("+")
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(clipboard, "\n"))
+end, { desc = "Replace buffer with system clipboard" })
