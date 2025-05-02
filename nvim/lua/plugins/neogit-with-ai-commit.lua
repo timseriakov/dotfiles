@@ -33,9 +33,11 @@ return {
     vim.keymap.set("n", "<leader>gn", function()
       neogit.open()
     end, { desc = "Neogit: Open" })
+
     vim.keymap.set("n", "<leader>gd", function()
       diffview.open("HEAD")
     end, { desc = "Neogit: Side-by-side Git Diff" })
+
     vim.keymap.set("n", "<leader>gH", function()
       vim.cmd("DiffviewFileHistory %")
     end, { desc = "Neogit: Git File History (current file)" })
@@ -167,11 +169,14 @@ return {
                         vim.fn.jobstart({ "git", "commit", "-F", commit_file }, {
                           cwd = git_root,
                           on_exit = function(_, code)
-                            if code == 0 then
-                              vim.notify("✅ Commit created!", vim.log.levels.INFO)
-                            else
-                              vim.notify("❌ Commit failed", vim.log.levels.ERROR)
-                            end
+                            vim.schedule(function()
+                              if code == 0 then
+                                vim.notify("✅ Commit created!", vim.log.levels.INFO)
+                                vim.cmd("bd") -- закрыть буфер после успешного коммита
+                              else
+                                vim.notify("❌ Commit failed", vim.log.levels.ERROR)
+                              end
+                            end)
                           end,
                         })
                       end,
