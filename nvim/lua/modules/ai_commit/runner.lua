@@ -5,13 +5,13 @@ local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
+local Job = require("plenary.job")
 
 local M = {}
 
 local function run_ai_commit(git_root, desc, opts)
   local commit_file = git_root .. "/.git/COMMIT_EDITMSG"
 
-  -- если amend, сразу показываем попап без lazycommit
   if opts.amend then
     popup.open_commit_popup("", commit_file, git_root, opts)
     return
@@ -44,8 +44,8 @@ local function run_ai_commit(git_root, desc, opts)
           sorter = conf.generic_sorter({}),
           layout_strategy = "horizontal",
           layout_config = {
-            width = 0.8,
-            height = 0.45,
+            width = 0.75,
+            height = 0.40,
             prompt_position = "top",
             preview_width = 0.35,
             anchor = "CENTER",
@@ -76,6 +76,58 @@ local function run_ai_commit(git_root, desc, opts)
   })
 end
 
+local function select_files_to_stage(callback)
+  Job:new({
+    command = "git",
+    args = { "status", "--porcelain" },
+    on_exit = function(j)
+      local output = j:result()
+      local entries = {}
+
+      for _, line in ipairs(output) do
+        local filepath = line:sub(4)
+        if filepath ~= "" then
+          table.insert(entries, filepath)
+        end
+      end
+
+      vim.schedule(function()
+        pickers
+          .new({}, {
+            prompt_title = "Select files to stage",
+            finder = finders.new_table(entries),
+            sorter = conf.generic_sorter({}),
+            layout_strategy = "horizontal",
+            layout_config = {
+              width = 0.6,
+              height = 0.35,
+              prompt_position = "top",
+            },
+            attach_mappings = function(prompt_bufnr, map)
+              actions.select_default:replace(function()
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                local selection = picker:get_multi_selection()
+                if #selection == 0 then
+                  local single = action_state.get_selected_entry()
+                  if single then
+                    selection = { single }
+                  end
+                end
+                local files = vim.tbl_map(function(entry)
+                  return entry[1]
+                end, selection)
+                actions.close(prompt_bufnr)
+                callback(files)
+              end)
+              return true
+            end,
+          })
+          :find()
+      end)
+    end,
+  }):start()
+end
+
 function M.ai_commit(opts)
   local use_all = opts.all or false
   local use_amend = opts.amend or false
@@ -98,6 +150,19 @@ function M.ai_commit(opts)
         validate_and_run()
       end,
     })
+  elseif opts.select_files then
+    select_files_to_stage(function(files)
+      if vim.tbl_isempty(files) then
+        vim.notify("No files selected", vim.log.levels.WARN)
+        return
+      end
+      vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
+        cwd = git_root,
+        on_exit = function()
+          validate_and_run()
+        end,
+      })
+    end)
   else
     validate_and_run()
   end
@@ -113,8 +178,8 @@ function M.setup()
   end, { desc = "AI Commit: amend last commit" })
 
   vim.keymap.set("n", "<leader>gS", function()
-    M.ai_commit({ all = false })
-  end, { desc = "AI Commit: staged only" })
+    M.ai_commit({ all = false, select_files = true })
+  end, { desc = "AI Commit: select files" })
 end
 
 return M
