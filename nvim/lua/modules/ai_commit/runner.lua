@@ -1,3 +1,4 @@
+-- runner.lua
 local popup = require("modules.ai_commit.popup")
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
@@ -8,6 +9,14 @@ local action_state = require("telescope.actions.state")
 local M = {}
 
 local function run_ai_commit(git_root, desc, opts)
+  local commit_file = git_root .. "/.git/COMMIT_EDITMSG"
+
+  -- если amend, сразу показываем попап без lazycommit
+  if opts.amend then
+    popup.open_commit_popup("", commit_file, git_root, opts)
+    return
+  end
+
   vim.fn.jobstart({ "lazycommit" }, {
     cwd = git_root,
     stdout_buffered = true,
@@ -24,17 +33,6 @@ local function run_ai_commit(git_root, desc, opts)
 
       if vim.tbl_isempty(results) then
         vim.notify("No AI commit suggestions found.", vim.log.levels.WARN)
-        return
-      end
-
-      local commit_file = git_root .. "/.git/COMMIT_EDITMSG"
-
-      local function open_popup(selected)
-        popup.open_commit_popup(selected or "", commit_file, git_root, opts)
-      end
-
-      if opts.amend then
-        open_popup("")
         return
       end
 
@@ -60,7 +58,7 @@ local function run_ai_commit(git_root, desc, opts)
               local selection = action_state.get_selected_entry()
               actions.close(bufnr)
               if selection then
-                open_popup(selection[1])
+                popup.open_commit_popup(selection[1], commit_file, git_root, opts)
               end
             end
             map("i", "<CR>", apply)
