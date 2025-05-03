@@ -1,5 +1,3 @@
--- modules/ai_commit/previewer.lua
-
 local Job = require("plenary.job")
 local previewers = require("telescope.previewers")
 local putils = require("telescope.previewers.utils")
