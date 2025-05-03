@@ -81,6 +81,9 @@
           "vendorID" : "0x5ac"
         }
       },
+      "pointer" : {
+        "speed" : 0.05
+      },
       "scrolling" : {
         "modifiers" : {
           "vertical" : {

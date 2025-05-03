@@ -131,7 +131,7 @@ end
 function M.ai_commit(opts)
   local use_all = opts.all or false
   local use_amend = opts.amend or false
-  local desc = use_all and (use_amend and "AI Commit (amend)" or "AI Commit (all)") or "AI Commit (staged only)"
+  local desc = use_all and (use_amend and "Commit (amend)" or "AI Commit (all)") or "AI Commit (staged only)"
   local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
 
   local function validate_and_run()
@@ -175,7 +175,7 @@ function M.setup()
 
   vim.keymap.set("n", "<leader>gA", function()
     M.ai_commit({ all = true, amend = true })
-  end, { desc = "AI Commit: amend last commit" })
+  end, { desc = "Amend last commit" })
 
   vim.keymap.set("n", "<leader>gS", function()
     M.ai_commit({ all = false, select_files = true })
