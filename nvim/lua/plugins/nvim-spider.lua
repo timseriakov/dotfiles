@@ -3,8 +3,9 @@ return {
   event = "VeryLazy",
   config = function()
     require("spider").setup({
-      skipInsignificantPunctuation = true,
-      consistentOperatorPending = true,
+      skipInsignificantPunctuation = false,
+      consistentOperatorPending = false,
+      subwordMovement = true,
     })
 
     vim.schedule(function()
