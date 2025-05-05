@@ -24,15 +24,15 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>gn", function()
+    vim.keymap.set("n", "<leader>gnn", function()
       neogit.open()
     end, { desc = "Neogit: Open" })
 
-    vim.keymap.set("n", "<leader>gd", function()
+    vim.keymap.set("n", "<leader>gnd", function()
       diffview.open("HEAD")
     end, { desc = "Neogit: Git Diff (HEAD)" })
 
-    vim.keymap.set("n", "<leader>gH", function()
+    vim.keymap.set("n", "<leader>gnf", function()
       vim.cmd("DiffviewFileHistory %")
     end, { desc = "Neogit: Git File History (current file)" })
   end,
