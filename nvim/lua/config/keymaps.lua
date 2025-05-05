@@ -44,4 +44,55 @@ vim.keymap.set("n", "<leader>bv", function()
 end, { desc = "Replace buffer with system clipboard" })
 
 -- LeetCode
-vim.keymap.set("n", "<leader>cl", "<cmd>Leet<CR>", { desc = "LeetCode: Open dashboard" })
+-- vim.keymap.set("n", "<leader>cl", "<cmd>Leet<CR>", { desc = "LeetCode: Open dashboard" })
+
+local Menu = require("nui.menu")
+local event = require("nui.utils.autocmd")
+local map = vim.keymap.set
+
+local langs = {
+  { "JavaScript", "javascript" },
+  { "TypeScript", "typescript" },
+  { "Go", "golang" },
+}
+
+local function open_lang_menu()
+  local items = vim.tbl_map(function(lang)
+    return Menu.item(lang[1], { lang = lang[2] })
+  end, langs)
+
+  local menu = Menu({
+    position = "50%",
+    size = { width = 30, height = #items },
+    border = {
+      style = "rounded",
+      text = { top = " LeetCode Language " },
+    },
+  }, {
+    lines = items,
+    max_width = 30,
+    keymap = {
+      focus_next = { "j", "<Down>" },
+      focus_prev = { "k", "<Up>" },
+      close = { "<Esc>", "q" },
+      submit = { "<CR>", "<Space>" },
+    },
+    on_submit = function(item)
+      require("leetcode.config").user.lang = item.lang
+      vim.notify("LeetCode: switched to " .. item.text, vim.log.levels.INFO)
+    end,
+  })
+
+  menu:mount()
+  vim.api.nvim_create_autocmd("BufLeave", {
+    buffer = menu.bufnr,
+    once = true,
+    callback = function()
+      menu:unmount()
+    end,
+  })
+end
+
+-- бинды
+map("n", "<leader>;l", "<cmd>Leet<CR>", { desc = "LeetCode: Dashboard" })
+map("n", "<leader>;L", open_lang_menu, { desc = "LeetCode: Choose Language" })

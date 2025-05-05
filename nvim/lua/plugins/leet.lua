@@ -1,23 +1,20 @@
--- plugins/leetcode.lua
-
 return {
   "kawre/leetcode.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    "nvim-telescope/telescope.nvim", -- или "ibhagwan/fzf-lua"
-    -- "nvim-tree/nvim-web-devicons", -- (опционально, для иконок)
+    "nvim-telescope/telescope.nvim",
   },
-  cmd = "Leet", -- загружать при вызове команды
+  cmd = "Leet",
   opts = {
-    lang = "typescript", -- или "cpp", "rust", "python3", и т.д.
+    -- lang = "typescript",
     cn = {
       enabled = false,
       translator = true,
       translate_problems = true,
     },
     plugins = {
-      non_standalone = true, -- можно вызывать внутри текущей сессии Neovim
+      non_standalone = true,
     },
     description = {
       position = "left",
