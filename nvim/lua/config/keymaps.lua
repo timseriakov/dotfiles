@@ -42,3 +42,6 @@ vim.keymap.set("n", "<leader>bv", function()
   local clipboard = vim.fn.getreg("+")
   vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(clipboard, "\n"))
 end, { desc = "Replace buffer with system clipboard" })
+
+-- LeetCode
+vim.keymap.set("n", "<leader>cl", "<cmd>Leet<CR>", { desc = "LeetCode: Open dashboard" })
