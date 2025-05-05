@@ -8,7 +8,6 @@ return {
   config = function()
     local neogit = require("neogit")
     local diffview = require("diffview")
-    local ai_commit = require("modules.ai_commit.runner")
 
     neogit.setup({
       integrations = {
@@ -36,8 +35,5 @@ return {
     vim.keymap.set("n", "<leader>gH", function()
       vim.cmd("DiffviewFileHistory %")
     end, { desc = "Neogit: Git File History (current file)" })
-
-    -- AI Commit keybindings setup
-    ai_commit.setup()
   end,
 }
