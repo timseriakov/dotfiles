@@ -20,11 +20,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   command = [[%s/\s\+$//e]],
 })
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = "lua/plugins/*.lua",
-  callback = function()
-    require("lazy").reload()
-    vim.notify("🔁 Lazy plugins reloaded!", vim.log.levels.INFO)
-  end,
-})
