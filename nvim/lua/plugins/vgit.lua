@@ -72,15 +72,15 @@ return {
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true, desc = "" }
 
-    map("n", "<leader>gd", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
+    map("n", "<leader>gvp", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
     map("n", "<leader>gvh", vgit.buffer_history_preview, { desc = "VGit: File History" })
     map("n", "<leader>gvb", vgit.buffer_blame_preview, { desc = "VGit: Blame Preview" })
-    map("n", "<leader>gF", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
-    map("n", "<leader>gx", vgit.toggle_diff_preference, { desc = "Toggle VGit: Diff View" })
+    map("n", "<leader>gvf", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
+    map("n", "<leader>gvx", vgit.toggle_diff_preference, { desc = "Toggle VGit: Diff View" })
     map("n", "<leader>gu", vgit.buffer_reset, { desc = "VGit: Reset Buffer" })
-    map("n", "<leader>ghs", vgit.buffer_hunk_stage, { desc = "VGit: Stage Hunk" })
-    map("n", "<leader>ghr", vgit.buffer_hunk_reset, { desc = "VGit: Reset Hunk" })
-    map("n", "<leader>ghp", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
-    map("n", "<leader>gt", vgit.project_stash_preview, { desc = "VGit: sTash" })
+    map("n", "<leader>gvs", vgit.buffer_hunk_stage, { desc = "VGit: Stage Hunk" })
+    map("n", "<leader>gvr", vgit.buffer_hunk_reset, { desc = "VGit: Reset Hunk" })
+    map("n", "<leader>gvk", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
+    map("n", "<leader>gvt", vgit.project_stash_preview, { desc = "VGit: Stash" })
   end,
 }
