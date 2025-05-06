@@ -93,6 +93,6 @@ local function open_lang_menu()
   })
 end
 
--- бинды
+-- LeetCode
 map("n", "<leader>;l", "<cmd>Leet<CR>", { desc = "LeetCode: Dashboard" })
 map("n", "<leader>;L", open_lang_menu, { desc = "LeetCode: Choose Language" })
