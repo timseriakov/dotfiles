@@ -20,3 +20,21 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   command = [[%s/\s\+$//e]],
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("CustomHL", { clear = true }),
+  callback = function()
+    vim.api.nvim_set_hl(0, "ObsidianVirtualH1", {
+      fg = "#394253",
+      bg = "#9CBF87",
+      bold = true,
+    })
+  end,
+})
+
+-- применим сразу при старте #89ddff
+vim.api.nvim_set_hl(0, "ObsidianVirtualH1", {
+  fg = "#394253",
+  bg = "#9CBF87",
+  bold = true,
+})
