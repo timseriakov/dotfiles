@@ -1,8 +1,10 @@
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
-  lazy = true,
-  ft = "markdown",
+  event = {
+    "BufReadPre */vaults/default-vault/**/*.md",
+    "BufNewFile */vaults/default-vault/**/*.md",
+  },
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
@@ -14,13 +16,6 @@ return {
         name = "personal",
         path = "/Users/tim/vaults/default-vault",
       },
-      -- {
-      --   name = "work",
-      --   path = "~/vaults/work",
-      --   overrides = {
-      --     notes_subdir = "notes",
-      --   },
-      -- },
     },
 
     notes_subdir = "notes",
@@ -31,27 +26,6 @@ return {
       nvim_cmp = true,
       blink = false,
       min_chars = 2,
-    },
-
-    mappings = {
-      ["gf"] = {
-        action = function()
-          return require("obsidian").util.gf_passthrough()
-        end,
-        opts = { noremap = false, expr = true, buffer = true },
-      },
-      ["<leader>ch"] = {
-        action = function()
-          return require("obsidian").util.toggle_checkbox()
-        end,
-        opts = { buffer = true },
-      },
-      ["<CR>"] = {
-        action = function()
-          return require("obsidian").util.smart_action()
-        end,
-        opts = { buffer = true, expr = true },
-      },
     },
 
     attachments = {
@@ -82,7 +56,117 @@ return {
     },
 
     open_notes_in = "current",
-
     log_level = vim.log.levels.INFO,
+
+    mappings = {
+      ["gf"] = {
+        action = function()
+          return require("obsidian").util.gf_passthrough()
+        end,
+        opts = { noremap = false, expr = true, buffer = true, desc = "Follow Obsidian link (gf)" },
+      },
+      ["<leader>foc"] = {
+        action = function()
+          return require("obsidian").util.toggle_checkbox()
+        end,
+        opts = { buffer = true, desc = "Toggle checkbox" },
+      },
+      ["<leader>foo<CR>"] = {
+        action = function()
+          return require("obsidian").util.smart_action()
+        end,
+        opts = { buffer = true, expr = true, desc = "Smart action (follow or toggle)" },
+      },
+      ["<leader>foO"] = {
+        action = function()
+          vim.cmd("ObsidianOpen")
+        end,
+        opts = { buffer = true, desc = "Open in Obsidian app" },
+      },
+      ["<leader>fon"] = {
+        action = function()
+          vim.cmd("ObsidianNew")
+        end,
+        opts = { buffer = true, desc = "Create new note" },
+      },
+      ["<leader>foq"] = {
+        action = function()
+          vim.cmd("ObsidianQuickSwitch")
+        end,
+        opts = { buffer = true, desc = "Quick switch note" },
+      },
+      ["<leader>fof"] = {
+        action = function()
+          vim.cmd("ObsidianFollowLink")
+        end,
+        opts = { buffer = true, desc = "Follow link under cursor" },
+      },
+      ["<leader>fob"] = {
+        action = function()
+          vim.cmd("ObsidianBacklinks")
+        end,
+        opts = { buffer = true, desc = "Show backlinks" },
+      },
+      ["<leader>fot"] = {
+        action = function()
+          vim.cmd("ObsidianToday")
+        end,
+        opts = { buffer = true, desc = "Open today's daily note" },
+      },
+      ["<leader>foy"] = {
+        action = function()
+          vim.cmd("ObsidianYesterday")
+        end,
+        opts = { buffer = true, desc = "Open yesterday's daily note" },
+      },
+      ["<leader>foT"] = {
+        action = function()
+          vim.cmd("ObsidianTemplate")
+        end,
+        opts = { buffer = true, desc = "Insert template into current note" },
+      },
+      ["<leader>foN"] = {
+        action = function()
+          vim.cmd("ObsidianNewFromTemplate")
+        end,
+        opts = { buffer = true, desc = "Create note from template" },
+      },
+      ["<leader>foi"] = {
+        action = function()
+          vim.cmd("ObsidianPasteImg")
+        end,
+        opts = { buffer = true, desc = "Paste image from clipboard" },
+      },
+      ["<leader>for"] = {
+        action = function()
+          vim.cmd("ObsidianRename")
+        end,
+        opts = { buffer = true, desc = "Rename current note and update links" },
+      },
+    },
+
+    callbacks = {
+      enter_note = function()
+        vim.schedule(function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          local filename = vim.api.nvim_buf_get_name(bufnr)
+          local title = vim.fn.fnamemodify(filename, ":t:r")
+          local full_text = "# " .. title .. "  " -- добавляем 2 пробела
+
+          if vim.b.obsidian_virtual_h1 and vim.b.obsidian_ns then
+            pcall(vim.api.nvim_buf_del_extmark, bufnr, vim.b.obsidian_ns, vim.b.obsidian_virtual_h1)
+          end
+
+          vim.b.obsidian_ns = vim.api.nvim_create_namespace("obsidian_virtual_h1")
+          vim.b.obsidian_virtual_h1 = vim.api.nvim_buf_set_extmark(bufnr, vim.b.obsidian_ns, 0, 0, {
+            virt_lines = { { { full_text, "ObsidianVirtualH1" } } },
+            virt_lines_above = true,
+            priority = 100,
+          })
+
+          vim.cmd("normal! zt")
+        end)
+      end,
+    },
   },
 }
