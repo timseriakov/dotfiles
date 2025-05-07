@@ -1,5 +1,5 @@
 return {
-  "roobert/snacks.nvim",
+  "folke/snacks.nvim",
   keys = {
     -- Поменяли местами Zen и Zoom
     {
