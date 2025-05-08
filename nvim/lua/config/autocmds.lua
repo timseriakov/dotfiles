@@ -32,9 +32,31 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
--- применим сразу при старте #89ddff
+-- применим сразу при старте
 vim.api.nvim_set_hl(0, "ObsidianVirtualH1", {
   fg = "#394253",
   bg = "#9CBF87",
   bold = true,
+})
+
+-- Автоматическое переключение раскладки на английскую при входе в Normal Mode
+-- и при фокусе на Neovim, если не находимся в Insert Mode
+local function switch_to_english()
+  vim.fn.jobstart({ "im-select", "com.apple.keylayout.ABC" })
+end
+
+-- Автокоманда: переключение при выходе из Insert Mode
+vim.api.nvim_create_autocmd("InsertLeave", {
+  callback = function()
+    switch_to_english()
+  end,
+})
+
+-- Автокоманда: переключение при фокусе на Neovim, если мы не в Insert Mode
+vim.api.nvim_create_autocmd("FocusGained", {
+  callback = function()
+    if vim.fn.mode() ~= "i" then
+      switch_to_english()
+    end
+  end,
 })
