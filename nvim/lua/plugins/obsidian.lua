@@ -224,9 +224,22 @@ return {
       enter_note = function()
         vim.schedule(function()
           local bufnr = vim.api.nvim_get_current_buf()
+          local filetype = vim.bo[bufnr].filetype
+          local buftype = vim.bo[bufnr].buftype
           local filename = vim.api.nvim_buf_get_name(bufnr)
+
+          -- Пропустить, если это не обычный markdown-файл или системный буфер
+          if buftype ~= "" or filetype ~= "markdown" or filename == "" then
+            return
+          end
+
+          -- Исключить плагины вроде neo-tree
+          if filename:match("neo%-tree") or filename:match("NvimTree_") then
+            return
+          end
+
           local title = vim.fn.fnamemodify(filename, ":t:r")
-          local full_text = "# " .. title .. "  " -- добавляем 2 пробела
+          local full_text = "# " .. title .. "  "
 
           if vim.b.obsidian_virtual_h1 and vim.b.obsidian_ns then
             pcall(vim.api.nvim_buf_del_extmark, bufnr, vim.b.obsidian_ns, vim.b.obsidian_virtual_h1)
