@@ -71,7 +71,7 @@ return {
         end,
         opts = { buffer = true, desc = "Toggle checkbox" },
       },
-      ["<leader>oo"] = {
+      ["<leader>oa"] = {
         action = function()
           return require("obsidian").util.smart_action()
         end,
@@ -89,7 +89,7 @@ return {
         end,
         opts = { buffer = true, desc = "Create new note" },
       },
-      ["<leader>oq"] = {
+      ["<leader>oo"] = {
         action = function()
           vim.cmd("ObsidianQuickSwitch")
         end,
