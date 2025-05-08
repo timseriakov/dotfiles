@@ -65,79 +65,79 @@ return {
         end,
         opts = { noremap = false, expr = true, buffer = true, desc = "Follow Obsidian link (gf)" },
       },
-      ["<leader>foc"] = {
+      ["<leader>oc"] = {
         action = function()
           return require("obsidian").util.toggle_checkbox()
         end,
         opts = { buffer = true, desc = "Toggle checkbox" },
       },
-      ["<leader>foo<CR>"] = {
+      ["<leader>oo"] = {
         action = function()
           return require("obsidian").util.smart_action()
         end,
         opts = { buffer = true, expr = true, desc = "Smart action (follow or toggle)" },
       },
-      ["<leader>foO"] = {
+      ["<leader>oO"] = {
         action = function()
           vim.cmd("ObsidianOpen")
         end,
         opts = { buffer = true, desc = "Open in Obsidian app" },
       },
-      ["<leader>fon"] = {
+      ["<leader>on"] = {
         action = function()
           vim.cmd("ObsidianNew")
         end,
         opts = { buffer = true, desc = "Create new note" },
       },
-      ["<leader>foq"] = {
+      ["<leader>oq"] = {
         action = function()
           vim.cmd("ObsidianQuickSwitch")
         end,
         opts = { buffer = true, desc = "Quick switch note" },
       },
-      ["<leader>fof"] = {
+      ["<leader>of"] = {
         action = function()
           vim.cmd("ObsidianFollowLink")
         end,
         opts = { buffer = true, desc = "Follow link under cursor" },
       },
-      ["<leader>fob"] = {
+      ["<leader>ob"] = {
         action = function()
           vim.cmd("ObsidianBacklinks")
         end,
         opts = { buffer = true, desc = "Show backlinks" },
       },
-      ["<leader>fot"] = {
+      ["<leader>ot"] = {
         action = function()
           vim.cmd("ObsidianToday")
         end,
         opts = { buffer = true, desc = "Open today's daily note" },
       },
-      ["<leader>foy"] = {
+      ["<leader>oy"] = {
         action = function()
           vim.cmd("ObsidianYesterday")
         end,
         opts = { buffer = true, desc = "Open yesterday's daily note" },
       },
-      ["<leader>foT"] = {
+      ["<leader>oT"] = {
         action = function()
           vim.cmd("ObsidianTemplate")
         end,
         opts = { buffer = true, desc = "Insert template into current note" },
       },
-      ["<leader>foN"] = {
+      ["<leader>oN"] = {
         action = function()
           vim.cmd("ObsidianNewFromTemplate")
         end,
         opts = { buffer = true, desc = "Create note from template" },
       },
-      ["<leader>foi"] = {
+      ["<leader>oi"] = {
         action = function()
           vim.cmd("ObsidianPasteImg")
         end,
         opts = { buffer = true, desc = "Paste image from clipboard" },
       },
-      ["<leader>for"] = {
+      ["<leader>or"] = {
         action = function()
           vim.cmd("ObsidianRename")
         end,
