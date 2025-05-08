@@ -45,14 +45,12 @@ local function switch_to_english()
   vim.fn.jobstart({ "im-select", "com.apple.keylayout.ABC" })
 end
 
--- Автокоманда: переключение при выходе из Insert Mode
 vim.api.nvim_create_autocmd("InsertLeave", {
   callback = function()
     switch_to_english()
   end,
 })
 
--- Автокоманда: переключение при фокусе на Neovim, если мы не в Insert Mode
 vim.api.nvim_create_autocmd("FocusGained", {
   callback = function()
     if vim.fn.mode() ~= "i" then
