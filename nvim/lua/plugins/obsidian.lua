@@ -18,8 +18,8 @@ return {
       },
     },
 
-    notes_subdir = "notes",
-    new_notes_location = "notes_subdir",
+    notes_subdir = "",
+    new_notes_location = "current_dir",
     preferred_link_style = "wiki",
 
     completion = {
@@ -142,6 +142,81 @@ return {
           vim.cmd("ObsidianRename")
         end,
         opts = { buffer = true, desc = "Rename current note and update links" },
+      },
+      ["<leader>oz"] = {
+        action = function()
+          local obsidian = require("obsidian")
+          local Path = require("obsidian.path")
+          local client = obsidian.get_client()
+          local workspace = client.current_workspace
+
+          local base_path = Path.new(workspace.path)
+          local notes_dir = base_path -- весь vault, а не notes_subdir
+
+          local glob_path = tostring(notes_dir) .. "/**/*.md"
+          local files = vim.fn.glob(glob_path, true, true)
+
+          if #files == 0 then
+            vim.notify("No notes found.", vim.log.levels.WARN)
+            return
+          end
+
+          local random_file = files[math.random(#files)]
+          vim.cmd("edit " .. vim.fn.fnameescape(random_file))
+        end,
+        opts = { desc = "Random note", buffer = true },
+      },
+      ["<leader>oZ"] = {
+        action = function()
+          local Path = require("obsidian.path")
+          local pickers = require("telescope.pickers")
+          local finders = require("telescope.finders")
+          local conf = require("telescope.config").values
+          local actions = require("telescope.actions")
+          local action_state = require("telescope.actions.state")
+
+          local vault_path = "/Users/tim/vaults/default-vault"
+          local dirs = vim.fn.readdir(vault_path)
+          local candidates = vim.tbl_filter(function(name)
+            return vim.fn.isdirectory(vault_path .. "/" .. name) == 1 and not name:match("^%.")
+          end, dirs)
+
+          local previous = vim.g.obsidian_random_dir or nil
+
+          local function open_random_note(dir)
+            local glob_path = vault_path .. "/" .. dir .. "/**/*.md"
+            local files = vim.fn.glob(glob_path, true, true)
+
+            if #files == 0 then
+              vim.notify("No markdown files in selected directory.", vim.log.levels.WARN)
+              return
+            end
+
+            vim.g.obsidian_random_dir = dir
+            local random_file = files[math.random(#files)]
+            vim.cmd("edit " .. vim.fn.fnameescape(random_file))
+          end
+
+          pickers
+            .new({}, {
+              prompt_title = "Pick a directory",
+              finder = finders.new_table({ results = candidates }),
+              sorter = conf.generic_sorter({}),
+              default_text = previous or nil,
+              attach_mappings = function(prompt_bufnr, map)
+                actions.select_default:replace(function()
+                  actions.close(prompt_bufnr)
+                  local selection = action_state.get_selected_entry()
+                  if selection then
+                    open_random_note(selection.value)
+                  end
+                end)
+                return true
+              end,
+            })
+            :find()
+        end,
+        opts = { desc = "Random note from directory", buffer = true },
       },
     },
 
