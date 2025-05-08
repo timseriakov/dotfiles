@@ -14,13 +14,18 @@ return {
       end,
     })
 
-    -- Горячие клавиши для навигации по страницам
-    vim.keymap.set("n", "<leader>jj", function()
-      require("pdfview.renderer").next_page()
-    end, { desc = "PDFview: Next page" })
+    -- 🔒 Локальные бинды только в pdfview буфере
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "pdfview",
+      callback = function()
+        vim.keymap.set("n", "<leader>jj", function()
+          require("pdfview.renderer").next_page()
+        end, { desc = "PDFview: Next page", buffer = true })
 
-    vim.keymap.set("n", "<leader>kk", function()
-      require("pdfview.renderer").previous_page()
-    end, { desc = "PDFview: Previous page" })
+        vim.keymap.set("n", "<leader>kk", function()
+          require("pdfview.renderer").previous_page()
+        end, { desc = "PDFview: Previous page", buffer = true })
+      end,
+    })
   end,
 }

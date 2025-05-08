@@ -24,7 +24,7 @@ return {
 
       require("telescope").load_extension("opener")
 
-      vim.api.nvim_set_keymap("n", "<leader>fo", ":Telescope opener<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>fo", ":Folder opener<cr>", { noremap = true, silent = true })
     end,
   },
 }
