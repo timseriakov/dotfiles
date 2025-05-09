@@ -1,0 +1,5 @@
+{
+  "files": ["**/*.md"],
+  "ignores": ["**/03 Resources/000. Anki/**"],
+  "config": ".markdownlint.jsonc"
+}
