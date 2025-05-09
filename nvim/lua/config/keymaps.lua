@@ -56,7 +56,7 @@ vim.keymap.set("n", "<leader>bR", function()
   vim.notify("Copied full path: " .. fullpath)
 end, { desc = "Copy full path to clipboard" })
 
-vim.keymap.set("n", "<leader>br", function()
+vim.keymap.set("n", "<leader>bY", function()
   local relpath = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
   vim.fn.setreg("+", relpath)
   vim.notify("Copied relative path: " .. relpath)
