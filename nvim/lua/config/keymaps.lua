@@ -34,18 +34,35 @@ vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
 
 -- Copy entire buffer to system clipboard
-vim.keymap.set("n", "<leader>yy", ":%y+<CR>", { desc = "Copy entire buffer to clipboard" })
-vim.keymap.set("n", "<leader>bg", ":%y+<CR>", { desc = "Copy entire buffer to clipboard" })
+vim.keymap.set("n", "<leader>yy", ":%y+<CR>", { desc = "Copy buffer to clipboard" })
+vim.keymap.set("n", "<leader>bg", ":%y+<CR>", { desc = "Copy buffer to clipboard" })
 
 -- Replace buffer with system clipboard
 vim.keymap.set("n", "<leader>bv", function()
   local clipboard = vim.fn.getreg("+")
   vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(clipboard, "\n"))
-end, { desc = "Replace buffer with system clipboard" })
+end, { desc = "Replace buffer with clipboard" })
+
+-- Buffer copy filename and filepath
+vim.keymap.set("n", "<leader>by", function()
+  local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t")
+  vim.fn.setreg("+", filename)
+  vim.notify("Copied filename: " .. filename)
+end, { desc = "Copy filename to clipboard" })
+
+vim.keymap.set("n", "<leader>bR", function()
+  local fullpath = vim.api.nvim_buf_get_name(0)
+  vim.fn.setreg("+", fullpath)
+  vim.notify("Copied full path: " .. fullpath)
+end, { desc = "Copy full path to clipboard" })
+
+vim.keymap.set("n", "<leader>br", function()
+  local relpath = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
+  vim.fn.setreg("+", relpath)
+  vim.notify("Copied relative path: " .. relpath)
+end, { desc = "Copy relative path to clipboard" })
 
 -- LeetCode
--- vim.keymap.set("n", "<leader>cl", "<cmd>Leet<CR>", { desc = "LeetCode: Open dashboard" })
-
 local Menu = require("nui.menu")
 local event = require("nui.utils.autocmd")
 local map = vim.keymap.set
