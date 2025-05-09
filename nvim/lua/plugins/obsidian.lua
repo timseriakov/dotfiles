@@ -18,6 +18,8 @@ return {
       },
     },
 
+    disable_frontmatter = true,
+
     notes_subdir = "",
     new_notes_location = "current_dir",
     preferred_link_style = "wiki",
