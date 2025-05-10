@@ -8,33 +8,43 @@ return {
       end,
       desc = "Open Snipe buffer menu",
     },
+    {
+      "ff",
+      function()
+        local snipe = require("snipe")
+        ---@diagnostic disable-next-line: undefined-field
+        local now = (vim.uv or vim.loop).hrtime() / 1e6 -- безопасный вызов hrtime()
+        snipe.open_buffer_menu()
+      end,
+      desc = "Snipe buffer menu (ff)",
+    },
   },
   opts = {
     ui = {
-      max_height = -1, -- -1 means dynamic height (adapts to number of items)
-      position = "center", -- Show menu centered on screen
+      max_height = -1, -- авто-высота под список
+      position = "center", -- окно по центру экрана
       open_win_override = {
-        border = "single", -- You can use "rounded", "none", etc.
-        -- title = "Buffer Menu", -- Uncomment to set custom title
+        border = "single", -- рамка окна
+        -- title = "Buffer Menu",   -- можно включить заголовок окна
       },
-      preselect_current = false, -- Automatically select current buffer
-      preselect = nil, -- Function to dynamically preselect a buffer
-      text_align = "left", -- Can be "left", "right", or "file-first"
-      -- buffer_format = { "->", "icon", "filename", "", "directory" },
+      preselect_current = false, -- не выделять текущий буфер
+      preselect = nil, -- без предвыбора
+      text_align = "left", -- выравнивание текста
+      -- buffer_format можно включить при необходимости
     },
     hints = {
-      dictionary = "asdfgqwertzxcvb", -- Characters used for hint tags
+      dictionary = "asdfgqwertzxcvb", -- допустимые символы для меток
     },
     navigate = {
-      next_page = "J", -- Go to next page
-      prev_page = "K", -- Go to previous page
-      under_cursor = "<cr>", -- Select item under cursor
-      cancel_snipe = "<esc>", -- Cancel and close the menu
-      close_buffer = "D", -- Close the buffer under cursor
-      open_vsplit = "V", -- Open in vertical split
-      open_split = "H", -- Open in horizontal split
-      change_tag = "C", -- Change hint tag manually
+      next_page = "J", -- следующая страница
+      prev_page = "K", -- предыдущая страница
+      under_cursor = "<CR>", -- выбрать элемент под курсором
+      cancel_snipe = "<ESC>", -- отмена
+      close_buffer = "D", -- закрыть буфер
+      open_vsplit = "V", -- вертикальный сплит
+      open_split = "H", -- горизонтальный сплит
+      change_tag = "C", -- изменить тег вручную
     },
-    sort = "default", -- Sort buffers by buffer number (can also be "last" or a function)
+    sort = "default", -- сортировка по номеру буфера
   },
 }
