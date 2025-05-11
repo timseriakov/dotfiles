@@ -119,7 +119,7 @@ vim.keymap.set({ "n", "v" }, "<leader>fh", ":Resty run<CR>", { desc = "Resty Run
 vim.keymap.set({ "n", "v" }, "<leader>fH", ":Resty favorite<CR>", { desc = "Resty favorites" })
 
 -- Telescope import
-vim.keymap.set({ "n", "v" }, "<leader>ct", ":Telescope import<CR>", { desc = "Telelescope import" })
+vim.keymap.set({ "n", "v" }, "<leader>ct", ":Telescope import<CR>", { desc = "Telescope import" })
 
 vim.api.nvim_set_keymap("n", "<leader>;r", "", {
   noremap = true,
