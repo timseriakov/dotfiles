@@ -56,17 +56,5 @@ function nettest
     traceroute 8.8.8.8 >>$LOGFILE
     echo "" >>$LOGFILE
 
-    # === CURL TEST ===
-    echo "--- CURL VPS ($VPS_IP) ---" >>$LOGFILE
-    set BYTES (curl -o /dev/null -s -w "%{speed_download}" http://$VPS_IP)
-    if test -n "$BYTES"
-        set Mbit (math -s0 "$BYTES * 8 / 1000000")
-        echo "Speed: $BYTES bytes/sec" >>$LOGFILE
-        echo "Speed: $Mbit Mbit/s" >>$LOGFILE
-    else
-        echo "⚠️ CURL failed to fetch speed." >>$LOGFILE
-    end
-    echo "" >>$LOGFILE
-
     echo "✅ Log saved to: $LOGFILE"
 end
