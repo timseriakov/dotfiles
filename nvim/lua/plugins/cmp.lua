@@ -18,7 +18,6 @@ return {
       ghost_text = false,
     })
 
-    -- удалим codeium из cmp.sources (если вдруг включён)
     opts.sources = vim.tbl_filter(function(source)
       return source.name ~= "codeium"
     end, opts.sources or {})
