@@ -1,3 +1,3 @@
-function frc --wraps='lvim ~/.config/fish/' --description 'alias frc lvim ~/.config/fish/'
-  lvim ~/.config/fish/ $argv; 
+function frc --wraps='nvim ~/.config/fish/' --description 'alias frc nvim ~/.config/fish/'
+    nvim ~/.config/fish/ $argv
 end

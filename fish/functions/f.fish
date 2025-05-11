@@ -1,4 +1,4 @@
-function f --wraps='ug -Q' --wraps=z --description 'alias f z'
+function f --wraps=z --description 'alias f z'
   z $argv
         
 end
