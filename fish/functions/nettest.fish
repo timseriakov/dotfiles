@@ -44,11 +44,11 @@ function nettest
 
     # === PING ===
     echo "--- PING 8.8.8.8 ---" >>$LOGFILE
-    ping -c 50 8.8.8.8 >>$LOGFILE
+    ping -c 100 8.8.8.8 >>$LOGFILE
     echo "" >>$LOGFILE
 
     echo "--- PING VPS ($VPS_IP) ---" >>$LOGFILE
-    ping -c 50 $VPS_IP >>$LOGFILE
+    ping -c 100 $VPS_IP >>$LOGFILE
     echo "" >>$LOGFILE
 
     # === TRACEROUTE ===
