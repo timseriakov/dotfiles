@@ -1,6 +1,5 @@
 function nettest
-    # === Required rights ===
-    sudo -v
+    # === No global sudo elevation ===
 
     # === Config ===
     set LOGDIR ~/dev/tmp/netlogs
@@ -35,11 +34,15 @@ function nettest
 
     # === MTR ===
     echo "--- MTR 8.8.8.8 ---" >>$LOGFILE
-    env TERM=dumb sudo mtr --report-wide --report-cycles 100 8.8.8.8 >>$LOGFILE
+    set -x TERM dumb
+    sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 8.8.8.8 >>$LOGFILE
+    set -x TERM xterm-kitty
     echo "" >>$LOGFILE
 
     echo "--- MTR VPS ($VPS_IP) ---" >>$LOGFILE
-    env TERM=dumb sudo mtr --report-wide --report-cycles 100 $VPS_IP >>$LOGFILE
+    set -x TERM dumb
+    sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 $VPS_IP >>$LOGFILE
+    set -x TERM xterm-kitty
     echo "" >>$LOGFILE
 
     # === PING ===
