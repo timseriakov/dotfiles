@@ -1,6 +1,6 @@
 return {
   {
-    "aweis89/aider.nvim",
+    "timseriakov/aider.nvim",
     dependencies = {
       "akinsho/toggleterm.nvim",
       "nvim-telescope/telescope.nvim",
@@ -34,9 +34,7 @@ return {
       watch_files = true,
 
       -- Настройка отображения прогресса через snacks.nvim
-      progress_notifier = {
-        style = "compact", -- варианты: "compact", "minimal", "fancy"
-      },
+      progress_notifier = { style = "minimal" }, -- fansy, compact
 
       -- Лог Aider через fidget.nvim (если установлен)
       log_notifier = false,
@@ -50,7 +48,7 @@ return {
       editor_command = "nvim --cmd 'let g:flatten_wait=1' --cmd 'cnoremap wq write<bar>bdelete<bar>startinsert'",
 
       -- При открытии терминала сразу переходить в insert mode
-      auto_insert = false,
+      auto_insert = true,
 
       -- Аргументы CLI для Aider — задаём модели по умолчанию
       aider_args = {
@@ -159,7 +157,7 @@ return {
     },
     keys = {
       -- Открытие/скрытие Aider
-      { "<leader>a/", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
+      { "<leader>aa", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
       { "<leader>as", "<cmd>AiderAsk<cr>", desc = "Aider: Ask", mode = { "n", "v" } },
       { "<leader>ac", "<cmd>AiderSend<cr>", desc = "Aider: Send Command" },
       { "<leader>a+", "<cmd>AiderAdd<cr>", desc = "Aider: Add File" },
