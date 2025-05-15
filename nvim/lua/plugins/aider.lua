@@ -157,7 +157,7 @@ return {
     },
     keys = {
       -- Открытие/скрытие Aider
-      { "<leader>aa", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
+      { "<leader>a/", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
       { "<leader>as", "<cmd>AiderAsk<cr>", desc = "Aider: Ask", mode = { "n", "v" } },
       -- Добавить активный файл
       {
