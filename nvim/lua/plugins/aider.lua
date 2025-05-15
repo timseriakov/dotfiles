@@ -159,29 +159,66 @@ return {
       -- Открытие/скрытие Aider
       { "<leader>aa", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
       { "<leader>as", "<cmd>AiderAsk<cr>", desc = "Aider: Ask", mode = { "n", "v" } },
-      { "<leader>ac", "<cmd>AiderSend<cr>", desc = "Aider: Send Command" },
-      { "<leader>a+", "<cmd>AiderAdd<cr>", desc = "Aider: Add File" },
-      { "<leader>a-", "<cmd>AiderSend /drop<cr>", desc = "Aider: Drop File" },
-      { "<leader>ar", "<cmd>AiderSend /readonly<cr>", desc = "Aider: Add File as Read-Only" },
+      -- Добавить активный файл
       {
-        "<leader>al",
-        "<cmd>Telescope git_files<cr>",
-        desc = "Telescope: Add Git file to Aider",
+        "<leader>a+",
+        function()
+          local path = vim.api.nvim_buf_get_name(0)
+          if path == "" then
+            vim.notify("Нет активного файла для добавления", vim.log.levels.WARN)
+            return
+          end
+          vim.cmd("AiderSend /add " .. vim.fn.fnameescape(path))
+        end,
+        desc = "Aider: Add Current File",
+      },
+
+      -- Удалить активный файл из Aider
+      {
+        "<leader>a-",
+        function()
+          local path = vim.api.nvim_buf_get_name(0)
+          if path == "" then
+            vim.notify("Нет активного файла для удаления", vim.log.levels.WARN)
+            return
+          end
+          vim.cmd("AiderSend /drop " .. vim.fn.fnameescape(path))
+        end,
+        desc = "Aider: Drop Current File",
+      },
+
+      -- Добавить файл только для чтения
+      {
+        "<leader>ar",
+        function()
+          local path = vim.api.nvim_buf_get_name(0)
+          if path == "" then
+            vim.notify("Нет активного файла для read-only", vim.log.levels.WARN)
+            return
+          end
+          vim.cmd("AiderSend /read-only " .. vim.fn.fnameescape(path))
+        end,
+        desc = "Aider: Add File as Read-Only",
       },
       {
 
-        "<leader>af",
+        "<leader>auf",
         "<cmd>AiderToggle float<CR>",
         desc = "Aider: Toggle Float",
       },
       {
-        "<leader>av",
+        "<leader>auv",
         "<cmd>AiderToggle vertical<CR>",
         desc = "Aider: Toggle Vertical",
       },
+      {
+        "<leader>auh",
+        "<cmd>AiderToggle horizontal<CR>",
+        desc = "Aider: Toggle Horizontal",
+      },
       -- Поддержка выбора модели
       {
-        "<leader>am", -- Группа "Model"
+        "<leader>am",
         name = "+model",
       },
 
