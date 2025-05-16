@@ -177,7 +177,7 @@ function M.setup()
     M.ai_commit({ all = true, amend = true })
   end, { desc = "Amend last commit" })
 
-  vim.keymap.set("n", "<leader>gS", function()
+  vim.keymap.set("n", "<leader>gs", function()
     M.ai_commit({ all = false, select_files = true })
   end, { desc = "AI Commit: select files" })
 end
