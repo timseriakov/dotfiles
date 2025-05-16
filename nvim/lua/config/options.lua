@@ -13,6 +13,31 @@ vim.opt.spelllang = { "ru", "en" }
 vim.o.mousescroll = "ver:1,hor:1"
 vim.opt.swapfile = false
 
+if vim.g.started_by_firenvim then
+  vim.cmd([[set guifont=ShureTechMono\ Nerd\ Font\ Mono:h18]])
+
+  vim.g.firenvim_config = {
+    globalSettings = {
+      alt = "all",
+    },
+    localSettings = {
+      [".*"] = {
+        takeover = "never",
+        cmdline = "neovim",
+        content = "text",
+        selector = "textarea",
+      },
+    },
+  }
+
+  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+    callback = function()
+      vim.cmd("silent write")
+    end,
+    nested = true,
+  })
+end
+
 -- -- for neovide
 if vim.g.neovide then
   vim.env.IN_NEOVIDE = "true"
@@ -58,11 +83,11 @@ if vim.g.neovide then
 
   -- Время жизни каждой частицы (в секундах).
   -- Чем больше значение, тем дольше частицы остаются на экране (длиннее хвост).
-  vim.g.neovide_cursor_vfx_particle_lifetime = 2
+  vim.g.neovide_cursor_vfx_particle_lifetime = 1.1
 
   -- Плотность (кол-во) частиц, выбрасываемых курсором.
   -- Чем выше значение, тем ярче и насыщеннее след.
-  vim.g.neovide_cursor_vfx_particle_density = 0.7
+  vim.g.neovide_cursor_vfx_particle_density = 0.8
 
   -- Скорость, с которой частицы улетают от курсора.
   -- Чем выше, тем дальше и быстрее они двигаются.
@@ -70,11 +95,11 @@ if vim.g.neovide then
 
   -- Фаза синусоиды движения частиц (волнообразность).
   -- Чем выше значение, тем больше "извивов" в траектории.
-  vim.g.neovide_cursor_vfx_particle_phase = 1.5
+  vim.g.neovide_cursor_vfx_particle_phase = 3
 
   -- Крутизна "завихрений" в траектории частиц.
   -- Чем выше значение, тем больше частицы закручиваются.
-  vim.g.neovide_cursor_vfx_particle_curl = 0.1
+  vim.g.neovide_cursor_vfx_particle_curl = 1
 
   -- Размер следа от курсора (0.0–1.0).
   -- Чем больше значение, тем сильнее тянется хвост.
