@@ -18,8 +18,18 @@ return {
       ghost_text = false,
     })
 
+    -- фильтруем codeium из глобальных источников
     opts.sources = vim.tbl_filter(function(source)
       return source.name ~= "codeium"
     end, opts.sources or {})
+
+    -- добавляем per_filetype.sources
+    opts.sources = vim.tbl_extend("force", opts.sources or {}, {
+      per_filetype = {
+        codecompanion = {
+          { name = "codecompanion" },
+        },
+      },
+    })
   end,
 }

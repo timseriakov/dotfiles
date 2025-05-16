@@ -7,19 +7,45 @@ return {
     lazy = false,
     config = function()
       require("codecompanion").setup({
-        adapter = "openai",
-        opts = {
-          log_level = "WARN", -- DEBUG / TRACE для отладки
+        adapters = {
+          copilot = false,
+          openai = function()
+            return require("codecompanion.adapters").extend("openai", {
+              env = {
+                api_key = vim.env.OPENAI_API_KEY, -- использует переменную окружения
+              },
+              schema = {
+                model = {
+                  default = "gpt-4o", -- можно заменить на "gpt-4" или любой другой
+                },
+              },
+            })
+          end,
+        },
+        strategies = {
+          chat = {
+            adapter = "openai",
+          },
+          inline = {
+            adapter = "openai",
+          },
+          cmd = {
+            adapter = "openai",
+          },
         },
         extensions = {
           mcphub = {
             callback = "mcphub.extensions.codecompanion",
+            config = "/Users/tim/.config/mcphub/servers.json",
             opts = {
               show_result_in_chat = true,
               make_vars = true,
               make_slash_commands = true,
             },
           },
+        },
+        opts = {
+          log_level = "WARN",
         },
       })
     end,
