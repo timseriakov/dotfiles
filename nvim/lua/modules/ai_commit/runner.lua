@@ -77,7 +77,26 @@ local function run_ai_commit(git_root, desc, opts)
 end
 
 local previewers = require("telescope.previewers")
-local Path = require("plenary.path")
+
+local function parse_status_line(line)
+  local status = vim.trim(line:sub(1, 2))
+  local filepath = line:sub(4)
+  return status, filepath
+end
+
+local function status_priority(status)
+  if status:match("^%?%?") then
+    return 4 -- untracked
+  elseif status:match("D") then
+    return 3 -- deleted
+  elseif status:match("M") then
+    return 2 -- modified
+  elseif status:match("A") then
+    return 1 -- added
+  else
+    return 5 -- others
+  end
+end
 
 local function select_files_to_stage(callback)
   Job:new({
@@ -88,11 +107,24 @@ local function select_files_to_stage(callback)
       local entries = {}
 
       for _, line in ipairs(output) do
-        local filepath = line:sub(4)
-        if filepath ~= "" then
-          table.insert(entries, { value = filepath, display = filepath, ordinal = filepath })
+        local status, filepath = parse_status_line(line)
+        if filepath and filepath ~= "" then
+          table.insert(entries, {
+            value = filepath,
+            status = status,
+            ordinal = status .. " " .. filepath,
+            display = string.format(" %s  %s", status, filepath),
+            priority = status_priority(status),
+          })
         end
       end
+
+      table.sort(entries, function(a, b)
+        if a.priority == b.priority then
+          return a.value < b.value
+        end
+        return a.priority < b.priority
+      end)
 
       vim.schedule(function()
         pickers
@@ -103,8 +135,8 @@ local function select_files_to_stage(callback)
               entry_maker = function(entry)
                 return {
                   value = entry.value,
-                  display = entry.display,
                   ordinal = entry.ordinal,
+                  display = entry.display,
                 }
               end,
             }),
