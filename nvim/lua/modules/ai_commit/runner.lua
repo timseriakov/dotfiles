@@ -76,6 +76,9 @@ local function run_ai_commit(git_root, desc, opts)
   })
 end
 
+local previewers = require("telescope.previewers")
+local Path = require("plenary.path")
+
 local function select_files_to_stage(callback)
   Job:new({
     command = "git",
@@ -87,7 +90,7 @@ local function select_files_to_stage(callback)
       for _, line in ipairs(output) do
         local filepath = line:sub(4)
         if filepath ~= "" then
-          table.insert(entries, filepath)
+          table.insert(entries, { value = filepath, display = filepath, ordinal = filepath })
         end
       end
 
@@ -95,13 +98,30 @@ local function select_files_to_stage(callback)
         pickers
           .new({}, {
             prompt_title = "Select files to stage",
-            finder = finders.new_table(entries),
+            finder = finders.new_table({
+              results = entries,
+              entry_maker = function(entry)
+                return {
+                  value = entry.value,
+                  display = entry.display,
+                  ordinal = entry.ordinal,
+                }
+              end,
+            }),
+            previewer = previewers.new_termopen_previewer({
+              get_command = function(entry)
+                return { "git", "diff", "--", entry.value }
+              end,
+            }),
             sorter = conf.generic_sorter({}),
             layout_strategy = "horizontal",
             layout_config = {
-              width = 0.6,
-              height = 0.35,
-              prompt_position = "top",
+              width = 0.97,
+              height = 0.97,
+              preview_cutoff = 120,
+              prompt_position = "bottom",
+              preview_width = 0.65,
+              anchor = "CENTER",
             },
             attach_mappings = function(prompt_bufnr, map)
               actions.select_default:replace(function()
@@ -114,7 +134,7 @@ local function select_files_to_stage(callback)
                   end
                 end
                 local files = vim.tbl_map(function(entry)
-                  return entry[1]
+                  return entry.value
                 end, selection)
                 actions.close(prompt_bufnr)
                 callback(files)
