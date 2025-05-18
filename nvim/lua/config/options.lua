@@ -71,7 +71,7 @@ if vim.g.neovide then
 
   vim.g.neovide_show_border = false -- true???
 
-  vim.g.neovide_cursor_vfx_mode = "railgun"
+  -- vim.g.neovide_cursor_vfx_mode = "railgun"
   -- vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
   vim.g.neovide_cursor_antialiasing = true
   vim.g.neovide_hide_mouse_when_typing = true
