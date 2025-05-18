@@ -1,11 +1,10 @@
--- runner.lua
 local popup = require("modules.ai_commit.popup")
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
-local Job = require("plenary.job")
+local builtin = require("telescope.builtin")
 
 local M = {}
 
@@ -76,110 +75,6 @@ local function run_ai_commit(git_root, desc, opts)
   })
 end
 
-local previewers = require("telescope.previewers")
-
-local function parse_status_line(line)
-  local status = vim.trim(line:sub(1, 2))
-  local filepath = line:sub(4)
-  return status, filepath
-end
-
-local function status_priority(status)
-  if status:match("^%?%?") then
-    return 4 -- untracked
-  elseif status:match("D") then
-    return 3 -- deleted
-  elseif status:match("M") then
-    return 2 -- modified
-  elseif status:match("A") then
-    return 1 -- added
-  else
-    return 5 -- others
-  end
-end
-
-local function select_files_to_stage(callback)
-  Job:new({
-    command = "git",
-    args = { "status", "--porcelain" },
-    on_exit = function(j)
-      local output = j:result()
-      local entries = {}
-
-      for _, line in ipairs(output) do
-        local status, filepath = parse_status_line(line)
-        if filepath and filepath ~= "" then
-          table.insert(entries, {
-            value = filepath,
-            status = status,
-            ordinal = status .. " " .. filepath,
-            display = string.format(" %s  %s", status, filepath),
-            priority = status_priority(status),
-          })
-        end
-      end
-
-      table.sort(entries, function(a, b)
-        if a.priority == b.priority then
-          return a.value < b.value
-        end
-        return a.priority < b.priority
-      end)
-
-      vim.schedule(function()
-        pickers
-          .new({}, {
-            prompt_title = "Select files to stage",
-            finder = finders.new_table({
-              results = entries,
-              entry_maker = function(entry)
-                return {
-                  value = entry.value,
-                  ordinal = entry.ordinal,
-                  display = entry.display,
-                }
-              end,
-            }),
-            previewer = previewers.new_termopen_previewer({
-              get_command = function(entry)
-                return { "git", "diff", "--", entry.value }
-              end,
-            }),
-            sorter = conf.generic_sorter({}),
-            layout_strategy = "horizontal",
-            layout_config = {
-              width = 0.97,
-              height = 0.97,
-              preview_cutoff = 120,
-              prompt_position = "bottom",
-              preview_width = 0.65,
-              anchor = "CENTER",
-            },
-            attach_mappings = function(prompt_bufnr, map)
-              actions.select_default:replace(function()
-                local picker = action_state.get_current_picker(prompt_bufnr)
-                local selection = picker:get_multi_selection()
-                if #selection == 0 then
-                  local single = action_state.get_selected_entry()
-                  if single then
-                    selection = { single }
-                  end
-                end
-                local files = vim.tbl_map(function(entry)
-                  return entry.value
-                end, selection)
-                actions.close(prompt_bufnr)
-                callback(files)
-              end)
-              return true
-            end,
-          })
-          :find()
-      end)
-    end,
-  }):start()
-end
-
 function M.ai_commit(opts)
   local use_all = opts.all or false
   local use_amend = opts.amend or false
@@ -195,6 +90,16 @@ function M.ai_commit(opts)
     run_ai_commit(git_root, desc, { amend = use_amend })
   end
 
+  if opts.selected_files then
+    vim.fn.jobstart(vim.list_extend({ "git", "add" }, opts.selected_files), {
+      cwd = git_root,
+      on_exit = function()
+        validate_and_run()
+      end,
+    })
+    return
+  end
+
   if use_all then
     vim.fn.jobstart("git add -A", {
       cwd = git_root,
@@ -202,22 +107,40 @@ function M.ai_commit(opts)
         validate_and_run()
       end,
     })
-  elseif opts.select_files then
-    select_files_to_stage(function(files)
-      if vim.tbl_isempty(files) then
-        vim.notify("No files selected", vim.log.levels.WARN)
-        return
-      end
-      vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
-        cwd = git_root,
-        on_exit = function()
-          validate_and_run()
-        end,
-      })
-    end)
   else
     validate_and_run()
   end
+end
+
+function M.pick_git_files_then_commit()
+  builtin.git_status({
+    attach_mappings = function(_, map)
+      actions.select_default:replace(function(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        local selections = picker:get_multi_selection()
+
+        if #selections == 0 then
+          local single = action_state.get_selected_entry()
+          if single then
+            selections = { single }
+          end
+        end
+
+        local files = vim.tbl_map(function(entry)
+          return entry.value
+        end, selections)
+
+        actions.close(prompt_bufnr)
+
+        vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
+          on_exit = function()
+            M.ai_commit({ selected_files = files })
+          end,
+        })
+      end)
+      return true
+    end,
+  })
 end
 
 function M.setup()
@@ -230,8 +153,8 @@ function M.setup()
   end, { desc = "Amend last commit" })
 
   vim.keymap.set("n", "<leader>gs", function()
-    M.ai_commit({ all = false, select_files = true })
-  end, { desc = "AI Commit: select files" })
+    M.pick_git_files_then_commit()
+  end, { desc = "AI Commit: select files (builtin)" })
 end
 
 return M
