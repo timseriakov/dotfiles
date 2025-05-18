@@ -8,6 +8,7 @@ return {
     "LazyVim/LazyVim",
     keys = {
       { "<leader>gs", false },
+      { "<leader>sr", false },
     },
   },
 }
