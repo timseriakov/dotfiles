@@ -1,3 +1,4 @@
-function tt --wraps=taskwarrior-tui --description 'alias tt taskwarrior-tui'
-  taskwarrior-tui $argv; 
+function tt --wraps='taskell TODO.md' --description 'alias tt taskell TODO.md'
+  taskell TODO.md $argv
+        
 end

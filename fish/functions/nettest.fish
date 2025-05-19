@@ -43,6 +43,7 @@ function nettest
     set -x TERM dumb
     sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 $VPS_IP >>$LOGFILE
     set -x TERM xterm-kitty
+
     echo "" >>$LOGFILE
 
     # === PING ===
