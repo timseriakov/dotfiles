@@ -10,6 +10,7 @@ return {
     },
     lazy = false,
     opts = {
+
       spawn_args = {
         "--model",
         "openai/gpt-4.1",
@@ -74,6 +75,19 @@ return {
           buffer = term_bufnr,
           once = true,
           callback = function()
+            local win = vim.api.nvim_get_current_win()
+
+            -- Применяем highlight от Normal вручную к окну
+            local ns = vim.api.nvim_create_namespace("aider-term-fix")
+            vim.api.nvim_win_set_hl_ns(win, ns)
+
+            -- Ставим фон как у Normal
+            local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+            vim.api.nvim_set_hl(ns, "Normal", { fg = normal.fg, bg = normal.bg })
+            vim.api.nvim_set_hl(ns, "NormalNC", { fg = normal.fg, bg = normal.bg })
+            vim.api.nvim_set_hl(ns, "EndOfBuffer", { fg = normal.bg, bg = normal.bg })
+            vim.api.nvim_set_hl(ns, "StatusLine", { fg = normal.fg, bg = normal.bg })
+
             vim.cmd("startinsert")
           end,
         })
