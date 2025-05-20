@@ -1,4 +1,4 @@
-function t --wraps=et --wraps=lt --description 'alias t lt'
-  lt $argv
+function t --wraps=taskell --description 'alias t taskell'
+  taskell $argv
         
 end

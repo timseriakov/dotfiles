@@ -33,7 +33,7 @@ function nettest
     echo "" >>$LOGFILE
 
     # === MTR ===
-    echo "--- MTR 8.8.8.8 ---" >>$LOGFILE
+    echo "--- MTR Google DNS (8.8.8.8) ---" >>$LOGFILE
     set -x TERM dumb
     sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 8.8.8.8 >>$LOGFILE
     set -x TERM xterm-kitty
@@ -43,8 +43,14 @@ function nettest
     set -x TERM dumb
     sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 $VPS_IP >>$LOGFILE
     set -x TERM xterm-kitty
-
     echo "" >>$LOGFILE
+
+    echo "--- MTR MGTS DNS (194.158.196.245) ---" >>$LOGFILE
+    set -x TERM dumb
+    sudo /opt/homebrew/sbin/mtr --report-wide --report-cycles 100 194.158.196.245 >>$LOGFILE
+    set -x TERM xterm-kitty
+    echo "" >>$LOGFILE
+
 
     # === PING ===
     echo "--- PING 8.8.8.8 ---" >>$LOGFILE
@@ -53,11 +59,6 @@ function nettest
 
     echo "--- PING VPS ($VPS_IP) ---" >>$LOGFILE
     ping -c 100 $VPS_IP >>$LOGFILE
-    echo "" >>$LOGFILE
-
-    # === TRACEROUTE ===
-    echo "--- TRACEROUTE 8.8.8.8 ---" >>$LOGFILE
-    traceroute 8.8.8.8 >>$LOGFILE
     echo "" >>$LOGFILE
 
     echo "✅ Log saved to: $LOGFILE"
