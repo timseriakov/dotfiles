@@ -49,7 +49,8 @@ if vim.g.neovide then
   vim.g.neovide_fullscreen = true
 
   vim.opt.title = true
-  -- vim.g.neovide_background_color = "#2E3440"
+
+  vim.g.neovide_background_color = "#2e3440"
 
   vim.g.neovide_padding_top = 20
   vim.g.neovide_padding_bottom = 0
