@@ -1,16 +1,22 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        vtsls = {
-          keys = {
-            { "<leader>cM", false },
-            { "<leader>cm", LazyVim.lsp.action["source.addMissingImports.ts"], desc = "Add missing imports" },
-          },
-        },
-      },
-    },
+    opts = function(_, opts)
+      local vtsls = opts.servers.vtsls or {}
+      vtsls.keys = vtsls.keys or {}
+
+      vtsls.keys = vim.tbl_filter(function(key)
+        return key[1] ~= "<leader>cM" and key[1] ~= "<leader>cm"
+      end, vtsls.keys)
+
+      table.insert(vtsls.keys, {
+        "<leader>cm",
+        LazyVim.lsp.action["source.addMissingImports.ts"],
+        desc = "Add missing imports",
+      })
+
+      opts.servers.vtsls = vtsls
+    end,
   },
   {
     "williamboman/mason.nvim",
