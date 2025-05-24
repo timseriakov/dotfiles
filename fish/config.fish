@@ -85,7 +85,11 @@ end
 set -gx PROTO_HOME "$HOME/.proto"
 set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
 
+# orbstack
 set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
+
+# aerc
+set -gx AERC_CONFIG_DIR $HOME/.config/aerc
 
 # posting
 set -gx POSTING_PAGER moar
