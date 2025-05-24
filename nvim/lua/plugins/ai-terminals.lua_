@@ -1,0 +1,163 @@
+local telescope_state = require("telescope.actions.state")
+
+return {
+  "aweis89/ai-terminals.nvim",
+  dependencies = {
+    "folke/snacks.nvim",
+    {
+      "nvim-telescope/telescope.nvim",
+      opts = function(_, opts)
+        opts.defaults = opts.defaults or {}
+        opts.defaults.mappings = opts.defaults.mappings or {}
+        opts.defaults.mappings.i = vim.tbl_extend("force", opts.defaults.mappings.i or {}, {
+          ["<C-e>"] = function()
+            local entry = telescope_state.get_selected_entry()
+            if entry and entry.path then
+              require("ai-terminals").aider_add_files(entry.path)
+              vim.notify("Added to Aider: " .. entry.path)
+            end
+          end,
+          ["<C-r>"] = function()
+            local entry = telescope_state.get_selected_entry()
+            if entry and entry.path then
+              require("ai-terminals").aider_add_files(entry.path, { read_only = true })
+              vim.notify("Added (read-only): " .. entry.path)
+            end
+          end,
+          ["<C-z>"] = function()
+            local entry = telescope_state.get_selected_entry()
+            if entry and entry.path then
+              require("ai-terminals").aider_drop_files(entry.path)
+              vim.notify("Dropped from Aider: " .. entry.path)
+            end
+          end,
+        })
+      end,
+    },
+  },
+  opts = {
+    terminals = {
+      aider = {
+        cmd = function()
+          return table.concat({
+            "aider",
+            "--watch-files",
+            "--no-auto-commits",
+            "--model",
+            "openai/gpt-4.1",
+            "--editor-model",
+            "gpt-4.1-nano",
+            "--weak-model",
+            "gpt-4.1-nano",
+            "--code-theme",
+            "nord",
+            string.format("--%s-mode", vim.o.background),
+          }, " ")
+        end,
+      },
+    },
+    default_position = "bottom",
+    enable_diffing = true,
+    show_diffs_on_leave = true,
+    diff_close_keymap = "q",
+    terminal_keymaps = {
+      { key = "<C-w>q", action = "close", desc = "Close terminal window", modes = "t" },
+      {
+        key = "<Esc>",
+        action = function()
+          vim.cmd("stopinsert")
+        end,
+        desc = "Exit terminal insert mode",
+        modes = "t",
+      },
+    },
+  },
+  keys = {
+    {
+      "<leader>aa",
+      function()
+        require("ai-terminals").toggle("aider")
+      end,
+      mode = { "n", "v" },
+      desc = "Toggle Aider",
+    },
+    {
+      "<leader>a!",
+      function()
+        require("ai-terminals").aider_comment("AI!")
+      end,
+      desc = "Insert 'AI!' comment",
+    },
+    {
+      "<leader>a?",
+      function()
+        require("ai-terminals").aider_comment("AI?")
+      end,
+      desc = "Insert 'AI?' comment",
+    },
+    {
+      "<leader>ae",
+      function()
+        require("ai-terminals").aider_add_files(vim.fn.expand("%"))
+      end,
+      desc = "Add current file to Aider",
+    },
+    {
+      "<leader>ar",
+      function()
+        require("ai-terminals").aider_add_files(vim.fn.expand("%"), { read_only = true })
+      end,
+      desc = "Add current file to Aider (read-only)",
+    },
+    {
+      "<leader>aL",
+      function()
+        require("ai-terminals").aider_add_buffers()
+      end,
+      desc = "Add all buffers to Aider",
+    },
+    {
+      "<leader>ad",
+      function()
+        require("ai-terminals").send_diagnostics("aider")
+      end,
+      mode = { "n", "v" },
+      desc = "Send diagnostics to Aider",
+    },
+    {
+      "<leader>dvo",
+      function()
+        require("ai-terminals").diff_changes()
+      end,
+      desc = "Show vimdiff",
+    },
+    {
+      "<leader>dvD",
+      function()
+        require("ai-terminals").diff_changes({ delta = true })
+      end,
+      desc = "Show delta diff",
+    },
+    {
+      "<leader>gr",
+      function()
+        require("ai-terminals").revert_changes()
+      end,
+      desc = "Revert changes",
+    },
+    {
+      "<leader>ax",
+      function()
+        require("ai-terminals").destroy_all()
+      end,
+      desc = "Kill all AI terminals",
+    },
+    {
+      "<leader>af",
+      function()
+        require("ai-terminals").focus()
+      end,
+      desc = "Focus last AI terminal",
+    },
+  },
+}

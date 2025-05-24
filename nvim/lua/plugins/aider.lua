@@ -146,7 +146,7 @@ return {
 
       -- Клавиши для действий в Telescope (поддержка multi-select)
       telescope = {
-        add = "<C-l>", -- добавить выбранные файлы в Aider
+        add = "<C-e>", -- добавить выбранные файлы в Aider
         read_only = "<C-r>", -- добавить как только для чтения
         drop = "<C-z>", -- убрать из списка Aider
       },
@@ -171,7 +171,7 @@ return {
     },
     keys = {
       -- Открытие/скрытие Aider
-      { "<leader>a/", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
+      { "<leader>aa", "<cmd>AiderToggle<cr>", desc = "Aider: Toggle" },
       { "<leader>as", "<cmd>AiderAsk<cr>", desc = "Aider: Ask", mode = { "n", "v" } },
       -- Добавить активный файл
       {
