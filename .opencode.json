@@ -1,0 +1,42 @@
+{
+  "data": {},
+  "providers": {
+    "openai": {
+      "disabled": false
+    }
+  },
+  "lsp": {
+    "typescript": {
+      "enabled": false,
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "options": null
+    }
+  },
+  "agents": {
+    "coder": {
+      "model": "gpt-4o",
+      "maxTokens": 4000,
+      "reasoningEffort": ""
+    },
+    "task": {
+      "model": "gpt-4o",
+      "maxTokens": 4000,
+      "reasoningEffort": ""
+    },
+    "title": {
+      "model": "gpt-4o",
+      "maxTokens": 100,
+      "reasoningEffort": ""
+    }
+  },
+  "tui": {
+    "theme": "opencode"
+  },
+  "shell": {
+    "path": " /usr/local/bin/fish",
+    "args": ["-l"]
+  },
+  "autoCompact": true
+}
+

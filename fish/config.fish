@@ -65,31 +65,21 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 set -x HOMEBREW_NO_ENV_HINTS 1
 
-# pnpm
-set -gx PNPM_HOME /Users/tim/Library/pnpm
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
-# pnpm end
-
 # oracle instance client
 #set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
 #set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
 
-# Проверка и подключение secrets.fish
+# secrets.fish
 if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
 
-# proto
-set -gx PROTO_HOME "$HOME/.proto"
-set -gx PATH "$PROTO_HOME/shims:$PROTO_HOME/bin" $PATH
-
 # orbstack
 set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
 
-# aerc
-set -gx AERC_CONFIG_DIR $HOME/.config/aerc
+# volta
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
 
 # posting
 set -gx POSTING_PAGER moar
