@@ -33,17 +33,17 @@ return {
             adapter = "openai",
           },
         },
-        extensions = {
-          mcphub = {
-            callback = "mcphub.extensions.codecompanion",
-            config = "/Users/tim/.config/mcphub/servers.json",
-            opts = {
-              show_result_in_chat = true,
-              make_vars = true,
-              make_slash_commands = true,
-            },
-          },
-        },
+        -- extensions = {
+        --   mcphub = {
+        --     callback = "mcphub.extensions.codecompanion",
+        --     config = "/Users/tim/.config/mcphub/servers.json",
+        --     opts = {
+        --       show_result_in_chat = true,
+        --       make_vars = true,
+        --       make_slash_commands = true,
+        --     },
+        --   },
+        -- },
         opts = {
           log_level = "WARN",
         },

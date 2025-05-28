@@ -14,7 +14,7 @@ return {
       set_cursorline = true,
       set_number = true,
       set_signcolumn = true,
-      ignore = { "!neo-tree", "TelescopePrompt", "!minifiles" },
+      ignore = { "!neo-tree", "lazy", "TelescopePrompt", "!minifiles" },
     })
   end,
 }
