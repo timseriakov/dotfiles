@@ -1,10 +1,21 @@
+# if status is-interactive
+#     if not set -q TMUX; and not set -q IN_NEOVIDE; and not set -q NO_TMUX
+#         exec tmux
+#     else if set -q TASKWARRIOR
+#         exec /usr/local/bin/taskwarrior-tui
+#         exec /opt/homebrew/bin/taskwarrior-tui
+#     end
+# end
+#
+
 if status is-interactive
-    if not set -q TMUX; and not set -q IN_NEOVIDE; and not set -q NO_TMUX
+    if not set -q TMUX; and not set -q IN_NEOVIDE; and not set -q NO_TMUX; and not set -q NVIM
         exec tmux
-    else if set -q TASKWARRIOR
-        exec /usr/local/bin/taskwarrior-tui
-        exec /opt/homebrew/bin/taskwarrior-tui
     end
+end
+
+if set -q NVIM
+    set -gx TMPDIR /tmp
 end
 
 if type -q ngrok

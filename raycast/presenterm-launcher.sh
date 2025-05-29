@@ -9,8 +9,10 @@
 
 env NO_TMUX=1 /Applications/kitty.app/Contents/MacOS/kitty \
   --title "Presenterm" \
+  --instance-group=presenterm \
+  --override allow_remote_control=true \
   --single-instance \
-  -d "$HOME/vaults/default-vault/01 Projects/000. Slides" \
-  fish -i -C "source $HOME/dev/dotfiles/fish/functions/launch-presentation.fish" >/dev/null 2>&1 &
+  --directory "$HOME/vaults/default-vault/01 Projects/000. Slides" \
+  fish -i -C "source \"$HOME/dev/dotfiles/fish/functions/launch-presentation.fish\"" >/dev/null 2>&1 &
 
 exit 0
