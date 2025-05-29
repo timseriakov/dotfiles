@@ -1,20 +1,11 @@
-# if status is-interactive
-#     if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL
-#         exec tmux
-#     else if set -q WEBSTORM_TERMINAL
-#         exec /usr/local/bin/taskwarrior-tui
-#         exec /opt/homebrew/bin/taskwarrior-tui
-#     end
-# end
-
-# if status is-interactive
-#     if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL; and not set -q IN_NEOVIDE
-#         exec tmux
-#     else if set -q WEBSTORM_TERMINAL
-#         exec /usr/local/bin/taskwarrior-tui
-#         exec /opt/homebrew/bin/taskwarrior-tui
-#     end
-# end
+if status is-interactive
+    if not set -q TMUX; and not set -q IN_NEOVIDE; and not set -q NO_TMUX
+        exec tmux
+    else if set -q TASKWARRIOR
+        exec /usr/local/bin/taskwarrior-tui
+        exec /opt/homebrew/bin/taskwarrior-tui
+    end
+end
 
 if type -q ngrok
     ngrok completion | source
