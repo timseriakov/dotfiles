@@ -7,20 +7,18 @@
 #     end
 # end
 
-if status is-interactive
-    if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL; and not set -q IN_NEOVIDE
-        exec tmux
-    else if set -q WEBSTORM_TERMINAL
-        exec /usr/local/bin/taskwarrior-tui
-        exec /opt/homebrew/bin/taskwarrior-tui
-    end
-end
+# if status is-interactive
+#     if not set -q TMUX; and not set -q IDE; and not set -q WEBSTORM_TERMINAL; and not set -q IN_NEOVIDE
+#         exec tmux
+#     else if set -q WEBSTORM_TERMINAL
+#         exec /usr/local/bin/taskwarrior-tui
+#         exec /opt/homebrew/bin/taskwarrior-tui
+#     end
+# end
 
 if type -q ngrok
     ngrok completion | source
 end
-
-#test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell_integration.fish
 
 set -g -x fish_greeting Welcome
 
@@ -28,17 +26,6 @@ starship init fish | source
 
 fish_vi_key_bindings
 set fish_key_bindings fish_user_key_bindings
-
-function joshuto
-    set outfile /tmp/joshuto_dir.txt
-
-    /opt/homebrew/bin/joshuto --change-directory --output-file $outfile $argv
-
-    if test -f $outfile
-        cd (cat $outfile)
-        rm $outfile
-    end
-end
 
 set -gx ATUIN_NOBIND true
 atuin init fish | source
@@ -92,5 +79,7 @@ source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 
 # Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/tim/.lmstudio/bin
+
+set -gx XDG_CONFIG_HOME $HOME/.config
 
 zoxide init fish | source
