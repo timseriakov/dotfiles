@@ -100,7 +100,7 @@ keymap = [
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the filename without extension" },
 
 	# Filter
-	{ on = "F", run = "filter --smart", desc = "Filter files" },
+	{ on = "f", run = "filter --smart", desc = "Filter files" },
 
 	# Find
 	{ on = "/", run = "find --smart",            desc = "Find next file" },
@@ -167,7 +167,6 @@ prepend_keymap = [
     { on = "t", run  = "plugin smart-tab", desc = "Create a tab and enter the hovered directory"},
     { on = [ "g", "r" ], run  = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go root of the current Git repository"},
     { on = [ "c", "a" ], run  = "plugin ouch", desc = "Archive selected files"},
-    { on = "f", run  = "plugin smart-filter", desc = "Smart filter"},
 
     # { on = "q", run  = "plugin confirm-quit", desc = "Confirm before quitting if multiple tabs are open"},
     # { on = ["d", "u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
@@ -378,5 +377,5 @@ keymap = [
 	{ on = "<Down>", run = "arrow next", desc = "Next line" },
 
 	# Filtering
-	# { on = "F", run = "filter", desc = "Filter help items" },
+	{ on = "F", run = "filter", desc = "Filter help items" },
 ]
