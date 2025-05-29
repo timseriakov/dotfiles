@@ -1,0 +1,142 @@
+---
+default:
+  margin:
+    percent: 8
+  colors:
+    foreground: "D8DEE9"
+    background: "2E3440"
+
+slide_title:
+  alignment: center
+  padding_bottom: 1
+  padding_top: 1
+  colors:
+    foreground: "88C0D0" # Nord8
+  bold: true
+  font_size: 2
+
+code:
+  alignment: center
+  minimum_size: 50
+  minimum_margin:
+    percent: 8
+  theme_name: Nord
+  padding:
+    horizontal: 2
+    vertical: 1
+  background: false
+
+execution_output:
+  colors:
+    foreground: "D8DEE9"
+  status:
+    running:
+      foreground: "81A1C1"
+    success:
+      foreground: "A3BE8C"
+    failure:
+      foreground: "BF616A"
+    not_started:
+      foreground: "EBCB8B"
+  padding:
+    horizontal: 2
+    vertical: 1
+
+inline_code:
+  colors:
+    foreground: "B48EAD" # Nord15
+
+intro_slide:
+  title:
+    alignment: center
+    colors:
+      foreground: "88C0D0"
+    font_size: 2
+  subtitle:
+    alignment: center
+    colors:
+      foreground: "81A1C1"
+  event:
+    alignment: center
+    colors:
+      foreground: "A3BE8C"
+  location:
+    alignment: center
+    colors:
+      foreground: "8FBCBB"
+  date:
+    alignment: center
+    colors:
+      foreground: "EBCB8B"
+  author:
+    alignment: center
+    colors:
+      foreground: "D8DEE9"
+    positioning: page_bottom
+  footer: false
+
+headings:
+  h1:
+    prefix: "██"
+    colors:
+      foreground: "88C0D0"
+  h2:
+    prefix: "▓▓▓"
+    colors:
+      foreground: "81A1C1"
+  h3:
+    prefix: "▒▒▒▒"
+    colors:
+      foreground: "B48EAD"
+  h4:
+    prefix: "░░░░░"
+    colors:
+      foreground: "A3BE8C"
+  h5:
+    prefix: "░░░░░░"
+    colors:
+      foreground: "EBCB8B"
+  h6:
+    prefix: "░░░░░░░"
+    colors:
+      foreground: "8FBCBB"
+
+block_quote:
+  prefix: "▍ "
+  colors:
+    foreground: "D8DEE9"
+    background: "3B4252"
+    prefix: "81A1C1"
+
+alert:
+  prefix: "▍ "
+  base_colors:
+    foreground: "D8DEE9"
+    background: "3B4252"
+  styles:
+    note:
+      color: "81A1C1"
+    tip:
+      color: "A3BE8C"
+    important:
+      color: "B48EAD"
+    warning:
+      color: "EBCB8B"
+    caution:
+      color: "BF616A"
+
+typst:
+  colors:
+    foreground: "D8DEE9"
+
+footer:
+  style: template
+  right: "{current_slide} / {total_slides}"
+
+modals:
+  selection_colors:
+    foreground: "88C0D0"
+
+mermaid:
+  background: transparent
+  theme: dark
