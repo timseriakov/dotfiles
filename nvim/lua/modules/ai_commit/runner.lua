@@ -8,6 +8,29 @@ local builtin = require("telescope.builtin")
 
 local M = {}
 
+-- Надёжный способ найти git root (через git, а если не сработает — ищем .git вверх)
+local function get_git_root()
+  local ok, result = pcall(function()
+    local output = vim.fn.system("git rev-parse --show-toplevel")
+    return vim.fn.trim(output)
+  end)
+
+  if ok and result ~= "" and vim.fn.isdirectory(result) == 1 then
+    return result
+  end
+
+  -- Fallback — ищем вручную .git вверх по дереву
+  local path = vim.fn.getcwd()
+  while path and path ~= "/" do
+    if vim.fn.isdirectory(path .. "/.git") == 1 then
+      return path
+    end
+    path = vim.fn.fnamemodify(path, ":h")
+  end
+
+  return nil
+end
+
 local function run_ai_commit(git_root, desc, opts)
   local commit_file = git_root .. "/.git/COMMIT_EDITMSG"
 
@@ -19,7 +42,13 @@ local function run_ai_commit(git_root, desc, opts)
   vim.fn.jobstart({ "lazycommit" }, {
     cwd = git_root,
     stdout_buffered = true,
+
     on_stdout = function(_, data)
+      if not data or vim.tbl_isempty(data) then
+        vim.notify("lazycommit: no output received", vim.log.levels.WARN)
+        return
+      end
+
       local results = {}
       for _, line in ipairs(data) do
         if type(line) == "string" and line:match("^%d+%.%s*.+") then
@@ -31,7 +60,7 @@ local function run_ai_commit(git_root, desc, opts)
       end
 
       if vim.tbl_isempty(results) then
-        vim.notify("No AI commit suggestions found.", vim.log.levels.WARN)
+        vim.notify("lazycommit: no AI suggestions found", vim.log.levels.WARN)
         return
       end
 
@@ -62,7 +91,6 @@ local function run_ai_commit(git_root, desc, opts)
             end
             map("i", "<CR>", apply)
             map("n", "<CR>", apply)
-
             map("i", "<C-h>", actions.preview_scrolling_left)
             map("i", "<C-l>", actions.preview_scrolling_right)
             map("i", "<C-j>", actions.preview_scrolling_down)
@@ -72,6 +100,18 @@ local function run_ai_commit(git_root, desc, opts)
         })
         :find()
     end,
+
+    on_stderr = function(_, err)
+      if err and not vim.tbl_isempty(err) then
+        vim.notify("lazycommit stderr:\n" .. table.concat(err, "\n"), vim.log.levels.ERROR)
+      end
+    end,
+
+    on_exit = function(_, code)
+      if code ~= 0 then
+        vim.notify("lazycommit exited with code " .. code, vim.log.levels.ERROR)
+      end
+    end,
   })
 end
 
@@ -79,7 +119,12 @@ function M.ai_commit(opts)
   local use_all = opts.all or false
   local use_amend = opts.amend or false
   local desc = use_all and (use_amend and "Commit (amend)" or "AI Commit (all)") or "AI Commit (staged only)"
-  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  local git_root = get_git_root()
+
+  if not git_root then
+    vim.notify("❌ Not inside a valid git repository", vim.log.levels.ERROR)
+    return
+  end
 
   local function validate_and_run()
     local status = vim.fn.systemlist("git diff --name-only --cached")
@@ -132,7 +177,14 @@ function M.pick_git_files_then_commit()
 
         actions.close(prompt_bufnr)
 
+        local git_root = get_git_root()
+        if not git_root then
+          vim.notify("Not inside a git repo", vim.log.levels.ERROR)
+          return
+        end
+
         vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
+          cwd = git_root,
           on_exit = function()
             M.ai_commit({ selected_files = files })
           end,
