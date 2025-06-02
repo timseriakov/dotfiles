@@ -51,17 +51,6 @@ set --export PATH $BUN_INSTALL/bin $PATH
 #set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
 #set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
 
-# secrets.fish
-if test -f ~/dev/dotfiles/fish/secrets.fish
-    source ~/dev/dotfiles/fish/secrets.fish
-end
-
-# Load custom envs
-if test -f ~/dev/dotfiles/fish/env.fish
-    source ~/dev/dotfiles/fish/env.fish
-end
-
-
 # volta
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
@@ -77,3 +66,13 @@ set -gx PATH $PATH /Users/tim/.lmstudio/bin
 set -gx XDG_CONFIG_HOME $HOME/.config
 
 zoxide init fish | source
+
+# secrets.fish
+if test -f ~/dev/dotfiles/fish/secrets.fish
+    source ~/dev/dotfiles/fish/secrets.fish
+end
+
+# Load custom envs
+if test -f ~/dev/dotfiles/fish/env.fish
+    source ~/dev/dotfiles/fish/env.fish
+end
