@@ -40,7 +40,7 @@ filter_mode = "host"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false)
-# workspaces = false
+workspaces = true
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
@@ -61,7 +61,7 @@ filter_mode = "host"
 # inline_height = 0
 
 ## Invert the UI - put the search bar at the top , Default to `false`
-# invert = false
+invert = true
 
 ## enable or disable showing a preview of the selected command
 ## useful when the command is longer than the terminal width and is cut off
@@ -106,7 +106,7 @@ ctrl_n_shortcuts = true
 ## Configure the maximum height of the preview to show.
 ## Useful when you have long scripts in your history that you want to distinguish
 ## by more than the first few lines.
-# max_preview_height = 4
+max_preview_height = 20
 
 ## Configure whether or not to show the help row, which includes the current Atuin
 ## version (and whether an update is available), a keymap hint, and the total
@@ -136,6 +136,24 @@ enter_accept = true
 #  "pnpm",
 #  "kubectl",
 #]
-# 
+common_subcommands = [
+  "brew",
+  "cargo",
+  "docker",
+  "git",
+  "go",
+  "ip",
+  "kubectl",
+  "npm",
+  "pnpm",
+  "port",
+  "systemctl",
+  "tmux",
+  "yarn",
+  "bun",
+]
+#
 # Set commands that should be totally stripped and ignored from stats
 #common_prefix = ["sudo"]
+
+keymap_mode = "vim-insert"
