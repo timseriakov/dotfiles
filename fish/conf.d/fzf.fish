@@ -12,7 +12,7 @@ set --global _fzf_search_vars_command '_fzf_search_variables (set --show | psub)
 
 # Install the default bindings, which are mnemonic and minimally conflict with fish's preset bindings
 fzf_configure_bindings \
-    --directory=\ec \
+    --directory=\ef \
     --git_log=\el \
     --git_status=\es \
     --history=\er \
