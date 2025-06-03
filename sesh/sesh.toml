@@ -3,11 +3,11 @@ sort_order = ["config", "tmux", "zoxide"]
 blacklist = ["scratch"]
 
 [default_session]
-startup_command = "nvim -c ':Telescope find_files'"
+startup_command = "nvim ."
 preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]
-name = "dot"
+name = "dotfiles"
 path = "~/dev/dotfiles"
 startup_command = "nvim ."
 
