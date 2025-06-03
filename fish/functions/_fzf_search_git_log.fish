@@ -11,7 +11,7 @@ function _fzf_search_git_log --description "Search the output of git log and pre
             _fzf_wrapper --ansi \
                 --multi \
                 --tiebreak=index \
-                --prompt="Search Git Log> " \
+                --prompt="Git Log> " \
                 --preview='git show --color=always --stat --patch {1}' \
                 --query=(commandline --current-token) \
                 $fzf_git_log_opts
