@@ -2,12 +2,9 @@
 
 local WINDOWS = ya.target_family() == "windows"
 
--- The code of supported git status,
--- also used to determine which status to show for directories when they contain different statuses
--- see `bubble_up`
 local CODES = {
-	excluded = 100, -- ignored directory
-	ignored = 6, -- ignored file
+	excluded = 100,
+	ignored = 6,
 	untracked = 5,
 	modified = 4,
 	added = 3,
@@ -36,7 +33,6 @@ local function match(line)
 		end
 		if not path then
 		elseif path:find("[/\\]$") then
-			-- Mark the ignored directory as `excluded`, so we can process it further within `propagate_down`
 			return code == CODES.ignored and CODES.excluded or code, path:sub(1, -2)
 		else
 			return code, path
@@ -83,13 +79,9 @@ local function propagate_down(excluded, cwd, repo)
 	local new, rel = {}, cwd:strip_prefix(repo)
 	for _, path in ipairs(excluded) do
 		if rel:starts_with(path) then
-			-- If `cwd` is a subdirectory of an excluded directory, also mark it as `excluded`
 			new[tostring(cwd)] = CODES.excluded
 		elseif cwd == repo:join(path).parent then
-			-- If `path` is a direct subdirectory of `cwd`, mark it as `ignored`
 			new[path] = CODES.ignored
-		else
-			-- Skipping, we only care about `cwd` itself and its direct subdirectories for maximum performance
 		end
 	end
 	return new
@@ -102,7 +94,6 @@ local add = ya.sync(function(st, cwd, repo, changed)
 		if code == CODES.unknown then
 			st.repos[repo][path] = nil
 		elseif code == CODES.excluded then
-			-- Mark the directory with a special value `excluded` so that it can be distinguished during UI rendering
 			st.dirs[path] = CODES.excluded
 		else
 			st.repos[repo][path] = code
@@ -132,8 +123,8 @@ local remove = ya.sync(function(st, cwd)
 end)
 
 local function setup(st, opts)
-	st.dirs = {} -- Mapping between a directory and its corresponding repository
-	st.repos = {} -- Mapping between a repository and the status of each of its files
+	st.dirs = {}
+	st.repos = {}
 
 	opts = opts or {}
 	opts.order = opts.order or 1500
@@ -167,9 +158,9 @@ local function setup(st, opts)
 		if not code or signs[code] == "" then
 			return ""
 		elseif self._file.is_hovered then
-			return ui.Line { " ", signs[code] }
+			return ui.Line({ " ", signs[code] })
 		else
-			return ui.Line { " ", ui.Span(signs[code]):style(styles[code]) }
+			return ui.Line({ " ", ui.Span(signs[code]):style(styles[code]) })
 		end
 	end, opts.order)
 end
@@ -187,13 +178,25 @@ local function fetch(_, job)
 		paths[#paths + 1] = tostring(file.url)
 	end
 
-	-- stylua: ignore
-	local output, err = Command("git")
+	local cmd = Command("git")
 		:cwd(tostring(cwd))
-		:args({ "--no-optional-locks", "-c", "core.quotePath=", "status", "--porcelain", "-unormal", "--no-renames", "--ignored=matching" })
-		:args(paths)
-		:stdout(Command.PIPED)
-		:output()
+		:arg("--no-optional-locks")
+		:arg("-c")
+		:arg("core.quotePath=")
+		:arg("status")
+		:arg("--porcelain")
+		:arg("-unormal")
+		:arg("--no-renames")
+		:arg("--ignored=matching")
+
+	for _, path in ipairs(paths) do
+		cmd:arg(path)
+	end
+
+	cmd:stdout(Command.PIPED)
+
+	local output, err = cmd:output()
+
 	if not output then
 		return true, Err("Cannot spawn `git` command, error: %s", err)
 	end
@@ -213,8 +216,6 @@ local function fetch(_, job)
 	end
 	ya.dict_merge(changed, propagate_down(excluded, cwd, Url(repo)))
 
-	-- Reset the status of any files that don't appear in the output of `git status` to `unknown`,
-	-- so that cleaning up outdated statuses from `st.repos`
 	for _, path in ipairs(paths) do
 		local s = path:sub(#repo + 2)
 		changed[s] = changed[s] or CODES.unknown
