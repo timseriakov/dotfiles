@@ -1,6 +1,7 @@
 return {
   "3rd/image.nvim",
   lazy = false,
+  enabled = not vim.g.neovide,
   opts = {
     backend = "kitty",
     processor = "magick_cli",
