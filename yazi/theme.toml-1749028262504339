@@ -18,7 +18,7 @@ light = ""
 
 # : Manager {{{
 
-[mgr]
+[manager]
 cwd = { fg = "#88C0D0" }
 
 # Hovered
