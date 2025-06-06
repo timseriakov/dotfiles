@@ -8,7 +8,6 @@ local builtin = require("telescope.builtin")
 
 local M = {}
 
--- Надёжный способ найти корень git
 local function get_git_root()
   local ok, result = pcall(function()
     local out = vim.fn.system("git rev-parse --show-toplevel")
@@ -19,7 +18,6 @@ local function get_git_root()
     return result
   end
 
-  -- fallback: ищем .git вверх по дереву
   local path = vim.fn.getcwd()
   while path and path ~= "/" do
     if vim.fn.isdirectory(path .. "/.git") == 1 then
@@ -123,7 +121,7 @@ local function run_ai_commit(git_root, desc, opts)
 
       for _, pat in ipairs(quiet_patterns) do
         if stderr_combined:lower():match(pat:lower()) then
-          return -- не показываем уведомление, если это ожидаемое сообщение
+          return
         end
       end
 
@@ -174,7 +172,7 @@ function M.ai_commit(opts)
   end
 end
 
-function M.pick_git_files_then_commit()
+function M.pick_git_files_then_commit(opts)
   builtin.git_status({
     attach_mappings = function(_, map)
       actions.select_default:replace(function(prompt_bufnr)
@@ -203,7 +201,7 @@ function M.pick_git_files_then_commit()
         vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
           cwd = git_root,
           on_exit = function()
-            M.ai_commit({ selected_files = files })
+            M.ai_commit({ selected_files = files, amend = opts and opts.amend })
           end,
         })
       end)
@@ -223,7 +221,11 @@ function M.setup()
 
   vim.keymap.set("n", "<leader>gs", function()
     M.pick_git_files_then_commit()
-  end, { desc = "AI Commit: select files (builtin)" })
+  end, { desc = "AI Commit: select files" })
+
+  vim.keymap.set("n", "<leader>gS", function()
+    M.pick_git_files_then_commit({ amend = true })
+  end, { desc = "AI Amend: select files" })
 end
 
 return M
