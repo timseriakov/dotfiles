@@ -7,6 +7,7 @@ vim.opt.termguicolors = true
 vim.o.encoding = "utf-8"
 vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
 vim.env.TMPDIR = "/tmp/nvim"
+vim.fn.mkdir(vim.env.TMPDIR, "p") -- p = parents
 vim.g.lazyvim_eslint_auto_format = true
 vim.opt.spelllang = { "ru", "en" }
 
@@ -85,7 +86,7 @@ if vim.g.neovide then
   -- vim.g.neovide_cursor_vfx_mode = "railgun"
   -- vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
   vim.g.neovide_cursor_antialiasing = true
-  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_hide_mouse_when_typing = false
   vim.g.neovide_floating_opacity = 1
 
   -- vim.g.neovide_cursor_vfx_particle_curl = 0.1
