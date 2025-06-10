@@ -1,29 +1,17 @@
 #!/usr/bin/env bash
-
-set -e
+set -euo pipefail
 
 PKG="pkgs/archcraft-hyprland-catppuccin-6.0-3-any.pkg.tar.zst"
-WORKDIR="archcraft-hyprland-catppuccin-fixed"
-OUT="archcraft-hyprland-catppuccin-fixed.pkg.tar.zst"
 
-echo "==> Распаковка пакета..."
-rm -rf "$WORKDIR"
-mkdir "$WORKDIR"
-bsdtar -xf "$PKG" -C "$WORKDIR"
+echo "==> Распаковка пакета в /"
+sudo bsdtar -xpf "$PKG" -C /
 
-echo "==> Замена зависимостей..."
-sed -i \
-  -e 's/hyprland-stable/hyprland/' \
-  -e 's/wlroots/wlroots-git/' \
-  "$WORKDIR/.PKGINFO"
+echo "==> Копирование конфигурации в ~/.config/hypr"
+if [ -d "$HOME/.config/hypr" ]; then
+  echo "⚠️  ~/.config/hypr уже существует, делаю бэкап..."
+  mv "$HOME/.config/hypr" "$HOME/.config/hypr.bak.$(date +%s)"
+fi
 
-echo "==> Упаковка исправленного пакета..."
-cd "$WORKDIR"
-fakeroot bsdtar -cnf "../$OUT" ./*
+cp -r /etc/skel/.config/hypr "$HOME/.config/"
 
-echo "==> Установка..."
-cd ..
-sudo pacman -U "$OUT" --noconfirm
-
-echo "✅ Установлено. Можешь скопировать конфиги:"
-echo "   cp -r /etc/skel/.config/hypr ~/.config/"
+echo "✅ Готово. Теперь можешь запускать Hyprland."
