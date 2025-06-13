@@ -5,11 +5,11 @@
 add_newline = true
 
 [character] # The name of the module we are configuring is 'character'
-success_symbol = '[](bold red)[](bold green)[](bold yellow)[  ](blue)'
-error_symbol = '[](bold red)[](bold red)[](bold red)[  ](blue)'
+success_symbol = '[](bold green)'
+error_symbol = '[](bold red)'
 
-vimcmd_symbol = '[](bold green)[](bold yellow)[](bold red)[  ](blue)'
-vimcmd_visual_symbol = '[](bold yellow)[](bold yellow)[](bold yellow)[  ](blue)'
-vimcmd_replace_symbol = '[](bold purple)[](bold purple)[](bold purple)[  ](blue)'
-vimcmd_replace_one_symbol = '[](bold purple)[](bold purple)[](bold purple)[  ](blue)'
+vimcmd_symbol = '[](bold green)'
+vimcmd_visual_symbol = '[](bold yellow)'
+vimcmd_replace_symbol = '[](bold purple)'
+vimcmd_replace_one_symbol = '[](bold purple)'
 
