@@ -100,7 +100,7 @@ keymap = [
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the filename without extension" },
 
 	# Filter
-	{ on = "f", run = "filter --smart", desc = "Filter files" },
+	# { on = "f", run = "filter --smart", desc = "Filter files" },
 
 	# Find
 	{ on = "/", run = "find --smart",            desc = "Find next file" },
@@ -164,9 +164,10 @@ prepend_keymap = [
     { on = ["<C-y>"], run = "plugin system-clipboard" },
     { on   = "T", run  = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview pane" },
     { on = [ "g", "i" ], run  = "plugin lazygit", desc = "Run lazygit"},
-    { on = "t", run  = "plugin smart-tab", desc = "Create a tab and enter the hovered directory"},
     { on = [ "g", "r" ], run  = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go root of the current Git repository"},
     { on = [ "c", "a" ], run  = "plugin ouch", desc = "Archive selected files"},
+    { on = "f", run = "plugin jump-to-char", desc = "Jump to char" },
+
 
     # { on = "q", run  = "plugin confirm-quit", desc = "Confirm before quitting if multiple tabs are open"},
     # { on = ["d", "u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
