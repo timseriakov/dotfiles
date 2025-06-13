@@ -164,7 +164,6 @@ prepend_keymap = [
     { on = ["<C-y>"], run = "plugin system-clipboard" },
     { on   = "T", run  = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview pane" },
     { on = [ "g", "i" ], run  = "plugin lazygit", desc = "Run lazygit"},
-    { on = "t", run  = "plugin smart-tab", desc = "Create a tab and enter the hovered directory"},
     { on = [ "g", "r" ], run  = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go root of the current Git repository"},
     { on = [ "c", "a" ], run  = "plugin ouch", desc = "Archive selected files"},
 
