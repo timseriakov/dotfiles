@@ -7,7 +7,6 @@ return {
     "folke/snacks.nvim",
   },
   keys = {
-    -- 👇 in this section, choose your own keymappings!
     {
       "<leader>ff",
       mode = { "n", "v" },
@@ -15,7 +14,6 @@ return {
       desc = "Yazi (current file)",
     },
     {
-      -- Open in the current working directory
       "<leader>fj",
       "<cmd>Yazi cwd<cr>",
       desc = "Yazi (project root)",
@@ -27,7 +25,6 @@ return {
     },
   },
   opts = {
-    -- if you want to open yazi instead of netrw, see below for more info
     open_for_directories = false,
     floating_window_scaling_factor = 0.85,
     keymaps = {
