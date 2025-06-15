@@ -1,1 +1,1 @@
-{"history": ["**/*.mdx", "**.mdx", "**/*.md"]}
+{"history": ["docs/**", "**/*.mdx", "app/**", "**/*.md"]}
