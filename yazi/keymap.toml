@@ -168,7 +168,6 @@ prepend_keymap = [
     { on = [ "c", "a" ], run  = "plugin ouch", desc = "Archive selected files"},
     { on = "f", run = "plugin jump-to-char", desc = "Jump to char" },
 
-
     # { on = "q", run  = "plugin confirm-quit", desc = "Confirm before quitting if multiple tabs are open"},
     # { on = ["d", "u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
 ]

@@ -110,7 +110,7 @@ end
 --- @see Style To see how to style, in Yazi's documentation.
 local function set_component_style(component, component_type)
 	if component_type == ComponentType.A then
-		component:style(style_a):bold()
+		component:style(style_a)
 	elseif component_type == ComponentType.B then
 		component:style(style_b)
 	else
