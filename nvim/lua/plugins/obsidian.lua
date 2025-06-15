@@ -145,6 +145,14 @@ return {
         end,
         opts = { buffer = true, desc = "Rename current note and update links" },
       },
+      ["<leader>ov"] = {
+        action = function()
+          require("yazi").yazi({
+            floating_window_scaling_factor = 1.0,
+          })
+        end,
+        opts = { desc = "Open Yazi fullscreen" },
+      },
       ["<leader>oz"] = {
         action = function()
           local obsidian = require("obsidian")
@@ -153,7 +161,7 @@ return {
           local workspace = client.current_workspace
 
           local base_path = Path.new(workspace.path)
-          local notes_dir = base_path -- весь vault, а не notes_subdir
+          local notes_dir = base_path
 
           local glob_path = tostring(notes_dir) .. "/**/*.md"
           local files = vim.fn.glob(glob_path, true, true)
@@ -170,7 +178,6 @@ return {
       },
       ["<leader>oZ"] = {
         action = function()
-          local Path = require("obsidian.path")
           local pickers = require("telescope.pickers")
           local finders = require("telescope.finders")
           local conf = require("telescope.config").values
@@ -230,12 +237,10 @@ return {
           local buftype = vim.bo[bufnr].buftype
           local filename = vim.api.nvim_buf_get_name(bufnr)
 
-          -- Пропустить, если это не обычный markdown-файл или системный буфер
           if buftype ~= "" or filetype ~= "markdown" or filename == "" then
             return
           end
 
-          -- Исключить плагины вроде neo-tree
           if filename:match("neo%-tree") or filename:match("NvimTree_") then
             return
           end
