@@ -1,3 +1,4 @@
+-- telescope_glob_config.lua
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
@@ -8,84 +9,77 @@ return {
     local telescope = require("telescope")
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")
+    local finders = require("telescope.finders")
+    local pickers = require("telescope.pickers")
+    local conf = require("telescope.config").values
     local glob_store = require("modules.glob_store")
 
-    opts.pickers = opts.pickers or {}
+    local function get_excluded()
+      return {
+        "-E",
+        "*.png",
+        "-E",
+        "*.jpg",
+        "-E",
+        "*.jpeg",
+        "-E",
+        "*.gif",
+        "-E",
+        "*.svg",
+        "-E",
+        "*.webp",
+      }
+    end
 
-    opts.pickers.live_grep = {
-      additional_args = function()
-        local glob = glob_store.load_latest()
-        return glob ~= "" and { "--glob", glob } or {}
-      end,
-    }
+    local function build_fd_args(glob)
+      local args = { "fd", "--color", "never" }
 
-    opts.pickers.find_files = {
-      find_command = function()
-        local glob = glob_store.load_latest()
-        local args = {
-          "fd",
-          "--type",
-          "f",
-          "--color",
-          "never",
-          "-E",
-          "*.png",
-          "-E",
-          "*.jpg",
-          "-E",
-          "*.jpeg",
-          "-E",
-          "*.gif",
-          "-E",
-          "*.svg",
-          "-E",
-          "*.webp",
-        }
+      local path = glob:match("^([^*/]+)/%*%*$")
+      if path and vim.fn.isdirectory(path) == 1 then
+        table.insert(args, ".")
+        table.insert(args, "--search-path")
+        table.insert(args, path)
+      else
         if glob ~= "" then
           table.insert(args, "--glob")
           table.insert(args, glob)
         end
-        return args
-      end,
-    }
-
-    telescope.setup(opts)
-    telescope.load_extension("live_grep_args")
-
-    vim.keymap.set("n", "<leader>/", function()
-      local pickers = require("telescope.pickers")
-      local finders = require("telescope.finders")
-      local conf = require("telescope.config").values
-
-      local history = glob_store.load_all()
-      local globs = {}
-
-      for _, glob in ipairs(history) do
-        table.insert(globs, { label = "󰆓 " .. glob, value = glob })
       end
 
-      vim.list_extend(globs, {
-        { label = "**/*.ts", value = "**/*.ts" },
-        { label = "**/*.tsx", value = "**/*.tsx" },
-        { label = "**/*.json", value = "**/*.json" },
-        { label = "**/app/**/*", value = "**/app/**/*" },
-        { label = "**/docs/**/*", value = "**/docs/**/*" },
-        { label = "󰈭 Open globster.xyz", value = "__open_globster__" },
-        { label = " All files", value = "" },
-      })
+      vim.list_extend(args, { "--type", "f" })
+      vim.list_extend(args, get_excluded())
+      return args
+    end
+
+    local function open_glob_picker(callback)
+      local seen = {}
+      local globs = {}
+
+      local function add_glob(label, value)
+        if not seen[value] then
+          table.insert(globs, { label = label, value = value })
+          seen[value] = true
+        end
+      end
+
+      for _, glob in ipairs(glob_store.load_all()) do
+        add_glob("󰆓 " .. glob, glob)
+      end
+
+      add_glob("**/*.ts", "**/*.ts")
+      add_glob("**/*.tsx", "**/*.tsx")
+      add_glob("**/*.json", "**/*.json")
+      add_glob("app/**", "app/**")
+      add_glob("docs/**", "docs/**")
+      add_glob("󰈭 Open globster.xyz", "__open_globster__")
+      add_glob("All files", "")
 
       pickers
         .new({}, {
-          prompt_title = "Glob filter",
+          prompt_title = "Choose Glob",
           previewer = false,
-          layout_config = {
-            width = 0.5,
-            height = 0.5,
-            prompt_position = "bottom",
-          },
+          layout_config = { width = 0.5, height = 0.5 },
           sorting_strategy = "ascending",
-          results_title = false,
-          winblend = 0,
           finder = finders.new_table({
             results = globs,
             entry_maker = function(entry)
@@ -101,36 +95,65 @@ return {
           attach_mappings = function(_, _)
             actions.select_default:replace(function(prompt_bufnr)
               actions.close(prompt_bufnr)
-
-              local current_line = action_state.get_current_line()
               local entry = action_state.get_selected_entry()
               local value = (entry and entry.value or ""):gsub("^%s*(.-)%s*$", "%1")
 
-              if current_line ~= value then
-                value = current_line
-              end
-
               if value == "__open_globster__" then
-                local open_cmd = vim.fn.has("mac") == 1 and "open" or "xdg-open"
-                vim.fn.jobstart({ open_cmd, "https://globster.xyz/" }, { detach = true })
+                vim.fn.jobstart(
+                  { vim.fn.has("mac") == 1 and "open" or "xdg-open", "https://globster.xyz/" },
+                  { detach = true }
+                )
                 return
               end
 
               glob_store.save(value)
-
-              vim.schedule(function()
-                local title = value ~= "" and ("Live Grep › " .. value) or "Live Grep (all files)"
-                telescope.extensions.live_grep_args.live_grep_args({
-                  additional_args = value ~= "" and { "--glob", value } or nil,
-                  prompt_title = title,
-                })
-              end)
+              callback(value)
             end)
             return true
           end,
         })
         :find()
-    end, { desc = "Glob + Grep" })
+    end
+
+    opts.pickers = opts.pickers or {}
+    opts.pickers.live_grep = {
+      additional_args = function()
+        local glob = glob_store.load_latest()
+        return glob ~= "" and { "--glob", glob } or {}
+      end,
+    }
+    opts.pickers.find_files = {
+      find_command = build_fd_args(""),
+    }
+
+    telescope.setup(opts)
+    telescope.load_extension("live_grep_args")
+
+    vim.keymap.set("n", "<leader><leader>", function()
+      require("telescope.builtin").find_files({
+        prompt_title = "Find Files (all)",
+        find_command = build_fd_args(""),
+      })
+    end, { desc = "Find files (all)" })
+
+    vim.keymap.set("n", "<leader>sf", function()
+      open_glob_picker(function(glob)
+        require("telescope.builtin").find_files({
+          prompt_title = glob ~= "" and ("Find Files › " .. glob) or "Find Files (all)",
+          find_command = build_fd_args(glob),
+        })
+      end)
+    end, { desc = "Find Files with Glob" })
+
+    vim.keymap.set("n", "<leader>/", function()
+      open_glob_picker(function(glob)
+        local title = glob ~= "" and ("Live Grep › " .. glob) or "Live Grep (all files)"
+        telescope.extensions.live_grep_args.live_grep_args({
+          additional_args = glob ~= "" and { "--glob", glob } or nil,
+          prompt_title = title,
+        })
+      end)
+    end, { desc = "Live Grep with Glob" })
   end,
 
   opts = {
