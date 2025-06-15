@@ -6,10 +6,6 @@
 - Настроить taskell
 - Подмонтировать dev и vault
 - Законтребьютить Promter
-- 
-
-## Doing
-
 
 ## Done
 

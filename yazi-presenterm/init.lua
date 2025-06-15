@@ -18,11 +18,11 @@ require("yatline"):setup({
 		},
 	},
 	style_b = {
-		bg = "#3B4252",
+		bg = "#4C566A",
 		fg = "#D8DEE9",
 	},
 	style_c = {
-		bg = "#2E3440",
+		bg = "#3B4252",
 		fg = "#D8DEE9",
 	},
 
@@ -46,9 +46,7 @@ require("yatline"):setup({
 			section_c = {},
 		},
 		right = {
-			section_a = {
-				{ type = "line", custom = false, name = "tabs", params = { "right", "reverse" } },
-			},
+			section_a = {},
 			section_b = {},
 			section_c = {},
 		},
@@ -60,19 +58,17 @@ require("yatline"):setup({
 				{ type = "string", custom = false, name = "tab_mode" },
 			},
 			section_b = {
-				{ type = "string", custom = false, name = "hovered_size" },
+				{ type = "string", custom = false, name = "hovered_name" },
 			},
 			section_c = {
-				{ type = "string", custom = false, name = "hovered_name" },
+				{ type = "string", custom = false, name = "hovered_size" },
 			},
 		},
 		right = {
 			section_a = {
-				{ type = "string", custom = false, name = "cursor_position" },
+				{ type = "line", custom = false, name = "tabs", params = { "right", "reverse" } },
 			},
-			section_b = {
-				{ type = "string", custom = false, name = "cursor_percentage" },
-			},
+			section_b = {},
 			section_c = {
 				{ type = "coloreds", custom = false, name = "permissions" },
 			},

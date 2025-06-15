@@ -169,6 +169,12 @@
         }
       },
       "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "distance" : {
+          "vertical" : "auto"
+        },
         "modifiers" : {
           "vertical" : {
             "command" : {
@@ -184,6 +190,9 @@
               "type" : "ignore"
             }
           }
+        },
+        "speed" : {
+          "vertical" : 0
         }
       }
     },
