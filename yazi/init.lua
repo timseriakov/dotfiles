@@ -18,11 +18,11 @@ require("yatline"):setup({
 		},
 	},
 	style_b = {
-		bg = "#4C566A",
+		bg = "#3B4252",
 		fg = "#D8DEE9",
 	},
 	style_c = {
-		bg = "#3B4252",
+		bg = "#2E3440",
 		fg = "#D8DEE9",
 	},
 
@@ -35,7 +35,7 @@ require("yatline"):setup({
 	tab_width = 18,
 	tab_use_inverse = true,
 
-	selected = { icon = "󰻭", fg = "#EBCB8B" }, -- жёлтый icon
+	selected = { icon = "󰻭", fg = "#EBCB8B" },
 	copied = { icon = "", fg = "#A3BE8C" },
 	cut = { icon = "", fg = "#BF616A" },
 
@@ -55,22 +55,23 @@ require("yatline"):setup({
 	status_line = {
 		left = {
 			section_a = {
-				{ type = "string", custom = false, name = "tab_mode" },
+				-- { type = "string", custom = false, name = "tab_mode" },
+				{ type = "line", custom = false, name = "tabs", params = { "left", "reverse" } },
 			},
 			section_b = {
-				{ type = "string", custom = false, name = "hovered_name" },
+				-- { type = "string", custom = false, name = "hovered_name" },
 			},
-			section_c = {
-				{ type = "string", custom = false, name = "hovered_size" },
-			},
+			section_c = {},
 		},
 		right = {
 			section_a = {
-				{ type = "line", custom = false, name = "tabs", params = { "right", "reverse" } },
+				-- { type = "line", custom = false, name = "tabs", params = { "right", "reverse" } },
 			},
-			section_b = {},
-			section_c = {
+			section_b = {
 				{ type = "coloreds", custom = false, name = "permissions" },
+			},
+			section_c = {
+				{ type = "string", custom = false, name = "hovered_size" },
 			},
 		},
 	},
