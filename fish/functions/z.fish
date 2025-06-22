@@ -1,4 +1,5 @@
 function z --wraps=__zoxide_z --description 'z with smart eza listing'
+    set -g __prev_dir (pwd)
     __zoxide_z $argv; or return
 
     set lines (eza --all --long --icons --color=always | wc -l)
