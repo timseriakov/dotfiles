@@ -1,4 +1,4 @@
-function z --wraps=__zoxide_z --description 'alias z with smart eza listing'
+function z --wraps=__zoxide_z --description 'z with smart eza listing'
     __zoxide_z $argv; or return
 
     set lines (eza --all --long --icons --color=always | wc -l)
