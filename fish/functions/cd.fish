@@ -13,12 +13,12 @@ function cd
         builtin cd $argv; or return
     end
 
-    set lines (eza --all --long --icons --color=always | wc -l)
+    set lines (eza --all --long --icons --group-directories-first --color=always | wc -l)
     set height (tput lines)
 
     if test $lines -gt $height
         eza --all --icons --group-directories-first
     else
-        eza --all --long --icons
+        eza --all --long --icons --group-directories-first
     end
 end
