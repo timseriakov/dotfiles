@@ -1,5 +1,17 @@
 function cd
-    builtin cd $argv; or return
+    if test "$argv" = "-"
+        if set -q __prev_dir
+            set temp "$__prev_dir"
+            set __prev_dir (pwd)
+            builtin cd $temp; or return
+        else
+            echo "No previous directory"
+            return 1
+        end
+    else
+        set -g __prev_dir (pwd)
+        builtin cd $argv; or return
+    end
 
     set lines (eza --all --long --icons --color=always | wc -l)
     set height (tput lines)
