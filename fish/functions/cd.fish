@@ -1,5 +1,5 @@
 function cd
-    if test "$argv" = "-"
+    if test "$argv" = -
         if set -q __prev_dir
             set temp "$__prev_dir"
             set __prev_dir (pwd)
