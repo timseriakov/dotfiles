@@ -66,6 +66,8 @@ set -gx PATH $PATH /Users/tim/.lmstudio/bin
 set -gx XDG_CONFIG_HOME $HOME/.config
 
 zoxide init fish | source
+functions -e z
+source ~/.config/fish/functions/z.fish
 
 # secrets.fish
 if test -f ~/dev/dotfiles/fish/secrets.fish
