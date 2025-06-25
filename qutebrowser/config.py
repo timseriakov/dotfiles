@@ -27,6 +27,8 @@ editor = "nvim"
 username = "timseriakov"
 homepage = "https://github.com"
 
+config.set("content.autoplay", False)
+
 # General
 c.editor.command = [terminal, "-e", editor, "{}"]
 c.auto_save.session = True
@@ -56,7 +58,6 @@ c.qt.args = ["force-dark-mode", "dark-mode-settings"]
 # c.fileselect.single_file.command = [terminal, "-e", "ranger", "--choosefile", "{}"]
 # c.fileselect.multiple_files.command = [terminal, "-e", "ranger", "--choosefiles", "{}"]
 
-
 # Nord Palette
 nord0  = "#2e3440"
 nord1  = "#3b4252"
@@ -76,19 +77,17 @@ nord14 = "#a3be8c"
 nord15 = "#b48ead"
 
 # Colors
-accent = "#88c0d0"  # nord8
-black = "#2e3440"   # nord0
-white = "#eceff4"   # nord6
-red   = "#bf616a"   # nord11
-green = "#a3be8c"   # nord14
-yellow = "#ebcb8b"  # nord13
-blue = "#5e81ac"    # nord10
-purple = "#b48ead"  # nord15
+accent = nord8
+black = nord0
+white = nord6
+red   = nord11
+green = nord14
+yellow = nord13
+blue = nord10
+purple = nord15
 
 # Completion
-c.colors.completion.category.bg = (
-    "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3b4252, stop:1 #434c5e)"
-)
+c.colors.completion.category.bg = "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3b4252, stop:1 #434c5e)"
 c.colors.completion.category.border.bottom = accent
 c.colors.completion.category.border.top = accent
 c.colors.completion.category.fg = white
@@ -102,60 +101,82 @@ c.colors.completion.match.fg = accent
 c.colors.completion.scrollbar.bg = black
 c.colors.completion.scrollbar.fg = white
 
+# Prompts
+c.colors.prompts.bg = nord1
+c.colors.prompts.fg = nord6
+c.colors.prompts.selected.bg = nord3
+
 # Downloads
 c.colors.downloads.bar.bg = black
 c.colors.downloads.error.bg = red
+c.colors.downloads.error.fg = white
+c.colors.downloads.start.bg = blue
+c.colors.downloads.stop.bg = green
 
 # Hints
-c.colors.hints.bg = nord10
-c.colors.hints.fg = nord6
-c.colors.hints.match.fg = nord8
-c.hints.border = f"2px solid {nord8}"
-# c.fonts.hints = "bold 10pt 'Share Tech Mono'"
+c.colors.hints.bg = blue
+c.colors.hints.fg = white
+c.colors.hints.match.fg = accent
+c.hints.border = f"2px solid {accent}"
 
 # Messages
 c.colors.messages.info.bg = black
+c.colors.messages.info.fg = white
+c.colors.messages.error.bg = red
+c.colors.messages.error.fg = white
+c.colors.messages.warning.bg = yellow
+c.colors.messages.warning.fg = black
 
 # Statusbar
-c.colors.statusbar.normal.bg = nord0
-c.colors.statusbar.normal.fg = nord6
+c.colors.statusbar.normal.bg = black
+c.colors.statusbar.normal.fg = white
 c.colors.statusbar.command.bg = nord1
-c.colors.statusbar.command.fg = nord6
-c.colors.statusbar.insert.bg = nord14
-c.colors.statusbar.insert.fg = nord0
-c.colors.statusbar.passthrough.bg = nord15
-c.colors.statusbar.passthrough.fg = nord0
+c.colors.statusbar.command.fg = white
+c.colors.statusbar.insert.bg = green
+c.colors.statusbar.insert.fg = black
+c.colors.statusbar.passthrough.bg = purple
+c.colors.statusbar.passthrough.fg = black
 c.colors.statusbar.private.bg = nord3
-c.colors.statusbar.private.fg = nord6
-c.colors.statusbar.url.fg = nord6
-c.colors.statusbar.url.error.fg = nord11
-c.colors.statusbar.url.hover.fg = nord10
-c.colors.statusbar.url.success.http.fg = nord14
-c.colors.statusbar.url.success.https.fg = nord14
-c.colors.statusbar.url.warn.fg = nord13
+c.colors.statusbar.private.fg = white
+c.colors.statusbar.url.fg = white
+c.colors.statusbar.url.error.fg = red
+c.colors.statusbar.url.hover.fg = blue
+c.colors.statusbar.url.success.http.fg = green
+c.colors.statusbar.url.success.https.fg = green
+c.colors.statusbar.url.warn.fg = yellow
 
 # Tabs
 c.colors.tabs.bar.bg = black
 c.colors.tabs.even.bg = black
 c.colors.tabs.odd.bg = black
+c.colors.tabs.even.fg = white
+c.colors.tabs.odd.fg = white
 c.colors.tabs.selected.even.bg = blue
+c.colors.tabs.selected.even.fg = black
 c.colors.tabs.selected.odd.bg = blue
+c.colors.tabs.selected.odd.fg = black
 c.colors.tabs.pinned.even.bg = accent
+c.colors.tabs.pinned.even.fg = black
 c.colors.tabs.pinned.odd.bg = accent
+c.colors.tabs.pinned.odd.fg = black
 c.colors.tabs.pinned.selected.even.bg = accent
+c.colors.tabs.pinned.selected.even.fg = black
 c.colors.tabs.pinned.selected.odd.bg = accent
+c.colors.tabs.pinned.selected.odd.fg = black
 
 # Font
 font_size = "18pt"
 font_family = "Share Tech Mono"
-font = font_size + " " + font_family
 c.fonts.default_size = font_size
 c.fonts.default_family = font_family
-c.fonts.completion.entry = font
-c.fonts.hints = font
-c.fonts.debug_console = font
-c.fonts.prompts = font
-c.fonts.statusbar = font
+c.fonts.completion.entry = f"{font_size} {font_family}"
+c.fonts.hints = f"{font_size} {font_family}"
+c.fonts.debug_console = f"{font_size} {font_family}"
+c.fonts.prompts = f"{font_size} {font_family}"
+c.fonts.statusbar = f"{font_size} {font_family}"
+
+# Webpage BG
+c.colors.webpage.bg = black
 
 # Home page
 c.url.default_page = homepage
@@ -205,9 +226,10 @@ config.bind("t", "cmd-set-text -s :open -t")
 config.bind("/", "search")
 config.bind("?", "search")
 
-# Link hints
-config.bind("f", "hint")
-config.bind("F", "hint new-tab")
+# Open link in new tab
+config.bind("f", "hint links")
+# Open link in new tab (background)
+config.bind("F", "hint links tab-bg")
 
 # Yank current URL or link
 config.bind("yy", "yank")
@@ -225,16 +247,23 @@ config.bind(">>", "tab-move +")
 
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
-config.bind(leader + "cv", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh")
 
 
-config.bind(leader + "cb", "config-cycle statusbar.show always in-mode")
-# config.bind(leader + "cc", "config-edit")
+
+
+# config.bind(leader + "ce", "config-edit")
+config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh")
 config.bind(leader + "ch", "help")
-config.bind(leader + "cc", "config-source")
+config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
-config.bind(leader + "ct", "config-cycle tabs.show multiple switching")
 
+# ui
+config.bind(leader + "ut", "config-cycle tabs.show multiple switching")
+config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
+config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
+config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
+
+# dev tools
 config.bind(leader + "dd", "devtools")
 config.bind(leader + "de", "edit-text")
 config.bind(leader + "dc", "cmd-edit")
@@ -243,34 +272,38 @@ config.bind(leader + "dp", "screenshot " + ss_dir + "qute-" + timestamp + ".png"
 config.bind(leader + "ds", "view-source --edit")
 config.bind(leader + "dz", "view-source")
 
-config.bind(leader + "fc", "hint links yank --rapid")
-config.bind(leader + "fd", "hint links spawn " + terminal + "-e youtube-dl {hint-url}")
-config.bind(leader + "ff", "hint links tab-bg --rapid")
-config.bind(leader + "fi", "hint inputs")
-config.bind(leader + "fo", "hint links window")
-config.bind(leader + "fp", "hint links run :open -p {hint-url}")
-config.bind(leader + "fv", "hint links spawn mpv {hint-url}")
-config.bind(leader + "fy", "hint links yank")
-config.bind(leader + "fx", 'hint links spawn --detach open {hint-url}')
 
+config.bind(leader + "fc", "hint links yank --rapid") # Yank link rapidly
+config.bind(leader + "ff", "hint links tab --rapid") # Open link in new tab (foreground)
+config.bind(leader + "fb", "hint links tab-bg --rapid") # Open link in new tab (foreground)
+config.bind(leader + "fi", "hint inputs") # Open link in new tab (foreground)
+config.bind(leader + "fo", "hint links window") # Open link in new tab (foreground)
+config.bind(leader + "fp", "hint links run :open -p {hint-url}") # Open link in new tab (foreground)
+config.bind(leader + "fv", "hint links spawn mpv {hint-url}") # Open link in new tab (foreground)
+config.bind(leader + "fy", "hint links yank") # Open link in new tab (foreground)
+config.bind(leader + "fx", "hint links spawn --detach open {hint-url}") # Open link in new tab (foreground)
+
+# Trigger custom FZF script (interactive launcher)
+# Requires you to create a script at ~/.local/bin/qute-fzf.sh
+config.bind(leader + "fz", f"spawn --userscript ~/.local/bin/qute-fzf.sh")
+# quitting actions
 config.bind(leader + "qd", "tab-close")
 config.bind(leader + "qq", "close")
 config.bind(leader + "qr", "restart")
 config.bind(leader + "qt", "tab-only") # close all tabs except current
 config.bind(leader + "qw", "window-only") # close all windows except current
+config.bind(leader + "x", "quit --save")
 
+# tabs
 config.bind(leader + "ta", "bookmark-add")
 config.bind(leader + "tb", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
-config.bind(leader + "tg", "tab-give") # move tab to another window
+config.bind(leader + "tg", "tab-give") # move tab to new window
 config.bind(leader + "th", "history")
 config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
-config.bind(leader + "tw", "cmd-set-text -s :tab-take")
-config.bind(leader + "tx", 'spawn --detach open {url}')
-
-
-config.bind(leader + "x", "quit --save")
+config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
+config.bind(leader + "tx", 'spawn --detach open {url}') # open in default browser
 
