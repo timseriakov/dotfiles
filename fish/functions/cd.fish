@@ -13,6 +13,8 @@ function cd
         builtin cd $argv; or return
     end
 
+    echo
+
     set lines (eza --all --long --icons --group-directories-first --color=always | wc -l)
     set height (tput lines)
 
