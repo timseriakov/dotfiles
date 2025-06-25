@@ -1,9 +1,9 @@
 require("starship"):setup()
 require("git"):setup()
 require("yatline"):setup({
-	show_background = true,
-	display_header_line = true,
-	display_status_line = true,
+	show_background = false,
+	display_header_line = false,
+	display_status_line = false,
 	component_positions = { "header", "tab", "status" },
 
 	section_separator = { open = "", close = "" },
@@ -68,10 +68,10 @@ require("yatline"):setup({
 				-- { type = "line", custom = false, name = "tabs", params = { "right", "reverse" } },
 			},
 			section_b = {
-				{ type = "coloreds", custom = false, name = "permissions" },
+				-- { type = "coloreds", custom = false, name = "permissions" },
 			},
 			section_c = {
-				{ type = "string", custom = false, name = "hovered_size" },
+				-- { type = "string", custom = false, name = "hovered_size" },
 			},
 		},
 	},
