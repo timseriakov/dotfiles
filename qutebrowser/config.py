@@ -192,40 +192,22 @@ config.bind("J", "tab-next")
 # Restore closed tab
 config.bind("q", "undo")
 
-# Show help
-config.bind(",", "help")
-
-# Scrolling
-config.bind("o", "scroll down")
-config.bind("l", "scroll up")
-config.bind(";", "scroll right")  # no direct left-scroll in Vimium
-config.bind("d", "scroll right")
-config.bind("v", "scroll-page 0 1")   # page down
-config.bind("g", "scroll-page 0 -1")  # page up
-
-# View page source
-config.bind("z", "view-source")
+config.bind('d', 'scroll-page 0 0.5')
+config.bind('u', 'scroll-page 0 -0.5')
 
 # Enter insert mode
 config.bind("i", "mode-enter insert")
+config.bind("v", "mode-enter caret")
 
-# History navigation
-config.bind("B", "back")
-config.bind("F", "forward")
+config.bind("t", "cmd-set-text -s :open -t")
 
 # Find mode
-config.bind("t", "cmd-set-text -s :open -t")
 config.bind("/", "search")
-config.bind("?", "search-backward")
+config.bind("?", "search")
 
 # Link hints
 config.bind("f", "hint")
 config.bind("F", "hint new-tab")
-config.bind("<Alt-a>", "hint all")  # approximate to LinkHints.activateModeWithQueue
-
-# Back/Forward (by buffer)
-config.bind("hh", "back")
-config.bind("ll", "forward")
 
 # Yank current URL or link
 config.bind("yy", "yank")
@@ -235,43 +217,21 @@ config.bind("yl", "hint links yank")
 config.bind("p", "open --clipboard")
 config.bind("P", "open --clipboard --tab")
 
-# Tab management
-config.bind("n", "tab-next")
-config.bind("N", "tab-prev")
-config.bind("0", "tab-focus 1")
-config.bind("$", "tab-focus -1")
-
-config.bind("C", "tab-detach")
-config.bind("E", "tab-clone")
 config.bind("x", "tab-close")
 
 # Move tab
 config.bind("<<", "tab-move -")
 config.bind(">>", "tab-move +")
 
-config.bind("v", "mode-enter caret")
-
-
-# ---
-
-# config.bind("H", "tab-prev")
-# config.bind("J", "forward")
-# config.bind("K", "back")
-# config.bind("L", "tab-next")
-# config.bind("O", "cmd-set-text -s :open -w")
-# config.bind("P", "cmd-set-text -s :open -p")
-# config.bind("Q", "close")
-# config.bind("W", "tab-clone -w")
-# config.bind("a", "mode-enter insert")
-# config.bind("t", "cmd-set-text -s :open -t")
-
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
+config.bind(leader + "cv", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh")
+
 
 config.bind(leader + "cb", "config-cycle statusbar.show always in-mode")
-config.bind(leader + "cc", "config-edit")
+# config.bind(leader + "cc", "config-edit")
 config.bind(leader + "ch", "help")
-config.bind(leader + "cr", "config-source")
+config.bind(leader + "cc", "config-source")
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
 config.bind(leader + "ct", "config-cycle tabs.show multiple switching")
 
@@ -281,6 +241,7 @@ config.bind(leader + "dc", "cmd-edit")
 config.bind(leader + "df", "devtools-focus")
 config.bind(leader + "dp", "screenshot " + ss_dir + "qute-" + timestamp + ".png")
 config.bind(leader + "ds", "view-source --edit")
+config.bind(leader + "dz", "view-source")
 
 config.bind(leader + "fc", "hint links yank --rapid")
 config.bind(leader + "fd", "hint links spawn " + terminal + "-e youtube-dl {hint-url}")
@@ -290,24 +251,26 @@ config.bind(leader + "fo", "hint links window")
 config.bind(leader + "fp", "hint links run :open -p {hint-url}")
 config.bind(leader + "fv", "hint links spawn mpv {hint-url}")
 config.bind(leader + "fy", "hint links yank")
+config.bind(leader + "fx", 'hint links spawn --detach open {hint-url}')
 
 config.bind(leader + "qd", "tab-close")
 config.bind(leader + "qq", "close")
 config.bind(leader + "qr", "restart")
-config.bind(leader + "qt", "tab-only")
-config.bind(leader + "qw", "window-only")
+config.bind(leader + "qt", "tab-only") # close all tabs except current
+config.bind(leader + "qw", "window-only") # close all windows except current
 
 config.bind(leader + "ta", "bookmark-add")
 config.bind(leader + "tb", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
-config.bind(leader + "tg", "tab-give")
+config.bind(leader + "tg", "tab-give") # move tab to another window
 config.bind(leader + "th", "history")
 config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
 config.bind(leader + "tw", "cmd-set-text -s :tab-take")
+config.bind(leader + "tx", 'spawn --detach open {url}')
+
 
 config.bind(leader + "x", "quit --save")
 
-config.bind('<Alt-g>', 'hint links spawn --detach open {hint-url}')
