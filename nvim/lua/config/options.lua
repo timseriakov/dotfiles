@@ -14,6 +14,14 @@ vim.opt.spelllang = { "ru", "en" }
 vim.o.mousescroll = "ver:1,hor:1"
 vim.opt.swapfile = false
 
+-- Change cursor shape per mode in terminals like kitty or iTerm2
+if vim.env.TERM:match("xterm-kitty") or vim.env.TERM:match("xterm-256color") then
+  vim.opt.guicursor = ""
+  vim.opt.t_SI = "\27[6 q" -- insert: bar cursor
+  vim.opt.t_EI = "\27[2 q" -- normal: block
+  vim.opt.t_SR = "\27[4 q" -- replace: underline
+end
+
 if vim.g.started_by_firenvim then
   vim.cmd([[set guifont=ShureTechMono\ Nerd\ Font\ Mono:h18]])
 
