@@ -40,30 +40,10 @@ pyenv init - | source
 
 set -gx fish_command_timeout 8000
 
-set -gx LANG en_US.UTF-8
-set -gx LC_ALL en_US.UTF-8
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
-
-# oracle instance client
-#set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
-#set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
-
-# volta
-set -gx VOLTA_HOME "$HOME/.volta"
-set -gx PATH "$VOLTA_HOME/bin" $PATH
-
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
-
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/tim/.lmstudio/bin
-
-set -gx XDG_CONFIG_HOME $HOME/.config
 
 zoxide init fish | source
 functions -e z
