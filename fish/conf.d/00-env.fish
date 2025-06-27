@@ -1,3 +1,6 @@
+set -gx fish_command_timeout 8000
+set -gx fish_greeting Welcome
+
 set -gx NEOVIDE_TITLE_HIDDEN 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
@@ -37,7 +40,14 @@ set --export PATH $BUN_INSTALL/bin $PATH
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
 
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH /Users/tim/.lmstudio/bin
-
 set -gx XDG_CONFIG_HOME $HOME/.config
+
+# rustup shell setup
+if not contains "{cargo_bin}" $PATH
+    # Prepending path in case a system-installed rustc needs to be overridden
+    set -x PATH "{cargo_bin}" $PATH
+end
+
+source "$HOME/.cargo/env.fish"
+
+source "$HOME/.swiftly/env.fish"
