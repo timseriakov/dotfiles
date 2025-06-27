@@ -1,0 +1,110 @@
+server:
+  host: 0.0.0.0
+  port: 1931
+pages:
+  - name: Home
+    # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+    # hide-desktop-navigation: true
+    columns:
+      - size: small
+        widgets:
+          - type: calendar
+            first-day-of-week: monday
+
+          - type: rss
+            limit: 10
+            collapse-after: 3
+            cache: 12h
+            feeds:
+              - url: https://selfh.st/rss/
+                title: selfh.st
+                limit: 4
+
+          - type: twitch-channels
+            channels:
+              - theprimeagen
+
+      - size: full
+        widgets:
+          - type: group
+            widgets:
+              - type: hacker-news
+              - type: lobsters
+
+          - type: videos
+            channels:
+              - UCYeiozh-4QwuC1sjgCmB92w # DevOps Toolbox
+              - UCxa8XPOhu4iA6Lon71TJ0rg # Ampersand
+              - UCo71RUe6DX4w-Vd47rFLXPg # typecraft
+              - UCrk2bNxxxLP-Qd77KxBJ3Xg # diinki
+              - UCYvMQ4fBOX2kwfJ981cZSPg # proLinux
+
+          - type: group
+            widgets:
+              - type: reddit
+                subreddit: unixporn
+                show-thumbnails: true
+              - type: reddit
+                subreddit: selfhosted
+                show-thumbnails: true
+
+      - size: small
+        widgets:
+          - type: weather
+            location: Minsk, Belarus
+            units: metric # alternatively "imperial"
+            hour-format: 24h # alternatively "24h"
+            # Optionally hide the location from being displayed in the widget
+            # hide-location: true
+
+          - type: releases
+            cache: 1d
+            show-source-icon: true
+            token: ${GITHUB_TOKEN}
+            # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+            # read-only token from your Github account settings and use it here to increase the limit.
+            # token: ...
+            repositories:
+              - glanceapp/glance
+              - bknd-io/bknd
+              - syncthing/syncthing
+              - neovide/neovide
+              - neovim/neovim
+
+          - type: markets
+            markets:
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: XMR-USD
+                name: Monero
+              - symbol: ETH-USD
+                name: Ethereum
+              - symbol: SOL-USD
+                name: Solana
+              - symbol: DOT-USD
+                name: Polkadot
+
+  # Add more pages here:
+  # - name: Your page name
+  #   columns:
+  #     - size: small
+  #       widgets:
+  #         # Add widgets here
+
+  #     - size: full
+  #       widgets:
+  #         # Add widgets here
+
+  #     - size: small
+  #       widgets:
+  #         # Add widgets here
+  #
+
+theme:
+  presets:
+    dark:
+      background-color: 220 16 18
+      primary-color: 222 30 65
+      positive-color: 160 30 55
+      negative-color: 345 65 60
+      contrast-multiplier: 1.15
