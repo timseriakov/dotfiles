@@ -1,6 +1,8 @@
 ##################
 # Output settings:
 
+commit-language: english
+
 ## Use colors suitable for a dark terminal background (default: False)
 dark-mode: false
 

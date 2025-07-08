@@ -1,4 +1,7 @@
-function rfn --wraps='rm -rf ./node_modules' --description 'alias rfn rm -rf ./node_modules'
-  rm -rf ./node_modules $argv
-        
+function rfn --description 'Remove node_modules and lockfiles if they exist'
+    rm -rf node_modules
+    set lockfiles *.lock
+    if test (count $lockfiles) -gt 0
+        rm -f $lockfiles
+    end
 end
