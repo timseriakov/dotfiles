@@ -25,7 +25,7 @@ timestamp = strftime("%Y-%m-%d-%H-%M-%S", localtime())
 terminal = "kitty"
 editor = "nvim"
 username = "timseriakov"
-homepage = "https://github.com"
+homepage = "http://pmx:1931"
 
 config.set("content.autoplay", False)
 

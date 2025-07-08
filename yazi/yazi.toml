@@ -58,6 +58,9 @@ play = [
 	{ run = 'mpv --force-window %*', orphan = true, for = "windows" },
 	{ run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
 ]
+glow = [
+  { run = 'glow --style=dark --pager "$1"', block = true, desc = "Glow", for = "unix" }
+]
 
 [open]
 rules = [
@@ -76,6 +79,8 @@ rules = [
 	{ mime = "*/javascript", use = [ "edit", "reveal" ] },
 	# Empty file
 	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
+  # Markdown
+  { name = "*.md", use = [ "glow", "edit", "reveal" ] },
 	# Fallback
 	{ name = "*", use = [ "open", "reveal" ] },
 ]
