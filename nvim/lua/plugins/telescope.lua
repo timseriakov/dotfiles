@@ -129,6 +129,8 @@ return {
     telescope.setup(opts)
     telescope.load_extension("live_grep_args")
 
+    vim.opt.timeoutlen = 300
+
     vim.keymap.set("n", "<leader><leader>", function()
       require("telescope.builtin").find_files({
         prompt_title = "Find Files (all)",
@@ -154,6 +156,10 @@ return {
         })
       end)
     end, { desc = "Live Grep with Glob" })
+
+    vim.keymap.set("n", "ff", function()
+      require("telescope.builtin").buffers()
+    end, { desc = "Telescope Buffers" })
   end,
 
   opts = {
