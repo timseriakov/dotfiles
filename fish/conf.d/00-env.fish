@@ -1,4 +1,5 @@
 set -gx fish_command_timeout 8000
+
 set -gx fish_greeting Welcome
 
 set -gx NEOVIDE_TITLE_HIDDEN 1
@@ -26,8 +27,6 @@ set -gx POSTING_THEME alpine
 set -gx LANG en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
 
-set -gx PATH $HOME/Qt/6.7.0-custom/bin $PATH
-
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
@@ -51,3 +50,8 @@ end
 source "$HOME/.cargo/env.fish"
 
 source "$HOME/.swiftly/env.fish"
+
+set -gx LDFLAGS "-L/opt/homebrew/opt/llvm@16/lib"
+set -gx CPPFLAGS "-I/opt/homebrew/opt/llvm@16/include"
+
+set -gx ESLINT_USE_FLAT_CONFIG true

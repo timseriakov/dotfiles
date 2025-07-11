@@ -55,6 +55,8 @@ if vim.g.neovide then
 
   vim.g.neovide_input_macos_option_key_is_meta = "both"
 
+  vim.g.neovide_input_use_logo = true
+
   vim.g.neovide_fullscreen = false
 
   vim.opt.title = false
@@ -166,12 +168,20 @@ if vim.g.neovide then
   end)
 
   -- Allow clipboard copy-paste
+  vim.o.clipboard = "unnamedplus"
+
   vim.keymap.set("v", "<D-c>", '"+y') -- Copy
   vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
   vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+
   vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+  vim.keymap.set("i", "<D-v>", "<C-r>+") -- Paste insert (fixed)
+  --
+  -- vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]]) -- Paste terminal
+  -- vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+  --
   vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+P]]) -- Paste terminal mode
+  vim.api.nvim_set_keymap("c", "<D-v>", "<C-r>+", { noremap = true, silent = true })
 
   -- command mapping
   vim.keymap.set({ "i", "n" }, "<D-a>", "<Esc>ggVG") -- select all
