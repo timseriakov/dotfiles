@@ -167,25 +167,21 @@ if vim.g.neovide then
     reset_scale_factor()
   end)
 
-  -- Allow clipboard copy-paste
+  -- Clipboard: Make <D-v> behave like "p" from system clipboard in all modes
   vim.o.clipboard = "unnamedplus"
 
-  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
-  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
-  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  -- Copy in visual mode
+  vim.keymap.set("v", "<D-c>", '"+y', { noremap = true })
 
-  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
-  vim.keymap.set("i", "<D-v>", "<C-r>+") -- Paste insert (fixed)
-  --
-  -- vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]]) -- Paste terminal
-  -- vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
-  --
-  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+P]]) -- Paste terminal mode
-  vim.api.nvim_set_keymap("c", "<D-v>", "<C-r>+", { noremap = true, silent = true })
+  -- Paste in normal and visual mode as "p"
+  vim.keymap.set({ "n", "v" }, "<D-v>", '"+p', { noremap = true })
 
-  -- command mapping
-  vim.keymap.set({ "i", "n" }, "<D-a>", "<Esc>ggVG") -- select all
-  vim.keymap.set("n", "<D-z>", "u") -- undo
+  -- Paste in insert mode: exit, paste, return
+  vim.keymap.set("i", "<D-v>", '<Esc>"+pli', { noremap = true })
 
-  -- vim.keymap.set("x", "<D-x>", '"+dm0i<Esc>`0') -- cut (include insert hack to fix whichkey issue #518)
+  -- Paste in command-line mode
+  vim.keymap.set("c", "<D-v>", "<C-r>+", { noremap = true })
+
+  -- Paste in terminal mode: exit to normal, paste, return
+  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]], { noremap = true })
 end
