@@ -1,3 +1,5 @@
+set -gx PATH /opt/local/bin /opt/local/sbin $PATH
+
 set -gx fish_command_timeout 8000
 
 set -gx fish_greeting Welcome
@@ -50,8 +52,5 @@ end
 source "$HOME/.cargo/env.fish"
 
 source "$HOME/.swiftly/env.fish"
-
-set -gx LDFLAGS "-L/opt/homebrew/opt/llvm@16/lib"
-set -gx CPPFLAGS "-I/opt/homebrew/opt/llvm@16/include"
 
 set -gx ESLINT_USE_FLAT_CONFIG true
