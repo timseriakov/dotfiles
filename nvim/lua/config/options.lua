@@ -167,21 +167,39 @@ if vim.g.neovide then
     reset_scale_factor()
   end)
 
-  -- Clipboard: Make <D-v> behave like "p" from system clipboard in all modes
+  vim.g.neovide_input_use_logo = true
   vim.o.clipboard = "unnamedplus"
 
-  -- Copy in visual mode
-  vim.keymap.set("v", "<D-c>", '"+y', { noremap = true })
-
-  -- Paste in normal and visual mode as "p"
+  -- Normal / visual
   vim.keymap.set({ "n", "v" }, "<D-v>", '"+p', { noremap = true })
 
-  -- Paste in insert mode: exit, paste, return
-  vim.keymap.set("i", "<D-v>", '<Esc>"+pli', { noremap = true })
+  -- Insert mode
+  vim.keymap.set("i", "<D-v>", function()
+    local lines = vim.fn.getreg("+", 1, true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    vim.api.nvim_put(lines, "c", true, true)
+    vim.api.nvim_feedkeys("li", "n", true)
+  end, { noremap = true })
 
-  -- Paste in command-line mode
+  -- Terminal
+  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]], { noremap = true })
+
+  -- Command-line
   vim.keymap.set("c", "<D-v>", "<C-r>+", { noremap = true })
 
-  -- Paste in terminal mode: exit to normal, paste, return
-  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]], { noremap = true })
+  -- Visual mode copy
+  vim.keymap.set("v", "<D-c>", '"+y', { noremap = true })
+
+  -- Prompt buffers (Telescope, Dressing, etc)
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "DressingInput", "TelescopePrompt", "alpha", "oil", "neo-tree", "snacks_explorer" },
+    callback = function()
+      vim.keymap.set("i", "<D-v>", function()
+        local lines = vim.fn.getreg("+", 1, true)
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+        vim.api.nvim_put(lines, "c", true, true)
+        vim.api.nvim_feedkeys("li", "n", true)
+      end, { buffer = true, noremap = true })
+    end,
+  })
 end
