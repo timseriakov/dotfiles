@@ -38,7 +38,6 @@ return {
 
         vim.keymap.set({ "n", "x", "o" }, "F", function()
           flash.jump({
-            label = { pos = "top" },
             pattern = "^",
             search = { mode = "search" },
           })
