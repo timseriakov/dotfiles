@@ -171,7 +171,7 @@ if vim.g.neovide then
   vim.o.clipboard = "unnamedplus"
 
   -- Normal / visual
-  vim.keymap.set({ "n", "v" }, "<D-v>", '"+p', { noremap = true })
+  vim.keymap.set({ "n", "v" }, "<D-v>", '"+P', { noremap = true })
 
   -- Insert mode
   vim.keymap.set("i", "<D-v>", function()
@@ -182,7 +182,7 @@ if vim.g.neovide then
   end, { noremap = true })
 
   -- Terminal
-  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]], { noremap = true })
+  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+Pi]], { noremap = true })
 
   -- Command-line
   vim.keymap.set("c", "<D-v>", "<C-r>+", { noremap = true })
