@@ -64,7 +64,7 @@ if vim.g.neovide then
   -- vim.g.neovide_background_color = "#2e3440"
 
   vim.g.neovide_padding_top = 20
-  vim.g.neovide_padding_bottom = 0
+  vim.g.neovide_padding_bottom = 10
   vim.g.neovide_padding_right = 0
   vim.g.neovide_padding_left = 10
 
@@ -84,12 +84,12 @@ if vim.g.neovide then
   vim.g.neovide_floating_blur_amount_y = 7.0
 
   vim.g.neovide_floating_shadow = true
-  vim.g.neovide_floating_z_height = 3
+  vim.g.neovide_floating_z_height = 2
   vim.g.neovide_light_angle_degrees = 45
   vim.g.neovide_light_radius = 3
-  vim.g.neovide_floating_corner_radius = 0.3
+  vim.g.neovide_floating_corner_radius = 0.2
 
-  vim.g.experimental_layer_grouping = true
+  vim.g.experimental_layer_grouping = false
 
   vim.g.neovide_show_border = true -- true???
 
