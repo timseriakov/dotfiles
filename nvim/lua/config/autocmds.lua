@@ -21,6 +21,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   command = [[%s/\s\+$//e]],
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    vim.b.snacks_indent = false
+  end,
+})
+
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.api.nvim_create_augroup("CustomHL", { clear = true }),
   callback = function()
