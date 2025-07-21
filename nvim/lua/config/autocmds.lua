@@ -28,6 +28,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
+-- fix nord theme LSP border
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#4c566a" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#3b4252" })
+  end,
+})
+
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = vim.api.nvim_create_augroup("CustomHL", { clear = true }),
   callback = function()
