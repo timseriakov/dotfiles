@@ -13,6 +13,7 @@ vim.opt.spelllang = { "ru", "en" }
 
 vim.o.mousescroll = "ver:1,hor:1"
 vim.opt.swapfile = false
+vim.b.snacks_indent = false
 
 -- Change cursor shape per mode in terminals like kitty or iTerm2
 if vim.env.TERM:match("xterm-kitty") or vim.env.TERM:match("xterm-256color") then
@@ -64,7 +65,7 @@ if vim.g.neovide then
   -- vim.g.neovide_background_color = "#2e3440"
 
   vim.g.neovide_padding_top = 20
-  vim.g.neovide_padding_bottom = 10
+  vim.g.neovide_padding_bottom = 0
   vim.g.neovide_padding_right = 0
   vim.g.neovide_padding_left = 10
 
@@ -91,7 +92,7 @@ if vim.g.neovide then
 
   vim.g.experimental_layer_grouping = false
 
-  vim.g.neovide_show_border = true -- true???
+  vim.g.neovide_show_border = true
 
   -- vim.g.neovide_cursor_vfx_mode = "railgun"
   -- vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц

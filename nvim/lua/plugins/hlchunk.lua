@@ -28,13 +28,13 @@ return {
           { fg = "#81A1C1" },
         },
       },
-      blank = {
-        enable = true,
-        chars = { "⋅" },
-        style = {
-          { fg = "#3B4252" },
-        },
-      },
+      -- blank = {
+      --   enable = true,
+      --   chars = { "⋅" },
+      --   style = {
+      --     { fg = "#3B4252" },
+      --   },
+      -- },
     })
   end,
 }
