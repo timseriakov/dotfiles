@@ -4,6 +4,10 @@ return {
     require("lualine").setup({
       options = {
         globalstatus = false,
+        disabled_filetypes = {
+          statusline = { "dashboard" },
+          winbar = { "dashboard" },
+        },
       },
       sections = {
         lualine_a = {
