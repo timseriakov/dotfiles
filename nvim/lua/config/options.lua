@@ -13,7 +13,6 @@ vim.opt.spelllang = { "ru", "en" }
 
 vim.o.mousescroll = "ver:1,hor:1"
 vim.opt.swapfile = false
-vim.b.snacks_indent = false
 
 -- Change cursor shape per mode in terminals like kitty or iTerm2
 if vim.env.TERM:match("xterm-kitty") or vim.env.TERM:match("xterm-256color") then
