@@ -26,22 +26,6 @@ pages:
             channels:
               - theprimeagen
 
-          - type: server-stats
-            name: VPS
-            servers:
-              - type: remote
-                url: https://misc-glance-agent.yyhtbv.easypanel.host
-                token: "!1Qaz2Wsx"
-
-          - type: server-stats
-            name: localhost
-            hide-mountpoints-by-default: true
-            mountpoints:
-              "/":
-                hide: false
-            servers:
-              - type: local
-
       - size: full
         widgets:
           - type: group

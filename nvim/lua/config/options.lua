@@ -54,12 +54,11 @@ if vim.g.neovide then
   vim.o.guifont = "ShureTechMono Nerd Font:h18"
 
   vim.g.neovide_input_macos_option_key_is_meta = "both"
-
   vim.g.neovide_input_use_logo = true
 
-  vim.g.neovide_fullscreen = false
-
   vim.opt.title = false
+  vim.g.neovide_fullscreen = false
+  -- vim.g.neovide_macos_simple_fullscreen = true
 
   -- vim.g.neovide_background_color = "#2e3440"
 
@@ -76,8 +75,8 @@ if vim.g.neovide then
   -- vim.g.neovide_scroll_animation_far_lines = 0 -- this prevents previews in fzf windows from snapping
   -- vim.g.neovide_cursor_animate_in_insert_mode = true
 
-  vim.g.neovide_window_blurred = true
-  vim.g.neovide_opacity = 0.8
+  vim.g.neovide_window_blurred = false
+  vim.g.neovide_opacity = 1 -- 0.8
   vim.g.neovide_normal_opacity = 1
 
   vim.g.neovide_floating_blur_amount_x = 7.0
@@ -96,7 +95,9 @@ if vim.g.neovide then
   -- vim.g.neovide_cursor_vfx_mode = "railgun"
   -- vim.g.neovide_cursor_vfx_particle_density = 10.0 -- плотность частиц
   vim.g.neovide_cursor_antialiasing = true
-  vim.g.neovide_hide_mouse_when_typing = false
+  -- vim.g.neovide_cursor_short_animation_length = 0.04
+
+  vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_floating_opacity = 1
 
   -- vim.g.neovide_cursor_vfx_particle_curl = 0.1
