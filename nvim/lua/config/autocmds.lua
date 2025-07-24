@@ -2,7 +2,7 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
--- Автоформатирование при сохранении
+-- Format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.js", "*.ts", "*.jsx", "*.tsx" },
   callback = function()
@@ -25,15 +25,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
   callback = function()
     vim.b.snacks_indent = false
-  end,
-})
-
--- fix nord theme LSP border
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#4c566a" })
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#3b4252" })
   end,
 })
 
@@ -72,43 +63,5 @@ vim.api.nvim_create_autocmd("FocusGained", {
     if vim.fn.mode() ~= "i" then
       switch_to_english()
     end
-  end,
-})
-
-local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", { clear = true })
-vim.api.nvim_create_autocmd({ "User" }, {
-  pattern = "CodeCompanion*",
-  group = group,
-  callback = function(request)
-    if request.match == "CodeCompanionChatSubmitted" then
-      return
-    end
-
-    local msg
-
-    msg = "[CodeCompanion] " .. request.match:gsub("CodeCompanion", "")
-
-    vim.notify(msg, "info", {
-      timeout = 1000,
-      keep = function()
-        return not vim
-          .iter({ "Finished", "Opened", "Hidden", "Closed", "Cleared", "Created" })
-          :fold(false, function(acc, cond)
-            return acc or vim.endswith(request.match, cond)
-          end)
-      end,
-      id = "code_companion_status",
-      title = "Code Companion Status",
-      opts = function(notif)
-        notif.icon = ""
-        if vim.endswith(request.match, "Started") then
-          ---@diagnostic disable-next-line: undefined-field
-          notif.icon = spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-        elseif vim.endswith(request.match, "Finished") then
-          notif.icon = " "
-        end
-      end,
-    })
   end,
 })
