@@ -22,6 +22,25 @@ return {
       return val
     end
 
+    local openrouter_models = {
+      "mistralai/mistral-7b-instruct:free",
+      "openai/gpt-3.5-turbo",
+      "openai/gpt-4o",
+      "anthropic/claude-3.5-sonnet",
+      "google/gemini-1.5-flash",
+    }
+
+    local current_openrouter_model = openrouter_models[1]
+
+    local function select_openrouter_model()
+      vim.ui.select(openrouter_models, { prompt = "Select OpenRouter Model:" }, function(choice)
+        if choice then
+          current_openrouter_model = choice
+          vim.notify("  OpenRouter model set to: " .. choice, vim.log.levels.INFO)
+        end
+      end)
+    end
+
     local adapters = {
       openai = function()
         return extend("openai", {
@@ -29,14 +48,17 @@ return {
           schema = { model = { default = "gpt-4o" } },
         })
       end,
-      openrouter = function()
-        return extend("openai_compatible", {
+      mistral = function()
+        return require("codecompanion.adapters").extend("mistral", {
           env = {
-            url = "https://openrouter.ai/api/v1",
-            api_key = safe_getenv("OPENROUTER_API_KEY"),
-            chat_url = "/chat/completions",
+            url = "https://api.mistral.ai",
+            api_key = "MISTRAL_API_KEY",
           },
-          schema = { model = { default = "mistralai/mistral-7b-instruct:free" } },
+          schema = {
+            model = {
+              default = "codestral-latest",
+            },
+          },
         })
       end,
       codestral = function()
@@ -46,6 +68,20 @@ return {
             api_key = safe_getenv("CODESTRAL_API_KEY"),
           },
           schema = { model = { default = "codestral-latest" } },
+        })
+      end,
+      openrouter = function()
+        return require("codecompanion.adapters").extend("openai_compatible", {
+          env = {
+            url = "https://openrouter.ai/api",
+            api_key = "OPENROUTER_API_KEY",
+            chat_url = "/v1/chat/completions",
+          },
+          schema = {
+            model = {
+              default = current_openrouter_model,
+            },
+          },
         })
       end,
       gemini = function()
@@ -93,6 +129,7 @@ return {
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
           opts = {
+            language = "Russian",
             make_vars = true,
             make_slash_commands = true,
             show_result_in_chat = true,
@@ -101,6 +138,7 @@ return {
         history = {
           enabled = true,
           opts = {
+            language = "Russian",
             keymap = "gh",
             save_chat_keymap = "sc",
             auto_save = true,
@@ -114,7 +152,7 @@ return {
             auto_generate_title = true,
             title_generation_opts = {
               adapter = "openai",
-              model = "gpt-4o",
+              model = "gpt-4.1-nano",
               refresh_every_n_prompts = 3,
               max_refreshes = 5,
               format_title = function(title)
@@ -181,5 +219,7 @@ return {
     map("n", "<leader>am", function()
       require("codecompanion").extensions.history.generate_summary()
     end, vim.tbl_extend("force", opts, { desc = "Summarize Chat (gcs)" }))
+
+    map("n", "<leader>ao", select_openrouter_model, vim.tbl_extend("force", opts, { desc = "Select OpenRouter Model" }))
   end,
 }
