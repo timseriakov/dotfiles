@@ -108,7 +108,7 @@ return {
     })
 
     require("codecompanion").setup({
-      log_level = "DEBUG",
+      log_level = "ERROR",
       adapters = adapters,
       strategies = {
         chat = { adapter = "gemini" },

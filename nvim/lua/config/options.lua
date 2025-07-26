@@ -22,31 +22,6 @@ if vim.env.TERM:match("xterm-kitty") or vim.env.TERM:match("xterm-256color") the
   vim.opt.t_SR = "\27[4 q" -- replace: underline
 end
 
-if vim.g.started_by_firenvim then
-  vim.cmd([[set guifont=ShureTechMono\ Nerd\ Font\ Mono:h18]])
-
-  vim.g.firenvim_config = {
-    globalSettings = {
-      alt = "all",
-    },
-    localSettings = {
-      [".*"] = {
-        takeover = "never",
-        cmdline = "neovim",
-        content = "text",
-        selector = "textarea",
-      },
-    },
-  }
-
-  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-    callback = function()
-      vim.cmd("silent write")
-    end,
-    nested = true,
-  })
-end
-
 -- -- for neovide
 if vim.g.neovide then
   vim.env.IN_NEOVIDE = "true"
