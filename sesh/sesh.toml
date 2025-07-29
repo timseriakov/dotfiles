@@ -3,15 +3,12 @@ sort_order = ["config", "tmux", "zoxide"]
 blacklist = ["scratch"]
 
 [default_session]
-startup_command = "nvim ."
 preview_command = "eza --all --git --icons --color=always {}"
 
 [[session]]
 name = "dotfiles"
 path = "~/dev/dotfiles"
-startup_command = "nvim ."
 
 [[session]]
 name = "vault"
 path = "~/vaults/obsidian"
-startup_command = "nvim ."
