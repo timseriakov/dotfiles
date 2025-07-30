@@ -7,7 +7,7 @@ local function notify_result(title, res)
   end
 
   vim.notify(
-    (ok and "✅ " or "❌ ") .. title .. ":\n\n" .. output,
+    (ok and "  " or "  ") .. title .. ":\n\n" .. output,
     ok and vim.log.levels.INFO or vim.log.levels.ERROR,
     { title = title }
   )
