@@ -1,1 +1,12 @@
-{"history": ["src/mastra/workflows/describe-index.step.ts:5:20:const INDEX_NAME = process.env.VECTOR_INDEX || \"payload_docs\";", "src/mastra/tools/examples/run-agent.ts:39:34:  const agent = mastra.getAgent(\"payloadDocsAgent\");", "**/*.ts", "docs/**", "**/*.json", "**/*.mdx", "app/**", "**/*.md"]}
+{
+  "history": [
+    "**/*.tsx",
+    "**/*.ts",
+    "docs/**",
+    "**/*.json",
+    "**/*.mdx",
+    "app/**",
+    "**/*.md"
+  ]
+}
+
