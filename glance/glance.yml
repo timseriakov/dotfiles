@@ -202,6 +202,7 @@ pages:
               - bknd-io/bknd
               - neovide/neovide
               - neovim/neovim
+              - yarlson/lnk
 
           - type: markets
             markets:

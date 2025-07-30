@@ -113,9 +113,9 @@ function M.open_commit_popup(initial_text, commit_file, git_root, opts)
         on_exit = function(_, code)
           vim.schedule(function()
             if code == 0 then
-              vim.notify("✅ Commit created!", vim.log.levels.INFO)
+              vim.notify("  Commit created!", vim.log.levels.INFO)
             else
-              vim.notify("❌ Commit failed", vim.log.levels.ERROR)
+              vim.notify("  Commit failed", vim.log.levels.ERROR)
             end
           end)
         end,
