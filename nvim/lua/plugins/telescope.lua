@@ -154,6 +154,7 @@ return {
           map("i", "<c-s>", save_query_and_run(actions.select_horizontal))
           map("i", "<c-v>", save_query_and_run(actions.select_vertical))
           map("i", "<c-t>", save_query_and_run(actions.select_tab))
+          map("i", "<c-l>", save_query_and_run(actions.send_to_qflist + actions.open_qflist))
 
           map("i", "<C-h>", function(bufnr)
             local original_query = action_state.get_current_line(bufnr)
@@ -192,6 +193,11 @@ return {
     opts.pickers.find_files = {
       find_command = build_fd_args(""),
     }
+
+    opts.defaults = opts.defaults or {}
+    opts.defaults.mappings = opts.defaults.mappings or {}
+    opts.defaults.mappings.i = opts.defaults.mappings.i or {}
+    opts.defaults.mappings.i["<C-l>"] = actions.send_to_qflist + actions.open_qflist
 
     telescope.setup(opts)
     telescope.load_extension("live_grep_args")
