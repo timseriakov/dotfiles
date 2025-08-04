@@ -14,11 +14,14 @@ return {
     local conf = require("telescope.config").values
     local glob_store = require("modules.glob_store")
     local query_store = require("modules.query_store")
+    local file_query_store = require("modules.file_query_store")
 
     -- Forward declarations
     local launch_grep
+    local launch_find_files
     local open_glob_picker
     local open_query_history_picker
+    local open_file_query_history_picker
 
     local function get_excluded()
       return {
@@ -106,7 +109,30 @@ return {
     open_query_history_picker = function(callback)
       local queries = query_store.load_all()
       pickers.new({}, {
-        prompt_title = "Search History",
+        prompt_title = "Grep History",
+        previewer = false,
+        layout_config = { width = 0.5, height = 0.5 },
+        finder = finders.new_table({ results = queries }),
+        sorter = conf.generic_sorter({}),
+        attach_mappings = function(history_bufnr, map)
+          map("i", "<cr>", function()
+            local entry = action_state.get_selected_entry()
+            actions.close(history_bufnr)
+            callback(entry and entry.value)
+          end)
+          map("i", "<esc>", function(bufnr)
+            actions.close(bufnr)
+            callback(nil)
+          end)
+          return true
+        end,
+      }):find()
+    end
+
+    open_file_query_history_picker = function(callback)
+      local queries = file_query_store.load_all()
+      pickers.new({}, {
+        prompt_title = "File Search History",
         previewer = false,
         layout_config = { width = 0.5, height = 0.5 },
         finder = finders.new_table({ results = queries }),
@@ -183,6 +209,62 @@ return {
       })
     end
 
+    launch_find_files = function(options)
+      options = options or {}
+      local glob = options.glob
+      if glob == nil then
+        glob = glob_store.load_latest()
+        if glob == nil then glob = "" end
+      end
+
+      local current_query = options.query or ""
+      local title = glob ~= "" and ("Find Files › " .. glob) or "Find Files (all)"
+
+      require("telescope.builtin").find_files({
+        prompt_title = title,
+        find_command = build_fd_args(glob),
+        default_text = current_query,
+        attach_mappings = function(prompt_bufnr, map)
+          local function save_query_and_run(action)
+            return function(bufnr)
+              local query = action_state.get_current_line(bufnr)
+              if query and query ~= "" then file_query_store.save(query) end
+              action(bufnr)
+            end
+          end
+
+          map("i", "<cr>", save_query_and_run(actions.select_default))
+          map("i", "<c-s>", save_query_and_run(actions.select_horizontal))
+          map("i", "<c-v>", save_query_and_run(actions.select_vertical))
+          map("i", "<c-t>", save_query_and_run(actions.select_tab))
+          map("i", "<c-l>", save_query_and_run(actions.send_to_qflist + actions.open_qflist))
+
+          map("i", "<C-h>", function(bufnr)
+            local original_query = action_state.get_current_line(bufnr)
+            actions.close(bufnr)
+            open_file_query_history_picker(function(new_query)
+              launch_find_files({ glob = glob, query = new_query or original_query })
+            end)
+          end)
+
+          map("i", "<C-g>", function(bufnr)
+            local original_query = action_state.get_current_line(bufnr)
+            actions.close(bufnr)
+            open_glob_picker(function(new_glob)
+              if new_glob ~= nil then
+                glob_store.save(new_glob)
+                launch_find_files({ glob = new_glob, query = original_query })
+              else
+                launch_find_files({ glob = glob, query = original_query })
+              end
+            end)
+          end)
+
+          return true
+        end,
+      })
+    end
+
     opts.pickers = opts.pickers or {}
     opts.pickers.live_grep = {
       additional_args = function()
@@ -204,21 +286,13 @@ return {
 
     vim.opt.timeoutlen = 300
 
-    vim.keymap.set("n", "<leader><leader>", function()
-      require("telescope.builtin").find_files({
-        prompt_title = "Find Files (all)",
-        find_command = build_fd_args(""),
-      })
-    end, { desc = "Find files (all)" })
+    vim.keymap.set("n", "<leader><leader>", launch_find_files, { desc = "Find Files with History" })
 
     vim.keymap.set("n", "<leader>sf", function()
       open_glob_picker(function(glob)
         if glob ~= nil then
           glob_store.save(glob)
-          require("telescope.builtin").find_files({
-            prompt_title = glob ~= "" and ("Find Files › " .. glob) or "Find Files (all)",
-            find_command = build_fd_args(glob),
-          })
+          launch_find_files({ glob = glob })
         end
       end)
     end, { desc = "Find Files with Glob" })
