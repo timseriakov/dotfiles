@@ -54,3 +54,4 @@ source "$HOME/.cargo/env.fish"
 source "$HOME/.swiftly/env.fish"
 
 set -gx ESLINT_USE_FLAT_CONFIG true
+set -gx COMPOSE_BAKE true
