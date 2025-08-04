@@ -142,11 +142,18 @@ return {
         additional_args = glob ~= "" and { "--glob", glob } or nil,
         default_text = current_query,
         attach_mappings = function(prompt_bufnr, map)
-          map("i", "<cr>", function(bufnr)
-            local query = action_state.get_current_line(bufnr)
-            if query and query ~= "" then query_store.save(query) end
-            actions.select_default(bufnr)
-          end)
+          local function save_query_and_run(action)
+            return function(bufnr)
+              local query = action_state.get_current_line(bufnr)
+              if query and query ~= "" then query_store.save(query) end
+              action(bufnr)
+            end
+          end
+
+          map("i", "<cr>", save_query_and_run(actions.select_default))
+          map("i", "<c-s>", save_query_and_run(actions.select_horizontal))
+          map("i", "<c-v>", save_query_and_run(actions.select_vertical))
+          map("i", "<c-t>", save_query_and_run(actions.select_tab))
 
           map("i", "<C-h>", function(bufnr)
             local original_query = action_state.get_current_line(bufnr)

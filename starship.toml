@@ -14,3 +14,8 @@ vimcmd_symbol = '[](bold green)'
 vimcmd_visual_symbol = '[](bold yellow)'
 vimcmd_replace_symbol = '[](bold purple)'
 vimcmd_replace_one_symbol = '[](bold purple)'
+
+[username]
+disabled = true
+[hostname]
+disabled = true

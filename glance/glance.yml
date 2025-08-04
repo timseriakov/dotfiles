@@ -203,6 +203,7 @@ pages:
               - neovide/neovide
               - neovim/neovim
               - yarlson/lnk
+              - openai/codex
 
           - type: markets
             markets:
