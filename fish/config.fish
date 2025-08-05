@@ -17,3 +17,8 @@ set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
 if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
+
+# vapi
+set --export VAPI_INSTALL "$HOME/.vapi"
+set --export PATH $VAPI_INSTALL/bin $PATH
+set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
