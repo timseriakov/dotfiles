@@ -1,4 +1,3 @@
--- telescope_glob_config.lua
 return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
@@ -8,392 +7,10 @@ return {
   config = function(_, opts)
     local telescope = require("telescope")
     local actions = require("telescope.actions")
-    local action_state = require("telescope.actions.state")
-    local finders = require("telescope.finders")
-    local pickers = require("telescope.pickers")
-    local conf = require("telescope.config").values
     local glob_store = require("modules.glob_store")
-    local query_store = require("modules.query_store")
-    local file_query_store = require("modules.file_query_store")
-
-    -- Forward declarations
-    local launch_grep
-    local launch_find_files
-    local open_glob_picker
-    local open_query_history_picker
-    local open_file_query_history_picker
-    local copy_selection_to_clipboard
-    local copy_selection_paths_to_clipboard
-
-    local function get_excluded()
-      return {
-        "-E",
-        "*.png",
-        "-E",
-        "*.jpg",
-        "-E",
-        "*.jpeg",
-        "-E",
-        "*.gif",
-        "-E",
-        "*.svg",
-        "-E",
-        "*.webp",
-      }
-    end
-
-    local function build_fd_args(glob)
-      local args = { "fd", "--color", "never" }
-      local path = glob:match("^([^*/]+)/%*%*$")
-      if path and vim.fn.isdirectory(path) == 1 then
-        table.insert(args, ".")
-        table.insert(args, "--search-path")
-        table.insert(args, path)
-      else
-        if glob and glob ~= "" then
-          table.insert(args, "--glob")
-          table.insert(args, glob)
-        end
-      end
-      vim.list_extend(args, { "--type", "f" })
-      vim.list_extend(args, get_excluded())
-      return args
-    end
-
-    open_glob_picker = function(callback)
-      local seen = {}
-      local globs = {}
-
-      local function add_glob(label, value)
-        local key = value
-        if value == "" then
-          key = "__all_files__"
-        end
-        if not seen[key] then
-          table.insert(globs, { label = label, value = value })
-          seen[key] = true
-        end
-      end
-
-      add_glob("All files", "")
-      for _, glob in ipairs(glob_store.load_all()) do
-        if glob and glob ~= "" then
-          add_glob("󰆓 " .. glob, glob)
-        end
-      end
-      add_glob("**/*.ts", "**/*.ts")
-      add_glob("**/*.tsx", "**/*.tsx")
-      add_glob("**/*.json", "**/*.json")
-      add_glob("app/**", "app/**")
-      add_glob("docs/**", "docs/**")
-      add_glob("󰈭 Open globster.xyz", "__open_globster__")
-
-      pickers
-        .new({}, {
-          prompt_title = "Choose Glob",
-          previewer = false,
-          layout_config = { width = 0.5, height = 0.5 },
-          sorting_strategy = "ascending",
-          finder = finders.new_table({
-            results = globs,
-            entry_maker = function(entry)
-              return { value = entry.value, display = entry.label, ordinal = entry.label }
-            end,
-          }),
-          sorter = conf.generic_sorter({}),
-          attach_mappings = function(prompt_bufnr, map)
-            map("i", "<cr>", function()
-              local entry = action_state.get_selected_entry()
-              actions.close(prompt_bufnr)
-              local value = entry and entry.value
-              if value == "__open_globster__" then
-                vim.fn.jobstart(
-                  { vim.fn.has("mac") == 1 and "open" or "xdg-open", "https://globster.xyz/" },
-                  { detach = true }
-                )
-                return
-              end
-              if value ~= nil then
-                callback(value)
-              end
-            end)
-            map("i", "<esc>", function(bufnr)
-              actions.close(bufnr)
-              callback(nil) -- Cancel
-            end)
-            return true
-          end,
-        })
-        :find()
-    end
-
-    open_query_history_picker = function(callback)
-      local queries = query_store.load_all()
-      pickers
-        .new({}, {
-          prompt_title = "Grep History",
-          previewer = false,
-          layout_config = { width = 0.5, height = 0.5 },
-          finder = finders.new_table({ results = queries }),
-          sorter = conf.generic_sorter({}),
-          attach_mappings = function(history_bufnr, map)
-            map("i", "<cr>", function()
-              local entry = action_state.get_selected_entry()
-              actions.close(history_bufnr)
-              callback(entry and entry.value)
-            end)
-            map("i", "<esc>", function(bufnr)
-              actions.close(bufnr)
-              callback(nil)
-            end)
-            return true
-          end,
-        })
-        :find()
-    end
-
-    open_file_query_history_picker = function(callback)
-      local queries = file_query_store.load_all()
-      pickers
-        .new({}, {
-          prompt_title = "File Search History",
-          previewer = false,
-          layout_config = { width = 0.5, height = 0.5 },
-          finder = finders.new_table({ results = queries }),
-          sorter = conf.generic_sorter({}),
-          attach_mappings = function(history_bufnr, map)
-            map("i", "<cr>", function()
-              local entry = action_state.get_selected_entry()
-              actions.close(history_bufnr)
-              callback(entry and entry.value)
-            end)
-            map("i", "<esc>", function(bufnr)
-              actions.close(bufnr)
-              callback(nil)
-            end)
-            return true
-          end,
-        })
-        :find()
-    end
-
-    copy_selection_to_clipboard = function(bufnr)
-      local picker = action_state.get_current_picker(bufnr)
-      local selection = picker:get_multi_selection()
-
-      if #selection == 0 then
-        vim.notify("No files selected.", vim.log.levels.WARN)
-        return
-      end
-
-      local content_parts = {}
-      local processed_files = {}
-
-      local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel 2>/dev/null"))
-      if vim.v.shell_error ~= 0 then
-        git_root = vim.fn.getcwd()
-      end
-      if git_root:sub(-1) ~= "/" then
-        git_root = git_root .. "/"
-      end
-
-      for _, entry in ipairs(selection) do
-        local path_from_picker = entry.filename or entry.value
-        if path_from_picker and not processed_files[path_from_picker] then
-          processed_files[path_from_picker] = true
-
-          local abs_path = vim.fn.fnamemodify(path_from_picker, ":p")
-          local relative_path = abs_path
-          if abs_path:find(git_root, 1, true) == 1 then
-            relative_path = abs_path:sub(#git_root + 1)
-          end
-
-          local ok, lines = pcall(vim.fn.readfile, abs_path)
-          if ok then
-            local file_content = table.concat(lines, "\n")
-            table.insert(content_parts, relative_path .. "\n" .. file_content)
-          else
-            vim.notify("Error reading file: " .. abs_path, vim.log.levels.ERROR)
-          end
-        end
-      end
-
-      if #content_parts > 0 then
-        local final_string = table.concat(content_parts, "\n\n-------------\n\n")
-        vim.fn.setreg("+", final_string)
-        vim.notify("Copied content of " .. #content_parts .. " file(s) to clipboard.")
-      end
-
-      actions.close(bufnr)
-    end
-
-    copy_selection_paths_to_clipboard = function(bufnr)
-      local picker = action_state.get_current_picker(bufnr)
-      local selection = picker:get_multi_selection()
-
-      if #selection == 0 then
-        vim.notify("No files selected.", vim.log.levels.WARN)
-        return
-      end
-
-      local path_parts = {}
-      local processed_files = {}
-
-      local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel 2>/dev/null"))
-      if vim.v.shell_error ~= 0 then
-        git_root = vim.fn.getcwd()
-      end
-      if git_root:sub(-1) ~= "/" then
-        git_root = git_root .. "/"
-      end
-
-      for _, entry in ipairs(selection) do
-        local path_from_picker = entry.filename or entry.value
-        if path_from_picker and not processed_files[path_from_picker] then
-          processed_files[path_from_picker] = true
-
-          local abs_path = vim.fn.fnamemodify(path_from_picker, ":p")
-          local relative_path = abs_path
-          if abs_path:find(git_root, 1, true) == 1 then
-            relative_path = abs_path:sub(#git_root + 1)
-          end
-          table.insert(path_parts, relative_path)
-        end
-      end
-
-      if #path_parts > 0 then
-        local final_string = table.concat(path_parts, "\n")
-        vim.fn.setreg("+", final_string)
-        vim.notify("Copied " .. #path_parts .. " path(s) to clipboard.")
-      end
-
-      actions.close(bufnr)
-    end
-
-    launch_grep = function(options)
-      options = options or {}
-      local glob = options.glob
-      if glob == nil then
-        glob = glob_store.load_latest()
-        if glob == nil then
-          glob = ""
-        end
-      end
-
-      local current_query = options.query or ""
-      local title = glob ~= "" and ("Live Grep › " .. glob) or "Live Grep (all files)"
-
-      telescope.extensions.live_grep_args.live_grep_args({
-        prompt_title = title,
-        additional_args = glob ~= "" and { "--glob", glob } or nil,
-        default_text = current_query,
-        attach_mappings = function(prompt_bufnr, map)
-          local function save_query_and_run(action)
-            return function(bufnr)
-              local query = action_state.get_current_line(bufnr)
-              if query and query ~= "" then
-                query_store.save(query)
-              end
-              action(bufnr)
-            end
-          end
-
-          map("i", "<cr>", save_query_and_run(actions.select_default))
-          map("i", "<c-s>", save_query_and_run(actions.select_horizontal))
-          map("i", "<c-v>", save_query_and_run(actions.select_vertical))
-          map("i", "<c-t>", save_query_and_run(actions.select_tab))
-          map("i", "<c-l>", save_query_and_run(actions.send_to_qflist + actions.open_qflist))
-          map("i", "<c-y>", copy_selection_to_clipboard)
-          map("i", "<c-u>", copy_selection_paths_to_clipboard)
-
-          map("i", "<C-h>", function(bufnr)
-            local original_query = action_state.get_current_line(bufnr)
-            actions.close(bufnr)
-            open_query_history_picker(function(new_query)
-              launch_grep({ glob = glob, query = new_query or original_query })
-            end)
-          end)
-
-          map("i", "<C-g>", function(bufnr)
-            local original_query = action_state.get_current_line(bufnr)
-            actions.close(bufnr)
-            open_glob_picker(function(new_glob)
-              if new_glob ~= nil then
-                glob_store.save(new_glob)
-                launch_grep({ glob = new_glob, query = original_query })
-              else
-                -- Relaunch with same state if glob picker was cancelled
-                launch_grep({ glob = glob, query = original_query })
-              end
-            end)
-          end)
-
-          return true
-        end,
-      })
-    end
-
-    launch_find_files = function(options)
-      options = options or {}
-      local glob = options.glob
-      if glob == nil then
-        glob = glob_store.load_latest()
-        if glob == nil then
-          glob = ""
-        end
-      end
-
-      local current_query = options.query or ""
-      local title = glob ~= "" and ("Find Files › " .. glob) or "Find Files (all)"
-
-      require("telescope.builtin").find_files({
-        prompt_title = title,
-        find_command = build_fd_args(glob),
-        default_text = current_query,
-        attach_mappings = function(prompt_bufnr, map)
-          local function save_query_and_run(action)
-            return function(bufnr)
-              local query = action_state.get_current_line(bufnr)
-              if query and query ~= "" then
-                file_query_store.save(query)
-              end
-              action(bufnr)
-            end
-          end
-
-          map("i", "<cr>", save_query_and_run(actions.select_default))
-          map("i", "<c-s>", save_query_and_run(actions.select_horizontal))
-          map("i", "<c-v>", save_query_and_run(actions.select_vertical))
-          map("i", "<c-t>", save_query_and_run(actions.select_tab))
-          map("i", "<c-l>", save_query_and_run(actions.send_to_qflist + actions.open_qflist))
-          map("i", "<c-y>", copy_selection_to_clipboard)
-          map("i", "<c-u>", copy_selection_paths_to_clipboard)
-
-          map("i", "<C-h>", function(bufnr)
-            local original_query = action_state.get_current_line(bufnr)
-            actions.close(bufnr)
-            open_file_query_history_picker(function(new_query)
-              launch_find_files({ glob = glob, query = new_query or original_query })
-            end)
-          end)
-
-          map("i", "<C-g>", function(bufnr)
-            local original_query = action_state.get_current_line(bufnr)
-            actions.close(bufnr)
-            open_glob_picker(function(new_glob)
-              if new_glob ~= nil then
-                glob_store.save(new_glob)
-                launch_find_files({ glob = new_glob, query = original_query })
-              else
-                launch_find_files({ glob = glob, query = original_query })
-              end
-            end)
-          end)
-
-          return true
-        end,
-      })
-    end
+    local launchers = require("modules.telescope.launchers")
+    local pickers = require("modules.telescope.pickers")
+    local utils = require("modules.telescope.utils")
 
     opts.pickers = opts.pickers or {}
     opts.pickers.live_grep = {
@@ -403,31 +20,33 @@ return {
       end,
     }
     opts.pickers.find_files = {
-      find_command = build_fd_args(""),
+      find_command = utils.build_fd_args(""),
     }
 
     opts.defaults = opts.defaults or {}
     opts.defaults.mappings = opts.defaults.mappings or {}
     opts.defaults.mappings.i = opts.defaults.mappings.i or {}
     opts.defaults.mappings.i["<C-l>"] = actions.send_to_qflist + actions.open_qflist
+    opts.defaults.mappings.i["<c-y>"] = require("modules.telescope.actions").copy_selection_to_clipboard
+    opts.defaults.mappings.i["<c-u>"] = require("modules.telescope.actions").copy_selection_paths_to_clipboard
 
     telescope.setup(opts)
     telescope.load_extension("live_grep_args")
 
     vim.opt.timeoutlen = 300
 
-    vim.keymap.set("n", "<leader><leader>", launch_find_files, { desc = "Find Files with History" })
+    vim.keymap.set("n", "<leader><leader>", launchers.launch_find_files, { desc = "Find Files with History" })
 
     vim.keymap.set("n", "<leader>sf", function()
-      open_glob_picker(function(glob)
+      pickers.open_glob_picker(function(glob)
         if glob ~= nil then
           glob_store.save(glob)
-          launch_find_files({ glob = glob })
+          launchers.launch_find_files({ glob = glob })
         end
       end)
     end, { desc = "Find Files with Glob" })
 
-    vim.keymap.set("n", "<leader>/", launch_grep, { desc = "Live Grep with History" })
+    vim.keymap.set("n", "<leader>/", launchers.launch_grep, { desc = "Live Grep with History" })
 
     vim.keymap.set("n", "ff", function()
       require("telescope.builtin").buffers()
@@ -471,4 +90,3 @@ return {
     },
   },
 }
-

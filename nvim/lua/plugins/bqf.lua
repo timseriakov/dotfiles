@@ -25,7 +25,7 @@ return {
       func_map = {
         -- We remapped the horizontal split key to <C-s> to match personal preference.
         -- The default was <C-x>.
-        split = "<C-s>",
+        -- split = "<C-s>",
       },
 
       -- ## Preview window settings ##
@@ -44,7 +44,9 @@ return {
         buf_label = true, -- Show buffer index label (e.g., [1/3]) in the quickfix list.
         -- Callback to decide whether to preview a file. Return false to skip.
         -- We provide a default function to satisfy the linter.
-        should_preview_cb = function() return true end,
+        should_preview_cb = function()
+          return true
+        end,
       },
 
       -- ## FZF integration settings (for filtering within the qf window) ##
