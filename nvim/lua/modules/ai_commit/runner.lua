@@ -93,7 +93,7 @@ local function run_ai_commit(git_root, desc, opts)
             layout_strategy = "horizontal",
             layout_config = {
               width = 0.75,
-              height = 0.40,
+              height = 0.49,
               prompt_position = "top",
               preview_width = 0.35,
               anchor = "CENTER",
