@@ -55,3 +55,12 @@ source "$HOME/.swiftly/env.fish"
 
 set -gx ESLINT_USE_FLAT_CONFIG true
 set -gx COMPOSE_BAKE true
+
+# OrbStack tools
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
+
+# vapi
+set --export VAPI_INSTALL "$HOME/.vapi"
+set --export PATH $VAPI_INSTALL/bin $PATH
+set --export MANPATH "$HOME/.vapi"/share/man $MANPATH

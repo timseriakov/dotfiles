@@ -1,4 +1,4 @@
---- @since 25.2.7
+--- @since 25.5.31
 
 local M = {}
 local shell = os.getenv("SHELL") or ""
@@ -65,7 +65,7 @@ end
 local function get_trash_volume()
 	local cwd = get_cwd()
 	local trash_volumes_stream, cmr_err =
-		Command("trash-list"):args({ "--volumes" }):stdout(Command.PIPED):stderr(Command.PIPED):output()
+		Command("trash-list"):arg({ "--volumes" }):stdout(Command.PIPED):stderr(Command.PIPED):output()
 
 	---@type string|nil
 	local matched_vol_path = nil
@@ -96,7 +96,7 @@ local function get_latest_trashed_items(curr_working_volume)
 
 	local fake_enter = Command("printf"):stderr(Command.PIPED):stdout(Command.PIPED):spawn():take_stdout()
 	local trash_list_stream, err_cmd = Command(shell)
-		:args({ "-c", "trash-restore " .. path_quote(curr_working_volume) })
+		:arg({ "-c", "trash-restore " .. path_quote(curr_working_volume) })
 		:stdin(fake_enter)
 		:stdout(Command.PIPED)
 		:stderr(Command.NULL)
@@ -155,7 +155,7 @@ local function restore_files(curr_working_volume, start_index, end_index)
 	end
 
 	local restored_status, _ = Command(shell)
-		:args({
+		:arg({
 			"-c",
 			"echo " .. ya.quote(start_index .. "-" .. end_index) .. " | trash-restore --overwrite " .. path_quote(
 				curr_working_volume
@@ -200,9 +200,9 @@ end
 local function get_components(trash_list)
 	local theme = get_state(STATE.THEME) or {}
 	local item_odd_style = theme.list_item and theme.list_item.odd and ui.Style():fg(theme.list_item.odd)
-		or (th and th.confirm and th.confirm.list or ui.Style():fg("blue"))
+		or (th.confirm.list or ui.Style():fg("blue"))
 	local item_even_style = theme.list_item and theme.list_item.even and ui.Style():fg(theme.list_item.even)
-		or (th and th.confirm and th.confirm.list or ui.Style():fg("blue"))
+		or (th.confirm.list or ui.Style():fg("blue"))
 
 	local trashed_items_components = {}
 	for idx, item in pairs(trash_list) do
@@ -211,7 +211,7 @@ local function get_components(trash_list)
 			ui.Line({
 				ui.Span(" "),
 				ui.Span(item.trashed_path):style(idx % 2 == 0 and item_even_style or item_odd_style),
-			}):align(ui.Line.LEFT)
+			}):align(ui.Align.LEFT)
 		)
 	end
 	return trashed_items_components
@@ -233,21 +233,29 @@ function M:entry()
 	pos = pos or { "center", w = 70, h = 40 }
 
 	local theme = get_state(STATE.THEME) or {}
-	theme.title = theme.title and ui.Style():fg(theme.title):bold() or (th and th.confirm and th.confirm.title)
-	theme.header = theme.header and ui.Style():fg(theme.header) or (th and th.confirm and th.confirm.content)
+	theme.title = theme.title and ui.Style():fg(theme.title):bold() or th.confirm.title
+	theme.header = theme.header and ui.Style():fg(theme.header) or th.confirm.content
 	theme.header_warning = ui.Style():fg(theme.header_warning or "yellow")
 	if ya.confirm and show_confirm then
 		local continue_restore = ya.confirm({
-			-- title = ui.Line("Restore files/folders"):fg(theme.title):bold(),
 			title = ui.Line("Restore files/folders"):style(theme.title),
+			body = ui.Text({
+				ui.Line(""),
+				ui.Line("The following files and folders are going to be restored:"):style(theme.header),
+				ui.Line(""),
+				table.unpack(get_components(trashed_items)),
+			})
+				:align(ui.Align.LEFT)
+				:wrap(ui.Wrap.YES),
+			-- TODO: remove this after next yazi released
 			content = ui.Text({
 				ui.Line(""),
 				ui.Line("The following files and folders are going to be restored:"):style(theme.header),
 				ui.Line(""),
 				table.unpack(get_components(trashed_items)),
 			})
-				:align(ui.Text.LEFT)
-				:wrap(ui.Text.WRAP),
+				:align(ui.Align.LEFT)
+				:wrap(ui.Wrap.YES),
 			pos = pos,
 		})
 		-- stopping
@@ -260,14 +268,23 @@ function M:entry()
 	if collided_items and #collided_items > 0 then
 		overwrite_confirmed = ya.confirm({
 			title = ui.Line("Restore files/folders"):style(theme.title),
+			body = ui.Text({
+				ui.Line(""),
+				ui.Line("The following files and folders are existed, overwrite?"):style(theme.header_warning),
+				ui.Line(""),
+				table.unpack(get_components(collided_items)),
+			})
+				:align(ui.Align.LEFT)
+				:wrap(ui.Wrap.YES),
+			-- TODO: remove this after next yazi released
 			content = ui.Text({
 				ui.Line(""),
 				ui.Line("The following files and folders are existed, overwrite?"):style(theme.header_warning),
 				ui.Line(""),
 				table.unpack(get_components(collided_items)),
 			})
-				:align(ui.Text.LEFT)
-				:wrap(ui.Text.WRAP),
+				:align(ui.Align.LEFT)
+				:wrap(ui.Wrap.YES),
 			pos = pos,
 		})
 	end

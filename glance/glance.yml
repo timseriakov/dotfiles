@@ -204,6 +204,8 @@ pages:
               - neovim/neovim
               - yarlson/lnk
               - openai/codex
+              - charmbracelet/crush
+              - eyaltoledano/claude-task-master
 
           - type: markets
             markets:
