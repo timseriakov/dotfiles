@@ -92,10 +92,10 @@ local function run_ai_commit(git_root, desc, opts)
             sorter = conf.generic_sorter({}),
             layout_strategy = "horizontal",
             layout_config = {
-              width = 0.75,
+              width = 0.9,
               height = 0.49,
               prompt_position = "top",
-              preview_width = 0.35,
+              preview_width = 0.33,
               anchor = "CENTER",
             },
             results_title = false,
