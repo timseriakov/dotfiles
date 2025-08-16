@@ -5,13 +5,11 @@ function M:peek(job)
 	local preview_width = 55
 
 	local child = Command("glow")
-		:args({
-			"--style",
-			"dark",
-			"--width",
-			tostring(preview_width),  -- Use fixed width instead of job.area.w
-			tostring(job.file.url),
-		})
+		:arg("--style")
+		:arg("dark")
+		:arg("--width")
+		:arg(tostring(preview_width))
+		:arg(tostring(job.file.url))
 		:env("CLICOLOR_FORCE", "1")
 		:stdout(Command.PIPED)
 		:stderr(Command.PIPED)
@@ -39,10 +37,10 @@ function M:peek(job)
 
 	child:start_kill()
 	if job.skip > 0 and i < job.skip + limit then
-		ya.mgr_emit("peek", { 
-			tostring(math.max(0, i - limit)), 
+		ya.mgr_emit("peek", {
+			tostring(math.max(0, i - limit)),
 			only_if = job.file.url,
-			upper_bound = true 
+			upper_bound = true,
 		})
 	else
 		lines = lines:gsub("\t", string.rep(" ", rt.preview.tab_size))
@@ -55,7 +53,7 @@ function M:seek(job)
 	if not h or h.url ~= job.file.url then
 		return
 	end
-	ya.mgr_emit('peek', {
+	ya.mgr_emit("peek", {
 		math.max(0, cx.active.preview.skip + job.units),
 		only_if = job.file.url,
 	})
