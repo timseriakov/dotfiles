@@ -72,17 +72,17 @@ return {
     local map = vim.keymap.set
 
     -- global bindings
-    map("n", "<leader>hvp", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
-    map("n", "<leader>hvh", vgit.buffer_history_preview, { desc = "VGit: File History" })
-    map("n", "<leader>hvb", vgit.buffer_blame_preview, { desc = "VGit: Blame Preview" })
-    map("n", "<leader>hvf", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
-    map("n", "<leader>hvk", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
-    map("n", "<leader>hvt", vgit.project_stash_preview, { desc = "VGit: Stash" })
+    map("n", "<leader>hv", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
+    map("n", "<leader>hP", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
+    map("n", "<leader>hV", vgit.buffer_blame_preview, { desc = "VGit: Blame Preview" })
+    map("n", "<leader>hf", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
+    map("n", "<leader>hh", vgit.buffer_history_preview, { desc = "VGit: File History" })
+    map("n", "<leader>ht", vgit.project_stash_preview, { desc = "VGit: Stash" })
 
     -- toggle diff mode with notification
     map(
       "n",
-      "<leader>hvx",
+      "<leader>hx",
       (function()
         local current = "split"
         local icons = {
