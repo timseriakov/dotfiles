@@ -14,7 +14,7 @@ return {
           enabled = true,
         },
         live_gutter = {
-          enabled = true,
+          enabled = false,
           edge_navigation = true,
         },
         scene = {
@@ -70,17 +70,32 @@ return {
     })
 
     local map = vim.keymap.set
-    local opts = { noremap = true, silent = true, desc = "" }
 
-    map("n", "<leader>gvp", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
-    map("n", "<leader>gvh", vgit.buffer_history_preview, { desc = "VGit: File History" })
-    map("n", "<leader>gvb", vgit.buffer_blame_preview, { desc = "VGit: Blame Preview" })
-    map("n", "<leader>gvf", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
-    map("n", "<leader>gvx", vgit.toggle_diff_preference, { desc = "Toggle VGit: Diff View" })
-    map("n", "<leader>gu", vgit.buffer_reset, { desc = "VGit: Reset Buffer" })
-    map("n", "<leader>gvs", vgit.buffer_hunk_stage, { desc = "VGit: Stage Hunk" })
-    map("n", "<leader>gvr", vgit.buffer_hunk_reset, { desc = "VGit: Reset Hunk" })
-    map("n", "<leader>gvk", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
-    map("n", "<leader>gvt", vgit.project_stash_preview, { desc = "VGit: Stash" })
+    -- global bindings
+    map("n", "<leader>hvp", vgit.project_diff_preview, { desc = "VGit: Project Diff" })
+    map("n", "<leader>hvh", vgit.buffer_history_preview, { desc = "VGit: File History" })
+    map("n", "<leader>hvb", vgit.buffer_blame_preview, { desc = "VGit: Blame Preview" })
+    map("n", "<leader>hvf", vgit.buffer_diff_preview, { desc = "VGit: File Diff" })
+    map("n", "<leader>hvk", vgit.buffer_hunk_preview, { desc = "VGit: Preview Hunk" })
+    map("n", "<leader>hvt", vgit.project_stash_preview, { desc = "VGit: Stash" })
+
+    -- toggle diff mode with notification
+    map(
+      "n",
+      "<leader>hvx",
+      (function()
+        local current = "split"
+        local icons = {
+          split = "  split",
+          unified = "  unified",
+        }
+        return function()
+          vgit.toggle_diff_preference()
+          current = (current == "split") and "unified" or "split"
+          vim.notify("VGit diff mode: " .. icons[current], vim.log.levels.INFO, { title = "VGit" })
+        end
+      end)(),
+      { desc = "VGit: Toggle Diff Mode" }
+    )
   end,
 }
