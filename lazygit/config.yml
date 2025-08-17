@@ -1,0 +1,6 @@
+customCommands:
+  - key: "L"
+    command: "lazycommit commit"
+    context: "files"
+    description: "Generate commit message with LazyCommit"
+    loadingText: "AI is generating a commit message..."
