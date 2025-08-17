@@ -1,16 +1,16 @@
 return {
   "rmagatti/goto-preview",
-  dependencies = { "rmagatti/logger.nvim" }, -- обязательная зависимость
-  event = "BufEnter", -- загружать при открытии любого файла
+  dependencies = { "rmagatti/logger.nvim" },
+  event = "BufEnter",
   config = function()
     require("goto-preview").setup({
       width = 120,
       height = 20,
       border = { "↖", "─", "┐", "│", "┘", "─", "└", "│" },
-      default_mappings = false, -- мы настроим свои биндинги
-      resizing_mappings = true, -- чтобы можно было стрелками менять размер окна
+      default_mappings = false,
+      resizing_mappings = true,
       focus_on_open = true,
-      dismiss_on_move = false, -- чтобы окно не закрывалось, если ты двигаешь курсор
+      dismiss_on_move = false,
       force_close = true,
       bufhidden = "wipe",
       stack_floating_preview_windows = true,
