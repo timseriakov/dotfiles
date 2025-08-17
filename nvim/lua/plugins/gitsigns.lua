@@ -57,18 +57,22 @@ return {
 
     map({ "n", "v" }, "<leader>hs", "<cmd>Gitsigns stage_hunk<CR>", "Stage Hunk")
     map({ "n", "v" }, "<leader>hr", "<cmd>Gitsigns reset_hunk<CR>", "Reset Hunk")
-    map("n", "<leader>hS", gs.stage_buffer, "Stage Buffer")
-    map("n", "<leader>hu", gs.undo_stage_hunk, "Undo Stage Hunk")
-    map("n", "<leader>hR", gs.reset_buffer, "Reset Buffer")
-    map("n", "<leader>hp", gs.preview_hunk_inline, "Preview Hunk Inline")
+
+    map("n", "<leader>hS", gs.stage_buffer, "GSings: Stage Buffer")
+    map("n", "<leader>hu", gs.undo_stage_hunk, "GSings: SUndo Stage Hunk")
+
+    map("n", "<leader>hR", gs.reset_buffer, "GSings: SReset Buffer")
+    map("n", "<leader>hp", gs.preview_hunk_inline, "GSings: SPreview Hunk Inline")
+
     map("n", "<leader>hb", function()
       gs.blame_line({ full = true })
-    end, "Blame Line")
-    map("n", "<leader>hB", gs.blame, "Blame Buffer")
-    map("n", "<leader>hd", gs.diffthis, "Diff This")
+    end, "GSings: SBlame Line")
+
+    map("n", "<leader>hB", gs.blame, "GSings: SBlame Buffer")
+    map("n", "<leader>hd", gs.diffthis, "GSings: SDiff This")
     map("n", "<leader>hD", function()
       gs.diffthis("~")
     end, "Diff This ~")
-    map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Select Hunk")
+    map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GSings: SSelect Hunk")
   end,
 }
