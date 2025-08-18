@@ -4,3 +4,4 @@ customCommands:
     context: "files"
     description: "Generate commit message with LazyCommit"
     loadingText: "AI is generating a commit message..."
+    subprocess: true
