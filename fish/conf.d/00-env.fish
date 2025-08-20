@@ -63,3 +63,8 @@ set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
 set --export VAPI_INSTALL "$HOME/.vapi"
 set --export PATH $VAPI_INSTALL/bin $PATH
 set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
+
+# QtWebEngine paths for qutebrowser (Homebrew on macOS ARM)
+set -gx QTWEBENGINE_RESOURCES_PATH (brew --prefix qt@6)/lib/QtWebEngineCore.framework/Resources
+set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
+set -gx QT_PLUGIN_PATH (brew --prefix qt@6)/plugins
