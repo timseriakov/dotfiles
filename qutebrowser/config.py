@@ -117,7 +117,7 @@ c.colors.downloads.stop.bg = green
 c.colors.hints.bg = blue
 c.colors.hints.fg = white
 c.colors.hints.match.fg = accent
-c.hints.border = f"2px solid {accent}"
+c.hints.border = f"1px solid {accent}"
 
 # Messages
 c.colors.messages.info.bg = black
@@ -306,4 +306,3 @@ config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
 config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
 config.bind(leader + "tx", 'spawn --detach open {url}') # open in default browser
-

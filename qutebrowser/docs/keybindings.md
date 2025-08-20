@@ -1,117 +1,151 @@
-# [qute2k](https://github.com/2kabhishek/qute2k) [Keybindings](https://github.com/2KAbhishek/qute2k/blob/main/docs/keybindings.md)
-
-This table contains all the custom keybindings added by qute2k, find [default qutebrowser bindings here](qute://help/img/cheatsheet-big.png)
-
 > Leader is mapped to <kbd>Space</kbd> by default
 
-## Generic Bindings
+## Clipboard Bindings
 
-| Shortcut                       | Action                     |
-| ------------------------------ | -------------------------- |
-| <kbd>H</kbd>                   | Switch to the previous tab |
-| <kbd>J</kbd>                   | Go forward in history      |
-| <kbd>K</kbd>                   | Go back in history         |
-| <kbd>L</kbd>                   | Switch to the next tab     |
-| <kbd>O</kbd>                   | Open in new window         |
-| <kbd>P</kbd>                   | Open in private window     |
-| <kbd>Q</kbd>                   | Close the browser          |
-| <kbd>W</kbd>                   | Clone tab in new window    |
-| <kbd>a</kbd>                   | Enter insert mode          |
-| <kbd>t</kbd>                   | Open in new tab            |
-| <kbd>Ctrl-+</kbd>              | Zoom in                    |
-| <kbd>Ctrl--</kbd>              | Zoom out                   |
-| <kbd>Meta-+</kbd>              | Zoom in                    |
-| <kbd>Meta--</kbd>              | Zoom out                   |
-| <kbd>Leader</kbd> <kbd>x</kbd> | Quit the browser           |
+| Shortcut | Action |
+|---|---|
+| <kbd>p</kbd> | open --clipboard |
+| <kbd>P</kbd> | open --clipboard --tab |
 
 ## Config Bindings
 
-| Shortcut                        | Action                       |
-| ------------------------------- | ---------------------------- |
-| <kbd>Leader</kbd> <kbd>cb</kbd> | Toggle status bar visibility |
-| <kbd>Leader</kbd> <kbd>cc</kbd> | Edit configuration file      |
-| <kbd>Leader</kbd> <kbd>ch</kbd> | Open help page               |
-| <kbd>Leader</kbd> <kbd>ci</kbd> | Open GitHub page in new tab  |
-| <kbd>Leader</kbd> <kbd>cr</kbd> | Reload configuration file    |
-| <kbd>Leader</kbd> <kbd>cs</kbd> | Set command in command mode  |
-| <kbd>Leader</kbd> <kbd>ct</kbd> | Toggle tab bar visibility    |
+| Shortcut | Action |
+|---|---|
+| <kbd>e</kbd> | reload |
+| <kbd>Leader</kbd> <kbd>ce</kbd> | spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh |
+| <kbd>Leader</kbd> <kbd>ch</kbd> | help |
+| <kbd>Leader</kbd> <kbd>cc</kbd> | reload config |
+| <kbd>Leader</kbd> <kbd>cs</kbd> | cmd-set-text -s :set -t |
 
 ## Developer Bindings
 
-| Shortcut                        | Action                     |
-| ------------------------------- | -------------------------- |
-| <kbd>Leader</kbd> <kbd>dd</kbd> | Open devtools              |
-| <kbd>Leader</kbd> <kbd>de</kbd> | Edit text                  |
-| <kbd>Leader</kbd> <kbd>dc</kbd> | Edit command in $EDITOR    |
-| <kbd>Leader</kbd> <kbd>df</kbd> | Focus on devtools          |
-| <kbd>Leader</kbd> <kbd>dp</kbd> | Take a screenshot          |
-| <kbd>Leader</kbd> <kbd>ds</kbd> | View page source in editor |
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>dd</kbd> | devtools |
+| <kbd>Leader</kbd> <kbd>de</kbd> | edit-text |
+| <kbd>Leader</kbd> <kbd>dc</kbd> | cmd-edit |
+| <kbd>Leader</kbd> <kbd>df</kbd> | devtools-focus |
+| <kbd>Leader</kbd> <kbd>dp</kbd> | screenshot ~/Documents/screenshotsqute-2025-08-18-14:54:53.png |
+| <kbd>Leader</kbd> <kbd>ds</kbd> | view-source --edit |
+| <kbd>Leader</kbd> <kbd>dz</kbd> | view-source |
+
+## Find Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>/</kbd> | search |
+| <kbd>?</kbd> | search |
+
+## Generic Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>d</kbd> | scroll-page 0 0.5 |
+| <kbd>u</kbd> | scroll-page 0 -0.5 |
+| <kbd>t</kbd> | cmd-set-text -s :open -t |
+| <kbd>x</kbd> | tab-close |
+| <kbd><<</kbd> | tab-move - |
+| <kbd>>></kbd> | tab-move + |
 
 ## Hints Bindings
 
-| Shortcut                        | Action                          |
-| ------------------------------- | ------------------------------- |
-| <kbd>Leader</kbd> <kbd>fc</kbd> | Yank link                       |
-| <kbd>Leader</kbd> <kbd>fd</kbd> | Download video with youtube-dl  |
-| <kbd>Leader</kbd> <kbd>ff</kbd> | Open link in new background tab |
-| <kbd>Leader</kbd> <kbd>fi</kbd> | Activate hints for inputs       |
-| <kbd>Leader</kbd> <kbd>fo</kbd> | Open link in new window         |
-| <kbd>Leader</kbd> <kbd>fp</kbd> | Open link in private window     |
-| <kbd>Leader</kbd> <kbd>fv</kbd> | Open link in mpv                |
-| <kbd>Leader</kbd> <kbd>fy</kbd> | Yank link                       |
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>fc</kbd> | Yank link rapidly |
+| <kbd>Leader</kbd> <kbd>ff</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fb</kbd> | Open link in new tab (background) |
+| <kbd>Leader</kbd> <kbd>fi</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fo</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fp</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fv</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fy</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fx</kbd> | Open link in new tab (foreground) |
+| <kbd>Leader</kbd> <kbd>fz</kbd> | spawn --userscript ~/.local/bin/qute-fzf.sh |
+
+## Link Handling Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>f</kbd> | hint links |
+| <kbd>F</kbd> | hint links tab-bg |
+
+## Mode Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>i</kbd> | mode-enter insert |
+| <kbd>v</kbd> | mode-enter caret |
 
 ## Quit Bindings
 
-| Shortcut                        | Action              |
-| ------------------------------- | ------------------- |
-| <kbd>Leader</kbd> <kbd>qd</kbd> | Close current tab   |
-| <kbd>Leader</kbd> <kbd>qq</kbd> | Close the browser   |
-| <kbd>Leader</kbd> <kbd>qr</kbd> | Restart the browser |
-| <kbd>Leader</kbd> <kbd>qt</kbd> | Close other tabs    |
-| <kbd>Leader</kbd> <kbd>qw</kbd> | Close other windows |
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>qd</kbd> | tab-close |
+| <kbd>Leader</kbd> <kbd>qq</kbd> | close |
+| <kbd>Leader</kbd> <kbd>qr</kbd> | restart |
+| <kbd>Leader</kbd> <kbd>qt</kbd> | close all tabs except current |
+| <kbd>Leader</kbd> <kbd>qw</kbd> | close all windows except current |
+| <kbd>Leader</kbd> <kbd>x</kbd> | quit --save |
 
-## Tab Bindings
+## Tab Navigation Bindings
 
-| Shortcut                        | Action                       |
-| ------------------------------- | ---------------------------- |
-| <kbd>Leader</kbd> <kbd>ta</kbd> | Add bookmark                 |
-| <kbd>Leader</kbd> <kbd>tb</kbd> | List bookmarks               |
-| <kbd>Leader</kbd> <kbd>tc</kbd> | Clone current tab            |
-| <kbd>Leader</kbd> <kbd>td</kbd> | Clone tab in new window      |
-| <kbd>Leader</kbd> <kbd>tg</kbd> | Give tab to another window   |
-| <kbd>Leader</kbd> <kbd>th</kbd> | View history                 |
-| <kbd>Leader</kbd> <kbd>tm</kbd> | Move tab to a new position   |
-| <kbd>Leader</kbd> <kbd>tp</kbd> | Pin current tab              |
-| <kbd>Leader</kbd> <kbd>tt</kbd> | Open tab switcher            |
-| <kbd>Leader</kbd> <kbd>tu</kbd> | Undo last action             |
-| <kbd>Leader</kbd> <kbd>tw</kbd> | Take tab from another window |
+| Shortcut | Action |
+|---|---|
+| <kbd>w</kbd> | tab-prev |
+| <kbd>r</kbd> | tab-next |
+| <kbd>K</kbd> | tab-prev |
+| <kbd>J</kbd> | tab-next |
+| <kbd>q</kbd> | undo |
 
-To edit keybindings visit: [config.py](./config.py)
+## Tabs Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>ta</kbd> | bookmark-add |
+| <kbd>Leader</kbd> <kbd>tb</kbd> | bookmark-list |
+| <kbd>Leader</kbd> <kbd>tc</kbd> | tab-clone |
+| <kbd>Leader</kbd> <kbd>td</kbd> | tab-clone -w |
+| <kbd>Leader</kbd> <kbd>tg</kbd> | move tab to new window |
+| <kbd>Leader</kbd> <kbd>th</kbd> | history |
+| <kbd>Leader</kbd> <kbd>tm</kbd> | cmd-set-text -s :tab-move |
+| <kbd>Leader</kbd> <kbd>tp</kbd> | tab-pin |
+| <kbd>Leader</kbd> <kbd>tt</kbd> | cmd-set-text -s :tab-select |
+| <kbd>Leader</kbd> <kbd>tw</kbd> | move tab to selected window |
+| <kbd>Leader</kbd> <kbd>tx</kbd> | open in default browser |
+
+## UI Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>ut</kbd> | config-cycle tabs.show multiple switching |
+| <kbd>Leader</kbd> <kbd>us</kbd> | config-cycle statusbar.show always in-mode |
+| <kbd>Leader</kbd> <kbd>ua</kbd> | :set content.autoplay true ;; message-info 'Autoplay enabled' |
+| <kbd>Leader</kbd> <kbd>uf</kbd> | :set content.autoplay false ;; message-info 'Autoplay disabled' |
+
+## Yank Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd>yy</kbd> | yank |
+| <kbd>yl</kbd> | hint links yank |
+
+## Zoom Bindings
+
+| Shortcut | Action |
+|---|---|
+| <kbd><Ctrl-=/></kbd> | zoom-in |
+| <kbd><Ctrl--/></kbd> | zoom-out |
 
 ## Search Engines
 
-| Keybinding         | Action                                                             |
-| ------------------ | ------------------------------------------------------------------ |
-| <kbd>DEFAULT</kbd> | [DuckDuckGo](https://duckduckgo.com/?q={})                         |
-| <kbd>am</kbd>      | [Amazon](https://amazon.com/s?k={})                                |
-| <kbd>aw</kbd>      | [Arch Linux](https://wiki.archlinux.org/?search={})                |
-| <kbd>bn</kbd>      | [Bing](https://bing.com/search?q={})                               |
-| <kbd>dd</kbd>      | [DuckDuckGo](https://duckduckgo.com/?q={})                         |
-| <kbd>gg</kbd>      | [Google](https://google.com/search?q={})                           |
-| <kbd>gh</kbd>      | [GitHub](https://github.com/search?q={})                           |
-| <kbd>gho</kbd>     | [GitHub Open](https://github.com/{})                               |
-| <kbd>ghp</kbd>     | [GitHub PRs](https://www.github.com/pulls)                         |
-| <kbd>ghr</kbd>     | [GitHub Repo](https://github.com/2kabhishek/{})                    |
-| <kbd>jr</kbd>      | [JIRA Ticket](https://healthsparq.atlassian.net/browse/{})         |
-| <kbd>mp</kbd>      | [Google Maps](https://google.com/maps?q={})                        |
-| <kbd>rd</kbd>      | [Reddit](https://reddit.com/search/?q={})                          |
-| <kbd>rds</kbd>     | [Reddit Sub](https://reddit.com/r/{})                              |
-| <kbd>rt</kbd>      | [Rotten Tomatoes](https://rottentomatoes.com/search?search={})     |
-| <kbd>so</kbd>      | [Stack Overflow](https://stackoverflow.com/search?q={})            |
-| <kbd>sp</kbd>      | [Spotify](https://open.spotify.com/search/{})                      |
-| <kbd>tw</kbd>      | [Twitter](https://twitter.com/search?q={})                         |
-| <kbd>ud</kbd>      | [Urban Dictionary](https://urbandictionary.com/define.php?term={}) |
-| <kbd>wk</kbd>      | [Wikipedia](https://en.wikipedia.org/wiki/{})                      |
-| <kbd>yt</kbd>      | [YouTube](https://youtube.com/results?search_query={})             |
-| <kbd>ytm</kbd>     | [YouTube Music](https://music.youtube.com/search?q={})             |
+| Keybinding | Action |
+|---|---|
+| <kbd>DEFAULT</kbd> | [Google](https://google.com/search?q={...}) |
+| <kbd>dd</kbd> | [Duckduckgo](https://duckduckgo.com/?q={...}) |
+| <kbd>gh</kbd> | [Github](https://github.com/search?q={...}) |
+| <kbd>gg</kbd> | [Google](https://google.com/search?q={...}) |
+| <kbd>gho</kbd> | [Github](https://github.com/{...}) |
+| <kbd>ghr</kbd> | [Github](https://github.com/timseriakov/{...}) |
+| <kbd>yt</kbd> | [Youtube](https://youtube.com/results?search_query={...}) |
 
+To edit keybindings visit: [config.py](./config.py)
