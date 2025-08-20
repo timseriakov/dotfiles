@@ -18,7 +18,7 @@ function M.get_excluded()
 end
 
 function M.build_fd_args(glob)
-  local args = { "fd", "--color", "never" }
+  local args = { "fd", "--color", "never", "--hidden" }
   local path = glob:match("^([^*/]+)/%*%*$")
   if path and vim.fn.isdirectory(path) == 1 then
     table.insert(args, ".")
