@@ -1,8 +1,5 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  init = function()
-    -- Overridden to prevent auto-opening
-  end,
   opts = function(_, opts)
     opts.filesystem = opts.filesystem or {}
     opts.filesystem.window = opts.filesystem.window or {}
