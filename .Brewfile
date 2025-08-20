@@ -1,10 +1,3 @@
-tap "algertc/kleopatra4mac"
-tap "anchordotdev/tap"
-tap "antoniorodr/lexy"
-tap "charmbracelet/tap"
-tap "conikeec/tap"
-tap "d99kris/nchat"
-tap "dagger/tap"
 tap "daipeihust/tap"
 tap "danvergara/tools"
 tap "dotenvx/brew"
@@ -14,40 +7,10 @@ tap "felixkratz/formulae"
 tap "fsouza/prettierd"
 tap "ggozad/formulas"
 tap "gowebly/tap"
-tap "gromgit/brewtils"
-tap "hanshuaikang/nping"
 tap "hashicorp/tap"
-tap "homebrew-ffmpeg/ffmpeg"
-tap "homebrew/services"
-tap "imthaghost/goclone"
-tap "instantclienttap/instantclient"
 tap "itchyny/tap"
-tap "jesseduffield/lazydocker"
-tap "jesseduffield/lazygit"
-tap "jorgerojas26/lazysql"
 tap "koekeishiya/formulae"
-tap "kyoh86/tap"
-tap "libsql/sqld"
-tap "lusingander/tap"
-tap "mayowa-ojo/tap"
-tap "mietzen/thorium-cask"
-tap "ngrok/ngrok"
-tap "nikitabobko/tap"
-tap "opencode-ai/tap"
-tap "osx-cross/arm"
-tap "osx-cross/avr"
 tap "oven-sh/bun"
-tap "pulumi/tap"
-tap "qmk/qmk"
-tap "shshemi/tabiew"
-tap "sscotth/monoid"
-tap "sst/tap"
-tap "supabase/tap"
-tap "tursodatabase/tap"
-tap "valkyrie00/bbrew"
-tap "veeso/termscp"
-tap "vet-run/vet"
-tap "yarlson/lnk"
 # JPEG image codec that aids compression and decompression
 brew "jpeg-turbo"
 # Library for manipulating PNG images
@@ -114,8 +77,6 @@ brew "cointop"
 brew "coreutils"
 # CPU architecture fetching tool
 brew "cpufetch"
-# CPU usage limiter
-brew "cpulimit"
 # Top-like interface for container metrics
 brew "ctop"
 # Power of curl, ease of use of httpie
@@ -165,13 +126,7 @@ brew "snappy"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Play, record, convert, and stream audio and video
-brew "ffmpeg"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg@4"
-# Play, record, convert, and stream audio and video
 brew "ffmpeg@6"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Create thumbnails for your video files
 brew "ffmpegthumbnailer"
 # Fast Lexical Analyzer, generates Scanners (tokenizers)
@@ -326,10 +281,6 @@ brew "pyenv"
 brew "qt"
 # Python bindings for v6 of Qt
 brew "pyqt"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Cross-platform application and UI framework
@@ -411,37 +362,16 @@ brew "zlib"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # A powerful terminal-based AI assistant for developers, providing intelligent coding assistance directly in your terminal.
-brew "charmbracelet/tap/crush"
+brew "crush"
 # Switch your input method through terminal
-brew "daipeihust/tap/im-select"
+brew "im-select"
 # Secure dotenv–from the creator of `dotenv`
-brew "dotenvx/brew/dotenvx"
+brew "dotenvx"
 # prettier, on SPEED!
-brew "fsouza/prettierd/prettierd"
-# Interactive TUI for Homebrew
-brew "gromgit/brewtils/taproom"
-# Oracle Instant Client Basic x64
-brew "instantclienttap/instantclient/instantclient-basic"
-brew "itchyny/tap/mmv"
-# A simple terminal UI for docker, written in Go
-brew "jesseduffield/lazydocker/lazydocker"
-# Simple TUI to interact with the chmod command.
-brew "mayowa-ojo/tap/chmod-cli"
-# GNU compiler collection for AVR 8-bit and 32-bit Microcontrollers
-brew "osx-cross/avr/avr-gcc@9"
+brew "prettierd"
+brew "mmv"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "oven-sh/bun/bun"
-# The AI coding agent built for the terminal.
-brew "sst/tap/opencode"
-# Supabase CLI
-brew "supabase/tap/supabase"
-brew "tursodatabase/tap/turso"
-# A simple TUI tool to make your homebrew bold.
-brew "valkyrie00/bbrew/bbrew"
-# Command-line tool that acts as a safety net for the risky curl | bash pattern
-brew "vet-run/vet/vet-run"
-# Git-native dotfiles management that doesn't suck
-brew "yarlson/lnk/lnk"
+brew "bun"
 # Time tracker
 cask "activitywatch"
 # Enable Windows-like alt-tab
@@ -496,7 +426,3 @@ cask "voiceink"
 cask "whisky"
 # HTML to PDF renderer
 cask "wkhtmltopdf"
-# Video communication and virtual meeting platform
-cask "zoom"
-# Collect, organise, cite, and share research sources
-cask "zotero"
