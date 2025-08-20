@@ -197,13 +197,22 @@ function M.pick_git_files_then_commit(opts)
     attach_mappings = function(_, map)
       actions.select_default:replace(function(prompt_bufnr)
         local picker = action_state.get_current_picker(prompt_bufnr)
-        local selections = picker:get_multi_selection()
+        local multi_selections = picker:get_multi_selection()
+        local selections
+
+        if #multi_selections > 0 then
+          selections = multi_selections
+        else
+          local single_selection = action_state.get_selected_entry()
+          if single_selection then
+            selections = { single_selection }
+          else
+            selections = {}
+          end
+        end
 
         if #selections == 0 then
-          local single = action_state.get_selected_entry()
-          if single then
-            selections = { single }
-          end
+          return
         end
 
         local files = vim.tbl_map(function(entry)
