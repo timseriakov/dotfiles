@@ -1,9 +1,9 @@
 return {
-	"iamcco/markdown-preview.nvim",
-	cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-	build = "npm install",
-	init = function()
-		vim.g.mkdp_filetypes = { "markdown" }
-	end,
-	ft = { "markdown" },
+  "iamcco/markdown-preview.nvim",
+  build = function()
+    -- Use frozen lockfile to avoid modifying yarn.lock
+    vim.fn.system("cd app && rm -rf yarn.lock && yarn install --frozen-lockfile")
+  end,
+  ft = { "markdown" },
+  cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
 }
