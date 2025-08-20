@@ -196,43 +196,10 @@ function M.pick_git_files_then_commit(opts)
   builtin.git_status({
     attach_mappings = function(_, map)
       actions.select_default:replace(function(prompt_bufnr)
-        local picker = action_state.get_current_picker(prompt_bufnr)
-        local multi_selections = picker:get_multi_selection()
-        local selections
-
-        if #multi_selections > 0 then
-          selections = multi_selections
-        else
-          local single_selection = action_state.get_selected_entry()
-          if single_selection then
-            selections = { single_selection }
-          else
-            selections = {}
-          end
-        end
-
-        if #selections == 0 then
-          return
-        end
-
-        local files = vim.tbl_map(function(entry)
-          return entry.value
-        end, selections)
-
         actions.close(prompt_bufnr)
-
-        local git_root = get_git_root()
-        if not git_root then
-          vim.notify("Not inside a git repo", vim.log.levels.ERROR)
-          return
-        end
-
-        vim.fn.jobstart(vim.list_extend({ "git", "add" }, files), {
-          cwd = git_root,
-          on_exit = function()
-            M.ai_commit({ selected_files = files, amend = opts and opts.amend })
-          end,
-        })
+        -- The default action of the picker already staged the files.
+        -- We just need to proceed to the commit message generation.
+        M.ai_commit({ amend = opts and opts.amend })
       end)
       return true
     end,
