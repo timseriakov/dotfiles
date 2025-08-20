@@ -48,5 +48,10 @@ use = "yazi-rs/plugins:jump-to-char"
 rev = "de53d90"
 hash = "d2f04875bbd4ed3dd5696e8c4b094fde"
 
+[[plugin.deps]]
+use = "macydnah/office"
+rev = "33cc61a"
+hash = "d7e31c616cc6c8a1f05fdff7c47dae98"
+
 [flavor]
 deps = []

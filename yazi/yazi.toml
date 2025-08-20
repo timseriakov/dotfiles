@@ -124,6 +124,8 @@ preloaders = [
 	# Font
 	{ mime = "font/*", run = "font" },
 	{ mime = "application/ms-opentype", run = "font" },
+	# Office documents
+	{ mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", run = "office" },
 ]
 previewers = [
 	{ name = "*/", run = "folder" },
@@ -156,16 +158,31 @@ previewers = [
 	# Fallback
 	{ name = "*", run = "file" },
 ]
+prepend_preloaders = [
+    # Office Documents
+    { mime = "application/openxmlformats-officedocument.*", run = "office" },
+    { mime = "application/oasis.opendocument.*", run = "office" },
+    { mime = "application/ms-*", run = "office" },
+    { mime = "application/msword", run = "office" },
+    { name = "*.docx", run = "office" },
+]
 prepend_previewers = [
-  { name = "*.md", run = "glow" },
-  # Archive previewer
-	{ mime = "application/*zip",            run = "ouch" },
-	{ mime = "application/x-tar",           run = "ouch" },
-	{ mime = "application/x-bzip2",         run = "ouch" },
-	{ mime = "application/x-7z-compressed", run = "ouch" },
-	{ mime = "application/x-rar",           run = "ouch" },
-  { mime = "application/x-xz",            run = "ouch" },
-	{ mime = "application/xz",              run = "ouch" },
+    # Office Documents
+    { mime = "application/openxmlformats-officedocument.*", run = "office" },
+    { mime = "application/oasis.opendocument.*", run = "office" },
+    { mime = "application/ms-*", run = "office" },
+    { mime = "application/msword", run = "office" },
+    { name = "*.docx", run = "office" },
+    # Markdown
+    { name = "*.md", run = "glow" },
+    # Archive previewer
+    { mime = "application/*zip",            run = "ouch" },
+    { mime = "application/x-tar",           run = "ouch" },
+    { mime = "application/x-bzip2",         run = "ouch" },
+    { mime = "application/x-7z-compressed", run = "ouch" },
+    { mime = "application/x-rar",           run = "ouch" },
+    { mime = "application/x-xz",            run = "ouch" },
+    { mime = "application/xz",              run = "ouch" },
 ]
 prepend_fetchers = [
   { id   = "git", name = "*", run  = "git" },
