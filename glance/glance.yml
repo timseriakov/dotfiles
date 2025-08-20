@@ -38,7 +38,6 @@ pages:
               - UCYeiozh-4QwuC1sjgCmB92w # DevOps Toolbox
               - UCxa8XPOhu4iA6Lon71TJ0rg # Ampersand
               - UCo71RUe6DX4w-Vd47rFLXPg # typecraft
-              - UCrk2bNxxxLP-Qd77KxBJ3Xg # diinki
               - UCYvMQ4fBOX2kwfJ981cZSPg # proLinux
 
           - type: group
@@ -235,6 +234,22 @@ pages:
   #       widgets:
   #         # Add widgets here
   #
+  - name: Repos
+    columns:
+      - size: full
+        widgets:
+          - type: repository
+            repository: payloadcms/payload
+            pull-requests-limit: 5
+            issues-limit: 5
+            commits-limit: 5
+      - size: full
+        widgets:
+          - type: repository
+            repository: neovide/neovide
+            pull-requests-limit: 5
+            issues-limit: 5
+            commits-limit: 5
 
 theme:
   presets:
