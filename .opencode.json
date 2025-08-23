@@ -7,10 +7,17 @@
   },
   "lsp": {
     "typescript": {
-      "enabled": false,
+      "enabled": true,
       "command": "typescript-language-server",
       "args": ["--stdio"],
       "options": null
+    }
+  },
+  "mcp": {
+    "taskmaster-ai": {
+      "type": "local",
+      "enabled": true,
+      "command": ["npx", "-y", "--package=task-master-ai", "task-master-ai"]
     }
   },
   "agents": {
@@ -39,4 +46,3 @@
   },
   "autoCompact": true
 }
-
