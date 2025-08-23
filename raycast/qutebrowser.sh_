@@ -1,0 +1,23 @@
+#!/bin/bash
+# @raycast.schemaVersion 1
+# @raycast.title Qutebrowser
+# @raycast.mode silent
+# @raycast.package Browsers
+# @raycast.icon 🚀
+
+export PATH="/opt/homebrew/bin:$PATH"
+export QT_PLUGIN_PATH="$(brew --prefix qt@6)/plugins"
+
+QUTE_BIN="/opt/homebrew/bin/qutebrowser"
+
+# Check if qutebrowser process is running
+if pgrep -f "qutebrowser" >/dev/null; then
+  # It's running. Get its PID and try to activate it.
+  QUTE_PID=$(pgrep -f "qutebrowser" | head -n 1) # Get the first PID if multiple
+  if [ -n "$QUTE_PID" ]; then
+    osascript -e "tell application \"System Events\" to set frontmost of process id $QUTE_PID to true"
+  fi
+else
+  # Not running. Launch it.
+  "$QUTE_BIN" &
+fi
