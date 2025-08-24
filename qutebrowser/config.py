@@ -249,7 +249,7 @@ config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
 
 
-
+config.bind(",m", "spawn /opt/homebrew/bin/mpv {url}")
 
 # config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh")
