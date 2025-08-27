@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(system_profiler:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
