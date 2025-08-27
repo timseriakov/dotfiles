@@ -221,6 +221,7 @@ config.bind("i", "mode-enter insert")
 config.bind("v", "mode-enter caret")
 
 config.bind("t", "cmd-set-text -s :open -t")
+config.bind("<Cmd-t>", "cmd-set-text -s :open -t")
 
 # Find mode
 config.bind("/", "search")
@@ -240,6 +241,7 @@ config.bind("p", "open --clipboard")
 config.bind("P", "open --clipboard --tab")
 
 config.bind("x", "tab-close")
+config.bind("<Cmd-w>", "tab-close")
 
 # Move tab
 config.bind("<<", "tab-move -")
