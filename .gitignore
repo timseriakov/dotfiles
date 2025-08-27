@@ -10,4 +10,4 @@ codex/auth.json
 codex/log
 codex/sessions
 codex/history.jsonl
-codex/version.jsonl
+codex/version.json
