@@ -47,7 +47,7 @@ Chelp="\x1b[34m" # preview keybindings text
 # Patched to use a default value if QUTE_DATA_DIR is not set
 dbHistory="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history.sqlite"
 filterlist="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history-filters"
-closedtabs="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/closed-tabs-history"
+closedtabs="${QUTE_DATA_DIR:-/Users/tim/Library/Application Support/qutebrowser}/closed-tabs-history"
 tmpfile="/tmp/qute-plugins/qute-plugin-fzfhistory-tmp"
 
 #==== FUNCTIONS ==========================================
@@ -93,7 +93,13 @@ _build_history_list() {
 _build_closedtabs_list() {
   sedpattern="s/^/$C1/;s/|/$C2 /;s/\(.*\)|/\1$C3 | /"
 
-  tac $closedtabs | sed "$sedpattern" | fzf
+  # Check if closed-tabs file exists and is not empty
+  if [[ ! -s "$closedtabs" ]]; then
+    echo "No closed tabs history found" | fzf --disabled
+    return
+  fi
+  
+  tac "$closedtabs" | sed "$sedpattern" | fzf
 }
 
 # Fzf menu. $1: mode ; $2: select file to send the picked urls to qutebrowser
