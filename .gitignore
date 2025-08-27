@@ -6,3 +6,8 @@ zed/conversations
 zed/prompts
 .context
 repomix-output.xml
+codex/auth.json
+codex/log
+codex/sessions
+codex/history.jsonl
+codex/version.jsonl
