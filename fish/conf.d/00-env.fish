@@ -1,4 +1,11 @@
-set -gx PATH /opt/local/bin /opt/local/sbin /Users/tim/.qutebrowser/bin $PATH
+set -Ua fish_user_paths /opt/local/bin /opt/local/sbin $HOME/dev/dotfiles/qutebrowser/bin
+
+# Ruby ENV management
+set -Ua fish_user_paths $HOME/.rbenv/shims
+
+# Android SDK
+set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
+set -Ua fish_user_paths $ANDROID_HOME/emulator $ANDROID_HOME/platform-tools
 
 set -gx fish_command_timeout 8000
 
@@ -36,6 +43,7 @@ set --export PATH $BUN_INSTALL/bin $PATH
 # oracle instance client
 #set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
 #set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
+set -gx JAVA_HOME "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
 
 # volta
 set -gx VOLTA_HOME "$HOME/.volta"
