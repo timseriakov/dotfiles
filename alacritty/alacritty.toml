@@ -1,0 +1,196 @@
+[font]
+size = 18.0
+
+[font.normal]
+family = "ShureTechMono Nerd Font Mono"
+
+[colors.primary]
+background = "#2e3440"
+foreground = "#d8dee9"
+
+[colors.normal]
+black = "#3b4252"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#88c0d0"
+white = "#e5e9f0"
+
+[colors.bright]
+black = "#4c566a"
+red = "#bf616a"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+blue = "#81a1c1"
+magenta = "#b48ead"
+cyan = "#8fbcbb"
+white = "#eceff4"
+
+[colors.selection]
+text = "#d8dee9"
+background = "#3b4252"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Command"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Command"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Command|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+# Duplicates for Super modifier (alias of Command) and numpad
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Super"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Super"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Super|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Super"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadAdd"
+mods = "Command"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadSubtract"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadAdd"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadSubtract"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Command"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Command"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Super"
+action = "None"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Command|Shift"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Enter"
+mods = "Control"
+chars = "\u001b[13;5u"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Command"
+chars = "\u001bOP" # F1
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Command"
+chars = "\u001bOQ" # F2
+
+[[keyboard.bindings]]
+key = "A"
+mods = "Command"
+chars = "\u001bOR" # F3
+
+[[keyboard.bindings]]
+key = "Enter"
+mods = "Command"
+chars = "\u001bOS" # F4
+
+[[keyboard.bindings]]
+key = "Z"
+mods = "Command"
+chars = "\u001b[15~" # F5
+
+[[keyboard.bindings]]
+key = "R"
+mods = "Command"
+chars = "\u001b[17~" # F6
+
+[[keyboard.bindings]]
+key = "J"
+mods = "Command"
+chars = "\u001b[20~" # F9
+
+[[keyboard.bindings]]
+key = "K"
+mods = "Command"
+chars = "\u001b[21~" # F10
+
+[[keyboard.bindings]]
+key = "F"
+mods = "Command"
+chars = "\u001b[23~" # F11
+
+[[keyboard.bindings]]
+key = "U"
+mods = "Command"
+chars = "\u001b[24~" # F12
+[window]
+decorations = "None"
