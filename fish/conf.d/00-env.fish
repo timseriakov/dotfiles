@@ -1,4 +1,4 @@
-set -gx PATH /opt/local/bin /opt/local/sbin $PATH
+set -gx PATH /opt/local/bin /opt/local/sbin /Users/tim/.qutebrowser/bin $PATH
 
 set -gx fish_command_timeout 8000
 

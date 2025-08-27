@@ -1,0 +1,40 @@
+#!/bin/bash
+
+export PATH="/Users/tim/dev/dotfiles/qutebrowser/bin:$PATH"
+# Run qutebrowser/bin/qute-plugin-fzfbookmarks
+#
+# Add ~/.config/qutebrowser/bin to $PATH
+# in your .bashrc/.zshrc file or here:
+# export PATH="$HOME/.config/qutebrowser/bin:$PATH"
+
+# By default, run the 'history' mode
+[[ -z $1 ]] && mode="history" || mode="$1"
+
+plgdir="/tmp/qute-plugins"
+[[ ! -d $plgdir ]] && mkdir "$plgdir"
+
+selectfile="$plgdir/qute-plugin-fzfhistory-selection"
+[[ -s $selectfile ]] && echo -n "" > $selectfile
+
+term="alacritty"
+config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
+
+# Run the pop-up window
+$term --config-file "$config_file" -e bash -c "exec qute-plugin-fzfhistory $mode $selectfile; exit"
+
+# Cleanup any lingering alacritty processes
+sleep 0.5
+pkill -f "alacritty.*fzfhistory" 2>/dev/null || true
+
+# DEBUG: Log the content of the selection file
+cat "$selectfile" > /tmp/qute-selection.log
+
+# Qutebrowser will open the urls passed to QUTE_FIFO
+if [[ -s $selectfile ]]; then
+   echo "Final check, QUTE_FIFO is: $QUTE_FIFO" >> /tmp/qute-debug.log
+   while read url; do
+      echo "Command to execute: open -tr $url" >> /tmp/qute-debug.log
+      echo "open -tr $url" >> "$QUTE_FIFO"
+   done < $selectfile
+   echo "Finished writing to FIFO." >> /tmp/qute-debug.log
+fi

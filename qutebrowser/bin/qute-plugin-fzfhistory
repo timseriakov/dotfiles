@@ -1,0 +1,164 @@
+#!/bin/bash
+# MADE by Twix. https://github.com/Twix53791/
+
+# Self-callback for fzf preview
+if [[ "$1" == "--render-preview" ]]; then
+  C2="\x1b\[93m"
+  C3="\x1b\[35m"
+  Chelp="\x1b[34m"
+  sedpreview="s/^/$C2/; s/\(.*\)| /\1\n$C3/"
+  helpmsg="ctrl-f: hide the url domain (add a new filter) ;  ctrl-e: edit filters list"
+  echo -e "$2" | sed "$sedpreview" | head -c 300
+  echo -e "\n$Chelp$helpmsg"
+  exit 0
+fi
+
+#=========================================================
+# To use this plugin, first apply the patch:
+#   ./apply-fzfhistory-patch.sh
+#
+# The patch modify two files in qutebrowser src:
+#   tabbedbrowser.py (for closed-tabs-history)
+#   history.py
+# and update the CompletionHistory table of the history.sqlite
+# database.
+# It preserves your history and just add the time in
+# a human readable format.
+#
+# NOTE: To not patch tabbedbrowser.py and doesn't use
+# the closed-tabs extension of the plugin, run:
+#   ./apply-fzfhistory-path.sh --only-history
+#
+#=========================================================
+#==== CONFIG =============================================
+
+editor="/opt/homebrew/bin/nvim"
+
+# Colors displayed in fzf
+# 34/93/35 ; 34/93/92 ; 34/33/35 ; 94/33/92
+# 36/34/32 ; 92/34/36
+C1="\x1b\[34m"
+C2="\x1b\[93m"
+C3="\x1b\[35m"
+Chelp="\x1b[34m" # preview keybindings text
+
+#==== FILES ==============================================
+
+# Patched to use a default value if QUTE_DATA_DIR is not set
+dbHistory="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history.sqlite"
+filterlist="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history-filters"
+closedtabs="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/closed-tabs-history"
+tmpfile="/tmp/qute-plugins/qute-plugin-fzfhistory-tmp"
+
+#==== FUNCTIONS ==========================================
+
+# Build the file source of the fzf menu in 'history' mode
+_build_history_list() {
+  table="CompletionHistory"
+
+  year="strftime('%Y', last_atime, 'unixepoch')"
+  # Don't remove the spaces below! Lenght of each month must be 9 characters
+  # monthnames="January  February March    April    May      June     July     SeptemberOctober  November December "
+  # French
+  monthnames="Janvier  Fevrier  Mars     Avril    Mai      Juin     Juillet  SeptembreOctobre  Novembre Decembre"
+  month="substr('$monthnames', strftime('%m', last_atime, 'unixepoch') * 9 - 8,9)"
+  time="strftime('%d %H:%M:%S', last_atime, 'unixepoch')"
+
+  # Sed format the string with colors and formatted spacing
+  sedpattern="s/^/$C1/; s/|/ /; s/[[:space:]]*|/ /; s/|/$C2 /; s/\(.*\)|/\1$C3 | /"
+  # The structure of the sqlite3 pattern is the following:
+  #                      ^  %Y|monthname<spaces>|%d %H:%M:%S|title|url
+  # sed replaces | by: '$C1' ' '               ' '       '$C2 ' '$C3| '
+
+  # Filters with grep -v
+  # Patched to be macOS-compatible and not fail on empty file
+  if [ -s "$filterlist" ]; then
+    filters="$(paste -s -d'|' "$filterlist")"
+  else
+    filters="^$" # Grep for nothing, ensuring it doesn't fail
+  fi
+
+  # Order the fields here
+  fields_order="$year,$month, $time,title,url"
+
+  # Alternative display, less complex, a bit faster (not so much)
+  # sedpattern="s/^/$C1/; s/|/$C2 /; s/\(.*\)|/\1$C3 | /"
+  # fields_order="datetime(last_atime, 'unixepoch'),title,url"
+
+  # Patched to use absolute path to history.sqlite
+  sqlite3 "/Users/tim/Library/Application Support/qutebrowser/history.sqlite" "SELECT $fields_order FROM CompletionHistory ORDER BY last_atime DESC" | sed "$sedpattern" | grep -Ev "$filters" | fzf
+}
+
+# Build the file source of the fzf menu in 'close-tabs' mode
+_build_closedtabs_list() {
+  sedpattern="s/^/$C1/;s/|/$C2 /;s/\(.*\)|/\1$C3 | /"
+
+  tac $closedtabs | sed "$sedpattern" | fzf
+}
+
+# Fzf menu. $1: mode ; $2: select file to send the picked urls to qutebrowser
+_fzf_menu() {
+  # Get the url, then the domain from the url
+  sedgetdomain="s/.*| //; s/.*\/\\/; s/\/.*$//"
+
+  if [[ $1 == "closed-tabs" ]]; then
+    export FZF_DEFAULT_OPTS="--reverse --ansi -m \
+              --bind 'change:first,right:toggle+down,left:deselect-all,alt-q:abort' \
+              --bind 'alt-h:abort' \
+              --bind 'ctrl-d:half-page-down' \
+              --bind 'ctrl-u:half-page-up' \
+              --preview='echo -e {} | sed \"s/^/$C2/; s/\\(.*\\)| /\\1\\n$C3/\" | head -c 300' \
+              --preview-window='down,20%,wrap'"
+  else
+    export FZF_DEFAULT_OPTS="--reverse --ansi -m \
+              --bind 'change:first,right:toggle+down,left:deselect-all,alt-q:abort' \
+              --bind 'alt-h:abort' \
+              --bind 'ctrl-f:execute-silent(echo {} | sed \"$sedgetdomain\" >> $filterlist)+execute(echo :refresh)+abort' \
+              --bind 'ctrl-e:execute(echo :edit)+abort' \
+              --bind 'ctrl-d:half-page-down' \
+              --bind 'ctrl-u:half-page-up' \
+              --preview='bash /Users/tim/dev/dotfiles/qutebrowser/bin/qute-plugin-fzfhistory --render-preview {}' \
+              --preview-window='down,20%,wrap'"
+  fi
+
+  # Launch fzf
+  if [[ $1 == "closed-tabs" ]]; then
+    output=$(_build_closedtabs_list)
+  else
+    output=$(_build_history_list)
+  fi
+
+  [[ -z $output ]] && exit
+
+  # Refresh after ctrl + f
+  [[ $output == ":refresh" ]] && _fzf_menu "$@"
+
+  # Edit filters
+  if [[ $output == ":edit" ]]; then
+    $editor $filterlist
+    _fzf_menu "$@"
+  fi
+
+  # Get the urls
+  urlslist="$(while read line; do echo ${line##*| }; done <<<$output)"
+
+  # Write the file used by history-fzf userscript to
+  #  send commands to qutebrowser
+  echo "$urlslist" >"$2"
+}
+
+#==== MAIN ===============================================
+_main() {
+  mode="$1"
+  selectfile="$2"
+
+  if [[ $mode == "closed-tabs" ]]; then
+    _fzf_menu $mode "$selectfile"
+
+  else
+    _fzf_menu $mode "$selectfile"
+  fi
+}
+
+# $1: mode ; $2: file path to communicate with qutebrowser (to send the fzf selection)
+_main "$@"

@@ -22,7 +22,7 @@ leader = " "
 ss_dir = "~/Documents/screenshots"
 # updates on every config-source
 timestamp = strftime("%Y-%m-%d-%H-%M-%S", localtime())
-terminal = "kitty"
+terminal = "alacritty"
 editor = "nvim"
 username = "timseriakov"
 homepage = "http://pmx:1931"
@@ -249,10 +249,13 @@ config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
 
 
-config.bind(",m", "spawn /opt/homebrew/bin/mpv {url}")
+# Open link in mpv
+config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 
-# config.bind(leader + "ce", "config-edit")
-config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh")
+config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
+config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
+
+config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh") # config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
