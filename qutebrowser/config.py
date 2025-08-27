@@ -256,6 +256,7 @@ config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 
 config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
 config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
+config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
 config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh") # config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
