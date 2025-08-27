@@ -114,10 +114,12 @@ c.colors.downloads.start.bg = blue
 c.colors.downloads.stop.bg = green
 
 # Hints
-c.colors.hints.bg = blue
-c.colors.hints.fg = white
+c.colors.hints.bg = nord3  # darker grey for better contrast
+c.colors.hints.fg = nord6  # bright white text
 c.colors.hints.match.fg = accent
 c.hints.border = f"1px solid {accent}"
+c.hints.chars = "asdfghjkl"
+c.hints.min_chars = 1
 
 # Messages
 c.colors.messages.info.bg = black
@@ -170,7 +172,7 @@ font_family = "Share Tech Mono"
 c.fonts.default_size = font_size
 c.fonts.default_family = font_family
 c.fonts.completion.entry = f"{font_size} {font_family}"
-c.fonts.hints = f"{font_size} {font_family}"
+c.fonts.hints = f"15pt {font_family}"
 c.fonts.debug_console = f"{font_size} {font_family}"
 c.fonts.prompts = f"{font_size} {font_family}"
 c.fonts.statusbar = f"{font_size} {font_family}"
