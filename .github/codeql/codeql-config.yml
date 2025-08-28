@@ -1,0 +1,16 @@
+name: "CodeQL Config"
+
+# Disable languages that don't exist in this repository
+disable-default-queries: false
+
+# Only scan languages that actually exist in dotfiles
+queries:
+  - uses: security-and-quality
+
+# Exclude paths that don't need scanning
+paths-ignore:
+  - "**/*.log"
+  - "**/*.lock"
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/lazy-lock.json"

@@ -1,0 +1,20 @@
+# GitGuardian configuration
+
+# Paths to exclude from scanning
+paths-ignore:
+  - "**/*.log"
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/lazy-lock.json"
+
+# Files to exclude
+ignore:
+  - "secrets/baseline"
+
+# Custom detectors for dotfiles
+detectors:
+  - name: "SSH Private Keys"
+    regex: "-----BEGIN.*PRIVATE KEY-----"
+
+  - name: "API Keys in configs"
+    regex: "(api_key|secret_key|access_token)\\s*[=:]\\s*['\"][a-zA-Z0-9_-]{20,}['\"]"

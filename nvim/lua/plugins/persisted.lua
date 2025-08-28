@@ -5,7 +5,7 @@ return {
   config = function()
     require("persisted").setup({
       autosave = true,
-      autoload = true,
+      autoload = false, -- don't auto-restore on start; keep dashboard default
       follow_cwd = true,
       use_git_branch = true,
       silent = false,

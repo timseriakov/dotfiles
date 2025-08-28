@@ -29,6 +29,9 @@ homepage = "http://pmx:1931"
 
 config.set("content.autoplay", False)
 
+# Enable mouse back/forward buttons
+c.input.mouse.back_forward_buttons = True
+
 # General
 c.editor.command = [terminal, "-e", editor, "{}"]
 c.auto_save.session = True
@@ -222,6 +225,12 @@ config.bind('u', 'scroll-page 0 -0.5')
 config.bind("i", "mode-enter insert")
 config.bind("v", "mode-enter caret")
 
+# Navigation
+config.bind("H", "back")
+config.bind("L", "forward")
+config.bind("<Cmd-Left>", "back")
+config.bind("<Cmd-Right>", "forward")
+
 config.bind("t", "cmd-set-text -s :open -t")
 config.bind("<Cmd-t>", "cmd-set-text -s :open -t")
 
@@ -301,6 +310,7 @@ config.bind(leader + "qr", "restart")
 config.bind(leader + "qt", "tab-only") # close all tabs except current
 config.bind(leader + "qw", "window-only") # close all windows except current
 config.bind(leader + "x", "quit --save")
+
 
 # tabs
 config.bind(leader + "ta", "bookmark-add")
