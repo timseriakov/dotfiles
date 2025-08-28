@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export PATH="/Users/tim/dev/dotfiles/qutebrowser/bin:$PATH"
+# Ensure Homebrew and system binaries are available inside Alacritty
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tim/dev/dotfiles/qutebrowser/bin:$PATH"
 # Run qutebrowser/bin/qute-plugin-fzfbookmarks
 #
 # Add ~/.config/qutebrowser/bin to $PATH
@@ -16,15 +17,22 @@ plgdir="/tmp/qute-plugins"
 selectfile="$plgdir/qute-plugin-fzfhistory-selection"
 [[ -s $selectfile ]] && echo -n "" > $selectfile
 
-term="alacritty"
+# Prefer absolute Alacritty on macOS; fallback to PATH
+if [[ -x "/opt/homebrew/bin/alacritty" ]]; then
+  term="/opt/homebrew/bin/alacritty"
+else
+  term="alacritty"
+fi
 config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
+alacritty_log="/tmp/qute-alacritty.log"
+
+# Cleanup any lingering alacritty processes from previous runs (before launching)
+pkill -f "alacritty.*fzfhistory" 2>/dev/null || true
 
 # Run the pop-up window
-$term --config-file "$config_file" -e bash -c "exec qute-plugin-fzfhistory $mode $selectfile; exit"
-
-# Cleanup any lingering alacritty processes
-sleep 0.5
-pkill -f "alacritty.*fzfhistory" 2>/dev/null || true
+# Use absolute shell and absolute plugin path to avoid PATH issues
+plugin_path="/Users/tim/dev/dotfiles/qutebrowser/bin/qute-plugin-fzfhistory"
+$term --config-file "$config_file" -e /bin/bash -c "exec '$plugin_path' '$mode' '$selectfile'; exit" 2> "$alacritty_log"
 
 # DEBUG: Log the content of the selection file
 cat "$selectfile" > /tmp/qute-selection.log
