@@ -1,2 +1,5 @@
 [projects."/Users/tim/dev/dotfiles"]
 trust_level = "trusted"
+
+[projects."/Users/tim/dev/work/react"]
+trust_level = "trusted"

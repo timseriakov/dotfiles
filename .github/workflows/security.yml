@@ -1,0 +1,62 @@
+name: Security Scan
+
+# Отключить CodeQL для языков которых нет в репо
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # TruffleHog для поиска секретов
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  dotfile-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Проверка dotfiles на небезопасные настройки
+      - name: Check for secrets in dotfiles
+        run: |
+          # Поиск потенциальных секретов в конфигах
+          grep -r -i "password\|secret\|key\|token" --exclude-dir=.git . || true
+
+          # Проверка прав доступа
+          find . -type f -perm /002 -not -path "./.git/*" | head -20
+
+          # Проверка SSH ключей
+          find . -name "id_*" -not -path "./.git/*" | head -10
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Сканирование зависимостей
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'

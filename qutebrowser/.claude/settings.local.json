@@ -1,9 +1,21 @@
 {
   "permissions": {
     "allow": [
-      "Bash(system_profiler:*)"
+      "Bash(system_profiler:*)",
+      "WebSearch",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Read(//Users/tim/dev/dotfiles/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "/Users/tim/dev/dotfiles"
+    ]
   }
 }
