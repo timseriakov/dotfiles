@@ -4,11 +4,11 @@ opacity = 0.95
 startup_mode = "Windowed"
 
 [window.dimensions]
-columns = 180
+columns = 140
 lines = 43
 
 [window.position]
-x = 250
+x = 210
 y = 200
 
 [font]
