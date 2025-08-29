@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euo pipefail
+
+# Минимальный PATH для урезанной среды qutebrowser (macOS)
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tim/dev/dotfiles/qutebrowser/bin:$PATH"
+
+# Поиск бинаря Alacritty
+if [[ -x "/opt/homebrew/bin/alacritty" ]]; then
+  term="/opt/homebrew/bin/alacritty"
+else
+  term="alacritty"
+fi
+
+# Используем проверенный конфиг (размеры: 140x43, позиция 250x200, font 17.5)
+config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
+
+# Команда для запуска (без login-shell, чтобы не подхватывать fish/tmux)
+exec "$term" --config-file "$config_file" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec /Users/tim/.local/bin/braindrop"
