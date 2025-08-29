@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Открыть URL(ы) в qutebrowser и сразу вернуться (не блокируя вызывающего)
+# Если CLI недоступен — используем macOS `open -a qutebrowser`.
+
+if [[ $# -eq 0 ]]; then
+  exit 0
+fi
+
+if command -v qutebrowser >/dev/null 2>&1; then
+  # Открываем в новой вкладке существующего окна; не блокируем TUI
+  nohup qutebrowser --target tab "$@" >/dev/null 2>&1 &
+else
+  # macOS fallback; -g = не фокусировать
+  nohup open -g -a qutebrowser "$@" >/dev/null 2>&1 &
+fi
+
+exit 0

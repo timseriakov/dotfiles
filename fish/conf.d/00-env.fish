@@ -76,3 +76,4 @@ set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
 set -gx QTWEBENGINE_RESOURCES_PATH (brew --prefix qt@6)/lib/QtWebEngineCore.framework/Resources
 set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
 set -gx QT_PLUGIN_PATH (brew --prefix qt@6)/plugins
+# set -gx BROWSER "$HOME/dev/dotfiles/bin/open-in-qute"

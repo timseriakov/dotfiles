@@ -12,7 +12,7 @@ else
 fi
 
 # Используем проверенный конфиг (размеры: 140x43, позиция 250x200, font 17.5)
-config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
+config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-braindrop.toml"
 
 # Команда для запуска (без login-shell, чтобы не подхватывать fish/tmux)
 exec "$term" --config-file "$config_file" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec /Users/tim/.local/bin/braindrop"
