@@ -12,3 +12,4 @@ codex/sessions
 codex/history.jsonl
 codex/version.json
 mpv/watch_later
+raycast/*.rayconfig
