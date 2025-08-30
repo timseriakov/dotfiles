@@ -1,0 +1,49 @@
+#!/bin/bash
+# Qutebrowser userscript: открыть ваш форк Raindrop (команда add)
+# Передаёт текущие {url} и {title} через launchContext.
+# Использование: config.bind('<leader>a', 'spawn -u raindrop {url} {title}')
+
+set -euo pipefail
+
+# python3 для JSON/URL кодирования (без зависимости от PATH)
+if [[ -x /usr/bin/python3 ]]; then
+  PYTHON=/usr/bin/python3
+elif [[ -x /opt/homebrew/bin/python3 ]]; then
+  PYTHON=/opt/homebrew/bin/python3
+else
+  PYTHON=python3
+fi
+
+# macOS only (Raycast)
+if [[ "${OSTYPE:-}" != darwin* ]]; then
+  echo "Этот userscript работает только на macOS (Raycast)." >&2
+  exit 1
+fi
+
+url="${1:-}"
+title="${2:-}"
+if [[ -z "$url" ]]; then
+  echo "Использование: raindrop {url} {title}" >&2
+  exit 2
+fi
+
+# Диплинк: жёстко задан на вашу команду add.
+# Можно переопределить через переменную окружения RAYCAST_RAINDROP_COMMAND при желании.
+DEEPLINK_DEFAULT="raycast://extensions/lardissone/raindrop-io/add"
+DEEPLINK="${RAYCAST_RAINDROP_COMMAND:-$DEEPLINK_DEFAULT}"
+
+# Формируем launchContext и открываем Raycast
+context_json=$("$PYTHON" - <<'PY' "$url" "$title"
+import sys, json
+u = sys.argv[1]
+t = sys.argv[2] if len(sys.argv) > 2 else ""
+print(json.dumps({"url": u, "title": t}))
+PY
+)
+enc_context=$("$PYTHON" - <<'PY' "$context_json"
+import sys, urllib.parse
+print(urllib.parse.quote(sys.argv[1], safe=""))
+PY
+)
+/usr/bin/open "${DEEPLINK}?launchContext=${enc_context}" >/dev/null 2>&1 &
+exit 0

@@ -3,3 +3,39 @@ trust_level = "trusted"
 
 [projects."/Users/tim/dev/work/react"]
 trust_level = "trusted"
+
+[projects."/Users/tim/dev/work/mobile"]
+trust_level = "trusted"
+
+# MCP servers for Codex CLI
+# Note: Codex prefers stdio transport. For HTTP/SSE servers use a stdio bridge.
+# See: https://github.com/modelcontextprotocol/server-proxy
+
+[mcp_servers."sqvr-graphql"]
+command = "npx"
+args = ["-y", "mcp-graphql"]
+
+# extra environment variables
+[mcp_servers."sqvr-graphql".env]
+ENDPOINT = "https://auto.sqvr.net/api/graphql/v1"
+
+[mcp_servers."task-master-ai"]
+command = "npx"
+args = ["-y", "task-master-ai"]
+
+[mcp_servers.repomix]
+command = "npx"
+args = ["-y", "repomix", "--mcp"]
+
+[mcp_servers."perplexity-mcp"]
+command = "perplexity-mcp"
+
+# Atlassian remote SSE; wrap with mcp-remote (stdio client that dials SSE)
+[mcp_servers.atlassian]
+command = "npx"
+args = ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
+
+# (Optional) A known-good sanity check server to verify MCP in Codex:
+# [mcp_servers.playwright]
+# command = "npx"
+# args    = ["@playwright/mcp@latest"]

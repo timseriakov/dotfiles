@@ -267,8 +267,13 @@ config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 
 config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
 config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
+
 # Braindrop (TUI) in Alacritty
 config.bind(leader + 'b', 'spawn -u braindrop')
+
+# Save link to Raindrop
+config.bind(leader + 's', "spawn -u raindrop {url} {title}")
+
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
 config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh") # config.bind(leader + "ce", "config-edit")
@@ -300,7 +305,7 @@ config.bind(leader + "fo", "hint links window") # Open link in new tab (foregrou
 config.bind(leader + "fp", "hint links run :open -p {hint-url}") # Open link in new tab (foreground)
 config.bind(leader + "fv", "hint links spawn mpv {hint-url}") # Open link in new tab (foreground)
 config.bind(leader + "fy", "hint links yank") # Open link in new tab (foreground)
-config.bind(leader + "fx", "hint links spawn --detach open {hint-url}") # Open link in new tab (foreground)
+config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Brave Browser' {hint-url}") # Open link in Brave (hint)
 
 # Trigger custom FZF script (interactive launcher)
 # Requires you to create a script at ~/.local/bin/qute-fzf.sh
@@ -325,4 +330,4 @@ config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
 config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
-config.bind(leader + "tx", 'spawn --detach open {url}') # open in default browser
+config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Brave Browser' {url}") # Open current URL in Brave
