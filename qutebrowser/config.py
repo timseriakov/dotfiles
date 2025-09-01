@@ -35,6 +35,7 @@ c.input.mouse.back_forward_buttons = True
 # General
 c.editor.command = [terminal, "-e", editor, "{}"]
 c.auto_save.session = True
+c.session.lazy_restore = True
 c.zoom.default = "100%"
 c.window.hide_decoration = True
 
@@ -274,14 +275,14 @@ config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
 config.bind(leader + 'b', 'spawn -u braindrop')
 
 # Save link to Raindrop
-config.bind(leader + 's', "spawn -u raindrop {url} {title}")
+config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
 
 # Fill credentials from macOS Keychain
 config.bind(leader + 'p', 'spawn -u keychain_fill')
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
-config.bind(leader + "ce", "spawn ~/dev/dotfiles/fish/scripts/qutebrowser-dotfiles.sh") # config.bind(leader + "ce", "config-edit")
+# config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
@@ -314,7 +315,8 @@ config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Brave Br
 
 # Trigger custom FZF script (interactive launcher)
 # Requires you to create a script at ~/.local/bin/qute-fzf.sh
-config.bind(leader + "fz", f"spawn --userscript ~/.local/bin/qute-fzf.sh")
+# config.bind(leader + "fz", f"spawn --userscript ~/.local/bin/qute-fzf.sh")
+
 # quitting actions
 config.bind(leader + "qd", "tab-close")
 config.bind(leader + "qq", "close")
@@ -329,10 +331,19 @@ config.bind(leader + "ta", "bookmark-add")
 config.bind(leader + "tb", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
-config.bind(leader + "tg", "tab-give") # move tab to new window
+config.bind(leader + "tn", "tab-give") # move tab to new window
+config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
 config.bind(leader + "th", "history")
 config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
-config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
 config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Brave Browser' {url}") # Open current URL in Brave
+
+# sessions
+# Interactive prompts leverage completion for existing session names.
+config.bind(leader + "ss", "cmd-set-text -s :session-save ")
+config.bind(leader + "sl", "cmd-set-text -s :session-load ")
+config.bind(leader + "sd", "cmd-set-text -s :session-delete ")
+config.bind(leader + "sr", "cmd-set-text -s :session-rename ")
+config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
+config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
