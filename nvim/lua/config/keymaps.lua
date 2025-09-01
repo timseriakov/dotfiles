@@ -1,31 +1,3 @@
--- Peek in preview window
-vim.keymap.set(
-  "n",
-  "gpd",
-  "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
-  { desc = "Peek Definition" }
-)
-vim.keymap.set(
-  "n",
-  "gpi",
-  "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
-  { desc = "Peek Implementation" }
-)
-vim.keymap.set(
-  "n",
-  "gpt",
-  "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
-  { desc = "Peek Type Definition" }
-)
-vim.keymap.set(
-  "n",
-  "gpr",
-  "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
-  { desc = "Peek References" }
-)
-vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close peek window" })
-
-
 -- Open definition in vsplit
 local peek_def = require("modules.split-definition")
 
@@ -122,90 +94,87 @@ vim.keymap.set({ "n", "v" }, "<leader>fH", ":Resty favorite<CR>", { desc = "Rest
 -- Telescope import
 vim.keymap.set({ "n", "v" }, "<leader>ct", ":Telescope import<CR>", { desc = "Telescope import" })
 
-vim.api.nvim_set_keymap("n", "<leader>;r", "", {
-  noremap = true,
-  callback = function()
-    local notify = vim.notify
-    notify("📤 Переводим буфер на русский…", vim.log.levels.INFO)
+-- Fix: use vim.keymap.set for function callbacks (nvim_set_keymap doesn't support 'callback')
+vim.keymap.set("n", "<leader>;r", function()
+  local notify = vim.notify
+  notify("Translating...", vim.log.levels.INFO)
 
-    local buf = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local buf = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
-    local output_lines = {}
-    local blocks = {}
-    local in_code_block = false
+  local output_lines = {}
+  local blocks = {}
+  local in_code_block = false
 
-    for _, line in ipairs(lines) do
-      if line:match("^```") then
-        in_code_block = not in_code_block
-        table.insert(blocks, { is_code = true, lines = { line } })
-      elseif in_code_block then
-        table.insert(blocks[#blocks].lines, line)
-      elseif line:match("^%s*!%[.*%]%s*%(.+%)") then
-        table.insert(blocks, { is_code = true, lines = { line } })
-      else
-        if not blocks[#blocks] or blocks[#blocks].is_code then
-          table.insert(blocks, { is_code = false, lines = {} })
-        end
-        table.insert(blocks[#blocks].lines, line)
+  for _, line in ipairs(lines) do
+    if line:match("^```") then
+      in_code_block = not in_code_block
+      table.insert(blocks, { is_code = true, lines = { line } })
+    elseif in_code_block then
+      table.insert(blocks[#blocks].lines, line)
+    elseif line:match("^%s*!%[.*%]%s*%(.+%)") then
+      table.insert(blocks, { is_code = true, lines = { line } })
+    else
+      if not blocks[#blocks] or blocks[#blocks].is_code then
+        table.insert(blocks, { is_code = false, lines = {} })
       end
+      table.insert(blocks[#blocks].lines, line)
+    end
+  end
+
+  local function process_block(i)
+    local block = blocks[i]
+    if not block then
+      vim.api.nvim_buf_set_option(buf, "modifiable", true)
+      vim.api.nvim_buf_set_lines(buf, 0, -1, false, output_lines)
+      notify(
+        "Готово: перевод завершён (код/изображения пропущены)",
+        vim.log.levels.INFO
+      )
+      return
     end
 
-    local function process_block(i)
-      local block = blocks[i]
-      if not block then
-        vim.api.nvim_buf_set_option(buf, "modifiable", true)
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, output_lines)
-        notify(
-          "✅ Перевод завершён (блоки кода и изображений пропущены)",
-          vim.log.levels.INFO
-        )
-        return
+    if block.is_code then
+      for _, l in ipairs(block.lines) do
+        table.insert(output_lines, l)
       end
-
-      if block.is_code then
-        for _, l in ipairs(block.lines) do
-          table.insert(output_lines, l)
-        end
-        vim.schedule(function()
-          process_block(i + 1)
-        end)
-      else
-        local original_count = #block.lines
-        local text = table.concat(block.lines, "\n")
-        local job_id = vim.fn.jobstart({ "trans", "-brief", "-no-auto", ":ru" }, {
-          stdout_buffered = true,
-          on_stdout = function(_, data)
-            vim.schedule(function()
-              local clean = {}
-              for _, l in ipairs(data or {}) do
-                if not l:match("Showing translation") and not l:match("^%[.*%]$") then
-                  table.insert(clean, l)
-                end
+      vim.schedule(function()
+        process_block(i + 1)
+      end)
+    else
+      local original_count = #block.lines
+      local text = table.concat(block.lines, "\n")
+      local job_id = vim.fn.jobstart({ "trans", "-brief", "-no-auto", ":ru" }, {
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+          vim.schedule(function()
+            local clean = {}
+            for _, l in ipairs(data or {}) do
+              if not l:match("Showing translation") and not l:match("^%[.*%]$") then
+                table.insert(clean, l)
               end
-              if #clean < original_count then
-                for _ = #clean + 1, original_count do
-                  table.insert(clean, "")
-                end
-              end
-              for _, l in ipairs(clean) do
-                table.insert(output_lines, l)
-              end
-              process_block(i + 1)
-            end)
-          end,
-          on_stderr = function(_, err)
-            if err and #err > 0 and err[1] ~= "" then
-              notify("❌ Ошибка перевода блока " .. i, vim.log.levels.ERROR)
             end
-          end,
-        })
-        vim.fn.chansend(job_id, text .. "\n")
-        vim.fn.chanclose(job_id, "stdin")
-      end
+            if #clean < original_count then
+              for _ = #clean + 1, original_count do
+                table.insert(clean, "")
+              end
+            end
+            for _, l in ipairs(clean) do
+              table.insert(output_lines, l)
+            end
+            process_block(i + 1)
+          end)
+        end,
+        on_stderr = function(_, err)
+          if err and #err > 0 and err[1] ~= "" then
+            notify("Ошибка перевода блока " .. i, vim.log.levels.ERROR)
+          end
+        end,
+      })
+      vim.fn.chansend(job_id, text .. "\n")
+      vim.fn.chanclose(job_id, "stdin")
     end
+  end
 
-    process_block(1)
-  end,
-  desc = "Translate buffer",
-})
+  process_block(1)
+end, { desc = "Translate buffer" })
