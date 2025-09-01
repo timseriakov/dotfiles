@@ -10,7 +10,9 @@
       "Read(//Users/tim/dev/dotfiles/**)",
       "Read(//Users/tim/dev/dotfiles/**)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(security find-internet-password:*)",
+      "Bash(mkfifo:*)"
     ],
     "deny": [],
     "ask": [],
