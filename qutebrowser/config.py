@@ -44,6 +44,8 @@ c.statusbar.show = "in-mode"
 c.tabs.show = "switching" # multiple
 c.tabs.last_close = "close"
 # c.tabs.new_position.related = "last"
+# Open new tabs in background (e.g., middle-click on links)
+c.tabs.background = True
 
 # Downloads
 c.downloads.location.directory = "~/Downloads"
@@ -273,6 +275,9 @@ config.bind(leader + 'b', 'spawn -u braindrop')
 
 # Save link to Raindrop
 config.bind(leader + 's', "spawn -u raindrop {url} {title}")
+
+# Fill credentials from macOS Keychain
+config.bind(leader + 'p', 'spawn -u keychain_fill')
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
