@@ -7,22 +7,45 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [init]
 	defaultBranch = master
 
 [core]
-    pager = delta
+	pager = delta
 	autocrlf = input
 
 [interactive]
-    diffFilter = delta --color-only
+	diffFilter = delta --color-only
 
 [delta]
-    navigate = true
-    side-by-side = true
-    syntax-theme = Nord
+  theme = Nord
+	side-by-side = true
+  line-numbers = true
+	navigate = true
+  syntax-theme = Nord
+  light = false
+  zero-style = syntax
+  keep-plus-minus-markers = true
+  hyperlinks = false
+
 [merge]
-    conflictstyle = diff3
+	conflictstyle = diff3
 
 [diff]
-    colorMoved = default
+	colorMoved = default
+	external = difft           # use difftastic for `git diff`
+	tool = nvimdiff            # use Neovim for `git difftool` (Ctrl+T in LazyGit)
+
+[difftool]
+	prompt = false
+
+[difftool "nvimdiff"]
+	cmd = nvim -d "$LOCAL" "$REMOTE"
+
+[pager]
+	diff =                     # disable pager for `git diff` so difftastic prints directly
+
+[difftool "nvimdiff"]
+	# Separate minimal profile
+	cmd = env NVIM_APPNAME=nvim-diff nvim -d "$LOCAL" "$REMOTE"
