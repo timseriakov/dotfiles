@@ -4,6 +4,7 @@ local resizeHeight = 890
 -- apps to skip
 local excludedApps = {
 	["Simulator"] = true,
+	["AmneziaVPN"] = true,
 	["qemu-system-aarch64"] = true,
 }
 
