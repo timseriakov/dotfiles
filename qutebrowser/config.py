@@ -22,8 +22,8 @@ leader = " "
 ss_dir = "~/Documents/screenshots"
 # updates on every config-source
 timestamp = strftime("%Y-%m-%d-%H-%M-%S", localtime())
-terminal = "alacritty"
-editor = "nvim"
+terminal = "/opt/homebrew/bin/kitty"
+editor = "/opt/homebrew/bin/nvim"
 username = "timseriakov"
 homepage = "http://pmx:1931"
 
@@ -33,7 +33,7 @@ config.set("content.autoplay", False)
 c.input.mouse.back_forward_buttons = True
 
 # General
-c.editor.command = [terminal, "-e", editor, "{}"]
+c.editor.command = ["/usr/local/bin/fish", "-lc", f"{terminal} -e {editor} {{}}"]
 c.auto_save.session = True
 c.session.lazy_restore = True
 c.zoom.default = "100%"
@@ -282,7 +282,7 @@ config.bind(leader + 'p', 'spawn -u keychain_fill')
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
-# config.bind(leader + "ce", "config-edit")
+config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
