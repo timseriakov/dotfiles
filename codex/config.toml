@@ -7,6 +7,15 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/work/mobile"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/tmp/raycast-extensions"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-new/CV"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-new/TimSeriakov"]
+trust_level = "trusted"
+
 # MCP servers for Codex CLI
 # Note: Codex prefers stdio transport. For HTTP/SSE servers use a stdio bridge.
 # See: https://github.com/modelcontextprotocol/server-proxy
@@ -28,12 +37,27 @@ command = "npx"
 args = ["-y", "repomix", "--mcp"]
 
 [mcp_servers."perplexity-mcp"]
-command = "perplexity-mcp"
+command = "fish"
+args = ["-lc", "perplexity-mcp"]
 
 # Atlassian remote SSE; wrap with mcp-remote (stdio client that dials SSE)
 [mcp_servers.atlassian]
 command = "npx"
 args = ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
+
+[mcp_servers.activewatch]
+command = "node"
+args = ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"]
+
+[mcp_servers.gitlab]
+command = "fish"
+args = ["-lc", "npx -y @zereight/mcp-gitlab"]
+
+# [mcp_servers."figma-dev-mode-mcp-server"]
+# type = "http"
+# # type = "streamable-http"
+# url = "http://127.0.0.1:3845/mcp"
+
 
 # (Optional) A known-good sanity check server to verify MCP in Codex:
 # [mcp_servers.playwright]
