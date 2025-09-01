@@ -22,3 +22,5 @@ set -gx RCT_METRO_PORT 8081
 
 # Added by `rbenv init` on Mon Aug 25 15:17:59 +03 2025
 status --is-interactive; and rbenv init - --no-rehash fish | source
+# Increase file descriptor limit for interactive shells (macOS)
+status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
