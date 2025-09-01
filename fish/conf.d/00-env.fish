@@ -1,16 +1,12 @@
+# Base dirs
 set -Ua fish_user_paths /opt/local/bin /opt/local/sbin $HOME/dev/dotfiles/qutebrowser/bin
-
-# Ruby ENV management
-set -Ua fish_user_paths $HOME/.rbenv/shims
 
 # Android SDK
 set -gx ANDROID_HOME "$HOME/Library/Android/sdk"
 set -Ua fish_user_paths $ANDROID_HOME/emulator $ANDROID_HOME/platform-tools
 
 set -gx fish_command_timeout 8000
-
 set -gx fish_greeting Welcome
-
 set -gx NEOVIDE_TITLE_HIDDEN 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
@@ -32,48 +28,56 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 
-
 set -gx LANG en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
 
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
-
-# oracle instance client
-#set -x DYLD_LIBRARY_PATH "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru/lib"
-#set -x ORACLE_HOME "/opt/homebrew/Cellar/instantclient-basic/19.8.0.0.0dbru"
-set -gx JAVA_HOME "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
-
-# volta
-set -gx VOLTA_HOME "$HOME/.volta"
-set -gx PATH "$VOLTA_HOME/bin" $PATH
-
-set -gx XDG_CONFIG_HOME $HOME/.config
-
-# rustup shell setup
-if not contains "{cargo_bin}" $PATH
-    # Prepending path in case a system-installed rustc needs to be overridden
-    set -x PATH "{cargo_bin}" $PATH
+# bun (use fish_add_path to avoid duplicates and keep order)
+if type -q fish_add_path
+    fish_add_path --append $HOME/.bun/bin
+else
+    set --export PATH $HOME/.bun/bin $PATH
 end
 
-source "$HOME/.cargo/env.fish"
-# source "$HOME/.swiftly/env.fish"
+# Java
+set -gx JAVA_HOME "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
 
+# Volta
+if type -q fish_add_path
+    fish_add_path --append $HOME/.volta/bin
+else
+    set -gx PATH "$HOME/.volta/bin" $PATH
+end
+set -gx VOLTA_HOME "$HOME/.volta"
+
+# XDG
+set -gx XDG_CONFIG_HOME $HOME/.config
+
+# Rust/Cargo (correct way; removes the broken {cargo_bin} placeholder)
+if test -f "$HOME/.cargo/env.fish"
+    source "$HOME/.cargo/env.fish"
+end
+
+# ESLint/Compose
 set -gx ESLINT_USE_FLAT_CONFIG true
 set -gx COMPOSE_BAKE true
 
-# OrbStack tools
+# OrbStack (do not force to front; it will be deduped and kept after rbenv)
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
-set -Ux fish_user_paths $HOME/.orbstack/bin $fish_user_paths
+if type -q fish_add_path
+    fish_add_path --append $HOME/.orbstack/bin
+else
+    set -Ua fish_user_paths $HOME/.orbstack/bin
+end
 
 # vapi
-set --export VAPI_INSTALL "$HOME/.vapi"
-set --export PATH $VAPI_INSTALL/bin $PATH
+if type -q fish_add_path
+    fish_add_path --append $HOME/.vapi/bin
+else
+    set --export PATH $HOME/.vapi/bin $PATH
+end
 set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
 
-# QtWebEngine paths for qutebrowser (Homebrew on macOS ARM)
+# QtWebEngine (Homebrew on macOS ARM)
 set -gx QTWEBENGINE_RESOURCES_PATH (brew --prefix qt@6)/lib/QtWebEngineCore.framework/Resources
 set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
 set -gx QT_PLUGIN_PATH (brew --prefix qt@6)/plugins
-# set -gx BROWSER "$HOME/dev/dotfiles/bin/open-in-qute"
