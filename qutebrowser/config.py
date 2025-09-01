@@ -97,8 +97,8 @@ c.colors.completion.category.bg = "#2E3440"
 c.colors.completion.category.border.bottom = "transparent"
 c.colors.completion.category.border.top = "transparent"
 c.colors.completion.category.fg = nord5
-c.colors.completion.even.bg = nord1
-c.colors.completion.odd.bg = nord2
+c.colors.completion.even.bg = "#3B4252"
+c.colors.completion.odd.bg = "#4C566A"
 c.colors.completion.fg = nord4
 c.colors.completion.item.selected.bg = "#5482B0"
 c.colors.completion.item.selected.fg = white
@@ -136,9 +136,9 @@ c.colors.messages.warning.bg = yellow
 c.colors.messages.warning.fg = black
 
 # Statusbar
-c.colors.statusbar.normal.bg = black
+c.colors.statusbar.normal.bg = "#2E3440"
 c.colors.statusbar.normal.fg = white
-c.colors.statusbar.command.bg = nord1
+c.colors.statusbar.command.bg = "#2E3440"
 c.colors.statusbar.command.fg = white
 c.colors.statusbar.insert.bg = green
 c.colors.statusbar.insert.fg = black
@@ -155,24 +155,25 @@ c.colors.statusbar.url.warn.fg = yellow
 
 # Tabs
 c.colors.tabs.bar.bg = black
+c.tabs.padding = {"top": 2, "bottom": 2, "left": 2, "right": 2}
 
 # Tabs
-c.colors.tabs.even.bg = nord1
-c.colors.tabs.odd.bg = nord1
-c.colors.tabs.even.fg = nord4
-c.colors.tabs.odd.fg = nord4
-c.colors.tabs.selected.even.bg = "#5482B0"
-c.colors.tabs.selected.even.fg = white
-c.colors.tabs.selected.odd.bg = "#5482B0"
-c.colors.tabs.selected.odd.fg = white
-c.colors.tabs.pinned.even.bg = nord8
-c.colors.tabs.pinned.even.fg = black
-c.colors.tabs.pinned.odd.bg = nord8
-c.colors.tabs.pinned.odd.fg = black
-c.colors.tabs.pinned.selected.even.bg = "#6fb3d3"
-c.colors.tabs.pinned.selected.even.fg = black
-c.colors.tabs.pinned.selected.odd.bg = "#6fb3d3"
-c.colors.tabs.pinned.selected.odd.fg = black
+c.colors.tabs.even.bg = "#2E3440"
+c.colors.tabs.odd.bg = "#2E3440"
+c.colors.tabs.even.fg = "#E5E9F0"
+c.colors.tabs.odd.fg = "#E5E9F0"
+c.colors.tabs.selected.even.bg = "#88C0D0"
+c.colors.tabs.selected.even.fg = "#3B4252"
+c.colors.tabs.selected.odd.bg = "#88C0D0"
+c.colors.tabs.selected.odd.fg = "#3B4252"
+c.colors.tabs.pinned.even.bg = "#81A1C1"
+c.colors.tabs.pinned.even.fg = "#3B4252"
+c.colors.tabs.pinned.odd.bg = "#81A1C1"
+c.colors.tabs.pinned.odd.fg = "#3B4252"
+c.colors.tabs.pinned.selected.even.bg = "#88C0D0"
+c.colors.tabs.pinned.selected.even.fg = "#3B4252"
+c.colors.tabs.pinned.selected.odd.bg = "#88C0D0"
+c.colors.tabs.pinned.selected.odd.fg = "#3B4252"
 
 # Font
 font_size = "18pt"
