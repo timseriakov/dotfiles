@@ -93,19 +93,19 @@ blue = nord10
 purple = nord15
 
 # Completion
-c.colors.completion.category.bg = "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3b4252, stop:1 #434c5e)"
-c.colors.completion.category.border.bottom = accent
-c.colors.completion.category.border.top = accent
-c.colors.completion.category.fg = white
-c.colors.completion.even.bg = black
-c.colors.completion.odd.bg = black
-c.colors.completion.fg = white
-c.colors.completion.item.selected.bg = accent
-c.colors.completion.item.selected.fg = black
-c.colors.completion.item.selected.match.fg = white
-c.colors.completion.match.fg = accent
-c.colors.completion.scrollbar.bg = black
-c.colors.completion.scrollbar.fg = white
+c.colors.completion.category.bg = "#2E3440"
+c.colors.completion.category.border.bottom = "transparent"
+c.colors.completion.category.border.top = "transparent"
+c.colors.completion.category.fg = nord5
+c.colors.completion.even.bg = nord1
+c.colors.completion.odd.bg = nord2
+c.colors.completion.fg = nord4
+c.colors.completion.item.selected.bg = "#5482B0"
+c.colors.completion.item.selected.fg = white
+c.colors.completion.item.selected.match.fg = nord13
+c.colors.completion.match.fg = nord13
+c.colors.completion.scrollbar.bg = nord2
+c.colors.completion.scrollbar.fg = nord8
 
 # Prompts
 c.colors.prompts.bg = nord1
@@ -155,21 +155,23 @@ c.colors.statusbar.url.warn.fg = yellow
 
 # Tabs
 c.colors.tabs.bar.bg = black
-c.colors.tabs.even.bg = black
-c.colors.tabs.odd.bg = black
-c.colors.tabs.even.fg = white
-c.colors.tabs.odd.fg = white
-c.colors.tabs.selected.even.bg = blue
-c.colors.tabs.selected.even.fg = black
-c.colors.tabs.selected.odd.bg = blue
-c.colors.tabs.selected.odd.fg = black
-c.colors.tabs.pinned.even.bg = accent
+
+# Tabs
+c.colors.tabs.even.bg = nord1
+c.colors.tabs.odd.bg = nord1
+c.colors.tabs.even.fg = nord4
+c.colors.tabs.odd.fg = nord4
+c.colors.tabs.selected.even.bg = "#5482B0"
+c.colors.tabs.selected.even.fg = white
+c.colors.tabs.selected.odd.bg = "#5482B0"
+c.colors.tabs.selected.odd.fg = white
+c.colors.tabs.pinned.even.bg = nord8
 c.colors.tabs.pinned.even.fg = black
-c.colors.tabs.pinned.odd.bg = accent
+c.colors.tabs.pinned.odd.bg = nord8
 c.colors.tabs.pinned.odd.fg = black
-c.colors.tabs.pinned.selected.even.bg = accent
+c.colors.tabs.pinned.selected.even.bg = "#6fb3d3"
 c.colors.tabs.pinned.selected.even.fg = black
-c.colors.tabs.pinned.selected.odd.bg = accent
+c.colors.tabs.pinned.selected.odd.bg = "#6fb3d3"
 c.colors.tabs.pinned.selected.odd.fg = black
 
 # Font
