@@ -23,7 +23,8 @@ vim.keymap.set(
   "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
   { desc = "Peek References" }
 )
-vim.keymap.set("n", "gpp", "<cmd>lua require('goto-preview').close_all_win()<CR>", { desc = "Close All Peek Windows" })
+vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close peek window" })
+
 
 -- Open definition in vsplit
 local peek_def = require("modules.split-definition")
