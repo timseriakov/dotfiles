@@ -7,7 +7,7 @@ return {
   },
   cmd = "Leet",
   opts = {
-    -- lang = "typescript",
+    lang = "javascript",
     cn = {
       enabled = false,
       translator = true,
