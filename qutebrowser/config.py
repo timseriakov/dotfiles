@@ -241,8 +241,8 @@ config.bind("t", "cmd-set-text -s :open -t")
 config.bind("<Cmd-t>", "cmd-set-text -s :open -t")
 
 # Find mode
-config.bind("/", "search")
-config.bind("?", "search")
+config.bind("/", "cmd-set-text /")
+config.bind("?", "cmd-set-text ?")
 
 # Open link in new tab
 config.bind("f", "hint links")
@@ -267,6 +267,8 @@ config.bind(">>", "tab-move +")
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
 
+config.bind("ge", "cmd-set-text -s :open {url}") # edit url
+config.bind("gu", "navigate up") # go up one level in URL
 
 # Open link in mpv
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
@@ -304,7 +306,6 @@ config.bind(leader + "df", "devtools-focus")
 config.bind(leader + "dp", "screenshot " + ss_dir + "qute-" + timestamp + ".png")
 config.bind(leader + "ds", "view-source --edit")
 config.bind(leader + "dz", "view-source")
-
 
 config.bind(leader + "fc", "hint links yank --rapid") # Yank link rapidly
 config.bind(leader + "ff", "hint links tab --rapid") # Open link in new tab (foreground)
