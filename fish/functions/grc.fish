@@ -1,4 +1,4 @@
-function grc --wraps='cd ~/dev/dotfiles/glance && nvim ./glance.yml' --description 'alias grc cd ~/dev/dotfiles/glance && nvim ./glance.yml'
-  cd ~/dev/dotfiles/glance && nvim ./glance.yml $argv
-        
+function grc --wraps='cd ~/dev/dotfiles/glance && nvim ./glance.yml' --wraps='cd /Users/tim/.gemini' --description 'alias grc cd /Users/tim/.gemini'
+  cd /Users/tim/.gemini $argv
+
 end
