@@ -10,7 +10,7 @@ if set -q NVIM
     set -gx TMPDIR /tmp
 end
 
-starship init fish | source
+# Prompt initialized from conf.d/40-plugins.fish (interactive only)
 
 if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
