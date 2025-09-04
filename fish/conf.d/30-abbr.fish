@@ -80,6 +80,40 @@ abbr -a icat 'kitten icat'
 abbr -a hg 'hgrep --theme Nord'
 abbr -a ipinfo 'curl -s ipinfo.io'
 abbr -a ipinfo-more 'curl -s ipwho.is'
+abbr -a vtop 'vtop --theme nord'
+
+# Bun helpers (additional)
+abbr -a bb 'bun run build'
+abbr -a brm 'bun remove'
+
+# Brew helpers
+abbr -a bri 'brew install'
+abbr -a brr 'brew uninstall'
+abbr -a brrm 'brew uninstall'
+abbr -a brugh 'brew upgrade gh'
+abbr -a brc 'nvim ~/dev/dotfiles/Brewfile'
+
+# Backlog helpers
+abbr -a bl 'backlog'
+abbr -a blb 'backlog board'
+abbr -a blw 'backlog browser'
+
+# Misc shorties
+abbr -a c 'bat'
+abbr -a cbc 'cb cp'
+abbr -a cbp 'cb p'
+abbr -a cpr 'cp -r'
+abbr -a chmd 'chmod-cli'
+abbr -a cr 'crush'
+abbr -a de 'deno'
+abbr -a 'de-it' 'docker exec -it'
+abbr -a ge 'gemini'
+abbr -a grc 'cd ~/.gemini'
+abbr -a m 'mmv'
+abbr -a mtrx 'cmatrix -C blue -s'
+abbr -a mtrx-cyan 'cmatrix -C cyan -s'
+abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
+abbr -a sshh 'ggh'
 
 # Open configs/projects
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
