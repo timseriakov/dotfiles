@@ -1,4 +1,0 @@
-function a-openai-gpt-4.1 --wraps='aider --model openai/gpt-4.1 -c /Users/tim/.aider.conf.yml' --wraps='aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano -c /Users/tim/.aider.conf.yml' --wraps='aider --model  main-model=gpt-4.1 --editor-model=gpt-4.1-nano --weak-model=gpt-4.1-nano -c /Users/tim/.aider.conf.yml' --wraps='aider --model  main-model=openai/gpt-4.1 --editor-model=openai/gpt-4.1-nano --weak-model=openai/gpt-4.1-nano -c /Users/tim/.aider.conf.yml' --wraps='aider --model=openai/gpt-4.1 --editor-model=gpt-4.1-nano --weak-model=gpt-4.1-nano -c /Users/tim/.aider.conf.yml' --description 'alias a-openai-gpt-4.1 aider --model=openai/gpt-4.1 --editor-model=gpt-4.1-nano --weak-model=gpt-4.1-nano -c /Users/tim/.aider.conf.yml'
-  aider --model=openai/gpt-4.1 --editor-model=gpt-4.1-nano --weak-model=gpt-4.1-nano -c /Users/tim/.aider.conf.yml $argv
-        
-end
