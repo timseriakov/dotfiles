@@ -50,9 +50,12 @@ abbr -a dcu 'docker compose up'
 abbr -a dcub 'docker compose up --build'
 abbr -a dcubd 'docker-compose up --build -d'
 
-# Aider and Codex
+# Aider, Claude and Codex
 abbr -a a 'aider -c $HOME/.aider.conf.yml'
 abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
+abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
+abbr -a cl-opus 'claude --model claude-opus-4-20250514'
+abbr -a clup 'npm install -g @anthropic-ai/claude-code'
 abbr -a a-openai-gpt-4o 'aider --model gpt-4o -c $HOME/.aider.conf.yml'
 abbr -a a-openai-gpt-4.1 'aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano --weak-model openai/gpt-4.1-nano -c $HOME/.aider.conf.yml'
 abbr -a a-gemini 'aider --model gemini -c $HOME/.aider.conf.yml'
