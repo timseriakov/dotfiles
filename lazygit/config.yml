@@ -9,18 +9,25 @@ customCommands:
     context: "files"
     description: "Split diff (current file)"
     loadingText: "Rendering split diff..."
-    output: panel
+    output: terminal
     command: |
-      bash -lc 'git diff --no-ext-diff --color=always -- "{{.SelectedFile.Name}}" | git-split-diffs --color'
+      env TERM=xterm-256color bash -lc 'git diff --no-ext-diff --color=always -- "{{.SelectedFile.Name}}" | git-split-diffs --color=16m | less -R'
   - key: "S"
     context: "commits"
     description: "Split diff (selected commit)"
     loadingText: "Rendering split diff..."
-    output: panel
+    output: terminal
     command: |
-      bash -lc 'git show --no-ext-diff --color=always {{.SelectedCommit.Sha}} | git-split-diffs --color'
-
+      env TERM=xterm-256color bash -lc 'git show --no-ext-diff --color=always {{.SelectedCommit.Sha}} | git-split-diffs --color=16m | less -R'
+  - key: "G"
+    context: "files"
+    description: "Split diff (staged vs HEAD)"
+    loadingText: "Rendering split diff..."
+    output: terminal
+    command: |
+      env TERM=xterm-256color bash -lc 'git diff --cached --no-ext-diff --color=always -- "{{.SelectedFile.Name}}" | git-split-diffs --color=16m | less -R'
 git:
   paging:
     colorArg: always
-    pager: git-split-diffs --color
+    pager: git-split-diffs --color=16m
+    useConfigOnly: true
