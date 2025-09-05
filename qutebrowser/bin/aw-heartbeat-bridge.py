@@ -21,9 +21,11 @@ import socket
 import sys
 import argparse
 import time
+import platform
+import os
 
 
-def ensure_bucket(aw_base: str, bucket_id: str):
+def ensure_bucket(aw_base: str, bucket_id: str, meta_hostname: str):
     """Ensure bucket exists on aw-server.
 
     Tries to PUT bucket metadata; ignores errors if it already exists.
@@ -32,7 +34,7 @@ def ensure_bucket(aw_base: str, bucket_id: str):
     data = json.dumps({
         "client": "aw-heartbeat-bridge",
         "type": "event",
-        "hostname": socket.gethostname(),
+        "hostname": meta_hostname,
         "name": bucket_id,
     }).encode("utf-8")
     # First try POST (works with certain aw-server builds)
@@ -71,6 +73,29 @@ def ensure_bucket(aw_base: str, bucket_id: str):
 def post_event(aw_base: str, bucket_id: str, ts: str, url: str, title: str):
     """Send a single event to aw-server."""
     api = f"{aw_base}/api/0/buckets/{bucket_id}/events"
+    event = {
+        "timestamp": ts,
+        "duration": 0,
+        "data": {
+            "app": "qutebrowser",
+            "url": url,
+            "title": title,
+        },
+    }
+    body = json.dumps(event).encode("utf-8")
+    req = Request(api, data=body, method="POST")
+    req.add_header("Content-Type", "application/json")
+    with urlopen(req, timeout=3) as resp:
+        resp.read()
+
+
+def heartbeat_event(aw_base: str, bucket_id: str, ts: str, url: str, title: str, pulsetime: int = 15):
+    """Send a heartbeat which lets aw-server aggregate durations.
+
+    pulsetime controls how far apart heartbeats can be and still be merged
+    into a single event. Since the userscript sends every ~5s, 15s is sane.
+    """
+    api = f"{aw_base}/api/0/buckets/{bucket_id}/heartbeat?pulsetime={int(pulsetime)}"
     event = {
         "timestamp": ts,
         "duration": 0,
@@ -131,11 +156,13 @@ class Handler(BaseHTTPRequestHandler):
 
         bucket_id = self.server.bucket_id
         aw_base = self.server.aw_base
+        pulsetime = self.server.pulsetime
+        meta_hostname = self.server.meta_hostname
 
         try:
             try:
-                # Try to post directly first; if bucket is missing we'll handle 404
-                post_event(aw_base, bucket_id, ts, url, title)
+                # Prefer heartbeat to aggregate durations for graphs
+                heartbeat_event(aw_base, bucket_id, ts, url, title, pulsetime=pulsetime)
             except urllib.error.HTTPError as e:
                 code = getattr(e, 'code', None)
                 body = ''
@@ -148,10 +175,10 @@ class Handler(BaseHTTPRequestHandler):
                     exists = bucket_exists(aw_base, bucket_id)
                     print(f"Bucket exists before create? {exists}")
                     print("Retrying after creating bucket...")
-                    ensure_bucket(aw_base, bucket_id)
+                    ensure_bucket(aw_base, bucket_id, meta_hostname)
                     exists_after = bucket_exists(aw_base, bucket_id)
                     print(f"Bucket exists after create? {exists_after}")
-                    post_event(aw_base, bucket_id, ts, url, title)
+                    heartbeat_event(aw_base, bucket_id, ts, url, title, pulsetime=pulsetime)
                 else:
                     raise
 
@@ -197,22 +224,42 @@ def probe_aw_base(preferred: str) -> str:
     return preferred.rstrip('/') if preferred else 'http://127.0.0.1:5600'
 
 
+def choose_hostname(cli_hostname: str | None) -> str:
+    # priority: cli -> env -> platform.node with .local -> socket.gethostname
+    if cli_hostname:
+        return cli_hostname
+    env = os.environ.get('AW_BRIDGE_HOSTNAME')
+    if env:
+        return env
+    node = platform.node()
+    if node and node.endswith('.local'):
+        return node
+    host = socket.gethostname()
+    return host
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8437)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--aw", default="http://127.0.0.1:5600")
+    parser.add_argument("--pulsetime", type=int, default=15)
+    parser.add_argument("--hostname", default=None)
+    parser.add_argument("--bucket-id", default=None)
     args = parser.parse_args()
 
     host = args.host
     port = args.port
     aw_base = probe_aw_base(args.aw)
-    bucket_id = f"aw-watcher-qutebrowser_{socket.gethostname()}"
+    meta_hostname = choose_hostname(args.hostname)
+    bucket_id = args.bucket_id or f"aw-watcher-qutebrowser_{meta_hostname}"
 
     httpd = HTTPServer((host, port), Handler)
     httpd.bucket_id = bucket_id
     httpd.aw_base = aw_base
-    print(f"Listening on http://{host}:{port}/heartbeat -> {aw_base} bucket={bucket_id}")
+    httpd.pulsetime = max(5, int(args.pulsetime))
+    httpd.meta_hostname = meta_hostname
+    print(f"Listening on http://{host}:{port}/heartbeat -> {aw_base} bucket={bucket_id} hostname={meta_hostname}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
