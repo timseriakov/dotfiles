@@ -287,6 +287,12 @@ config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
 # Fill credentials from macOS Keychain
 config.bind(leader + 'p', 'spawn -u keychain_fill')
 
+# ActivityWatch heartbeat bridge controls
+config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
+config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
+config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
+config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
+
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
 config.bind(leader + "ce", "config-edit")

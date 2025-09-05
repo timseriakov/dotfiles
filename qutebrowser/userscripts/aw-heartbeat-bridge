@@ -1,0 +1,114 @@
+#!/bin/bash
+# Qutebrowser userscript: manage ActivityWatch heartbeat bridge
+# Usage:
+#   spawn -u aw-heartbeat-bridge [start|stop|status|restart]
+# Default: start
+
+set -euo pipefail
+
+# Ensure a sane PATH when called from qutebrowser
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+cmd="${1:-start}"
+
+# Resolve repo root (this script is in userscripts/, Python lives in bin/)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+PY="$ROOT_DIR/bin/aw-heartbeat-bridge.py"
+PIDFILE="/tmp/aw-heartbeat-bridge.pid"
+LOGFILE="/tmp/aw-heartbeat-bridge.log"
+
+qmsg() {
+  local msg="$1"
+  if [[ -n "${QUTE_FIFO:-}" && -p "$QUTE_FIFO" ]]; then
+    # Show a short message inside qutebrowser
+    printf "message-info '%s'\n" "$msg" >"$QUTE_FIFO" 2>/dev/null || true
+  fi
+}
+
+is_running() {
+  if [[ -f "$PIDFILE" ]];
+  then
+    local pid
+    pid="$(cat "$PIDFILE" 2>/dev/null || true)"
+    if [[ -n "${pid}" ]] && ps -p "$pid" >/dev/null 2>&1; then
+      return 0
+    fi
+  fi
+  # fallback by process name
+  if pgrep -f "aw-heartbeat-bridge.py" >/dev/null 2>&1; then
+    return 0
+  fi
+  return 1
+}
+
+start() {
+  if is_running; then
+    echo "aw-heartbeat-bridge: already running"
+    qmsg "AW bridge already running"
+    exit 0
+  fi
+  if [[ ! -f "$PY" ]]; then
+    echo "aw-heartbeat-bridge: Python bridge not found at $PY" >&2
+    exit 1
+  fi
+  # Resolve a python3 we can use under launchd/userscript env
+  PYTHON3=""
+  for p in /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3 "$(command -v python3 2>/dev/null || true)"; do
+    if [[ -n "$p" && -x "$p" ]]; then PYTHON3="$p"; break; fi
+  done
+  if [[ -z "$PYTHON3" ]]; then
+    echo "aw-heartbeat-bridge: python3 not found in PATH" >&2
+    exit 1
+  fi
+  echo "aw-heartbeat-bridge: starting..."
+  nohup "$PYTHON3" "$PY" >>"$LOGFILE" 2>&1 &
+  pid=$!
+  echo "$pid" >"$PIDFILE"
+  disown "$pid" 2>/dev/null || true
+  echo "aw-heartbeat-bridge: started pid=$pid (log: $LOGFILE)"
+  qmsg "AW bridge started (pid=$pid)"
+}
+
+stop() {
+  if [[ -f "$PIDFILE" ]]; then
+    pid="$(cat "$PIDFILE" 2>/dev/null || true)"
+    if [[ -n "${pid}" ]] && ps -p "$pid" >/dev/null 2>&1; then
+      kill "$pid" 2>/dev/null || true
+      rm -f "$PIDFILE"
+      echo "aw-heartbeat-bridge: stopped pid=$pid"
+      qmsg "AW bridge stopped"
+      exit 0
+    fi
+  fi
+  # fallback kill by name
+  if pgrep -f "aw-heartbeat-bridge.py" >/dev/null 2>&1; then
+    pkill -f "aw-heartbeat-bridge.py" || true
+    rm -f "$PIDFILE"
+    echo "aw-heartbeat-bridge: stopped"
+    qmsg "AW bridge stopped"
+  else
+    echo "aw-heartbeat-bridge: not running"
+    qmsg "AW bridge not running"
+  fi
+}
+
+status() {
+  if is_running; then
+    echo "aw-heartbeat-bridge: running"
+    qmsg "AW bridge running"
+    exit 0
+  else
+    echo "aw-heartbeat-bridge: not running"
+    qmsg "AW bridge not running"
+    exit 1
+  fi
+}
+
+case "$cmd" in
+  start) start ;;
+  stop) stop ;;
+  status) status ;;
+  restart) stop || true; start ;;
+  *) echo "Usage: $0 [start|stop|status|restart]" >&2; exit 2 ;;
+esac
