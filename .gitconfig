@@ -60,11 +60,16 @@
 	cmd = env NVIM_APPNAME=nvim-diff nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" -c 'wincmd J' -c 'wincmd ='
 
 [alias]
-    # Side-by-side diffs using git-split-diffs
-    sdiff = !sh -c 'git diff --no-ext-diff --color=always "$@" | git-split-diffs --color | less -RFX' -
-    # Log with patches rendered side-by-side
-    slog = !sh -c 'git log -p --color=always "$@" | git-split-diffs --color | less -RFX' -
+    # Side-by-side diffs using git-split-diffs (force truecolor)
+    sdiff = !sh -c 'git diff --no-ext-diff --color=always "$@" | git-split-diffs --color=16m | less -RFX' -
+    # Log with patches rendered side-by-side (force truecolor)
+    slog = !sh -c 'git log -p --color=always "$@" | git-split-diffs --color=16m | less -RFX' -
 
 [split-diffs]
     # Allow split view on narrower panes (e.g. LazyGit panel widths)
-	min-line-width = 0
+    	min-line-width = 0
+    # Point to custom theme directory in this repo
+	theme-directory = /Users/tim/dev/dotfiles/git-split-diffs
+    # Use the Nord-based theme without background colors
+    	theme-name = arctic-nobg
+    	syntax-highlighting-theme = nord
