@@ -42,7 +42,7 @@ c.window.hide_decoration = True
 # Layout
 c.scrolling.bar = "when-searching"
 c.statusbar.show = "in-mode"
-c.tabs.show = "switching" # multiple
+c.tabs.show = "never" # multiple
 c.tabs.last_close = "close"
 # c.tabs.new_position.related = "last"
 # Open new tabs in background (e.g., middle-click on links)
@@ -293,7 +293,7 @@ config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # 
 config.bind(leader + "cs", "cmd-set-text -s :set -t")
 
 # ui
-config.bind(leader + "ut", "config-cycle tabs.show multiple switching")
+config.bind(leader + "uu", "config-cycle tabs.show multiple never")
 config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
 config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
 config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
