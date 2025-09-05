@@ -44,6 +44,7 @@ abbr -a bid 'bun i -D'
 abbr -a bd 'bun dev'
 abbr -a bdd 'bun add'
 abbr -a bddd 'bun add -D'
+abbr -a bx 'bunx'
 
 # Docker
 abbr -a dcu 'docker compose up'
