@@ -39,6 +39,11 @@ end
 
 mkdir -p (dirname "$PLIST")
 
+set ENV_BLOCK ''
+if set -q AW_BRIDGE_HOSTNAME
+  set ENV_BLOCK $ENV_BLOCK'  <key>EnvironmentVariables</key>'"\n"'  <dict>'"\n"'    <key>AW_BRIDGE_HOSTNAME</key>'"\n"'    <string>'$AW_BRIDGE_HOSTNAME'</string>'"\n"'  </dict>'"\n"
+end
+
 printf '%s\n' \
   '<?xml version="1.0" encoding="UTF-8"?>' \
   '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
@@ -51,6 +56,7 @@ printf '%s\n' \
   '    <string>'$PYTHON3'</string>' \
   '    <string>'$PY_SCRIPT'</string>' \
   '  </array>' \
+  $ENV_BLOCK \
   '  <key>RunAtLoad</key>' \
   '  <true/>' \
   '  <key>KeepAlive</key>' \
