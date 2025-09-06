@@ -53,6 +53,10 @@ args = ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"]
 command = "fish"
 args = ["-lc", "npx -y @zereight/mcp-gitlab"]
 
+[mcp_servers.gk]
+command = "gk"
+args = ["mcp"]
+
 # [mcp_servers."figma-dev-mode-mcp-server"]
 # type = "http"
 # # type = "streamable-http"
