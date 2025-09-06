@@ -11,8 +11,24 @@ else
   term="alacritty"
 fi
 
-# Используем проверенный конфиг (размеры: 140x43, позиция 250x200, font 17.5)
+# Используем конфиг для большого окна (windowed 9999x9999, font 17.5)
 config_file="/Users/tim/dev/dotfiles/qutebrowser/alacritty-braindrop.toml"
 
-# Команда для запуска (без login-shell, чтобы не подхватывать fish/tmux)
-exec "$term" --config-file "$config_file" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec /Users/tim/.local/bin/braindrop"
+# Уникальный класс для нашего braindrop окна
+window_class="braindrop-terminal"
+
+# Проверяем, запущено ли уже окно braindrop
+if pgrep -f "braindrop" > /dev/null 2>&1; then
+    # Активируем существующее окно через AppleScript
+    osascript -e '
+        tell application "System Events"
+            set appProcess to first process whose name is "Alacritty"
+            set frontmost of appProcess to true
+        end tell
+    ' 2>/dev/null || true
+
+    exit 0
+fi
+
+# Если окна нет или не удалось активировать - запускаем новое
+exec "$term" --config-file "$config_file" --class "$window_class" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec /Users/tim/.local/bin/braindrop"
