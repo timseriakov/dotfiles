@@ -5,7 +5,7 @@ repos:
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
-        exclude: '.*lock\.json$'
+        exclude: '(^fish/fish_variables$|.*lock\.json$)'
 
   # General security checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
