@@ -12,7 +12,10 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(security find-internet-password:*)",
-      "Bash(mkfifo:*)"
+      "Bash(mkfifo:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:greasyfork.org)"
     ],
     "deny": [],
     "ask": [],
