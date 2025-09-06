@@ -225,8 +225,7 @@
         }
 
 
-        // Auto remove after 10 seconds
-        setTimeout(removeTooltip, 10000);
+        // Tooltip stays open until manually closed
 
         // Save to history
         const historyItem = {
