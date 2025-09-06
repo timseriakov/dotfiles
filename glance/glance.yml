@@ -5,7 +5,7 @@ server:
 pages:
   - name: Home
     # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
-    hide-desktop-navigation: true
+    hide-desktop-navigation: false
 
     columns:
       - size: small
@@ -240,15 +240,15 @@ pages:
         widgets:
           - type: repository
             repository: payloadcms/payload
-            pull-requests-limit: 5
-            issues-limit: 5
+            pull-requests-limit: 10
+            issues-limit: 10
             commits-limit: 5
       - size: full
         widgets:
           - type: repository
             repository: neovide/neovide
-            pull-requests-limit: 5
-            issues-limit: 5
+            pull-requests-limit: 10
+            issues-limit: 10
             commits-limit: 5
 
 theme:

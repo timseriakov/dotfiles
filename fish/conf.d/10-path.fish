@@ -26,6 +26,9 @@ fish_add_path -Ua ~/.orbstack/bin
 
 # Go
 fish_add_path -Ua ~/go/bin
+set -gx GOPATH $HOME/go
+set -gx GOBIN $HOME/.local/bin
+fish_add_path -Ua $GOBIN
 
 # Java SDKs (prefer 11 to match JAVA_HOME)
 fish_add_path -Ua /opt/homebrew/opt/openjdk@11/bin
