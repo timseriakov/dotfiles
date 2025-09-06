@@ -295,7 +295,7 @@ config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartb
 
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
-config.bind(leader + 'tr', 'jseval --quiet (function(){var e=document.querySelector(".goog-te-menu-value span");if(e){e.click();}else{window.location.reload();}})()') # full page translation
+config.bind(leader + 'tr', 'jseval --quiet (function(){var e=document.getElementById("google_translate_element");if(e&&e.classList.contains("T")){e.click();}else{var m=document.querySelector(".goog-te-menu-value span");if(m){m.click();}else if(e){e.innerHTML="§";e.title="Click to translate";e.classList.add("T");e.click();}}})()') # full page translation
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
