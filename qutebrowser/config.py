@@ -295,7 +295,8 @@ config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartb
 
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
-config.bind(leader + 'tr', 'jseval --quiet (function(){var e=document.getElementById("google_translate_element");if(e&&e.classList.contains("T")){e.click();}else{var m=document.querySelector(".goog-te-menu-value span");if(m){m.click();}else if(e){e.innerHTML="§";e.title="Click to translate";e.classList.add("T");e.click();}}})()') # full page translation
+# Full-page translate toggle (inline only): no toolbars, always RU, reversible.
+config.bind(leader + 'tr', "jseval --quiet (function(){if(typeof window.__inline_ru_toggle__==='function'){return window.__inline_ru_toggle__()}try{var ev=new KeyboardEvent('keydown',{key:'F3',keyCode:114,which:114});document.dispatchEvent(ev)}catch(e){console.warn('inline RU toggler not loaded; restart qutebrowser')}})()") # full page translation
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
