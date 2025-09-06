@@ -293,8 +293,9 @@ config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
 
-# Translation sidebar toggle
-config.bind(leader + 'tr', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))')
+# Translation
+config.bind(leader + 'tr', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
+config.bind(leader + 'tp', 'jseval --quiet (function(){var e=document.querySelector(".goog-te-menu-value span");if(e){e.click();}else{window.location.reload();}})()') # full page translation
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
