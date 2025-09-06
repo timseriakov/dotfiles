@@ -31,4 +31,4 @@ if pgrep -f "braindrop" > /dev/null 2>&1; then
 fi
 
 # Если окна нет или не удалось активировать - запускаем новое
-exec "$term" --config-file "$config_file" --class "$window_class" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec braindrop"
+exec "$term" --config-file "$config_file" --class "$window_class" -e /bin/bash -c "BROWSER=\"$HOME/dev/dotfiles/bin/open-in-qute\" exec /Users/tim/.local/bin/braindrop"
