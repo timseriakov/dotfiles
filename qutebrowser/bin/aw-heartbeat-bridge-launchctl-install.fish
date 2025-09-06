@@ -55,6 +55,8 @@ printf '%s\n' \
   '  <array>' \
   '    <string>'$PYTHON3'</string>' \
   '    <string>'$PY_SCRIPT'</string>' \
+  '    <string>--hostname</string>' \
+  '    <string>pmx.local</string>' \
   '  </array>' \
   $ENV_BLOCK \
   '  <key>RunAtLoad</key>' \
