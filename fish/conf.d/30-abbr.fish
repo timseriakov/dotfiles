@@ -94,10 +94,12 @@ abbr -a gd 'git sdiff'
 
 # Brew helpers
 abbr -a bri 'brew install'
-abbr -a brr 'brew uninstall'
 abbr -a brrm 'brew uninstall'
 abbr -a brugh 'brew upgrade gh'
 abbr -a brc 'nvim ~/dev/dotfiles/Brewfile'
+abbr -a brewfile-dump 'brew bundle dump --global --force'
+abbr -a brewfile-cleanup 'brew bundle cleanup --force'
+abbr -a brewfile-upgrade 'brew bundle upgrade --global'
 
 # Backlog helpers
 abbr -a bl backlog
