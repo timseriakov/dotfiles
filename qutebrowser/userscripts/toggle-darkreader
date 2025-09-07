@@ -90,6 +90,8 @@ else
   js_off='(function(){try{localStorage.setItem("qute-smart-dark","off");var el=document.getElementById("qute-smart-dark-style");if(el&&el.parentNode){el.parentNode.removeChild(el);}window.dispatchEvent(new StorageEvent("storage",{key:"qute-smart-dark",newValue:"off"}));return true}catch(e){console.error(e);return false}})()'
   printf '%s\n' "message-info 'Smart dark: OFF'" > "${FIFO}"
   printf "jseval -q -- '%s'\n" "$js_off" > "${FIFO}"
+  # Also clear any previously persisted engine-level stylesheet, just in case
+  printf '%s\n' "set content.user_stylesheets \"\"" > "${FIFO}"
 fi
 
 exit 0

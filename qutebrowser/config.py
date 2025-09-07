@@ -321,6 +321,9 @@ config.bind(leader + 'un', "config-cycle -p colors.webpage.darkmode.enabled true
 # - Dark Reader userscript toggle on Space u m
 config.bind(leader + 'um', 'spawn --userscript toggle-darkreader')
 
+# Reset any dark styles globally and on current site (Space u 0)
+config.bind(leader + 'u0', 'spawn --userscript reset-dark')
+
 # dev tools
 config.bind(leader + "dd", "devtools")
 config.bind(leader + "de", "edit-text")
