@@ -55,6 +55,8 @@ echo "${target_state}" > "${STATE_FILE}"
 
 # JS snippets to toggle Dark Reader or fallback CSS on current page and persist per-origin flag
 # Use engine-level user stylesheet as robust dark mode when toggling via 'um'.
+# Per-page JS-based dark filter (avoids global inversion). Fallback to
+# engine-level user stylesheet only on strict-CSP hosts (e.g., Google).
 USER_CSS="$ROOT_DIR/styles/darkfilter.css"
 
 HOST=""
@@ -68,17 +70,26 @@ if [[ "$HOST" == *"google."* ]] || [[ "$HOST" == *"google" ]] || [[ "$HOST" == *
 fi
 
 if [[ "${target_state}" == "on" ]]; then
-  # Apply robust user stylesheet-based dark mode (CSP-proof), temporary
-  printf '%s\n' \
-    "set -t content.user_stylesheets \"$USER_CSS\"" \
-    "message-info 'Dark style (user stylesheet): ON'" \
-    > "${FIFO}"
+  if [[ "$is_csp_strict" == true ]]; then
+    printf '%s\n' \
+      "message-warning 'Strict CSP: use built-in dark mode (Space u n) on this site'" \
+      > "${FIFO}"
+    exit 0
+  fi
+  # Persist per-origin and apply immediately
+  js_on='(function(){try{localStorage.setItem("qute-smart-dark","on");var ID="qute-smart-dark-style";if(!document.getElementById(ID)){var el=document.createElement("style");el.id=ID;el.type="text/css";el.textContent="html{background:#111!important;filter:invert(0.90) hue-rotate(180deg) contrast(0.95)!important} img,video,picture,canvas,svg,object,embed{filter:invert(1) hue-rotate(180deg) contrast(1.05)!important;background:transparent!important}";(document.head||document.documentElement).appendChild(el);}window.dispatchEvent(new StorageEvent("storage",{key:"qute-smart-dark",newValue:"on"}));return true}catch(e){console.error(e);return false}})()'
+  printf '%s\n' "message-info 'Smart dark: ON (per-site)'" > "${FIFO}"
+  printf "jseval -q -- '%s'\n" "$js_on" > "${FIFO}"
 else
-  # Remove user stylesheet to turn dark style off (temporary)
-  printf '%s\n' \
-    "set -t content.user_stylesheets \"\"" \
-    "message-info 'Dark style (user stylesheet): OFF'" \
-    > "${FIFO}"
+  if [[ "$is_csp_strict" == true ]]; then
+    printf '%s\n' \
+      "message-warning 'Strict CSP: use built-in dark mode (Space u n) on this site'" \
+      > "${FIFO}"
+    exit 0
+  fi
+  js_off='(function(){try{localStorage.setItem("qute-smart-dark","off");var el=document.getElementById("qute-smart-dark-style");if(el&&el.parentNode){el.parentNode.removeChild(el);}window.dispatchEvent(new StorageEvent("storage",{key:"qute-smart-dark",newValue:"off"}));return true}catch(e){console.error(e);return false}})()'
+  printf '%s\n' "message-info 'Smart dark: OFF'" > "${FIFO}"
+  printf "jseval -q -- '%s'\n" "$js_off" > "${FIFO}"
 fi
 
 exit 0
