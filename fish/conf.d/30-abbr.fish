@@ -45,18 +45,21 @@ abbr -a bd 'bun dev'
 abbr -a bdd 'bun add'
 abbr -a bddd 'bun add -D'
 abbr -a bx bunx
+abbr -a de-it 'docker exec -it'
 
 # Docker
 abbr -a dcu 'docker compose up'
 abbr -a dcub 'docker compose up --build'
 abbr -a dcubd 'docker-compose up --build -d'
+abbr -a de-it 'docker exec -it'
 
-# Aider, Claude and Codex
+# AI tools
 abbr -a a 'aider -c $HOME/.aider.conf.yml'
 abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 abbr -a clup 'npm install -g @anthropic-ai/claude-code'
+abbr -a cm claude-monitor
 abbr -a a-openai-gpt-4o 'aider --model gpt-4o -c $HOME/.aider.conf.yml'
 abbr -a a-openai-gpt-4.1 'aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano --weak-model openai/gpt-4.1-nano -c $HOME/.aider.conf.yml'
 abbr -a a-gemini 'aider --model gemini -c $HOME/.aider.conf.yml'
@@ -68,6 +71,8 @@ abbr -a cx codex
 abbr -a cx-4.1 'codex -m gpt-4.1'
 abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
+abbr -a cr crush
+abbr -a ge gemini
 
 # CLI utilities
 abbr -a gg lazygit
@@ -87,10 +92,6 @@ abbr -a vtop 'vtop --theme nord'
 abbr -a gl 'git slog'
 abbr -a gd 'git sdiff'
 
-# Bun helpers (additional)
-abbr -a bb 'bun run build'
-abbr -a brm 'bun remove'
-
 # Brew helpers
 abbr -a bri 'brew install'
 abbr -a brr 'brew uninstall'
@@ -109,27 +110,26 @@ abbr -a cbc 'cb cp'
 abbr -a cbp 'cb p'
 abbr -a cpr 'cp -r'
 abbr -a chmd chmod-cli
-abbr -a cr crush
 abbr -a de deno
-abbr -a de-it 'docker exec -it'
-abbr -a ge gemini
-abbr -a grc 'cd ~/.gemini'
 abbr -a m mmv
 abbr -a mtrx 'cmatrix -C blue -s'
 abbr -a mtrx-cyan 'cmatrix -C cyan -s'
-abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
 abbr -a sshh ggh
 
 # Open configs/projects
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
+abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
+abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
 abbr -a qrc 'nvim ~/dev/dotfiles/qutebrowser/config.py'
 abbr -a trc 'nvim ~/.tmux.conf'
 abbr -a glarc 'nvim ~/Library/LaunchAgents/app.glance.plist'
 abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
+abbr -a grc 'cd ~/.gemini'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
 abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
 abbr -a arc 'nvim ~/dev/dotfiles/aerospace/aerospace.toml'
 abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
+abbr -a abrc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
 abbr -a secrets 'nvim ~/dev/dotfiles/fish/secrets.fish'
 
 # Misc simple
