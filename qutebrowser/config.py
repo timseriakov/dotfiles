@@ -128,7 +128,7 @@ c.colors.hints.bg = nord3  # darker grey for better contrast
 c.colors.hints.fg = nord6  # bright white text
 c.colors.hints.match.fg = accent
 c.hints.border = f"1px solid {accent}"
-c.hints.chars = "asdfghjkl"
+c.hints.chars = "asdfghjklwertyuio"
 c.hints.min_chars = 1
 
 # Messages
