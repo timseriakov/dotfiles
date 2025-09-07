@@ -280,6 +280,8 @@ config.bind("gu", "navigate up") # go up one level in URL
 
 # Open link in mpv
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
+# Download current URL as file (for audio/video tabs)
+config.bind(leader + "d", "download {url}")
 
 config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
 config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
