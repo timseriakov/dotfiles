@@ -1,15 +1,7 @@
 [window]
 decorations = "none"
-opacity = 0.9
-startup_mode = "Windowed"
-
-[window.dimensions]
-columns = 140
-lines = 43
-
-[window.position]
-x = 250
-y = 200
+opacity = 0.95
+startup_mode = "Maximized"
 
 [font]
 size = 17.5
@@ -47,6 +39,6 @@ background = "#88c0d0"
 
 [keyboard]
 bindings = [
-    { key = "D", mods = "Control", chars = "\u0004" },
-    { key = "U", mods = "Control", chars = "\u0015" },
+  { key = "D", mods = "Control", chars = "\u0004" },
+  { key = "U", mods = "Control", chars = "\u0015" },
 ]
