@@ -71,8 +71,10 @@ fi
 
 if [[ "${target_state}" == "on" ]]; then
   if [[ "$is_csp_strict" == true ]]; then
+    # Strict CSP → fall back to engine-level stylesheet (temporary, session-only)
     printf '%s\n' \
-      "message-warning 'Strict CSP: use built-in dark mode (Space u n) on this site'" \
+      "set -t content.user_stylesheets \"$USER_CSS\"" \
+      "message-info 'Smart dark: ON (engine stylesheet for strict CSP site)'" \
       > "${FIFO}"
     exit 0
   fi
@@ -82,8 +84,10 @@ if [[ "${target_state}" == "on" ]]; then
   printf "jseval -q -- '%s'\n" "$js_on" > "${FIFO}"
 else
   if [[ "$is_csp_strict" == true ]]; then
+    # Turn off engine-level stylesheet
     printf '%s\n' \
-      "message-warning 'Strict CSP: use built-in dark mode (Space u n) on this site'" \
+      "set -t content.user_stylesheets \"\"" \
+      "message-info 'Smart dark: OFF (engine stylesheet cleared)'" \
       > "${FIFO}"
     exit 0
   fi
