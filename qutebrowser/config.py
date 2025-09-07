@@ -266,7 +266,7 @@ config.bind("<Cmd-w>", "tab-close")
 
 # Move tab
 config.bind("<<", "tab-move -")
-config.bind(">>", "tab-move +")
+config.bind(">", "tab-move +")
 
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
