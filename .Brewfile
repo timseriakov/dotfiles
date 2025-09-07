@@ -1,3 +1,7 @@
+tap "alcova-ai/tap"
+tap "bgreenwell/doxx"
+tap "charmbracelet/tap"
+tap "control-theory/gonzo"
 tap "daipeihust/tap"
 tap "danvergara/tools"
 tap "dotenvx/brew"
@@ -7,10 +11,12 @@ tap "felixkratz/formulae"
 tap "fsouza/prettierd"
 tap "ggozad/formulas"
 tap "gowebly/tap"
+tap "gromgit/brewtils"
 tap "hashicorp/tap"
 tap "itchyny/tap"
 tap "koekeishiya/formulae"
 tap "oven-sh/bun"
+tap "tokuhirom/tap"
 # JPEG image codec that aids compression and decompression
 brew "jpeg-turbo"
 # Library for manipulating PNG images
@@ -33,8 +39,6 @@ brew "arm-none-eabi-gcc"
 brew "ast-grep"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
-# GNU internationalization (i18n) and localization (l10n) library
-brew "gettext"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
 # C library of Git core methods that is re-entrant and linkable
@@ -43,12 +47,16 @@ brew "libgit2"
 brew "bat"
 # Parser generator
 brew "bison"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # Freely available high-quality data compressor
 brew "bzip2"
 # Software library to render fonts
 brew "freetype"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
 # XML-based font configuration API for X Windows
 brew "fontconfig"
 # Core application library for C
@@ -59,6 +67,16 @@ brew "pixman"
 brew "cairo"
 # Object-file caching compiler wrapper
 brew "ccache"
+# Toolkit for image loading and pixel buffer manipulation
+brew "gdk-pixbuf"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# Library to render SVG files using Cairo
+brew "librsvg"
+# Versatile and fast Unicode/ASCII/ANSI graphics renderer
+brew "chafa"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
 brew "clang-format"
 # Cut, copy, and paste anything, anywhere, all from the terminal
@@ -67,10 +85,6 @@ brew "clipboard"
 brew "cmake"
 # Console Matrix
 brew "cmatrix"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# OpenAI's coding agent that runs in your terminal
-brew "codex"
 # Interactive terminal based UI application for tracking cryptocurrencies
 brew "cointop"
 # GNU File, Shell, and Text utilities
@@ -81,8 +95,12 @@ brew "cpufetch"
 brew "ctop"
 # Power of curl, ease of use of httpie
 brew "curlie"
+# Modern diagram scripting language that turns text to diagrams
+brew "d2"
 # Message bus system, providing inter-application communication
 brew "dbus", restart_service: :changed
+# Command-line interface for SQLite
+brew "sqlite"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # Good-lookin' diffs with diff-highlight and more
@@ -91,46 +109,42 @@ brew "diff-so-fancy"
 brew "difftastic"
 # Terminal visual disk space navigator
 brew "diskonaut"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Platform built on V8 to build network applications
 brew "node"
 # Immersive terminal interface for managing docker containers and services
 brew "dockly"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.13"
-# TUI todo manager
-brew "dooit"
 # Disk Usage/Free Utility - a better 'df' alternative
 brew "duf"
+# Asynchronous event library
+brew "libevent"
+# Compression/decompression library aiming for high speed
+brew "snappy"
 # Perl lib for reading and writing EXIF metadata
 brew "exiftool"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Asynchronous event library
-brew "libevent"
-# OpenType text shaping engine
-brew "harfbuzz"
 # Subtitle renderer for the ASS/SSA subtitle format
 brew "libass"
+# MP3 player for Linux and UNIX
+brew "mpg123"
 # Audio codec
 brew "opus"
 # VP8/VP9 video codec
 brew "libvpx"
-# Framework for layout and rendering of i18n text
-brew "pango"
-# Compression/decompression library aiming for high speed
-brew "snappy"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg@6"
 # Create thumbnails for your video files
 brew "ffmpegthumbnailer"
 # Fast Lexical Analyzer, generates Scanners (tokenizers)
 brew "flex"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.13"
 # Command-line outline and bitmap font editor/converter
 brew "fontforge"
 # Terminal JSON viewer
@@ -141,8 +155,6 @@ brew "fzf"
 brew "gawk"
 # GNU compiler collection
 brew "gcc"
-# Toolkit for image loading and pixel buffer manipulation
-brew "gdk-pixbuf"
 # Interact with Google Gemini AI models from the command-line
 brew "gemini-cli"
 # GitHub command-line tool
@@ -165,16 +177,18 @@ brew "gnupg"
 brew "go"
 # Go manage your Ollama models
 brew "gollama"
+# Log analysis TUI
+brew "gonzo"
 # Perfect hash function generator
 brew "gperf"
 # Library access to GnuPG
 brew "gpgme"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Image processing tools collection
 brew "graphicsmagick"
-# Library to render SVG files using Cairo
-brew "librsvg"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
 # Tool for glamorous shell scripts
@@ -221,6 +235,8 @@ brew "ninja"
 brew "meson"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Media player based on MPlayer and mplayer2
 brew "mpv"
 # SMTP client that can be used as an SMTP plugin for Mutt
@@ -245,8 +261,8 @@ brew "numpy"
 brew "nx", link: false
 # Create, run, and share large language models (LLMs)
 brew "ollama", restart_service: :changed
-# Protocol buffers (Google's data interchange format)
-brew "protobuf"
+# Command-line Git information tool
+brew "onefetch"
 # Terminal client for Ollama
 brew "oterm"
 # Command-line tool to view objects (JSON/YAML/TOML) in TUI tree widget
@@ -271,6 +287,8 @@ brew "portal"
 brew "portaudio"
 # Terminal slideshow tool
 brew "presenterm"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
 # Sound system for POSIX OSes
 brew "pulseaudio", restart_service: :changed
 # Monitor data's progress through a pipe
@@ -287,10 +305,14 @@ brew "qemu"
 brew "qt@5"
 # Generate types and converters from JSON, Schema, and GraphQL
 brew "quicktype"
+# Ruby version manager
+brew "rbenv"
 # Alternative to backtracking PCRE-style regular expression engines
 brew "re2"
 # Persistent key-value database, with built-in net interface
 brew "redis", restart_service: :changed
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Rust toolchain installer
 brew "rustup"
 # Smart session manager for the terminal
@@ -347,6 +369,8 @@ brew "vercel-cli"
 brew "viu"
 # Console-based network traffic monitor
 brew "vnstat"
+# Watch files and take action when they change
+brew "watchman"
 # Internet file retriever
 brew "wget"
 # Access X11 clipboards from the command-line
@@ -361,21 +385,33 @@ brew "yq"
 brew "zlib"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# A Model Context Protocol (MCP) server for the Perplexity API
+brew "alcova-ai/tap/perplexity-mcp"
+# Terminal document viewer for .docx files
+brew "bgreenwell/doxx/doxx"
 # A powerful terminal-based AI assistant for developers, providing intelligent coding assistance directly in your terminal.
-brew "crush"
+brew "charmbracelet/tap/crush"
 # Switch your input method through terminal
-brew "im-select"
+brew "daipeihust/tap/im-select"
 # Secure dotenv–from the creator of `dotenv`
-brew "dotenvx"
+brew "dotenvx/brew/dotenvx"
 # prettier, on SPEED!
-brew "prettierd"
-brew "mmv"
+brew "fsouza/prettierd/prettierd"
+# Interactive TUI for Homebrew
+brew "gromgit/brewtils/taproom"
+brew "itchyny/tap/mmv"
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
-brew "bun"
+brew "oven-sh/bun/bun"
+# Docker Compose Viewer - A TUI tool for monitoring Docker Compose applications
+brew "tokuhirom/tap/dcv"
 # Time tracker
 cask "activitywatch"
+# GPU-accelerated terminal emulator
+cask "alacritty"
 # Enable Windows-like alt-tab
 cask "alt-tab"
+# VPN client
+cask "amneziavpn"
 # Memory training application
 cask "anki"
 # Web browser focusing on privacy
@@ -384,10 +420,14 @@ cask "brave-browser"
 cask "dbgate"
 # Collaborative team software
 cask "figma"
+# Desktop debugging platform for mobile developers
+cask "flipper"
 cask "font-fira-code-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-shure-tech-mono-nerd-font"
 cask "font-ubuntu-mono-nerd-font"
+# CLI for GitKraken
+cask "gitkraken-cli"
 # Desktop automation application
 cask "hammerspoon"
 # Hyprnote application
@@ -398,6 +438,8 @@ cask "iina"
 cask "karabiner-elements"
 # GPU-based terminal emulator
 cask "kitty"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
 # Discover, download, and run local LLMs
@@ -414,8 +456,16 @@ cask "oracle-jdk"
 cask "orbstack"
 # Utility to uninstall apps and remove leftover files from old/uninstalled apps
 cask "pearcleaner"
+# Tool to create native applications from command-line scripts
+cask "platypus"
 # Peer to peer Bitorrent client
 cask "qbittorrent"
+# Standalone app for debugging React Native apps
+cask "react-native-debugger"
+# Team communication and collaboration software
+cask "slack"
+# Video game digital distribution service
+cask "steam"
 # JDK from the Eclipse Foundation (Adoptium)
 cask "temurin"
 # Virtual machines UI using QEMU
@@ -426,3 +476,7 @@ cask "voiceink"
 cask "whisky"
 # HTML to PDF renderer
 cask "wkhtmltopdf"
+# OpenJDK distribution from Azul
+cask "zulu"
+# OpenJDK distribution from Azul
+cask "zulu@11"

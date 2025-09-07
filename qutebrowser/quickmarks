@@ -16,5 +16,7 @@ glp https://gitlab.sqvr.net/dashboard/merge_requests?assignee_username=seriakov
 ji https://sqvr-inc.atlassian.net
 tr https://sqvr-inc.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports-report?project.key=SQ&project.id=10005
 
+sl https://app.slack.com/client/T0B3T22RJ/CKVJFJQ0G
+
 aw http://localhost:5600
 ho http://localhost:1931
