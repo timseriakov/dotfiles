@@ -1,0 +1,14 @@
+/* Simple engine-level dark filter via user stylesheet.
+   Applied by toggling qutebrowser setting `content.user_stylesheets`.
+   Works regardless of site CSP.
+*/
+
+html {
+  background: #111 !important;
+  filter: invert(0.90) hue-rotate(180deg) contrast(0.95) !important;
+}
+
+img, video, picture, canvas, svg, object, embed {
+  filter: invert(1) hue-rotate(180deg) contrast(1.05) !important;
+  background: transparent !important;
+}

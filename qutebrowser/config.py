@@ -265,11 +265,14 @@ config.bind("x", "tab-close")
 config.bind("<Cmd-w>", "tab-close")
 
 # Move tab
-config.bind("<<", "tab-move -")
+config.bind("<", "tab-move -")
 config.bind(">", "tab-move +")
 
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
+
+# macOS-style Preferences: Cmd+,
+config.bind("<Cmd-,>", "open qute://settings")
 
 config.bind("ge", "cmd-set-text -s :open {url}") # edit url
 config.bind("gu", "navigate up") # go up one level in URL
@@ -295,12 +298,9 @@ config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
 
-
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
 config.bind(leader + 'tr', 'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();') # full page translation toggle
-
-
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
@@ -314,6 +314,11 @@ config.bind(leader + "uu", "config-cycle tabs.show multiple never")
 config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
 config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
 config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
+# Dark mode controls
+# - Built-in Qt darkmode toggle on Space u n
+config.bind(leader + 'un', "config-cycle -p colors.webpage.darkmode.enabled true false")
+# - Dark Reader userscript toggle on Space u m
+config.bind(leader + 'um', 'spawn --userscript toggle-darkreader')
 
 # dev tools
 config.bind(leader + "dd", "devtools")
