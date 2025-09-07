@@ -29,6 +29,8 @@ homepage = "http://pmx:1931"
 
 config.set("content.autoplay", False)
 
+# Note: userscripts directory is ~/.qutebrowser/userscripts (symlinked to repo)
+
 # Enable mouse back/forward buttons
 c.input.mouse.back_forward_buttons = True
 
@@ -293,9 +295,12 @@ config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
 
+
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
-config.bind(leader + 'tr', 'jseval --quiet (function(){var e=document.getElementById("google_translate_element");if(e&&e.classList.contains("T")){e.click();}else{var m=document.querySelector(".goog-te-menu-value span");if(m){m.click();}else if(e){e.innerHTML="§";e.title="Click to translate";e.classList.add("T");e.click();}}})()') # full page translation
+config.bind(leader + 'tr', 'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();') # full page translation toggle
+
+
 
 config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 
