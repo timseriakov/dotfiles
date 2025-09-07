@@ -43,9 +43,9 @@ args = [
   "codex",
 ]
 
-[mcp_servers.repomix]
-command = "npx"
-args = ["-y", "repomix", "--mcp"]
+# [mcp_servers.repomix]
+# command = "npx"
+# args = ["-y", "repomix", "--mcp"]
 
 [mcp_servers."perplexity-mcp"]
 command = "fish"
@@ -56,17 +56,14 @@ args = ["-lc", "perplexity-mcp"]
 command = "npx"
 args = ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
 
-[mcp_servers.activewatch]
-command = "node"
-args = ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"]
+# [mcp_servers.activewatch]
+# command = "node"
+# args = ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"]
 
 [mcp_servers.gitlab]
 command = "fish"
 args = ["-lc", "npx -y @zereight/mcp-gitlab"]
 
-[mcp_servers.gk]
-command = "gk"
-args = ["mcp"]
 
 # [mcp_servers."figma-dev-mode-mcp-server"]
 # type = "http"
