@@ -132,6 +132,7 @@ c.hints.chars = "asdfghjkl"
 c.hints.min_chars = 1
 
 # Messages
+c.messages.timeout = 2500  # auto-hide messages after 2.5s
 c.colors.messages.info.bg = black
 c.colors.messages.info.fg = white
 c.colors.messages.error.bg = red
