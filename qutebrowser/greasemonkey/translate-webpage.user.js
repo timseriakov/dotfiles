@@ -17,10 +17,17 @@
 javascript:
 (function(){
 "use strict";
+return;
 
-var defLang="",toolbarLang="";
+// Disabled: translation is controlled by qutebrowser userscript `toggle-translate`.
+// Keeping this script inert avoids auto-translation and loops.
+return;
 
-if (document.querySelector('body > .skiptranslate > iframe')) return;
+// Hardcode target language to Russian and hide language UI
+var defLang="ru",toolbarLang="ru";
+
+// Don't abort if translate iframe exists — we need it for toggling off
+var existingTranslateFrame = document.querySelector('body > .skiptranslate > iframe.skiptranslate');
 try {
   if (window.frameElement.classList.contains('skiptranslate')) return;
 }catch(e){}
@@ -29,6 +36,7 @@ var nLang=navigator.language.split('-')[0];
 
 if (defLang == '?') defLang=nLang;
 if (toolbarLang == '?') toolbarLang=nLang;
+
 
 function getCookies() {
   var r={}, a=document.cookie;
@@ -62,10 +70,10 @@ var translate_to=defLang || '',
     closeBtn,
     GM=false;
 
+// Do not override the hardcoded target language from storage
 try{
-  [translate_to, toolbarLang]=getDef();
-  btnAdded=false;
   GM=true;
+  btnAdded=false;
 }catch(e){}
 
 var curLang='', curLangS='';
@@ -359,14 +367,10 @@ function handleFrame(f) {
     }
 
   var cookies=getCookies();
-
-  if (translate_to && cookies.googtrans && !done) force=false;
-  if (translate_to && (!cookies.googtrans || !force) && !done) {
-    if (trans && forceLang(translate_to, a, force)) {
-      done=true;
-      return;
-      }
-    }
+  // Do NOT auto-click language. Rely strictly on googtrans cookie set by the toggler.
+  if (cookies.googtrans) {
+    return;
+  }
 
   function createBt(r, cfg, d=document) {
     var m=r.cloneNode(true),
@@ -436,23 +440,17 @@ body > .skiptranslate:not([id]):not([style*="display:"]) ~ #google_translate_ele
 body > #google_translate_element:empty {
   display: none;
 }
+/* Keep the container present for script init, but visually hidden */
 body > #google_translate_element {
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  z-index: 9999999;
-}
-body > #google_translate_element.T:hover {
-  background: white;
-  color: black;
-  padding: 0.5em;
-  border: 2px solid red;
-  font: bold 14px arial;
-}
-body > #google_translate_element.T:not(:hover) {
-  opacity: 0;
-  max-width: 3px;
-  max-height: 3px;
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  z-index: -1 !important;
 }
 
 no #google_translate_element img {
@@ -498,6 +496,7 @@ function startGT() {
     new google.translate.TranslateElement({
       pageLanguage: '',
       autoDisplay: false,
+      includedLanguages: 'ru',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE
     }, 'google_translate_element');
   }`;
@@ -616,7 +615,8 @@ Clique para traduzir`},
   };
 
 
-if (trans || getCookies().googtrans || !GM || ( gmi && (gmi == 'context-menu') ) && (gmi && !gmi.startsWith('document-') ) ) startGT();
+// Start Google Translate ONLY when a translation cookie is present
+if (getCookies().googtrans) startGT();
 else {
   gte.innerHTML='&#167;';
   gte.title=locS('float_tit');
@@ -627,6 +627,6 @@ else {
     this.classList.remove('T');
     startGT();
     }, {once: true});
-  }
+}
 
 })()
