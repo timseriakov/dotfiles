@@ -32,6 +32,17 @@ ENDPOINT = "https://auto.sqvr.net/api/graphql/v1"
 command = "npx"
 args = ["-y", "task-master-ai"]
 
+[mcp_servers.serena]
+command = "uvx"
+args = [
+  "--from",
+  "git+https://github.com/oraios/serena",
+  "serena",
+  "start-mcp-server",
+  "--context",
+  "codex",
+]
+
 [mcp_servers.repomix]
 command = "npx"
 args = ["-y", "repomix", "--mcp"]

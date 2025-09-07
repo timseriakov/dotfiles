@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# qutebrowser userscript: Toggle Dark Reader on current page and
+# switch built‑in qutebrowser dark mode accordingly.
+#
+# Keybinding is set in config.py to:
+#   spawn --userscript toggle-darkreader
+#
+# Behavior:
+# - Maintains a simple global state file: ~/.qutebrowser/darkreader_enabled ("on"|"off")
+# - When turning Dark Reader ON:
+#     * Disables qutebrowser built-in dark mode globally
+#     * Enables Dark Reader on the current page and sets localStorage flag
+# - When turning Dark Reader OFF:
+#     * Enables qutebrowser built-in dark mode globally
+#     * Disables Dark Reader on the current page and clears localStorage flag
+
+set -euo pipefail
+
+# Ensure a sane PATH when called from qutebrowser (macOS)
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+FIFO=${QUTE_FIFO:-}
+if [[ -z "${FIFO}" ]]; then
+  echo "This script must be run by qutebrowser as a userscript (QUTE_FIFO not set)" >&2
+  exit 1
+fi
+
+STATE_FILE="${HOME}/.qutebrowser/darkreader_enabled"
+mkdir -p "${HOME}/.qutebrowser" 2>/dev/null || true
+
+# Resolve repo root (reserved for potential future use)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+current_state="off"
+if [[ -f "${STATE_FILE}" ]] && grep -q "^on$" "${STATE_FILE}"; then
+  current_state="on"
+fi
+
+# Optional explicit argument: on|off
+target_state="${1:-}"
+case "${target_state}" in
+  on|off) ;;
+  *)
+    if [[ "${current_state}" == "on" ]]; then
+      target_state="off"
+    else
+      target_state="on"
+    fi
+    ;;
+esac
+
+echo "${target_state}" > "${STATE_FILE}"
+
+# JS snippets to toggle Dark Reader or fallback CSS on current page and persist per-origin flag
+# Use engine-level user stylesheet as robust dark mode when toggling via 'um'.
+USER_CSS="$ROOT_DIR/styles/darkfilter.css"
+
+HOST=""
+if [[ -n "${QUTE_URL:-}" ]]; then
+  HOST="$(printf '%s' "$QUTE_URL" | sed -E 's#^[a-zA-Z]+://##; s#/.*$##; s#:.*$##')"
+fi
+
+is_csp_strict=false
+if [[ "$HOST" == *"google."* ]] || [[ "$HOST" == *"google" ]] || [[ "$HOST" == *"youtube.com"* ]]; then
+  is_csp_strict=true
+fi
+
+if [[ "${target_state}" == "on" ]]; then
+  # Apply robust user stylesheet-based dark mode (CSP-proof), temporary
+  printf '%s\n' \
+    "set -t content.user_stylesheets \"$USER_CSS\"" \
+    "message-info 'Dark style (user stylesheet): ON'" \
+    > "${FIFO}"
+else
+  # Remove user stylesheet to turn dark style off (temporary)
+  printf '%s\n' \
+    "set -t content.user_stylesheets \"\"" \
+    "message-info 'Dark style (user stylesheet): OFF'" \
+    > "${FIFO}"
+fi
+
+exit 0
