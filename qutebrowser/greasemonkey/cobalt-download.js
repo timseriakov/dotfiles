@@ -23,9 +23,6 @@
 // @match        *://*.tumblr.com/blog/view/*/*
 // @match        *://*.tiktok.com/*
 // @match        *://*.vimeo.com/*
-// @match        *://*.youtube.com/watch?*
-// @match        *://*.youtu.be/*
-// @match        *://*.youtube.com/shorts/*
 // @match        *://*.vk.com/video*
 // @match        *://*.vk.com/*?w=wall*
 // @match        *://*.vk.com/clip*
@@ -85,8 +82,6 @@
         // Site-specific selectors
         if (hostname.includes('soundcloud.com')) {
             selectors = ['.soundActions.sc-button-toolbar .sc-button-group'];
-        } else if (hostname.includes('youtube.com') || hostname.includes('youtu.be')) {
-            selectors = ['#actions-inner', '#menu-container', '.ytd-menu-renderer'];
         } else if (hostname.includes('twitter.com') || hostname.includes('x.com')) {
             selectors = ['[role="group"]', '[data-testid="tweet"]'];
         } else if (hostname.includes('instagram.com')) {
