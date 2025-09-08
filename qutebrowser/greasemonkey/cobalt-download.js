@@ -53,51 +53,88 @@
         window.open(au, '_blank');
     }
 
-    // Add download button for SoundCloud and YouTube
-    if (window.location.hostname.includes('soundcloud.com')) {
-        const containerSelector = ".soundActions.sc-button-toolbar .sc-button-group";
+    // Universal download button creator
+    function createDownloadButton(containerId = 'cobalt-download-btn') {
+        const button = document.createElement('button');
+        button.id = containerId;
+        button.textContent = 'Download';
+        button.style.cssText = `
+            margin-left: 5px;
+            padding: 8px 12px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        `;
 
-        function addCobaltButton() {
-            const container = document.querySelector(containerSelector);
+        button.onclick = function(e) {
+            e.preventDefault();
+            downloadItem(window.location.href);
+        };
+
+        return button;
+    }
+
+    // Add download buttons for different sites
+    function addUniversalDownloadButton() {
+        const hostname = window.location.hostname;
+        let selectors = [];
+
+        // Site-specific selectors
+        if (hostname.includes('soundcloud.com')) {
+            selectors = ['.soundActions.sc-button-toolbar .sc-button-group'];
+        } else if (hostname.includes('youtube.com') || hostname.includes('youtu.be')) {
+            selectors = ['#actions-inner', '#menu-container', '.ytd-menu-renderer'];
+        } else if (hostname.includes('twitter.com') || hostname.includes('x.com')) {
+            selectors = ['[role="group"]', '[data-testid="tweet"]'];
+        } else if (hostname.includes('instagram.com')) {
+            selectors = ['[role="button"]', 'section'];
+        } else if (hostname.includes('tiktok.com')) {
+            selectors = ['[data-e2e="browse-video-desc"]', '[data-e2e="video-detail"]'];
+        } else if (hostname.includes('reddit.com')) {
+            selectors = ['[data-click-id="comments"]', '.Post'];
+        } else {
+            // Generic fallback - try to find common button containers
+            selectors = ['nav', 'header', '.toolbar', '.controls', '.actions'];
+        }
+
+        // Try each selector
+        for (const selector of selectors) {
+            const container = document.querySelector(selector);
             const existingButton = document.getElementById('cobalt-download-btn');
 
             if (container && !existingButton) {
-                const button = document.createElement('button');
-                button.id = 'cobalt-download-btn';
-                button.className = 'sc-button sc-button-medium sc-button-responsive';
-                button.textContent = 'Download (Cobalt)';
-                button.style.marginLeft = '5px';
-                button.style.border = '1px solid #ff5500';
-                button.style.color = '#ff5500';
-                button.style.backgroundColor = 'transparent';
-
-                button.onclick = function(e) {
-                    e.preventDefault();
-                    downloadItem(window.location.href);
-                };
-
+                const button = createDownloadButton();
                 container.appendChild(button);
-                console.log('Added Cobalt download button');
+                console.log(`Added Cobalt download button to ${hostname} using selector: ${selector}`);
+                return; // Exit after first successful placement
             }
         }
+    }
 
+    // Universal initialization
+    function initDownloadButton() {
         // Try to add button on page load
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', addCobaltButton);
+            document.addEventListener('DOMContentLoaded', addUniversalDownloadButton);
         } else {
-            addCobaltButton();
+            addUniversalDownloadButton();
         }
 
-        // Also try periodically in case page content changes
+        // Also try periodically in case page content changes (for SPAs)
         const interval = setInterval(() => {
-            addCobaltButton();
-            if (document.getElementById('cobalt-download-btn')) {
-                clearInterval(interval);
+            if (!document.getElementById('cobalt-download-btn')) {
+                addUniversalDownloadButton();
             }
-        }, 1000);
+        }, 2000);
 
-        // Stop trying after 10 seconds
-        setTimeout(() => clearInterval(interval), 10000);
+        // Stop trying after 30 seconds
+        setTimeout(() => clearInterval(interval), 30000);
     }
+
+    // Initialize for all supported sites
+    initDownloadButton();
 
 })();
