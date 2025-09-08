@@ -91,6 +91,7 @@ abbr -a vtop 'vtop --theme nord'
 # Git
 abbr -a gl 'git slog'
 abbr -a gd 'git sdiff'
+abbr -a gprune 'git remote prune origin'
 
 # Brew helpers
 abbr -a bri 'brew install'
