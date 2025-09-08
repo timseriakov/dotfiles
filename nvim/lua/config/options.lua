@@ -72,7 +72,7 @@ if vim.g.neovide then
   vim.g.neovide_cursor_antialiasing = true
   -- vim.g.neovide_cursor_short_animation_length = 0.04
 
-  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_hide_mouse_when_typing = false
   vim.g.neovide_floating_opacity = 1
 
   -- vim.g.neovide_cursor_vfx_particle_curl = 0.1
