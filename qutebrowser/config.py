@@ -269,6 +269,10 @@ config.bind("<Cmd-w>", "tab-close")
 config.bind("<", "tab-move -")
 config.bind(">", "tab-move +")
 
+# Swap m and M for bookmarks
+config.bind("m", "bookmark-add")
+config.bind("M", "quickmark-save")
+
 config.bind("<Ctrl-=>", "zoom-in")
 config.bind("<Ctrl-->", "zoom-out")
 
