@@ -91,6 +91,8 @@ abbr -a vtop 'vtop --theme nord'
 # Git
 abbr -a gl 'git slog'
 abbr -a gd 'git sdiff'
+abbr -a gvd 'git vdiff'
+abbr -a gvl 'git vlog'
 abbr -a gprune 'git remote prune origin'
 
 # Brew helpers
@@ -130,9 +132,8 @@ abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
 abbr -a grc 'cd ~/.gemini'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
 abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
-abbr -a arc 'nvim ~/dev/dotfiles/aerospace/aerospace.toml'
 abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
-abbr -a abrc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
+abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
 abbr -a secrets 'nvim ~/dev/dotfiles/fish/secrets.fish'
 
 # Misc simple
