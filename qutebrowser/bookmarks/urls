@@ -1,0 +1,7 @@
+https://gitlab.sqvr.net SQVR GitLab Project
+https://sqvr-inc.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports-report?project.key=SQ&project.id=10005 SQVR Jira Time Tracker
+https://sqvr-inc.atlassian.net/issues/?jql=assignee+%3D+currentUser%28%29+ORDER+BY+created+DESC&atlOrigin=eyJpIjoiMTNkNmQ1N2RjMjEyNGU2ZTg2NjlhZGYyM2M1MmI5YmQiLCJwIjoiaiJ9 SQVR Jira Issues
+https://meet.google.com/ams-tqno-ohn?pli=1 SQVR Daily Meet
+https://sqvr-inc.atlassian.net/browse/SQ-19147 [SQ-19147] [Mobile] Регресс. Не работают даты выбора бронирований в календаре - Jira
+https://sqvr-inc.atlassian.net/browse/SQ-19148 [SQ-19148] [Mobile] Регресс. При указании даты бронирования в прошлом, закрывается окно календаря. - Jira
+https://claudelog.com/ Claude Code Docs, Guides & Best Practices | ClaudeLog
