@@ -33,8 +33,14 @@ abbr -a ydd 'yarn add'
 abbr -a yddd 'yarn add -D'
 abbr -a yrm 'yarn remove'
 abbr -a ys 'yarn start'
+abbr -a yi 'yarn ios'
+abbr -a yiv 'yarn ios --verbose'
+abbr -a yan 'yarn android'
+abbr -a yanv 'yarn android --verbose'
 abbr -a yb 'yarn build'
 abbr -a yd 'yarn dev'
+# mobile RN project related
+abbr -a wd 'watchman watch-del .; watchman watch-project .'
 
 # bun
 abbr -a b bun
@@ -73,6 +79,7 @@ abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 abbr -a cr crush
 abbr -a ge gemini
+abbr -a gec ' bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
 
 # CLI utilities
 abbr -a gg lazygit
