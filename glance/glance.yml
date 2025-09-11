@@ -198,12 +198,9 @@ pages:
             repositories:
               - payloadcms/payload
               - glanceapp/glance
-              - bknd-io/bknd
               - neovide/neovide
               - neovim/neovim
               - yarlson/lnk
-              - openai/codex
-              - charmbracelet/crush
               - eyaltoledano/claude-task-master
               - Haleclipse/CCometixLine
 
