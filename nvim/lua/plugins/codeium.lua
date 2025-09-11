@@ -1,4 +1,3 @@
--- ~/.config/nvim/lua/plugins/codeium.lua
 return {
   "Exafunction/codeium.nvim",
   dependencies = {
@@ -47,8 +46,10 @@ return {
         enabled = true,
         key_bindings = {
           accept = "<Tab>",
-          next = "<M-l>",
-          prev = "<M-h>",
+          accept_word = "<M-f>",
+          accept_line = "<M-l>",
+          next = "<M-n>",
+          prev = "<M-p>",
         },
       },
     })

@@ -4,7 +4,7 @@ return {
   { "catppuccin/nvim", enabled = false },
   {
     "github/copilot.vim",
-    enabled = true,
+    enabled = false,
   },
   {
     "LazyVim/LazyVim",
@@ -16,7 +16,6 @@ return {
   { "olimorris/codecompanion.nvim", enabled = false },
   { "ravitemer/codecompanion-history.nvim", enabled = false },
   { "ravitemer/mcphub.nvim", enabled = false },
-  { "Exafunction/codeium.nvim", enabled = false },
   { "MeanderingProgrammer/render-markdown.nvim", ft = {} }, -- avoid loading via codecompanion
   -- If you had copilot-cmp before, keep it disabled to avoid dual engines
   { "zbirenbaum/copilot-cmp", enabled = false },
