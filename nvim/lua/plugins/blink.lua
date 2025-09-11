@@ -5,17 +5,8 @@ return {
     opts.completion = opts.completion or {}
     opts.completion.ghost_text = { enabled = false }
 
-    -- добавляем <Tab> для принятия Codeium
+    -- Убираем Tab из blink.cmp, так как codeium.nvim сам управляет Tab
     opts.keymap = opts.keymap or {}
-    opts.keymap["<Tab>"] = {
-      LazyVim.cmp.map({
-        "snippet_forward",
-        "lua",
-        function()
-          return vim.fn["codeium#Accept"]()
-        end,
-      }),
-      "fallback",
-    }
+    opts.keymap["<Tab>"] = { "fallback" }
   end,
 }

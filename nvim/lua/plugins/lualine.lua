@@ -1,25 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
   config = function()
-    local function copilot_status()
-      local ok_s, suggestion = pcall(require, "copilot.suggestion")
-      if not ok_s then
-        return ""
-      end
-
-      -- Visible lightning when a ghost-text is shown
-      if suggestion.is_visible() then
-        return ""
-      end
-
-      -- Show enabled/disabled state (optional)
-      local ok_c, client = pcall(require, "copilot.client")
-      if ok_c and client.is_initialized() then
-        return ""
-      end
-      return ""
-    end
-
     require("lualine").setup({
       options = {
         globalstatus = false,
@@ -29,9 +10,16 @@ return {
         },
       },
       sections = {
-        lualine_a = { "mode" },
+        lualine_a = {
+          "mode",
+        },
         lualine_b = {
-          { "filetype", colored = true, icon_only = true, icon = { align = "right" } },
+          {
+            "filetype",
+            colored = true,
+            icon_only = true,
+            icon = { align = "right" },
+          },
         },
         lualine_c = {
           {
@@ -49,7 +37,17 @@ return {
           },
         },
         lualine_x = {
-          copilot_status, -- Copilot indicator: "" enabled, "" visible suggestion
+          -- 🧠 Codeium статус — теперь САМАЯ ЛЕВАЯ часть в правом блоке
+          function()
+            local status = require("codeium.virtual_text").status()
+            if status.state == "waiting" then
+              return "󰑕"
+            end
+            if status.state == "completions" and status.total > 0 then
+              return string.format(" %d/%d", status.current, status.total)
+            end
+            return ""
+          end,
           "diff",
           "branch",
         },
@@ -58,16 +56,9 @@ return {
       },
     })
 
-    -- Refresh when insert state changes to keep icon responsive
-    local grp = vim.api.nvim_create_augroup("CopilotLualineRefresh", { clear = true })
-    vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave", "TextChangedI", "CursorMovedI" }, {
-      group = grp,
-      callback = function()
-        local ok, lualine = pcall(require, "lualine")
-        if ok then
-          lualine.refresh()
-        end
-      end,
-    })
+    -- Обновляем статусбар при смене состояния Codeium
+    require("codeium.virtual_text").set_statusbar_refresh(function()
+      require("lualine").refresh()
+    end)
   end,
 }
