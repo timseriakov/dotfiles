@@ -219,18 +219,26 @@ c.url.searchengines = {
 
 # Reload
 config.bind("e", "reload")
+config.bind("у", "reload")
 
 # Tab navigation
 config.bind("w", "tab-prev")
+config.bind("ц", "tab-prev")
 config.bind("r", "tab-next")
+config.bind("к", "tab-next")
 config.bind("K", "tab-prev")
+config.bind("Л", "tab-prev")
 config.bind("J", "tab-next")
+config.bind("О", "tab-next")
 
 # Restore closed tab
 config.bind("q", "undo")
+config.bind("й", "undo")
 
 config.bind('d', 'scroll-page 0 0.5')
+config.bind('в', 'scroll-page 0 0.5')
 config.bind('u', 'scroll-page 0 -0.5')
+config.bind('г', 'scroll-page 0 -0.5')
 
 # Enter insert mode
 config.bind("i", "mode-enter insert")
@@ -238,12 +246,16 @@ config.bind("v", "mode-enter caret")
 
 # Navigation
 config.bind("H", "back")
+config.bind("Р", "back")
 config.bind("L", "forward")
+config.bind("Д", "forward")
 config.bind("<Cmd-Left>", "back")
 config.bind("<Cmd-Right>", "forward")
 
 config.bind("t", "cmd-set-text -s :open -t")
+config.bind("е", "cmd-set-text -s :open -t")
 config.bind("<Cmd-t>", "cmd-set-text -s :open -t")
+config.bind("<Cmd-е>", "cmd-set-text -s :open -t")
 
 # Find mode
 config.bind("/", "cmd-set-text /")
@@ -256,6 +268,7 @@ config.bind("F", "hint links tab-bg")
 
 # Yank current URL or link
 config.bind("yy", "yank")
+config.bind("нн", "yank")
 config.bind("yl", "hint links yank")
 
 # Open copied URL
@@ -263,7 +276,9 @@ config.bind("p", "open --clipboard")
 config.bind("P", "open --clipboard --tab")
 
 config.bind("x", "tab-close")
+config.bind("ч", "tab-close")
 config.bind("<Cmd-w>", "tab-close")
+config.bind("<Cmd-ц>", "tab-close")
 
 # Move tab
 config.bind("<", "tab-move -")
