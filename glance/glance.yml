@@ -203,6 +203,7 @@ pages:
               - yarlson/lnk
               - eyaltoledano/claude-task-master
               - Haleclipse/CCometixLine
+              - Piebald-AI/tweakcc
 
           - type: markets
             markets:
