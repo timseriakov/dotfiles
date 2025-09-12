@@ -242,6 +242,8 @@ config.bind('г', 'scroll-page 0 -0.5')
 
 # Enter insert mode
 config.bind("i", "mode-enter insert")
+config.bind("a", "mode-enter insert")
+config.bind("ф", "mode-enter insert")
 config.bind("v", "mode-enter caret")
 
 # Navigation
@@ -300,7 +302,8 @@ config.bind("gu", "navigate up") # go up one level in URL
 # Open link in mpv
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 # Download current URL as file (for audio/video tabs)
-config.bind(leader + "D", "download {url}")
+config.bind(leader + "ad", "download {url}")
+config.bind(leader + "aa", "download-cancel")
 
 config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
 config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
