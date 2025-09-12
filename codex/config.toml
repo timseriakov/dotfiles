@@ -1,4 +1,4 @@
-model = "o3-mini"
+# model = "o3-mini"
 # model = "gpt-4o-mini"
 
 [projects."/Users/tim/dev/dotfiles"]
@@ -31,9 +31,9 @@ args = ["-y", "mcp-graphql"]
 [mcp_servers."sqvr-graphql".env]
 ENDPOINT = "https://auto.sqvr.net/api/graphql/v1"
 
-[mcp_servers."task-master-ai"]
-command = "npx"
-args = ["-y", "task-master-ai"]
+# [mcp_servers."task-master-ai"]
+# command = "npx"
+# args = ["-y", "task-master-ai"]
 
 [mcp_servers.serena]
 command = "uvx"
@@ -72,9 +72,3 @@ args = ["-lc", "npx -y @zereight/mcp-gitlab"]
 # type = "http"
 # # type = "streamable-http"
 # url = "http://127.0.0.1:3845/mcp"
-
-
-# (Optional) A known-good sanity check server to verify MCP in Codex:
-# [mcp_servers.playwright]
-# command = "npx"
-# args    = ["@playwright/mcp@latest"]
