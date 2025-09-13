@@ -1,17 +1,88 @@
 #!/bin/bash
 # MADE by Twix. https://github.com/Twix53791/
 
+#==== CONSTANTS ==============================================
+
+# Paths
+QUTE_DATA_DIR="${QUTE_DATA_DIR:-/Users/tim/Library/Application Support/qutebrowser}"
+QUTE_CONFIG_DIR="/Users/tim/dev/dotfiles/qutebrowser"
+DB_HISTORY="$QUTE_DATA_DIR/history.sqlite"
+FILTER_LIST="$QUTE_CONFIG_DIR/history-filters"
+CLOSED_TABS="$QUTE_DATA_DIR/closed-tabs-history"
+SCRIPT_PATH="$QUTE_CONFIG_DIR/bin/qute-plugin-fzfhistory"
+EDITOR="/opt/homebrew/bin/nvim"
+
 # Self-callback for fzf preview
 if [[ "$1" == "--render-preview" ]]; then
   C2="\x1b\[93m"
   C3="\x1b\[35m"
   Chelp="\x1b[34m"
   sedpreview="s/^/$C2/; s/\(.*\)| /\1\n$C3/"
-  helpmsg="ctrl-f: hide the url domain (add a new filter) ;  ctrl-e: edit filters list"
+  helpmsg=""
   echo -e "$2" | sed "$sedpreview" | head -c 300
   echo -e "\n$Chelp$helpmsg"
   exit 0
 fi
+
+# Handle delete entry command
+if [[ "$1" == "--delete-entry" ]]; then
+  full_line="$2"
+  mode="$3"
+  selectfile="$4"
+
+  # Extract URL from the full fzf line (after the last "| ") and remove any trailing quotes
+  url=$(echo "$full_line" | sed 's/.*| //' | sed "s/'*$//")
+
+  # Determine mode by checking for mode flag file
+  if [[ -f /tmp/qute-fzf-mode-closedtabs ]]; then
+    mode="closed-tabs"
+  else
+    mode="history"
+  fi
+
+  if [[ "$mode" == "closed-tabs" ]]; then
+    # Delete from closed-tabs file
+    if [[ -f "$CLOSED_TABS" ]]; then
+      # Remove line containing the URL from closed-tabs file
+      grep -v "|[[:space:]]*$url$" "$CLOSED_TABS" > "${CLOSED_TABS}.tmp" && mv "${CLOSED_TABS}.tmp" "$CLOSED_TABS"
+    fi
+  else
+    # Delete from history database (escape single quotes for safety)
+    escaped_url=$(echo "$url" | sed "s/'/''/g")
+    sqlite3 "$DB_HISTORY" "DELETE FROM CompletionHistory WHERE url = '$escaped_url';"
+    sqlite3 "$DB_HISTORY" "DELETE FROM History WHERE url = '$escaped_url';"
+  fi
+
+  # Signal to restart fzf
+  echo ":restart" > /tmp/qute-fzf-action
+
+  exit 0
+fi
+
+# Handle build history for reload (needed for delete functionality)
+if [[ "$1" == "--build-history" ]]; then
+  C1="\x1b\[34m"
+  C2="\x1b\[93m"
+  C3="\x1b\[35m"
+  filterlist="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history-filters"
+
+  year="strftime('%Y', last_atime, 'unixepoch')"
+  monthnames="Janvier  Fevrier  Mars     Avril    Mai      Juin     Juillet  SeptembreOctobre  Novembre Decembre"
+  month="substr('$monthnames', strftime('%m', last_atime, 'unixepoch') * 9 - 8,9)"
+  time="strftime('%d %H:%M:%S', last_atime, 'unixepoch')"
+  sedpattern="s/^/$C1/; s/|/ /; s/[[:space:]]*|/ /; s/|/$C2 /; s/\(.*\)|/\1$C3 | /"
+
+  if [ -s "$filterlist" ]; then
+    filters="$(paste -s -d'|' "$filterlist")"
+  else
+    filters="^$"
+  fi
+
+  fields_order="$year,$month, $time,title,url"
+  sqlite3 "$DB_HISTORY" "SELECT $fields_order FROM CompletionHistory ORDER BY last_atime DESC" | sed "$sedpattern" | grep -Ev "$filters"
+  exit 0
+fi
+
 
 #=========================================================
 # To use this plugin, first apply the patch:
@@ -30,24 +101,12 @@ fi
 #   ./apply-fzfhistory-path.sh --only-history
 #
 #=========================================================
-#==== CONFIG =============================================
-
-editor="/opt/homebrew/bin/nvim"
-
 # Colors displayed in fzf
-# 34/93/35 ; 34/93/92 ; 34/33/35 ; 94/33/92
-# 36/34/32 ; 92/34/36
 C1="\x1b\[34m"
 C2="\x1b\[93m"
 C3="\x1b\[35m"
 Chelp="\x1b[34m" # preview keybindings text
 
-#==== FILES ==============================================
-
-# Patched to use a default value if QUTE_DATA_DIR is not set
-dbHistory="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history.sqlite"
-filterlist="${QUTE_DATA_DIR:-/Users/tim/dev/dotfiles/qutebrowser}/history-filters"
-closedtabs="${QUTE_DATA_DIR:-/Users/tim/Library/Application Support/qutebrowser}/closed-tabs-history"
 tmpfile="/tmp/qute-plugins/qute-plugin-fzfhistory-tmp"
 
 #==== FUNCTIONS ==========================================
@@ -72,8 +131,8 @@ _build_history_list() {
 
   # Filters with grep -v
   # Patched to be macOS-compatible and not fail on empty file
-  if [ -s "$filterlist" ]; then
-    filters="$(paste -s -d'|' "$filterlist")"
+  if [ -s "$FILTER_LIST" ]; then
+    filters="$(paste -s -d'|' "$FILTER_LIST")"
   else
     filters="^$" # Grep for nothing, ensuring it doesn't fail
   fi
@@ -94,16 +153,22 @@ _build_closedtabs_list() {
   sedpattern="s/^/$C1/;s/|/$C2 /;s/\(.*\)|/\1$C3 | /"
 
   # Check if closed-tabs file exists and is not empty
-  if [[ ! -s "$closedtabs" ]]; then
+  if [[ ! -s "$CLOSED_TABS" ]]; then
     echo "No closed tabs history found" | fzf --disabled
     return
   fi
-  
-  tac "$closedtabs" | sed "$sedpattern" | fzf
+
+  tac "$CLOSED_TABS" | sed "$sedpattern" | fzf
 }
 
 # Fzf menu. $1: mode ; $2: select file to send the picked urls to qutebrowser
 _fzf_menu() {
+  # Create mode flag for delete function
+  rm -f /tmp/qute-fzf-mode-closedtabs
+  if [[ $1 == "closed-tabs" ]]; then
+    touch /tmp/qute-fzf-mode-closedtabs
+  fi
+
   # Get the url, then the domain from the url
   sedgetdomain="s/.*| //; s/.*\/\\/; s/\/.*$//"
 
@@ -111,20 +176,20 @@ _fzf_menu() {
     export FZF_DEFAULT_OPTS="--reverse --ansi -m \
               --bind 'change:first,right:toggle+down,left:deselect-all,alt-q:abort' \
               --bind 'alt-h:abort' \
+              --bind 'ctrl-x:execute-silent(bash '$SCRIPT_PATH' --delete-entry \"{}\")+abort' \
               --bind 'ctrl-d:half-page-down' \
               --bind 'ctrl-u:half-page-up' \
               --preview='echo -e {} | sed \"s/^/$C2/; s/\\(.*\\)| /\\1\\n$C3/\" | head -c 300' \
-              --preview-window='down,20%,wrap'"
+              --preview-window='down,15%,wrap'"
   else
     export FZF_DEFAULT_OPTS="--reverse --ansi -m \
               --bind 'change:first,right:toggle+down,left:deselect-all,alt-q:abort' \
               --bind 'alt-h:abort' \
-              --bind 'ctrl-f:execute-silent(echo {} | sed \"$sedgetdomain\" >> $filterlist)+execute(echo :refresh)+abort' \
-              --bind 'ctrl-e:execute(echo :edit)+abort' \
+              --bind 'ctrl-x:execute-silent(bash '$SCRIPT_PATH' --delete-entry \"{}\")+abort' \
               --bind 'ctrl-d:half-page-down' \
               --bind 'ctrl-u:half-page-up' \
-              --preview='bash /Users/tim/dev/dotfiles/qutebrowser/bin/qute-plugin-fzfhistory --render-preview {}' \
-              --preview-window='down,20%,wrap'"
+              --preview='bash '$SCRIPT_PATH' --render-preview {}' \
+              --preview-window='down,15%,wrap'"
   fi
 
   # Launch fzf
@@ -134,16 +199,18 @@ _fzf_menu() {
     output=$(_build_history_list)
   fi
 
-  [[ -z $output ]] && exit
+  # Check if we need to restart after delete
+  if [[ -f /tmp/qute-fzf-action ]]; then
+    action=$(cat /tmp/qute-fzf-action)
+    rm -f /tmp/qute-fzf-action
 
-  # Refresh after ctrl + f
-  [[ $output == ":refresh" ]] && _fzf_menu "$@"
-
-  # Edit filters
-  if [[ $output == ":edit" ]]; then
-    $editor $filterlist
-    _fzf_menu "$@"
+    if [[ $action == ":restart" ]]; then
+      _fzf_menu "$@"
+      return
+    fi
   fi
+
+  [[ -z $output ]] && exit
 
   # Get the urls
   urlslist="$(while read line; do echo ${line##*| }; done <<<$output)"
