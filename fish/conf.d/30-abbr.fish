@@ -6,10 +6,11 @@ end
 # Editors and quick openers
 abbr -a v nvim
 abbr -a vv 'nvim .'
+abbr -a o open
 abbr -a 'o.' 'open .'
-abbr -a R 'glow README.md'
+abbr -a R 'glow --pager'
+abbr -a RM 'glow README.md'
 abbr -a so 'source ~/.config/fish/config.fish'
-abbr -a f-source 'source ~/.config/fish/config.fish'
 
 # npm
 abbr -a n npm
@@ -39,8 +40,7 @@ abbr -a yan 'yarn android'
 abbr -a yanv 'yarn android --verbose'
 abbr -a yb 'yarn build'
 abbr -a yd 'yarn dev'
-# mobile RN project related
-abbr -a wd 'watchman watch-del .; watchman watch-project .'
+abbr -a wd 'watchman watch-del .; watchman watch-project .' # mobile RN project related
 
 # bun
 abbr -a b bun
@@ -53,56 +53,13 @@ abbr -a bddd 'bun add -D'
 abbr -a bx bunx
 abbr -a de-it 'docker exec -it'
 
-# Docker
-abbr -a dcu 'docker compose up'
-abbr -a dcub 'docker compose up --build'
-abbr -a dcubd 'docker-compose up --build -d'
-abbr -a de-it 'docker exec -it'
-
-# AI tools
-abbr -a a 'aider -c $HOME/.aider.conf.yml'
-abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
-abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
-abbr -a cl-opus 'claude --model claude-opus-4-20250514'
-abbr -a clup 'npm install -g @anthropic-ai/claude-code'
-abbr -a twcc 'npx -y tweakcc'
-abbr -a cm 'claude-monitor  --time-format 24h'
-abbr -a ccline-update 'npm update -g @cometix/ccline'
-abbr -a a-openai-gpt-4o 'aider --model gpt-4o -c $HOME/.aider.conf.yml'
-abbr -a a-openai-gpt-4.1 'aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano --weak-model openai/gpt-4.1-nano -c $HOME/.aider.conf.yml'
-abbr -a a-gemini 'aider --model gemini -c $HOME/.aider.conf.yml'
-abbr -a a-gemini-2.5-pro-free 'aider --model openrouter/google/gemini-2.5-pro-exp-03-25:free -c $HOME/.aider.conf.yml'
-abbr -a a-openrouter-gpt-4o 'aider --model openrouter/openai/gpt-4o -c $HOME/.aider.conf.yml'
-abbr -a a-codestral 'aider --model codestral/codestral-latest -c $HOME/.aider.conf.yml'
-abbr -a a-claude-3.7-sonnet 'aider --model openrouter/anthropic/claude-3.7-sonnet -c $HOME/.aider.conf.yml'
-abbr -a cx codex
-abbr -a cx-4.1 'codex -m gpt-4.1'
-abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
-abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
-abbr -a cr crush
-abbr -a ge gemini
-abbr -a gec ' bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
-
-# CLI utilities
-abbr -a gg lazygit
-abbr -a bt btop
-abbr -a web carbonyl
-abbr -a mdp 'glow --pager'
-abbr -a srv 'npx http-server .'
-abbr -a serve 'npx serve .'
-abbr -a ff 'npx fast-cli'
-abbr -a icat 'kitten icat'
-abbr -a hg 'hgrep --theme Nord'
-abbr -a ipinfo 'curl -s ipinfo.io'
-abbr -a ipinfo-more 'curl -s ipwho.is'
-abbr -a vtop 'vtop --theme nord'
-
 # Git
 abbr -a gl 'git slog'
 abbr -a gd 'git sdiff'
 abbr -a gvd 'git vdiff'
 abbr -a gvl 'git vlog'
 abbr -a gprune 'git remote prune origin'
+abbr -a gg lazygit
 
 # Brew helpers
 abbr -a bri 'brew install'
@@ -113,24 +70,58 @@ abbr -a brewfile-dump 'brew bundle dump --global --force'
 abbr -a brewfile-cleanup 'brew bundle cleanup --force'
 abbr -a brewfile-upgrade 'brew bundle upgrade --global'
 
+# Deno
+abbr -a de deno
+
+# Docker
+abbr -a dcu 'docker compose up'
+abbr -a dcub 'docker compose up --build'
+abbr -a dcubd 'docker-compose up --build -d'
+abbr -a de-it 'docker exec -it'
+
+# CLaude Code
+abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
+abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
+abbr -a cl-opus 'claude --model claude-opus-4-20250514'
+# Claude Code tools
+abbr -a cc-update 'npm install -g @anthropic-ai/claude-code'
+abbr -a ccline-update 'npm update -g @cometix/ccline'
+abbr -a cc-tw 'npx -y tweakcc@latest'
+abbr -a cc-history 'npx -y cchistory@latest'
+abbr -a cc-log 'cclogviewer -input'
+abbr -a cc-exp 'npx -y ccexp@latest'
+abbr -a cc-mon 'claude-monitor  --time-format 24h'
+
+# Gemini
+abbr -a ge gemini
+abbr -a geup 'brew install gemini-cli'
+abbr -a gec 'bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+
+# Codex
+abbr -a cx codex
+abbr -a cx-4.1 'codex -m gpt-4.1'
+abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
+abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
+
+# Aider
+abbr -a a 'aider -c $HOME/.aider.conf.yml'
+abbr -a a-openai-gpt-4o 'aider --model gpt-4o -c $HOME/.aider.conf.yml'
+abbr -a a-openai-gpt-4.1 'aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano --weak-model openai/gpt-4.1-nano -c $HOME/.aider.conf.yml'
+abbr -a a-gemini 'aider --model gemini -c $HOME/.aider.conf.yml'
+abbr -a a-gemini-2.5-pro-free 'aider --model openrouter/google/gemini-2.5-pro-exp-03-25:free -c $HOME/.aider.conf.yml'
+abbr -a a-openrouter-gpt-4o 'aider --model openrouter/openai/gpt-4o -c $HOME/.aider.conf.yml'
+abbr -a a-codestral 'aider --model codestral/codestral-latest -c $HOME/.aider.conf.yml'
+abbr -a a-claude-3.7-sonnet 'aider --model openrouter/anthropic/claude-3.7-sonnet -c $HOME/.aider.conf.yml'
+
+# Other AI tools
+abbr -a cr crush
+
 # Backlog helpers
 abbr -a bl backlog
 abbr -a blb 'backlog board'
 abbr -a blw 'backlog browser'
 
-# Misc shorties
-abbr -a c bat
-abbr -a cbc 'cb cp'
-abbr -a cbp 'cb p'
-abbr -a cpr 'cp -r'
-abbr -a chmd chmod-cli
-abbr -a de deno
-abbr -a m mmv
-abbr -a mtrx 'cmatrix -C blue -s'
-abbr -a mtrx-cyan 'cmatrix -C cyan -s'
-abbr -a sshh ggh
-
-# Open configs/projects
+# Open configs
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
 abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
 abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
@@ -145,13 +136,37 @@ abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
 abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
 abbr -a secrets 'nvim ~/dev/dotfiles/fish/secrets.fish'
 
-# Misc simple
+# Misc
 abbr -a cls clear
+
 abbr -a cbs 'cb show'
 abbr -a ccc 'cb cp'
 abbr -a ppp 'cb p'
+abbr -a cpr 'cp -r'
+
 abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'
+
 abbr -a t taskell
 abbr -a tt 'taskell TODO.md'
-abbr -a lsl 'ls -l -a | grep '^l''
+
+abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
+abbr -a c bat
+abbr -a chmd chmod-cli
+abbr -a m mmv
+abbr -a mtrx 'cmatrix -C blue -s'
+abbr -a mtrx-cyan 'cmatrix -C cyan -s'
+abbr -a sshh ggh
+
+abbr -a icat 'kitten icat'
+abbr -a hg 'hgrep --theme Nord'
+
+abbr -a srv 'npx http-server .'
+abbr -a serve 'npx serve .'
+abbr -a ff 'npx fast-cli'
+
+abbr -a ipinfo 'curl -s ipinfo.io'
+abbr -a ipinfo-more 'curl -s ipwho.is'
+
+abbr -a bt btop
+abbr -a vtop 'vtop --theme nord'
