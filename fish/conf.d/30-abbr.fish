@@ -103,17 +103,8 @@ abbr -a cx-4.1 'codex -m gpt-4.1'
 abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
-# Aider
-abbr -a a 'aider -c $HOME/.aider.conf.yml'
-abbr -a a-openai-gpt-4o 'aider --model gpt-4o -c $HOME/.aider.conf.yml'
-abbr -a a-openai-gpt-4.1 'aider --model openai/gpt-4.1 --editor-model openai/gpt-4.1-nano --weak-model openai/gpt-4.1-nano -c $HOME/.aider.conf.yml'
-abbr -a a-gemini 'aider --model gemini -c $HOME/.aider.conf.yml'
-abbr -a a-gemini-2.5-pro-free 'aider --model openrouter/google/gemini-2.5-pro-exp-03-25:free -c $HOME/.aider.conf.yml'
-abbr -a a-openrouter-gpt-4o 'aider --model openrouter/openai/gpt-4o -c $HOME/.aider.conf.yml'
-abbr -a a-codestral 'aider --model codestral/codestral-latest -c $HOME/.aider.conf.yml'
-abbr -a a-claude-3.7-sonnet 'aider --model openrouter/anthropic/claude-3.7-sonnet -c $HOME/.aider.conf.yml'
-
 # Other AI tools
+abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr crush
 
 # Backlog helpers
