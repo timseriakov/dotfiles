@@ -86,11 +86,13 @@ abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
 abbr -a cc-update 'npm install -g @anthropic-ai/claude-code'
 abbr -a ccline-update 'npm update -g @cometix/ccline'
-abbr -a cc-tw 'npx -y tweakcc@latest'
+abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
 abbr -a cc-history 'npx -y cchistory@latest'
 abbr -a cc-log 'cclogviewer -input'
 abbr -a cc-exp 'npx -y ccexp@latest'
 abbr -a cc-mon 'claude-monitor  --time-format 24h'
+abbr -a cc-cmd claude-cmd
+abbr -a lm lmsh # Translates natural language to shell commands using Claude Code CLI
 
 # Gemini
 abbr -a ge gemini
