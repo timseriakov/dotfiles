@@ -10,7 +10,7 @@ abbr -a o open
 abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
-abbr -a so 'source ~/.config/fish/config.fish'
+abbr -a ef 'exec fish'
 
 # npm
 abbr -a n npm
@@ -92,7 +92,7 @@ abbr -a cc-log 'cclogviewer -input'
 abbr -a cc-exp 'npx -y ccexp@latest'
 abbr -a cc-mon 'claude-monitor  --time-format 24h'
 abbr -a cc-cmd claude-cmd
-abbr -a lm lmsh # Translates natural language to shell commands using Claude Code CLI
+abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
 abbr -a ge gemini

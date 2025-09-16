@@ -210,12 +210,13 @@ c.url.searchengines = {
 }
 
 # Aliases
-# c.aliases = {
-#     "o": "open",
-#     "Q": "close",
-#     "w": "session-save",
-#     "x": "quit --save",
-# }
+c.aliases = {
+    "o": "open",
+    "Q": "close",
+    "w": "session-save",
+    "x": "quit --save",
+    "msgs": "messages",
+}
 
 # Reload
 config.bind("e", "reload")
@@ -332,7 +333,9 @@ config.bind(leader + leader, 'cmd-set-text -s :tab-select')
 config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
-config.bind(leader + "cs", "cmd-set-text -s :set -t")
+config.bind(leader + "сс", "config-source ;; message-info 'Config reloaded'") # reload config
+config.bind(leader + "cs", "spawn --userscript claude-export")
+config.bind(leader + "cS", "cmd-set-text -s :set -t")
 
 # ui
 config.bind(leader + "uu", "config-cycle tabs.show multiple never")

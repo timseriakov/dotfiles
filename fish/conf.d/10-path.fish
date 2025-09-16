@@ -23,6 +23,9 @@ fish_add_path -Ua ~/.nix-profile/bin
 fish_add_path -Ua ~/.swiftly/bin
 fish_add_path -Ua ~/.lmstudio/bin
 fish_add_path -Ua ~/.orbstack/bin
+#
+# lazyshell
+fish_add_path -Ua ~/.lazyshell/bin
 
 # Go
 fish_add_path -Ua ~/go/bin

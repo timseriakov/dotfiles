@@ -9,7 +9,7 @@ repos:
       # Secondary targeted scan for fish/fish_variables without entropy detectors
       - id: detect-secrets
         name: detect-secrets (fish variables, no entropy)
-        entry: detect-secrets scan --no-follow-symlinks --all-files \
+        entry: detect-secrets scan --all-files \
           --disable-plugin Base64HighEntropyString \
           --disable-plugin HexHighEntropyString \
           --fail-on-secrets fish/fish_variables
