@@ -160,7 +160,8 @@ c.colors.statusbar.url.warn.fg = yellow
 
 # Tabs
 c.colors.tabs.bar.bg = black
-c.tabs.padding = {"top": 2, "bottom": 2, "left": 2, "right": 2}
+c.tabs.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
+c.statusbar.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
 
 # Tabs
 c.colors.tabs.even.bg = nord0
