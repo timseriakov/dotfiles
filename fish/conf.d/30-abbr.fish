@@ -115,6 +115,7 @@ abbr -a blb 'backlog board'
 abbr -a blw 'backlog browser'
 
 # Open configs
+abbr -a zd 'z dot'
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
 abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
 abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
