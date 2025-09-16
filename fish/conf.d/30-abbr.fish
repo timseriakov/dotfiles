@@ -114,8 +114,12 @@ abbr -a bl backlog
 abbr -a blb 'backlog board'
 abbr -a blw 'backlog browser'
 
-# Open configs
+# z jumps
 abbr -a zd 'z dot'
+abbr -a zm 'z mobile'
+abbr -a zl 'z dl'
+
+# Open configs
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
 abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
 abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
