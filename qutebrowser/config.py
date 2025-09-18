@@ -25,7 +25,7 @@ timestamp = strftime("%Y-%m-%d-%H-%M-%S", localtime())
 terminal = "/opt/homebrew/bin/kitty"
 editor = "/opt/homebrew/bin/nvim"
 username = "timseriakov"
-homepage = "http://pmx:1931"
+homepage = "http://localhost:1931"
 
 config.set("content.autoplay", False)
 
@@ -340,7 +340,12 @@ config.bind(leader + "cS", "cmd-set-text -s :set -t")
 
 # ui
 config.bind(leader + "uu", "config-cycle tabs.show multiple never")
+config.bind(leader + "гг", "config-cycle tabs.show multiple never")
+
 config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
+config.bind(leader + "uy", "config-cycle statusbar.show always in-mode")
+config.bind(leader + "гн", "config-cycle statusbar.show always in-mode")
+
 config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
 config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
 # Dark mode controls
