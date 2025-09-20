@@ -244,8 +244,11 @@ config.bind('г', 'scroll-page 0 -0.5')
 
 # Enter insert mode
 config.bind("i", "mode-enter insert")
+config.bind("ш", "mode-enter insert")
+
 config.bind("a", "mode-enter insert")
 config.bind("ф", "mode-enter insert")
+
 config.bind("v", "mode-enter caret")
 
 # Navigation
@@ -292,9 +295,6 @@ config.bind(">", "tab-move +")
 config.bind("m", "bookmark-add")
 config.bind("M", "quickmark-save")
 
-config.bind("<Ctrl-=>", "zoom-in")
-config.bind("<Ctrl-->", "zoom-out")
-
 # macOS-style Preferences: Cmd+,
 config.bind("<Cmd-,>", "open qute://settings")
 
@@ -316,9 +316,6 @@ config.bind(leader + 'b', 'spawn -u braindrop')
 # Save link to Raindrop
 config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
 
-# Fill credentials from macOS Keychain
-config.bind(leader + 'p', 'spawn -u keychain_fill')
-
 # ActivityWatch heartbeat bridge controls
 config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
@@ -335,7 +332,6 @@ config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "сс", "config-source ;; message-info 'Config reloaded'") # reload config
-config.bind(leader + "cs", "spawn --userscript claude-export")
 config.bind(leader + "cS", "cmd-set-text -s :set -t")
 
 # ui
@@ -348,6 +344,7 @@ config.bind(leader + "гн", "config-cycle statusbar.show always in-mode")
 
 config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
 config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
+
 # Dark mode controls
 # - Built-in Qt darkmode toggle on Space u n
 config.bind(leader + 'un', "config-cycle -p colors.webpage.darkmode.enabled true false")
@@ -374,11 +371,7 @@ config.bind(leader + "fo", "hint links window") # Open link in new tab (foregrou
 config.bind(leader + "fp", "hint links run :open -p {hint-url}") # Open link in new tab (foreground)
 config.bind(leader + "fv", "hint links spawn mpv {hint-url}") # Open link in new tab (foreground)
 config.bind(leader + "fy", "hint links yank") # Open link in new tab (foreground)
-config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Brave Browser' {hint-url}") # Open link in Brave (hint)
-
-# Trigger custom FZF script (interactive launcher)
-# Requires you to create a script at ~/.local/bin/qute-fzf.sh
-# config.bind(leader + "fz", f"spawn --userscript ~/.local/bin/qute-fzf.sh")
+config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Helium' {hint-url}") # Open link in Helium (hint)
 
 # quitting actions
 config.bind(leader + "qd", "tab-close")
@@ -400,7 +393,7 @@ config.bind(leader + "th", "history")
 config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
-config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Brave Browser' {url}") # Open current URL in Brave
+config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
 
 # sessions
 # Interactive prompts leverage completion for existing session names.
