@@ -45,6 +45,7 @@ args = [
   "start-mcp-server",
   "--context",
   "codex",
+  "--no-browser",
 ]
 
 # [mcp_servers.repomix]
