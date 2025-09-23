@@ -8,6 +8,24 @@ return {
         },
       },
     },
+    routes = {
+      {
+        filter = {
+          event = "msg_show",
+          kind = "",
+          find = "eslint",
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = "lsp",
+          kind = "message",
+          find = "eslint",
+        },
+        opts = { skip = true },
+      },
+    },
   },
   config = function(_, opts)
     require("noice").setup(opts)
