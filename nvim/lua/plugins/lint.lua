@@ -12,10 +12,11 @@ return {
 				mysql = { "sqlfluff" },
 				plsql = { "sqlfluff" },
 				sql = { "sqlfluff" },
-				typescript = { "eslint" },
-				typescriptreact = { "eslint" },
-				javascript = { "eslint" },
-				javascriptreact = { "eslint" },
+				-- ESLint removed - using LSP via LazyVim instead
+				-- typescript = { "eslint" },
+				-- typescriptreact = { "eslint" },
+				-- javascript = { "eslint" },
+				-- javascriptreact = { "eslint" },
 			}
 
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {

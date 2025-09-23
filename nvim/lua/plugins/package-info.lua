@@ -12,10 +12,10 @@ return {
       icons = {
         enable = false,
       },
-      colors = {
-        up_to_date = "#5c5f66", -- темнее, чем #3C4048
-        outdated = "#b38f5a", -- более приглушённый оранжевый
-        invalid = "#a33a3a", -- менее ядовитый красный
+      highlights = {
+        up_to_date = { fg = "#4c566a" }, -- nord3 (polar night) - актуальные версии
+        outdated = { fg = "#81a1c1" }, -- nord9 (frost blue) - устаревшие версии
+        invalid = { fg = "#5e81ac" }, -- nord10 (frost dark blue) - невалидные версии
       },
       notifications = false, -- Whether to display notifications when running commands
       hide_up_to_date = true, -- It hides up to date versions when displaying virtual text
