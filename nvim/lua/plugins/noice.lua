@@ -11,24 +11,18 @@ return {
     routes = {
       {
         filter = {
-          event = "notify",
-          find = "eslint",
-        },
-        opts = { skip = true },
-      },
-      {
-        filter = {
-          event = "msg_show",
-          kind = "",
-          find = "eslint",
-        },
-        opts = { skip = true },
-      },
-      {
-        filter = {
-          event = "lsp",
-          kind = "message",
-          find = "eslint",
+          event = "diagnostic_set",
+          cond = function(message)
+            if not message.opts or not message.opts.diagnostics then
+              return false
+            end
+            for _, d in ipairs(message.opts.diagnostics) do
+              if d.source == "eslint" then
+                return true
+              end
+            end
+            return false
+          end,
         },
         opts = { skip = true },
       },
