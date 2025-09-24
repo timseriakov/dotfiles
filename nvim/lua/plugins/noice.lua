@@ -11,6 +11,13 @@ return {
     routes = {
       {
         filter = {
+          event = "notify",
+          find = "eslint",
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
           event = "msg_show",
           kind = "",
           find = "eslint",
