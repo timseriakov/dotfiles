@@ -10,20 +10,7 @@ return {
     },
     routes = {
       {
-        filter = {
-          event = "diagnostic_set",
-          cond = function(message)
-            if not message.opts or not message.opts.diagnostics then
-              return false
-            end
-            for _, d in ipairs(message.opts.diagnostics) do
-              if d.source == "eslint" then
-                return true
-              end
-            end
-            return false
-          end,
-        },
+        filter = { event = "diagnostic_set" },
         opts = { skip = true },
       },
     },
