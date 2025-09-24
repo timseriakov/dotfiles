@@ -8,12 +8,6 @@ return {
         },
       },
     },
-    routes = {
-      {
-        filter = { event = "diagnostic_set" },
-        opts = { skip = true },
-      },
-    },
   },
   config = function(_, opts)
     require("noice").setup(opts)
