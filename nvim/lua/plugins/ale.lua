@@ -9,6 +9,9 @@ return {
     -- Auto-disable ALE LSP if builtin LSP is active
     vim.g.ale_disable_lsp = "auto"
 
+    -- Stop ALE from echoing messages, which are then picked up by noice
+    vim.g.ale_echo_cursor = 0
+
     -- Linting triggers
     vim.g.ale_lint_on_enter = 1
     vim.g.ale_lint_on_text_changed = "never"
