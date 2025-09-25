@@ -201,7 +201,7 @@ c.url.start_pages = homepage
 
 # Search engines
 c.url.searchengines = {
-    "DEFAULT": "https://google.com/search?q={}",
+    "DEFAULT": "https://duckduckgo.com/?q={}",
     "dd": "https://duckduckgo.com/?q={}",
     "gh": "https://github.com/search?q={}",
     "gg": "https://google.com/search?q={}",
