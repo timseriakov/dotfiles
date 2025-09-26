@@ -38,7 +38,7 @@ c.input.mouse.back_forward_buttons = True
 c.editor.command = ["/usr/local/bin/fish", "-lc", f"{terminal} -e {editor} {{}}"]
 c.auto_save.session = True
 c.session.lazy_restore = True
-c.zoom.default = "100%"
+c.zoom.default = "125%"
 c.window.hide_decoration = True
 
 # Layout
