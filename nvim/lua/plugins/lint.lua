@@ -8,7 +8,7 @@ return {
 			lint.linters_by_ft = {
 				dockerfile = { "hadolint" },
 				fish = { "fish" },
-				markdown = { "markdownlint-cli2" },
+				-- markdown = { "markdownlint-cli2" },
 				mysql = { "sqlfluff" },
 				plsql = { "sqlfluff" },
 				sql = { "sqlfluff" },
@@ -17,6 +17,16 @@ return {
 				-- typescriptreact = { "eslint" },
 				-- javascript = { "eslint" },
 				-- javascriptreact = { "eslint" },
+			}
+
+			lint.linters = {
+				["markdownlint-cli2"] = {
+					cmd = "markdownlint-cli2",
+					condition = function()
+						print("markdown_lint_enabled:", vim.b.markdown_lint_enabled)
+						return vim.b.markdown_lint_enabled ~= false
+					end,
+				},
 			}
 
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
