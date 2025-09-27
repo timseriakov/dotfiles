@@ -186,3 +186,126 @@
     svg {
         color: inherit !important;
     }
+
+    /* Monospace font for terminal-like appearance */
+    * {
+        font-family: "ShureTechMono Nerd Font Mono", "JetBrainsMono Nerd Font Mono", monospace !important;
+        font-size: 17px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Consistent sizing for all text elements */
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 17px !important;
+        font-weight: bold !important;
+    }
+
+    /* Buttons and inputs same size */
+    button, input, select, textarea {
+        font-size: 17px !important;
+        font-family: "ShureTechMono Nerd Font Mono", "JetBrainsMono Nerd Font Mono", monospace !important;
+    }
+
+    /* Hide powered by text */
+    nav span.text-sm:not(:has(span)) {
+        display: none !important;
+    }
+
+    /* Hide version text in aside */
+    aside span.text-sm {
+        display: none !important;
+    }
+
+    /* Hide powered by in header - more specific */
+    [data-version*="Backlog.md"] {
+        font-size: 0 !important;
+    }
+
+    /* Fixed header height */
+    header,
+    [class*="border-b"][class*="h-18"] {
+        height: 32px !important;
+        min-height: 32px !important;
+        max-height: 32px !important;
+    }
+
+    /* Hide theme toggle button */
+    button[aria-label="Switch to dark mode"],
+    button[title="Switch to dark mode"] {
+        display: none !important;
+    }
+
+    /* Hide Backlog.md text in header */
+    header span:contains("Backlog"),
+    header *:contains("Backlog.md") {
+        display: none !important;
+    }
+
+    /* Use #606E88 for all borders */
+    [class*="border"] {
+        border-color: #606E88 !important;
+    }
+
+    /* Input borders */
+    input[class*="border"],
+    select[class*="border"] {
+        border-color: #606E88 !important;
+    }
+
+    /* Header, aside, main background */
+    header,
+    aside,
+    main {
+        background-color: #2E3440 !important;
+    }
+
+    /* Page background */
+    body,
+    #root {
+        background-color: #2E3440 !important;
+    }
+
+    /* Card title styling - like nvim highlighting */
+    [class*="bg-white"][class*="border"] h3 {
+        background: #414349 !important;
+        color: #EBCB8B !important;
+        padding: 4px 16px !important;
+        margin: -12px -12px 8px -12px !important;
+        font-weight: bold !important;
+        border-radius: 0 !important;
+        width: calc(100% + 24px) !important;
+    }
+
+    /* Status badges on one line below title */
+    [class*="bg-white"][class*="border"] .flex.items-center.space-x-3 {
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        margin-bottom: 12px !important;
+        margin-top: 0 !important;
+    }
+
+    /* Individual status badges */
+    [class*="bg-white"][class*="border"] .flex.items-center.space-x-3 > span {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 3px 12px !important;
+    }
+
+    /* All status spans - no rounded corners */
+    span[class*="rounded-circle"],
+    span[class*="px-2"],
+    [class*="bg-white"][class*="border"] span {
+        border-radius: 0 !important;
+        padding: 3px 12px !important;
+    }
+
+    /* Tags styling - target tags in cards */
+    [class*="bg-white"][class*="border"] .flex.flex-wrap.gap-1 span.bg-gray-100,
+    [class*="bg-white"][class*="border"] .flex.flex-wrap.gap-1 span[class*="bg-gray-100"] {
+        color: #606E88 !important;
+        background-color: #3B4252 !important;
+        border-radius: 0 !important;
+        padding: 3px 12px !important;
+    }
