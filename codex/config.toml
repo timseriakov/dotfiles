@@ -20,6 +20,9 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/pet-new/TimSeriakov"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/work/spec-kit"]
+trust_level = "trusted"
+
 # MCP servers for Codex CLI
 # Note: Codex prefers stdio transport. For HTTP/SSE servers use a stdio bridge.
 # See: https://github.com/modelcontextprotocol/server-proxy
