@@ -38,7 +38,7 @@ c.input.mouse.back_forward_buttons = True
 c.editor.command = ["/usr/local/bin/fish", "-lc", f"{terminal} -e {editor} {{}}"]
 c.auto_save.session = True
 c.session.lazy_restore = True
-c.zoom.default = "125%"
+c.zoom.default = "100%"
 c.window.hide_decoration = True
 
 # Layout
@@ -320,6 +320,10 @@ config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
 config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
+
+# Nord theme for Backlog.md - toggle loop
+nord_css_path = "/Users/tim/dev/dotfiles/qutebrowser/styles/backlog-nord.css"
+config.bind(leader + "ud", f":config-cycle content.user_stylesheets [] [{nord_css_path}] ;; message-info 'Nord theme toggled'")
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
 
 # Translation
