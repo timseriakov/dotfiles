@@ -107,7 +107,7 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
-abbr -a cr crush
+abbr -a cr cursor-agent
 
 # Backlog helpers
 abbr -a bl backlog
@@ -133,6 +133,7 @@ abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
 abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
 abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
 abbr -a secrets 'nvim ~/dev/dotfiles/fish/secrets.fish'
+abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish'
 
 # Misc
 abbr -a cls clear
