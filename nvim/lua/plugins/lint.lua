@@ -19,15 +19,13 @@ return {
 				-- javascriptreact = { "eslint" },
 			}
 
-			lint.linters = {
-				["markdownlint-cli2"] = {
-					cmd = "markdownlint-cli2",
-					condition = function()
-						print("markdown_lint_enabled:", vim.b.markdown_lint_enabled)
-						return vim.b.markdown_lint_enabled ~= false
-					end,
-				},
-			}
+		local markdownlint = lint.linters["markdownlint-cli2"]
+		if markdownlint then
+			markdownlint.condition = function()
+				print("markdown_lint_enabled:", vim.b.markdown_lint_enabled)
+				return vim.b.markdown_lint_enabled ~= false
+			end
+		end
 
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 				callback = function()
