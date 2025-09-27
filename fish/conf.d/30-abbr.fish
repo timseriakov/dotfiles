@@ -111,8 +111,8 @@ abbr -a cr cursor-agent
 
 # Backlog helpers
 abbr -a bl backlog
-abbr -a blb 'backlog board'
-abbr -a blw 'backlog browser'
+abbr -a bb 'backlog board'
+abbr -a bw 'backlog browser'
 
 # z jumps
 abbr -a zd 'z dot'
