@@ -73,3 +73,5 @@
     # Use the Nord-based theme without background colors
     	theme-name = arctic-nobg
     	syntax-highlighting-theme = nord
+[coderabbit]
+	machineId = cli/a396e9c8c0df4af8be1396a8094f56fc
