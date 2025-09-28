@@ -352,11 +352,6 @@ config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autopla
 # Dark mode controls
 # - Built-in Qt darkmode toggle on Space u n
 config.bind(leader + 'un', "config-cycle -p colors.webpage.darkmode.enabled true false")
-# - Dark Reader userscript toggle on Space u m
-config.bind(leader + 'um', 'spawn --userscript toggle-darkreader')
-
-# Reset any dark styles globally and on current site (Space u 0)
-config.bind(leader + 'u0', 'spawn --userscript reset-dark')
 
 # dev tools
 config.bind(leader + "dd", "devtools")
