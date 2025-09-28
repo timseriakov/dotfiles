@@ -321,10 +321,10 @@ config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 
-# Nord theme for Backlog.md - toggle loop
-nord_css_path = "/Users/tim/dev/dotfiles/qutebrowser/styles/backlog-nord.css"
-config.bind(leader + "ud", f":config-cycle content.user_stylesheets [] [{nord_css_path}] ;; message-info 'Nord theme toggled'")
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
+
+# Clear any user stylesheets to fix nord theme removal
+config.set('content.user_stylesheets', [])
 
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
