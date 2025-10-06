@@ -10,11 +10,21 @@ return {
       desc = "Toggle Zoom Mode",
     },
     {
-      "<leader>z",
+      "<leader>we",
       function()
-        require("snacks.toggle").zoom():toggle()
+        -- Custom zoom with statusline
+        local zoom = require("snacks.toggle").zoom()
+        if zoom:get() then
+          -- Currently zoomed, restore
+          zoom:set(false)
+          vim.o.laststatus = 3 -- Restore statusline
+        else
+          -- Not zoomed, zoom in
+          vim.o.laststatus = 3 -- Keep statusline
+          zoom:set(true)
+        end
       end,
-      desc = "Toggle Zoom Mode",
+      desc = "Toggle Zoom Mode (with statusline)",
     },
     {
       "<leader>uZ",

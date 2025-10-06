@@ -29,8 +29,7 @@ local function toggle_window_size()
   end
 end
 
--- Toggle window size
-vim.keymap.set("n", "<leader>we", toggle_window_size, { desc = "Toggle window size (maximize/50-50)" })
+-- Toggle window size (moved to zoom mode)
 
 -- Jump back
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
