@@ -3,6 +3,7 @@
 #   qute://help/settings.html
 
 from time import localtime, strftime
+import os
 
 # Reassign to avoid lsp(ruff_lsp) errors
 config = config  # noqa: F821
@@ -216,7 +217,7 @@ c.aliases = {
     "Q": "close",
     "w": "session-save",
     "x": "quit --save",
-    "msgs": "messages",
+    "ms": "messages",
 }
 
 # Reload
@@ -321,10 +322,8 @@ config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 
+config.bind(leader + 'aa', 'mode-enter insert')
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
-
-# Clear any user stylesheets to fix nord theme removal
-config.set('content.user_stylesheets', [])
 
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
@@ -402,3 +401,9 @@ config.bind(leader + "sd", "cmd-set-text -s :session-delete ")
 config.bind(leader + "sr", "cmd-set-text -s :session-rename ")
 config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
 config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
+
+# Autostart ActivityWatch bridge
+# Autostart ActivityWatch bridge
+userscript = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge')
+if os.path.exists(userscript):
+    os.system(f'{userscript} start &')
