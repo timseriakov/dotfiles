@@ -3,6 +3,35 @@ local peek_def = require("modules.split-definition")
 
 vim.keymap.set("n", "gs", peek_def.split_definition, { desc = "Peek Definition (vsplit + return focus)" })
 
+-- Window size toggle function
+local window_state = {}
+local function toggle_window_size()
+  local current_win = vim.api.nvim_get_current_win()
+  local current_buf = vim.api.nvim_win_get_buf(current_win)
+
+  -- Check if we have saved state for this buffer
+  if window_state[current_buf] then
+    -- Restore to 50/50 split
+    vim.cmd("wincmd =")
+    window_state[current_buf] = nil
+  else
+    -- Save current window configuration and maximize
+    local win_config = vim.api.nvim_win_get_config(current_win)
+    window_state[current_buf] = {
+      width = win_config.width,
+      height = win_config.height,
+      col = win_config.col,
+      row = win_config.row
+    }
+
+    -- Maximize current window
+    vim.cmd("wincmd |")
+  end
+end
+
+-- Toggle window size
+vim.keymap.set("n", "<leader>we", toggle_window_size, { desc = "Toggle window size (maximize/50-50)" })
+
 -- Jump back
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
 
