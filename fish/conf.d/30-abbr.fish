@@ -60,6 +60,7 @@ abbr -a gvd 'git vdiff'
 abbr -a gvl 'git vlog'
 abbr -a gprune 'git remote prune origin'
 abbr -a gg lazygit
+abbr -a пп lazygit
 
 # Brew helpers
 abbr -a bri 'brew install'
@@ -109,10 +110,10 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
 
-# Backlog helpers
+# Backlog.md helpers
 abbr -a bl backlog
-abbr -a bb 'backlog board'
-abbr -a bw 'backlog browser'
+abbr -a t 'backlog board'
+abbr -a tt 'backlog browser'
 
 # z jumps
 abbr -a zd 'z dot'
@@ -146,9 +147,6 @@ abbr -a cpr 'cp -r'
 abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'
 
-abbr -a t taskell
-abbr -a tt 'taskell TODO.md'
-
 abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
 abbr -a c bat
 abbr -a chmd chmod-cli
@@ -159,6 +157,7 @@ abbr -a sshh ggh
 
 abbr -a icat 'kitten icat'
 abbr -a hg 'hgrep --theme Nord'
+abbr -a fxp 'fx package.json'
 
 abbr -a srv 'npx http-server .'
 abbr -a serve 'npx serve .'
