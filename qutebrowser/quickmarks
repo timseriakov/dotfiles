@@ -5,7 +5,7 @@ gm https://gmail.com
 gh https://github.com
 ghp https://github.com/pulls
 yt https://youtube.com
-sc https://soundcloud.com
+sc https://soundcloud.com/feed
 scs https://cobalt.tools
 gl https://gitlab.sqvr.net/mobile/mobile
 gll https://gitlab.sqvr.net/dashboard/merge_requests?assignee_username=seriakov
@@ -18,5 +18,5 @@ ho http://localhost:1931
 dl https://www.deepl.com/en/translator
 cr https://cursor.com/agents
 pr https://www.perplexity.ai/
-dir https://www.di.fm/channels/followed
 dis https://www.di.fm/shows/followed
+di https://www.di.fm/channels/followed

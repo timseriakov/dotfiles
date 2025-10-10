@@ -22,10 +22,6 @@ pages:
                 title: selfh.st
                 limit: 4
 
-          - type: twitch-channels
-            channels:
-              - theprimeagen
-
       - size: full
         widgets:
           - type: group
@@ -209,14 +205,10 @@ pages:
             markets:
               - symbol: BTC-USD
                 name: Bitcoin
-              - symbol: XMR-USD
-                name: Monero
               - symbol: ETH-USD
                 name: Ethereum
-              - symbol: SOL-USD
-                name: Solana
-              - symbol: DOT-USD
-                name: Polkadot
+              - symbol: XMR-USD
+                name: Monero
 
   # Add more pages here:
   # - name: Your page name
