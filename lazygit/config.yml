@@ -31,3 +31,25 @@ git:
     colorArg: always
     pager: git-split-diffs --color=16m
     useConfigOnly: true
+
+gui:
+  theme:
+    activeBorderColor:
+      - "#88c0d0"
+      - bold
+    inactiveBorderColor:
+      - "#4c566a"
+    optionsTextColor:
+      - "#81a1c1"
+    selectedLineBgColor:
+      - "#3d5a7a"
+    cherryPickedCommitBgColor:
+      - "#5e81ac"
+    cherryPickedCommitFgColor:
+      - "#eceff4"
+    unstagedChangesColor:
+      - "#d08770"
+    defaultFgColor:
+      - "#eceff4"
+    searchingActiveBorderColor:
+      - "#a3be8c"

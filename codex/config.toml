@@ -1,4 +1,5 @@
-model = "gpt-5-codex"
+model = "gpt-5"
+model_reasoning_effort = "minimal"
 # model = "o3-mini"
 # model = "gpt-4o-mini"
 

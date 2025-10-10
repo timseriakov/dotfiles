@@ -11,6 +11,7 @@ abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
+abbr -a wt branchlet
 
 # npm
 abbr -a n npm
