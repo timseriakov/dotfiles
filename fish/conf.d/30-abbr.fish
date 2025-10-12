@@ -171,3 +171,4 @@ abbr -a bt btop
 abbr -a vtop 'vtop --theme nord'
 
 abbr -a dl 'cd ~/dl'
+abbr -a do 'cd ~/dev/dotfiles'
