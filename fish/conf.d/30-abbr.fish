@@ -169,3 +169,5 @@ abbr -a ipinfo-more 'curl -s ipwho.is'
 
 abbr -a bt btop
 abbr -a vtop 'vtop --theme nord'
+
+abbr -a dl 'cd ~/dl'
