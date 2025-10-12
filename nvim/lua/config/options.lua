@@ -11,7 +11,8 @@ vim.fn.mkdir(vim.env.TMPDIR, "p") -- p = parents
 vim.g.lazyvim_eslint_auto_format = true
 vim.opt.spelllang = { "ru", "en" }
 
-vim.o.mousescroll = "ver:1,hor:1"
+vim.opt.mouse = "a" -- Enable mouse support
+vim.o.mousescroll = "ver:1,hor:1" -- Slower mouse scroll for terminal
 vim.opt.swapfile = false
 
 -- Change cursor shape per mode in terminals like kitty or iTerm2
