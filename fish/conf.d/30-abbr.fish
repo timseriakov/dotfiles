@@ -83,6 +83,8 @@ abbr -a de-it 'docker exec -it'
 
 # CLaude Code
 abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
+abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --resume'
+
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
