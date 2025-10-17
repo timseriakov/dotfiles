@@ -27,6 +27,7 @@ terminal = "/opt/homebrew/bin/kitty"
 editor = "/opt/homebrew/bin/nvim"
 username = "timseriakov"
 homepage = "http://localhost:1931"
+c.content.user_stylesheets = ['~/.qutebrowser/styles/tooltip.css']
 
 config.set("content.autoplay", False)
 

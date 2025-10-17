@@ -1,0 +1,27 @@
+a[href]::after {
+  content: attr(href);
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 9999;
+  border-radius: 3px;
+  margin-bottom: 2px;
+
+  /* Задержка появления */
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  transition-delay: 1s; /* Задержка 0.5 секунды */
+}
+
+a[href]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
