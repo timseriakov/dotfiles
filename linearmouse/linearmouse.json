@@ -25,9 +25,7 @@
         "acceleration" : {
           "vertical" : 1
         },
-        "distance" : {
-          "vertical" : "auto"
-        },
+        "distance" : 3,
         "modifiers" : {
           "vertical" : {
             "command" : {
@@ -140,9 +138,7 @@
         "acceleration" : {
           "vertical" : 0.74
         },
-        "distance" : {
-          "vertical" : "auto"
-        },
+        "distance" : 3,
         "modifiers" : {
           "vertical" : {
             "control" : {
