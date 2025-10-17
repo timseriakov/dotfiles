@@ -32,6 +32,9 @@ if vim.g.neovide then
   vim.g.neovide_input_macos_option_key_is_meta = "both"
   vim.g.neovide_input_use_logo = true
 
+  -- Enable mouse move events for scroll-under-cursor
+  vim.o.mousemoveevent = true
+
   vim.opt.title = false
   vim.g.neovide_fullscreen = false
   -- vim.g.neovide_macos_simple_fullscreen = true
