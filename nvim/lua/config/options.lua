@@ -108,10 +108,10 @@ if vim.g.neovide then
   -- vim.g.neovide_cursor_trail_size = 0.3
 
   -- Длительность анимации перемещения курсора (в секундах).
-  -- vim.g.neovide_cursor_animation_length = 0.13
+  vim.g.neovide_cursor_animation_length = 0.05
 
   -- Длительность анимации при коротком перемещении (1–2 символа).
-  -- vim.g.neovide_cursor_short_animation_length = 0.03
+  vim.g.neovide_cursor_short_animation_length = 0.015
 
   -- Включает/отключает анимацию курсора в режиме вставки.
   vim.g.neovide_cursor_animate_in_insert_mode = false
