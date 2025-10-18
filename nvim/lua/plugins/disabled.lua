@@ -7,6 +7,10 @@ return {
     enabled = false,
   },
   {
+    "zbirenbaum/copilot.lua",
+    enabled = false,
+  },
+  {
     "LazyVim/LazyVim",
     keys = {
       { "<leader>gs", false },
