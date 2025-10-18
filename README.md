@@ -6,12 +6,3 @@
 \____ |\____/|__|  |__|  |__|____/\___  >____  >
      \/                               \/     \/
 ```
-
-## For AI Assistants
-
-📋 **Read before working with this repo:** [AI-INSTRUCTIONS.md](./AI-INSTRUCTIONS.md)
-
-Quick links:
-- [Claude Code](./CLAUDE.md)
-- [Gemini](./GEMINI.md)
-- [General Agents](./AGENTS.md)

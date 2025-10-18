@@ -1,5 +1,6 @@
 return {
   "nvim-zh/colorful-winsep.nvim",
+  enabled = not vim.g.neovide,
   event = { "WinLeave" },
   config = function()
     require("colorful-winsep").setup({
