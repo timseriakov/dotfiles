@@ -3,6 +3,10 @@
 -- Add any additional options here
 vim.g.lazyvim_picker = "telescope"
 -- vim.g.lazyvim_picker = "fzf"
+
+-- Disable AI in autocomplete menu, use only ghost text (virtual_text)
+vim.g.ai_cmp = false
+
 vim.opt.termguicolors = true
 vim.o.encoding = "utf-8"
 vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
