@@ -12,8 +12,8 @@ return {
         chars = {
           right_arrow = "─",
         },
-        duration = 100,
-        delay = 100,
+        duration = 80,
+        delay = 70,
       },
       indent = {
         enable = true,
