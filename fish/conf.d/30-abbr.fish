@@ -86,6 +86,7 @@ abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)
 abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --resume'
 abbr -a clc 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --continue'
 abbr -a .c 'cd ~/.claude'
+abbr -a mp mcpproxy
 
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
