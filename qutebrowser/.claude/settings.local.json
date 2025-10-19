@@ -22,5 +22,6 @@
     "additionalDirectories": [
       "/Users/tim/dev/dotfiles"
     ]
-  }
+  },
+  "spinnerTipsEnabled": false
 }
