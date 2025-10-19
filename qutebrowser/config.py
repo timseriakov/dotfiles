@@ -234,6 +234,10 @@ config.bind("K", "tab-prev")
 config.bind("Л", "tab-prev")
 config.bind("J", "tab-next")
 config.bind("О", "tab-next")
+config.bind("<Cmd-k>", "tab-prev")
+config.bind("<Cmd-л>", "tab-prev")
+config.bind("<Cmd-j>", "tab-next")
+config.bind("<Cmd-о>", "tab-next")
 
 # Restore closed tab
 config.bind("q", "undo")
@@ -393,6 +397,7 @@ config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
 config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
+config.bind(leader + "ti", "open -p") # Open new private window
 
 # sessions
 # Interactive prompts leverage completion for existing session names.
