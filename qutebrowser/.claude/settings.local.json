@@ -15,7 +15,8 @@
       "Bash(mkfifo:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:gist.github.com)",
-      "WebFetch(domain:greasyfork.org)"
+      "WebFetch(domain:greasyfork.org)",
+      "mcp__mcpproxy__call_tool"
     ],
     "deny": [],
     "ask": [],
