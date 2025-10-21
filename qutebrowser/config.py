@@ -46,7 +46,7 @@ c.window.hide_decoration = True
 # Layout
 c.scrolling.bar = "when-searching"
 c.statusbar.show = "in-mode"
-c.tabs.show = "never" # multiple
+c.tabs.show = "always" # multiple # never
 c.tabs.last_close = "close"
 # c.tabs.new_position.related = "last"
 # Open new tabs in background (e.g., middle-click on links)
@@ -183,6 +183,13 @@ c.colors.tabs.pinned.selected.even.fg = nord1
 c.colors.tabs.pinned.selected.odd.bg = nord8
 c.colors.tabs.pinned.selected.odd.fg = nord1
 
+# Tab loading indicator
+c.tabs.indicator.width = 7  # width in pixels (0 to disable)
+c.colors.tabs.indicator.start = "#F90"     # bright orange - loading in progress
+c.colors.tabs.indicator.stop = "#00A86E"   # bright green - loaded successfully
+c.colors.tabs.indicator.error = "#FF2B3A"  # bright red - loading error
+c.colors.tabs.indicator.system = 'none'    # no gradient, instant color change
+
 # Font
 font_size = "18pt"
 font_family = "Share Tech Mono"
@@ -203,7 +210,7 @@ c.url.start_pages = homepage
 
 # Search engines
 c.url.searchengines = {
-    "DEFAULT": "https://duckduckgo.com/?q={}",
+    "DEFAULT": "https://google.com/search?q={}",
     "dd": "https://duckduckgo.com/?q={}",
     "gh": "https://github.com/search?q={}",
     "gg": "https://google.com/search?q={}",
