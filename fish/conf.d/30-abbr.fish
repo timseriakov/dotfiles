@@ -139,7 +139,7 @@ abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
 abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
 abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
 abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
-abbr -a secrets 'nvim ~/dev/dotfiles/fish/secrets.fish'
+abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish'
 abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish'
 
 # Misc
@@ -149,6 +149,8 @@ abbr -a cbs 'cb show'
 abbr -a ccc 'cb cp'
 abbr -a ppp 'cb p'
 abbr -a cpr 'cp -r'
+
+abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
 
 abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'

@@ -1,5 +1,27 @@
 # Gemini Instructions
 
+## MCP Server Access via MCPProxy
+
+**IMPORTANT**: All MCP servers are accessed through MCPProxy (http://localhost:8080/mcp/) for token optimization and intelligent tool discovery.
+
+**How it works:**
+- Gemini connects to a single MCPProxy endpoint via `mcp-remote`
+- MCPProxy uses BM25 search to find the most relevant tools across all servers
+- This reduces token usage by ~99% compared to loading all tools upfront
+
+**Available servers through MCPProxy:**
+- morphllm-fast-apply (pattern-based bulk edits)
+- sequential-thinking (complex multi-step reasoning)
+- serena (semantic code understanding, project memory)
+- perplexity-mcp (AI-powered reasoning)
+- sqvr-graphql (GraphQL API integration)
+- gitlab (GitLab integration)
+- atlassian (Jira/Confluence integration)
+
+**Usage:** Simply request tools by natural language - MCPProxy will automatically find and provide the right tools. No manual tool selection needed.
+
+**Configuration:** MCP servers managed in `~/dev/dotfiles/mcpproxy/mcp_config.json`
+
 ## Git Commit Best Practices
 
 ### ⚠️ Pre-commit Hook Rules
