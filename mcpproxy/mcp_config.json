@@ -1,0 +1,370 @@
+{
+  "listen": "127.0.0.1:8080",
+  "data_dir": "/Users/tim/.mcpproxy",
+  "enable_tray": true,
+  "debug_search": false,
+  "mcpServers": [
+    {
+      "name": "activitywatch",
+      "protocol": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"
+      ],
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-21T19:04:57.9416+03:00",
+      "updated": "2025-10-24T11:39:54.758221+03:00"
+    },
+    {
+      "name": "atlassian",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.atlassian.com/v1/sse"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.766361+03:00"
+    },
+    {
+      "name": "context7",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.776317+03:00"
+    },
+    {
+      "name": "fleur",
+      "protocol": "stdio",
+      "command": "/Users/tim/.local/bin/uvx",
+      "args": [
+        "mcp-fleur"
+      ],
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.784324+03:00"
+    },
+    {
+      "name": "gitlab",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@zereight/mcp-gitlab"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.792321+03:00"
+    },
+    {
+      "name": "morphllm-fast-apply",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
+      "env": {
+        "MORPH_API_KEY": "${keyring:morph_api_key}"
+      },
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.800371+03:00"
+    },
+    {
+      "name": "perplexity-mcp",
+      "protocol": "stdio",
+      "command": "fish",
+      "args": [
+        "-lc",
+        "perplexity-mcp"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:59.271913+03:00"
+    },
+    {
+      "name": "repomix",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "repomix",
+        "serve"
+      ],
+      "working_dir": "/Users/tim/dev/work/mobile",
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.823255+03:00"
+    },
+    {
+      "name": "sequential-thinking",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.832035+03:00"
+    },
+    {
+      "name": "serena",
+      "protocol": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "/Users/tim/dev/work/mobile",
+        "--enable-web-dashboard",
+        "False"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.842403+03:00"
+    },
+    {
+      "name": "shrimp-task-manager",
+      "protocol": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/tim/dev/ai/mcp-shrimp-task-manager/dist/index.js"
+      ],
+      "env": {
+        "DATA_DIR": "/Users/tim/dev/ai/shrimp-data",
+        "ENABLE_GUI": "false",
+        "TEMPLATES_USE": "ru"
+      },
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-19T12:42:21.144894+03:00",
+      "updated": "2025-10-24T11:39:54.850398+03:00"
+    },
+    {
+      "name": "sqvr-graphql",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-graphql"
+      ],
+      "env": {
+        "ALLOW_MUTATIONS": "true",
+        "ENDPOINT": "https://qa1.sqvr.net/api/graphql/v1",
+        "HEADERS": "{\"UserToken\": \"${keyring:sqvr_user_token}\"}"
+      },
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2025-10-24T11:39:54.857449+03:00"
+    }
+  ],
+  "top_k": 5,
+  "tools_limit": 15,
+  "tool_response_limit": 20000,
+  "call_tool_timeout": "2m0s",
+  "environment": {
+    "inherit_system_safe": true,
+    "allowed_system_vars": [
+      "PATH",
+      "HOME",
+      "TMPDIR",
+      "TEMP",
+      "TMP",
+      "SHELL",
+      "TERM",
+      "LANG",
+      "USER",
+      "USERNAME",
+      "XDG_CONFIG_HOME",
+      "XDG_DATA_HOME",
+      "XDG_CACHE_HOME",
+      "XDG_RUNTIME_DIR",
+      "LC_ALL",
+      "LC_CTYPE",
+      "LC_NUMERIC",
+      "LC_TIME",
+      "LC_COLLATE",
+      "LC_MONETARY",
+      "LC_MESSAGES",
+      "LC_PAPER",
+      "LC_NAME",
+      "LC_ADDRESS",
+      "LC_TELEPHONE",
+      "LC_MEASUREMENT",
+      "LC_IDENTIFICATION",
+      "GITLAB_PERSONAL_ACCESS_TOKEN",
+      "GITLAB_API_URL",
+      "GITLAB_TOKEN",
+      "GITLAB_URL",
+      "PERPLEXITY_API_KEY",
+      "PERPLEXITY_MODEL",
+      "CONTEXT7_API_KEY",
+      "GITHUB_TOKEN",
+      "GITHUB_PERSONAL_ACCESS_TOKEN"
+    ],
+    "custom_vars": {},
+    "enhance_path": false
+  },
+  "logging": {
+    "level": "info",
+    "enable_file": true,
+    "enable_console": true,
+    "filename": "main.log",
+    "max_size": 10,
+    "max_backups": 5,
+    "max_age": 30,
+    "compress": true,
+    "json_format": false
+  },
+  "read_only_mode": false,
+  "disable_management": false,
+  "allow_server_add": true,
+  "allow_server_remove": true,
+  "enable_prompts": true,
+  "check_server_repo": true,
+  "docker_isolation": {
+    "enabled": false,
+    "default_images": {
+      "bash": "alpine:3.18",
+      "binary": "alpine:3.18",
+      "cargo": "rust:1.75-slim",
+      "composer": "php:8.2-cli-alpine",
+      "gem": "ruby:3.2-alpine",
+      "go": "golang:1.21-alpine",
+      "node": "node:20",
+      "npm": "node:20",
+      "npx": "node:20",
+      "php": "php:8.2-cli-alpine",
+      "pip": "python:3.11",
+      "pipx": "python:3.11",
+      "python": "python:3.11",
+      "python3": "python:3.11",
+      "ruby": "ruby:3.2-alpine",
+      "rustc": "rust:1.75-slim",
+      "sh": "alpine:3.18",
+      "uvx": "python:3.11",
+      "yarn": "node:20"
+    },
+    "registry": "docker.io",
+    "network_mode": "bridge",
+    "memory_limit": "512m",
+    "cpu_limit": "1.0",
+    "timeout": "30s",
+    "log_max_size": "100m",
+    "log_max_files": "3"
+  },
+  "registries": [
+    {
+      "id": "pulse",
+      "name": "Pulse MCP",
+      "description": "Browse and discover MCP use-cases, servers, clients, and news",
+      "url": "https://www.pulsemcp.com/",
+      "servers_url": "https://api.pulsemcp.com/v0beta/servers",
+      "tags": [
+        "verified"
+      ],
+      "protocol": "custom/pulse"
+    },
+    {
+      "id": "docker-mcp-catalog",
+      "name": "Docker MCP Catalog",
+      "description": "A collection of secure, high-quality MCP servers as docker images",
+      "url": "https://hub.docker.com/catalogs/mcp",
+      "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
+      "tags": [
+        "verified"
+      ],
+      "protocol": "custom/docker"
+    },
+    {
+      "id": "fleur",
+      "name": "Fleur",
+      "description": "Fleur is the app store for Claude",
+      "url": "https://www.fleurmcp.com/",
+      "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
+      "tags": [
+        "verified"
+      ],
+      "protocol": "custom/fleur"
+    },
+    {
+      "id": "azure-mcp-demo",
+      "name": "Azure MCP Registry Demo",
+      "description": "A reference implementation of MCP registry using Azure API Center",
+      "url": "https://demo.registry.azure-mcp.net/",
+      "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
+      "tags": [
+        "verified",
+        "demo",
+        "azure",
+        "reference"
+      ],
+      "protocol": "mcp/v0"
+    },
+    {
+      "id": "remote-mcp-servers",
+      "name": "Remote MCP Servers",
+      "description": "Community-maintained list of remote Model Context Protocol servers",
+      "url": "https://remote-mcp-servers.com/",
+      "servers_url": "https://remote-mcp-servers.com/api/servers",
+      "tags": [
+        "verified",
+        "community",
+        "remote"
+      ],
+      "protocol": "custom/remote"
+    }
+  ],
+  "features": {
+    "enable_runtime": true,
+    "enable_event_bus": true,
+    "enable_sse": true,
+    "enable_observability": true,
+    "enable_health_checks": true,
+    "enable_metrics": true,
+    "enable_tracing": false,
+    "enable_oauth": true,
+    "enable_quarantine": true,
+    "enable_docker_isolation": false,
+    "enable_search": true,
+    "enable_caching": true,
+    "enable_async_storage": true,
+    "enable_web_ui": true,
+    "enable_tray": true,
+    "enable_debug_logging": false,
+    "enable_contract_tests": false
+  },
+  "tls": {
+    "enabled": false,
+    "require_client_cert": false,
+    "hsts": true
+  },
+  "tokenizer": {
+    "enabled": true,
+    "default_model": "gpt-4",
+    "encoding": "cl100k_base"
+  }
+}

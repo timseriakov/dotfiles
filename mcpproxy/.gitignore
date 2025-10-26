@@ -1,0 +1,19 @@
+# Runtime database
+config.db
+
+# Search index
+index.bleve/
+
+# Claude temporary files
+.claude/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+main.log*
+
+# Note: mcp_config.json is committed but contains api_key.
+# This is the local mcpproxy API key, not a sensitive external token.
+# Sensitive tokens are stored via keyring (${keyring:...}) and not committed.
