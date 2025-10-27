@@ -140,28 +140,30 @@ restart_mcpproxy() {
     fi
 }
 
-# Remove API key from config (for git commits)
+# Clear API key from config (for git commits)
 remove_api_key() {
     if [ ! -f "$CONFIG_FILE" ]; then
         msg "$RED" "✗ Config file not found: $CONFIG_FILE"
         return 1
     fi
 
-    # Check if api_key exists
-    if ! grep -q '"api_key":' "$CONFIG_FILE"; then
-        msg "$GREEN" "✓ No API key found in config (already clean)"
+    # Check if api_key exists with non-empty value
+    local current_key=$(grep '"api_key":' "$CONFIG_FILE" | grep -o '"api_key": *"[^"]*"' | sed 's/"api_key": *"\(.*\)"/\1/')
+
+    if [ -z "$current_key" ]; then
+        msg "$GREEN" "✓ API key is already empty (config clean)"
         return 0
     fi
 
-    msg "$YELLOW" "Removing API key from config..."
+    msg "$YELLOW" "Clearing API key from config..."
 
     # Create backup
     cp "$CONFIG_FILE" "$CONFIG_FILE.backup"
 
-    # Remove api_key line (pattern: "api_key": "...",)
-    sed -i '' '/"api_key":/d' "$CONFIG_FILE"
+    # Replace api_key value with empty string (keep the field)
+    sed -i '' 's/"api_key": *"[^"]*"/"api_key": ""/' "$CONFIG_FILE"
 
-    msg "$GREEN" "✓ API key removed from config"
+    msg "$GREEN" "✓ API key cleared from config (set to empty string)"
     msg "$BLUE" "  (Backup saved to: $CONFIG_FILE.backup)"
 }
 
