@@ -193,11 +193,11 @@ pages:
             # token: ...
             repositories:
               - payloadcms/payload
+              - smart-mcp-proxy/mcpproxy-go
               - glanceapp/glance
               - neovide/neovide
               - neovim/neovim
               - yarlson/lnk
-              - eyaltoledano/claude-task-master
               - Haleclipse/CCometixLine
               - Piebald-AI/tweakcc
 

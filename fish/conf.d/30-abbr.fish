@@ -95,10 +95,11 @@ abbr -a cc-update 'npm install -g @anthropic-ai/claude-code'
 abbr -a ccline-update 'npm update -g @cometix/ccline'
 abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
 abbr -a cc-history 'npx -y cchistory@latest'
-abbr -a cc-log 'cclogviewer -input'
+abbr -a cc-logviewer 'cclogviewer -input'
 abbr -a cc-exp 'npx -y ccexp@latest'
 abbr -a cc-mon 'claude-monitor  --time-format 24h'
 abbr -a cc-cmd claude-cmd
+abbr -a cc-log 'npx -y vibe-log-cli@latest'
 abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
