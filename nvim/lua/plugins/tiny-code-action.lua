@@ -62,21 +62,24 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    init = function()
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-
-      -- Отключаем дефолтный биндинг <leader>ca
-      keys[#keys + 1] = { "<leader>ca", false }
-
-      keys[#keys + 1] = {
-        "<leader>ca",
-        function()
-          require("tiny-code-action").code_action()
-        end,
-        desc = "Code Action",
-        mode = { "n", "v" },
-        has = "codeAction",
-      }
-    end,
+    opts = {
+      servers = {
+        ["*"] = {
+          keys = {
+            -- Отключаем дефолтный биндинг <leader>ca
+            { "<leader>ca", false },
+            {
+              "<leader>ca",
+              function()
+                require("tiny-code-action").code_action()
+              end,
+              desc = "Code Action",
+              mode = { "n", "v" },
+              has = "codeAction",
+            },
+          },
+        },
+      },
+    },
   },
 }
