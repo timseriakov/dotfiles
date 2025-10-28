@@ -16,3 +16,5 @@ fish/fishd.tmp*
 tweakcc/cli.js.backup
 karabiner/automatic_backups
 .gemini-clipboard
+mcpproxy/config.db
+mcpproxy/config.db.backup*

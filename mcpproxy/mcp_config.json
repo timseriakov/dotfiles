@@ -1,9 +1,9 @@
 {
   "listen": "127.0.0.1:8080",
+  "enable_socket": true,
   "data_dir": "/Users/tim/.mcpproxy",
   "enable_tray": true,
   "debug_search": false,
-  "api_key": "",
   "mcpServers": [
     {
       "name": "activitywatch",
@@ -15,7 +15,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-10-27T11:04:00.32495+03:00"
+      "updated": "2025-10-28T13:58:25.69432+03:00"
     },
     {
       "name": "atlassian",
@@ -29,7 +29,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:05:44.473726+03:00"
+      "updated": "2025-10-28T13:58:34.942237+03:00"
     },
     {
       "name": "context7",
@@ -42,7 +42,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.345237+03:00"
+      "updated": "2025-10-28T13:58:25.709155+03:00"
     },
     {
       "name": "fleur",
@@ -54,7 +54,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.355272+03:00"
+      "updated": "2025-10-28T13:58:25.728114+03:00"
     },
     {
       "name": "gitlab",
@@ -67,7 +67,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.365175+03:00"
+      "updated": "2025-10-28T13:58:25.73974+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -83,7 +83,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.372247+03:00"
+      "updated": "2025-10-28T13:58:25.750825+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -96,7 +96,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.379175+03:00"
+      "updated": "2025-10-28T13:58:25.760201+03:00"
     },
     {
       "name": "repomix",
@@ -110,7 +110,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.386301+03:00"
+      "updated": "2025-10-28T13:58:25.771206+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -123,7 +123,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.394178+03:00"
+      "updated": "2025-10-28T13:58:25.779496+03:00"
     },
     {
       "name": "serena",
@@ -144,7 +144,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.402473+03:00"
+      "updated": "2025-10-28T13:58:25.788307+03:00"
     },
     {
       "name": "shrimp-task-manager",
@@ -161,7 +161,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:42:21.144894+03:00",
-      "updated": "2025-10-27T11:04:00.409476+03:00"
+      "updated": "2025-10-28T13:58:25.797293+03:00"
     },
     {
       "name": "sqvr-graphql",
@@ -179,7 +179,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-27T11:04:00.421245+03:00"
+      "updated": "2025-10-28T13:58:25.806448+03:00"
     }
   ],
   "top_k": 5,

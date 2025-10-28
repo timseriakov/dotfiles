@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Service identifier -->
+    <key>Label</key>
+    <string>com.mcpproxy.server</string>
+
+    <!-- Command to run -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/mcpproxy</string>
+        <string>serve</string>
+    </array>
+
+    <!-- Working directory (important for config.db and other files) -->
+    <key>WorkingDirectory</key>
+    <string>/Users/tim/dev/dotfiles/mcpproxy</string>
+
+    <!-- Start at login/boot -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Keep alive and restart if crashes -->
+    <key>KeepAlive</key>
+    <dict>
+        <!-- Always restart if exits -->
+        <key>SuccessfulExit</key>
+        <false/>
+        <!-- Don't restart if deliberately stopped -->
+        <key>Crashed</key>
+        <true/>
+    </dict>
+
+    <!-- Logs -->
+    <key>StandardOutPath</key>
+    <string>/Users/tim/Library/Logs/mcpproxy/stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/Library/Logs/mcpproxy/stderr.log</string>
+
+    <!-- Environment variables if needed -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+
+    <!-- Process control -->
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <!-- Timeout for graceful shutdown -->
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>
