@@ -68,3 +68,8 @@ git commit -m "another change"
 
 ## Implementation
 All AI tools (Claude, Gemini, ChatGPT, Copilot, etc.) should follow this pattern when working with this repository.
+
+## MCPProxy Policy
+- All AI tools must use MCPProxy only: `http://localhost:8080/mcp/`.
+- No direct connections to individual MCP servers — always route via MCPProxy.
+- See `CODEX.md` for details and the tool decision matrix.

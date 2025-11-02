@@ -37,7 +37,7 @@ abbr -a yrm 'yarn remove'
 abbr -a ys 'yarn start'
 abbr -a yi 'yarn ios'
 abbr -a yiv 'yarn ios --verbose'
-abbr -a yan 'yarn android && watchman watch-del .; watchman watch-project .'
+abbr -a yan 'yarn android:pre-build && yarn android && watchman watch-del .; watchman watch-project .'
 abbr -a yanv 'yarn android --verbose'
 abbr -a yb 'yarn build'
 abbr -a yd 'yarn dev'
@@ -86,7 +86,9 @@ abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)
 abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --resume'
 abbr -a clc 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --continue'
 abbr -a .c 'cd ~/.claude'
+abbr -a c. 'cd ~/.claude'
 abbr -a mp mcpproxy
+abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
 
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
@@ -116,6 +118,8 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
+abbr -a oc opencode
+abbr -a ag ' auggie --rules $HOME/dev/claude/CLAUDE.md'
 
 # Backlog.md helpers
 abbr -a bl backlog
