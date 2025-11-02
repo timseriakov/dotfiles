@@ -15,7 +15,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-10-28T13:58:25.69432+03:00"
+      "updated": "2025-10-31T13:44:57.597923+03:00"
     },
     {
       "name": "atlassian",
@@ -29,7 +29,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:34.942237+03:00"
+      "updated": "2025-10-31T13:45:03.330906+03:00"
     },
     {
       "name": "context7",
@@ -42,7 +42,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.709155+03:00"
+      "updated": "2025-10-31T13:44:57.618337+03:00"
     },
     {
       "name": "fleur",
@@ -54,7 +54,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.728114+03:00"
+      "updated": "2025-10-31T13:44:57.626708+03:00"
     },
     {
       "name": "gitlab",
@@ -67,7 +67,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.73974+03:00"
+      "updated": "2025-10-31T13:44:57.637431+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -83,7 +83,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.750825+03:00"
+      "updated": "2025-10-31T13:44:57.647342+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -96,7 +96,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.760201+03:00"
+      "updated": "2025-10-31T13:44:57.657336+03:00"
     },
     {
       "name": "repomix",
@@ -110,7 +110,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.771206+03:00"
+      "updated": "2025-10-31T13:44:57.667305+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -123,7 +123,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.779496+03:00"
+      "updated": "2025-10-31T13:44:57.677241+03:00"
     },
     {
       "name": "serena",
@@ -144,7 +144,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.788307+03:00"
+      "updated": "2025-10-31T13:44:57.69022+03:00"
     },
     {
       "name": "shrimp-task-manager",
@@ -161,7 +161,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:42:21.144894+03:00",
-      "updated": "2025-10-28T13:58:25.797293+03:00"
+      "updated": "2025-10-31T13:44:57.708275+03:00"
     },
     {
       "name": "sqvr-graphql",
@@ -179,7 +179,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-10-28T13:58:25.806448+03:00"
+      "updated": "2025-10-31T13:44:57.729326+03:00"
     }
   ],
   "top_k": 5,
@@ -240,6 +240,7 @@
     "compress": true,
     "json_format": false
   },
+  "api_key": "",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,

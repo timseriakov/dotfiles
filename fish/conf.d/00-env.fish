@@ -35,6 +35,8 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 
+set -gx REACT_EDITOR /opt/homebrew/bin/nvim
+
 # vapi manpath
 set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
 

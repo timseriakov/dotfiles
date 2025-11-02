@@ -62,6 +62,7 @@ c.downloads.location.suggestion = "both"
 # Dark mode
 c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
+c.qt.args = ["force-dark-mode", "dark-mode-settings"]
 
 # File handling
 # c.fileselect.handler = "external"

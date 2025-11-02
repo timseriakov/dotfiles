@@ -1,7 +1,5 @@
-model = "gpt-5"
-model_reasoning_effort = "minimal"
-# model = "o3-mini"
-# model = "gpt-4o-mini"
+model = "gpt-5-codex"
+model_reasoning_effort = "medium"
 
 [projects."/Users/tim/dev/dotfiles"]
 trust_level = "trusted"
@@ -24,57 +22,9 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/work/spec-kit"]
 trust_level = "trusted"
 
-# MCP servers for Codex CLI
-# Note: Codex prefers stdio transport. For HTTP/SSE servers use a stdio bridge.
-# See: https://github.com/modelcontextprotocol/server-proxy
+[projects."/Users/tim/.config/opencode"]
+trust_level = "trusted"
 
-[mcp_servers."sqvr-graphql"]
-command = "npx"
-args = ["-y", "mcp-graphql"]
-
-# extra environment variables
-[mcp_servers."sqvr-graphql".env]
-ENDPOINT = "https://auto.sqvr.net/api/graphql/v1"
-
-# [mcp_servers."task-master-ai"]
-# command = "npx"
-# args = ["-y", "task-master-ai"]
-
-[mcp_servers.serena]
-command = "uvx"
-args = [
-  "--from",
-  "git+https://github.com/oraios/serena",
-  "serena",
-  "start-mcp-server",
-  "--context",
-  "codex",
-  "--no-browser",
-]
-
-# [mcp_servers.repomix]
-# command = "npx"
-# args = ["-y", "repomix", "--mcp"]
-
-[mcp_servers."perplexity-mcp"]
-command = "fish"
-args = ["-lc", "perplexity-mcp"]
-
-# Atlassian remote SSE; wrap with mcp-remote (stdio client that dials SSE)
-[mcp_servers.atlassian]
-command = "npx"
-args = ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
-
-# [mcp_servers.activewatch]
-# command = "node"
-# args = ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"]
-
-[mcp_servers.gitlab]
-command = "fish"
-args = ["-lc", "npx -y @zereight/mcp-gitlab"]
-
-
-# [mcp_servers."figma-dev-mode-mcp-server"]
-# type = "http"
-# # type = "streamable-http"
-# url = "http://127.0.0.1:3845/mcp"
+[mcp_servers.mcpproxy]
+type = "http"
+url = "http://localhost:8080/mcp/"
