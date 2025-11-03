@@ -42,13 +42,13 @@ c.auto_save.session = True
 c.session.lazy_restore = True
 c.zoom.default = "100%"
 c.window.hide_decoration = True
-c.tabs.position = "top"
 
 # Layout
 c.scrolling.bar = "when-searching"
 c.statusbar.show = "in-mode"
 c.tabs.show = "always" # multiple # never
 c.tabs.last_close = "close"
+c.tabs.position = "top"
 # c.tabs.new_position.related = "last"
 # Open new tabs in background (e.g., middle-click on links)
 c.tabs.background = True
@@ -149,8 +149,8 @@ c.colors.statusbar.command.bg = nord0
 c.colors.statusbar.command.fg = white
 c.colors.statusbar.insert.bg = green
 c.colors.statusbar.insert.fg = black
-c.colors.statusbar.passthrough.bg = purple
-c.colors.statusbar.passthrough.fg = black
+c.colors.statusbar.passthrough.bg = nord3  # темно-серый вместо фиолетового для лучшей видимости URL
+c.colors.statusbar.passthrough.fg = white
 c.colors.statusbar.private.bg = nord3
 c.colors.statusbar.private.fg = white
 c.colors.statusbar.url.fg = white
@@ -263,6 +263,12 @@ config.bind("a", "mode-enter insert")
 config.bind("ф", "mode-enter insert")
 
 config.bind("v", "mode-enter caret")
+
+# Passthrough mode toggle (Ctrl+V and Ctrl+A)
+config.bind("<Ctrl-v>", "mode-enter passthrough", mode="normal")
+config.bind("<Ctrl-v>", "mode-leave", mode="passthrough")
+config.bind("<Ctrl-a>", "mode-enter passthrough", mode="normal")
+config.bind("<Ctrl-a>", "mode-leave", mode="passthrough")
 
 # Navigation
 config.bind("H", "back")
