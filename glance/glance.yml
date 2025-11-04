@@ -198,6 +198,7 @@ pages:
               - neovide/neovide
               - neovim/neovim
               - yarlson/lnk
+              - anthropics/claude-code
               - Haleclipse/CCometixLine
               - Piebald-AI/tweakcc
 

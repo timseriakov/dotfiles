@@ -18,6 +18,9 @@ config.set(
     "https://accounts.google.com/*"
 )
 
+# Use Tor only for .onion domains (and direct for everything else)
+c.content.proxy = "socks://localhost:9050/;direct://"
+
 # Variables
 leader = " "
 ss_dir = "~/Documents/screenshots"
@@ -317,7 +320,8 @@ config.bind("<", "tab-move -")
 config.bind(">", "tab-move +")
 
 # Swap m and M for bookmarks
-config.bind("m", "bookmark-add")
+# config.bind("m", "bookmark-add")  # Disabled to prevent accidental bookmarks
+config.bind("<Ctrl-b>", "bookmark-add")  # Use Ctrl+B instead to prevent accidents
 config.bind("M", "quickmark-save")
 
 # macOS-style Preferences: Cmd+,

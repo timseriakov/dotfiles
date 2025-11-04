@@ -11,6 +11,7 @@ abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
+abbr -a fe 'exec fish'
 abbr -a wt branchlet
 
 # npm
@@ -89,7 +90,6 @@ abbr -a .c 'cd ~/.claude'
 abbr -a c. 'cd ~/.claude'
 abbr -a mp mcpproxy
 abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
-
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
@@ -119,7 +119,9 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
 abbr -a oc opencode
-abbr -a ag ' auggie --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a ag 'auggie --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a goo goose
+abbr -a amp 'npx -y @sourcegraph/amp@latest'
 
 # Backlog.md helpers
 abbr -a bl backlog
