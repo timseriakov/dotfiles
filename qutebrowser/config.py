@@ -18,8 +18,8 @@ config.set(
     "https://accounts.google.com/*"
 )
 
-# Use Tor only for .onion domains (and direct for everything else)
-c.content.proxy = "socks://localhost:9050/;direct://"
+# Tor proxy configuration
+# Default: .onion through Tor, others direct
 
 # Variables
 leader = " "
@@ -45,6 +45,9 @@ c.auto_save.session = True
 c.session.lazy_restore = True
 c.zoom.default = "100%"
 c.window.hide_decoration = True
+
+# Note: cmd+q override is handled by Karabiner-Elements at system level
+# See karabiner/karabiner.json for the rule that maps cmd+q to cmd+shift+w in qutebrowser
 
 # Layout
 c.scrolling.bar = "when-searching"
@@ -229,6 +232,11 @@ c.aliases = {
     "w": "session-save",
     "x": "quit --save",
     "ms": "messages",
+    "qq": "quit --save",  # Safe quit alias for intentional app exit
+    "tor-start": "spawn -u tor-toggle start",    # Start Tor
+    "tor-stop": "spawn -u tor-toggle stop",      # Stop Tor
+    "tor-status": "spawn -u tor-toggle status",  # Tor status
+    "tor-toggle": "spawn -u tor-toggle toggle",  # Toggle Tor
 }
 
 # Reload
@@ -308,12 +316,8 @@ config.bind("З", "open --clipboard --tab")
 
 config.bind("x", "tab-close")
 config.bind("ч", "tab-close")
-config.bind("<Cmd-w>", "tab-close")
-config.bind("<Cmd-ц>", "tab-close")
-
-# TODO
-config.bind("<Cmd-q>", "tab-close")
-config.bind("<Cmd-й>", "tab-close")
+config.bind("<Cmd-Shift-w>", "tab-close")  # For Karabiner cmd+q -> cmd+shift+w mapping
+config.bind("<Cmd-q>", "tab-close")  # Direct cmd+q for Russian layout (cmd+й)
 
 # Move tab
 config.bind("<", "tab-move -")
@@ -344,6 +348,22 @@ config.bind(leader + 'b', 'spawn -u braindrop')
 
 # Save link to Raindrop
 config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
+
+# Tor controls - Manage Tor service and proxy for .onion sites
+config.bind(leader + 'os', 'spawn -u tor-toggle start')    # Start Tor
+config.bind(leader + 'ox', 'spawn -u tor-toggle stop')     # Stop Tor
+config.bind(leader + 'oi', 'spawn -u tor-toggle status')   # Tor Info/Status
+config.bind(leader + 'oo', 'spawn -u tor-toggle toggle')   # Toggle Tor
+
+# macOS Passwords integration - WORKING USERSCRIPTS ONLY
+config.bind("<Ctrl-Shift-l>", "spawn -u auto-login")            # Auto Login (Ctrl+Shift+L) ⭐ MAIN - works automatically
+config.bind(leader + 'la', "spawn -u auto-login")               # Auto Login (automatic, shows warnings) ⭐
+config.bind(leader + 'lq', "spawn -u quick-login")              # Quick Login (uses first found)
+config.bind(leader + 'lf', "spawn -u simple-login")             # Simple Login (interactive) ✅
+config.bind(leader + 'll', "spawn -u list-passwords")           # List passwords for domain
+config.bind(leader + 'lb', "spawn -u macos-passwords")          # Basic macOS passwords
+config.bind(leader + 'lm', "spawn -u macos-passwords-advanced") # Advanced menu
+config.bind(leader + 'lp', "spawn -u macos-passwords.py")       # Python version
 
 # ActivityWatch heartbeat bridge controls
 config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
@@ -407,6 +427,10 @@ config.bind(leader + "qt", "tab-only") # close all tabs except current
 config.bind(leader + "qw", "window-only") # close all windows except current
 config.bind(leader + "x", "quit --save")
 
+# cmd+q will be remapped to cmd+shift+w by Karabiner-Elements for qutebrowser
+# This provides consistent "close" behavior (cmd+q) in both tmux and qutebrowser
+# without accidental app quit
+
 
 # tabs
 config.bind(leader + "ta", "bookmark-add")
@@ -436,3 +460,14 @@ config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
 userscript = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge')
 if os.path.exists(userscript):
     os.system(f'{userscript} start &')
+
+# Tor commands
+c.aliases['tor-start'] = 'spawn -u tor-toggle start'
+c.aliases['tor-stop'] = 'spawn -u tor-toggle stop'
+c.aliases['tor-status'] = 'spawn -u tor-toggle status'
+c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
+
+
+
+# Proxy configuration: .onion through Tor, others direct
+c.content.proxy = "socks://localhost:9050/;direct://"
