@@ -355,15 +355,9 @@ config.bind(leader + 'ox', 'spawn -u tor-toggle stop')     # Stop Tor
 config.bind(leader + 'oi', 'spawn -u tor-toggle status')   # Tor Info/Status
 config.bind(leader + 'oo', 'spawn -u tor-toggle toggle')   # Toggle Tor
 
-# macOS Passwords integration - WORKING USERSCRIPTS ONLY
-config.bind("<Ctrl-Shift-l>", "spawn -u auto-login")            # Auto Login (Ctrl+Shift+L) ⭐ MAIN - works automatically
-config.bind(leader + 'la', "spawn -u auto-login")               # Auto Login (automatic, shows warnings) ⭐
-config.bind(leader + 'lq', "spawn -u quick-login")              # Quick Login (uses first found)
-config.bind(leader + 'lf', "spawn -u simple-login")             # Simple Login (interactive) ✅
-config.bind(leader + 'll', "spawn -u list-passwords")           # List passwords for domain
-config.bind(leader + 'lb', "spawn -u macos-passwords")          # Basic macOS passwords
-config.bind(leader + 'lm', "spawn -u macos-passwords-advanced") # Advanced menu
-config.bind(leader + 'lp', "spawn -u macos-passwords.py")       # Python version
+config.bind("<Ctrl-Shift-k>", "spawn -u keychain-login")         # Apple Passwords (apw)
+config.bind(leader + 'p', "spawn -u keychain-login")             # Space p – ключевая быстрая команда
+config.bind(leader + 'P', "spawn -u keychain-login --pick")      # Space P – выбор записи Apple Passwords
 
 # ActivityWatch heartbeat bridge controls
 config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
@@ -469,5 +463,11 @@ c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
 
 
 
+
+
+
+
+
+
 # Proxy configuration: .onion through Tor, others direct
-c.content.proxy = "socks://localhost:9050/;direct://"
+# c.content.proxy = "socks://localhost:9050/;direct://"
