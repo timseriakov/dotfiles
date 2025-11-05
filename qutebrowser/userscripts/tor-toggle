@@ -1,0 +1,223 @@
+#!/bin/bash
+# Qutebrowser userscript for Tor controls
+# Provides visual feedback through qutebrowser's message system AND terminal window
+# Usage:
+#   config.bind('<leader>os', 'spawn -u tor-toggle start')
+#   config.bind('<leader>ox', 'spawn -u tor-toggle stop')
+#   config.bind('<leader>oi', 'spawn -u tor-toggle status')
+#   config.bind('<leader>oo', 'spawn -u tor-toggle toggle')
+
+set -euo pipefail
+
+# Ensure proper PATH for Homebrew and system binaries
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# Check if running as qutebrowser userscript
+if [[ -z "${QUTE_FIFO:-}" ]]; then
+  echo "Error: Must be run as qutebrowser userscript" >&2
+  exit 1
+fi
+
+# Path to the main Tor toggle script
+SCRIPT_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+TOR_SCRIPT="$SCRIPT_DIR/scripts/tor-toggle.sh"
+
+# Function to send message to qutebrowser
+qute_message() {
+  local level="$1" # info, warning, error
+  local message="$2"
+  echo "message-$level '$message'" >>"$QUTE_FIFO"
+}
+
+# Function to show temporary status message
+qute_temp_message() {
+  local message="$1"
+  local timeout="${2:-3000}" # 3 seconds default
+  echo "message-info '$message'" >>"$QUTE_FIFO"
+  # Clear message after timeout (qutebrowser will handle this automatically)
+}
+
+# Function to run command in terminal window with visual feedback
+run_in_terminal() {
+  local command="$1"
+  local action_name="$2"
+
+  # Find Alacritty binary
+  local alacritty_bin=""
+  if [[ -x "/opt/homebrew/bin/alacritty" ]]; then
+    alacritty_bin="/opt/homebrew/bin/alacritty"
+  elif [[ -x "/usr/local/bin/alacritty" ]]; then
+    alacritty_bin="/usr/local/bin/alacritty"
+  elif command -v alacritty >/dev/null 2>&1; then
+    alacritty_bin="alacritty"
+  else
+    echo "Warning: Alacritty not found, falling back to background execution" >&2
+    return 1
+  fi
+
+  # Create a wrapper script that shows the command output and waits
+  local temp_script="/tmp/tor-toggle-terminal-$$.sh"
+  cat >"$temp_script" <<EOF
+#!/bin/bash
+set -euo pipefail
+
+# Colors for terminal output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+echo -e "\${CYAN}Tor Control Terminal\${NC}"
+echo -e "\${BLUE}Action: $action_name\${NC}"
+echo -e "\${BLUE}Command: $command\${NC}"
+echo ""
+
+# Run the actual command
+if "$TOR_SCRIPT" "$command"; then
+    echo ""
+    echo -e "\${GREEN}Operation completed successfully!\${NC}"
+    exit_code=0
+else
+    exit_code=\$?
+    echo ""
+    echo -e "\${RED}Operation failed with exit code: \$exit_code\${NC}"
+fi
+
+echo ""
+echo -e "\${YELLOW}This window will close in 5 seconds...\${NC}"
+echo -e "\${YELLOW}Press any key to close immediately\${NC}"
+
+# Wait for user input or timeout
+read -t 5 -n 1 || true
+
+exit \$exit_code
+EOF
+
+  chmod +x "$temp_script"
+
+  # Launch Alacritty with good size and beautiful shadow
+  "$alacritty_bin" \
+    --title "Tor Control - $action_name" \
+    --option window.dimensions.columns=80 \
+    --option window.dimensions.lines=20 \
+    --command "$temp_script" &
+
+  # Clean up the temp script after a delay
+  (
+    sleep 10
+    rm -f "$temp_script"
+  ) &
+
+  return 0
+}
+
+# Check if the main script exists
+if [[ ! -f "$TOR_SCRIPT" ]]; then
+  qute_message "error" "🚨 Tor toggle script not found: $TOR_SCRIPT"
+  exit 1
+fi
+
+# Check if script is executable
+if [[ ! -x "$TOR_SCRIPT" ]]; then
+  qute_message "error" "🚨 Tor toggle script is not executable: $TOR_SCRIPT"
+  exit 1
+fi
+
+# Get command from argument (default: toggle)
+COMMAND="${1:-toggle}"
+
+# Map commands to user-friendly action names
+case "$COMMAND" in
+"start" | "on" | "enable")
+  ACTION_NAME="Starting Tor"
+  qute_temp_message " Starting Tor..."
+  ;;
+"stop" | "off" | "disable")
+  ACTION_NAME="Stopping Tor"
+  qute_temp_message " Stopping Tor..."
+  ;;
+"status" | "check")
+  ACTION_NAME="Checking Tor Status"
+  qute_temp_message " Checking Tor status..."
+  ;;
+"toggle")
+  ACTION_NAME="Toggling Tor"
+  qute_temp_message " Toggling Tor..."
+  ;;
+*)
+  qute_message "error" " Unknown Tor command: $COMMAND"
+  exit 1
+  ;;
+esac
+
+# Try to run in terminal window for visual feedback
+if run_in_terminal "$COMMAND" "$ACTION_NAME"; then
+  # Terminal window launched successfully
+  echo "Tor command '$COMMAND' launched in terminal window" >&2
+
+  # Still run the command in background to get results for qutebrowser messages
+  SCRIPT_OUTPUT=""
+  SCRIPT_EXIT_CODE=0
+
+  # Small delay to let terminal window appear
+  sleep 0.5
+
+  # Run the script with the specified command (in background for message processing)
+  if SCRIPT_OUTPUT=$("$TOR_SCRIPT" "$COMMAND" 2>&1); then
+    SCRIPT_EXIT_CODE=0
+  else
+    SCRIPT_EXIT_CODE=$?
+  fi
+else
+  # Fallback: run without terminal window
+  echo "Running Tor command '$COMMAND' in background (no terminal window)" >&2
+
+  # Capture the script output
+  SCRIPT_OUTPUT=""
+  SCRIPT_EXIT_CODE=0
+
+  # Run the script with the specified command
+  if SCRIPT_OUTPUT=$("$TOR_SCRIPT" "$COMMAND" 2>&1); then
+    SCRIPT_EXIT_CODE=0
+  else
+    SCRIPT_EXIT_CODE=$?
+  fi
+fi
+
+# Parse the result and show appropriate message
+# Special case: status command can have exit code 1 (OFF state) but it's not an error
+if [[ $SCRIPT_EXIT_CODE -eq 0 ]] || [[ "$COMMAND" == "status" ]] || [[ "$COMMAND" == "check" ]]; then
+  case "$COMMAND" in
+  "start" | "on" | "enable")
+    # Reload .onion pages to use Tor
+    if [[ -n "${QUTE_URL:-}" ]] && [[ "$QUTE_URL" == *".onion"* ]]; then
+      echo "reload" >>"$QUTE_FIFO"
+    fi
+    ;;
+  "stop" | "off" | "disable")
+    # Reload .onion pages (they won't work now)
+    if [[ -n "${QUTE_URL:-}" ]] && [[ "$QUTE_URL" == *".onion"* ]]; then
+      echo "reload" >>"$QUTE_FIFO"
+    fi
+    ;;
+  "status" | "check")
+    # Status is shown only in terminal
+    ;;
+  "toggle")
+    # Reload .onion pages if needed
+    if [[ -n "${QUTE_URL:-}" ]] && [[ "$QUTE_URL" == *".onion"* ]]; then
+      echo "reload" >>"$QUTE_FIFO"
+    fi
+    ;;
+  esac
+else
+  # Error occurred - details are in terminal
+  echo "Error output: $SCRIPT_OUTPUT" >&2
+fi
+
+# Log the full output to stderr for debugging
+echo "Tor toggle script output:" >&2
+echo "$SCRIPT_OUTPUT" >&2
+echo "Exit code: $SCRIPT_EXIT_CODE" >&2
