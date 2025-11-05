@@ -154,6 +154,16 @@
 | <kbd>Leader</kbd> <kbd>b</kbd> | spawn -u braindrop |
 | <kbd>Leader</kbd> <kbd>r</kbd> | spawn -u raindrop {url} {title} |
 
+## Password Management (Login)
+
+| Shortcut | Action |
+|---|---|
+| <kbd>Leader</kbd> <kbd>p</kbd> | keychain-login (Apple Passwords, быстрый) |
+| <kbd>Leader</kbd> <kbd>P</kbd> | keychain-login --pick (выбор записи Apple Passwords) |
+| <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>K</kbd> | keychain-login (Apple Passwords, shortcut) |
+
+> Примечание: `keychain-login` использует `apw` (Apple Passwords CLI). Перед использованием установите `brew install bendews/homebrew-tap/apw`, запустите `brew services start apw` и выполните `apw auth`.
+
 ## History & Sessions
 
 | Shortcut | Action |
