@@ -4,6 +4,11 @@ size = 18.0
 [font.normal]
 family = "ShureTechMono Nerd Font Mono"
 
+# Nerd Font symbol mappings for proper icon rendering
+[font.glyph_offset]
+x = 0
+y = 0
+
 [colors.primary]
 background = "#2e3440"
 foreground = "#d8dee9"
@@ -31,6 +36,9 @@ white = "#eceff4"
 [colors.selection]
 text = "#d8dee9"
 background = "#3b4252"
+
+[selection]
+save_to_clipboard = true
 
 [[keyboard.bindings]]
 key = "Key0"
@@ -123,6 +131,7 @@ key = "V"
 mods = "Command"
 action = "Paste"
 
+
 [[keyboard.bindings]]
 key = "W"
 mods = "Command"
@@ -193,4 +202,9 @@ key = "U"
 mods = "Command"
 chars = "\u001b[24~" # F12
 [window]
-decorations = "None"
+decorations = "Buttonless" # Без кнопок, но с тенью
+
+# Внутренний паддинг (отступы от краев окна)
+[window.padding]
+x = 16 # Горизонтальный паддинг (слева и справа)
+y = 16 # Вертикальный паддинг (сверху и снизу)
