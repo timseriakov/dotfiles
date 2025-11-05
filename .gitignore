@@ -18,3 +18,4 @@ karabiner/automatic_backups
 .gemini-clipboard
 mcpproxy/config.db
 mcpproxy/config.db.backup*
+__pycache__/
