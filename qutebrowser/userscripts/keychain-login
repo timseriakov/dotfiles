@@ -331,6 +331,241 @@ query_apw_get() {
   esac
 }
 
+# ========== Получение OTP через apw ==========
+query_apw_otp() {
+  local service="$1"
+  local username="${2:-}"
+  local output status
+
+  local cmd=("$APW_BIN" otp get "$service")
+  [[ -n "$username" ]] && cmd+=("$username")
+
+  log "Запрос OTP: ${cmd[*]}"
+
+  set +e
+  output=$("${cmd[@]}" 2>&1)
+  local exit_code=$?
+  set -e
+
+  log "apw otp get exit code: $exit_code"
+  log "apw otp get output length: ${#output}"
+
+  if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
+    log "Не удалось распарсить JSON от apw otp get"
+
+    # Если уже пытались auth, ошибка
+    if [[ $ATTEMPTED_AUTH == true ]]; then
+      log "apw otp get не вернул валидный JSON после авторизации (вероятно, нет OTP)"
+      printf '{"status":3,"error":"No OTP found"}'
+      return 3
+    fi
+
+    # Пытаемся auth и повторяем
+    ATTEMPTED_AUTH=true
+    send_message info "Требуется авторизация для получения OTP..."
+    if launch_apw_auth; then
+      log "Авторизация успешна, повторяю apw otp get"
+      sleep 1
+      query_apw_otp "$service" "$username"
+      return $?
+    else
+      log "Авторизация apw не выполнена для OTP"
+      printf '{"status":3,"error":"No OTP found"}'
+      return 3
+    fi
+  fi
+
+  log "JSON status code для OTP: $status"
+
+  case "$status" in
+  0)
+    # Успешно получен OTP
+    printf '%s' "$output"
+    return 0
+    ;;
+  3)
+    # Нет OTP для этой записи (это норм, не все записи имеют OTP)
+    log "Нет OTP для $service / $username (status=3)"
+    printf '%s' "$output"
+    return 3
+    ;;
+  2 | 4 | 5 | 9)
+    if [[ $ATTEMPTED_AUTH == false ]]; then
+      ATTEMPTED_AUTH=true
+      send_message info "Требуется авторизация для получения OTP..."
+      if launch_apw_auth; then
+        log "Авторизация успешна, повторяю apw otp get"
+        sleep 1
+        query_apw_otp "$service" "$username"
+        return $?
+      else
+        log "Авторизация apw не выполнена для OTP"
+        printf '{"status":3,"error":"No OTP found"}'
+        return 3
+      fi
+    else
+      log "apw требует повторной авторизации для otp get, но попытка уже была"
+      printf '{"status":3,"error":"No OTP found"}'
+      return 3
+    fi
+    ;;
+  *)
+    local error_msg
+    error_msg=$(printf '%s' "$output" | jq -r '.error // "Не удалось получить OTP"' 2>/dev/null)
+    log "apw otp get: $error_msg (status=$status)"
+    printf '{"status":3,"error":"No OTP found"}'
+    return 3
+    ;;
+  esac
+}
+
+# ========== Выбор записи через fzf (Nord theme) ==========
+select_entry_fzf() {
+  local domain="$1"
+  shift
+  local entries=("$@")
+
+  # Проверка наличия fzf
+  if ! command -v fzf >/dev/null 2>&1; then
+    log "fzf не найден, fallback на osascript"
+    select_entry_osascript "$domain" "${entries[@]}"
+    return $?
+  fi
+
+  # Поиск Alacritty
+  local alacritty_bin
+  if ! alacritty_bin=$(find_alacritty); then
+    log "Alacritty не найден, fallback на osascript"
+    select_entry_osascript "$domain" "${entries[@]}"
+    return $?
+  fi
+
+  log "Используем fzf для выбора записи (Alacritty: $alacritty_bin)"
+
+  # Подготовка данных в формат TSV для fzf
+  # Формат отображения: username@service • label (если label != service)
+  local fzf_input=""
+  local display_to_entry=()
+
+  for entry in "${entries[@]}"; do
+    IFS=$'\t' read -r username service label _uuid <<<"$entry"
+
+    # Формируем отображаемую строку
+    local display="${username}@${service}"
+    [[ -n "$label" && "$label" != "$service" ]] && display="${display} • ${label}"
+
+    # Сохраняем mapping display -> original entry
+    display_to_entry+=("$display|$entry")
+
+    # Добавляем в input для fzf (TSV: display<tab>username<tab>service<tab>label)
+    fzf_input+="${display}"$'\t'"${username}"$'\t'"${service}"$'\t'"${label}"$'\n'
+  done
+
+  # Создание временного скрипта для fzf окна
+  local temp_script
+  temp_script=$(mktemp /tmp/fzf-select.XXXXXX)
+
+  if [[ -z "$temp_script" ]]; then
+    log "ERROR: mktemp не смог создать временный файл для fzf"
+    select_entry_osascript "$domain" "${entries[@]}"
+    return $?
+  fi
+
+  log "Создан временный скрипт fzf: $temp_script"
+
+  # Скрипт с Nord цветовой схемой и preview
+  cat >"$temp_script" <<'FZFSCRIPT'
+#!/bin/bash
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+# Nord theme colors для fzf
+export FZF_DEFAULT_OPTS="
+--ansi
+--height=100%
+--layout=reverse
+--border=rounded
+--border-label=' Apple Passwords - Выбор записи '
+--border-label-pos=3
+--prompt=' ❯ '
+--pointer='▶'
+--marker='✓'
+--info=inline
+--delimiter=$'\t'
+--with-nth=1
+--preview='echo -e \"╭────────────────────────────╮\n│ 👤 Пользователь: {2}\n│ 🌐 Домен: {3}\n│ 🏷️  Метка: {4}\n╰────────────────────────────╯\n\nНажмите Enter для выбора\nили Esc для отмены\"'
+--preview-window=up:9:border-rounded:wrap
+--color=fg:#e5e9f0,bg:#2e3440,hl:#88c0d0
+--color=fg+:#e5e9f0,bg+:#3b4252,hl+:#88c0d0
+--color=info:#81a1c1,prompt:#81a1c1,pointer:#88c0d0
+--color=marker:#a3be8c,spinner:#81a1c1,header:#88c0d0
+--color=border:#4c566a,label:#81a1c1
+--color=preview-fg:#d8dee9,preview-bg:#2e3440
+--color=preview-border:#4c566a
+"
+
+# Читаем TSV данные из stdin и показываем fzf
+result=$(cat | fzf)
+exit_code=$?
+
+if [[ $exit_code -eq 0 && -n "$result" ]]; then
+  echo "$result"
+  exit 0
+elif [[ $exit_code -eq 130 ]]; then
+  # Ctrl-C / Esc
+  echo "__CANCELLED__"
+  exit 0
+else
+  echo "__CANCELLED__"
+  exit 1
+fi
+FZFSCRIPT
+
+  chmod +x "$temp_script"
+
+  # Запуск Alacritty с fzf
+  local selected
+  set +e
+  selected=$(printf '%s' "$fzf_input" | "$alacritty_bin" \
+    --title "Apple Passwords - Выбор записи" \
+    --option window.dimensions.columns=120 \
+    --option window.dimensions.lines=25 \
+    --command "$temp_script" 2>>"$DEBUG_LOG")
+  local exit_code=$?
+  set -e
+
+  rm -f "$temp_script"
+
+  if [[ $exit_code -ne 0 || "$selected" == "__CANCELLED__" || -z "$selected" ]]; then
+    log "Пользователь отменил выбор fzf"
+    printf '__CANCELLED__'
+    return 0
+  fi
+
+  # selected содержит полную строку с табами: "display\tusername\tservice\tlabel"
+  # Извлекаем display (первое поле)
+  local display_selected
+  display_selected=$(echo "$selected" | cut -f1)
+
+  log "Выбрано через fzf: $display_selected"
+
+  # Находим соответствующую оригинальную entry
+  for mapping in "${display_to_entry[@]}"; do
+    local display_part="${mapping%%|*}"
+    local entry_part="${mapping#*|}"
+
+    if [[ "$display_part" == "$display_selected" ]]; then
+      printf '%s' "$entry_part"
+      return 0
+    fi
+  done
+
+  # Fallback на первую запись если не нашли
+  log "Не нашли соответствие для выбора fzf, используем первую запись"
+  printf '%s' "${entries[0]}"
+}
+
 # ========== Выбор записи через osascript ==========
 select_entry_osascript() {
   local domain="$1"
@@ -442,7 +677,8 @@ if [[ ${#RESULTS[@]} -eq 1 && $PICK_MODE == false ]]; then
   SELECTED="${RESULTS[0]}"
   log "Автоматически выбрана единственная запись"
 else
-  SELECTED=$(select_entry_osascript "$DOMAIN" "${RESULTS[@]}")
+  # Используем fzf с fallback на osascript
+  SELECTED=$(select_entry_fzf "$DOMAIN" "${RESULTS[@]}")
   if [[ "$SELECTED" == "__CANCELLED__" ]]; then
     send_message info "Выбор записи Apple Паролей отменён"
     log "Завершение: пользователь отменил выбор"
@@ -469,6 +705,30 @@ if [[ -z "$USERNAME" ]]; then
   log "Username извлечён из результата apw pw get: $USERNAME"
 fi
 
+# Попытка получить OTP для этой записи
+OTP=""
+log "Попытка получить OTP для $SERVICE / $USERNAME"
+set +e
+OTP_JSON=$(query_apw_otp "$SERVICE" "$USERNAME")
+OTP_STATUS=$?
+set -e
+
+if [[ $OTP_STATUS -eq 0 ]]; then
+  # OTP успешно получен
+  OTP=$(printf '%s' "$OTP_JSON" | jq -r '.code // empty' 2>/dev/null)
+  if [[ -n "$OTP" ]]; then
+    log "OTP успешно получен: $OTP"
+  else
+    log "OTP JSON получен, но code пуст"
+  fi
+elif [[ $OTP_STATUS -eq 3 ]]; then
+  # Нет OTP для этой записи (это нормально)
+  log "Нет OTP для этой записи (status=3)"
+else
+  # Ошибка получения OTP (не критично, продолжаем без OTP)
+  log "Ошибка получения OTP (status=$OTP_STATUS), продолжаем без OTP"
+fi
+
 # ========== Генерация и инжект JavaScript ==========
 TMP_JS=$(mktemp /tmp/qute-keychain-login.XXXXXX.js)
 trap 'rm -f "$TMP_JS"' EXIT
@@ -477,6 +737,7 @@ log "Генерация JavaScript для DOM injection"
 
 QUTE_USERNAME="$USERNAME" \
   QUTE_PASSWORD="$PASSWORD" \
+  QUTE_OTP="$OTP" \
   QUTE_SERVICE="$SERVICE" \
   QUTE_LABEL="$LABEL" \
   python3 - <<'PYSCRIPT' >"$TMP_JS"
@@ -485,6 +746,7 @@ from string import Template
 
 username = os.environ.get('QUTE_USERNAME', '')
 password = os.environ.get('QUTE_PASSWORD', '')
+otp = os.environ.get('QUTE_OTP', '')
 service = os.environ.get('QUTE_SERVICE', '')
 label = os.environ.get('QUTE_LABEL', '')
 
@@ -492,7 +754,9 @@ template = Template('''
 (function() {
   const username = $username;
   const password = $password;
+  const otp = $otp;
   const hasUsername = username.length > 0;
+  const hasOtp = otp.length > 0;
   const service = $service;
   const label = $label;
 
@@ -520,6 +784,27 @@ template = Template('''
     'input[name="pwd"]',
     'input[id*="pass" i]',
     'input[id="user_pass"]'
+  ];
+
+  const otpSelectors = [
+    'input[type="text"][name*="otp" i]',
+    'input[type="text"][name*="code" i]',
+    'input[type="text"][name*="token" i]',
+    'input[type="tel"][name*="code" i]',
+    'input[type="number"][name*="code" i]',
+    'input[autocomplete="one-time-code"]',
+    'input[name="otp"]',
+    'input[name="code"]',
+    'input[name="token"]',
+    'input[name="verification_code"]',
+    'input[name="authenticator_code"]',
+    'input[id*="otp" i]',
+    'input[id*="code" i]',
+    'input[id*="token" i]',
+    'input[inputmode="numeric"]',
+    'input[placeholder*="код" i]',
+    'input[placeholder*="code" i]',
+    'input[placeholder*="otp" i]'
   ];
 
   const events = ['input', 'change', 'keyup'];
@@ -585,6 +870,23 @@ template = Template('''
       filled++;
     }
 
+    // Поиск и заполнение OTP поля
+    let otpField = null;
+    if (hasOtp) {
+      for (const selector of otpSelectors) {
+        const field = document.querySelector(selector);
+        if (field && field.offsetParent !== null && !field.disabled && !field.readOnly) {
+          otpField = field;
+          break;
+        }
+      }
+
+      if (otpField && setValue(otpField, otp)) {
+        otpField.focus();
+        filled++;
+      }
+    }
+
     // Уведомление на странице
     const notification = document.createElement('div');
     notification.style.cssText = 'position:fixed;top:20px;right:20px;padding:15px 20px;border-radius:8px;z-index:10000;font-family:-apple-system,system-ui,sans-serif;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3);max-width:360px;';
@@ -594,17 +896,33 @@ template = Template('''
       infoLine = infoLine ? infoLine + ' • ' + label : label;
     }
 
-    if (filled >= (hasUsername ? 2 : 1)) {
+    // Определяем ожидаемое количество полей
+    let expectedFields = 0;
+    if (hasUsername) expectedFields++;
+    if (password.length > 0) expectedFields++;
+    if (hasOtp) expectedFields++;
+
+    if (filled === expectedFields && filled > 0) {
+      // Всё заполнено успешно
       notification.style.background = '#4CAF50';
       notification.style.color = 'white';
-      const heading = hasUsername ? '🔐 Apple Passwords: ' + username : '🔐 Apple Passwords';
+      let heading = '🔐 Apple Passwords';
+      if (hasUsername && hasOtp) {
+        heading += ': ' + username + ' + OTP';
+      } else if (hasUsername) {
+        heading += ': ' + username;
+      } else if (hasOtp) {
+        heading += ': OTP заполнен';
+      }
       const subtitle = infoLine ? '<br><small>' + infoLine + '</small>' : '';
       notification.innerHTML = heading + subtitle;
     } else if (filled > 0) {
+      // Частичное заполнение
       notification.style.background = '#FF9800';
       notification.style.color = 'white';
-      notification.innerHTML = '⚠️ Заполнено только одно поле';
+      notification.innerHTML = '⚠️ Заполнено полей: ' + filled + ' из ' + expectedFields;
     } else {
+      // Ничего не заполнено
       notification.style.background = '#f44336';
       notification.style.color = 'white';
       notification.innerHTML = '❌ Поля для ввода не найдены на странице';
@@ -635,6 +953,7 @@ template = Template('''
 js = template.substitute(
     username=json.dumps(username),
     password=json.dumps(password),
+    otp=json.dumps(otp),
     service=json.dumps(service),
     label=json.dumps(label),
 )
