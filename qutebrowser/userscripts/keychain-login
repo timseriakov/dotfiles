@@ -425,6 +425,9 @@ detect_form_type() {
   elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(2fa|mfa|totp)' "$html_file"; then
     HAS_OTP="true"
     log "Found OTP field (2fa/mfa/totp)"
+  elif grep -iE '<input[^>]*(id|name)=["'"'"'][^"'"'"']*code' "$html_file" | grep -viE '(postal|promo|discount|coupon|zip|product|referral|affiliate|area|country|currency|sku)[_-]?code' | grep -q .; then
+    HAS_OTP="true"
+    log "Found OTP field (id/name contains 'code', excluding non-OTP patterns)"
   fi
 
   # Fallback: if nothing found, request password
