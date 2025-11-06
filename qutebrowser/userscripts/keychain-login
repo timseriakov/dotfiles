@@ -546,22 +546,22 @@ select_entry_fzf() {
   log "Created temp output file: $temp_output"
 
   # Script with Nord color scheme and preview
-  cat >"$temp_script" <<'FZFSCRIPT'
+  cat >"$temp_script" <<FZFSCRIPT
 #!/bin/bash
 set -euo pipefail
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:\$PATH"
 
 # Read data from file passed as first argument
-DATA_FILE="$1"
-OUTPUT_FILE="$2"
+DATA_FILE="\$1"
+OUTPUT_FILE="\$2"
 
-if [[ ! -f "$DATA_FILE" ]]; then
-  echo "Error: Data file not found: $DATA_FILE" >&2
+if [[ ! -f "\$DATA_FILE" ]]; then
+  echo "Error: Data file not found: \$DATA_FILE" >&2
   exit 1
 fi
 
-if [[ -z "$OUTPUT_FILE" ]]; then
+if [[ -z "\$OUTPUT_FILE" ]]; then
   echo "Error: Output file not specified" >&2
   exit 1
 fi
@@ -580,8 +580,8 @@ export FZF_DEFAULT_OPTS="
 --info=inline
 --delimiter=$'\t'
 --with-nth=1
---preview='echo -e \"╭────────────────────────────╮\n│ 👤 User: {2}\n│ 🌐 Domain: {3}\n│ 🏷️  Label: {4}\n╰────────────────────────────╯\n\nPress Enter to select\nor Esc to cancel\"'
---preview-window=up:9:border-rounded:wrap
+--preview=echo -e '👤 {2}\\n🌐 {3}\\n🏷️  {4}'
+--preview-window=up:3:wrap
 --color=fg:#e5e9f0,bg:#2e3440,hl:#88c0d0
 --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#88c0d0
 --color=info:#81a1c1,prompt:#81a1c1,pointer:#88c0d0
@@ -592,18 +592,18 @@ export FZF_DEFAULT_OPTS="
 "
 
 # Read TSV data from file and show fzf
-result=$(cat "$DATA_FILE" | fzf)
-exit_code=$?
+result=\$(cat "\$DATA_FILE" | fzf)
+exit_code=\$?
 
-if [[ $exit_code -eq 0 && -n "$result" ]]; then
-  echo "$result" > "$OUTPUT_FILE"
+if [[ \$exit_code -eq 0 && -n "\$result" ]]; then
+  echo "\$result" > "\$OUTPUT_FILE"
   exit 0
-elif [[ $exit_code -eq 130 ]]; then
+elif [[ \$exit_code -eq 130 ]]; then
   # Ctrl-C / Esc
-  echo "__CANCELLED__" > "$OUTPUT_FILE"
+  echo "__CANCELLED__" > "\$OUTPUT_FILE"
   exit 0
 else
-  echo "__CANCELLED__" > "$OUTPUT_FILE"
+  echo "__CANCELLED__" > "\$OUTPUT_FILE"
   exit 1
 fi
 FZFSCRIPT
@@ -614,7 +614,7 @@ FZFSCRIPT
   set +e
   "$alacritty_bin" \
     --title "Apple Passwords - Select Record" \
-    --option window.dimensions.columns=120 \
+    --option window.dimensions.columns=90 \
     --option window.dimensions.lines=25 \
     --command "$temp_script" "$temp_data" "$temp_output" 2>>"$DEBUG_LOG"
   local exit_code=$?
