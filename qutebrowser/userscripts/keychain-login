@@ -804,7 +804,24 @@ template = Template('''
     'input[inputmode="numeric"]',
     'input[placeholder*="код" i]',
     'input[placeholder*="code" i]',
-    'input[placeholder*="otp" i]'
+    'input[placeholder*="otp" i]',
+    'input[name*="2fa" i]',
+    'input[name*="mfa" i]',
+    'input[id*="2fa" i]',
+    'input[id*="mfa" i]',
+    'input[name*="verify" i]',
+    'input[name*="verification" i]',
+    'input[id*="verify" i]',
+    'input[placeholder*="verification" i]',
+    'input[name*="totp" i]',
+    'input[id*="totp" i]',
+    'input[name*="sms" i]',
+    'input[id*="sms" i]',
+    'input[aria-label*="code" i]',
+    'input[aria-label*="otp" i]',
+    'input[aria-label*="verification" i]',
+    'input[name*="pin" i]',
+    'input[id*="pin" i]'
   ];
 
   const events = ['input', 'change', 'keyup'];
