@@ -334,11 +334,11 @@ query_apw_get() {
 # ========== Получение OTP через apw ==========
 query_apw_otp() {
   local service="$1"
-  local username="${2:-}"
+  local username="${2:-}"  # username не используется, но оставляем для совместимости
   local output status
 
+  # ВАЖНО: apw otp get принимает только URL, БЕЗ username
   local cmd=("$APW_BIN" otp get "$service")
-  [[ -n "$username" ]] && cmd+=("$username")
 
   log "Запрос OTP: ${cmd[*]}"
 
@@ -349,10 +349,12 @@ query_apw_otp() {
 
   log "apw otp get exit code: $exit_code"
   log "apw otp get output length: ${#output}"
+  log "apw otp get raw output: $output"
 
   # Проверяем JSON и статус
   if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
     log "Не удалось распарсить JSON от apw otp get (вероятно, OTP нет или нужна auth)"
+    log "apw otp get non-JSON output (первые 200 символов): ${output:0:200}"
     # Не критичная ошибка - просто нет OTP
     printf '{"status":3,"error":"No OTP found"}'
     return 3
@@ -685,7 +687,7 @@ set -e
 
 if [[ $OTP_STATUS -eq 0 ]]; then
   # OTP успешно получен
-  OTP=$(printf '%s' "$OTP_JSON" | jq -r '.code // empty' 2>/dev/null)
+  OTP=$(printf '%s' "$OTP_JSON" | jq -r '.results[0].code // empty' 2>/dev/null)
   if [[ -n "$OTP" ]]; then
     log "OTP успешно получен: $OTP"
   else
