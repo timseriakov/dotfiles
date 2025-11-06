@@ -518,12 +518,34 @@ select_entry_fzf() {
 
   log "Created temp fzf script: $temp_script"
 
+  # Create temp data file with TSV records
+  local temp_data
+  temp_data=$(mktemp /tmp/fzf-data.XXXXXX)
+
+  if [[ -z "$temp_data" ]]; then
+    log "ERROR: mktemp failed to create temp data file"
+    rm -f "$temp_script"
+    select_entry_osascript "$domain" "${entries[@]}"
+    return $?
+  fi
+
+  printf '%s' "$fzf_input" > "$temp_data"
+  log "Created temp data file: $temp_data"
+
   # Script with Nord color scheme and preview
   cat >"$temp_script" <<'FZFSCRIPT'
 #!/bin/bash
 set -euo pipefail
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+# Read data from file passed as first argument
+DATA_FILE="$1"
+
+if [[ ! -f "$DATA_FILE" ]]; then
+  echo "Error: Data file not found: $DATA_FILE" >&2
+  exit 1
+fi
 
 # Nord theme colors for fzf
 export FZF_DEFAULT_OPTS="
@@ -550,8 +572,8 @@ export FZF_DEFAULT_OPTS="
 --color=preview-border:#4c566a
 "
 
-# Read TSV data from stdin and show fzf
-result=$(cat | fzf)
+# Read TSV data from file and show fzf
+result=$(cat "$DATA_FILE" | fzf)
 exit_code=$?
 
 if [[ $exit_code -eq 0 && -n "$result" ]]; then
@@ -569,18 +591,20 @@ FZFSCRIPT
 
   chmod +x "$temp_script"
 
-  # Launch Alacritty with fzf
+  # Launch Alacritty with fzf (pass data file path as argument)
   local selected
   set +e
-  selected=$(printf '%s' "$fzf_input" | "$alacritty_bin" \
+  selected=$("$alacritty_bin" \
     --title "Apple Passwords - Select Record" \
     --option window.dimensions.columns=120 \
     --option window.dimensions.lines=25 \
-    --command "$temp_script" 2>>"$DEBUG_LOG")
+    --command "$temp_script" "$temp_data" 2>>"$DEBUG_LOG")
   local exit_code=$?
   set -e
 
-  rm -f "$temp_script"
+  # Cleanup temp files
+  rm -f "$temp_script" "$temp_data"
+  log "Cleaned up temp files: $temp_script, $temp_data"
 
   if [[ $exit_code -ne 0 || "$selected" == "__CANCELLED__" || -z "$selected" ]]; then
     log "User cancelled fzf selection"
