@@ -532,6 +532,19 @@ select_entry_fzf() {
   printf '%s' "$fzf_input" > "$temp_data"
   log "Created temp data file: $temp_data"
 
+  # Create temp output file for fzf result
+  local temp_output
+  temp_output=$(mktemp /tmp/fzf-output.XXXXXX)
+
+  if [[ -z "$temp_output" ]]; then
+    log "ERROR: mktemp failed to create temp output file"
+    rm -f "$temp_script" "$temp_data"
+    select_entry_osascript "$domain" "${entries[@]}"
+    return $?
+  fi
+
+  log "Created temp output file: $temp_output"
+
   # Script with Nord color scheme and preview
   cat >"$temp_script" <<'FZFSCRIPT'
 #!/bin/bash
@@ -541,9 +554,15 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
 # Read data from file passed as first argument
 DATA_FILE="$1"
+OUTPUT_FILE="$2"
 
 if [[ ! -f "$DATA_FILE" ]]; then
   echo "Error: Data file not found: $DATA_FILE" >&2
+  exit 1
+fi
+
+if [[ -z "$OUTPUT_FILE" ]]; then
+  echo "Error: Output file not specified" >&2
   exit 1
 fi
 
@@ -577,37 +596,47 @@ result=$(cat "$DATA_FILE" | fzf)
 exit_code=$?
 
 if [[ $exit_code -eq 0 && -n "$result" ]]; then
-  echo "$result"
+  echo "$result" > "$OUTPUT_FILE"
   exit 0
 elif [[ $exit_code -eq 130 ]]; then
   # Ctrl-C / Esc
-  echo "__CANCELLED__"
+  echo "__CANCELLED__" > "$OUTPUT_FILE"
   exit 0
 else
-  echo "__CANCELLED__"
+  echo "__CANCELLED__" > "$OUTPUT_FILE"
   exit 1
 fi
 FZFSCRIPT
 
   chmod +x "$temp_script"
 
-  # Launch Alacritty with fzf (pass data file path as argument)
-  local selected
+  # Launch Alacritty with fzf (pass data file and output file paths as arguments)
   set +e
-  selected=$("$alacritty_bin" \
+  "$alacritty_bin" \
     --title "Apple Passwords - Select Record" \
     --option window.dimensions.columns=120 \
     --option window.dimensions.lines=25 \
-    --command "$temp_script" "$temp_data" 2>>"$DEBUG_LOG")
+    --command "$temp_script" "$temp_data" "$temp_output" 2>>"$DEBUG_LOG"
   local exit_code=$?
   set -e
 
+  log "Alacritty exited with code: $exit_code"
+
+  # Read selection from output file
+  local selected=""
+  if [[ -f "$temp_output" ]]; then
+    selected=$(cat "$temp_output")
+    log "Selection from output file: '$selected'"
+  else
+    log "ERROR: Output file not found: $temp_output"
+  fi
+
   # Cleanup temp files
-  rm -f "$temp_script" "$temp_data"
-  log "Cleaned up temp files: $temp_script, $temp_data"
+  rm -f "$temp_script" "$temp_data" "$temp_output"
+  log "Cleaned up temp files: $temp_script, $temp_data, $temp_output"
 
   if [[ $exit_code -ne 0 || "$selected" == "__CANCELLED__" || -z "$selected" ]]; then
-    log "User cancelled fzf selection"
+    log "User cancelled fzf selection (exit_code=$exit_code, selected='$selected')"
     printf '__CANCELLED__'
     return 0
   fi
