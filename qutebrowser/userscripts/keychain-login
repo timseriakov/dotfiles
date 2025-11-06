@@ -1,20 +1,20 @@
 #!/bin/bash
-# Автозаполнение форм через Apple Passwords (apw CLI)
-# Использование:
-#   keychain-login            # автозаполнение первого совпадения
-#   keychain-login --pick     # всегда показывать выбор записи
-# Требования: brew install bendews/homebrew-tap/apw && brew services start apw
+# Autofill forms via Apple Passwords (apw CLI)
+# Usage:
+#   keychain-login            # autofill first match
+#   keychain-login --pick     # always show record selection
+# Requirements: brew install bendews/homebrew-tap/apw && brew services start apw
 
 set -euo pipefail
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
-# ========== Конфигурация ==========
+# ========== Configuration ==========
 DEBUG_LOG="/tmp/keychain-login.log"
 PICK_MODE=false
 ATTEMPTED_AUTH=false
 
-# ========== Утилиты логирования ==========
+# ========== Logging utilities ==========
 log() {
   local timestamp
   timestamp=$(date '+%Y-%m-%d %H:%M:%S')
@@ -38,64 +38,64 @@ die() {
   exit 1
 }
 
-# ========== Проверки окружения ==========
-[[ -z "${QUTE_URL:-}" ]] || [[ -z "${QUTE_FIFO:-}" ]] && die "Должен запускаться как userscript qutebrowser"
+# ========== Environment checks ==========
+[[ -z "${QUTE_URL:-}" ]] || [[ -z "${QUTE_FIFO:-}" ]] && die "Must be run as qutebrowser userscript"
 
-# Создаём лог-файл если не существует
+# Create log file if it doesn't exist
 touch "$DEBUG_LOG" 2>/dev/null || true
-log "========== Новая сессия keychain-login =========="
+log "========== New keychain-login session =========="
 log "URL: $QUTE_URL"
 
-# ========== Парсинг аргументов ==========
+# ========== Argument parsing ==========
 while [[ $# -gt 0 ]]; do
   case "$1" in
   -p | --pick)
     PICK_MODE=true
-    log "Включён режим выбора записи (--pick)"
+    log "Enabled record selection mode (--pick)"
     ;;
   -h | --help)
-    send_message info "Использование: keychain-login [--pick]"
+    send_message info "Usage: keychain-login [--pick]"
     exit 0
     ;;
   *)
-    die "Неизвестный аргумент: $1"
+    die "Unknown argument: $1"
     ;;
   esac
   shift
 done
 
-# ========== Проверка зависимостей ==========
+# ========== Dependency checks ==========
 for cmd in jq python3; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
-    die "Команда '$cmd' не найдена. Установите: brew install $cmd"
+    die "Command '$cmd' not found. Install: brew install $cmd"
   fi
 done
 
 if [[ -n "${APW_BIN:-}" ]]; then
-  [[ ! -x "$APW_BIN" ]] && die "Указанный APW_BIN='$APW_BIN' не исполняемый"
+  [[ ! -x "$APW_BIN" ]] && die "Specified APW_BIN='$APW_BIN' is not executable"
 else
   if ! command -v apw >/dev/null 2>&1; then
-    die "Команда 'apw' не найдена. Установите: brew install bendews/homebrew-tap/apw && brew services start apw"
+    die "Command 'apw' not found. Install: brew install bendews/homebrew-tap/apw && brew services start apw"
   fi
   APW_BIN="$(command -v apw)"
 fi
 
-log "Используется apw: $APW_BIN"
+log "Using apw: $APW_BIN"
 
-# Проверка службы apw
+# Check apw service
 if ! pgrep -x "apw" >/dev/null 2>&1; then
-  send_message warning "Служба apw не запущена. Запустите: brew services start apw"
-  log "WARNING: Процесс apw не найден через pgrep"
+  send_message warning "apw service not running. Start it: brew services start apw"
+  log "WARNING: apw process not found via pgrep"
 fi
 
-# ========== Извлечение домена ==========
+# ========== Domain extraction ==========
 DOMAIN=$(echo "$QUTE_URL" | sed -E 's|^https?://([^/]+).*|\1|' | sed 's/^www\.//')
 DOMAIN_LOWER=$(printf '%s' "$DOMAIN" | tr '[:upper:]' '[:lower:]')
 
-log "Извлечён домен: $DOMAIN (нижний регистр: $DOMAIN_LOWER)"
-send_message info "Apple Passwords: ищу записи для $DOMAIN"
+log "Extracted domain: $DOMAIN (lowercase: $DOMAIN_LOWER)"
+send_message info "Apple Passwords: searching records for $DOMAIN"
 
-# ========== Поиск Alacritty для окна auth ==========
+# ========== Find Alacritty for auth window ==========
 find_alacritty() {
   for path in "/opt/homebrew/bin/alacritty" "/usr/local/bin/alacritty"; do
     if [[ -x "$path" ]]; then
@@ -110,30 +110,30 @@ find_alacritty() {
   return 1
 }
 
-# ========== Запуск окна авторизации apw ==========
+# ========== Launch apw auth window ==========
 launch_apw_auth() {
   local alacritty_bin
 
-  log "Попытка авторизации через apw auth"
+  log "Attempting auth via apw auth"
 
   if ! alacritty_bin=$(find_alacritty); then
-    log "Alacritty не найден, запуск apw auth напрямую"
+    log "Alacritty not found, running apw auth directly"
     "$APW_BIN" auth
     return $?
   fi
 
-  log "Найден Alacritty: $alacritty_bin"
+  log "Found Alacritty: $alacritty_bin"
 
-  # Создаём временный скрипт для окна авторизации
+  # Create temporary script for auth window
   local temp_script
   temp_script=$(mktemp /tmp/apw-auth.XXXXXX)
 
   if [[ -z "$temp_script" ]]; then
-    log "ERROR: mktemp не смог создать временный файл"
-    die "Не удалось создать временный файл для auth"
+    log "ERROR: mktemp failed to create temp file"
+    die "Failed to create temp file for auth"
   fi
 
-  # ВАЖНО: heredoc БЕЗ кавычек для интерполяции переменных
+  # IMPORTANT: heredoc WITHOUT quotes for variable interpolation
   cat >"$temp_script" <<AUTHSCRIPT
 #!/bin/bash
 set -euo pipefail
@@ -148,11 +148,11 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo -e "\${CYAN}╔════════════════════════════════════════════════╗\${NC}"
-echo -e "\${CYAN}║      Apple Passwords - Авторизация             ║\${NC}"
+echo -e "\${CYAN}║      Apple Passwords - Authorization           ║\${NC}"
 echo -e "\${CYAN}╚════════════════════════════════════════════════╝\${NC}"
 echo ""
-echo -e "\${YELLOW}Touch ID запрос появится в отдельном окне.\${NC}"
-echo -e "Введите код подтверждения и нажмите Enter."
+echo -e "\${YELLOW}Touch ID prompt will appear in a separate window.\${NC}"
+echo -e "Enter confirmation code and press Enter."
 echo ""
 
 "$APW_BIN" auth
@@ -160,43 +160,43 @@ status=\$?
 
 echo ""
 if [[ \$status -eq 0 ]]; then
-    echo -e "\${GREEN}✓ Авторизация завершена успешно!\${NC}"
+    echo -e "\${GREEN}✓ Authorization completed successfully!\${NC}"
 else
-    echo -e "\${RED}✗ apw auth вернул код ошибки: \$status\${NC}"
+    echo -e "\${RED}✗ apw auth returned error code: \$status\${NC}"
 fi
 
 echo ""
-echo -e "\${YELLOW}Нажмите Enter для закрытия окна...\${NC}"
+echo -e "\${YELLOW}Press Enter to close window...\${NC}"
 read -r
 exit \$status
 AUTHSCRIPT
 
   chmod +x "$temp_script"
-  log "Создан временный скрипт auth: $temp_script"
+  log "Created temp auth script: $temp_script"
 
-  # Запуск Alacritty с окном авторизации (синхронно, ждём завершения)
-  log "Запуск Alacritty: $alacritty_bin"
+  # Launch Alacritty with auth window (synchronously, wait for completion)
+  log "Launching Alacritty: $alacritty_bin"
 
   set +e
   "$alacritty_bin" \
-    --title "Apple Passwords - Авторизация" \
+    --title "Apple Passwords - Authorization" \
     --option window.dimensions.columns=50 \
     --option window.dimensions.lines=15 \
     --command "$temp_script" 2>>"$DEBUG_LOG"
   local exit_code=$?
   set -e
 
-  log "Alacritty завершён с кодом: $exit_code"
+  log "Alacritty exited with code: $exit_code"
   rm -f "$temp_script"
   return $exit_code
 }
 
-# ========== Запрос списка паролей через apw ==========
+# ========== Query password list via apw ==========
 query_apw_list() {
   local domain="$1"
   local output status
 
-  log "Запрос: apw pw list '$domain'"
+  log "Request: apw pw list '$domain'"
 
   set +e
   output=$("$APW_BIN" pw list "$domain" 2>&1)
@@ -206,9 +206,9 @@ query_apw_list() {
   log "apw pw list exit code: $exit_code"
   log "apw pw list output: $output"
 
-  # Проверяем JSON статус
+  # Check JSON status
   if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
-    log "Не удалось распарсить JSON от apw pw list"
+    log "Failed to parse JSON from apw pw list"
     printf '%s' "$output"
     return "$exit_code"
   fi
@@ -217,51 +217,51 @@ query_apw_list() {
 
   case "$status" in
   0)
-    # Успех
+    # Success
     printf '%s' "$output"
     return 0
     ;;
   1)
-    # Timeout - возможно, apw auth уже запущен или зависла авторизация
-    log "Timeout от apw (status=1) - возможно, зависла предыдущая авторизация"
-    die "apw timeout: возможно, запущена другая сессия авторизации. Перезапустите службу: brew services restart apw"
+    # Timeout - possibly previous auth session hung
+    log "apw timeout (status=1) - previous auth session hung"
+    die "apw timeout: previous auth session hung. Restart service: brew services restart apw"
     ;;
   3)
-    # Нет записей
-    log "Нет записей для домена $domain (status=3)"
+    # No records
+    log "No records for domain $domain (status=3)"
     printf '%s' "$output"
     return 3
     ;;
   2 | 4 | 5 | 9)
-    # Требуется авторизация (9=missing encryption key, 2/4/5=unauthorized)
-    log "Требуется авторизация (status=$status)"
+    # Authorization required (9=missing encryption key, 2/4/5=unauthorized)
+    log "Authorization required (status=$status)"
 
     if [[ $ATTEMPTED_AUTH == false ]]; then
       ATTEMPTED_AUTH=true
-      send_message info "Требуется авторизация Apple Passwords..."
+      send_message info "Authorization required..."
 
       if launch_apw_auth; then
-        log "Авторизация успешна, повторяю запрос apw pw list"
+        log "Auth successful, retrying apw pw list"
         sleep 1
-        query_apw_list "$domain" # Рекурсивный вызов после auth
+        query_apw_list "$domain" # Recursive call after auth
         return $?
       else
-        die "Авторизация apw не выполнена"
+        die "apw auth failed"
       fi
     else
-      die "apw требует повторной авторизации, но попытка уже была"
+      die "apw requires re-auth but already attempted"
     fi
     ;;
   *)
     local error_msg
-    error_msg=$(printf '%s' "$output" | jq -r '.error // "Ошибка apw"' 2>/dev/null)
-    log "apw pw list вернул неизвестный статус $status: $error_msg"
+    error_msg=$(printf '%s' "$output" | jq -r '.error // "apw error"' 2>/dev/null)
+    log "apw pw list returned unknown status $status: $error_msg"
     die "apw: $error_msg"
     ;;
   esac
 }
 
-# ========== Получение пароля через apw ==========
+# ========== Get password via apw ==========
 query_apw_get() {
   local service="$1"
   local username="${2:-}"
@@ -270,7 +270,7 @@ query_apw_get() {
   local cmd=("$APW_BIN" pw get "$service")
   [[ -n "$username" ]] && cmd+=("$username")
 
-  log "Запрос: ${cmd[*]}"
+  log "Request: ${cmd[*]}"
 
   set +e
   output=$("${cmd[@]}" 2>&1)
@@ -281,23 +281,23 @@ query_apw_get() {
   log "apw pw get output length: ${#output}"
 
   if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
-    log "Не удалось распарсить JSON от apw pw get"
+    log "Failed to parse JSON from apw pw get"
 
-    # Если уже пытались auth, ошибка
+    # If already attempted auth, error
     if [[ $ATTEMPTED_AUTH == true ]]; then
-      die "apw pw get не вернул валидный JSON после авторизации"
+      die "apw pw get returned invalid JSON after authorization"
     fi
 
-    # Пытаемся auth и повторяем
+    # Try auth and retry
     ATTEMPTED_AUTH=true
-    send_message info "Требуется авторизация для получения пароля..."
+    send_message info "Authorization required to get password..."
     if launch_apw_auth; then
-      log "Авторизация успешна, повторяю apw pw get"
+      log "Auth successful, retrying apw pw get"
       sleep 1
       query_apw_get "$service" "$username"
       return $?
     else
-      die "Авторизация apw не выполнена"
+      die "apw auth failed"
     fi
   fi
 
@@ -311,37 +311,37 @@ query_apw_get() {
   2 | 4 | 5 | 9)
     if [[ $ATTEMPTED_AUTH == false ]]; then
       ATTEMPTED_AUTH=true
-      send_message info "Требуется авторизация для получения пароля..."
+      send_message info "Authorization required to get password..."
       if launch_apw_auth; then
-        log "Авторизация успешна, повторяю apw pw get"
+        log "Auth successful, retrying apw pw get"
         sleep 1
         query_apw_get "$service" "$username"
         return $?
       else
-        die "Авторизация apw не выполнена"
+        die "apw auth failed"
       fi
     else
-      die "apw требует повторной авторизации для get, но попытка уже была"
+      die "apw requires re-auth for get but already attempted"
     fi
     ;;
   *)
     local error_msg
-    error_msg=$(printf '%s' "$output" | jq -r '.error // "Не удалось получить пароль"' 2>/dev/null)
+    error_msg=$(printf '%s' "$output" | jq -r '.error // "Failed to get password"' 2>/dev/null)
     die "apw pw get: $error_msg (status=$status)"
     ;;
   esac
 }
 
-# ========== Получение OTP через apw ==========
+# ========== Get OTP via apw ==========
 query_apw_otp() {
   local service="$1"
-  local username="${2:-}"  # username не используется, но оставляем для совместимости
+  local username="${2:-}"  # username not used but kept for compatibility
   local output status
 
-  # ВАЖНО: apw otp get принимает только URL, БЕЗ username
+  # IMPORTANT: apw otp get accepts only URL, WITHOUT username
   local cmd=("$APW_BIN" otp get "$service")
 
-  log "Запрос OTP: ${cmd[*]}"
+  log "OTP request: ${cmd[*]}"
 
   set +e
   output=$("${cmd[@]}" 2>&1)
@@ -352,108 +352,158 @@ query_apw_otp() {
   log "apw otp get output length: ${#output}"
   log "apw otp get raw output: $output"
 
-  # Проверяем JSON и статус
+  # Check JSON and status
   if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
-    log "Не удалось распарсить JSON от apw otp get (вероятно, OTP нет или нужна auth)"
-    log "apw otp get non-JSON output (первые 200 символов): ${output:0:200}"
-    # Не критичная ошибка - просто нет OTP
+    log "Failed to parse JSON from apw otp get (likely no OTP or auth needed)"
+    log "apw otp get non-JSON output (first 200 chars): ${output:0:200}"
+    # Not critical error - just no OTP
     printf '{"status":3,"error":"No OTP found"}'
     return 3
   fi
 
-  log "JSON status code для OTP: $status"
+  log "JSON status code for OTP: $status"
 
   case "$status" in
   0)
-    # Успешно получен OTP
+    # OTP successfully retrieved
     printf '%s' "$output"
     return 0
     ;;
   3)
-    # Нет OTP для этой записи (норм, не все записи имеют OTP)
-    log "Нет OTP для $service / $username (status=3)"
+    # No OTP for this record (normal, not all records have OTP)
+    log "No OTP for $service / $username (status=3)"
     printf '%s' "$output"
     return 3
     ;;
   *)
-    # Любая другая ошибка - просто логируем и возвращаем "No OTP"
+    # Any other error - just log and return "No OTP"
     local error_msg
-    error_msg=$(printf '%s' "$output" | jq -r '.error // "Ошибка apw otp"' 2>/dev/null)
-    log "apw otp get вернул статус $status: $error_msg (пропускаем OTP)"
+    error_msg=$(printf '%s' "$output" | jq -r '.error // "apw otp error"' 2>/dev/null)
+    log "apw otp get returned status $status: $error_msg (skipping OTP)"
     printf '{"status":3,"error":"No OTP found"}'
     return 3
     ;;
   esac
 }
 
-# ========== Выбор записи через fzf (Nord theme) ==========
+# ========== Detect form type on page ==========
+detect_form_type() {
+  local html_file="$QUTE_HTML"
+
+  # Default initialization (if detection fails)
+  HAS_PASSWORD="false"  # pragma: allowlist secret
+  HAS_OTP="false"
+
+  if [[ -z "$html_file" || ! -f "$html_file" ]]; then
+    log "WARN: QUTE_HTML unavailable ($html_file), fallback to password+OTP"
+    HAS_PASSWORD="true"  # pragma: allowlist secret
+    HAS_OTP="true"
+    return
+  fi
+
+  log "Analyzing form from $html_file"
+
+  # Check password fields
+  if grep -qiE 'type=["'"'"']?password["'"'"']?' "$html_file"; then
+    HAS_PASSWORD="true"  # pragma: allowlist secret
+    log "Found password field (type=password)"
+  elif grep -qiE 'autocomplete=["'"'"']?(current-password|new-password)["'"'"']?' "$html_file"; then
+    HAS_PASSWORD="true"  # pragma: allowlist secret
+    log "Found password field (autocomplete)"
+  fi
+
+  # Check OTP fields (strict conditions to avoid CSRF tokens)
+  if grep -qiE 'autocomplete=["'"'"']?one-time-code["'"'"']?' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (autocomplete=one-time-code)"
+  elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel|number)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*otp' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (name=otp)"
+  elif grep -qiE '<input[^>]*inputmode=["'"'"']?numeric["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(code|verification)' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (inputmode=numeric + code/verification)"
+  elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(2fa|mfa|totp)' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (2fa/mfa/totp)"
+  fi
+
+  # Fallback: if nothing found, request password
+  if [[ "$HAS_PASSWORD" == "false" && "$HAS_OTP" == "false" ]]; then  # pragma: allowlist secret
+    log "WARN: Fields not detected, fallback to password"
+    HAS_PASSWORD="true"  # pragma: allowlist secret
+  fi
+
+  log "Form detection result: hasPassword=$HAS_PASSWORD, hasOTP=$HAS_OTP"
+}
+
+# ========== Select record via fzf (Nord theme) ==========
 select_entry_fzf() {
   local domain="$1"
   shift
   local entries=("$@")
 
-  # Проверка наличия fzf
+  # Check for fzf
   if ! command -v fzf >/dev/null 2>&1; then
-    log "fzf не найден, fallback на osascript"
+    log "fzf not found, fallback to osascript"
     select_entry_osascript "$domain" "${entries[@]}"
     return $?
   fi
 
-  # Поиск Alacritty
+  # Find Alacritty
   local alacritty_bin
   if ! alacritty_bin=$(find_alacritty); then
-    log "Alacritty не найден, fallback на osascript"
+    log "Alacritty not found, fallback to osascript"
     select_entry_osascript "$domain" "${entries[@]}"
     return $?
   fi
 
-  log "Используем fzf для выбора записи (Alacritty: $alacritty_bin)"
+  log "Using fzf for record selection (Alacritty: $alacritty_bin)"
 
-  # Подготовка данных в формат TSV для fzf
-  # Формат отображения: username@service • label (если label != service)
+  # Preparing data in TSV format for fzf
+  # Display format: username@service • label (if label != service)
   local fzf_input=""
   local display_to_entry=()
 
   for entry in "${entries[@]}"; do
     IFS=$'\t' read -r username service label _uuid <<<"$entry"
 
-    # Формируем отображаемую строку
+    # Build display string
     local display="${username}@${service}"
     [[ -n "$label" && "$label" != "$service" ]] && display="${display} • ${label}"
 
-    # Сохраняем mapping display -> original entry
+    # Save mapping display -> original entry
     display_to_entry+=("$display|$entry")
 
-    # Добавляем в input для fzf (TSV: display<tab>username<tab>service<tab>label)
+    # Add to fzf input (TSV: display<tab>username<tab>service<tab>label)
     fzf_input+="${display}"$'\t'"${username}"$'\t'"${service}"$'\t'"${label}"$'\n'
   done
 
-  # Создание временного скрипта для fzf окна
+  # Creating temp script for fzf window
   local temp_script
   temp_script=$(mktemp /tmp/fzf-select.XXXXXX)
 
   if [[ -z "$temp_script" ]]; then
-    log "ERROR: mktemp не смог создать временный файл для fzf"
+    log "ERROR: mktemp failed to create temp file for fzf"
     select_entry_osascript "$domain" "${entries[@]}"
     return $?
   fi
 
-  log "Создан временный скрипт fzf: $temp_script"
+  log "Created temp fzf script: $temp_script"
 
-  # Скрипт с Nord цветовой схемой и preview
+  # Script with Nord color scheme and preview
   cat >"$temp_script" <<'FZFSCRIPT'
 #!/bin/bash
 set -euo pipefail
 
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-# Nord theme colors для fzf
+# Nord theme colors for fzf
 export FZF_DEFAULT_OPTS="
 --ansi
 --height=100%
 --layout=reverse
 --border=rounded
---border-label=' Apple Passwords - Выбор записи '
+--border-label=' Apple Passwords - Select Record '
 --border-label-pos=3
 --prompt=' ❯ '
 --pointer='▶'
@@ -461,7 +511,7 @@ export FZF_DEFAULT_OPTS="
 --info=inline
 --delimiter=$'\t'
 --with-nth=1
---preview='echo -e \"╭────────────────────────────╮\n│ 👤 Пользователь: {2}\n│ 🌐 Домен: {3}\n│ 🏷️  Метка: {4}\n╰────────────────────────────╯\n\nНажмите Enter для выбора\nили Esc для отмены\"'
+--preview='echo -e \"╭────────────────────────────╮\n│ 👤 User: {2}\n│ 🌐 Domain: {3}\n│ 🏷️  Label: {4}\n╰────────────────────────────╯\n\nPress Enter to select\nor Esc to cancel\"'
 --preview-window=up:9:border-rounded:wrap
 --color=fg:#e5e9f0,bg:#2e3440,hl:#88c0d0
 --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#88c0d0
@@ -472,7 +522,7 @@ export FZF_DEFAULT_OPTS="
 --color=preview-border:#4c566a
 "
 
-# Читаем TSV данные из stdin и показываем fzf
+# Read TSV data from stdin and show fzf
 result=$(cat | fzf)
 exit_code=$?
 
@@ -491,11 +541,11 @@ FZFSCRIPT
 
   chmod +x "$temp_script"
 
-  # Запуск Alacritty с fzf
+  # Launch Alacritty with fzf
   local selected
   set +e
   selected=$(printf '%s' "$fzf_input" | "$alacritty_bin" \
-    --title "Apple Passwords - Выбор записи" \
+    --title "Apple Passwords - Select Record" \
     --option window.dimensions.columns=120 \
     --option window.dimensions.lines=25 \
     --command "$temp_script" 2>>"$DEBUG_LOG")
@@ -505,19 +555,19 @@ FZFSCRIPT
   rm -f "$temp_script"
 
   if [[ $exit_code -ne 0 || "$selected" == "__CANCELLED__" || -z "$selected" ]]; then
-    log "Пользователь отменил выбор fzf"
+    log "User cancelled fzf selection"
     printf '__CANCELLED__'
     return 0
   fi
 
-  # selected содержит полную строку с табами: "display\tusername\tservice\tlabel"
-  # Извлекаем display (первое поле)
+  # selected contains full string with tabs: "display\tusername\tservice\tlabel"
+  # Extract display (first field)
   local display_selected
   display_selected=$(echo "$selected" | cut -f1)
 
-  log "Выбрано через fzf: $display_selected"
+  log "Selected via fzf: $display_selected"
 
-  # Находим соответствующую оригинальную entry
+  # Find corresponding original entry
   for mapping in "${display_to_entry[@]}"; do
     local display_part="${mapping%%|*}"
     local entry_part="${mapping#*|}"
@@ -528,12 +578,12 @@ FZFSCRIPT
     fi
   done
 
-  # Fallback на первую запись если не нашли
-  log "Не нашли соответствие для выбора fzf, используем первую запись"
+  # Fallback to first record if not found
+  log "Match not found for fzf selection, using first record"
   printf '%s' "${entries[0]}"
 }
 
-# ========== Выбор записи через osascript ==========
+# ========== Select record via osascript ==========
 select_entry_osascript() {
   local domain="$1"
   shift
@@ -565,7 +615,7 @@ select_entry_osascript() {
   done
 
   local prompt
-  prompt=$(printf '%s' "Несколько записей Apple Passwords для ${domain}. Выберите:" | sed 's/\\/\\\\/g; s/"/\\"/g')
+  prompt=$(printf '%s' "Multiple Apple Passwords records for ${domain}. Select:" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
   local output
   output=$(
@@ -578,12 +628,12 @@ OSASCRIPT
   )
 
   if [[ "$output" == "__CANCELLED__" ]]; then
-    log "Пользователь отменил выбор записи"
+    log "User cancelled record selection"
     printf '__CANCELLED__'
     return 0
   fi
 
-  # Находим выбранную запись
+  # Find selected record
   local i=0
   for display in "${displays[@]}"; do
     if [[ "$display" == "$output" ]]; then
@@ -593,28 +643,28 @@ OSASCRIPT
     i=$((i + 1))
   done
 
-  # Fallback на первую
-  log "Не нашли совпадение для выбора, используем первую запись"
+  # Fallback to first
+  log "Match not found for selection, using first record"
   printf '%s' "${entries[0]}"
 }
 
-# ========== Основная логика ==========
+# ========== Main logic ==========
 
-# Запрос списка паролей
+# Query password list
 LIST_JSON=$(query_apw_list "$DOMAIN_LOWER")
 LIST_STATUS=$?
 
 if [[ $LIST_STATUS -eq 3 ]]; then
-  send_message error "В Apple Паролях нет записей для $DOMAIN"
-  log "Завершение: нет записей"
+  send_message error "No Apple Passwords records for $DOMAIN"
+  log "Exit: no records"
   exit 0
 fi
 
 if [[ $LIST_STATUS -ne 0 ]]; then
-  die "apw pw list завершился с кодом $LIST_STATUS"
+  die "apw pw list exited with code $LIST_STATUS"
 fi
 
-# Парсинг результатов
+# Parse results
 RESULTS=()
 while IFS=$'\t' read -r username service label uuid; do
   [[ -z "$username" && -z "$service" ]] && continue
@@ -630,86 +680,98 @@ done < <(printf '%s' "$LIST_JSON" | jq -r --arg domain "$DOMAIN_LOWER" '
     ] | @tsv
 ')
 
-log "Найдено записей: ${#RESULTS[@]}"
+log "Found records: ${#RESULTS[@]}"
 
 if [[ ${#RESULTS[@]} -eq 0 ]]; then
-  send_message error "В Apple Паролях нет записей для $DOMAIN"
-  log "Завершение: пустой массив результатов после парсинга"
+  send_message error "No Apple Passwords records for $DOMAIN"
+  log "Exit: empty result array after parsing"
   exit 0
 fi
 
-# Выбор записи
+# Select record
 SELECTED=""
 if [[ ${#RESULTS[@]} -eq 1 && $PICK_MODE == false ]]; then
   SELECTED="${RESULTS[0]}"
-  log "Автоматически выбрана единственная запись"
+  log "Automatically selected single record"
 else
-  # Используем fzf с fallback на osascript
+  # Use fzf with fallback to osascript
   SELECTED=$(select_entry_fzf "$DOMAIN" "${RESULTS[@]}")
   if [[ "$SELECTED" == "__CANCELLED__" ]]; then
-    send_message info "Выбор записи Apple Паролей отменён"
-    log "Завершение: пользователь отменил выбор"
+    send_message info "Apple Passwords record selection cancelled"
+    log "Exit: user cancelled selection"
     exit 0
   fi
 fi
 
 IFS=$'\t' read -r USERNAME SERVICE LABEL _uuid <<<"$SELECTED"
-log "Выбрана запись: username=$USERNAME, service=$SERVICE, label=$LABEL"
+log "Selected record: username=$USERNAME, service=$SERVICE, label=$LABEL"
 
-# Получение пароля
-GET_JSON=$(query_apw_get "$SERVICE" "$USERNAME")
-PASSWORD=$(printf '%s' "$GET_JSON" | jq -r '.results[0].password // empty' 2>/dev/null)
+# ========== Form type detection ==========
+detect_form_type
 
-if [[ -z "$PASSWORD" ]]; then
-  die "apw не вернул пароль (пустое значение)"
-fi
-
-log "Пароль успешно получен, длина: ${#PASSWORD} символов"
-
-# Если username не был указан, пытаемся извлечь из результата
-if [[ -z "$USERNAME" ]]; then
-  USERNAME=$(printf '%s' "$GET_JSON" | jq -r '.results[0].username // empty' 2>/dev/null)
-  log "Username извлечён из результата apw pw get: $USERNAME"
-fi
-
-# Попытка получить OTP для этой записи
+# Variable initialization
+PASSWORD=""
 OTP=""
-log "Попытка получить OTP для $SERVICE / $USERNAME"
 
-# Даём apw daemon время на сохранение авторизационной сессии после получения пароля
-sleep 0.5
+# ========== Conditional password fetch ==========
+if [[ "$HAS_PASSWORD" == "true" ]]; then  # pragma: allowlist secret
+  log "Form contains password field, requesting password for $SERVICE"
+  GET_JSON=$(query_apw_get "$SERVICE" "$USERNAME")
+  PASSWORD=$(printf '%s' "$GET_JSON" | jq -r '.results[0].password // empty' 2>/dev/null)
 
-# Если уже была авторизация, пробуем получить OTP без повторной auth
-# Сохраняем флаг авторизации перед вызовом
-AUTH_WAS_ATTEMPTED=$ATTEMPTED_AUTH
-log "Флаг ATTEMPTED_AUTH перед OTP запросом: $AUTH_WAS_ATTEMPTED"
-
-set +e
-OTP_JSON=$(query_apw_otp "$SERVICE" "$USERNAME")
-OTP_STATUS=$?
-set -e
-
-if [[ $OTP_STATUS -eq 0 ]]; then
-  # OTP успешно получен
-  OTP=$(printf '%s' "$OTP_JSON" | jq -r '.results[0].code // empty' 2>/dev/null)
-  if [[ -n "$OTP" ]]; then
-    log "OTP успешно получен: $OTP"
-  else
-    log "OTP JSON получен, но code пуст"
+  if [[ -z "$PASSWORD" ]]; then
+    die "apw returned no password (empty value)"
   fi
-elif [[ $OTP_STATUS -eq 3 ]]; then
-  # Нет OTP для этой записи (это нормально)
-  log "Нет OTP для этой записи (status=3)"
+
+  log "Password successfully retrieved, length: ${#PASSWORD} chars"
+
+  # If username not specified, try to extract from result
+  if [[ -z "$USERNAME" ]]; then
+    USERNAME=$(printf '%s' "$GET_JSON" | jq -r '.results[0].username // empty' 2>/dev/null)
+    log "Username extracted from apw pw get result: $USERNAME"
+  fi
 else
-  # Ошибка получения OTP (не критично, продолжаем без OTP)
-  log "Ошибка получения OTP (status=$OTP_STATUS), продолжаем без OTP"
+  log "Form does NOT contain password field, skipping password request"
 fi
 
-# ========== Генерация и инжект JavaScript ==========
+# ========== Conditional OTP fetch ==========
+if [[ "$HAS_OTP" == "true" ]]; then
+  log "Form contains OTP field, requesting OTP for $SERVICE"
+
+  set +e
+  OTP_JSON=$(query_apw_otp "$SERVICE")
+  OTP_STATUS=$?
+  set -e
+
+  if [[ $OTP_STATUS -eq 0 ]]; then
+    # OTP successfully retrieved
+    OTP=$(printf '%s' "$OTP_JSON" | jq -r '.results[0].code // empty' 2>/dev/null)
+    if [[ -n "$OTP" ]]; then
+      log "OTP successfully retrieved: $OTP"
+    else
+      log "OTP JSON retrieved but code is empty"
+    fi
+  elif [[ $OTP_STATUS -eq 3 ]]; then
+    # No OTP for this record (normal)
+    log "No OTP for this record (status=3)"
+  else
+    # Error getting OTP (not critical, continuing without OTP)
+    log "Error getting OTP (status=$OTP_STATUS), continuing without OTP"
+  fi
+else
+  log "Form does NOT contain OTP field, skipping OTP request"
+fi
+
+# ========== Check that we got something ==========
+if [[ -z "$PASSWORD" && -z "$OTP" ]]; then
+  die "Failed to get password or OTP for $SERVICE (hasPassword=$HAS_PASSWORD, hasOTP=$HAS_OTP)"
+fi
+
+# ========== Generate and inject JavaScript ==========
 TMP_JS=$(mktemp /tmp/qute-keychain-login.XXXXXX.js)
 trap 'rm -f "$TMP_JS"' EXIT
 
-log "Генерация JavaScript для DOM injection"
+log "Generating JavaScript for DOM injection"
 
 QUTE_USERNAME="$USERNAME" \
   QUTE_PASSWORD="$PASSWORD" \
@@ -778,7 +840,7 @@ template = Template('''
     'input[id*="code" i]',
     'input[id*="token" i]',
     'input[inputmode="numeric"]',
-    'input[placeholder*="код" i]',
+    'input[placeholder*="code" i]',
     'input[placeholder*="code" i]',
     'input[placeholder*="otp" i]',
     'input[name*="2fa" i]',
@@ -831,7 +893,7 @@ template = Template('''
     let usernameField = null;
     let passwordField = null;
 
-    // Поиск и заполнение username поля
+    // Find and fill username field
     if (hasUsername) {
       for (const selector of usernameSelectors) {
         const field = document.querySelector(selector);
@@ -847,23 +909,25 @@ template = Template('''
       }
     }
 
-    // Поиск и заполнение password поля
-    for (const selector of passwordSelectors) {
-      const field = document.querySelector(selector);
-      if (field && field.offsetParent !== null && !field.disabled && !field.readOnly) {
-        passwordField = field;
-        break;
+    // Find and fill password field (only if password retrieved)
+    if (password.length > 0) {
+      for (const selector of passwordSelectors) {
+        const field = document.querySelector(selector);
+        if (field && field.offsetParent !== null && !field.disabled && !field.readOnly) {
+          passwordField = field;
+          break;
+        }
+      }
+
+      if (passwordField && setValue(passwordField, password)) {
+        if (!hasUsername) {
+          passwordField.focus();
+        }
+        filled++;
       }
     }
 
-    if (passwordField && setValue(passwordField, password)) {
-      if (!hasUsername) {
-        passwordField.focus();
-      }
-      filled++;
-    }
-
-    // Поиск и заполнение OTP поля
+    // Find and fill OTP field
     let otpField = null;
     if (hasOtp) {
       for (const selector of otpSelectors) {
@@ -880,7 +944,7 @@ template = Template('''
       }
     }
 
-    // Уведомление на странице
+    // Page notification
     const notification = document.createElement('div');
     notification.style.cssText = 'position:fixed;top:20px;right:20px;padding:15px 20px;border-radius:8px;z-index:10000;font-family:-apple-system,system-ui,sans-serif;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3);max-width:360px;';
 
@@ -889,14 +953,14 @@ template = Template('''
       infoLine = infoLine ? infoLine + ' • ' + label : label;
     }
 
-    // Определяем ожидаемое количество полей
+    // Determine expected field count
     let expectedFields = 0;
     if (hasUsername) expectedFields++;
     if (password.length > 0) expectedFields++;
     if (hasOtp) expectedFields++;
 
     if (filled === expectedFields && filled > 0) {
-      // Всё заполнено успешно
+      // All filled successfully
       notification.style.background = '#4CAF50';
       notification.style.color = 'white';
       let heading = '🔐 Apple Passwords';
@@ -905,20 +969,20 @@ template = Template('''
       } else if (hasUsername) {
         heading += ': ' + username;
       } else if (hasOtp) {
-        heading += ': OTP заполнен';
+        heading += ': OTP filled';
       }
       const subtitle = infoLine ? '<br><small>' + infoLine + '</small>' : '';
       notification.innerHTML = heading + subtitle;
     } else if (filled > 0) {
-      // Частичное заполнение
+      // Partial fill
       notification.style.background = '#FF9800';
       notification.style.color = 'white';
-      notification.innerHTML = '⚠️ Заполнено полей: ' + filled + ' из ' + expectedFields;
+      notification.innerHTML = '⚠️ Filled fields: ' + filled + ' of ' + expectedFields;
     } else {
-      // Ничего не заполнено
+      // Nothing filled
       notification.style.background = '#f44336';
       notification.style.color = 'white';
-      notification.innerHTML = '❌ Поля для ввода не найдены на странице';
+      notification.innerHTML = '❌ Input fields not found on page';
     }
 
     document.body.appendChild(notification);
@@ -932,14 +996,14 @@ template = Template('''
     return filled;
   };
 
-  // Ожидание загрузки DOM
+  // Wait for DOM load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', run, { once: true });
-    return 'Автозаполнение Apple Passwords: ожидание DOMContentLoaded';
+    return 'Apple Passwords autofill: waiting for DOMContentLoaded';
   }
 
   const filledCount = run();
-  return 'Автозаполнение Apple Passwords: заполнено полей ' + filledCount;
+  return 'Apple Passwords autofill: filled ' + filledCount + ' fields';
 })();
 ''')
 
@@ -954,12 +1018,12 @@ js = template.substitute(
 print(js)
 PYSCRIPT
 
-log "JavaScript сгенерирован, размер: $(wc -c <"$TMP_JS") байт"
+log "JavaScript generated, size: $(wc -c <"$TMP_JS") bytes"
 
-# Инжект в страницу
+# Inject into page
 echo "jseval --quiet --file $TMP_JS" >>"$QUTE_FIFO"
 
-# Финальное уведомление
+# Final notification
 INFO_LINE=""
 if [[ -n "$USERNAME" ]]; then
   INFO_LINE="$USERNAME"
@@ -971,5 +1035,5 @@ else
 fi
 
 send_message info "Apple Passwords: $INFO_LINE"
-log "Успешное завершение: $INFO_LINE"
-log "========== Конец сессии =========="
+log "Successful completion: $INFO_LINE"
+log "========== End session =========="
