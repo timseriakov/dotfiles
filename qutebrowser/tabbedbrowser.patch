@@ -16,28 +16,29 @@
 +from qutebrowser.utils import (standarddir, log, usertypes, utils, qtutils,
                                 urlutils, message, jinja, version)
  from qutebrowser.misc import quitter, objects
- 
+
 @@ -519,6 +520,23 @@
                  else:
                      self.undo_stack[-1].append(entry)
- 
+
 +                # Patch closed-tabs-history for qute-plugin-fzfhistory
-+                closed_history=standarddir.data() + "/closed-tabs-history"
-+                tmp_ch="/tmp/qute_closed_history_tmp"
-+                url_str = tab.url().toDisplayString() + "\n"
-+                now=datetime.datetime.now().strftime("%Y %B %d %H:%M:%S")
++                # Skip private/incognito windows for privacy
++                if not self.is_private:
++                    closed_history=standarddir.data() + "/closed-tabs-history"
++                    tmp_ch="/tmp/qute_closed_history_tmp"
++                    url_str = tab.url().toDisplayString() + "\n"
++                    now=datetime.datetime.now().strftime("%Y %B %d %H:%M:%S")
 +
-+                with open(closed_history, 'r') as chf:
-+                    with open(tmp_ch, "w") as tmpf:
-+                        # If the url already saved, delete the old entry
-+                        for line in (chf.readlines() [-99:]):
-+                            if url_str not in line:
-+                                tmpf.write(line)
-+                        # Append the file with the current closed tab data
-+                        tmpf.write(now + "|" + tab.title() + "|" + url_str)
++                    with open(closed_history, 'r') as chf:
++                        with open(tmp_ch, "w") as tmpf:
++                            # If the url already saved, delete the old entry
++                            for line in (chf.readlines() [-99:]):
++                                if url_str not in line:
++                                    tmpf.write(line)
++                            # Append the file with the current closed tab data
++                            tmpf.write(now + "|" + tab.title() + "|" + url_str)
 +
-+                shutil.copy(tmp_ch, closed_history)
++                    shutil.copy(tmp_ch, closed_history)
 +
          tab.private_api.shutdown()
          self.widget.removeTab(idx)
- 

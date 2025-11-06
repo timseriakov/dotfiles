@@ -439,6 +439,7 @@ config.bind(leader + "tp", "tab-pin")
 config.bind(leader + "tt", "cmd-set-text -s :tab-select")
 config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
 config.bind(leader + "ti", "open -p") # Open new private window
+config.bind("<Cmd-Shift-N>", "open -p")  # macOS standard incognito shortcut (Cmd+Shift+N)
 
 # sessions
 # Interactive prompts leverage completion for existing session names.
