@@ -425,9 +425,11 @@ detect_form_type() {
   elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(2fa|mfa|totp)' "$html_file"; then
     HAS_OTP="true"
     log "Found OTP field (2fa/mfa/totp)"
-  elif grep -iE '<input[^>]*(id|name)=["'"'"'][^"'"'"']*code' "$html_file" | grep -viE '(postal|promo|discount|coupon|zip|product|referral|affiliate|area|country|currency|sku|merchant|vendor|store|customer|client|company|member|employee|invite|access|partner|language|langcode|locale|security|unlock|activation|registration|organization|group|team|department|branch|project|transaction|order|tracking|campaign)[_-]?code' | grep -q .; then
+  elif grep -iE '<input[^>]*(id|name)=["'"'"'][^"'"'"']*code' "$html_file" | grep -viE '(postal|promo|discount|coupon|zip|product|referral|affiliate|area|country|currency|sku|merchant|vendor|store|customer|client|company|member|employee|invite|access|partner|language|langcode|locale|security|unlock|activation|registration|organization|group|team|department|branch|project|transaction|order|tracking|campaign)[_-]?code' > /tmp/matched_code_field.txt && grep -q . /tmp/matched_code_field.txt; then
     HAS_OTP="true"
+    MATCHED_FIELD=$(cat /tmp/matched_code_field.txt | head -1)
     log "Found OTP field (id/name contains 'code', excluding non-OTP patterns)"
+    log "DEBUG: Matched field HTML: $MATCHED_FIELD"
   fi
 
   # Fallback: if nothing found, request password
