@@ -637,13 +637,30 @@ FZFSCRIPT
 
   chmod +x "$temp_script"
 
+  # Kill any previous fzf windows that might be hidden
+  log "Cleaning up previous fzf windows..."
+  pkill -f "fzf-select" 2>/dev/null || true
+  pkill -f "Apple Passwords - Select Record" 2>/dev/null || true
+
+  # Remove old temp files
+  rm -f /tmp/fzf-select.* /tmp/fzf-data.* /tmp/fzf-output.* 2>/dev/null || true
+  log "Cleanup complete"
+
   # Launch Alacritty with fzf (pass data file and output file paths as arguments)
   set +e
   "$alacritty_bin" \
     --title "Apple Passwords - Select Record" \
     --option window.dimensions.columns=90 \
     --option window.dimensions.lines=25 \
-    --command "$temp_script" "$temp_data" "$temp_output" 2>>"$DEBUG_LOG"
+    --command "$temp_script" "$temp_data" "$temp_output" 2>>"$DEBUG_LOG" &
+  local alacritty_pid=$!
+
+  # Try to make window always-on-top using AppleScript
+  sleep 0.2  # Give Alacritty time to create window
+  osascript -e 'tell application "Alacritty" to activate' 2>/dev/null || true
+
+  # Wait for Alacritty to finish
+  wait $alacritty_pid
   local exit_code=$?
   set -e
 
