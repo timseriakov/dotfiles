@@ -139,6 +139,7 @@ launch_apw_auth() {
 set -euo pipefail
 
 export PATH="$PATH"
+export __CFBundleIdentifier="org.qutebrowser.qutebrowser"
 
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
@@ -674,6 +675,9 @@ fi
 # Попытка получить OTP для этой записи
 OTP=""
 log "Попытка получить OTP для $SERVICE / $USERNAME"
+
+# Даём apw daemon время на сохранение авторизационной сессии после получения пароля
+sleep 0.5
 
 # Если уже была авторизация, пробуем получить OTP без повторной auth
 # Сохраняем флаг авторизации перед вызовом
