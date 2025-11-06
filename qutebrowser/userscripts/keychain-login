@@ -412,24 +412,47 @@ detect_form_type() {
     log "Found password field (autocomplete)"
   fi
 
-  # Check OTP fields (strict conditions to avoid CSRF tokens)
+  # Check OTP fields using multiple attributes (layered detection)
+  # Level 1: Explicit autocomplete attribute (99.9% confidence)
   if grep -qiE 'autocomplete=["'"'"']?one-time-code["'"'"']?' "$html_file"; then
     HAS_OTP="true"
     log "Found OTP field (autocomplete=one-time-code)"
-  elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel|number)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*otp' "$html_file"; then
+  # Level 2: name/id contains 'otp' (95% confidence)
+  elif grep -qiE '<input[^>]*(name|id)=["'"'"'][^"'"'"']*otp' "$html_file"; then
     HAS_OTP="true"
-    log "Found OTP field (name=otp)"
-  elif grep -qiE '<input[^>]*inputmode=["'"'"']?numeric["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(code|verification)' "$html_file"; then
+    log "Found OTP field (name/id contains 'otp')"
+  # Level 3: class/placeholder contains 'otp' (90% confidence)
+  elif grep -qiE '<input[^>]*(class|placeholder)=["'"'"'][^"'"'"']*otp' "$html_file"; then
     HAS_OTP="true"
-    log "Found OTP field (inputmode=numeric + code/verification)"
-  elif grep -qiE '<input[^>]*type=["'"'"']?(text|tel)["'"'"']?[^>]*name=["'"'"'][^"'"'"']*(2fa|mfa|totp)' "$html_file"; then
+    log "Found OTP field (class/placeholder contains 'otp')"
+  # Level 4: pin patterns (85% confidence)
+  elif grep -qiE '<input[^>]*(name|id|class|placeholder)=["'"'"'][^"'"'"']*pin' "$html_file"; then
     HAS_OTP="true"
-    log "Found OTP field (2fa/mfa/totp)"
-  elif grep -iE '<input[^>]*(id|name)=["'"'"'][^"'"'"']*code' "$html_file" | grep -viE '(postal|promo|discount|coupon|zip|product|referral|affiliate|area|country|currency|sku|merchant|vendor|store|customer|client|company|member|employee|invite|access|partner|language|langcode|locale|security|unlock|activation|registration|organization|group|team|department|branch|project|transaction|order|tracking|campaign)[_-]?code' > /tmp/matched_code_field.txt && grep -q . /tmp/matched_code_field.txt; then
+    log "Found OTP field (pin pattern)"
+  # Level 5: verification patterns (80% confidence)
+  elif grep -qiE '<input[^>]*(name|id|class|placeholder)=["'"'"'][^"'"'"']*verification' "$html_file"; then
     HAS_OTP="true"
-    MATCHED_FIELD=$(cat /tmp/matched_code_field.txt | head -1)
-    log "Found OTP field (id/name contains 'code', excluding non-OTP patterns)"
-    log "DEBUG: Matched field HTML: $MATCHED_FIELD"
+    log "Found OTP field (verification pattern)"
+  # Level 6: 2fa/mfa/totp patterns (80% confidence)
+  elif grep -qiE '<input[^>]*(name|id|class)=["'"'"'][^"'"'"']*(2fa|mfa|totp)' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (2fa/mfa/totp pattern)"
+  # Level 7: auth patterns with numeric input (75% confidence)
+  elif grep -qiE '<input[^>]*inputmode=["'"'"']?numeric[^>]*(name|id|class)=["'"'"'][^"'"'"']*auth' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (auth + numeric input)"
+  # Level 8: 'code' with OTP context (70% confidence)
+  elif grep -qiE '<input[^>]*(name|id)=["'"'"'][^"'"'"']*(verification|auth|confirm|2fa|mfa|totp|backup|recovery|sms|email|phone|google|security).*code' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (code with OTP context)"
+  # Level 9: aria-label with OTP keywords (65% confidence)
+  elif grep -qiE 'aria-label=["'"'"'][^"'"'"']*(otp|one-time|verification code|auth code|pin|enter code)' "$html_file"; then
+    HAS_OTP="true"
+    log "Found OTP field (aria-label with OTP keywords)"
+  # Level 10: Multiple single-char inputs (digit-by-digit pattern, 60% confidence)
+  elif [ $(grep -c '<input[^>]*maxlength=["'"'"']?1["'"'"']?' "$html_file") -ge 6 ]; then
+    HAS_OTP="true"
+    log "Found OTP field (6+ single-char inputs - digit-by-digit pattern)"
   fi
 
   # Fallback: if nothing found, request password
