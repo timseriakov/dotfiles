@@ -762,18 +762,18 @@ template = Template('''
 
   const usernameSelectors = [
     'input[type="email"]',
-    'input[type="text"][name*="user" i]',
-    'input[type="text"][name*="email" i]',
-    'input[type="text"][name*="login" i]',
+    'input[type="text"][name*="user" i]:not([name*="otp" i]):not([name*="code" i]):not([name*="token" i]):not([name*="verify" i]):not([inputmode="numeric"])',
+    'input[type="text"][name*="email" i]:not([name*="code" i]):not([name*="verify" i])',
+    'input[type="text"][name*="login" i]:not([name*="code" i]):not([name*="token" i])',
     'input[autocomplete="username"]',
     'input[autocomplete="email"]',
     'input[name="username"]',
     'input[name="email"]',
     'input[name="login"]',
     'input[name="log"]',
-    'input[id*="user" i]',
-    'input[id*="email" i]',
-    'input[id*="login" i]',
+    'input[id*="user" i]:not([id*="otp" i]):not([id*="code" i]):not([id*="verify" i]):not([inputmode="numeric"])',
+    'input[id*="email" i]:not([id*="code" i]):not([id*="verify" i])',
+    'input[id*="login" i]:not([id*="code" i]):not([id*="token" i])',
     'input[id="user_login"]'
   ];
 
