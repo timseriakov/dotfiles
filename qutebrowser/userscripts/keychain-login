@@ -337,16 +337,6 @@ query_apw_otp() {
   local username="${2:-}"
   local output status
 
-  # КРИТИЧНО: Если авторизация уже была, не пытаемся auth снова
-  # Просто пробуем получить OTP один раз, без повторных попыток
-  local allow_auth=false
-  if [[ $ATTEMPTED_AUTH == false ]]; then
-    allow_auth=true
-    log "OTP запрос: авторизация разрешена (первый вызов)"
-  else
-    log "OTP запрос: авторизация уже была, повторная auth запрещена"
-  fi
-
   local cmd=("$APW_BIN" otp get "$service")
   [[ -n "$username" ]] && cmd+=("$username")
 
@@ -360,29 +350,12 @@ query_apw_otp() {
   log "apw otp get exit code: $exit_code"
   log "apw otp get output length: ${#output}"
 
+  # Проверяем JSON и статус
   if ! status=$(printf '%s' "$output" | jq -r '.status // "unknown"' 2>/dev/null); then
-    log "Не удалось распарсить JSON от apw otp get"
-
-    # Если авторизация запрещена (уже была), просто возвращаем "No OTP"
-    if [[ $allow_auth == false ]]; then
-      log "Авторизация запрещена, пропускаем OTP"
-      printf '{"status":3,"error":"No OTP found"}'
-      return 3
-    fi
-
-    # Пытаемся auth и повторяем (только если allow_auth=true)
-    ATTEMPTED_AUTH=true
-    send_message info "Требуется авторизация для получения OTP..."
-    if launch_apw_auth; then
-      log "Авторизация успешна, повторяю apw otp get"
-      sleep 1
-      query_apw_otp "$service" "$username"
-      return $?
-    else
-      log "Авторизация apw не выполнена для OTP"
-      printf '{"status":3,"error":"No OTP found"}'
-      return 3
-    fi
+    log "Не удалось распарсить JSON от apw otp get (вероятно, OTP нет или нужна auth)"
+    # Не критичная ошибка - просто нет OTP
+    printf '{"status":3,"error":"No OTP found"}'
+    return 3
   fi
 
   log "JSON status code для OTP: $status"
@@ -394,37 +367,16 @@ query_apw_otp() {
     return 0
     ;;
   3)
-    # Нет OTP для этой записи (это норм, не все записи имеют OTP)
+    # Нет OTP для этой записи (норм, не все записи имеют OTP)
     log "Нет OTP для $service / $username (status=3)"
     printf '%s' "$output"
     return 3
     ;;
-  2 | 4 | 5 | 9)
-    # Если авторизация запрещена, просто возвращаем "No OTP"
-    if [[ $allow_auth == false ]]; then
-      log "apw требует авторизацию для OTP, но повторная auth запрещена, пропускаем OTP"
-      printf '{"status":3,"error":"No OTP found"}'
-      return 3
-    fi
-
-    # Пытаемся auth (только если allow_auth=true)
-    ATTEMPTED_AUTH=true
-    send_message info "Требуется авторизация для получения OTP..."
-    if launch_apw_auth; then
-      log "Авторизация успешна, повторяю apw otp get"
-      sleep 1
-      query_apw_otp "$service" "$username"
-      return $?
-    else
-      log "Авторизация apw не выполнена для OTP"
-      printf '{"status":3,"error":"No OTP found"}'
-      return 3
-    fi
-    ;;
   *)
+    # Любая другая ошибка - просто логируем и возвращаем "No OTP"
     local error_msg
-    error_msg=$(printf '%s' "$output" | jq -r '.error // "Не удалось получить OTP"' 2>/dev/null)
-    log "apw otp get: $error_msg (status=$status)"
+    error_msg=$(printf '%s' "$output" | jq -r '.error // "Ошибка apw otp"' 2>/dev/null)
+    log "apw otp get вернул статус $status: $error_msg (пропускаем OTP)"
     printf '{"status":3,"error":"No OTP found"}'
     return 3
     ;;
