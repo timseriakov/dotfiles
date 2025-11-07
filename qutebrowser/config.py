@@ -336,6 +336,8 @@ config.bind("gu", "navigate up") # go up one level in URL
 
 # Open link in mpv
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
+config.bind(leader + "i", "spawn open -a IINA {url}")
+
 # Download current URL as file (for audio/video tabs)
 config.bind(leader + "ad", "download {url}")
 config.bind(leader + "aa", "download-cancel")
@@ -410,6 +412,7 @@ config.bind(leader + "fi", "hint inputs") # Open link in new tab (foreground)
 config.bind(leader + "fo", "hint links window") # Open link in new tab (foreground)
 config.bind(leader + "fp", "hint links run :open -p {hint-url}") # Open link in new tab (foreground)
 config.bind(leader + "fv", "hint links spawn mpv {hint-url}") # Open link in new tab (foreground)
+config.bind(leader + "fI", "hint links spawn open -a IINA {hint-url}") # Open link in IINA (hint)
 config.bind(leader + "fy", "hint links yank") # Open link in new tab (foreground)
 config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Helium' {hint-url}") # Open link in Helium (hint)
 
