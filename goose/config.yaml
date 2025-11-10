@@ -1,2 +1,55 @@
-GOOSE_PROVIDER: claude-code
-GOOSE_MODEL: claude-sonnet-4-20250514
+OPENAI_BASE_PATH: v1/chat/completions
+GOOSE_MODEL: gemini-2.5-pro
+GOOSE_PROVIDER: gemini-cli
+OPENAI_HOST: https://api.openai.com
+extensions:
+  developer:
+    available_tools: []
+    bundled: true
+    description: Code editing and shell access
+    display_name: Developer Tools
+    enabled: true
+    name: developer
+    timeout: 300
+    type: builtin
+  extensionmanager:
+    available_tools: []
+    bundled: true
+    description: Enable extension management tools for discovering, enabling, and disabling extensions
+    enabled: true
+    name: Extension Manager
+    type: platform
+  jetbrains:
+    available_tools: []
+    bundled: true
+    description: Connect to jetbrains IDEs
+    display_name: JetBrains
+    enabled: false
+    name: jetbrains
+    timeout: 300
+    type: builtin
+  memory:
+    available_tools: []
+    bundled: true
+    description: Tools to save and retrieve durable memories
+    display_name: Memory
+    enabled: true
+    name: memory
+    timeout: 300
+    type: builtin
+  todo:
+    available_tools: []
+    bundled: true
+    description: Enable a todo list for Goose so it can keep track of what it is doing
+    enabled: true
+    name: todo
+    type: platform
+  tutorial:
+    available_tools: []
+    bundled: true
+    description: Access interactive tutorials and guides
+    display_name: Tutorial
+    enabled: false
+    name: tutorial
+    timeout: 300
+    type: builtin

@@ -1,16 +1,18 @@
 a[href]::after {
   content: attr(href);
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  padding: 4px 8px;
-  font-size: 12px;
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(41, 43, 48, 0.8);
+  color: #e5e5e5;
+  padding: 2px 8px;
+  font-size: 12.5px;
+  font-weight: normal;
   white-space: nowrap;
   z-index: 9999;
-  border-radius: 3px;
-  margin-bottom: 2px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 
   /* Задержка появления */
   opacity: 0;
@@ -18,7 +20,7 @@ a[href]::after {
   transition:
     opacity 0.3s ease,
     visibility 0.3s ease;
-  transition-delay: 1s; /* Задержка 0.5 секунды */
+  transition-delay: 1s; /* Задержка 1 секунда */
 }
 
 a[href]:hover::after {

@@ -35,7 +35,7 @@ abbr -a y yarn
 abbr -a ydd 'yarn add'
 abbr -a yddd 'yarn add -D'
 abbr -a yrm 'yarn remove'
-abbr -a ys 'yarn start'
+abbr -a ys 'yarn start --reset-cache'
 abbr -a yi 'yarn ios'
 abbr -a yiv 'yarn ios --verbose'
 abbr -a yan 'yarn android:pre-build && yarn android && watchman watch-del .; watchman watch-project .'
@@ -119,7 +119,7 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
 abbr -a oc opencode
-abbr -a ag 'auggie --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
 
