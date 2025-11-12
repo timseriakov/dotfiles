@@ -120,6 +120,7 @@ abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
 abbr -a oc opencode
 abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
 
