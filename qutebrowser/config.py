@@ -237,10 +237,6 @@ c.aliases = {
     "x": "quit --save",
     "ms": "messages",
     "qq": "quit --save",  # Safe quit alias for intentional app exit
-    "tor-start": "spawn -u tor-toggle start",    # Start Tor
-    "tor-stop": "spawn -u tor-toggle stop",      # Stop Tor
-    "tor-status": "spawn -u tor-toggle status",  # Tor status
-    "tor-toggle": "spawn -u tor-toggle toggle",  # Toggle Tor
 }
 
 # Reload
@@ -292,8 +288,11 @@ config.bind("<Cmd-Right>", "forward")
 
 # Open link in new tab
 config.bind("f", "hint links")
+config.bind("а", en("hint links"))
+
 # Open link in new tab (background)
 config.bind("F", "hint links tab-bg")
+config.bind("А", en("hint links tab-bg"))
 
 # Yank current URL or link
 config.bind("yy", "yank")
@@ -314,6 +313,9 @@ config.bind("<Cmd-q>", "tab-close")  # Direct cmd+q for Russian layout (cmd+й)
 # Move tab
 config.bind("<", "tab-move -")
 config.bind(">", "tab-move +")
+
+config.bind("/", "cmd-set-text /")
+config.bind("?", "cmd-set-text ?")
 
 # Swap m and M for bookmarks
 # config.bind("m", "bookmark-add")  # Disabled to prevent accidental bookmarks
@@ -343,11 +345,19 @@ config.bind(leader + 'b', 'spawn -u braindrop')
 # Save link to Raindrop
 config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
 
+# Tor aliases for cleaner bindings
+c.aliases.update({
+    'tor-start': 'spawn -u tor-toggle start',
+    'tor-stop': 'spawn -u tor-toggle stop',
+    'tor-status': 'spawn -u tor-toggle status',
+    'tor-toggle': 'spawn -u tor-toggle toggle',
+})
+
 # Tor controls - Manage Tor service and proxy for .onion sites
-config.bind(leader + 'os', 'spawn -u tor-toggle start')    # Start Tor
-config.bind(leader + 'ox', 'spawn -u tor-toggle stop')     # Stop Tor
-config.bind(leader + 'oi', 'spawn -u tor-toggle status')   # Tor Info/Status
-config.bind(leader + 'oo', 'spawn -u tor-toggle toggle')   # Toggle Tor
+config.bind(leader + 'os', 'tor-start')    # Start Tor
+config.bind(leader + 'ox', 'tor-stop')     # Stop Tor
+config.bind(leader + 'oi', 'tor-status')   # Tor Info/Status
+config.bind(leader + 'oo', 'tor-toggle')   # Toggle Tor
 
 config.bind("<Ctrl-Shift-k>", "spawn -u keychain-login")         # Apple Passwords (apw)
 config.bind(leader + 'p', "spawn -u keychain-login")             # Space p – ключевая быстрая команда
@@ -444,11 +454,7 @@ userscript = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/aw-heart
 if os.path.exists(userscript):
     os.system(f'{userscript} start &')
 
-# Tor commands
-c.aliases['tor-start'] = 'spawn -u tor-toggle start'
-c.aliases['tor-stop'] = 'spawn -u tor-toggle stop'
-c.aliases['tor-status'] = 'spawn -u tor-toggle status'
-c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
+# Tor commands (aliases defined above in c.aliases dict)
 
 # ========================================
 # Automatic English Keyboard Layout Switching
@@ -485,9 +491,6 @@ config.bind("<Escape>", en_mode_leave(), mode="insert")
 
 # Auto-switch to English for command modes (keep existing functionality)
 config.bind(":", en("cmd-set-text :"))
-# Search modes preserve current layout (you may want to search in Russian/English)
-config.bind("/", "cmd-set-text /")
-config.bind("?", "cmd-set-text ?")
 config.bind("t", en("cmd-set-text -s :open -t"))
 config.bind("е", en("cmd-set-text -s :open -t"))
 config.bind("<Cmd-t>", en("cmd-set-text -s :open -t"))
