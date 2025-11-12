@@ -270,12 +270,7 @@ config.bind('в', 'scroll-page 0 0.5')
 config.bind('u', 'scroll-page 0 -0.5')
 config.bind('г', 'scroll-page 0 -0.5')
 
-# Enter insert mode
-config.bind("i", "mode-enter insert")
-config.bind("ш", "mode-enter insert")
-
-config.bind("a", "mode-enter insert")
-config.bind("ф", "mode-enter insert")
+# Insert mode bindings moved to automatic layout switching section
 
 config.bind("v", "mode-enter caret")
 
@@ -363,7 +358,7 @@ config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 
-config.bind(leader + 'aa', 'mode-enter insert')
+# Insert mode binding moved to automatic layout switching section
 config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
 
 # Translation
@@ -456,10 +451,57 @@ c.aliases['tor-status'] = 'spawn -u tor-toggle status'
 c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
 
 # ========================================
-# Auto English Layout for Command Modes
+# Automatic English Keyboard Layout Switching
 # ========================================
+# Similar to Neovim's InsertLeave behavior but for qutebrowser:
+# - Switch to English on window focus (when not in insert mode)
+# - Switch to English when leaving insert mode
+# - Keep current layout when in insert mode for multilingual typing
 
+# Configure automatic insert mode behavior
+c.input.insert_mode.auto_enter = True   # Enter insert mode when clicking input fields
+c.input.insert_mode.auto_leave = True   # Leave insert mode when clicking outside
+
+# Override mode-enter and mode-leave commands to include layout switching
+def en_mode_enter(mode):
+    """Enter mode without switching layout (preserve current for typing)"""
+    return f"mode-enter {mode}"
+
+def en_mode_leave():
+    """Leave mode and switch to English layout"""
+    return "spawn -u switch-to-english ;; mode-leave"
+
+# Override insert mode bindings to preserve layout when entering, switch when leaving
+config.bind("i", en_mode_enter("insert"))
+config.bind("ш", en_mode_enter("insert"))  # Russian layout
+config.bind("a", en_mode_enter("insert"))
+config.bind("ф", en_mode_enter("insert"))  # Russian layout
+config.bind(leader + 'aa', en_mode_enter("insert"))
+
+# Override Escape to switch to English when leaving insert mode
+config.bind("<Escape>", en_mode_leave(), mode="insert")
+
+# Window focus handling: Start background monitor when qutebrowser starts
+# The monitor script will handle switching to English when window gains focus
+import subprocess
+import threading
+
+def start_focus_monitor():
+    """Start the window focus monitor in the background"""
+    try:
+        monitor_script = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/window-focus-monitor')
+        if os.path.exists(monitor_script):
+            subprocess.Popen([monitor_script], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass  # Silently fail if monitor can't start
+
+# Start the focus monitor in a separate thread to avoid blocking qutebrowser startup
+threading.Thread(target=start_focus_monitor, daemon=True).start()
+
+# Auto-switch to English for command modes (keep existing functionality)
 config.bind(":", en("cmd-set-text :"))
+config.bind("/", en("cmd-set-text /"))
+config.bind("?", en("cmd-set-text ?"))
 config.bind("t", en("cmd-set-text -s :open -t"))
 config.bind("е", en("cmd-set-text -s :open -t"))
 config.bind("<Cmd-t>", en("cmd-set-text -s :open -t"))

@@ -1,12 +1,44 @@
 # Automatic English Keyboard Layout Switching in qutebrowser
 
-This feature automatically switches to English keyboard layout when entering qutebrowser's internal command/prompt modes, similar to how Neovim automatically switches to English layout when exiting insert mode.
+This feature provides comprehensive automatic English keyboard layout switching for qutebrowser, similar to Neovim's InsertLeave behavior. It includes:
+
+1. **Window focus switching** - English layout when qutebrowser gains focus (if not in insert mode)
+2. **Mode change switching** - English layout when leaving insert mode
+3. **Command mode switching** - English layout for all command/prompt modes
+4. **Preserve multilingual input** - Keep current layout when in insert mode for typing in other languages
 
 ## How it works
 
-1. **Userscript**: `userscripts/switch-to-english` uses `im-select` to switch to English (ABC) layout
-2. **Helper function**: `en(cmd)` in config.py wraps commands with layout switching
-3. **Key binding overrides**: Modified key bindings that enter command/prompt modes to first switch to English layout
+### Core Components
+
+1. **Layout switching userscript**: `userscripts/switch-to-english` - Simple 3-line script using `im-select`
+2. **Window focus monitor**: `userscripts/window-focus-monitor` - Background process monitoring qutebrowser focus
+3. **Insert mode detection**: Greasemonkey script detecting when leaving input fields
+4. **Mode change overrides**: Modified insert mode bindings to switch layout on mode changes
+5. **Command mode switching**: All command/prompt modes automatically switch to English
+
+### Automatic Switching Scenarios
+
+**Window Focus (Normal Mode Only)**
+- When qutebrowser window gains focus and you're not typing in an input field
+- Handled by background monitor process
+
+**Leaving Insert Mode**
+- When pressing Escape to leave insert mode
+- When clicking outside input fields on web pages
+- Similar to Neovim's InsertLeave behavior
+
+**Command/Prompt Modes**
+- All colon commands (`:`)
+- Search modes (`/`, `?`)
+- Tab/URL opening prompts
+- Session management prompts
+- Any other qutebrowser internal input modes
+
+**Preserved Multilingual Input**
+- Entering insert mode preserves current keyboard layout
+- Typing in web page input fields keeps your chosen language
+- Only switches to English when leaving input contexts
 
 ## Affected key bindings
 

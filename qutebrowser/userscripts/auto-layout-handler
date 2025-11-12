@@ -1,0 +1,16 @@
+#!/bin/bash
+# qutebrowser userscript: Handle window focus and switch to English layout
+# This script is called when qutebrowser window gains focus
+
+set -euo pipefail
+
+# Function to switch to English layout
+switch_to_english() {
+  if command -v im-select >/dev/null 2>&1; then
+    im-select com.apple.keylayout.ABC 2>/dev/null || true
+  fi
+}
+
+# Always switch to English when qutebrowser gains focus
+# The mode check is handled by the calling context
+switch_to_english
