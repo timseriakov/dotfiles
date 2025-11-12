@@ -24,10 +24,11 @@ This feature provides automatic English keyboard layout switching for qutebrowse
 
 **Command/Prompt Modes**
 - All colon commands (`:`)
-- Search modes (`/`, `?`)
 - Tab/URL opening prompts
 - Session management prompts
 - Any other qutebrowser internal input modes
+
+**Search modes preserve current layout** (`/`, `?`) - you may want to search in Russian or English
 
 **Preserved Multilingual Input**
 - Entering insert mode preserves current keyboard layout

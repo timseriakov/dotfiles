@@ -39,7 +39,7 @@ fi
 echo ""
 echo "✅ Setup complete! Features enabled:"
 echo "   • Leave insert mode → English layout (Escape key)"
-echo "   • Command modes → English layout (: / ? t etc.)"
+echo "   • Command modes → English layout (: t etc., search / ? preserves current)"
 echo "   • Preserve layout in insert mode for multilingual typing"
 echo ""
 echo "💡 You may need to restart qutebrowser for all features to work."
