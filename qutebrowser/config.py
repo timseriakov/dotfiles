@@ -425,7 +425,6 @@ config.bind(leader + "x", "quit --save")
 # This provides consistent "close" behavior (cmd+q) in both tmux and qutebrowser
 # without accidental app quit
 
-
 # tabs
 config.bind(leader + "ta", "bookmark-add")
 config.bind(leader + "tb", "bookmark-list")
@@ -446,7 +445,6 @@ config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
 config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
 
 # Autostart ActivityWatch bridge
-# Autostart ActivityWatch bridge
 userscript = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge')
 if os.path.exists(userscript):
     os.system(f'{userscript} start &')
@@ -457,24 +455,11 @@ c.aliases['tor-stop'] = 'spawn -u tor-toggle stop'
 c.aliases['tor-status'] = 'spawn -u tor-toggle status'
 c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
 
-
-
-
-
-
-
-
-
-# Proxy configuration: .onion through Tor, others direct
-# c.content.proxy = "socks://localhost:9050/;direct://"
-
 # ========================================
 # Auto English Layout for Command Modes
 # ========================================
 
 config.bind(":", en("cmd-set-text :"))
-config.bind("/", en("cmd-set-text /"))
-config.bind("?", en("cmd-set-text ?"))
 config.bind("t", en("cmd-set-text -s :open -t"))
 config.bind("е", en("cmd-set-text -s :open -t"))
 config.bind("<Cmd-t>", en("cmd-set-text -s :open -t"))
