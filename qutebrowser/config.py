@@ -36,6 +36,10 @@ config.set("content.autoplay", False)
 
 # Note: userscripts directory is ~/.qutebrowser/userscripts (symlinked to repo)
 
+# Short helper for English layout switching
+def en(cmd):
+    return f"spawn -u switch-to-english ;; {cmd}"
+
 # Enable mouse back/forward buttons
 c.input.mouse.back_forward_buttons = True
 
@@ -289,14 +293,7 @@ config.bind("Д", "forward")
 config.bind("<Cmd-Left>", "back")
 config.bind("<Cmd-Right>", "forward")
 
-config.bind("t", "cmd-set-text -s :open -t")
-config.bind("е", "cmd-set-text -s :open -t")
-config.bind("<Cmd-t>", "cmd-set-text -s :open -t")
-config.bind("<Cmd-е>", "cmd-set-text -s :open -t")
-
-# Find mode
-config.bind("/", "cmd-set-text /")
-config.bind("?", "cmd-set-text ?")
+# Tab opening and search modes - moved to keyboard layout switching section
 
 # Open link in new tab
 config.bind("f", "hint links")
@@ -331,7 +328,7 @@ config.bind("M", "quickmark-save")
 # macOS-style Preferences: Cmd+,
 config.bind("<Cmd-,>", "open qute://settings")
 
-config.bind("ge", "cmd-set-text -s :open {url}") # edit url
+# URL editing - moved to keyboard layout switching section
 config.bind("gu", "navigate up") # go up one level in URL
 
 # Open link in mpv
@@ -373,13 +370,13 @@ config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartb
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
 config.bind(leader + 'tr', 'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();') # full page translation toggle
 
-config.bind(leader + leader, 'cmd-set-text -s :tab-select')
+# Tab selection - moved to keyboard layout switching section
 
 config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
 config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
 config.bind(leader + "сс", "config-source ;; message-info 'Config reloaded'") # reload config
-config.bind(leader + "cS", "cmd-set-text -s :set -t")
+# Settings prompt - moved to keyboard layout switching section
 
 # ui
 config.bind(leader + "uu", "config-cycle tabs.show multiple never")
@@ -435,21 +432,16 @@ config.bind(leader + "tb", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
 config.bind(leader + "tn", "tab-give") # move tab to new window
-config.bind(leader + "tw", "cmd-set-text -s :tab-take") # move tab to selected window
 config.bind(leader + "th", "history")
-config.bind(leader + "tm", "cmd-set-text -s :tab-move")
 config.bind(leader + "tp", "tab-pin")
-config.bind(leader + "tt", "cmd-set-text -s :tab-select")
+# Tab prompts with text input - moved to keyboard layout switching section
 config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
 config.bind(leader + "ti", "open -p") # Open new private window
 config.bind("<Cmd-Shift-N>", "open -p")  # macOS standard incognito shortcut (Cmd+Shift+N)
 
 # sessions
 # Interactive prompts leverage completion for existing session names.
-config.bind(leader + "ss", "cmd-set-text -s :session-save ")
-config.bind(leader + "sl", "cmd-set-text -s :session-load ")
-config.bind(leader + "sd", "cmd-set-text -s :session-delete ")
-config.bind(leader + "sr", "cmd-set-text -s :session-rename ")
+# Session prompts with text input - moved to keyboard layout switching section
 config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
 config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
 
@@ -475,3 +467,25 @@ c.aliases['tor-toggle'] = 'spawn -u tor-toggle toggle'
 
 # Proxy configuration: .onion through Tor, others direct
 # c.content.proxy = "socks://localhost:9050/;direct://"
+
+# ========================================
+# Auto English Layout for Command Modes
+# ========================================
+
+config.bind(":", en("cmd-set-text :"))
+config.bind("/", en("cmd-set-text /"))
+config.bind("?", en("cmd-set-text ?"))
+config.bind("t", en("cmd-set-text -s :open -t"))
+config.bind("е", en("cmd-set-text -s :open -t"))
+config.bind("<Cmd-t>", en("cmd-set-text -s :open -t"))
+config.bind("<Cmd-е>", en("cmd-set-text -s :open -t"))
+config.bind(leader + leader, en("cmd-set-text -s :tab-select"))
+config.bind("ge", en("cmd-set-text -s :open {url}"))
+config.bind(leader + "ss", en("cmd-set-text -s :session-save "))
+config.bind(leader + "sl", en("cmd-set-text -s :session-load "))
+config.bind(leader + "sd", en("cmd-set-text -s :session-delete "))
+config.bind(leader + "sr", en("cmd-set-text -s :session-rename "))
+config.bind(leader + "tm", en("cmd-set-text -s :tab-move"))
+config.bind(leader + "tw", en("cmd-set-text -s :tab-take"))
+config.bind(leader + "tt", en("cmd-set-text -s :tab-select"))
+config.bind(leader + "cS", en("cmd-set-text -s :set -t"))
