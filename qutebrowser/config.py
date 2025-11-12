@@ -481,27 +481,10 @@ config.bind(leader + 'aa', en_mode_enter("insert"))
 # Override Escape to switch to English when leaving insert mode
 config.bind("<Escape>", en_mode_leave(), mode="insert")
 
-# Window focus handling: Start background monitor when qutebrowser starts
-# The monitor script will handle switching to English when window gains focus
-import subprocess
-import threading
-
-def start_focus_monitor():
-    """Start the window focus monitor in the background"""
-    try:
-        monitor_script = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/window-focus-monitor')
-        if os.path.exists(monitor_script):
-            subprocess.Popen([monitor_script], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except Exception:
-        pass  # Silently fail if monitor can't start
-
-# Start the focus monitor in a separate thread to avoid blocking qutebrowser startup
-threading.Thread(target=start_focus_monitor, daemon=True).start()
+# Note: Window focus monitoring removed - keeping only reliable mode-based switching
 
 # Auto-switch to English for command modes (keep existing functionality)
 config.bind(":", en("cmd-set-text :"))
-config.bind("/", en("cmd-set-text /"))
-config.bind("?", en("cmd-set-text ?"))
 config.bind("t", en("cmd-set-text -s :open -t"))
 config.bind("е", en("cmd-set-text -s :open -t"))
 config.bind("<Cmd-t>", en("cmd-set-text -s :open -t"))

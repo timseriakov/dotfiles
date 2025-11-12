@@ -26,7 +26,6 @@ defaults write com.apple.HIToolbox AppleLanguageIndicatorEnabled 0
 echo "🔐 Setting userscript permissions..."
 chmod +x userscripts/switch-to-english
 chmod +x userscripts/auto-layout-handler
-chmod +x userscripts/window-focus-monitor
 
 # Test the basic layout switching
 echo "🧪 Testing layout switching..."
@@ -39,7 +38,6 @@ fi
 
 echo ""
 echo "✅ Setup complete! Features enabled:"
-echo "   • Window focus → English layout (when not in insert mode)"
 echo "   • Leave insert mode → English layout (Escape key)"
 echo "   • Command modes → English layout (: / ? t etc.)"
 echo "   • Preserve layout in insert mode for multilingual typing"

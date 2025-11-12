@@ -1,27 +1,21 @@
 # Automatic English Keyboard Layout Switching in qutebrowser
 
-This feature provides comprehensive automatic English keyboard layout switching for qutebrowser, similar to Neovim's InsertLeave behavior. It includes:
+This feature provides automatic English keyboard layout switching for qutebrowser, similar to Neovim's InsertLeave behavior. It includes:
 
-1. **Window focus switching** - English layout when qutebrowser gains focus (if not in insert mode)
-2. **Mode change switching** - English layout when leaving insert mode
-3. **Command mode switching** - English layout for all command/prompt modes
-4. **Preserve multilingual input** - Keep current layout when in insert mode for typing in other languages
+1. **Mode change switching** - English layout when leaving insert mode
+2. **Command mode switching** - English layout for all command/prompt modes
+3. **Preserve multilingual input** - Keep current layout when in insert mode for typing in other languages
 
 ## How it works
 
 ### Core Components
 
 1. **Layout switching userscript**: `userscripts/switch-to-english` - Simple 3-line script using `im-select`
-2. **Window focus monitor**: `userscripts/window-focus-monitor` - Background process monitoring qutebrowser focus
-3. **Insert mode detection**: Greasemonkey script detecting when leaving input fields
-4. **Mode change overrides**: Modified insert mode bindings to switch layout on mode changes
-5. **Command mode switching**: All command/prompt modes automatically switch to English
+2. **Insert mode detection**: Greasemonkey script detecting when leaving input fields
+3. **Mode change overrides**: Modified insert mode bindings to switch layout on mode changes
+4. **Command mode switching**: All command/prompt modes automatically switch to English
 
 ### Automatic Switching Scenarios
-
-**Window Focus (Normal Mode Only)**
-- When qutebrowser window gains focus and you're not typing in an input field
-- Handled by background monitor process
 
 **Leaving Insert Mode**
 - When pressing Escape to leave insert mode
