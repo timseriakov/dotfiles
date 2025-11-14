@@ -28,7 +28,7 @@ return {
     opts.defaults.mappings.i = opts.defaults.mappings.i or {}
     opts.defaults.mappings.i["<C-l>"] = actions.send_to_qflist + actions.open_qflist
     opts.defaults.mappings.i["<c-y>"] = require("modules.telescope.actions").copy_selection_to_clipboard
-    opts.defaults.mappings.i["<c-u>"] = require("modules.telescope.actions").copy_selection_paths_to_clipboard
+    opts.defaults.mappings.i["<c-r>"] = require("modules.telescope.actions").copy_selection_paths_to_clipboard
 
     telescope.setup(opts)
     telescope.load_extension("live_grep_args")

@@ -3,9 +3,22 @@ local action_state = require("telescope.actions.state")
 
 local M = {}
 
-function M.copy_selection_to_clipboard(bufnr)
+local function get_selected_entries(bufnr)
   local picker = action_state.get_current_picker(bufnr)
   local selection = picker:get_multi_selection()
+
+  if #selection == 0 then
+    local current_entry = action_state.get_selected_entry()
+    if current_entry then
+      selection = { current_entry }
+    end
+  end
+
+  return selection
+end
+
+function M.copy_selection_to_clipboard(bufnr)
+  local selection = get_selected_entries(bufnr)
 
   if #selection == 0 then
     vim.notify("No files selected.", vim.log.levels.WARN)
@@ -54,8 +67,7 @@ function M.copy_selection_to_clipboard(bufnr)
 end
 
 function M.copy_selection_paths_to_clipboard(bufnr)
-  local picker = action_state.get_current_picker(bufnr)
-  local selection = picker:get_multi_selection()
+  local selection = get_selected_entries(bufnr)
 
   if #selection == 0 then
     vim.notify("No files selected.", vim.log.levels.WARN)
