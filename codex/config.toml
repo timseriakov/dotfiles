@@ -1,4 +1,4 @@
-model = "gpt-5-codex"
+model = "gpt-5.1-codex"
 model_reasoning_effort = "medium"
 
 [projects."/Users/tim/dev/dotfiles"]
@@ -28,3 +28,6 @@ trust_level = "trusted"
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp/"
+
+[notice]
+hide_gpt5_1_migration_prompt = true
