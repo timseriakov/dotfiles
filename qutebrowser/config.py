@@ -18,9 +18,6 @@ config.set(
     "https://accounts.google.com/*"
 )
 
-# Tor proxy configuration
-# Default: .onion through Tor, others direct
-
 # Variables
 leader = " "
 ss_dir = "~/Documents/screenshots"
@@ -30,7 +27,7 @@ terminal = "/opt/homebrew/bin/kitty"
 editor = "/opt/homebrew/bin/nvim"
 username = "timseriakov"
 homepage = "http://localhost:1931"
-c.content.user_stylesheets = ['~/.qutebrowser/styles/tooltip.css']
+# c.content.user_stylesheets = ['~/.qutebrowser/styles/tooltip.css']
 
 config.set("content.autoplay", False)
 
@@ -157,7 +154,7 @@ c.colors.statusbar.normal.bg = nord0
 c.colors.statusbar.normal.fg = "#6C7086"
 c.colors.statusbar.command.bg = nord0
 c.colors.statusbar.command.fg = white
-c.colors.statusbar.insert.bg = green
+c.colors.statusbar.insert.bg = "#3D6164" # "#00754a"
 c.colors.statusbar.insert.fg = black
 c.colors.statusbar.passthrough.bg = nord3  # темно-серый вместо фиолетового для лучшей видимости URL
 c.colors.statusbar.passthrough.fg = white
@@ -321,6 +318,7 @@ config.bind("?", "cmd-set-text ?")
 # config.bind("m", "bookmark-add")  # Disabled to prevent accidental bookmarks
 config.bind("<Ctrl-b>", "bookmark-add")  # Use Ctrl+B instead to prevent accidents
 config.bind("M", "quickmark-save")
+config.unbind("m")
 
 # macOS-style Preferences: Cmd+,
 config.bind("<Cmd-,>", "open qute://settings")
