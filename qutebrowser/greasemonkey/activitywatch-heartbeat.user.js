@@ -24,6 +24,9 @@
   // Internal state
   let lastUrl = location.href;
   let beatTimer = null;
+  // Throttling state
+  let lastSentTime = 0;
+  let throttleTimer = null;
 
   // Guard: only operate on http/https pages.
   function isHttpLike() {
@@ -38,6 +41,23 @@
    * - Silently ignores errors; this is best-effort tracking.
    */
   function sendHeartbeat() {
+    // Throttling to prevent infinite loops
+    const now = Date.now();
+    if (now - lastSentTime < 2000) {
+      if (!throttleTimer) {
+        throttleTimer = setTimeout(() => {
+          throttleTimer = null;
+          sendHeartbeat();
+        }, 2000 - (now - lastSentTime));
+      }
+      return;
+    }
+    if (throttleTimer) {
+      clearTimeout(throttleTimer);
+      throttleTimer = null;
+    }
+    lastSentTime = now;
+
     if (!isHttpLike()) return;
 
     const payload = {

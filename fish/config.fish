@@ -18,3 +18,6 @@ end
 
 # Increase file descriptor limit for interactive shells (macOS)
 status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
+
+# Added by Antigravity
+fish_add_path /Users/tim/.antigravity/antigravity/bin

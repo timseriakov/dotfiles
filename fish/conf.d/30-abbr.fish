@@ -90,6 +90,7 @@ abbr -a .c 'cd ~/.claude'
 abbr -a c. 'cd ~/.claude'
 abbr -a mp mcpproxy
 abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mpr '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
@@ -133,6 +134,8 @@ abbr -a tt 'backlog browser'
 abbr -a zd 'z dot'
 abbr -a zm 'z mobile'
 abbr -a zl 'z dl'
+abbr -a dl 'cd ~/dl'
+abbr -a do 'cd ~/dev/dotfiles'
 
 # Open configs
 abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
@@ -185,5 +188,4 @@ abbr -a ipinfo-more 'curl -s ipwho.is'
 abbr -a bt btop
 abbr -a vtop 'vtop --theme nord'
 
-abbr -a dl 'cd ~/dl'
-abbr -a do 'cd ~/dev/dotfiles'
+abbr -a r rum
