@@ -16,8 +16,12 @@ if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
 
+# Workbrew auto-activation
+if test -f .workbrew-env
+    source .workbrew-env
+end
+
 # Increase file descriptor limit for interactive shells (macOS)
 status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
 
-# Added by Antigravity
-fish_add_path /Users/tim/.antigravity/antigravity/bin
+# Note: Antigravity PATH managed in conf.d/10-path.fish
