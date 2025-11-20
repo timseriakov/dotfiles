@@ -3,14 +3,11 @@
 # Clear old fish_user_paths to avoid duplicates (universal)
 set -eU fish_user_paths
 
-# Priority: rbenv → pyenv → rest
-# rbenv (shims first, then bin)
-fish_add_path -Ua ~/.rbenv/shims
-fish_add_path -Ua ~/.rbenv/bin
+# Note: rbenv and pyenv shims are managed by their init scripts in 20-tooling.fish
+# Don't add them manually here to avoid duplicates
 
-# pyenv
-fish_add_path -Ua ~/.pyenv/shims
-fish_add_path -Ua ~/.pyenv/bin
+# Antigravity (high priority)
+fish_add_path -Ua ~/.antigravity/antigravity/bin
 
 # User/local tool bins
 fish_add_path -Ua ~/.local/bin
@@ -23,15 +20,12 @@ fish_add_path -Ua ~/.nix-profile/bin
 fish_add_path -Ua ~/.swiftly/bin
 fish_add_path -Ua ~/.lmstudio/bin
 fish_add_path -Ua ~/.orbstack/bin
-#
-# lazyshell
 fish_add_path -Ua ~/.lazyshell/bin
 
 # Go
 fish_add_path -Ua ~/go/bin
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/.local/bin
-fish_add_path -Ua $GOBIN
 
 # Java SDKs (prefer 11 to match JAVA_HOME)
 fish_add_path -Ua /opt/homebrew/opt/openjdk@11/bin
@@ -48,14 +42,12 @@ fish_add_path -Ua ~/oracle/instantclient_23_3
 fish_add_path -Ua ~/Qt/6.7.0-custom/bin
 fish_add_path -Ua /opt/homebrew/opt/qt@5/bin
 
-# System paths
-fish_add_path -Ua /opt/homebrew/bin
-fish_add_path -Ua /opt/homebrew/sbin
-fish_add_path -Ua /opt/local/bin
-fish_add_path -Ua /opt/local/sbin
-fish_add_path -Ua /usr/local/bin
-fish_add_path -Ua /usr/local/sbin
-fish_add_path -Ua /usr/bin
-fish_add_path -Ua /bin
-fish_add_path -Ua /usr/sbin
-fish_add_path -Ua /sbin
+# MacPorts (if installed)
+if test -d /opt/local/bin
+    fish_add_path -Ua /opt/local/bin
+    fish_add_path -Ua /opt/local/sbin
+end
+
+# Note: System paths (/usr/bin, /bin, /usr/sbin, /sbin) and Homebrew paths
+# (/opt/homebrew/bin, /opt/homebrew/sbin) are already in the default system PATH
+# Don't add them to fish_user_paths to avoid duplicates
