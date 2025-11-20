@@ -6,6 +6,18 @@
   "debug_search": false,
   "mcpServers": [
     {
+      "name": "Homebrew",
+      "protocol": "stdio",
+      "command": "/opt/homebrew/bin/brew",
+      "args": [
+        "mcp-server"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-11-20T13:55:43.556402+03:00",
+      "updated": "2025-11-20T13:55:43.556405+03:00"
+    },
+    {
       "name": "activitywatch",
       "protocol": "stdio",
       "command": "node",
@@ -15,7 +27,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-11-18T15:07:15.854268+03:00"
+      "updated": "2025-11-19T11:33:17.768036+03:00"
     },
     {
       "name": "atlassian",
@@ -29,7 +41,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:09:30.888827+03:00"
+      "updated": "2025-11-19T11:33:17.781457+03:00"
     },
     {
       "name": "context7",
@@ -42,7 +54,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.872461+03:00"
+      "updated": "2025-11-19T11:33:17.789976+03:00"
     },
     {
       "name": "fleur",
@@ -54,7 +66,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.885113+03:00"
+      "updated": "2025-11-19T11:33:17.799958+03:00"
     },
     {
       "name": "gitlab",
@@ -67,7 +79,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.893623+03:00"
+      "updated": "2025-11-19T11:33:17.807744+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -83,7 +95,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.90064+03:00"
+      "updated": "2025-11-19T11:33:17.816995+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -96,7 +108,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.908665+03:00"
+      "updated": "2025-11-19T11:33:17.827205+03:00"
     },
     {
       "name": "repomix",
@@ -110,7 +122,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.916582+03:00"
+      "updated": "2025-11-19T11:33:17.836168+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -123,7 +135,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.923537+03:00"
+      "updated": "2025-11-19T11:33:17.8451+03:00"
     },
     {
       "name": "serena",
@@ -144,7 +156,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.93184+03:00"
+      "updated": "2025-11-19T11:33:17.853128+03:00"
     },
     {
       "name": "shadcn-svelte-extras",
@@ -157,7 +169,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-11-16T14:48:58.981911+03:00",
-      "updated": "2025-11-18T15:07:15.940657+03:00"
+      "updated": "2025-11-19T11:33:17.861102+03:00"
     },
     {
       "name": "shrimp-task-manager",
@@ -174,7 +186,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:42:21.144894+03:00",
-      "updated": "2025-11-18T15:07:15.951686+03:00"
+      "updated": "2025-11-19T11:33:17.869236+03:00"
     },
     {
       "name": "sqvr-graphql",
@@ -192,7 +204,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-11-18T15:07:15.960371+03:00"
+      "updated": "2025-11-19T11:33:17.879397+03:00"
     }
   ],
   "top_k": 5,
@@ -253,7 +265,6 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,
