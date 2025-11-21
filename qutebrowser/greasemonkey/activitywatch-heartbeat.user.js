@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ActivityWatch Heartbeat for qutebrowser
 // @namespace    https://github.com/timhq/dotfiles
-// @version      1.0.0
-// @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs.
+// @version      1.1.0
+// @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs. Disabled in private/incognito mode.
 // @match        *://*/*
 // @run-at       document-start
 // @grant        none
@@ -14,6 +14,45 @@
   // Prevent double-injection in rare cases (e.g., bfcache restores).
   if (window.__awHeartbeatInstalled__) return;
   window.__awHeartbeatInstalled__ = true;
+
+  // Exit early if in private/incognito mode
+  // Detection: try to detect private mode through synchronous heuristics
+  function isPrivateMode() {
+    // Method 1: Check if localStorage throws an exception when accessed
+    // In qutebrowser private mode, localStorage typically throws SecurityError
+    try {
+      const testKey = '__awPrivateTest__';
+      localStorage.setItem(testKey, '1');
+      localStorage.removeItem(testKey);
+    } catch (e) {
+      // localStorage access failed - likely private mode
+      return true;
+    }
+
+    // Method 2: Check for indexedDB.databases (not available in some private modes)
+    // Some browsers don't expose this API in private mode
+    if (window.indexedDB && typeof window.indexedDB.databases === 'undefined') {
+      return true;
+    }
+
+    // Method 3: Try to open IndexedDB connection
+    // In some private modes, this fails immediately
+    try {
+      const openRequest = window.indexedDB.open('__awPrivateTest__');
+      if (!openRequest) {
+        return true;
+      }
+    } catch (e) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (isPrivateMode()) {
+    console.debug('[aw-heartbeat] Private mode detected, not tracking');
+    return;
+  }
 
   // Configuration
   const ENDPOINT = 'http://127.0.0.1:8437/heartbeat';

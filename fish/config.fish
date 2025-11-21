@@ -16,10 +16,6 @@ if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
 
-# Workbrew auto-activation
-if test -f .workbrew-env
-    source .workbrew-env
-end
 
 # Increase file descriptor limit for interactive shells (macOS)
 status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536

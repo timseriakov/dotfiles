@@ -205,6 +205,18 @@
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
       "updated": "2025-11-19T11:33:17.879397+03:00"
+    },
+    {
+      "name": "svelte-mcp",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "@sveltejs/mcp"
+      ],
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-11-20T22:00:50.113672+03:00",
+      "updated": "2025-11-20T22:00:50.113675+03:00"
     }
   ],
   "top_k": 5,
