@@ -330,9 +330,19 @@ config.bind("gu", "navigate up") # go up one level in URL
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 config.bind(leader + "i", "spawn open -a IINA {url}")
 
-# Download current URL as file (for audio/video tabs)
-config.bind(leader + "ad", "download {url}")
-config.bind(leader + "aa", "download-cancel")
+# ActivityWatch heartbeat bridge controls
+config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
+config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
+config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
+
+# ActivityWatch tracking toggle (opt-out system: enabled by default)
+# Disable: sets flag in both localStorage (persistent) and sessionStorage (session-only for private windows)
+config.bind(leader + 'ad', 'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))')
+# Enable: removes flag from both storages
+config.bind(leader + 'ae', 'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))')
+
+# Insert mode binding moved to automatic layout switching section
+config.bind(leader + 'al', f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'")
 
 config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
 config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
@@ -364,12 +374,9 @@ config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
 # Force picker (даже для одного credential)
 config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
 
-c.input.mode_override = None
 
-# Autofill password (single credential auto-selects)
-config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
-# Force picker (даже для одного credential)
-config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
+
+
 
 
 # ActivityWatch heartbeat bridge controls

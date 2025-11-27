@@ -101,7 +101,7 @@ status() {
   else
     echo "aw-heartbeat-bridge: not running"
     qmsg "AW bridge not running"
-    exit 1
+    exit 0
   fi
 }
 
