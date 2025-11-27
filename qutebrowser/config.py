@@ -23,7 +23,7 @@ leader = " "
 ss_dir = "~/Documents/screenshots"
 # updates on every config-source
 timestamp = strftime("%Y-%m-%d-%H-%M-%S", localtime())
-terminal = "/opt/homebrew/bin/kitty"
+terminal = "/opt/homebrew/bin/alacritty"
 editor = "/opt/homebrew/bin/nvim"
 username = "timseriakov"
 homepage = "http://localhost:1931"
@@ -357,17 +357,34 @@ config.bind(leader + 'ox', 'tor-stop')     # Stop Tor
 config.bind(leader + 'oi', 'tor-status')   # Tor Info/Status
 config.bind(leader + 'oo', 'tor-toggle')   # Toggle Tor
 
-config.bind("<Ctrl-Shift-k>", "spawn -u keychain-login")         # Apple Passwords (apw)
-config.bind(leader + 'p', "spawn -u keychain-login")             # Space p – ключевая быстрая команда
-config.bind(leader + 'P', "spawn -u keychain-login --pick")      # Space P – выбор записи Apple Passwords
+c.input.mode_override = None
+
+# Autofill password (single credential auto-selects)
+config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
+# Force picker (даже для одного credential)
+config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
+
+c.input.mode_override = None
+
+# Autofill password (single credential auto-selects)
+config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
+# Force picker (даже для одного credential)
+config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
+
 
 # ActivityWatch heartbeat bridge controls
 config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
 config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
 config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
 
+# ActivityWatch tracking toggle (opt-out system: enabled by default)
+# Disable: sets flag in both localStorage (persistent) and sessionStorage (session-only for private windows)
+config.bind(leader + 'ad', 'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))')
+# Enable: removes flag from both storages
+config.bind(leader + 'ae', 'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))')
+
 # Insert mode binding moved to automatic layout switching section
-config.bind(leader + 'al', f'spawn --detach {terminal} -e tail -f /tmp/aw-heartbeat-bridge.log')
+config.bind(leader + 'al', f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'")
 
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
