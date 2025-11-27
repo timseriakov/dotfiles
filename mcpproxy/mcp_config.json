@@ -9,9 +9,7 @@
       "name": "Homebrew",
       "protocol": "stdio",
       "command": "/opt/homebrew/bin/brew",
-      "args": [
-        "mcp-server"
-      ],
+      "args": ["mcp-server"],
       "enabled": true,
       "quarantined": false,
       "created": "2025-11-20T13:55:43.556402+03:00",
@@ -21,9 +19,7 @@
       "name": "activitywatch",
       "protocol": "stdio",
       "command": "node",
-      "args": [
-        "/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"
-      ],
+      "args": ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
@@ -33,11 +29,7 @@
       "name": "atlassian",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.atlassian.com/v1/sse"
-      ],
+      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -47,10 +39,7 @@
       "name": "context7",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp"
-      ],
+      "args": ["-y", "@upstash/context7-mcp"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -60,9 +49,7 @@
       "name": "fleur",
       "protocol": "stdio",
       "command": "/Users/tim/.local/bin/uvx",
-      "args": [
-        "mcp-fleur"
-      ],
+      "args": ["mcp-fleur"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -72,10 +59,7 @@
       "name": "gitlab",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@zereight/mcp-gitlab"
-      ],
+      "args": ["-y", "@zereight/mcp-gitlab"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -85,10 +69,7 @@
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@morph-llm/morph-fast-apply"
-      ],
+      "args": ["-y", "@morph-llm/morph-fast-apply"],
       "env": {
         "MORPH_API_KEY": "${keyring:morph_api_key}"
       },
@@ -101,10 +82,7 @@
       "name": "perplexity-mcp",
       "protocol": "stdio",
       "command": "fish",
-      "args": [
-        "-lc",
-        "perplexity-mcp"
-      ],
+      "args": ["-lc", "perplexity-mcp"],
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -114,10 +92,7 @@
       "name": "repomix",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "repomix",
-        "serve"
-      ],
+      "args": ["repomix", "serve"],
       "working_dir": "/Users/tim/dev/work/mobile",
       "enabled": false,
       "quarantined": false,
@@ -128,10 +103,7 @@
       "name": "sequential-thinking",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
@@ -158,10 +130,7 @@
       "name": "shadcn-svelte-extras",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "jsrepo",
-        "mcp"
-      ],
+      "args": ["jsrepo", "mcp"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-11-16T14:48:58.981911+03:00",
@@ -171,9 +140,7 @@
       "name": "shrimp-task-manager",
       "protocol": "stdio",
       "command": "node",
-      "args": [
-        "/Users/tim/dev/ai/mcp-shrimp-task-manager/dist/index.js"
-      ],
+      "args": ["/Users/tim/dev/ai/mcp-shrimp-task-manager/dist/index.js"],
       "env": {
         "DATA_DIR": "/Users/tim/dev/ai/shrimp-data",
         "ENABLE_GUI": "false",
@@ -188,10 +155,7 @@
       "name": "sqvr-graphql",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-graphql"
-      ],
+      "args": ["-y", "mcp-graphql"],
       "env": {
         "ALLOW_MUTATIONS": "true",
         "ENDPOINT": "https://qa1.sqvr.net/api/graphql/v1",
@@ -206,9 +170,7 @@
       "name": "svelte-mcp",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "@sveltejs/mcp"
-      ],
+      "args": ["@sveltejs/mcp"],
       "enabled": false,
       "quarantined": false,
       "created": "2025-11-20T22:00:50.113672+03:00",
@@ -318,9 +280,7 @@
       "description": "Browse and discover MCP use-cases, servers, clients, and news",
       "url": "https://www.pulsemcp.com/",
       "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/pulse"
     },
     {
@@ -329,9 +289,7 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/docker"
     },
     {
@@ -340,9 +298,7 @@
       "description": "Fleur is the app store for Claude",
       "url": "https://www.fleurmcp.com/",
       "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/fleur"
     },
     {
@@ -351,12 +307,7 @@
       "description": "A reference implementation of MCP registry using Azure API Center",
       "url": "https://demo.registry.azure-mcp.net/",
       "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": [
-        "verified",
-        "demo",
-        "azure",
-        "reference"
-      ],
+      "tags": ["verified", "demo", "azure", "reference"],
       "protocol": "mcp/v0"
     },
     {
@@ -365,11 +316,7 @@
       "description": "Community-maintained list of remote Model Context Protocol servers",
       "url": "https://remote-mcp-servers.com/",
       "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": [
-        "verified",
-        "community",
-        "remote"
-      ],
+      "tags": ["verified", "community", "remote"],
       "protocol": "custom/remote"
     }
   ],

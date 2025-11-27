@@ -19,3 +19,4 @@ karabiner/automatic_backups
 mcpproxy/config.db
 mcpproxy/config.db.backup*
 __pycache__/
+qutebrowser/userscripts/qpw

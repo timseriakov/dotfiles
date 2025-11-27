@@ -18,6 +18,7 @@ See **FLAGS.md** for complete flag documentation:
 - `--seq` / `--sequential` → Explicitly enable Sequential for structured reasoning
 
 **Manual Triggers** (without flags):
+
 - Complex debugging scenarios with multiple layers
 - Architectural analysis and system design questions
 - Problems requiring hypothesis testing and validation
@@ -32,22 +33,22 @@ See **FLAGS.md** for complete flag documentation:
 
 ### Core Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `thought` | string | Yes | Current thinking step content (analysis, revision, question, realization, hypothesis) |
-| `thoughtNumber` | integer | Yes | Position in sequence (can exceed initial `totalThoughts`) |
-| `totalThoughts` | integer | Yes | Estimated total thoughts needed (dynamically adjustable) |
-| `nextThoughtNeeded` | boolean | Yes | Whether additional reasoning steps required |
+| Parameter           | Type    | Required | Description                                                                           |
+| ------------------- | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `thought`           | string  | Yes      | Current thinking step content (analysis, revision, question, realization, hypothesis) |
+| `thoughtNumber`     | integer | Yes      | Position in sequence (can exceed initial `totalThoughts`)                             |
+| `totalThoughts`     | integer | Yes      | Estimated total thoughts needed (dynamically adjustable)                              |
+| `nextThoughtNeeded` | boolean | Yes      | Whether additional reasoning steps required                                           |
 
 ### Advanced Parameters (Optional)
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `isRevision` | boolean | Mark this thought as revising previous thinking |
-| `revisesThought` | integer | Which thought number is being reconsidered (requires `isRevision: true`) |
-| `branchFromThought` | integer | Branching point thought number for alternative reasoning paths |
-| `branchId` | string | Identifier for current branch (if exploring alternatives) |
-| `needsMoreThoughts` | boolean | Realized more thoughts needed even at apparent "end" |
+| Parameter           | Type    | Description                                                              |
+| ------------------- | ------- | ------------------------------------------------------------------------ |
+| `isRevision`        | boolean | Mark this thought as revising previous thinking                          |
+| `revisesThought`    | integer | Which thought number is being reconsidered (requires `isRevision: true`) |
+| `branchFromThought` | integer | Branching point thought number for alternative reasoning paths           |
+| `branchId`          | string  | Identifier for current branch (if exploring alternatives)                |
+| `needsMoreThoughts` | boolean | Realized more thoughts needed even at apparent "end"                     |
 
 ---
 
@@ -63,22 +64,23 @@ See **FLAGS.md** for complete flag documentation:
 
 ## Sequential vs Native LLM Reasoning
 
-| Aspect | Native LLM Reasoning | Sequential Thinking MCP Server |
-|--------|---------------------|-------------------------------|
-| **Transparency** | Opaque; reasoning hidden in model's forward pass | Fully auditable with explicit thought tracking |
-| **Structure** | Implicit and unstructured | Explicitly structured with discrete steps and metadata |
-| **Debuggability** | Difficult to inspect or audit | Easy to inspect, debug, enhance trust |
-| **Flexibility** | Fixed during model inference | Dynamic adjustment, branching, revisions allowed |
-| **Use Case** | General-purpose reasoning | Complex problems requiring decomposition & traceability |
-| **Prompt Engineering** | Requires careful crafting | Reduces guesswork through structured framework |
-| **Context Maintenance** | Limited across long sequences | Maintains context over numerous steps |
-| **Revision** | Cannot revise earlier reasoning | Can mark and revise previous thoughts |
+| Aspect                  | Native LLM Reasoning                             | Sequential Thinking MCP Server                          |
+| ----------------------- | ------------------------------------------------ | ------------------------------------------------------- |
+| **Transparency**        | Opaque; reasoning hidden in model's forward pass | Fully auditable with explicit thought tracking          |
+| **Structure**           | Implicit and unstructured                        | Explicitly structured with discrete steps and metadata  |
+| **Debuggability**       | Difficult to inspect or audit                    | Easy to inspect, debug, enhance trust                   |
+| **Flexibility**         | Fixed during model inference                     | Dynamic adjustment, branching, revisions allowed        |
+| **Use Case**            | General-purpose reasoning                        | Complex problems requiring decomposition & traceability |
+| **Prompt Engineering**  | Requires careful crafting                        | Reduces guesswork through structured framework          |
+| **Context Maintenance** | Limited across long sequences                    | Maintains context over numerous steps                   |
+| **Revision**            | Cannot revise earlier reasoning                  | Can mark and revise previous thoughts                   |
 
 ---
 
 ## Choose When
 
 ### Use Sequential For:
+
 - **Over native reasoning**: When problems have 3+ interconnected components
 - **Systematic analysis**: Root cause analysis, architecture review, security assessment
 - **Structure matters**: Problems benefit from decomposition and evidence gathering
@@ -89,6 +91,7 @@ See **FLAGS.md** for complete flag documentation:
 - **Agentic workflows**: Self-directed, goal-oriented AI behavior
 
 ### Don't Use Sequential For:
+
 - **Simple tasks**: Basic explanations, single-file changes, straightforward fixes
 - **Real-time needs**: Latency-critical applications (extra overhead)
 - **General knowledge**: Simple facts or synthesis (native is faster)
@@ -113,19 +116,23 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Effective Prompting Patterns
 
 **Initial Scoping**:
+
 - Begin with clear problem statement
 - Let sequential process determine steps needed
 - Don't over-constrain initial `totalThoughts` estimate
 
 **Revision Encouragement**:
+
 - Structure prompts to allow revision of earlier thoughts
 - Example: "Reconsider step 3 based on this new information"
 
 **Alternative Exploration**:
+
 - Explicitly ask to branch and explore alternatives
 - Example: "Create a branch to explore alternative database design"
 
 **Hypothesis Validation**:
+
 - Generate potential solutions during reasoning
 - Validate through structured subsequent thoughts
 - Example: "Hypothesis: caching improves performance. Validate this."
@@ -133,11 +140,13 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Workflow Integration
 
 **Complementary, Not Replacement**:
+
 - Sequential serves as integration layer, not orchestrator replacement
 - Works with LangChain, LlamaIndex, crewAI, etc.
 - Agent framework determines strategy; LLM + Sequential provide transparent reasoning
 
 **Monitoring and Debugging**:
+
 - Leverage in-memory storage for analysis
 - Use pretty-printed output for inspection
 - Verify reasoning follows expected patterns
@@ -150,6 +159,7 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Combination Patterns
 
 **Sequential + Context7** (enabled by `--think-hard`):
+
 ```
 Sequential coordinates analysis
   ↓
@@ -159,6 +169,7 @@ Sequential integrates knowledge into structured reasoning
 ```
 
 **Sequential + Perplexity**:
+
 ```
 Perplexity gathers external facts
   ↓
@@ -168,6 +179,7 @@ Validated conclusion with citations
 ```
 
 **Sequential + Serena**:
+
 ```
 Serena provides project/code context
   ↓
@@ -181,6 +193,7 @@ Structured design decisions with code awareness
 ## Examples
 
 ### Example 1: Complex Debugging
+
 ```
 Task: "Why is this API endpoint slow?"
 
@@ -194,6 +207,7 @@ Sequential reasoning:
 ```
 
 ### Example 2: System Design
+
 ```
 Task: "Design scalable user authentication system"
 
@@ -210,13 +224,13 @@ Sequential reasoning:
 
 ## When NOT to Use Sequential
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|--------|
-| Explain a function | Native Claude | Simple explanation, structure overkill |
-| Fix typo | Native Claude | Straightforward change |
-| Quick fact lookup | Native Claude or Perplexity | Faster without structure overhead |
-| Real-time chatbot | Native Claude | Latency concerns |
-| General knowledge query | Native Claude | No analysis decomposition needed |
+| Scenario                | Use Instead                 | Reason                                 |
+| ----------------------- | --------------------------- | -------------------------------------- |
+| Explain a function      | Native Claude               | Simple explanation, structure overkill |
+| Fix typo                | Native Claude               | Straightforward change                 |
+| Quick fact lookup       | Native Claude or Perplexity | Faster without structure overhead      |
+| Real-time chatbot       | Native Claude               | Latency concerns                       |
+| General knowledge query | Native Claude               | No analysis decomposition needed       |
 
 ---
 

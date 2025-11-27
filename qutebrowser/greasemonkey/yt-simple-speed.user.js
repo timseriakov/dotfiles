@@ -9,33 +9,34 @@
 // @run-at       document-end
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+  "use strict";
 
-    function waitForVideo() {
-        const video = document.querySelector('video');
-        if (video && !document.getElementById('speed-control-simple')) {
-            addSpeedControl(video);
-        } else {
-            setTimeout(waitForVideo, 1000);
-        }
+  function waitForVideo() {
+    const video = document.querySelector("video");
+    if (video && !document.getElementById("speed-control-simple")) {
+      addSpeedControl(video);
+    } else {
+      setTimeout(waitForVideo, 1000);
+    }
+  }
+
+  function addSpeedControl(video) {
+    // Find like button container
+    const likeButton =
+      document.querySelector("#top-level-buttons-computed") ||
+      document.querySelector(".ytd-menu-renderer") ||
+      document.querySelector("#actions");
+
+    if (!likeButton) {
+      setTimeout(() => addSpeedControl(video), 1000);
+      return;
     }
 
-    function addSpeedControl(video) {
-        // Find like button container
-        const likeButton = document.querySelector('#top-level-buttons-computed') ||
-                          document.querySelector('.ytd-menu-renderer') ||
-                          document.querySelector('#actions');
-
-        if (!likeButton) {
-            setTimeout(() => addSpeedControl(video), 1000);
-            return;
-        }
-
-        // Create control div
-        const control = document.createElement('div');
-        control.id = 'speed-control-simple';
-        control.style.cssText = `
+    // Create control div
+    const control = document.createElement("div");
+    control.id = "speed-control-simple";
+    control.style.cssText = `
             display: flex;
             align-items: center;
             gap: 6px;
@@ -48,10 +49,10 @@
             color: var(--yt-spec-text-primary);
         `;
 
-        // Minus button
-        const minusBtn = document.createElement('button');
-        minusBtn.textContent = '−';
-        minusBtn.style.cssText = `
+    // Minus button
+    const minusBtn = document.createElement("button");
+    minusBtn.textContent = "−";
+    minusBtn.style.cssText = `
             background: none;
             border: 1px solid var(--yt-spec-outline);
             color: var(--yt-spec-text-primary);
@@ -67,9 +68,9 @@
             padding: 8px;
         `;
 
-        // Speed display
-        const speedDisplay = document.createElement('span');
-        speedDisplay.style.cssText = `
+    // Speed display
+    const speedDisplay = document.createElement("span");
+    speedDisplay.style.cssText = `
             min-width: 40px;
             text-align: center;
             font-weight: 500;
@@ -78,15 +79,15 @@
             border-radius: 4px;
         `;
 
-        speedDisplay.onclick = () => {
-            video.playbackRate = 1.0;
-            updateDisplay();
-        };
+    speedDisplay.onclick = () => {
+      video.playbackRate = 1.0;
+      updateDisplay();
+    };
 
-        // Plus button
-        const plusBtn = document.createElement('button');
-        plusBtn.textContent = '+';
-        plusBtn.style.cssText = `
+    // Plus button
+    const plusBtn = document.createElement("button");
+    plusBtn.textContent = "+";
+    plusBtn.style.cssText = `
             background: none;
             border: 1px solid var(--yt-spec-outline);
             color: var(--yt-spec-text-primary);
@@ -102,61 +103,62 @@
             padding: 8px;
         `;
 
-        function updateDisplay() {
-            speedDisplay.textContent = video.playbackRate.toFixed(2) + 'x';
-        }
+    function updateDisplay() {
+      speedDisplay.textContent = video.playbackRate.toFixed(2) + "x";
+    }
 
-        minusBtn.onclick = () => {
-            video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
-            updateDisplay();
-        };
+    minusBtn.onclick = () => {
+      video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
+      updateDisplay();
+    };
 
-        plusBtn.onclick = () => {
-            video.playbackRate = Math.min(4.0, video.playbackRate + 0.25);
-            updateDisplay();
-        };
+    plusBtn.onclick = () => {
+      video.playbackRate = Math.min(4.0, video.playbackRate + 0.25);
+      updateDisplay();
+    };
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // Keyboard shortcuts
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
+        return;
 
-            if (e.key === '-') {
-                e.preventDefault();
-                video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
-                updateDisplay();
-            } else if (e.key === '+' || e.key === '=') {
-                e.preventDefault();
-                video.playbackRate = Math.min(4.0, video.playbackRate + 0.25);
-                updateDisplay();
-            }
-        });
-
-        control.appendChild(minusBtn);
-        control.appendChild(speedDisplay);
-        control.appendChild(plusBtn);
-
-        // Insert before like button
-        likeButton.parentNode.insertBefore(control, likeButton);
-
+      if (e.key === "-") {
+        e.preventDefault();
+        video.playbackRate = Math.max(0.25, video.playbackRate - 0.25);
         updateDisplay();
-        video.addEventListener('ratechange', updateDisplay);
-    }
+      } else if (e.key === "+" || e.key === "=") {
+        e.preventDefault();
+        video.playbackRate = Math.min(4.0, video.playbackRate + 0.25);
+        updateDisplay();
+      }
+    });
 
-    // Start when page loads
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', waitForVideo);
-    } else {
-        waitForVideo();
-    }
+    control.appendChild(minusBtn);
+    control.appendChild(speedDisplay);
+    control.appendChild(plusBtn);
 
-    // Handle YouTube navigation
-    let currentUrl = location.href;
-    new MutationObserver(() => {
-        if (location.href !== currentUrl) {
-            currentUrl = location.href;
-            const existing = document.getElementById('speed-control-simple');
-            if (existing) existing.remove();
-            setTimeout(waitForVideo, 1000);
-        }
-    }).observe(document, { subtree: true, childList: true });
+    // Insert before like button
+    likeButton.parentNode.insertBefore(control, likeButton);
+
+    updateDisplay();
+    video.addEventListener("ratechange", updateDisplay);
+  }
+
+  // Start when page loads
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", waitForVideo);
+  } else {
+    waitForVideo();
+  }
+
+  // Handle YouTube navigation
+  let currentUrl = location.href;
+  new MutationObserver(() => {
+    if (location.href !== currentUrl) {
+      currentUrl = location.href;
+      const existing = document.getElementById("speed-control-simple");
+      if (existing) existing.remove();
+      setTimeout(waitForVideo, 1000);
+    }
+  }).observe(document, { subtree: true, childList: true });
 })();

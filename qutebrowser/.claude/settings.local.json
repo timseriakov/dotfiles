@@ -21,9 +21,7 @@
     ],
     "deny": [],
     "ask": [],
-    "additionalDirectories": [
-      "/Users/tim/dev/dotfiles"
-    ]
+    "additionalDirectories": ["/Users/tim/dev/dotfiles"]
   },
   "spinnerTipsEnabled": false
 }

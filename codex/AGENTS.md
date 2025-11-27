@@ -7,12 +7,14 @@
 **IMPORTANT**: All MCP servers are accessed through MCPProxy (http://localhost:8080/mcp/) for token optimization and intelligent tool discovery.
 
 **How it works:**
+
 - MCPProxy exposes a single `retrieve_tools` function to Claude Code CLI
 - When you need a tool, Claude automatically calls `retrieve_tools("what you need")`
 - MCPProxy uses BM25 search to find the top-5 most relevant tools across all servers
 - This reduces token usage by ~99% compared to loading all tools upfront
 
 **Available servers through MCPProxy:**
+
 - morphllm-fast-apply (pattern-based bulk edits)
 - sequential-thinking (complex multi-step reasoning)
 - serena (semantic code understanding, project memory)
@@ -22,7 +24,6 @@
 - atlassian (Jira/Confluence integration)
 
 **Usage:** Simply request tools by natural language - MCPProxy will automatically find and provide the right tools. No manual tool selection needed.
-
 
 # MCP Decision Tree
 
@@ -42,6 +43,7 @@
 ### Active Servers
 
 Through MCPProxy you have access to:
+
 - **morphllm-fast-apply** - Pattern-based code editing
 - **sequential-thinking** - Multi-step reasoning engine
 - **serena** - Semantic code understanding & project memory
@@ -103,18 +105,20 @@ Through MCPProxy you have access to:
 ### Decision Rules
 
 **1. Check for explicit flags first** → See FLAGS.md
-   - `--think` / `--think-hard` / `--think-deep` → Sequential + combinations
-   - `--seq` → Sequential explicitly
-   - `--morph` → Morphllm explicitly
-   - `--serena` → Serena explicitly
+
+- `--think` / `--think-hard` / `--think-deep` → Sequential + combinations
+- `--seq` → Sequential explicitly
+- `--morph` → Morphllm explicitly
+- `--serena` → Serena explicitly
 
 **2. Analyze task scope**
-   - Multi-file pattern edits → **Morphllm** (with validation!)
-   - Symbol operations (rename, refactor) → **Serena**
-   - Complex analysis (3+ components) → **Sequential**
-   - External facts needed → **Perplexity**
-   - Code review / Issues → **GitLab / Atlassian**
-   - API queries → **SQVR GraphQL** (granular!)
+
+- Multi-file pattern edits → **Morphllm** (with validation!)
+- Symbol operations (rename, refactor) → **Serena**
+- Complex analysis (3+ components) → **Sequential**
+- External facts needed → **Perplexity**
+- Code review / Issues → **GitLab / Atlassian**
+- API queries → **SQVR GraphQL** (granular!)
 
 **3. Default to Native Claude** for simple, single-scope tasks
 
@@ -124,28 +128,31 @@ Through MCPProxy you have access to:
 
 ### When to Choose MCP over Native
 
-| Scenario | Use MCP | Reason |
-|----------|---------|--------|
-| Multi-file edits with patterns | Morphllm | 10.5K tokens/sec, 98% accuracy |
-| Symbol rename across codebase | Serena | LSP-based, semantic understanding |
-| Complex debugging (3+ layers) | Sequential | Structured, auditable reasoning |
-| Fact verification | Perplexity | Internet access, citations |
-| Simple explanation | Native Claude | Faster, no setup overhead |
-| Single-file typo fix | Native Claude | Overkill for MCP |
+| Scenario                       | Use MCP       | Reason                            |
+| ------------------------------ | ------------- | --------------------------------- |
+| Multi-file edits with patterns | Morphllm      | 10.5K tokens/sec, 98% accuracy    |
+| Symbol rename across codebase  | Serena        | LSP-based, semantic understanding |
+| Complex debugging (3+ layers)  | Sequential    | Structured, auditable reasoning   |
+| Fact verification              | Perplexity    | Internet access, citations        |
+| Simple explanation             | Native Claude | Faster, no setup overhead         |
+| Single-file typo fix           | Native Claude | Overkill for MCP                  |
 
 ### MCP Server Priority
 
 **For pattern-based code edits:**
+
 1. Serena (if symbol operations needed)
 2. Morphllm (if bulk pattern transformations)
 3. Native Edit tool (if single simple change)
 
 **For analysis tasks:**
+
 1. Sequential (if 3+ interconnected components)
 2. Perplexity (if external facts needed)
 3. Native Claude (if straightforward single-component)
 
 **For code understanding:**
+
 1. Serena (if need LSP-level semantic understanding)
 2. Native Grep/Read (if simple text search sufficient)
 
@@ -156,6 +163,7 @@ Through MCPProxy you have access to:
 ### Serial Chains (Execute in order)
 
 **Pattern 1: Semantic Analysis → Precise Edit**
+
 ```
 Serena (find_symbol, find_referencing_symbols)
   ↓ (identify all locations)
@@ -165,6 +173,7 @@ Manual Validation (verify results)
 ```
 
 **Pattern 2: Research → Structured Analysis**
+
 ```
 Perplexity (perplexity_ask for facts)
   ↓ (gather external information)
@@ -174,6 +183,7 @@ Decision Output
 ```
 
 **Pattern 3: Symbol Search → Memory → Edit**
+
 ```
 Serena (find_symbol to locate)
   ↓ (find targets)
@@ -186,44 +196,48 @@ Validation
 
 ## Quick Reference Table
 
-| Task Type | Primary Tool | Secondary | Validation |
-|-----------|-------------|-----------|------------|
-| Bulk pattern edits (<10 files) | Morphllm | Serena (for symbol ops) | Always manual |
-| Symbol rename/refactor | Serena | Morphllm (for bulk apply) | LSP verification |
-| Complex debugging (3+ components) | Sequential | Perplexity (for facts) | Hypothesis testing |
-| Architectural analysis | Sequential | Serena (for code context) | Review reasoning |
-| Find all symbol references | Serena | Native Grep (fallback) | Compare results |
-| Project memory management | Serena | - | Auto-triggers |
-| Fact verification | Perplexity | WebSearch (fallback) | Citation check |
-| GitLab MR operations | GitLab MCP | - | Manual review |
-| Jira issue tracking | Atlassian | - | Minimal queries |
-| GraphQL API queries | SQVR GraphQL | - | Granular, atomic |
-| Simple code explanation | Native Claude | - | None needed |
-| Single-file simple edit | Native Edit | - | Quick check |
+| Task Type                         | Primary Tool  | Secondary                 | Validation         |
+| --------------------------------- | ------------- | ------------------------- | ------------------ |
+| Bulk pattern edits (<10 files)    | Morphllm      | Serena (for symbol ops)   | Always manual      |
+| Symbol rename/refactor            | Serena        | Morphllm (for bulk apply) | LSP verification   |
+| Complex debugging (3+ components) | Sequential    | Perplexity (for facts)    | Hypothesis testing |
+| Architectural analysis            | Sequential    | Serena (for code context) | Review reasoning   |
+| Find all symbol references        | Serena        | Native Grep (fallback)    | Compare results    |
+| Project memory management         | Serena        | -                         | Auto-triggers      |
+| Fact verification                 | Perplexity    | WebSearch (fallback)      | Citation check     |
+| GitLab MR operations              | GitLab MCP    | -                         | Manual review      |
+| Jira issue tracking               | Atlassian     | -                         | Minimal queries    |
+| GraphQL API queries               | SQVR GraphQL  | -                         | Granular, atomic   |
+| Simple code explanation           | Native Claude | -                         | None needed        |
+| Single-file simple edit           | Native Edit   | -                         | Quick check        |
 
 ---
 
 ## Critical Validation Rules
 
 ### Morphllm
+
 - ⚠️ **ALWAYS validate manually** - 98% accuracy ≠ 100%
 - Use `dryRun: true` for preview
 - Review all changes before committing
 - Watch for: incorrect context preservation, missed edge cases
 
 ### SQVR GraphQL
+
 - ⚠️ **Always granular, atomic queries** - huge schema
 - Never introspect entire schema
 - Use filters, pagination, field selection
 - Token limits hit easily - be surgical
 
 ### Serena Project Memory
+
 - AI decides when to write automatically
 - Triggers: after edits, after analysis, on errors, after onboarding
 - Don't write trivial operations
 - Balance thoroughness vs storage
 
 ### Sequential Thinking
+
 - Explicit invocation required ("use sequential thinking tool")
 - Dynamic thought adjustment allowed
 - Branch when exploring alternatives
@@ -250,28 +264,34 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 ## MCP Server Flags
 
 **--seq / --sequential**
+
 - Trigger: Complex debugging, system design, multi-component analysis
 - Behavior: Enable Sequential for structured multi-step reasoning and hypothesis testing
 
 **--morph / --morphllm**
+
 - Trigger: Bulk code transformations, pattern-based edits, style enforcement
 - Behavior: Enable Morphllm for efficient multi-file pattern application
 
 **--serena**
+
 - Trigger: Symbol operations, project memory needs, large codebase navigation
 - Behavior: Enable Serena for semantic understanding and session persistence
 
 ## Analysis Depth Flags
 
 **--think**
+
 - Trigger: Multi-component analysis needs, moderate complexity
 - Behavior: Standard structured analysis (~4K tokens), enables Sequential
 
 **--think-hard**
+
 - Trigger: Architectural analysis, system-wide dependencies
 - Behavior: Deep analysis (~10K tokens), enables Sequential + Context7
 
 **--think-deep**
+
 - Trigger: Critical system redesign, legacy modernization, complex debugging
 - Behavior: Maximum depth analysis (~32K tokens), enables all MCP servers
 
@@ -284,6 +304,7 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 **Core Directive**: Evidence > assumptions | Code > documentation | Efficiency > verbosity
 
 ## Philosophy
+
 - **Task-First Approach**: Understand → Plan → Execute → Validate
 - **Evidence-Based Reasoning**: All claims verifiable through testing, metrics, or documentation
 - **Parallel Thinking**: Maximize efficiency through intelligent batching and coordination
@@ -292,6 +313,7 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 ## Engineering Mindset
 
 ### SOLID
+
 - **Single Responsibility**: Each component has one reason to change
 - **Open/Closed**: Open for extension, closed for modification
 - **Liskov Substitution**: Derived classes substitutable for base classes
@@ -299,11 +321,13 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 - **Dependency Inversion**: Depend on abstractions, not concretions
 
 ### Core Patterns
+
 - **DRY**: Abstract common functionality, eliminate duplication
 - **KISS**: Prefer simplicity over complexity in design decisions
 - **YAGNI**: Implement current requirements only, avoid speculation
 
 ### Systems Thinking
+
 - **Ripple Effects**: Consider architecture-wide impact of decisions
 - **Long-term Perspective**: Evaluate immediate vs. future trade-offs
 - **Risk Calibration**: Balance acceptable risks with delivery constraints
@@ -311,17 +335,20 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 ## Decision Framework
 
 ### Data-Driven Choices
+
 - **Measure First**: Base optimization on measurements, not assumptions
 - **Hypothesis Testing**: Formulate and test systematically
 - **Source Validation**: Verify information credibility
 - **Bias Recognition**: Account for cognitive biases
 
 ### Trade-off Analysis
+
 - **Temporal Impact**: Immediate vs. long-term consequences
 - **Reversibility**: Classify as reversible, costly, or irreversible
 - **Option Preservation**: Maintain future flexibility under uncertainty
 
 ### Risk Management
+
 - **Proactive Identification**: Anticipate issues before manifestation
 - **Impact Assessment**: Evaluate probability and severity
 - **Mitigation Planning**: Develop risk reduction strategies
@@ -329,12 +356,14 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 ## Quality Philosophy
 
 ### Quality Quadrants
+
 - **Functional**: Correctness, reliability, feature completeness
 - **Structural**: Code organization, maintainability, technical debt
 - **Performance**: Speed, scalability, resource efficiency
 - **Security**: Vulnerability management, access control, data protection
 
 ### Quality Standards
+
 - **Automated Enforcement**: Use tooling for consistent quality
 - **Preventive Measures**: Catch issues early when cheaper to fix
 - **Human-Centered Design**: Prioritize user welfare and autonomy
@@ -344,6 +373,7 @@ Behavioral flags for Claude Code to enable specific execution modes and tool sel
 ### Parallel Operations (Execute simultaneously)
 
 When tasks are independent:
+
 - Read multiple files in parallel
 - Query multiple Serena tools for different symbols
 - Fetch GitLab MR + Jira issue simultaneously
@@ -357,11 +387,13 @@ When tasks are independent:
 See **FLAGS.md** for complete flag documentation. Quick reference:
 
 ### Analysis Depth Flags
+
 - `--think` → Standard analysis (~4K tokens), enables Sequential
 - `--think-hard` → Deep analysis (~10K tokens), Sequential + Context7
 - `--think-deep` → Maximum depth (~32K tokens), all MCP servers
 
 ### MCP Server Flags
+
 - `--seq` / `--sequential` → Enable Sequential explicitly
 - `--morph` / `--morphllm` → Enable Morphllm explicitly
 - `--serena` → Enable Serena explicitly
@@ -398,12 +430,12 @@ See **FLAGS.md** for complete flag documentation. Quick reference:
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | string | Yes | Absolute path to file to edit |
-| `code_edit` | string | Yes | Code changes with `// ... existing code ...` markers for unchanged sections |
-| `instruction` | string | Yes | Single-sentence description of what this edit accomplishes |
-| `dryRun` | boolean | No | Preview changes without applying (default: false) |
+| Parameter     | Type    | Required | Description                                                                 |
+| ------------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `path`        | string  | Yes      | Absolute path to file to edit                                               |
+| `code_edit`   | string  | Yes      | Code changes with `// ... existing code ...` markers for unchanged sections |
+| `instruction` | string  | Yes      | Single-sentence description of what this edit accomplishes                  |
+| `dryRun`      | boolean | No       | Preview changes without applying (default: false)                           |
 
 ### How code_edit Works
 
@@ -427,6 +459,7 @@ function loginUser(username, password) {
 ```
 
 **Pattern Rules**:
+
 - Use `// ... existing code ...` (or language-appropriate comments) for unchanged sections
 - Include only lines that need to change
 - Morphllm intelligently merges changes into actual file content
@@ -443,6 +476,7 @@ function loginUser(username, password) {
 ## Triggers
 
 Use Morphllm when you need:
+
 - Multi-file edit operations with consistent patterns
 - Framework updates, style guide enforcement, code cleanup
 - Bulk text replacements across multiple files
@@ -454,12 +488,14 @@ Use Morphllm when you need:
 ## Choose When
 
 ### Use Morphllm For:
+
 - **Pattern-based edits**: Consistent transformations across multiple files
 - **Bulk operations**: Style enforcement, framework updates, text replacements
 - **Token efficiency**: Fast Apply scenarios with compression needs
 - **Simple to moderate complexity**: <10 files, straightforward transformations
 
 ### Don't Use Morphllm For:
+
 - **Symbol operations**: Use Serena for rename/refactor with dependency tracking
 - **LSP integration needs**: Use Serena for semantic understanding
 - **Single simple changes**: Native Edit tool is faster
@@ -472,6 +508,7 @@ Use Morphllm when you need:
 ### Serial Combination Patterns
 
 **Pattern 1: Semantic Analysis → Morphllm Edit**
+
 ```
 1. Serena.find_symbol(target)
    → Locate all instances semantically
@@ -482,6 +519,7 @@ Use Morphllm when you need:
 ```
 
 **Pattern 2: Sequential Planning → Morphllm Execution**
+
 ```
 1. Sequential.sequentialthinking(edit_strategy)
    → Plan systematic changes
@@ -496,6 +534,7 @@ Use Morphllm when you need:
 ## Examples
 
 ### Example 1: Add Error Handling
+
 ```javascript
 // Instruction: "Add try-catch error handling to API calls"
 // code_edit:
@@ -503,12 +542,13 @@ try {
   const response = await fetch(apiUrl);
   // ... existing code ...
 } catch (error) {
-  logError('API call failed', error);
+  logError("API call failed", error);
   throw new NetworkError(error.message);
 }
 ```
 
 ### Example 2: Framework Migration
+
 ```javascript
 // Instruction: "Convert React class component to hooks"
 // code_edit:
@@ -529,12 +569,12 @@ const UserProfile = ({ userId }) => {
 
 ## When NOT to Use Morphllm
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|---------|
-| Rename function everywhere | Serena | Symbol operations need LSP tracking |
-| Single typo fix | Native Edit | Overkill for simple change |
-| Complex refactoring | Serena + Morphllm | Need semantic understanding first |
-| Mission-critical code | Manual edit | 98% accuracy insufficient |
+| Scenario                   | Use Instead       | Reason                              |
+| -------------------------- | ----------------- | ----------------------------------- |
+| Rename function everywhere | Serena            | Symbol operations need LSP tracking |
+| Single typo fix            | Native Edit       | Overkill for simple change          |
+| Complex refactoring        | Serena + Morphllm | Need semantic understanding first   |
+| Mission-critical code      | Manual edit       | 98% accuracy insufficient           |
 
 ---
 
@@ -551,6 +591,7 @@ After every Morphllm edit:
 - [ ] Git diff review before committing
 
 **Remember**: Morphllm is a powerful assistant, not a replacement for human judgment.
+
 # Sequential MCP Server
 
 **Purpose**: Multi-step reasoning engine for complex analysis and systematic problem solving
@@ -571,6 +612,7 @@ See **FLAGS.md** for complete flag documentation:
 - `--seq` / `--sequential` → Explicitly enable Sequential for structured reasoning
 
 **Manual Triggers** (without flags):
+
 - Complex debugging scenarios with multiple layers
 - Architectural analysis and system design questions
 - Problems requiring hypothesis testing and validation
@@ -585,22 +627,22 @@ See **FLAGS.md** for complete flag documentation:
 
 ### Core Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `thought` | string | Yes | Current thinking step content (analysis, revision, question, realization, hypothesis) |
-| `thoughtNumber` | integer | Yes | Position in sequence (can exceed initial `totalThoughts`) |
-| `totalThoughts` | integer | Yes | Estimated total thoughts needed (dynamically adjustable) |
-| `nextThoughtNeeded` | boolean | Yes | Whether additional reasoning steps required |
+| Parameter           | Type    | Required | Description                                                                           |
+| ------------------- | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `thought`           | string  | Yes      | Current thinking step content (analysis, revision, question, realization, hypothesis) |
+| `thoughtNumber`     | integer | Yes      | Position in sequence (can exceed initial `totalThoughts`)                             |
+| `totalThoughts`     | integer | Yes      | Estimated total thoughts needed (dynamically adjustable)                              |
+| `nextThoughtNeeded` | boolean | Yes      | Whether additional reasoning steps required                                           |
 
 ### Advanced Parameters (Optional)
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `isRevision` | boolean | Mark this thought as revising previous thinking |
-| `revisesThought` | integer | Which thought number is being reconsidered (requires `isRevision: true`) |
-| `branchFromThought` | integer | Branching point thought number for alternative reasoning paths |
-| `branchId` | string | Identifier for current branch (if exploring alternatives) |
-| `needsMoreThoughts` | boolean | Realized more thoughts needed even at apparent "end" |
+| Parameter           | Type    | Description                                                              |
+| ------------------- | ------- | ------------------------------------------------------------------------ |
+| `isRevision`        | boolean | Mark this thought as revising previous thinking                          |
+| `revisesThought`    | integer | Which thought number is being reconsidered (requires `isRevision: true`) |
+| `branchFromThought` | integer | Branching point thought number for alternative reasoning paths           |
+| `branchId`          | string  | Identifier for current branch (if exploring alternatives)                |
+| `needsMoreThoughts` | boolean | Realized more thoughts needed even at apparent "end"                     |
 
 ---
 
@@ -616,22 +658,23 @@ See **FLAGS.md** for complete flag documentation:
 
 ## Sequential vs Native LLM Reasoning
 
-| Aspect | Native LLM Reasoning | Sequential Thinking MCP Server |
-|--------|---------------------|-------------------------------|
-| **Transparency** | Opaque; reasoning hidden in model's forward pass | Fully auditable with explicit thought tracking |
-| **Structure** | Implicit and unstructured | Explicitly structured with discrete steps and metadata |
-| **Debuggability** | Difficult to inspect or audit | Easy to inspect, debug, enhance trust |
-| **Flexibility** | Fixed during model inference | Dynamic adjustment, branching, revisions allowed |
-| **Use Case** | General-purpose reasoning | Complex problems requiring decomposition & traceability |
-| **Prompt Engineering** | Requires careful crafting | Reduces guesswork through structured framework |
-| **Context Maintenance** | Limited across long sequences | Maintains context over numerous steps |
-| **Revision** | Cannot revise earlier reasoning | Can mark and revise previous thoughts |
+| Aspect                  | Native LLM Reasoning                             | Sequential Thinking MCP Server                          |
+| ----------------------- | ------------------------------------------------ | ------------------------------------------------------- |
+| **Transparency**        | Opaque; reasoning hidden in model's forward pass | Fully auditable with explicit thought tracking          |
+| **Structure**           | Implicit and unstructured                        | Explicitly structured with discrete steps and metadata  |
+| **Debuggability**       | Difficult to inspect or audit                    | Easy to inspect, debug, enhance trust                   |
+| **Flexibility**         | Fixed during model inference                     | Dynamic adjustment, branching, revisions allowed        |
+| **Use Case**            | General-purpose reasoning                        | Complex problems requiring decomposition & traceability |
+| **Prompt Engineering**  | Requires careful crafting                        | Reduces guesswork through structured framework          |
+| **Context Maintenance** | Limited across long sequences                    | Maintains context over numerous steps                   |
+| **Revision**            | Cannot revise earlier reasoning                  | Can mark and revise previous thoughts                   |
 
 ---
 
 ## Choose When
 
 ### Use Sequential For:
+
 - **Over native reasoning**: When problems have 3+ interconnected components
 - **Systematic analysis**: Root cause analysis, architecture review, security assessment
 - **Structure matters**: Problems benefit from decomposition and evidence gathering
@@ -642,6 +685,7 @@ See **FLAGS.md** for complete flag documentation:
 - **Agentic workflows**: Self-directed, goal-oriented AI behavior
 
 ### Don't Use Sequential For:
+
 - **Simple tasks**: Basic explanations, single-file changes, straightforward fixes
 - **Real-time needs**: Latency-critical applications (extra overhead)
 - **General knowledge**: Simple facts or synthesis (native is faster)
@@ -666,19 +710,23 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Effective Prompting Patterns
 
 **Initial Scoping**:
+
 - Begin with clear problem statement
 - Let sequential process determine steps needed
 - Don't over-constrain initial `totalThoughts` estimate
 
 **Revision Encouragement**:
+
 - Structure prompts to allow revision of earlier thoughts
 - Example: "Reconsider step 3 based on this new information"
 
 **Alternative Exploration**:
+
 - Explicitly ask to branch and explore alternatives
 - Example: "Create a branch to explore alternative database design"
 
 **Hypothesis Validation**:
+
 - Generate potential solutions during reasoning
 - Validate through structured subsequent thoughts
 - Example: "Hypothesis: caching improves performance. Validate this."
@@ -686,11 +734,13 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Workflow Integration
 
 **Complementary, Not Replacement**:
+
 - Sequential serves as integration layer, not orchestrator replacement
 - Works with LangChain, LlamaIndex, crewAI, etc.
 - Agent framework determines strategy; LLM + Sequential provide transparent reasoning
 
 **Monitoring and Debugging**:
+
 - Leverage in-memory storage for analysis
 - Use pretty-printed output for inspection
 - Verify reasoning follows expected patterns
@@ -703,6 +753,7 @@ Capitalization and exact wording are flexible, but explicit mention is required.
 ### Combination Patterns
 
 **Sequential + Context7** (enabled by `--think-hard`):
+
 ```
 Sequential coordinates analysis
   ↓
@@ -712,6 +763,7 @@ Sequential integrates knowledge into structured reasoning
 ```
 
 **Sequential + Perplexity**:
+
 ```
 Perplexity gathers external facts
   ↓
@@ -721,6 +773,7 @@ Validated conclusion with citations
 ```
 
 **Sequential + Serena**:
+
 ```
 Serena provides project/code context
   ↓
@@ -734,6 +787,7 @@ Structured design decisions with code awareness
 ## Examples
 
 ### Example 1: Complex Debugging
+
 ```
 Task: "Why is this API endpoint slow?"
 
@@ -747,6 +801,7 @@ Sequential reasoning:
 ```
 
 ### Example 2: System Design
+
 ```
 Task: "Design scalable user authentication system"
 
@@ -763,13 +818,13 @@ Sequential reasoning:
 
 ## When NOT to Use Sequential
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|--------|
-| Explain a function | Native Claude | Simple explanation, structure overkill |
-| Fix typo | Native Claude | Straightforward change |
-| Quick fact lookup | Native Claude or Perplexity | Faster without structure overhead |
-| Real-time chatbot | Native Claude | Latency concerns |
-| General knowledge query | Native Claude | No analysis decomposition needed |
+| Scenario                | Use Instead                 | Reason                                 |
+| ----------------------- | --------------------------- | -------------------------------------- |
+| Explain a function      | Native Claude               | Simple explanation, structure overkill |
+| Fix typo                | Native Claude               | Straightforward change                 |
+| Quick fact lookup       | Native Claude or Perplexity | Faster without structure overhead      |
+| Real-time chatbot       | Native Claude               | Latency concerns                       |
+| General knowledge query | Native Claude               | No analysis decomposition needed       |
 
 ---
 
@@ -798,12 +853,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 ### LSP Integration
 
 **What LSP Provides:**
+
 - "Go to Definition", "Find All References", "Autocomplete" capabilities
 - Language-agnostic symbol parsing, navigation, modification
 - Support for: Python, JavaScript/TypeScript, Java, C/C++, Rust, Go, and more
 - Proven, mature capabilities from editor ecosystems (VSCode, IntelliJ)
 
 **Benefits:**
+
 - No manual file parsing needed
 - Semantic understanding, not brittle text matching
 - Consistent interface across multiple languages
@@ -821,23 +878,25 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name or path pattern (e.g., "method", "class/method", "/class/method") |
-| `relative_path` | string | No | Restrict search to specific file or directory |
-| `depth` | integer | No | Depth to retrieve descendants (e.g., 1 for class methods) |
-| `include_kinds` | int[] | No | LSP symbol kinds to include (5=class, 6=method, 12=function, etc.) |
-| `exclude_kinds` | int[] | No | LSP symbol kinds to exclude (takes precedence over include) |
-| `substring_matching` | boolean | No | Use substring matching for last segment of name |
-| `include_body` | boolean | No | Include symbol's source code (use judiciously for token economy) |
+| Parameter            | Type    | Required | Description                                                                   |
+| -------------------- | ------- | -------- | ----------------------------------------------------------------------------- |
+| `name_path`          | string  | Yes      | Symbol name or path pattern (e.g., "method", "class/method", "/class/method") |
+| `relative_path`      | string  | No       | Restrict search to specific file or directory                                 |
+| `depth`              | integer | No       | Depth to retrieve descendants (e.g., 1 for class methods)                     |
+| `include_kinds`      | int[]   | No       | LSP symbol kinds to include (5=class, 6=method, 12=function, etc.)            |
+| `exclude_kinds`      | int[]   | No       | LSP symbol kinds to exclude (takes precedence over include)                   |
+| `substring_matching` | boolean | No       | Use substring matching for last segment of name                               |
+| `include_body`       | boolean | No       | Include symbol's source code (use judiciously for token economy)              |
 
 **LSP Symbol Kinds Reference:**
+
 - 1=file, 2=module, 3=namespace, 4=package, 5=class, 6=method, 7=property, 8=field
 - 9=constructor, 10=enum, 11=interface, 12=function, 13=variable, 14=constant
 - 15=string, 16=number, 17=boolean, 18=array, 19=object, 20=key, 21=null
 - 22=enum member, 23=struct, 24=event, 25=operator, 26=type parameter
 
 **Use Cases:**
+
 - Find function definition, locate class methods, discover variables, semantic search
 
 **Choose Smartly**: Use `include_kinds`, `relative_path` to scope, avoid `include_body` unless necessary.
@@ -850,15 +909,16 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name path to find references for |
-| `relative_path` | string | Yes | File containing the symbol (must be file, not directory) |
-| `include_kinds` | int[] | No | Filter referencing symbols by kind |
-| `exclude_kinds` | int[] | No | Exclude specific symbol kinds |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                                              |
+| ------------------ | ------- | -------- | -------------------------------------------------------- |
+| `name_path`        | string  | Yes      | Symbol name path to find references for                  |
+| `relative_path`    | string  | Yes      | File containing the symbol (must be file, not directory) |
+| `include_kinds`    | int[]   | No       | Filter referencing symbols by kind                       |
+| `exclude_kinds`    | int[]   | No       | Exclude specific symbol kinds                            |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default)                       |
 
 **Use Cases:**
+
 - Impact analysis before refactoring
 - Understand symbol usage patterns
 - Identify all callers of a function
@@ -874,13 +934,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name path to replace |
-| `relative_path` | string | Yes | File containing the symbol |
-| `body` | string | Yes | New implementation body |
+| Parameter       | Type   | Required | Description                 |
+| --------------- | ------ | -------- | --------------------------- |
+| `name_path`     | string | Yes      | Symbol name path to replace |
+| `relative_path` | string | Yes      | File containing the symbol  |
+| `body`          | string | Yes      | New implementation body     |
 
 **Use Cases:**
+
 - Update function logic without breaking signature
 - Refactor method implementation
 - Fix bugs in specific function
@@ -896,13 +957,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol after which to insert |
-| `relative_path` | string | Yes | File containing the symbol |
-| `body` | string | Yes | Code to insert after symbol |
+| Parameter       | Type   | Required | Description                  |
+| --------------- | ------ | -------- | ---------------------------- |
+| `name_path`     | string | Yes      | Symbol after which to insert |
+| `relative_path` | string | Yes      | File containing the symbol   |
+| `body`          | string | Yes      | Code to insert after symbol  |
 
 **Use Cases:**
+
 - Add helper function near related code
 - Insert logging/instrumentation
 - Add test utilities near implementation
@@ -923,29 +985,34 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Automatic Triggers for write_memory:**
 
 ✅ **After Code Modifications**
+
 - What was changed and why
 - Intent behind modification
 - Related files/symbols affected
 
 ✅ **After Significant Analyses**
+
 - Dependency analysis results
 - Reference search outcomes
 - Impact assessment findings
 - Architectural insights
 
 ✅ **After Onboarding/Configuration**
+
 - Initial project context
 - Technology stack discovered
 - Key patterns identified
 - Project structure understanding
 
 ✅ **On Errors/Warnings**
+
 - Problems encountered
 - Solutions attempted
 - Workarounds applied
 - Tracking for future reference
 
 ❌ **DON'T Write For:**
+
 - Every trivial operation (balance thoroughness vs storage)
 - Temporary scratch work
 - Duplicate information
@@ -957,13 +1024,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `memory_name` | string | Yes | Meaningful memory identifier |
-| `content` | string | Yes | UTF-8 encoded information in markdown format |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                                  |
+| ------------------ | ------- | -------- | -------------------------------------------- |
+| `memory_name`      | string  | Yes      | Meaningful memory identifier                 |
+| `content`          | string  | Yes      | UTF-8 encoded information in markdown format |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default)           |
 
 **Use Cases:**
+
 - Record refactoring decisions
 - Save analysis outcomes
 - Document patterns discovered
@@ -979,12 +1047,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `memory_file_name` | string | Yes | Memory identifier to retrieve |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                        |
+| ------------------ | ------- | -------- | ---------------------------------- |
+| `memory_file_name` | string  | Yes      | Memory identifier to retrieve      |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default) |
 
 **Use Cases:**
+
 - Recall previous decisions
 - Load project context
 - Retrieve analysis results
@@ -1001,6 +1070,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Parameters:** None
 
 **Use Cases:**
+
 - Browse project history
 - Discover previous agent actions
 - Audit memory usage
@@ -1020,12 +1090,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `relative_path` | string | Yes | File to get overview of |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                        |
+| ------------------ | ------- | -------- | ---------------------------------- |
+| `relative_path`    | string  | Yes      | File to get overview of            |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default) |
 
 **Use Cases:**
+
 - First look at new file
 - Understand file structure quickly
 - Identify key components
@@ -1041,23 +1112,25 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `substring_pattern` | string | Yes | Regular expression pattern to search |
-| `relative_path` | string | No | Restrict to file/directory |
-| `restrict_search_to_code_files` | boolean | No | Only search files with analyzable symbols (default: false) |
-| `paths_include_glob` | string | No | Glob pattern for files to include (e.g., "*.ts", "src/**/*.py") |
-| `paths_exclude_glob` | string | No | Glob pattern for files to exclude (takes precedence) |
-| `context_lines_before` | integer | No | Lines of context before match |
-| `context_lines_after` | integer | No | Lines of context after match |
+| Parameter                       | Type    | Required | Description                                                       |
+| ------------------------------- | ------- | -------- | ----------------------------------------------------------------- |
+| `substring_pattern`             | string  | Yes      | Regular expression pattern to search                              |
+| `relative_path`                 | string  | No       | Restrict to file/directory                                        |
+| `restrict_search_to_code_files` | boolean | No       | Only search files with analyzable symbols (default: false)        |
+| `paths_include_glob`            | string  | No       | Glob pattern for files to include (e.g., "_.ts", "src/\*\*/_.py") |
+| `paths_exclude_glob`            | string  | No       | Glob pattern for files to exclude (takes precedence)              |
+| `context_lines_before`          | integer | No       | Lines of context before match                                     |
+| `context_lines_after`           | integer | No       | Lines of context after match                                      |
 
 **Pattern Matching Logic:**
+
 - DOTALL mode: `.` matches newlines
 - Don't use `.*` at beginning/end (already matches all)
 - Use non-greedy `.*?` in middle for complex patterns
 - Multi-line patterns span lines if needed
 
 **Use Cases:**
+
 - Find specific code patterns
 - Search non-code files (config, docs)
 - Regex-based refactoring targets
@@ -1073,12 +1146,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file_name_pattern` | string | Yes | File name or pattern to find |
-| `search_path` | string | No | Directory to search within |
+| Parameter           | Type   | Required | Description                  |
+| ------------------- | ------ | -------- | ---------------------------- |
+| `file_name_pattern` | string | Yes      | File name or pattern to find |
+| `search_path`       | string | No       | Directory to search within   |
 
 **Use Cases:**
+
 - Quick file location without manual browsing
 - Find configuration files
 - Locate test files
@@ -1094,12 +1168,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `directory_path` | string | Yes | Directory to list |
-| `recursive` | boolean | No | Recursively list subdirectories (default: false) |
+| Parameter        | Type    | Required | Description                                      |
+| ---------------- | ------- | -------- | ------------------------------------------------ |
+| `directory_path` | string  | Yes      | Directory to list                                |
+| `recursive`      | boolean | No       | Recursively list subdirectories (default: false) |
 
 **Use Cases:**
+
 - Understand project structure
 - Locate modules/packages
 - Discover related files
@@ -1117,12 +1192,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `information` | string | Yes | Information to analyze |
-| `context` | string | No | Additional context for analysis |
+| Parameter     | Type   | Required | Description                     |
+| ------------- | ------ | -------- | ------------------------------- |
+| `information` | string | Yes      | Information to analyze          |
+| `context`     | string | No       | Additional context for analysis |
 
 **Use Cases:**
+
 - Synthesize findings from multiple tool calls
 - Generate insights from code exploration
 - Connect patterns across codebase
@@ -1139,6 +1215,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Parameters:** None
 
 **Use Cases:**
+
 - Determine if project context exists
 - Decide whether to perform initial analysis
 - Check session state
@@ -1150,6 +1227,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 ## When to Use Serena
 
 **Use For:**
+
 - Symbol operations: rename, refactor, find references, modify implementations
 - Semantic code navigation: LSP-based understanding of structure
 - Project memory: automatic context preservation across sessions
@@ -1157,6 +1235,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 - Code exploration: find symbols, references, overview
 
 **Don't Use For:**
+
 - Pattern-based bulk edits → Use Morphllm (faster for style enforcement)
 - Simple text replacement → Native Edit tool
 - Single-file trivial changes → Overkill
@@ -1170,46 +1249,50 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Serena → Morphllm**: Serena finds symbols → Morphllm applies bulk edits
 **Serena → Sequential**: Serena provides code context → Sequential analyzes architecture
 
-*See MCP_DecisionTree.md for detailed combination patterns*
+_See MCP_DecisionTree.md for detailed combination patterns_
 
 ---
 
 ## Tool Selection Guide
 
-| Need | Use | Notes |
-|------|-----|-------|
-| Find by name | `find_symbol` | Fastest, semantic |
-| Find references | `find_referencing_symbols` | Always before refactor |
-| Update impl | `replace_symbol_body` | Keeps signature |
-| Add code | `insert_after_symbol` | Safe insertion |
-| Pattern search | `search_for_pattern` | Use `max_answer_chars`, narrow scope |
-| File overview | `get_symbols_overview` | First look at new file |
-| Dir structure | `list_dir` | Explore project |
-| Save context | `write_memory` | Auto-triggered |
-| Load context | `read_memory` | When relevant |
+| Need            | Use                        | Notes                                |
+| --------------- | -------------------------- | ------------------------------------ |
+| Find by name    | `find_symbol`              | Fastest, semantic                    |
+| Find references | `find_referencing_symbols` | Always before refactor               |
+| Update impl     | `replace_symbol_body`      | Keeps signature                      |
+| Add code        | `insert_after_symbol`      | Safe insertion                       |
+| Pattern search  | `search_for_pattern`       | Use `max_answer_chars`, narrow scope |
+| File overview   | `get_symbols_overview`     | First look at new file               |
+| Dir structure   | `list_dir`                 | Explore project                      |
+| Save context    | `write_memory`             | Auto-triggered                       |
+| Load context    | `read_memory`              | When relevant                        |
 
 ---
 
 ## Validation and Best Practices
 
 **Symbol Operations**:
+
 - Always `find_referencing_symbols` before refactoring
 - Verify scope with LSP kinds filtering
 - Use `relative_path` to constrain searches
 
 **Project Memory**:
+
 - Descriptive memory names (include context, date if relevant)
 - Markdown format for readability
 - Balance thoroughness vs storage (don't write trivial operations)
 - AI decides when to write automatically (trust the triggers)
 
 **Code Navigation**:
+
 - Start with `get_symbols_overview` for new files
 - Use `include_kinds` to filter symbol types
 - Prefer `find_symbol` over `search_for_pattern` for known symbols
 - Use `restrict_search_to_code_files` appropriately
 
 **Token Economy**:
+
 - ⚠️ **ALWAYS use `max_answer_chars`** for search_for_pattern (default: unlimited!)
 - Avoid `include_body=true` unless necessary
 - Minimize `context_lines_before/after` (0-1 lines usually sufficient)
@@ -1237,6 +1320,7 @@ search_for_pattern({
 ```
 
 **Solution:**
+
 ```typescript
 search_for_pattern({
   substring_pattern: "ReportStatusEnum\\.REJECTED",
@@ -1251,6 +1335,7 @@ search_for_pattern({
 ```
 
 **Rules:**
+
 - ⚠️ ALWAYS `max_answer_chars: 2000-5000` for searches
 - Default `context_lines: 0`, add only if needed
 - Narrow with `relative_path` and globs
@@ -1276,6 +1361,7 @@ find_symbol({
 ```
 
 **Solution:**
+
 ```typescript
 // Option 1: Narrow pattern + scope
 search_for_pattern({
@@ -1296,6 +1382,7 @@ find_symbol({
 ```
 
 **Rules:**
+
 - Prefer `find_symbol` for known identifiers (Components, hooks, interfaces)
 - Never `include_body: true` for broad searches
 - Specific pattern > generic pattern
@@ -1306,12 +1393,12 @@ find_symbol({
 
 ### React/TypeScript Specific Tips
 
-| What to Find | Tool | Example |
-|--------------|------|----------|
-| React Components | `find_symbol` | `find_symbol({ name_path: "StatusBadge", include_kinds: [12], relative_path: "src/components" })` |
-| TypeScript Interfaces | `find_symbol` | `find_symbol({ name_path: "ReportProps", include_kinds: [11], relative_path: "src/types" })` |
-| Custom Hooks | `find_symbol` | `find_symbol({ name_path: "useReportStatus", include_kinds: [12], relative_path: "src/hooks" })` |
-| JSX/TSX Patterns | `search_for_pattern` | Use only with `max_answer_chars` + specific `relative_path` |
+| What to Find          | Tool                 | Example                                                                                           |
+| --------------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
+| React Components      | `find_symbol`        | `find_symbol({ name_path: "StatusBadge", include_kinds: [12], relative_path: "src/components" })` |
+| TypeScript Interfaces | `find_symbol`        | `find_symbol({ name_path: "ReportProps", include_kinds: [11], relative_path: "src/types" })`      |
+| Custom Hooks          | `find_symbol`        | `find_symbol({ name_path: "useReportStatus", include_kinds: [12], relative_path: "src/hooks" })`  |
+| JSX/TSX Patterns      | `search_for_pattern` | Use only with `max_answer_chars` + specific `relative_path`                                       |
 
 **Rule**: Prefer `find_symbol` over `search_for_pattern` for React/TS code - more precise, less tokens.
 
@@ -1319,15 +1406,16 @@ find_symbol({
 
 ## Token Optimization Quick Reference (JS/TS)
 
-| Operation | Token Risk | JS/TS Example | Mitigation |
-|-----------|------------|---------------|------------|
-| `search_for_pattern` | 🔴 HIGH | Search for "useState" | `max_answer_chars: 3000`, `context_lines: 0` |
-| `find_symbol` broad | 🟡 MEDIUM | Find all "Component" | `relative_path: "src/components"`, no `include_body` |
-| Search in node_modules | 🔴 CRITICAL | Any pattern in deps | `paths_exclude_glob: "**/node_modules/**"` |
-| TSX with context | 🔴 HIGH | React components | Use `find_symbol`, not pattern |
-| `get_symbols_overview` | 🟢 LOW | Component structure | Safe for single files |
+| Operation              | Token Risk  | JS/TS Example         | Mitigation                                           |
+| ---------------------- | ----------- | --------------------- | ---------------------------------------------------- |
+| `search_for_pattern`   | 🔴 HIGH     | Search for "useState" | `max_answer_chars: 3000`, `context_lines: 0`         |
+| `find_symbol` broad    | 🟡 MEDIUM   | Find all "Component"  | `relative_path: "src/components"`, no `include_body` |
+| Search in node_modules | 🔴 CRITICAL | Any pattern in deps   | `paths_exclude_glob: "**/node_modules/**"`           |
+| TSX with context       | 🔴 HIGH     | React components      | Use `find_symbol`, not pattern                       |
+| `get_symbols_overview` | 🟢 LOW      | Component structure   | Safe for single files                                |
 
 **Default JS/TS Strategy:**
+
 ```typescript
 {
   max_answer_chars: 3000,
@@ -1351,6 +1439,7 @@ find_symbol({
 - **AI decides memory writes** - automatic triggers, not manual
 - **Symbol-first** - use for operations on functions/classes/variables
 - **Complements Morphllm** - Serena finds, Morphllm transforms
+
 # Perplexity MCP Server
 
 **Purpose**: AI-powered internet research and complex reasoning with citations
@@ -1362,6 +1451,7 @@ find_symbol({
 ## Overview
 
 Perplexity MCP provides two distinct capabilities:
+
 1. **Internet Search**: Access current information beyond Claude's knowledge cutoff
 2. **Complex Reasoning**: Structured analysis for problems requiring deep thought
 
@@ -1379,11 +1469,12 @@ Perplexity MCP provides two distinct capabilities:
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `messages` | array | Yes | Array of message objects with `role` and `content` |
+| Parameter  | Type  | Required | Description                                        |
+| ---------- | ----- | -------- | -------------------------------------------------- |
+| `messages` | array | Yes      | Array of message objects with `role` and `content` |
 
 **Message Format:**
+
 ```json
 {
   "messages": [
@@ -1396,6 +1487,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Use Cases:**
+
 - Fact verification with sources
 - Current events and recent information
 - Technical documentation research
@@ -1403,6 +1495,7 @@ Perplexity MCP provides two distinct capabilities:
 - Best practices research
 
 **Example 1: Fact Verification**
+
 ```json
 {
   "messages": [
@@ -1416,6 +1509,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Example 2: Technical Research**
+
 ```json
 {
   "messages": [
@@ -1429,6 +1523,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Best Practices:**
+
 - **Be specific**: "React 19 breaking changes" > "React updates"
 - **Request sources**: Ask for citations when verification critical
 - **Current info**: Use for anything time-sensitive or recent
@@ -1444,11 +1539,12 @@ Perplexity MCP provides two distinct capabilities:
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `query` | string | Yes | The query or problem to reason about |
+| Parameter | Type   | Required | Description                          |
+| --------- | ------ | -------- | ------------------------------------ |
+| `query`   | string | Yes      | The query or problem to reason about |
 
 **Use Cases:**
+
 - Complex logic problems
 - Multi-step reasoning
 - Trade-off analysis
@@ -1456,6 +1552,7 @@ Perplexity MCP provides two distinct capabilities:
 - Decision support
 
 **Example 1: Architecture Decision**
+
 ```
 perplexity_reason(
   query="Analyze trade-offs between microservices and monolith architecture for a team of 5 developers building a SaaS product"
@@ -1464,6 +1561,7 @@ perplexity_reason(
 ```
 
 **Example 2: Performance Analysis**
+
 ```
 perplexity_reason(
   query="Given: API response time 2s, database query 1.8s, network latency 50ms. What's the bottleneck and how to optimize?"
@@ -1472,6 +1570,7 @@ perplexity_reason(
 ```
 
 **Best Practices:**
+
 - **Provide context**: Include relevant constraints, requirements
 - **Be specific**: Detailed queries get better reasoning
 - **Structured problems**: Works well for logic/analysis tasks
@@ -1481,13 +1580,13 @@ perplexity_reason(
 
 ## Perplexity vs Other Tools
 
-| Aspect | Perplexity | Sequential | Native Claude |
-|--------|------------|------------|---------------|
-| **Internet Access** | Yes (ask only) | No | No |
-| **Use Case** | Facts, research | Complex analysis | General knowledge |
-| **Citations** | Yes (ask) | No | No |
-| **Speed** | Slower (API) | Moderate | Fastest |
-| **Best For** | Current info, verification | Multi-component debugging | Simple queries |
+| Aspect              | Perplexity                 | Sequential                | Native Claude     |
+| ------------------- | -------------------------- | ------------------------- | ----------------- |
+| **Internet Access** | Yes (ask only)             | No                        | No                |
+| **Use Case**        | Facts, research            | Complex analysis          | General knowledge |
+| **Citations**       | Yes (ask)                  | No                        | No                |
+| **Speed**           | Slower (API)               | Moderate                  | Fastest           |
+| **Best For**        | Current info, verification | Multi-component debugging | Simple queries    |
 
 **Decision Rule**: External facts → Perplexity | Internal reasoning → Sequential | Simple query → Native
 
@@ -1495,14 +1594,15 @@ perplexity_reason(
 
 ## Perplexity vs Context7
 
-| Aspect | Perplexity | Context7 |
-|--------|------------|---------|
-| **Source** | Open internet | Curated documentation |
-| **Quality** | Variable | High (official docs) |
-| **Coverage** | Broad | Specific frameworks |
+| Aspect       | Perplexity       | Context7              |
+| ------------ | ---------------- | --------------------- |
+| **Source**   | Open internet    | Curated documentation |
+| **Quality**  | Variable         | High (official docs)  |
+| **Coverage** | Broad            | Specific frameworks   |
 | **Use Case** | General research | Official API/patterns |
 
 **Decision Rule:**
+
 - Use **Context7** for: official framework docs (React, Vue, etc.)
 - Use **Perplexity** for: general research, non-framework topics
 
@@ -1511,6 +1611,7 @@ perplexity_reason(
 ## Choose When
 
 ### Use perplexity_ask For:
+
 - ✅ Verifying current versions, deprecations, breaking changes
 - ✅ Researching best practices and patterns
 - ✅ Checking security advisories
@@ -1519,6 +1620,7 @@ perplexity_reason(
 - ✅ Fact-checking generated code against current standards
 
 ### Use perplexity_reason For:
+
 - ✅ Complex trade-off analysis
 - ✅ Multi-factor decision support
 - ✅ Logical problem-solving
@@ -1526,6 +1628,7 @@ perplexity_reason(
 - ✅ Performance bottleneck analysis
 
 ### Don't Use Perplexity For:
+
 - ❌ Historical facts (use native Claude)
 - ❌ Code generation (use native Claude)
 - ❌ Simple explanations (use native Claude)
@@ -1535,7 +1638,7 @@ perplexity_reason(
 
 ## Combination Patterns
 
-*See MCP_DecisionTree.md for detailed combination patterns with Sequential, Morphllm, and Serena*
+_See MCP_DecisionTree.md for detailed combination patterns with Sequential, Morphllm, and Serena_
 
 ---
 
@@ -1544,12 +1647,14 @@ perplexity_reason(
 ### Effective Prompting
 
 **For perplexity_ask:**
+
 - ✅ "What are the security implications of React Server Components in 2025?"
 - ✅ "Compare Next.js 15 vs Remix performance benchmarks"
 - ❌ "Tell me about React" (too broad)
 - ❌ "Is React good?" (subjective, better for native)
 
 **For perplexity_reason:**
+
 - ✅ "Given constraints A, B, C, analyze trade-offs between solutions X and Y"
 - ✅ "Reasoning chain: why does caching at layer L1 vs L2 affect latency?"
 - ❌ "What should I do?" (too vague)
@@ -1558,6 +1663,7 @@ perplexity_reason(
 ### Citation Handling
 
 When using `perplexity_ask`:
+
 - Always check citations for credibility
 - Prefer official documentation over blog posts
 - Cross-reference critical information
@@ -1575,6 +1681,7 @@ When using `perplexity_ask`:
 ## Triggers
 
 Use Perplexity when:
+
 - Need current information beyond training cutoff
 - Verification of facts or versions required
 - Researching best practices or security advisories
@@ -1586,6 +1693,7 @@ Use Perplexity when:
 ## Examples
 
 ### perplexity_ask Example
+
 ```json
 {
   "messages": [{
@@ -1597,6 +1705,7 @@ Use Perplexity when:
 ```
 
 ### perplexity_reason Example
+
 ```
 perplexity_reason(
   query: "Analyze: Should we use event-driven architecture for order processing with 1000 orders/day, 3 developers, 6-month timeline?"
@@ -1608,13 +1717,13 @@ perplexity_reason(
 
 ## When NOT to Use
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|--------|
-| Code generation | Native Claude | Faster, no API overhead |
-| Historical facts | Native Claude | Within knowledge cutoff |
-| Official framework docs | Context7 | Curated documentation |
-| Simple explanations | Native Claude | Overkill for basic queries |
-| Internal codebase questions | Serena | Project-specific context |
+| Scenario                    | Use Instead   | Reason                     |
+| --------------------------- | ------------- | -------------------------- |
+| Code generation             | Native Claude | Faster, no API overhead    |
+| Historical facts            | Native Claude | Within knowledge cutoff    |
+| Official framework docs     | Context7      | Curated documentation      |
+| Simple explanations         | Native Claude | Overkill for basic queries |
+| Internal codebase questions | Serena        | Project-specific context   |
 
 ---
 
@@ -1630,7 +1739,7 @@ perplexity_reason(
 
 ---
 
-*Integration patterns and decision flows documented in MCP_DecisionTree.md*
+_Integration patterns and decision flows documented in MCP_DecisionTree.md_
 
 ---
 
@@ -1645,6 +1754,7 @@ perplexity_reason(
 **Description**: Create new merge request in GitLab project.
 
 **Key Parameters:**
+
 - `project_id`: Project ID or URL-encoded path
 - `source_branch`: Branch with changes
 - `target_branch`: Base branch (usually main/master)
@@ -1654,11 +1764,13 @@ perplexity_reason(
 - `reviewer_ids`: User IDs as reviewers
 
 **Use Cases:**
+
 - Automated MR creation after feature completion
 - Batch MR creation for multiple related changes
 - CI/CD pipeline integration
 
 **Example:**
+
 ```
 create_merge_request(
   project_id="my-org/my-project",
@@ -1676,15 +1788,18 @@ create_merge_request(
 **Description**: Retrieve merge request details and metadata.
 
 **Key Parameters:**
+
 - `project_id`: Project ID or URL-encoded path
 - `merge_request_iid`: MR internal ID (IID, not global ID)
 
 **Use Cases:**
+
 - Check MR status before operations
 - Retrieve MR metadata for analysis
 - Monitor MR progress
 
 **Example:**
+
 ```
 get_merge_request(
   project_id="my-org/my-project",
@@ -1700,6 +1815,7 @@ get_merge_request(
 **Description**: Get changes/diffs for merge request with optional file filtering.
 
 **Key Parameters:**
+
 - `project_id`: Project ID or URL-encoded path
 - `merge_request_iid`: MR internal ID
 - `from`: Base branch/commit SHA
@@ -1707,11 +1823,13 @@ get_merge_request(
 - `excluded_file_patterns`: Regex patterns to exclude files (e.g., `["^test/mocks/", "\\.spec\\.ts$"]`)
 
 **Use Cases:**
+
 - Code review analysis
 - Change impact assessment
 - Automated diff validation
 
 **Example:**
+
 ```
 get_merge_request_diffs(
   project_id="my-org/my-project",
@@ -1736,6 +1854,7 @@ get_merge_request_diffs(
 - Project management
 
 **Discovery Pattern:**
+
 ```
 retrieve_tools("gitlab merge request comments")
 retrieve_tools("gitlab create branch")
@@ -1766,15 +1885,18 @@ MCPProxy will automatically find relevant tools based on natural language query.
 **Description**: Retrieve specific Jira issue by key.
 
 **Key Parameters:**
+
 - `issueKey`: Jira issue key (e.g., "PROJ-123")
 - `expand`: Additional fields to include (e.g., "changelog", "comments")
 
 **Use Cases:**
+
 - Check issue status
 - Retrieve issue details for context
 - Analyze issue history
 
 **Example:**
+
 ```
 getJiraIssue(issueKey="AUTH-456")
 → Returns issue details, status, assignee, etc.
@@ -1789,16 +1911,19 @@ getJiraIssue(issueKey="AUTH-456")
 **Description**: Search Jira issues using JQL (Jira Query Language).
 
 **Key Parameters:**
+
 - `jql`: JQL query string
 - `maxResults`: Limit result count (default: 50)
 - `fields`: Specific fields to return (reduces payload)
 
 **Use Cases:**
+
 - Find related issues
 - Sprint planning queries
 - Status/priority filtering
 
 **Example:**
+
 ```
 searchJiraIssuesUsingJql(
   jql="project = AUTH AND status = 'In Progress' AND assignee = currentUser()",
@@ -1809,6 +1934,7 @@ searchJiraIssuesUsingJql(
 ```
 
 **Best Practice**:
+
 - Use specific JQL to minimize results
 - Limit `maxResults` to what you need
 - Request only necessary `fields`
@@ -1820,11 +1946,13 @@ searchJiraIssuesUsingJql(
 **Description**: Get current authenticated user information.
 
 **Use Cases:**
+
 - Verify authentication
 - Get user ID for assignments
 - Check user permissions
 
 **Example:**
+
 ```
 atlassianUserInfo()
 → Returns current user details
@@ -1837,11 +1965,13 @@ atlassianUserInfo()
 **Description**: List accessible Atlassian resources (sites, projects).
 
 **Use Cases:**
+
 - Discover available projects
 - Check access permissions
 - Initialize integration
 
 **Example:**
+
 ```
 getAccessibleAtlassianResources()
 → Returns accessible Jira/Confluence sites
@@ -1852,6 +1982,7 @@ getAccessibleAtlassianResources()
 ### Atlassian Best Practices
 
 **Token Economy:**
+
 - ✅ Batch related queries when possible
 - ✅ Use JQL filters to reduce result size
 - ✅ Request specific fields, not all data
@@ -1861,6 +1992,7 @@ getAccessibleAtlassianResources()
 - ❌ Don't use overly broad JQL queries
 
 **Efficiency Rules:**
+
 1. One targeted query > multiple broad queries
 2. Specific fields > all fields
 3. Limited results > unlimited results
@@ -1877,6 +2009,7 @@ getAccessibleAtlassianResources()
 ### The Schema Problem
 
 **Challenge**: SQVR GraphQL schema is **ENORMOUS**
+
 - Thousands of types, fields, relationships
 - Easy to hit token limits with large queries
 - Full schema introspection is prohibitively expensive
@@ -1898,11 +2031,13 @@ getAccessibleAtlassianResources()
 **Description**: Execute GraphQL query against SQVR API.
 
 **Key Parameters:**
+
 - `query`: GraphQL query string
 - `variables`: Query variables (JSON object)
 - `operationName`: Operation name for multi-operation documents
 
 **Use Cases:**
+
 - Fetch specific entity data
 - Execute mutations
 - Query relationships
@@ -1910,6 +2045,7 @@ getAccessibleAtlassianResources()
 **Best Practice Examples:**
 
 **❌ WRONG - Too Broad:**
+
 ```graphql
 query {
   users {
@@ -1921,6 +2057,7 @@ query {
 ```
 
 **✅ RIGHT - Surgical:**
+
 ```graphql
 query GetUserEmail($userId: ID!) {
   user(id: $userId) {
@@ -1930,7 +2067,7 @@ query GetUserEmail($userId: ID!) {
 ```
 
 **Token Optimization Rule**: Multiple small queries > one large query
-*Example*: `query GetUser + query GetPosts` (2×1K tokens) > `query AllUserData` (5K tokens)
+_Example_: `query GetUser + query GetPosts` (2×1K tokens) > `query AllUserData` (5K tokens)
 
 ---
 
@@ -1941,23 +2078,27 @@ query GetUserEmail($userId: ID!) {
 **⚠️ DANGER**: Full introspection hits token limits easily!
 
 **Key Parameters:**
+
 - `typename`: Specific type to introspect (ALWAYS use this!)
 - `includeDeprecated`: Include deprecated fields (default: false)
 
 **Best Practice:**
 
 **❌ WRONG - Full Schema:**
+
 ```
 introspect-schema()  // Requests ENTIRE schema - DANGER!
 ```
 
 **✅ RIGHT - Specific Type:**
+
 ```
 introspect-schema(typename="User")  // Only User type
 introspect-schema(typename="Post")  // Only Post type
 ```
 
 **Workflow for Unknown Schema:**
+
 ```
 1. introspect-schema(typename="Query")
    → See available root queries
@@ -1988,13 +2129,13 @@ introspect-schema(typename="Post")  // Only Post type
 
 **Token Economy Examples:**
 
-| Approach | Token Cost | Recommended |
-|----------|------------|-------------|
-| Full schema introspection | ~50K+ tokens | ❌ Never |
-| Type-specific introspection | ~500-2K tokens | ✅ When needed |
-| Minimal field query | ~100-500 tokens | ✅ Default |
-| Paginated query (limit=10) | ~500-1K tokens | ✅ Always |
-| Unpaginated broad query | ~10K+ tokens | ❌ Never |
+| Approach                    | Token Cost      | Recommended    |
+| --------------------------- | --------------- | -------------- |
+| Full schema introspection   | ~50K+ tokens    | ❌ Never       |
+| Type-specific introspection | ~500-2K tokens  | ✅ When needed |
+| Minimal field query         | ~100-500 tokens | ✅ Default     |
+| Paginated query (limit=10)  | ~500-1K tokens  | ✅ Always      |
+| Unpaginated broad query     | ~10K+ tokens    | ❌ Never       |
 
 ---
 
@@ -2012,36 +2153,40 @@ introspect-schema(typename="Post")  // Only Post type
 
 ## Integration Selection Matrix
 
-| Need | Use | Avoid |
-|------|-----|-------|
-| Code review workflow | GitLab MR tools | Fetching all MRs |
-| Issue status check | Jira getIssue | Searching without JQL |
-| Sprint planning | Jira JQL search | Broad queries |
-| API data fetch | SQVR query-graphql (granular!) | Full schema introspection |
-| Entity details | SQVR query-graphql (specific fields) | Fetching all fields |
-| Architecture diagram | D2 tools | Using for simple explanations |
+| Need                 | Use                                  | Avoid                         |
+| -------------------- | ------------------------------------ | ----------------------------- |
+| Code review workflow | GitLab MR tools                      | Fetching all MRs              |
+| Issue status check   | Jira getIssue                        | Searching without JQL         |
+| Sprint planning      | Jira JQL search                      | Broad queries                 |
+| API data fetch       | SQVR query-graphql (granular!)       | Full schema introspection     |
+| Entity details       | SQVR query-graphql (specific fields) | Fetching all fields           |
+| Architecture diagram | D2 tools                             | Using for simple explanations |
 
 ---
 
 ## Key Insights
 
 **GitLab:**
+
 - Focus on core 3 tools (MR operations)
 - Use MCPProxy `retrieve_tools` for additional functionality
 - Minimal, targeted operations
 
 **Atlassian/Jira:**
+
 - **Economy is critical** - minimize API calls
 - Specific JQL queries with field selection
 - Batch operations when possible
 
 **SQVR GraphQL:**
+
 - **Granular atomic queries** - non-negotiable
 - **Never full schema introspection** - specify types
 - Pagination, filtering, field selection always
 - Token limits hit easily - be surgical
 
 **D2 Diagrams:**
+
 - Low priority, use only when needed
 - Good for architecture docs
 - Not for default documentation

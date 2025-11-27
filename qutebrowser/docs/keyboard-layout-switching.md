@@ -18,11 +18,13 @@ This feature provides automatic English keyboard layout switching for qutebrowse
 ### Automatic Switching Scenarios
 
 **Leaving Insert Mode**
+
 - When pressing Escape to leave insert mode
 - When clicking outside input fields on web pages
 - Similar to Neovim's InsertLeave behavior
 
 **Command/Prompt Modes**
+
 - All colon commands (`:`)
 - Tab/URL opening prompts
 - Session management prompts
@@ -31,6 +33,7 @@ This feature provides automatic English keyboard layout switching for qutebrowse
 **Search modes preserve current layout** (`/`, `?`) - you may want to search in Russian or English
 
 **Preserved Multilingual Input**
+
 - Entering insert mode preserves current keyboard layout
 - Typing in web page input fields keeps your chosen language
 - Only switches to English when leaving input contexts
@@ -40,32 +43,39 @@ This feature provides automatic English keyboard layout switching for qutebrowse
 The following qutebrowser internal modes now automatically switch to English layout:
 
 ### Command mode
+
 - `:` - Enter command mode
 
 ### Search modes
+
 - `/` - Forward search
 - `?` - Backward search
 
 ### Tab/URL opening
+
 - `t` / `е` - Open new tab prompt
 - `Cmd+t` / `Cmd+е` - Open new tab prompt (macOS)
 
 ### Navigation prompts
+
 - `Space+Space` - Tab selection prompt
 - `ge` - Edit current URL
 
 ### Session management
+
 - `Space+ss` - Save session prompt
 - `Space+sl` - Load session prompt
 - `Space+sd` - Delete session prompt
 - `Space+sr` - Rename session prompt
 
 ### Tab management
+
 - `Space+tm` - Move tab prompt
 - `Space+tw` - Take tab prompt
 - `Space+tt` - Select tab prompt
 
 ### Settings
+
 - `Space+cS` - Set configuration prompt
 
 ## Requirements
@@ -86,6 +96,7 @@ This runs once and permanently disables the macOS keyboard layout indicator popu
 ## Implementation details
 
 Each affected key binding uses the `en()` helper function:
+
 ```python
 config.bind(":", en("cmd-set-text :"))
 config.bind("t", en("cmd-set-text -s :open -t"))

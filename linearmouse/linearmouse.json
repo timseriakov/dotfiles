@@ -1,207 +1,207 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.2",
-  "schemes" : [
+  "$schema": "https:\/\/schema.linearmouse.app\/0.10.2",
+  "schemes": [
     {
-      "buttons" : {
-        "clickDebouncing" : {
-          "timeout" : 0
+      "buttons": {
+        "clickDebouncing": {
+          "timeout": 0
         },
-        "universalBackForward" : false
+        "universalBackForward": false
       },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0xc2f0",
-          "productName" : "ABall",
-          "vendorID" : "0xfeed"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0xc2f0",
+          "productName": "ABall",
+          "vendorID": "0xfeed"
         }
       },
-      "pointer" : {
-        "acceleration" : 20,
-        "disableAcceleration" : false,
-        "speed" : 0.0689655172413792768
+      "pointer": {
+        "acceleration": 20,
+        "disableAcceleration": false,
+        "speed": 0.0689655172413792768
       },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 1
+      "scrolling": {
+        "acceleration": {
+          "vertical": 1
         },
-        "distance" : 3,
-        "modifiers" : {
-          "vertical" : {
-            "command" : {
-              "type" : "auto"
+        "distance": 3,
+        "modifiers": {
+          "vertical": {
+            "command": {
+              "type": "auto"
             },
-            "control" : {
-              "type" : "auto"
+            "control": {
+              "type": "auto"
             },
-            "option" : {
-              "type" : "auto"
+            "option": {
+              "type": "auto"
             },
-            "shift" : {
-              "type" : "auto"
+            "shift": {
+              "type": "auto"
             }
           }
         },
-        "speed" : {
-          "vertical" : 0
+        "speed": {
+          "vertical": 0
         }
       }
     },
     {
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0x615e",
-          "productName" : "Chocofi White",
-          "vendorID" : "0x1d50"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0x615e",
+          "productName": "Chocofi White",
+          "vendorID": "0x1d50"
         }
       },
-      "pointer" : {
-        "acceleration" : 3,
-        "disableAcceleration" : false,
-        "speed" : 0.0689655172413792768
+      "pointer": {
+        "acceleration": 3,
+        "disableAcceleration": false,
+        "speed": 0.0689655172413792768
       },
-      "scrolling" : {
-        "speed" : {
-          "vertical" : 1
+      "scrolling": {
+        "speed": {
+          "vertical": 1
         }
       }
     },
     {
-      "buttons" : {
-        "universalBackForward" : true
+      "buttons": {
+        "universalBackForward": true
       },
-      "if" : {
-        "device" : {
-          "category" : "trackpad",
-          "productID" : "0x343",
-          "productName" : "Apple Internal Keyboard \/ Trackpad",
-          "vendorID" : "0x5ac"
+      "if": {
+        "device": {
+          "category": "trackpad",
+          "productID": "0x343",
+          "productName": "Apple Internal Keyboard \/ Trackpad",
+          "vendorID": "0x5ac"
         }
       },
-      "pointer" : {
-        "speed" : 0.05
+      "pointer": {
+        "speed": 0.05
       },
-      "scrolling" : {
-        "modifiers" : {
-          "vertical" : {
-            "control" : {
-              "type" : "preventDefault"
+      "scrolling": {
+        "modifiers": {
+          "vertical": {
+            "control": {
+              "type": "preventDefault"
             },
-            "shift" : {
-              "type" : "preventDefault"
+            "shift": {
+              "type": "preventDefault"
             }
           }
         }
       }
     },
     {
-      "buttons" : {
-        "universalBackForward" : true
+      "buttons": {
+        "universalBackForward": true
       },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0x1340",
-          "productName" : "USB GAMING MOUSE ",
-          "vendorID" : "0x30fa"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0x1340",
+          "productName": "USB GAMING MOUSE ",
+          "vendorID": "0x30fa"
         }
       },
-      "pointer" : {
-        "acceleration" : 2
+      "pointer": {
+        "acceleration": 2
       },
-      "scrolling" : {
-        "reverse" : {
-          "vertical" : false
+      "scrolling": {
+        "reverse": {
+          "vertical": false
         }
       }
     },
     {
-      "buttons" : {
-        "universalBackForward" : false
+      "buttons": {
+        "universalBackForward": false
       },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0x43",
-          "productName" : "UGREEN Mouse",
-          "serialNumber" : "No.161-0043-2",
-          "vendorID" : "0x2b89"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0x43",
+          "productName": "UGREEN Mouse",
+          "serialNumber": "No.161-0043-2",
+          "vendorID": "0x2b89"
         }
       },
-      "pointer" : {
-        "acceleration" : 2.5,
-        "disableAcceleration" : false,
-        "speed" : 0.005
+      "pointer": {
+        "acceleration": 2.5,
+        "disableAcceleration": false,
+        "speed": 0.005
       },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 0.74
+      "scrolling": {
+        "acceleration": {
+          "vertical": 0.74
         },
-        "distance" : 3,
-        "modifiers" : {
-          "vertical" : {
-            "control" : {
-              "scale" : 0.3,
-              "type" : "changeSpeed"
+        "distance": 3,
+        "modifiers": {
+          "vertical": {
+            "control": {
+              "scale": 0.3,
+              "type": "changeSpeed"
             }
           }
         },
-        "reverse" : {
-          "vertical" : false
+        "reverse": {
+          "vertical": false
         },
-        "speed" : {
-          "vertical" : 11.69
+        "speed": {
+          "vertical": 11.69
         }
       }
     },
     {
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0xf605",
-          "productName" : "ProtoArc EM01",
-          "vendorID" : "0x3554"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0xf605",
+          "productName": "ProtoArc EM01",
+          "vendorID": "0x3554"
         }
       },
-      "scrolling" : {
-        "acceleration" : 1,
-        "distance" : 3,
-        "modifiers" : {
-          "vertical" : {
-            "command" : {
-              "type" : "ignore"
+      "scrolling": {
+        "acceleration": 1,
+        "distance": 3,
+        "modifiers": {
+          "vertical": {
+            "command": {
+              "type": "ignore"
             },
-            "control" : {
-              "type" : "ignore"
+            "control": {
+              "type": "ignore"
             },
-            "option" : {
-              "type" : "ignore"
+            "option": {
+              "type": "ignore"
             },
-            "shift" : {
-              "type" : "ignore"
+            "shift": {
+              "type": "ignore"
             }
           }
         },
-        "speed" : 0
+        "speed": 0
       }
     },
     {
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0x40",
-          "productName" : "ProtoArc EM03",
-          "vendorID" : "0x1915"
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0x40",
+          "productName": "ProtoArc EM03",
+          "vendorID": "0x1915"
         }
       },
-      "pointer" : {
-        "acceleration" : 2.276,
-        "speed" : 0.2656
+      "pointer": {
+        "acceleration": 2.276,
+        "speed": 0.2656
       },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 0.81
+      "scrolling": {
+        "acceleration": {
+          "vertical": 0.81
         }
       }
     }
