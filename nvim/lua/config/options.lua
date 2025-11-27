@@ -7,6 +7,8 @@ vim.g.lazyvim_picker = "telescope"
 -- Disable AI in autocomplete menu, use only ghost text (virtual_text)
 vim.g.ai_cmp = false
 
+vim.opt.relativenumber = false
+
 vim.opt.termguicolors = true
 vim.o.encoding = "utf-8"
 vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
