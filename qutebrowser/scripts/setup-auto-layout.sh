@@ -24,12 +24,12 @@ defaults write com.apple.HIToolbox AppleLanguageIndicatorEnabled 0
 
 # Make sure userscripts are executable
 echo "🔐 Setting userscript permissions..."
-chmod +x userscripts/switch-to-english
-chmod +x userscripts/auto-layout-handler
+chmod +x ../userscripts/switch-to-english
+chmod +x ../userscripts/auto-layout-handler
 
 # Test the basic layout switching
 echo "🧪 Testing layout switching..."
-if userscripts/switch-to-english; then
+if ../userscripts/switch-to-english; then
     echo "✅ Layout switching works!"
 else
     echo "❌ Layout switching failed. Check im-select installation."
