@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ActivityWatch Heartbeat for qutebrowser
 // @namespace    https://github.com/timhq/dotfiles
-// @version      1.1.0
-// @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs. Disabled in private/incognito mode.
+// @version      4.0.0
+// @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs. Enabled by default. Automatically detects and blocks tracking in private/incognito windows.
 // @match        *://*/*
 // @run-at       document-start
 // @grant        none
@@ -15,43 +15,85 @@
   if (window.__awHeartbeatInstalled__) return;
   window.__awHeartbeatInstalled__ = true;
 
-  // Exit early if in private/incognito mode
-  // Detection: try to detect private mode through synchronous heuristics
-  function isPrivateMode() {
-    // Method 1: Check if localStorage throws an exception when accessed
-    // In qutebrowser private mode, localStorage typically throws SecurityError
-    try {
-      const testKey = '__awPrivateTest__';
-      localStorage.setItem(testKey, '1');
-      localStorage.removeItem(testKey);
-    } catch (e) {
-      // localStorage access failed - likely private mode
-      return true;
-    }
+  // OPT-OUT SYSTEM: Tracking ENABLED by default, can be disabled manually
+  // To disable tracking: Space+ad
+  // To re-enable: Space+ae
+  //
+  // Private mode: In private windows, press Space+ad once per session
+  // The flag will be stored in sessionStorage (doesn't persist after close)
+  const TRACKING_DISABLED_KEY = '__qute_aw_tracking_disabled__';
 
-    // Method 2: Check for indexedDB.databases (not available in some private modes)
-    // Some browsers don't expose this API in private mode
-    if (window.indexedDB && typeof window.indexedDB.databases === 'undefined') {
-      return true;
-    }
-
-    // Method 3: Try to open IndexedDB connection
-    // In some private modes, this fails immediately
-    try {
-      const openRequest = window.indexedDB.open('__awPrivateTest__');
-      if (!openRequest) {
-        return true;
-      }
-    } catch (e) {
-      return true;
-    }
-
-    return false;
+  let trackingDisabled = false;
+  try {
+    // Check both localStorage (persistent) and sessionStorage (session-only)
+    trackingDisabled =
+      localStorage.getItem(TRACKING_DISABLED_KEY) === '1' ||
+      sessionStorage.getItem(TRACKING_DISABLED_KEY) === '1';
+  } catch (e) {
+    // localStorage blocked entirely - likely private mode, don't track
+    console.debug('[aw-heartbeat] Storage blocked, likely private mode');
+    return;
   }
 
-  if (isPrivateMode()) {
-    console.debug('[aw-heartbeat] Private mode detected, not tracking');
+  if (trackingDisabled) {
+    console.debug('[aw-heartbeat] Tracking manually disabled');
     return;
+  }
+
+  console.debug('[aw-heartbeat] Tracking active');
+
+  // PRIVACY: Detect private/incognito mode in qutebrowser
+  // Uses navigator.storage.persist() - most reliable for QtWebEngine/Chromium
+  let isPrivateMode = false;
+
+  // Method 1: Storage Persistence API (primary detection for QtWebEngine)
+  // In private/incognito mode, persist() ALWAYS returns false because
+  // temporary profile cannot guarantee persistent storage
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().then(persistent => {
+      if (!persistent) {
+        // Additional check: in normal mode, persist might be false but can be requested
+        // In private mode, it's ALWAYS false and cannot be changed
+        navigator.storage.persisted().then(isPersisted => {
+          if (!isPersisted) {
+            isPrivateMode = true;
+            console.debug('[aw-heartbeat] Private mode detected via storage.persist()');
+          }
+        });
+      }
+    }).catch(() => {
+      // API not available or blocked - might be private mode
+      isPrivateMode = true;
+      console.debug('[aw-heartbeat] Private mode detected (storage API blocked)');
+    });
+  }
+
+  // Method 2: Service Worker registration (backup detection)
+  // Service Workers are restricted or unavailable in private mode
+  if ('serviceWorker' in navigator) {
+    // Try to register empty service worker - will fail in private mode
+    navigator.serviceWorker.register('data:text/javascript,')
+      .catch((error) => {
+        if (error.name === 'SecurityError' || error.message.includes('private')) {
+          isPrivateMode = true;
+          console.debug('[aw-heartbeat] Private mode detected via ServiceWorker');
+        }
+      });
+  }
+
+  // Method 3: IndexedDB quota check (additional verification)
+  if (navigator.storage && navigator.storage.estimate) {
+    navigator.storage.estimate().then(estimate => {
+      // Private mode typically has very limited quota (0 or < 10MB)
+      if (estimate.usage === 0 && estimate.quota < 10000000) {
+        isPrivateMode = true;
+        console.debug('[aw-heartbeat] Private mode detected via quota');
+      }
+    });
+  }
+
+  if (isPrivateMode) {
+    console.debug('[aw-heartbeat] Private mode confirmed, marking heartbeats');
   }
 
   // Configuration
@@ -126,8 +168,12 @@
     try {
       // Keep requests lightweight to avoid CORS preflight; server should accept plain JSON bytes.
       // no-cors means the response is opaque, but the request will be sent.
+      // PRIVACY: Add header to mark private window heartbeats
+      const headers = isPrivateMode ? {'X-Private-Window': '1'} : {};
+
       fetch(ENDPOINT, {
         method: 'POST',
+        headers: headers,
         body,
         keepalive: true,
         mode: 'no-cors',

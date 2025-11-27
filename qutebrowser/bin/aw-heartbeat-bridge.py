@@ -131,6 +131,13 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             return
 
+        # PRIVACY: Block heartbeats from private/incognito windows
+        if self.headers.get('X-Private-Window') == '1':
+            print("[PRIVACY] Rejected heartbeat from private window")
+            self.send_response(204)  # No Content - успешно, но игнорируем
+            self.end_headers()
+            return
+
         length = int(self.headers.get("Content-Length", "0"))
         raw = self.rfile.read(length)
         try:
