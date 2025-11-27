@@ -169,7 +169,7 @@
     try {
       if (localStorage.getItem("aw_debug") === "1") {
         // Keep it concise to avoid noise
-         
+
         console.debug("[aw-heartbeat]", payload);
       }
     } catch (_) {
@@ -418,7 +418,6 @@
 function debug() {
   try {
     if (localStorage.getItem("aw_debug") === "1") {
-       
       console.debug("[aw-heartbeat]", ...arguments);
     }
   } catch (_) {

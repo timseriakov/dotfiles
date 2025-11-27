@@ -10,5 +10,5 @@ export default [
   },
   {
     ignores: ["qutebrowser/greasemonkey/"],
-  }
+  },
 ];
