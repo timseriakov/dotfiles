@@ -67,6 +67,7 @@ abbr -a пп lazygit
 # Brew helpers
 abbr -a bri 'brew install'
 abbr -a brrm 'brew uninstall'
+abbr -a brs 'brew services'
 abbr -a brugh 'brew upgrade gh'
 abbr -a brc 'nvim ~/dev/dotfiles/Brewfile'
 abbr -a brewfile-dump 'brew bundle dump --global --force'
@@ -107,6 +108,7 @@ abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
 abbr -a ge gemini
+abbr -a ge-up 'npm install -g @google/gemini-cli'
 abbr -a geup 'brew install gemini-cli'
 abbr -a gec 'bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
 
@@ -189,3 +191,4 @@ abbr -a bt btop
 abbr -a vtop 'vtop --theme nord'
 
 abbr -a r rum
+abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
