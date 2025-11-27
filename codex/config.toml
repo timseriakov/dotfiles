@@ -31,6 +31,9 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/work/slidev"]
 trust_level = "untrusted"
 
+[projects."/Users/tim/dev/pet-new/qpw"]
+trust_level = "trusted"
+
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp/"
