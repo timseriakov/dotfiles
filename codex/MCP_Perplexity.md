@@ -9,6 +9,7 @@
 ## Overview
 
 Perplexity MCP provides two distinct capabilities:
+
 1. **Internet Search**: Access current information beyond Claude's knowledge cutoff
 2. **Complex Reasoning**: Structured analysis for problems requiring deep thought
 
@@ -26,11 +27,12 @@ Perplexity MCP provides two distinct capabilities:
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `messages` | array | Yes | Array of message objects with `role` and `content` |
+| Parameter  | Type  | Required | Description                                        |
+| ---------- | ----- | -------- | -------------------------------------------------- |
+| `messages` | array | Yes      | Array of message objects with `role` and `content` |
 
 **Message Format:**
+
 ```json
 {
   "messages": [
@@ -43,6 +45,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Use Cases:**
+
 - Fact verification with sources
 - Current events and recent information
 - Technical documentation research
@@ -50,6 +53,7 @@ Perplexity MCP provides two distinct capabilities:
 - Best practices research
 
 **Example 1: Fact Verification**
+
 ```json
 {
   "messages": [
@@ -63,6 +67,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Example 2: Technical Research**
+
 ```json
 {
   "messages": [
@@ -76,6 +81,7 @@ Perplexity MCP provides two distinct capabilities:
 ```
 
 **Best Practices:**
+
 - **Be specific**: "React 19 breaking changes" > "React updates"
 - **Request sources**: Ask for citations when verification critical
 - **Current info**: Use for anything time-sensitive or recent
@@ -91,11 +97,12 @@ Perplexity MCP provides two distinct capabilities:
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `query` | string | Yes | The query or problem to reason about |
+| Parameter | Type   | Required | Description                          |
+| --------- | ------ | -------- | ------------------------------------ |
+| `query`   | string | Yes      | The query or problem to reason about |
 
 **Use Cases:**
+
 - Complex logic problems
 - Multi-step reasoning
 - Trade-off analysis
@@ -103,6 +110,7 @@ Perplexity MCP provides two distinct capabilities:
 - Decision support
 
 **Example 1: Architecture Decision**
+
 ```
 perplexity_reason(
   query="Analyze trade-offs between microservices and monolith architecture for a team of 5 developers building a SaaS product"
@@ -111,6 +119,7 @@ perplexity_reason(
 ```
 
 **Example 2: Performance Analysis**
+
 ```
 perplexity_reason(
   query="Given: API response time 2s, database query 1.8s, network latency 50ms. What's the bottleneck and how to optimize?"
@@ -119,6 +128,7 @@ perplexity_reason(
 ```
 
 **Best Practices:**
+
 - **Provide context**: Include relevant constraints, requirements
 - **Be specific**: Detailed queries get better reasoning
 - **Structured problems**: Works well for logic/analysis tasks
@@ -128,13 +138,13 @@ perplexity_reason(
 
 ## Perplexity vs Other Tools
 
-| Aspect | Perplexity | Sequential | Native Claude |
-|--------|------------|------------|---------------|
-| **Internet Access** | Yes (ask only) | No | No |
-| **Use Case** | Facts, research | Complex analysis | General knowledge |
-| **Citations** | Yes (ask) | No | No |
-| **Speed** | Slower (API) | Moderate | Fastest |
-| **Best For** | Current info, verification | Multi-component debugging | Simple queries |
+| Aspect              | Perplexity                 | Sequential                | Native Claude     |
+| ------------------- | -------------------------- | ------------------------- | ----------------- |
+| **Internet Access** | Yes (ask only)             | No                        | No                |
+| **Use Case**        | Facts, research            | Complex analysis          | General knowledge |
+| **Citations**       | Yes (ask)                  | No                        | No                |
+| **Speed**           | Slower (API)               | Moderate                  | Fastest           |
+| **Best For**        | Current info, verification | Multi-component debugging | Simple queries    |
 
 **Decision Rule**: External facts → Perplexity | Internal reasoning → Sequential | Simple query → Native
 
@@ -142,14 +152,15 @@ perplexity_reason(
 
 ## Perplexity vs Context7
 
-| Aspect | Perplexity | Context7 |
-|--------|------------|---------|
-| **Source** | Open internet | Curated documentation |
-| **Quality** | Variable | High (official docs) |
-| **Coverage** | Broad | Specific frameworks |
+| Aspect       | Perplexity       | Context7              |
+| ------------ | ---------------- | --------------------- |
+| **Source**   | Open internet    | Curated documentation |
+| **Quality**  | Variable         | High (official docs)  |
+| **Coverage** | Broad            | Specific frameworks   |
 | **Use Case** | General research | Official API/patterns |
 
 **Decision Rule:**
+
 - Use **Context7** for: official framework docs (React, Vue, etc.)
 - Use **Perplexity** for: general research, non-framework topics
 
@@ -158,6 +169,7 @@ perplexity_reason(
 ## Choose When
 
 ### Use perplexity_ask For:
+
 - ✅ Verifying current versions, deprecations, breaking changes
 - ✅ Researching best practices and patterns
 - ✅ Checking security advisories
@@ -166,6 +178,7 @@ perplexity_reason(
 - ✅ Fact-checking generated code against current standards
 
 ### Use perplexity_reason For:
+
 - ✅ Complex trade-off analysis
 - ✅ Multi-factor decision support
 - ✅ Logical problem-solving
@@ -173,6 +186,7 @@ perplexity_reason(
 - ✅ Performance bottleneck analysis
 
 ### Don't Use Perplexity For:
+
 - ❌ Historical facts (use native Claude)
 - ❌ Code generation (use native Claude)
 - ❌ Simple explanations (use native Claude)
@@ -182,7 +196,7 @@ perplexity_reason(
 
 ## Combination Patterns
 
-*See MCP_DecisionTree.md for detailed combination patterns with Sequential, Morphllm, and Serena*
+_See MCP_DecisionTree.md for detailed combination patterns with Sequential, Morphllm, and Serena_
 
 ---
 
@@ -191,12 +205,14 @@ perplexity_reason(
 ### Effective Prompting
 
 **For perplexity_ask:**
+
 - ✅ "What are the security implications of React Server Components in 2025?"
 - ✅ "Compare Next.js 15 vs Remix performance benchmarks"
 - ❌ "Tell me about React" (too broad)
 - ❌ "Is React good?" (subjective, better for native)
 
 **For perplexity_reason:**
+
 - ✅ "Given constraints A, B, C, analyze trade-offs between solutions X and Y"
 - ✅ "Reasoning chain: why does caching at layer L1 vs L2 affect latency?"
 - ❌ "What should I do?" (too vague)
@@ -205,6 +221,7 @@ perplexity_reason(
 ### Citation Handling
 
 When using `perplexity_ask`:
+
 - Always check citations for credibility
 - Prefer official documentation over blog posts
 - Cross-reference critical information
@@ -222,6 +239,7 @@ When using `perplexity_ask`:
 ## Triggers
 
 Use Perplexity when:
+
 - Need current information beyond training cutoff
 - Verification of facts or versions required
 - Researching best practices or security advisories
@@ -233,6 +251,7 @@ Use Perplexity when:
 ## Examples
 
 ### perplexity_ask Example
+
 ```json
 {
   "messages": [{
@@ -244,6 +263,7 @@ Use Perplexity when:
 ```
 
 ### perplexity_reason Example
+
 ```
 perplexity_reason(
   query: "Analyze: Should we use event-driven architecture for order processing with 1000 orders/day, 3 developers, 6-month timeline?"
@@ -255,13 +275,13 @@ perplexity_reason(
 
 ## When NOT to Use
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|--------|
-| Code generation | Native Claude | Faster, no API overhead |
-| Historical facts | Native Claude | Within knowledge cutoff |
-| Official framework docs | Context7 | Curated documentation |
-| Simple explanations | Native Claude | Overkill for basic queries |
-| Internal codebase questions | Serena | Project-specific context |
+| Scenario                    | Use Instead   | Reason                     |
+| --------------------------- | ------------- | -------------------------- |
+| Code generation             | Native Claude | Faster, no API overhead    |
+| Historical facts            | Native Claude | Within knowledge cutoff    |
+| Official framework docs     | Context7      | Curated documentation      |
+| Simple explanations         | Native Claude | Overkill for basic queries |
+| Internal codebase questions | Serena        | Project-specific context   |
 
 ---
 
@@ -277,4 +297,4 @@ perplexity_reason(
 
 ---
 
-*Integration patterns and decision flows documented in MCP_DecisionTree.md*
+_Integration patterns and decision flows documented in MCP_DecisionTree.md_

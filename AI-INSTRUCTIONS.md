@@ -5,6 +5,7 @@
 ## 🚨 Pre-commit Hook Warning
 
 This repository uses automated formatting hooks that **WILL CONFLICT** with incremental commits:
+
 - `end-of-file-fixer` - adds newlines at end of files
 - `trailing-whitespace` - removes trailing whitespace
 - `detect-secrets` - scans for secrets
@@ -12,6 +13,7 @@ This repository uses automated formatting hooks that **WILL CONFLICT** with incr
 ## ❌ What Causes Conflicts
 
 **DON'T do this pattern:**
+
 ```bash
 # BAD - causes conflicts
 edit file1.js
@@ -21,6 +23,7 @@ git add file2.js && git commit -m "step 2"  # ← CONFLICT!
 ```
 
 **Why it fails:**
+
 1. First commit triggers pre-commit hooks
 2. Hooks modify files (add newlines, fix whitespace)
 3. Second commit conflicts with hook modifications
@@ -29,6 +32,7 @@ git add file2.js && git commit -m "step 2"  # ← CONFLICT!
 ## ✅ Correct Workflow
 
 **DO this instead:**
+
 ```bash
 # GOOD - no conflicts
 edit file1.js
@@ -42,6 +46,7 @@ git commit -m "Complete feature implementation"
 ## 📝 File Creation Rules
 
 **Always end files with newline:**
+
 ```javascript
 // file.js
 console.log("last line");
@@ -49,6 +54,7 @@ console.log("last line");
 ```
 
 **Use this pattern when creating files:**
+
 ```bash
 cat > newfile.js << 'EOF'
 content here

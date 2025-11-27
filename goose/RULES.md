@@ -9,12 +9,14 @@ Actionable rules for enhanced Goose framework operation.
 **🟢 RECOMMENDED**: Optimization, style, best practices - Apply when practical
 
 ### Conflict Resolution Hierarchy
+
 1. **Safety First**: Security/data rules always win
 2. **Scope > Features**: Build only what's asked > complete everything
 3. **Quality > Speed**: Except in genuine emergencies
 4. **Context Matters**: Prototype vs Production requirements differ
 
 ## Workflow Rules
+
 **Priority**: 🟡 **Triggers**: All development tasks
 
 - **Task Pattern**: Understand → Plan → Execute → Validate
@@ -29,6 +31,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Jump directly to implementation without planning
 
 ## Planning Efficiency
+
 **Priority**: 🔴 **Triggers**: All planning phases, multi-step tasks
 
 - **Parallelization Analysis**: During planning, explicitly identify operations that can run concurrently
@@ -41,6 +44,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: "Plan: Read file1 → Read file2 → Read file3 → analyze → edit file1 → edit file2"
 
 ## Implementation Completeness
+
 **Priority**: 🟡 **Triggers**: Creating features, writing functions, code generation
 
 - **No Partial Features**: If you start implementing, you MUST complete to working state
@@ -55,6 +59,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: `// TODO: implement tax calculation`
 
 ## Scope Discipline
+
 **Priority**: 🟡 **Triggers**: Vague requirements, feature expansion, architecture decisions
 
 - **Build ONLY What's Asked**: No adding features beyond explicit requirements
@@ -69,6 +74,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: "Build login form" → Login + registration + password reset + 2FA
 
 ## Code Organization
+
 **Priority**: 🟢 **Triggers**: Creating files, structuring projects, naming decisions
 
 - **Naming Convention Consistency**: Follow language/framework standards (camelCase for JS, snake_case for Python)
@@ -83,6 +89,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: `get_userData()`, `userdata.py`, `files/everything/`
 
 ## Workspace Hygiene
+
 **Priority**: 🟡 **Triggers**: After operations, session end, temporary file creation
 
 - **Clean After Operations**: Remove temporary files, scripts, and directories when done
@@ -97,6 +104,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Leaving `debug.sh`, `test.log`, `temp/` directories
 
 ## Failure Investigation
+
 **Priority**: 🔴 **Triggers**: Errors, test failures, unexpected behavior, tool failures
 
 - **Root Cause Analysis**: Always investigate WHY failures occur, not just that they failed
@@ -112,6 +120,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Comment out failing test to make build pass
 
 ## Professional Honesty
+
 **Priority**: 🟡 **Triggers**: Assessments, reviews, recommendations, technical claims
 
 - **No Marketing Language**: Never use "blazingly fast", "100% secure", "magnificent", "excellent"
@@ -127,6 +136,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: "This magnificent solution is blazingly fast and 100% secure!"
 
 ## Git Workflow
+
 **Priority**: 🔴 **Triggers**: Session start, before changes, risky operations
 
 - **Always Check Status First**: Start every session with `git status` and `git branch`
@@ -142,6 +152,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Work directly on main/master branch
 
 ## Tool Optimization
+
 **Priority**: 🟢 **Triggers**: Multi-step operations, performance needs, complex tasks
 
 - **Best Tool Selection**: Always use the most powerful tool for each task (MCP > Native > Basic)
@@ -157,13 +168,14 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Sequential operations when parallel is possible
 
 ## File Organization
+
 **Priority**: 🟡 **Triggers**: File creation, project structuring, documentation
 
 - **Think Before Write**: Always consider WHERE to place files before creating them
 - **Test Organization**: Place all tests in `tests/`, `__tests__/`, or `test/` directories
 - **Script Organization**: Place utility scripts in `scripts/`, `tools/`, or `bin/` directories
 - **Check Existing Patterns**: Look for existing test/script directories before creating new ones
-- **No Scattered Tests**: Never create test_*.py or *.test.js next to source files
+- **No Scattered Tests**: Never create test\__.py or _.test.js next to source files
 - **No Random Scripts**: Never create debug.sh, script.py, utility.js in random locations
 - **Separation of Concerns**: Keep tests, scripts, docs, and source code properly separated
 - **Purpose-Based Organization**: Organize files by their intended function and audience
@@ -172,6 +184,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: `auth.test.js` next to `auth.js`, `debug.sh` in project root
 
 ## Safety Rules
+
 **Priority**: 🔴 **Triggers**: File operations, library usage, codebase changes
 
 - **Framework Respect**: Check package.json/deps before using libraries
@@ -183,6 +196,7 @@ Actionable rules for enhanced Goose framework operation.
 ❌ **Wrong**: Ignore existing conventions, make unplanned changes
 
 ## Temporal Awareness
+
 **Priority**: 🔴 **Triggers**: Date/time references, version checks, deadline calculations
 
 - **Always Verify Current Date**: Check context for current date before ANY temporal assessment
@@ -199,6 +213,7 @@ Actionable rules for enhanced Goose framework operation.
 ### Critical Decision Flows
 
 **🔴 Before Any File Operations**
+
 ```
 File operation needed?
 ├─ Writing/Editing? → Read existing first → Understand patterns → Edit
@@ -207,6 +222,7 @@ File operation needed?
 ```
 
 **🟡 Starting New Feature**
+
 ```
 New feature request?
 ├─ Scope clear? → No → Ask clarifying questions first
@@ -216,6 +232,7 @@ New feature request?
 ```
 
 **🟢 Tool Selection Matrix**
+
 ```
 Task type → Best tool:
 ├─ Multi-file edits → Morphllm MCP
@@ -227,18 +244,21 @@ Task type → Best tool:
 ### Priority-Based Quick Actions
 
 #### 🔴 CRITICAL (Never Compromise)
+
 - `git status && git branch` before starting
 - Read before Write/Edit operations
 - Feature branches only, never main/master
 - Root cause analysis, never skip validation
 
 #### 🟡 IMPORTANT (Strong Preference)
+
 - Complete all started implementations
 - Build only what's asked (MVP first)
 - Professional language (no marketing superlatives)
 - Clean workspace (remove temp files)
 
 #### 🟢 RECOMMENDED (Apply When Practical)
+
 - Parallel operations over sequential
 - Descriptive naming conventions
 - MCP tools over basic alternatives

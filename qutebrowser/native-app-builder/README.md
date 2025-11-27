@@ -54,12 +54,14 @@ make test       # Протестировать wrapper без установки
 ## Что делает нативная обертка
 
 ### Основные функции:
+
 1. **Настройка процесса**: Устанавливает имя процесса как "qutebrowser"
 2. **Переменные окружения**: Настраивает пути для Python, Qt и кодеков
 3. **Интеграция с macOS**: Инициализирует NSApplication для правильной работы с системой
 4. **Встроенный Python**: Использует embedded Python interpreter вместо внешнего процесса
 
 ### Переменные окружения:
+
 - `PATH`: Включает Homebrew пути
 - `QT_PLUGIN_PATH`: Путь к плагинам Qt6
 - `QTWEBENGINE_RESOURCES_PATH`: Ресурсы QtWebEngine
@@ -68,6 +70,7 @@ make test       # Протестировать wrapper без установки
 ## Особенности
 
 ### ✅ Что работает:
+
 - Показывается как "qutebrowser" в меню macOS и Activity Monitor
 - Полная поддержка кодеков (H.264, H.265, и т.д.)
 - Все функции qutebrowser работают корректно
@@ -76,10 +79,12 @@ make test       # Протестировать wrapper без установки
 - URL schemes (http, https, file)
 
 ### ❌ Известные ограничения:
+
 - **Raycast Pro window layouts могут не работать** - это ограничение Qt framework, не нашей реализации
 - Qt приложения используют собственную систему управления окнами
 
 ### Обходные пути для управления окнами:
+
 - Использовать встроенные горячие клавиши macOS
 - Использовать альтернативы: Rectangle, Magnet, BetterSnapTool
 - Настроить горячие клавиши в самом qutebrowser
@@ -87,6 +92,7 @@ make test       # Протестировать wrapper без установки
 ## Установка на новой системе
 
 1. Установить зависимости:
+
 ```bash
 # Установить Homebrew (если не установлен)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -96,12 +102,14 @@ brew install qutebrowser
 ```
 
 2. Склонировать конфигурацию:
+
 ```bash
 git clone <your-dotfiles-repo>
 cd dotfiles/qutebrowser/scripts
 ```
 
 3. Собрать и установить:
+
 ```bash
 make check
 make install
@@ -110,6 +118,7 @@ make install
 ## Обновление
 
 При обновлении qutebrowser через Homebrew:
+
 ```bash
 brew update && brew upgrade qutebrowser
 make install  # Переустановить wrapper
@@ -118,21 +127,25 @@ make install  # Переустановить wrapper
 ## Отладка
 
 ### Проверить статус:
+
 ```bash
 make check
 ```
 
 ### Тестировать без установки:
+
 ```bash
 make test
 ```
 
 ### Восстановить из резервной копии:
+
 ```bash
 make restore
 ```
 
 ### Посмотреть логи:
+
 ```bash
 # Запустить из терминала для просмотра ошибок
 /Applications/qutebrowser.app/Contents/MacOS/qutebrowser
@@ -140,11 +153,11 @@ make restore
 
 ## Сравнение с другими подходами
 
-| Подход | Отображение процесса | Кодеки | Raycast | Сложность |
-|--------|---------------------|---------|---------|-----------|
-| Homebrew qutebrowser | Python | ❌ | ❓ | Простая |
-| Официальный .app | qutebrowser | ❌ | ❓ | Простая |
-| Наша реализация | qutebrowser | ✅ | ❌ | Средняя |
+| Подход               | Отображение процесса | Кодеки | Raycast | Сложность |
+| -------------------- | -------------------- | ------ | ------- | --------- |
+| Homebrew qutebrowser | Python               | ❌     | ❓      | Простая   |
+| Официальный .app     | qutebrowser          | ❌     | ❓      | Простая   |
+| Наша реализация      | qutebrowser          | ✅     | ❌      | Средняя   |
 
 ## Лицензия
 

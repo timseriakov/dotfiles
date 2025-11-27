@@ -25,12 +25,12 @@
 
 ### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `path` | string | Yes | Absolute path to file to edit |
-| `code_edit` | string | Yes | Code changes with `// ... existing code ...` markers for unchanged sections |
-| `instruction` | string | Yes | Single-sentence description of what this edit accomplishes |
-| `dryRun` | boolean | No | Preview changes without applying (default: false) |
+| Parameter     | Type    | Required | Description                                                                 |
+| ------------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `path`        | string  | Yes      | Absolute path to file to edit                                               |
+| `code_edit`   | string  | Yes      | Code changes with `// ... existing code ...` markers for unchanged sections |
+| `instruction` | string  | Yes      | Single-sentence description of what this edit accomplishes                  |
+| `dryRun`      | boolean | No       | Preview changes without applying (default: false)                           |
 
 ### How code_edit Works
 
@@ -54,6 +54,7 @@ function loginUser(username, password) {
 ```
 
 **Pattern Rules**:
+
 - Use `// ... existing code ...` (or language-appropriate comments) for unchanged sections
 - Include only lines that need to change
 - Morphllm intelligently merges changes into actual file content
@@ -70,6 +71,7 @@ function loginUser(username, password) {
 ## Triggers
 
 Use Morphllm when you need:
+
 - Multi-file edit operations with consistent patterns
 - Framework updates, style guide enforcement, code cleanup
 - Bulk text replacements across multiple files
@@ -81,12 +83,14 @@ Use Morphllm when you need:
 ## Choose When
 
 ### Use Morphllm For:
+
 - **Pattern-based edits**: Consistent transformations across multiple files
 - **Bulk operations**: Style enforcement, framework updates, text replacements
 - **Token efficiency**: Fast Apply scenarios with compression needs
 - **Simple to moderate complexity**: <10 files, straightforward transformations
 
 ### Don't Use Morphllm For:
+
 - **Symbol operations**: Use Serena for rename/refactor with dependency tracking
 - **LSP integration needs**: Use Serena for semantic understanding
 - **Single simple changes**: Native Edit tool is faster
@@ -99,6 +103,7 @@ Use Morphllm when you need:
 ### Serial Combination Patterns
 
 **Pattern 1: Semantic Analysis → Morphllm Edit**
+
 ```
 1. Serena.find_symbol(target)
    → Locate all instances semantically
@@ -109,6 +114,7 @@ Use Morphllm when you need:
 ```
 
 **Pattern 2: Sequential Planning → Morphllm Execution**
+
 ```
 1. Sequential.sequentialthinking(edit_strategy)
    → Plan systematic changes
@@ -123,6 +129,7 @@ Use Morphllm when you need:
 ## Examples
 
 ### Example 1: Add Error Handling
+
 ```javascript
 // Instruction: "Add try-catch error handling to API calls"
 // code_edit:
@@ -130,12 +137,13 @@ try {
   const response = await fetch(apiUrl);
   // ... existing code ...
 } catch (error) {
-  logError('API call failed', error);
+  logError("API call failed", error);
   throw new NetworkError(error.message);
 }
 ```
 
 ### Example 2: Framework Migration
+
 ```javascript
 // Instruction: "Convert React class component to hooks"
 // code_edit:
@@ -156,12 +164,12 @@ const UserProfile = ({ userId }) => {
 
 ## When NOT to Use Morphllm
 
-| Scenario | Use Instead | Reason |
-|----------|-------------|---------|
-| Rename function everywhere | Serena | Symbol operations need LSP tracking |
-| Single typo fix | Native Edit | Overkill for simple change |
-| Complex refactoring | Serena + Morphllm | Need semantic understanding first |
-| Mission-critical code | Manual edit | 98% accuracy insufficient |
+| Scenario                   | Use Instead       | Reason                              |
+| -------------------------- | ----------------- | ----------------------------------- |
+| Rename function everywhere | Serena            | Symbol operations need LSP tracking |
+| Single typo fix            | Native Edit       | Overkill for simple change          |
+| Complex refactoring        | Serena + Morphllm | Need semantic understanding first   |
+| Mission-critical code      | Manual edit       | 98% accuracy insufficient           |
 
 ---
 

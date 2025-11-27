@@ -15,12 +15,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 ### LSP Integration
 
 **What LSP Provides:**
+
 - "Go to Definition", "Find All References", "Autocomplete" capabilities
 - Language-agnostic symbol parsing, navigation, modification
 - Support for: Python, JavaScript/TypeScript, Java, C/C++, Rust, Go, and more
 - Proven, mature capabilities from editor ecosystems (VSCode, IntelliJ)
 
 **Benefits:**
+
 - No manual file parsing needed
 - Semantic understanding, not brittle text matching
 - Consistent interface across multiple languages
@@ -38,23 +40,25 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name or path pattern (e.g., "method", "class/method", "/class/method") |
-| `relative_path` | string | No | Restrict search to specific file or directory |
-| `depth` | integer | No | Depth to retrieve descendants (e.g., 1 for class methods) |
-| `include_kinds` | int[] | No | LSP symbol kinds to include (5=class, 6=method, 12=function, etc.) |
-| `exclude_kinds` | int[] | No | LSP symbol kinds to exclude (takes precedence over include) |
-| `substring_matching` | boolean | No | Use substring matching for last segment of name |
-| `include_body` | boolean | No | Include symbol's source code (use judiciously for token economy) |
+| Parameter            | Type    | Required | Description                                                                   |
+| -------------------- | ------- | -------- | ----------------------------------------------------------------------------- |
+| `name_path`          | string  | Yes      | Symbol name or path pattern (e.g., "method", "class/method", "/class/method") |
+| `relative_path`      | string  | No       | Restrict search to specific file or directory                                 |
+| `depth`              | integer | No       | Depth to retrieve descendants (e.g., 1 for class methods)                     |
+| `include_kinds`      | int[]   | No       | LSP symbol kinds to include (5=class, 6=method, 12=function, etc.)            |
+| `exclude_kinds`      | int[]   | No       | LSP symbol kinds to exclude (takes precedence over include)                   |
+| `substring_matching` | boolean | No       | Use substring matching for last segment of name                               |
+| `include_body`       | boolean | No       | Include symbol's source code (use judiciously for token economy)              |
 
 **LSP Symbol Kinds Reference:**
+
 - 1=file, 2=module, 3=namespace, 4=package, 5=class, 6=method, 7=property, 8=field
 - 9=constructor, 10=enum, 11=interface, 12=function, 13=variable, 14=constant
 - 15=string, 16=number, 17=boolean, 18=array, 19=object, 20=key, 21=null
 - 22=enum member, 23=struct, 24=event, 25=operator, 26=type parameter
 
 **Use Cases:**
+
 - Find function definition, locate class methods, discover variables, semantic search
 
 **Choose Smartly**: Use `include_kinds`, `relative_path` to scope, avoid `include_body` unless necessary.
@@ -67,15 +71,16 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name path to find references for |
-| `relative_path` | string | Yes | File containing the symbol (must be file, not directory) |
-| `include_kinds` | int[] | No | Filter referencing symbols by kind |
-| `exclude_kinds` | int[] | No | Exclude specific symbol kinds |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                                              |
+| ------------------ | ------- | -------- | -------------------------------------------------------- |
+| `name_path`        | string  | Yes      | Symbol name path to find references for                  |
+| `relative_path`    | string  | Yes      | File containing the symbol (must be file, not directory) |
+| `include_kinds`    | int[]   | No       | Filter referencing symbols by kind                       |
+| `exclude_kinds`    | int[]   | No       | Exclude specific symbol kinds                            |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default)                       |
 
 **Use Cases:**
+
 - Impact analysis before refactoring
 - Understand symbol usage patterns
 - Identify all callers of a function
@@ -91,13 +96,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol name path to replace |
-| `relative_path` | string | Yes | File containing the symbol |
-| `body` | string | Yes | New implementation body |
+| Parameter       | Type   | Required | Description                 |
+| --------------- | ------ | -------- | --------------------------- |
+| `name_path`     | string | Yes      | Symbol name path to replace |
+| `relative_path` | string | Yes      | File containing the symbol  |
+| `body`          | string | Yes      | New implementation body     |
 
 **Use Cases:**
+
 - Update function logic without breaking signature
 - Refactor method implementation
 - Fix bugs in specific function
@@ -113,13 +119,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name_path` | string | Yes | Symbol after which to insert |
-| `relative_path` | string | Yes | File containing the symbol |
-| `body` | string | Yes | Code to insert after symbol |
+| Parameter       | Type   | Required | Description                  |
+| --------------- | ------ | -------- | ---------------------------- |
+| `name_path`     | string | Yes      | Symbol after which to insert |
+| `relative_path` | string | Yes      | File containing the symbol   |
+| `body`          | string | Yes      | Code to insert after symbol  |
 
 **Use Cases:**
+
 - Add helper function near related code
 - Insert logging/instrumentation
 - Add test utilities near implementation
@@ -140,29 +147,34 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Automatic Triggers for write_memory:**
 
 ✅ **After Code Modifications**
+
 - What was changed and why
 - Intent behind modification
 - Related files/symbols affected
 
 ✅ **After Significant Analyses**
+
 - Dependency analysis results
 - Reference search outcomes
 - Impact assessment findings
 - Architectural insights
 
 ✅ **After Onboarding/Configuration**
+
 - Initial project context
 - Technology stack discovered
 - Key patterns identified
 - Project structure understanding
 
 ✅ **On Errors/Warnings**
+
 - Problems encountered
 - Solutions attempted
 - Workarounds applied
 - Tracking for future reference
 
 ❌ **DON'T Write For:**
+
 - Every trivial operation (balance thoroughness vs storage)
 - Temporary scratch work
 - Duplicate information
@@ -174,13 +186,14 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `memory_name` | string | Yes | Meaningful memory identifier |
-| `content` | string | Yes | UTF-8 encoded information in markdown format |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                                  |
+| ------------------ | ------- | -------- | -------------------------------------------- |
+| `memory_name`      | string  | Yes      | Meaningful memory identifier                 |
+| `content`          | string  | Yes      | UTF-8 encoded information in markdown format |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default)           |
 
 **Use Cases:**
+
 - Record refactoring decisions
 - Save analysis outcomes
 - Document patterns discovered
@@ -196,12 +209,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `memory_file_name` | string | Yes | Memory identifier to retrieve |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                        |
+| ------------------ | ------- | -------- | ---------------------------------- |
+| `memory_file_name` | string  | Yes      | Memory identifier to retrieve      |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default) |
 
 **Use Cases:**
+
 - Recall previous decisions
 - Load project context
 - Retrieve analysis results
@@ -218,6 +232,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Parameters:** None
 
 **Use Cases:**
+
 - Browse project history
 - Discover previous agent actions
 - Audit memory usage
@@ -237,12 +252,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `relative_path` | string | Yes | File to get overview of |
-| `max_answer_chars` | integer | No | Limit output size (-1 for default) |
+| Parameter          | Type    | Required | Description                        |
+| ------------------ | ------- | -------- | ---------------------------------- |
+| `relative_path`    | string  | Yes      | File to get overview of            |
+| `max_answer_chars` | integer | No       | Limit output size (-1 for default) |
 
 **Use Cases:**
+
 - First look at new file
 - Understand file structure quickly
 - Identify key components
@@ -258,23 +274,25 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `substring_pattern` | string | Yes | Regular expression pattern to search |
-| `relative_path` | string | No | Restrict to file/directory |
-| `restrict_search_to_code_files` | boolean | No | Only search files with analyzable symbols (default: false) |
-| `paths_include_glob` | string | No | Glob pattern for files to include (e.g., "*.ts", "src/**/*.py") |
-| `paths_exclude_glob` | string | No | Glob pattern for files to exclude (takes precedence) |
-| `context_lines_before` | integer | No | Lines of context before match |
-| `context_lines_after` | integer | No | Lines of context after match |
+| Parameter                       | Type    | Required | Description                                                       |
+| ------------------------------- | ------- | -------- | ----------------------------------------------------------------- |
+| `substring_pattern`             | string  | Yes      | Regular expression pattern to search                              |
+| `relative_path`                 | string  | No       | Restrict to file/directory                                        |
+| `restrict_search_to_code_files` | boolean | No       | Only search files with analyzable symbols (default: false)        |
+| `paths_include_glob`            | string  | No       | Glob pattern for files to include (e.g., "_.ts", "src/\*\*/_.py") |
+| `paths_exclude_glob`            | string  | No       | Glob pattern for files to exclude (takes precedence)              |
+| `context_lines_before`          | integer | No       | Lines of context before match                                     |
+| `context_lines_after`           | integer | No       | Lines of context after match                                      |
 
 **Pattern Matching Logic:**
+
 - DOTALL mode: `.` matches newlines
 - Don't use `.*` at beginning/end (already matches all)
 - Use non-greedy `.*?` in middle for complex patterns
 - Multi-line patterns span lines if needed
 
 **Use Cases:**
+
 - Find specific code patterns
 - Search non-code files (config, docs)
 - Regex-based refactoring targets
@@ -290,12 +308,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file_name_pattern` | string | Yes | File name or pattern to find |
-| `search_path` | string | No | Directory to search within |
+| Parameter           | Type   | Required | Description                  |
+| ------------------- | ------ | -------- | ---------------------------- |
+| `file_name_pattern` | string | Yes      | File name or pattern to find |
+| `search_path`       | string | No       | Directory to search within   |
 
 **Use Cases:**
+
 - Quick file location without manual browsing
 - Find configuration files
 - Locate test files
@@ -311,12 +330,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `directory_path` | string | Yes | Directory to list |
-| `recursive` | boolean | No | Recursively list subdirectories (default: false) |
+| Parameter        | Type    | Required | Description                                      |
+| ---------------- | ------- | -------- | ------------------------------------------------ |
+| `directory_path` | string  | Yes      | Directory to list                                |
+| `recursive`      | boolean | No       | Recursively list subdirectories (default: false) |
 
 **Use Cases:**
+
 - Understand project structure
 - Locate modules/packages
 - Discover related files
@@ -334,12 +354,13 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `information` | string | Yes | Information to analyze |
-| `context` | string | No | Additional context for analysis |
+| Parameter     | Type   | Required | Description                     |
+| ------------- | ------ | -------- | ------------------------------- |
+| `information` | string | Yes      | Information to analyze          |
+| `context`     | string | No       | Additional context for analysis |
 
 **Use Cases:**
+
 - Synthesize findings from multiple tool calls
 - Generate insights from code exploration
 - Connect patterns across codebase
@@ -356,6 +377,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Parameters:** None
 
 **Use Cases:**
+
 - Determine if project context exists
 - Decide whether to perform initial analysis
 - Check session state
@@ -367,6 +389,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 ## When to Use Serena
 
 **Use For:**
+
 - Symbol operations: rename, refactor, find references, modify implementations
 - Semantic code navigation: LSP-based understanding of structure
 - Project memory: automatic context preservation across sessions
@@ -374,6 +397,7 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 - Code exploration: find symbols, references, overview
 
 **Don't Use For:**
+
 - Pattern-based bulk edits → Use Morphllm (faster for style enforcement)
 - Simple text replacement → Native Edit tool
 - Single-file trivial changes → Overkill
@@ -387,46 +411,50 @@ Serena transforms AI code interaction by providing **context-rich, symbol-aware*
 **Serena → Morphllm**: Serena finds symbols → Morphllm applies bulk edits
 **Serena → Sequential**: Serena provides code context → Sequential analyzes architecture
 
-*See MCP_DecisionTree.md for detailed combination patterns*
+_See MCP_DecisionTree.md for detailed combination patterns_
 
 ---
 
 ## Tool Selection Guide
 
-| Need | Use | Notes |
-|------|-----|-------|
-| Find by name | `find_symbol` | Fastest, semantic |
-| Find references | `find_referencing_symbols` | Always before refactor |
-| Update impl | `replace_symbol_body` | Keeps signature |
-| Add code | `insert_after_symbol` | Safe insertion |
-| Pattern search | `search_for_pattern` | Use `max_answer_chars`, narrow scope |
-| File overview | `get_symbols_overview` | First look at new file |
-| Dir structure | `list_dir` | Explore project |
-| Save context | `write_memory` | Auto-triggered |
-| Load context | `read_memory` | When relevant |
+| Need            | Use                        | Notes                                |
+| --------------- | -------------------------- | ------------------------------------ |
+| Find by name    | `find_symbol`              | Fastest, semantic                    |
+| Find references | `find_referencing_symbols` | Always before refactor               |
+| Update impl     | `replace_symbol_body`      | Keeps signature                      |
+| Add code        | `insert_after_symbol`      | Safe insertion                       |
+| Pattern search  | `search_for_pattern`       | Use `max_answer_chars`, narrow scope |
+| File overview   | `get_symbols_overview`     | First look at new file               |
+| Dir structure   | `list_dir`                 | Explore project                      |
+| Save context    | `write_memory`             | Auto-triggered                       |
+| Load context    | `read_memory`              | When relevant                        |
 
 ---
 
 ## Validation and Best Practices
 
 **Symbol Operations**:
+
 - Always `find_referencing_symbols` before refactoring
 - Verify scope with LSP kinds filtering
 - Use `relative_path` to constrain searches
 
 **Project Memory**:
+
 - Descriptive memory names (include context, date if relevant)
 - Markdown format for readability
 - Balance thoroughness vs storage (don't write trivial operations)
 - AI decides when to write automatically (trust the triggers)
 
 **Code Navigation**:
+
 - Start with `get_symbols_overview` for new files
 - Use `include_kinds` to filter symbol types
 - Prefer `find_symbol` over `search_for_pattern` for known symbols
 - Use `restrict_search_to_code_files` appropriately
 
 **Token Economy**:
+
 - ⚠️ **ALWAYS use `max_answer_chars`** for search_for_pattern (default: unlimited!)
 - Avoid `include_body=true` unless necessary
 - Minimize `context_lines_before/after` (0-1 lines usually sufficient)
@@ -454,6 +482,7 @@ search_for_pattern({
 ```
 
 **Solution:**
+
 ```typescript
 search_for_pattern({
   substring_pattern: "ReportStatusEnum\\.REJECTED",
@@ -468,6 +497,7 @@ search_for_pattern({
 ```
 
 **Rules:**
+
 - ⚠️ ALWAYS `max_answer_chars: 2000-5000` for searches
 - Default `context_lines: 0`, add only if needed
 - Narrow with `relative_path` and globs
@@ -493,6 +523,7 @@ find_symbol({
 ```
 
 **Solution:**
+
 ```typescript
 // Option 1: Narrow pattern + scope
 search_for_pattern({
@@ -513,6 +544,7 @@ find_symbol({
 ```
 
 **Rules:**
+
 - Prefer `find_symbol` for known identifiers (Components, hooks, interfaces)
 - Never `include_body: true` for broad searches
 - Specific pattern > generic pattern
@@ -523,12 +555,12 @@ find_symbol({
 
 ### React/TypeScript Specific Tips
 
-| What to Find | Tool | Example |
-|--------------|------|----------|
-| React Components | `find_symbol` | `find_symbol({ name_path: "StatusBadge", include_kinds: [12], relative_path: "src/components" })` |
-| TypeScript Interfaces | `find_symbol` | `find_symbol({ name_path: "ReportProps", include_kinds: [11], relative_path: "src/types" })` |
-| Custom Hooks | `find_symbol` | `find_symbol({ name_path: "useReportStatus", include_kinds: [12], relative_path: "src/hooks" })` |
-| JSX/TSX Patterns | `search_for_pattern` | Use only with `max_answer_chars` + specific `relative_path` |
+| What to Find          | Tool                 | Example                                                                                           |
+| --------------------- | -------------------- | ------------------------------------------------------------------------------------------------- |
+| React Components      | `find_symbol`        | `find_symbol({ name_path: "StatusBadge", include_kinds: [12], relative_path: "src/components" })` |
+| TypeScript Interfaces | `find_symbol`        | `find_symbol({ name_path: "ReportProps", include_kinds: [11], relative_path: "src/types" })`      |
+| Custom Hooks          | `find_symbol`        | `find_symbol({ name_path: "useReportStatus", include_kinds: [12], relative_path: "src/hooks" })`  |
+| JSX/TSX Patterns      | `search_for_pattern` | Use only with `max_answer_chars` + specific `relative_path`                                       |
 
 **Rule**: Prefer `find_symbol` over `search_for_pattern` for React/TS code - more precise, less tokens.
 
@@ -536,15 +568,16 @@ find_symbol({
 
 ## Token Optimization Quick Reference (JS/TS)
 
-| Operation | Token Risk | JS/TS Example | Mitigation |
-|-----------|------------|---------------|------------|
-| `search_for_pattern` | 🔴 HIGH | Search for "useState" | `max_answer_chars: 3000`, `context_lines: 0` |
-| `find_symbol` broad | 🟡 MEDIUM | Find all "Component" | `relative_path: "src/components"`, no `include_body` |
-| Search in node_modules | 🔴 CRITICAL | Any pattern in deps | `paths_exclude_glob: "**/node_modules/**"` |
-| TSX with context | 🔴 HIGH | React components | Use `find_symbol`, not pattern |
-| `get_symbols_overview` | 🟢 LOW | Component structure | Safe for single files |
+| Operation              | Token Risk  | JS/TS Example         | Mitigation                                           |
+| ---------------------- | ----------- | --------------------- | ---------------------------------------------------- |
+| `search_for_pattern`   | 🔴 HIGH     | Search for "useState" | `max_answer_chars: 3000`, `context_lines: 0`         |
+| `find_symbol` broad    | 🟡 MEDIUM   | Find all "Component"  | `relative_path: "src/components"`, no `include_body` |
+| Search in node_modules | 🔴 CRITICAL | Any pattern in deps   | `paths_exclude_glob: "**/node_modules/**"`           |
+| TSX with context       | 🔴 HIGH     | React components      | Use `find_symbol`, not pattern                       |
+| `get_symbols_overview` | 🟢 LOW      | Component structure   | Safe for single files                                |
 
 **Default JS/TS Strategy:**
+
 ```typescript
 {
   max_answer_chars: 3000,

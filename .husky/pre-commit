@@ -1,0 +1,28 @@
+
+
+# Check for merge conflicts
+if git diff --check --cached | grep -q '<<<<<<<'; then
+  echo "Error: Merge conflict markers found. Please resolve them before committing."
+  exit 1
+fi
+
+# Check for large files (max 5MB)
+MAX_SIZE=5000000
+for file in $(git diff --cached --name-only --diff-filter=A); do
+  if [ -f "$file" ]; then
+    size=$(wc -c < "$file")
+    if [ $size -gt $MAX_SIZE ]; then
+      echo "Error: File '$file' is larger than 5MB. Please add it to .gitignore or use Git LFS."
+      exit 1
+    fi
+  fi
+done
+
+# Lint YAML files
+npx yaml-lint **/*.yml **/*.yaml
+
+# Format files with prettier
+npx prettier --write .
+
+# Run eslint
+npx eslint . --ext .js,.jsx,.ts,.tsx --fix
