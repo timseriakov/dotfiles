@@ -16,7 +16,8 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:gist.github.com)",
       "WebFetch(domain:greasyfork.org)",
-      "mcp__mcpproxy__call_tool"
+      "mcp__mcpproxy__call_tool",
+      "WebFetch(domain:qutebrowser.org)"
     ],
     "deny": [],
     "ask": [],
