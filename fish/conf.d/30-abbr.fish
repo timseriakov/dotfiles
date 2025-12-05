@@ -133,8 +133,8 @@ abbr -a t 'backlog board'
 abbr -a tt 'backlog browser'
 
 # z jumps
+abbr -a dev 'cd ~/dev'
 abbr -a zd 'z dot'
-abbr -a zm 'z mobile'
 abbr -a zl 'z dl'
 abbr -a dl 'cd ~/dl'
 abbr -a do 'cd ~/dev/dotfiles'
