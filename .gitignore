@@ -20,7 +20,11 @@ mcpproxy/config.db
 mcpproxy/config.db.backup*
 __pycache__/
 qutebrowser/userscripts/qpw
+
+# GitHub Copilot artifacts
 copilot
+.copilot
+copilot-*
 
 # Node.js
 node_modules
