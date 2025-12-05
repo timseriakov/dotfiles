@@ -235,7 +235,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "5f94f44c6b3d35853f317e0f4b3dfda2fb370c5f2b8980106bc2e7f6a355aabe",
+  "api_key": "",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,
