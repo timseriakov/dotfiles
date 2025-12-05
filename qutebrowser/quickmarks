@@ -17,7 +17,7 @@ aw http://localhost:5600
 ho http://localhost:1931
 dl https://www.deepl.com/en/translator
 cr https://cursor.com/agents
-pr https://www.perplexity.ai/
+per https://www.perplexity.ai/
 dis https://www.di.fm/shows/followed
 di https://www.di.fm/channels/followed
 rt https://rutracker.org/forum/index.php
@@ -29,3 +29,7 @@ map https://yandex.com/maps
 us https://claude.ai/settings/usage
 al https://aliexpress.ru/
 24 https://track24.ru/
+cin https://my.cincin.exchange/dashboard
+ct https://coursetrain.net/
+pt https://promptessor.com/prompt/new
+pri https://prismer.app/researches
