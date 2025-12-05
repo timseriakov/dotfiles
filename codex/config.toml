@@ -34,6 +34,15 @@ trust_level = "untrusted"
 [projects."/Users/tim/dev/pet-new/qpw"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/pet-new/mcp-feedback-loop"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-new"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-new/rari-shadcnui"]
+trust_level = "trusted"
+
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp/"
