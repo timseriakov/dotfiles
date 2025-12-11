@@ -11,12 +11,19 @@ c = c  # noqa: F821
 
 config.load_autoconfig()
 
-# User agent
+# User agent (default for all sites)
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0",
-    "https://accounts.google.com/*"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 )
+# Google-specific UA override
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/133.0.0.0 Safari/{webkit_version} Edg/131.0.2903.86",
+    "https://accounts.google.com/*",
+)
+# Standard headers for all sites
+config.set("content.headers.accept_language", "en-US,en;q=0.9")
 
 # Variables
 leader = " "
@@ -373,10 +380,6 @@ c.input.mode_override = None
 config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
 # Force picker (даже для одного credential)
 config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
-
-
-
-
 
 
 # ActivityWatch heartbeat bridge controls
