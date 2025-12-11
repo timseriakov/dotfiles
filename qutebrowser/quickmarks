@@ -17,7 +17,7 @@ aw http://localhost:5600
 ho http://localhost:1931
 dl https://www.deepl.com/en/translator
 cr https://cursor.com/agents
-per https://www.perplexity.ai/
+pr https://www.perplexity.ai/
 dis https://www.di.fm/shows/followed
 di https://www.di.fm/channels/followed
 rt https://rutracker.org/forum/index.php
@@ -33,3 +33,5 @@ cin https://my.cincin.exchange/dashboard
 ct https://coursetrain.net/
 pt https://promptessor.com/prompt/new
 pri https://prismer.app/researches
+prompt https://promptessor.com/prompt/new
+wb https://www.wildberries.by/
