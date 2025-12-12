@@ -14,7 +14,9 @@ config.load_autoconfig()
 # User agent (default for all sites)
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/143.0.0.0 Safari/537.36",
 )
 # Google-specific UA override
 config.set(
@@ -22,8 +24,21 @@ config.set(
     "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/133.0.0.0 Safari/{webkit_version} Edg/131.0.2903.86",
     "https://accounts.google.com/*",
 )
-# Standard headers for all sites
+# Standard headers for all sites (навигационный профиль)
 config.set("content.headers.accept_language", "en-US,en;q=0.9")
+config.set(
+    "content.headers.custom",
+    {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "sec-ch-ua": '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"macOS"',
+    },
+)
 
 # Variables
 leader = " "
