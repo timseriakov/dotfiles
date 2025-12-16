@@ -11,7 +11,6 @@ gl https://gitlab.sqvr.net/mobile/mobile
 gll https://gitlab.sqvr.net/dashboard/merge_requests?assignee_username=seriakov
 ji https://sqvr-inc.atlassian.net
 ju https://home.atlassian.com/o/047e69bf-68d9-4a95-91e4-1fdebe58d023/notifications?cloudId=a21eb619-b019-40a1-a225-2e52d25da42c
-tr https://sqvr-inc.atlassian.net/plugins/servlet/ac/jira-timesheet-plugin/timereports-report?project.key=SQ&project.id=10005
 sl https://app.slack.com/client/T0B3T22RJ/CKVJFJQ0G
 aw http://localhost:5600
 ho http://localhost:1931
@@ -21,6 +20,7 @@ pr https://www.perplexity.ai/
 dis https://www.di.fm/shows/followed
 di https://www.di.fm/channels/followed
 rt https://rutracker.org/forum/index.php
+tr https://rutracker.org/forum/index.php
 nnm https://nnmclub.to/forum/tracker.php
 kf https://www.kufar.by/l/r~minsk
 ku https://www.kucoin.com/ru

@@ -49,7 +49,7 @@ abbr -a b bun
 abbr -a ba 'bun a'
 abbr -a bi 'bun i'
 abbr -a bid 'bun i -D'
-abbr -a bd 'bun dev'
+abbr -a bde 'bun dev'
 abbr -a bdd 'bun add'
 abbr -a bddd 'bun add -D'
 abbr -a bx bunx
@@ -192,3 +192,6 @@ abbr -a vtop 'vtop --theme nord'
 
 abbr -a r rum
 abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
+
+abbr -a beads /Users/tim/.local/bin/bd
+abbr -a trrnts /opt/homebrew/bin/bv
