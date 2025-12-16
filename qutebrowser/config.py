@@ -478,6 +478,10 @@ config.bind(leader + "td", "tab-clone -w")
 config.bind(leader + "tn", "tab-give") # move tab to new window
 config.bind(leader + "th", "history")
 config.bind(leader + "tp", "tab-pin")
+config.bind(leader + "n", en(f"open -w {homepage}"))  # New window (leader+n) with EN layout
+config.bind(leader + "т", en(f"open -w {homepage}"))  # New window (leader+n, Russian layout) with EN layout
+config.bind("<Cmd-n>", en(f"open -w {homepage}"))  # New window (Cmd+N) with EN layout
+config.bind("<Cmd-т>", en(f"open -w {homepage}"))  # New window (Cmd+N, Russian layout) with EN layout
 # Tab prompts with text input - moved to keyboard layout switching section
 config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
 config.bind(leader + "ti", "open -p") # Open new private window
