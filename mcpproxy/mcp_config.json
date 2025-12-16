@@ -14,7 +14,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-11-20T13:55:43.556402+03:00",
-      "updated": "2025-12-12T16:55:35.498635+03:00"
+      "updated": "2025-12-12T22:07:40.543502+03:00"
     },
     {
       "name": "activitywatch",
@@ -25,7 +25,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-12-12T16:55:35.521152+03:00"
+      "updated": "2025-12-12T22:07:40.552284+03:00"
     },
     {
       "name": "atlassian",
@@ -36,7 +36,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.528039+03:00"
+      "updated": "2025-12-12T22:07:40.560373+03:00"
     },
     {
       "name": "context7",
@@ -47,7 +47,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.533938+03:00"
+      "updated": "2025-12-12T22:07:40.568299+03:00"
     },
     {
       "name": "fleur",
@@ -58,7 +58,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.540162+03:00"
+      "updated": "2025-12-12T22:07:40.57632+03:00"
     },
     {
       "name": "gitlab",
@@ -69,7 +69,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.550052+03:00"
+      "updated": "2025-12-12T22:07:40.584408+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -83,7 +83,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.558075+03:00"
+      "updated": "2025-12-12T22:07:40.593497+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -94,12 +94,12 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.567002+03:00"
+      "updated": "2025-12-12T22:07:40.600328+03:00"
     },
     {
       "name": "playwright",
       "protocol": "stdio",
-      "command": "bunx",
+      "command": "npx",
       "args": ["@playwright/mcp@latest"],
       "env": {
         "PLAYWRIGHT_BROWSERS_PATH": "0",
@@ -110,7 +110,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-12T22:06:08.241903+03:00",
-      "updated": "2025-12-12T22:07:40.527973+03:00"
+      "updated": "2025-12-12T22:07:40.608367+03:00"
     },
     {
       "name": "repomix",
@@ -122,7 +122,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.575037+03:00"
+      "updated": "2025-12-12T22:07:40.615324+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -133,7 +133,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.582811+03:00"
+      "updated": "2025-12-12T22:07:40.622442+03:00"
     },
     {
       "name": "serena",
@@ -151,7 +151,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.590081+03:00"
+      "updated": "2025-12-12T22:07:40.632346+03:00"
     },
     {
       "name": "shadcn-svelte-extras",
@@ -162,7 +162,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-11-16T14:48:58.981911+03:00",
-      "updated": "2025-12-12T16:55:35.598017+03:00"
+      "updated": "2025-12-12T22:07:40.641552+03:00"
     },
     {
       "name": "shrimp-task-manager",
@@ -178,7 +178,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:42:21.144894+03:00",
-      "updated": "2025-12-12T16:55:35.605982+03:00"
+      "updated": "2025-12-12T22:07:40.650423+03:00"
     },
     {
       "name": "sqvr-graphql",
@@ -194,7 +194,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-12T16:55:35.614036+03:00"
+      "updated": "2025-12-12T22:07:40.659415+03:00"
     },
     {
       "name": "svelte-mcp",
@@ -205,7 +205,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-11-20T22:00:50.113672+03:00",
-      "updated": "2025-12-12T16:55:35.622914+03:00"
+      "updated": "2025-12-12T22:07:40.668443+03:00"
     }
   ],
   "top_k": 5,

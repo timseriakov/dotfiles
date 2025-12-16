@@ -1,7 +1,7 @@
 {
-  "ccVersion": "2.0.55",
+  "ccVersion": "2.0.71",
   "ccInstallationDir": "/Users/tim/.volta/tools/image/packages/@anthropic-ai/claude-code/lib/node_modules/@anthropic-ai/claude-code/",
-  "lastModified": "2025-11-27T15:02:05.698Z",
+  "lastModified": "2025-12-17T12:34:50.583Z",
   "changesApplied": true,
   "settings": {
     "themes": [
@@ -745,6 +745,11 @@
         "allowedTools": []
       }
     ],
-    "defaultToolset": null
+    "defaultToolset": null,
+    "misc": {
+      "showTweakccVersion": true,
+      "showPatchesApplied": true,
+      "expandThinkingBlocks": true
+    }
   }
 }
