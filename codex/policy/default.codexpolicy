@@ -1,0 +1,1 @@
+prefix_rule(pattern=["curl", "-s", "https://api.github.com/repos/smart-mcp-proxy/mcpproxy-go/releases/tags/v0.10.12"], decision="allow")
