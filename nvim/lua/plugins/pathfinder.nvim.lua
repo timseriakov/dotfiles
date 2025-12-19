@@ -2,7 +2,7 @@
 -- Улучшенная навигация по файлам через gf/gF
 
 return {
-  "AlexSoliz67/pathfinder.nvim",
+  "HawkinsT/pathfinder.nvim",
   event = "VeryLazy",
   config = function()
     require("pathfinder").setup({
