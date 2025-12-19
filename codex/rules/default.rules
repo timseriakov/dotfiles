@@ -1,0 +1,2 @@
+prefix_rule(pattern=["git", "add", "config.py", "docs/keybindings.md"], decision="allow")
+prefix_rule(pattern=["git", "add", "-A"], decision="allow")
