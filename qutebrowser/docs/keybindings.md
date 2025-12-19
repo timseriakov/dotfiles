@@ -11,8 +11,8 @@
 
 | Shortcut     | Action                 |
 | ------------ | ---------------------- |
-| <kbd>p</kbd> | open --clipboard       |
-| <kbd>P</kbd> | open --clipboard --tab |
+| <kbd>p</kbd> | open {clipboard}       |
+| <kbd>P</kbd> | open --tab {clipboard} |
 
 ## Config Bindings
 
