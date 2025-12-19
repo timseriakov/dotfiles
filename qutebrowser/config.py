@@ -319,10 +319,10 @@ config.bind("нн", "yank")
 config.bind("yl", "hint links yank")
 
 # Open copied URL
-config.bind("p", "open --clipboard")
-config.bind("з", "open --clipboard")
-config.bind("P", "open --clipboard --tab")
-config.bind("З", "open --clipboard --tab")
+config.bind("p", "open {clipboard}")
+config.bind("з", "open {clipboard}")
+config.bind("P", "open --tab {clipboard}")
+config.bind("З", "open --tab {clipboard}")
 
 config.bind("x", "tab-close")
 config.bind("ч", "tab-close")
