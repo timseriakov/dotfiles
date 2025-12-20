@@ -161,6 +161,8 @@
 | <kbd>Leader</kbd> <kbd>p</kbd>                | keychain-login (Apple Passwords, быстрый)            |
 | <kbd>Leader</kbd> <kbd>P</kbd>                | keychain-login --pick (выбор записи Apple Passwords) |
 | <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>K</kbd> | keychain-login (Apple Passwords, shortcut)           |
+| <kbd>Leader</kbd> <kbd>l</kbd>                | qpw (WIP)                                            |
+| <kbd>Leader</kbd> <kbd>L</kbd>                | qpw --pick (WIP)                                     |
 
 > Примечание: `keychain-login` использует `apw` (Apple Passwords CLI). Перед использованием установите `brew install bendews/homebrew-tap/apw`, запустите `brew services start apw` и выполните `apw auth`.
 
