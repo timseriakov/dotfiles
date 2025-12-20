@@ -5,9 +5,9 @@
 from time import localtime, strftime
 import os
 
-# Reassign to avoid lsp(ruff_lsp) errors
-config = config  # noqa: F821
-c = c  # noqa: F821
+# Reassign to avoid lsp errors
+config = config  # type: ignore[name-defined]  # noqa: F821
+c = c  # type: ignore[name-defined]  # noqa: F821
 
 config.load_autoconfig()
 
@@ -391,10 +391,15 @@ config.bind(leader + 'oo', 'tor-toggle')   # Toggle Tor
 
 c.input.mode_override = None
 
-# Autofill password (single credential auto-selects)
-config.bind('<Ctrl-Shift-l>', 'spawn --userscript qpw')
-# Force picker (даже для одного credential)
-config.bind('<Ctrl-Shift-p>', 'spawn --userscript qpw --pick')
+# Apple Passwords autofill (keychain-login)
+config.bind('<Ctrl-Shift-k>', 'spawn -u keychain-login')
+config.bind('<Ctrl-Shift-k>', 'spawn -u keychain-login', mode='insert')
+config.bind(leader + 'p', 'spawn -u keychain-login')
+config.bind(leader + 'P', 'spawn -u keychain-login --pick')
+
+# Autofill password (qpw, WIP)
+config.bind(leader + 'l', 'spawn --userscript qpw')
+config.bind(leader + 'L', 'spawn --userscript qpw --pick')
 
 
 # ActivityWatch heartbeat bridge controls
