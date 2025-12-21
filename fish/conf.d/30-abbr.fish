@@ -6,7 +6,7 @@ end
 # Editors and quick openers
 abbr -a v nvim
 abbr -a vv 'nvim .'
-abbr -a o open
+abbr -a op open
 abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
@@ -108,9 +108,9 @@ abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
 abbr -a ge gemini
-abbr -a ge-up 'npm install -g @google/gemini-cli'
-abbr -a geup 'brew install gemini-cli'
-abbr -a gec 'bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+abbr -a geup 'npm install -g @google/gemini-cli'
+# abbr -a geup 'brew install gemini-cli'
+abbr -a geclear 'bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
 
 # Codex
 abbr -a cx codex
@@ -119,10 +119,13 @@ abbr -a cx-4.1 'codex -m gpt-4.1'
 abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
+# OpenCode
+abbr -a o opencode
+abbr -a ou 'npm install -g opencode-ai'
+
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
-abbr -a oc opencode
 abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a goo goose

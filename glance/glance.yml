@@ -196,6 +196,7 @@ pages:
             repositories:
               - payloadcms/payload
               - smart-mcp-proxy/mcpproxy-go
+              - sst/opencode
               - glanceapp/glance
               - neovide/neovide
               - neovim/neovim
