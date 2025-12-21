@@ -28,3 +28,6 @@ copilot-*
 
 # Node.js
 node_modules
+
+# Beads cache/state
+.beads
