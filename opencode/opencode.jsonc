@@ -359,6 +359,22 @@
             "output": ["text"],
           },
         },
+        "gemini-3-flash": {
+          "name": "Gemini 3 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
         "claude-sonnet-4-5": {
           "name": "Claude Sonnet 4.5 (Antigravity)",
           "limit": { "context": 200000, "output": 64000 },
@@ -372,7 +388,7 @@
   },
 
   // Default model for OpenCode sessions
-  "model": "openai/gpt-5.2-medium",
+  "model": "google/gemini-3-pro-high",
 
   // MCP proxy for tool discovery
   "mcp": {
