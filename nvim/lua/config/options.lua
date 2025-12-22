@@ -10,6 +10,7 @@ vim.g.ai_cmp = false
 vim.opt.relativenumber = false
 
 vim.opt.termguicolors = true
+vim.o.autoread = true -- Required for opencode.nvim (and generally good)
 vim.o.encoding = "utf-8"
 vim.o.fileencodings = "utf-8,cp1251,koi8-r,latin1"
 vim.env.TMPDIR = "/tmp/nvim"

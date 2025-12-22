@@ -9,7 +9,7 @@ return {
     local cmp = require("compare-with-clipboard")
     cmp.setup(opts)
 
-    vim.keymap.set({ "n", "v" }, "<leader>cb", function()
+    vim.keymap.set({ "n", "v" }, "<leader>bc", function()
       local mode = vim.fn.mode()
       local temp_reg = "z"
 
@@ -41,6 +41,6 @@ return {
           end
         end
       end, 50)
-    end, { desc = "Compare with clipboard" })
+    end, { desc = "Compare Buffer with clipboard" })
   end,
 }

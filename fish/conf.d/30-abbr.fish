@@ -186,7 +186,7 @@ abbr -a fxp 'fx package.json'
 
 abbr -a srv 'npx http-server .'
 abbr -a serve 'npx serve .'
-abbr -a ff 'npx fast-cli'
+abbr -a ff 'npx -y fast-cli'
 
 abbr -a ipinfo 'curl -s ipinfo.io'
 abbr -a ipinfo-more 'curl -s ipwho.is'
