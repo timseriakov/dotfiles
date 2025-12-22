@@ -43,10 +43,6 @@
     "branch": "main",
     "commit": "fc8edd6ecf8e4095ef878780e4bed83cc5c56c14"
   },
-  "claudecode.nvim": {
-    "branch": "main",
-    "commit": "6091df0e8edcdc92526cec23bbb42f63c0bb5ff2"
-  },
   "codeium.nvim": {
     "branch": "main",
     "commit": "821b570b526dbb05b57aa4ded578b709a704a38a"
@@ -199,6 +195,10 @@
     "branch": "main",
     "commit": "d5a29b6254dad07757832db505ea5aeab9aad43a"
   },
+  "mini.pick": {
+    "branch": "main",
+    "commit": "c488bbaa74b4b9e9ba49ebaffdd9f19b15b64a4f"
+  },
   "neo-tree.nvim": {
     "branch": "main",
     "commit": "b0b73273b4f5a1f4b4aac8accd6e0c3b4b5a6967"
@@ -298,6 +298,10 @@
   "one-small-step-for-vimkind": {
     "branch": "main",
     "commit": "87eeca2bd4d90a94eed1ef0dbc66885117e7bacb"
+  },
+  "opencode.nvim": {
+    "branch": "main",
+    "commit": "fef07f395ed8ce7818b6858443fa9fd0bcc406ad"
   },
   "opener.nvim": {
     "branch": "main",
@@ -441,6 +445,6 @@
   },
   "yazi.nvim": {
     "branch": "main",
-    "commit": "0754bf5cee9a0c64d5755d685d1d9d4c18c75fcc"
+    "commit": "b0fa7804087087bb2d734054ec037d046751549b"
   }
 }

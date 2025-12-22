@@ -476,8 +476,8 @@ config.bind(leader + "x", "quit --save")
 # without accidental app quit
 
 # tabs
-config.bind(leader + "ta", "bookmark-add")
-config.bind(leader + "tb", "bookmark-list")
+config.bind(leader + "ts", "bookmark-add")
+config.bind(leader + "tq", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
 config.bind(leader + "tn", "tab-give") # move tab to new window
