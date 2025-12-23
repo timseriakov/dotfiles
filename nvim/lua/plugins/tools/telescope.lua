@@ -31,18 +31,6 @@ return {
     opts.defaults.mappings.i["<c-r>"] = require("modules.telescope.actions").copy_selection_paths_to_clipboard
 
     telescope.setup(opts)
-
-    local ok, snacks = pcall(require, "snacks")
-    if ok then
-      vim.api.nvim_set_hl(0, "SnacksImageBorder", { fg = "#9ca0af" })
-      vim.api.nvim_set_hl(0, "SnacksImageTitle", { fg = "#ffff00" })
-
-      for _, builtin in ipairs({ "find_files", "live_grep", "grep_string", "oldfiles" }) do
-        if telescope.pickers[builtin] then
-          telescope.pickers[builtin].previewers.buffer = snacks.image.preview
-        end
-      end
-    end
     telescope.load_extension("live_grep_args")
 
     vim.opt.timeoutlen = 300
