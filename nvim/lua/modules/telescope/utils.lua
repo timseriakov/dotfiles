@@ -1,20 +1,7 @@
 local M = {}
 
 function M.get_excluded()
-  return {
-    "-E",
-    "*.png",
-    "-E",
-    "*.jpg",
-    "-E",
-    "*.jpeg",
-    "-E",
-    "*.gif",
-    "-E",
-    "*.svg",
-    "-E",
-    "*.webp",
-  }
+  return {}
 end
 
 function M.build_fd_args(glob)
