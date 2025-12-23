@@ -8,6 +8,44 @@ return {
       { "folke/snacks.nvim" },
     },
     config = function()
+      -- Auto-patch opencode.nvim to suppress JSON decode errors during rapid scrolling
+      local patch_file = function()
+        local client_path = vim.fn.stdpath("data") .. "/lazy/opencode.nvim/lua/opencode/cli/client.lua"
+        local f = io.open(client_path, "r")
+        if not f then return end
+        local content = f:read("*all")
+        f:close()
+
+        local needs_patch = false
+        
+        -- Patch SSE handler
+        if content:find('vim.notify("SSE JSON decode error: " .. full_event, vim.log.levels.ERROR') then
+          content = content:gsub(
+            'vim.notify%("SSE JSON decode error: " .. full_event, vim.log.levels.ERROR, { title = "opencode" }%)',
+            'if vim.g.opencode_debug then vim.notify("SSE JSON decode error: " .. full_event, vim.log.levels.DEBUG, { title = "opencode" }) end'
+          )
+          needs_patch = true
+        end
+
+        -- Patch JSON handler
+        if content:find('vim.notify("JSON decode error: " .. full_data, vim.log.levels.ERROR') then
+          content = content:gsub(
+            'vim.notify%("JSON decode error: " .. full_data, vim.log.levels.ERROR, { title = "opencode" }%)',
+            'if vim.g.opencode_debug then vim.notify("JSON decode error: " .. full_data, vim.log.levels.ERROR, { title = "opencode" }) end'
+          )
+          needs_patch = true
+        end
+
+        if needs_patch then
+          local fw = io.open(client_path, "w")
+          if fw then
+            fw:write(content)
+            fw:close()
+          end
+        end
+      end
+      patch_file()
+
       ---@type opencode.Opts
       vim.g.opencode_opts = {
         -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
