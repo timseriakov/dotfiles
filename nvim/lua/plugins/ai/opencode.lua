@@ -11,6 +11,13 @@ return {
       ---@type opencode.Opts
       vim.g.opencode_opts = {
         -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
+        select = {
+          snacks = {
+            layout = {
+              preset = "select",
+            },
+          },
+        },
       }
 
       -- Required for `opts.events.reload`.
@@ -23,10 +30,15 @@ return {
       vim.keymap.set({ "n", "x" }, "<leader>as", function() require("opencode").select() end, { desc = "Opencode: Select/Actions" })
       -- Toggle
       vim.keymap.set({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Opencode: Toggle" })
-      -- Operator (Range)
+      
+      -- Operator (Range) - Space A O
       vim.keymap.set({ "n", "x" }, "<leader>ao", function() return require("opencode").operator("@this ") end, { expr = true, desc = "Opencode: Operator (Range)" })
-      -- Operator (Line)
+      -- Operator (Line) - Space A L
       vim.keymap.set("n", "<leader>al", function() return require("opencode").operator("@this ") .. "_" end, { expr = true, desc = "Opencode: Operator (Line)" })
+
+      -- Standard Opencode bindings (go / goo) as requested
+      vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { expr = true, desc = "Opencode: Operator (Range)" })
+      vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { expr = true, desc = "Opencode: Operator (Line)" })
 
       -- Scrolling in session
       vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end, { desc = "Opencode: Half page up" })
