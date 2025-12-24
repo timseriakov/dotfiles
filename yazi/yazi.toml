@@ -135,6 +135,7 @@ fetchers = [
 spotters = [
   { name = "*/", run = "folder" },
   # Code
+  { name = "*.jsonc", run = "code" },
   { mime = "text/*", run = "code" },
   { mime = "application/{mbox,javascript,wine-extension-ini}", run = "code" },
   # Image
@@ -163,11 +164,14 @@ preloaders = [
 ]
 previewers = [
   { name = "*/", run = "folder" },
+  # JSONC - use custom jsonc previewer (bat force json)
+  { name = "*.jsonc", run = "jsonc" },
+  # JSON - use code previewer for syntax highlighting
+  { name = "*.json", run = "code" },
   # Code
   { mime = "text/*", run = "code" },
   { mime = "application/{mbox,javascript,wine-extension-ini}", run = "code" },
-  # JSON
-  { mime = "application/{json,ndjson}", run = "json" },
+  { mime = "application/ndjson", run = "json" },
   # Image
   { mime = "image/{avif,hei?,jxl}", run = "magick" },
   { mime = "image/svg+xml", run = "svg" },
