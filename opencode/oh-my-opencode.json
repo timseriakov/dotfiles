@@ -4,16 +4,16 @@
   "google_auth": false,
 
   "agents": {
-    "Sisyphus": { "model": "google/gemini-3-pro-high" },
-    "Planner-Sisyphus": { "model": "google/gemini-3-pro-high" },
+    "Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
+    "Planner-Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
 
-    "oracle": { "model": "google/gemini-3-pro-high" },
-    "librarian": { "model": "google/gemini-3-flash" },
-    "explore": { "model": "google/gemini-3-flash" },
+    "oracle": { "model": "zai-coding-plan/glm-4.7" },
+    "librarian": { "model": "zai-coding-plan/glm-4.5-flash" },
+    "explore": { "model": "zai-coding-plan/glm-4.5-flash" },
 
-    "frontend-ui-ux-engineer": { "model": "google/gemini-3-pro-high" },
-    "document-writer": { "model": "google/gemini-3-flash" },
-    "multimodal-looker": { "model": "google/gemini-2.5-flash" }
+    "frontend-ui-ux-engineer": { "model": "zai-coding-plan/glm-4.7" },
+    "document-writer": { "model": "zai-coding-plan/glm-4.7" },
+    "multimodal-looker": { "model": "zai-coding-plan/glm-4.5-flash" }
   },
 
   "claude_code": {
