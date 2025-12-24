@@ -121,7 +121,10 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
 # OpenCode
 abbr -a o opencode
-abbr -a ou 'npm install -g opencode-ai'
+abbr -a oup 'npm install -g opencode-ai'
+abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim ./opencode.jsonc'
+abbr -a .o 'cd ~/dev/dotfiles/opencode'
+abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
