@@ -46,3 +46,6 @@ if type -q brew
     set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
     set -gx QT_PLUGIN_PATH (brew --prefix qt@6)/plugins
 end
+
+# Deno experemental tsgo flag
+set -gx DENO_UNSTABLE_TSGO 1

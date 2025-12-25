@@ -114,7 +114,7 @@ abbr -a geclear 'bat google_accounts.json && rm -rf oauth_creds.json installatio
 
 # Codex
 abbr -a cx codex
-abbr -a cxu 'npm install -g @openai/codex'
+abbr -a cxup 'npm install -g @openai/codex'
 abbr -a cx-4.1 'codex -m gpt-4.1'
 abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
