@@ -6,13 +6,13 @@ return {
   },
   config = function()
     -- Автозагрузка PDF через BufReadPost
-    vim.api.nvim_create_autocmd("BufReadPost", {
-      pattern = "*.pdf",
-      callback = function()
-        local path = vim.fn.expand("%:p")
-        require("pdfview").open(path)
-      end,
-    })
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "*.pdf",
+  callback = function()
+    local path = vim.fn.expand("%:p")
+    require("pdfview").open(path)
+  end,
+})
 
     -- 🔒 Локальные бинды только в pdfview буфере
     vim.api.nvim_create_autocmd("FileType", {

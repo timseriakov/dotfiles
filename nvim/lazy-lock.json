@@ -63,10 +63,6 @@
     "branch": "release",
     "commit": "f3d66c148aa60ad04c0a21d3e0a776459de09eb2"
   },
-  "d2-vim": {
-    "branch": "master",
-    "commit": "cb3eb7fcb1a2d45c4304bf2e91077d787b724a39"
-  },
   "dashboard-nvim": {
     "branch": "master",
     "commit": "0775e567b6c0be96d01a61795f7b64c1758262f6"
@@ -107,13 +103,17 @@
     "branch": "main",
     "commit": "3bc2bd7aef28fbed6643534a0fdd0f19966544bc"
   },
+  "import.nvim": {
+    "branch": "main",
+    "commit": "b3b0294827eb9c4db0af6d2a0684e2862325fc0c"
+  },
   "inc-rename.nvim": {
     "branch": "main",
     "commit": "2597bccb57d1b570fbdbd4adf88b955f7ade715b"
   },
   "kulala.nvim": {
     "branch": "main",
-    "commit": "9fc4831a116fb32b0fd420ed483f5102a873446a"
+    "commit": "cd3eaa83b8d60533837202dede73238334d71832"
   },
   "lazy.nvim": {
     "branch": "main",
@@ -126,10 +126,6 @@
   "lazygit.nvim": {
     "branch": "main",
     "commit": "a04ad0dbc725134edbee3a5eea29290976695357"
-  },
-  "leetcode.nvim": {
-    "branch": "master",
-    "commit": "fdd3f91800b3983e27bc9fcfb99cfa7293d7f11a"
   },
   "logger.nvim": {
     "branch": "main",
@@ -201,7 +197,7 @@
   },
   "neotest-golang": {
     "branch": "main",
-    "commit": "37e400cfe9d193e508b1a512e96cbef83b08deb6"
+    "commit": "97bf34a811806166b62494b40bbd4959c221647f"
   },
   "nerdy.nvim": {
     "branch": "main",
@@ -249,7 +245,7 @@
   },
   "nvim-lspconfig": {
     "branch": "master",
-    "commit": "8973916a3d015d65a8c4614e141f4270a713cf33"
+    "commit": "d696e36d5792daf828f8c8e8d4b9aa90c1a10c2a"
   },
   "nvim-nio": {
     "branch": "master",
@@ -257,7 +253,7 @@
   },
   "nvim-rip-substitute": {
     "branch": "main",
-    "commit": "b93ed65cd0d7ea30dd36451dfddeb9cf32fecad2"
+    "commit": "a329cf2a21e918faab2dcae88a5ec3148ce9c4d8"
   },
   "nvim-treesitter": {
     "branch": "main",
@@ -343,10 +339,6 @@
     "branch": "main",
     "commit": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c"
   },
-  "telescope-import.nvim": {
-    "branch": "main",
-    "commit": "b3b0294827eb9c4db0af6d2a0684e2862325fc0c"
-  },
   "telescope-live-grep-args.nvim": {
     "branch": "master",
     "commit": "b80ec2c70ec4f32571478b501218c8979fab5201"
@@ -425,6 +417,6 @@
   },
   "yazi.nvim": {
     "branch": "main",
-    "commit": "76c61e39b37baccbcb5e02927dd6f7246d0bf95b"
+    "commit": "7e2f49b72218f62fe73adbf221d85cd27ebf9f2b"
   }
 }

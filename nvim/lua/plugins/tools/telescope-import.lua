@@ -1,7 +1,16 @@
 return {
-  "piersolenski/telescope-import.nvim",
+  "piersolenski/import.nvim",
   dependencies = "nvim-telescope/telescope.nvim",
-  config = function()
-    require("telescope").load_extension("import")
-  end,
+  opts = {
+    picker = "telescope",
+  },
+  keys = {
+    {
+      "<leader>ci",
+      function()
+        require("import").pick()
+      end,
+      desc = "Import (Telescope)",
+    },
+  },
 }
