@@ -22,5 +22,7 @@
     "skills": false,
     "agents": true,
     "hooks": true
-  }
+  },
+
+  "disabled_hooks": ["tool-output-truncator"]
 }
