@@ -49,3 +49,7 @@ end
 
 # Deno experemental tsgo flag
 set -gx DENO_UNSTABLE_TSGO 1
+
+# GO MCP Proxy
+set -gx MCPPROXY_DISABLE_OAUTH true
+set -gx MCPPROXY_UPDATE_APP_BUNDLE true

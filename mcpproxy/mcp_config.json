@@ -33,6 +33,7 @@
       "command": "npx",
       "args": ["-y", "@morph-llm/morph-fast-apply"],
       "env": {
+        "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
       },
       "oauth": null,
@@ -163,7 +164,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "aca717a080e490861722a6c1c3f6a67b296073ee5665b02a1cea96e355a61482",
+  "api_key": "76bc1b264d2f5d7500a8339bde9f7a01e0532d06606b76242c9caaa2347330bb",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,

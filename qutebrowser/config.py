@@ -277,8 +277,10 @@ config.bind("<Cmd-j>", "tab-prev")
 config.bind("<Cmd-о>", "tab-prev")
 
 # Restore closed tab
-config.bind("q", "undo")
-config.bind("й", "undo")
+config.bind("z", "undo")
+config.bind("я", "undo")
+config.bind("Q", "undo")
+config.bind("Й", "undo")
 
 config.bind('d', 'scroll-page 0 0.5')
 config.bind('в', 'scroll-page 0 0.5')
@@ -324,8 +326,11 @@ config.bind("з", "open {clipboard}")
 config.bind("P", "open --tab {clipboard}")
 config.bind("З", "open --tab {clipboard}")
 
+config.bind("q", "tab-close")
+config.bind("й", "tab-close")
 config.bind("x", "tab-close")
 config.bind("ч", "tab-close")
+
 config.bind("<Cmd-Shift-w>", "tab-close")  # For Karabiner cmd+q -> cmd+shift+w mapping
 config.bind("<Cmd-q>", "tab-close")  # Direct cmd+q for Russian layout (cmd+й)
 
@@ -419,6 +424,7 @@ config.bind(leader + 'al', f"spawn --detach {terminal} --config-file /Users/tim/
 # Translation
 config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
 config.bind(leader + 'tr', 'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();') # full page translation toggle
+config.bind(leader + 'ty', 'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();') # yandex translation toggle
 
 # Tab selection - moved to keyboard layout switching section
 

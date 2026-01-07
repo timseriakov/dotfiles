@@ -22,6 +22,9 @@ vim.opt.mouse = "a" -- Enable mouse support
 vim.o.mousescroll = "ver:1,hor:1" -- Slower mouse scroll for terminal
 vim.opt.swapfile = false
 
+-- Clipboard integration
+vim.o.clipboard = "unnamedplus"
+
 -- Change cursor shape per mode in terminals like kitty or iTerm2
 if vim.env.TERM:match("xterm-kitty") or vim.env.TERM:match("xterm-256color") then
   vim.opt.guicursor = ""
@@ -155,7 +158,6 @@ if vim.g.neovide then
   end)
 
   vim.g.neovide_input_use_logo = true
-  vim.o.clipboard = "unnamedplus"
 
   -- Normal / visual
   vim.keymap.set({ "n", "v" }, "<D-v>", '"+P', { noremap = true })
