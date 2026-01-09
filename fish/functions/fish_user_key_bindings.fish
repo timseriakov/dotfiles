@@ -13,4 +13,7 @@ function fish_user_key_bindings
 
     # jj to escape insert → normal with correct cursor mode
     bind -M insert -m default jj 'set -g fish_bind_mode default; commandline -f backward-char repaint'
+
+    # Execute 'f' immediately on space
+    bind -M insert ' ' 'if commandline | string match -q -- "f"; commandline -f execute; else; commandline -f expand-abbr; commandline -i " "; end'
 end
