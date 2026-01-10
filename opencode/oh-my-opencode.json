@@ -4,16 +4,16 @@
   "google_auth": false,
 
   "agents": {
-    "Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
-    "Planner-Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
+    "Sisyphus": { "model": "openai/gpt-5.2-high" },
+    "Planner-Sisyphus": { "model": "openai/gpt-5.2-pro" },
 
-    "oracle": { "model": "zai-coding-plan/glm-4.7" },
-    "librarian": { "model": "zai-coding-plan/glm-4.5-flash" },
-    "explore": { "model": "zai-coding-plan/glm-4.5-flash" },
+    "oracle": { "model": "openai/gpt-5.1-codex-max-medium" },
+    "librarian": { "model": "openai/gpt-4.1-mini" },
+    "explore": { "model": "openai/gpt-4o-mini" },
 
-    "frontend-ui-ux-engineer": { "model": "zai-coding-plan/glm-4.7" },
-    "document-writer": { "model": "zai-coding-plan/glm-4.7" },
-    "multimodal-looker": { "model": "zai-coding-plan/glm-4.5-flash" }
+    "frontend-ui-ux-engineer": { "model": "openai/gpt-5.1-codex-high" },
+    "document-writer": { "model": "openai/gpt-5.1-codex-medium" },
+    "multimodal-looker": { "model": "openai/gpt-4o" }
   },
 
   "claude_code": {
@@ -22,7 +22,5 @@
     "skills": false,
     "agents": true,
     "hooks": true
-  },
-
-  "disabled_hooks": ["tool-output-truncator"]
+  }
 }
