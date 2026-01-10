@@ -197,20 +197,32 @@ previewers = [
   { name = "*", run = "file" },
 ]
 prepend_preloaders = [
-  # Office Documents
+  { mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", run = "office" },
+  { mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", run = "office" },
+  { mime = "application/vnd.openxmlformats-officedocument.presentationml.presentation", run = "office" },
   { mime = "application/openxmlformats-officedocument.*", run = "office" },
   { mime = "application/oasis.opendocument.*", run = "office" },
   { mime = "application/ms-*", run = "office" },
   { mime = "application/msword", run = "office" },
   { name = "*.docx", run = "office" },
+  { name = "*.xlsx", run = "office" },
+  { name = "*.xls", run = "office" },
+  { name = "*.xlsm", run = "office" },
+  { name = "*.pptx", run = "office" },
 ]
 prepend_previewers = [
-  # Office Documents
+  { mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", run = "office" },
+  { mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", run = "office" },
+  { mime = "application/vnd.openxmlformats-officedocument.presentationml.presentation", run = "office" },
   { mime = "application/openxmlformats-officedocument.*", run = "office" },
   { mime = "application/oasis.opendocument.*", run = "office" },
   { mime = "application/ms-*", run = "office" },
   { mime = "application/msword", run = "office" },
   { name = "*.docx", run = "office" },
+  { name = "*.xlsx", run = "office" },
+  { name = "*.xls", run = "office" },
+  { name = "*.xlsm", run = "office" },
+  { name = "*.pptx", run = "office" },
   # Markdown
   { name = "*.md", run = "glow" },
   # Archive previewer
