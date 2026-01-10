@@ -311,21 +311,6 @@
 
   // Keyboard shortcuts handler
   function handleKeyPress(e) {
-    // Debug: log all key presses to console when debug is enabled
-    try {
-      if (localStorage.getItem("translate_debug") === "1") {
-        console.log("[translate-debug] Key pressed:", {
-          key: e.key,
-          keyCode: e.keyCode,
-          which: e.which,
-          code: e.code,
-          ctrl: e.ctrlKey,
-          alt: e.altKey,
-          shift: e.shiftKey,
-        });
-      }
-    } catch (_) {}
-
     // ESC - close sidebar and tooltip
     if (
       e.key === "Escape" ||
@@ -376,9 +361,4 @@
       removeTooltip();
     }
   });
-
-  console.log("Translate Selection Tooltip loaded");
-  console.log(
-    "Hotkeys: Space+tr (qutebrowser), F2 or Ctrl+T to toggle sidebar, ESC to close",
-  );
 })();

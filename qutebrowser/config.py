@@ -279,8 +279,8 @@ config.bind("<Cmd-о>", "tab-prev")
 # Restore closed tab
 config.bind("z", "undo")
 config.bind("я", "undo")
-config.bind("Q", "undo")
-config.bind("Й", "undo")
+config.bind("q", "undo")
+config.bind("й", "undo")
 
 config.bind('d', 'scroll-page 0 0.5')
 config.bind('в', 'scroll-page 0 0.5')
@@ -326,8 +326,6 @@ config.bind("з", "open {clipboard}")
 config.bind("P", "open --tab {clipboard}")
 config.bind("З", "open --tab {clipboard}")
 
-config.bind("q", "tab-close")
-config.bind("й", "tab-close")
 config.bind("x", "tab-close")
 config.bind("ч", "tab-close")
 
