@@ -14,7 +14,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-12-21T22:46:44.925468+03:00"
+      "updated": "2026-01-09T23:07:56.921477+03:00"
     },
     {
       "name": "lightpanda",
@@ -25,7 +25,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2025-12-21T22:46:44.975596+03:00"
+      "updated": "2026-01-09T23:07:56.937534+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -40,7 +40,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-21T22:46:44.960544+03:00"
+      "updated": "2026-01-09T23:07:56.944503+03:00"
     },
     {
       "name": "nx",
@@ -48,10 +48,10 @@
       "command": "npx",
       "args": ["nx-mcp@latest"],
       "oauth": null,
-      "enabled": true,
+      "enabled": false,
       "quarantined": false,
       "created": "2025-12-24T12:20:49.488052+03:00",
-      "updated": "2025-12-24T12:20:49.488055+03:00"
+      "updated": "2026-01-09T23:08:43.031409+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -62,7 +62,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-21T22:46:44.96753+03:00"
+      "updated": "2026-01-09T23:07:56.960361+03:00"
     },
     {
       "name": "repomix",
@@ -74,7 +74,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-21T22:46:44.991498+03:00"
+      "updated": "2026-01-09T23:07:56.969317+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -85,7 +85,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-21T22:46:45.001517+03:00"
+      "updated": "2026-01-09T23:07:56.976482+03:00"
     },
     {
       "name": "serena",
@@ -103,7 +103,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2025-12-21T22:46:45.009423+03:00"
+      "updated": "2026-01-09T23:07:56.985519+03:00"
     }
   ],
   "top_k": 5,
@@ -164,7 +164,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "76bc1b264d2f5d7500a8339bde9f7a01e0532d06606b76242c9caaa2347330bb",
+  "api_key": "aac1f4b5abef910a5e2cdf8ddc6937563c078d9874474a7f0bf2cccface9770c",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,
