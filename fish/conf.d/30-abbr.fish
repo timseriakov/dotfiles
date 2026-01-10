@@ -134,11 +134,6 @@ abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claud
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
 
-# Backlog.md helpers
-abbr -a bl backlog
-abbr -a t 'backlog board'
-abbr -a tt 'backlog browser'
-
 # z jumps
 abbr -a dev 'cd ~/dev'
 abbr -a zd 'z dot'
@@ -190,6 +185,7 @@ abbr -a fxp 'fx package.json'
 abbr -a srv 'npx http-server .'
 abbr -a serve 'npx serve .'
 abbr -a ff 'npx -y fast-cli'
+abbr -a ports snitch
 
 abbr -a ipinfo 'curl -s ipinfo.io'
 abbr -a ipinfo-more 'curl -s ipwho.is'
@@ -202,3 +198,6 @@ abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
 
 abbr -a beads /Users/tim/.local/bin/bd
 abbr -a trrnts /opt/homebrew/bin/bv
+
+# Mole
+abbr -a mu 'mole uninstall'
