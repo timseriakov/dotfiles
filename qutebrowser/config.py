@@ -11,6 +11,8 @@ c = c  # type: ignore[name-defined]  # noqa: F821
 
 config.load_autoconfig()
 
+config.set("content.site_specific_quirks.enabled", True)
+
 # User agent (default for all sites)
 config.set(
     "content.headers.user_agent",
@@ -21,8 +23,13 @@ config.set(
 # Google-specific UA override
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/133.0.0.0 Safari/{webkit_version} Edg/131.0.2903.86",
+    "Mozilla/5.0 ({os_info}; rv:131.0) Gecko/20100101 Firefox/131.0",
     "https://accounts.google.com/*",
+)
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "https://accounts.youtube.com/*",
 )
 # Standard headers for all sites (навигационный профиль)
 config.set("content.headers.accept_language", "en-US,en;q=0.9")
@@ -30,13 +37,6 @@ config.set(
     "content.headers.custom",
     {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "sec-ch-ua": '"Google Chrome";v="143", "Chromium";v="143", "Not A(Brand";v="24"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
     },
 )
 
@@ -55,9 +55,11 @@ config.set("content.autoplay", False)
 
 # Note: userscripts directory is ~/.qutebrowser/userscripts (symlinked to repo)
 
+
 # Short helper for English layout switching
 def en(cmd):
     return f"spawn -u switch-to-english ;; {cmd}"
+
 
 # Enable mouse back/forward buttons
 c.input.mouse.back_forward_buttons = True
@@ -75,7 +77,7 @@ c.window.hide_decoration = True
 # Layout
 c.scrolling.bar = "when-searching"
 c.statusbar.show = "in-mode"
-c.tabs.show = "always" # multiple # never
+c.tabs.show = "always"  # multiple # never
 c.tabs.last_close = "close"
 c.tabs.position = "top"
 # c.tabs.new_position.related = "last"
@@ -98,16 +100,16 @@ c.colors.webpage.preferred_color_scheme = "dark"
 # c.fileselect.multiple_files.command = [terminal, "-e", "ranger", "--choosefiles", "{}"]
 
 # Nord Palette
-nord0  = "#2e3440"
-nord1  = "#3b4252"
-nord2  = "#434c5e"
-nord3  = "#4c566a"
-nord4  = "#d8dee9"
-nord5  = "#e5e9f0"
-nord6  = "#eceff4"
-nord7  = "#8fbcbb"
-nord8  = "#88c0d0"
-nord9  = "#81a1c1"
+nord0 = "#2e3440"
+nord1 = "#3b4252"
+nord2 = "#434c5e"
+nord3 = "#4c566a"
+nord4 = "#d8dee9"
+nord5 = "#e5e9f0"
+nord6 = "#eceff4"
+nord7 = "#8fbcbb"
+nord8 = "#88c0d0"
+nord9 = "#81a1c1"
 nord10 = "#5e81ac"
 nord11 = "#bf616a"
 nord12 = "#d08770"
@@ -119,7 +121,7 @@ nord15 = "#b48ead"
 accent = nord8
 black = nord0
 white = nord6
-red   = nord11
+red = nord11
 green = nord14
 yellow = nord13
 blue = nord10
@@ -176,9 +178,13 @@ c.colors.statusbar.normal.bg = nord0
 c.colors.statusbar.normal.fg = "#6C7086"
 c.colors.statusbar.command.bg = nord0
 c.colors.statusbar.command.fg = white
-c.colors.statusbar.insert.bg = "#5E81AC" # "#A3BE8C" #  "#00BAC7" # "#3D6164" # "#00754a"
+c.colors.statusbar.insert.bg = (
+    "#5E81AC"  # "#A3BE8C" #  "#00BAC7" # "#3D6164" # "#00754a"
+)
 c.colors.statusbar.insert.fg = black
-c.colors.statusbar.passthrough.bg = nord3  # темно-серый вместо фиолетового для лучшей видимости URL
+c.colors.statusbar.passthrough.bg = (
+    nord3  # темно-серый вместо фиолетового для лучшей видимости URL
+)
 c.colors.statusbar.passthrough.fg = white
 c.colors.statusbar.private.bg = nord3
 c.colors.statusbar.private.fg = white
@@ -214,10 +220,10 @@ c.colors.tabs.pinned.selected.odd.fg = nord1
 
 # Tab loading indicator
 c.tabs.indicator.width = 7  # width in pixels (0 to disable)
-c.colors.tabs.indicator.start = "#F90"     # bright orange - loading in progress
-c.colors.tabs.indicator.stop = "#00A86E"   # bright green - loaded successfully
+c.colors.tabs.indicator.start = "#F90"  # bright orange - loading in progress
+c.colors.tabs.indicator.stop = "#00A86E"  # bright green - loaded successfully
 c.colors.tabs.indicator.error = "#FF2B3A"  # bright red - loading error
-c.colors.tabs.indicator.system = 'none'    # no gradient, instant color change
+c.colors.tabs.indicator.system = "none"  # no gradient, instant color change
 
 # Font
 font_size = "18pt"
@@ -282,10 +288,10 @@ config.bind("я", "undo")
 config.bind("q", "undo")
 config.bind("й", "undo")
 
-config.bind('d', 'scroll-page 0 0.5')
-config.bind('в', 'scroll-page 0 0.5')
-config.bind('u', 'scroll-page 0 -0.5')
-config.bind('г', 'scroll-page 0 -0.5')
+config.bind("d", "scroll-page 0 0.5")
+config.bind("в", "scroll-page 0 0.5")
+config.bind("u", "scroll-page 0 -0.5")
+config.bind("г", "scroll-page 0 -0.5")
 
 # Insert mode bindings moved to automatic layout switching section
 
@@ -349,87 +355,120 @@ config.unbind("m")
 config.bind("<Cmd-,>", "open qute://settings")
 
 # URL editing - moved to keyboard layout switching section
-config.bind("gu", "navigate up") # go up one level in URL
+config.bind("gu", "navigate up")  # go up one level in URL
 
 # Open link in mpv
 config.bind(leader + "m", "spawn /opt/homebrew/bin/mpv {url}")
 config.bind(leader + "i", "spawn open -a IINA {url}")
 
 # ActivityWatch heartbeat bridge controls
-config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
-config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
-config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
+config.bind(leader + "aw", "spawn -u aw-heartbeat-bridge start")
+config.bind(leader + "aW", "spawn -u aw-heartbeat-bridge stop")
+config.bind(leader + "as", "spawn -u aw-heartbeat-bridge status")
 
 # ActivityWatch tracking toggle (opt-out system: enabled by default)
 # Disable: sets flag in both localStorage (persistent) and sessionStorage (session-only for private windows)
-config.bind(leader + 'ad', 'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))')
+config.bind(
+    leader + "ad",
+    'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))',
+)
 # Enable: removes flag from both storages
-config.bind(leader + 'ae', 'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))')
+config.bind(
+    leader + "ae",
+    'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))',
+)
 
 # Insert mode binding moved to automatic layout switching section
-config.bind(leader + 'al', f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'")
+config.bind(
+    leader + "al",
+    f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'",
+)
 
-config.bind(leader + 'h', 'spawn -u fzfhistory-userscript')
-config.bind(leader + 'H', 'spawn -u fzfhistory-userscript closed-tabs')
+config.bind(leader + "h", "spawn -u fzfhistory-userscript")
+config.bind(leader + "H", "spawn -u fzfhistory-userscript closed-tabs")
 
 # Braindrop (TUI) in Alacritty
-config.bind(leader + 'b', 'spawn -u braindrop')
+config.bind(leader + "b", "spawn -u braindrop")
 
 # Save link to Raindrop
-config.bind(leader + 'r', "spawn -u raindrop {url} {title}")
+config.bind(leader + "r", "spawn -u raindrop {url} {title}")
 
 # Tor aliases for cleaner bindings
-c.aliases.update({
-    'tor-start': 'spawn -u tor-toggle start',
-    'tor-stop': 'spawn -u tor-toggle stop',
-    'tor-status': 'spawn -u tor-toggle status',
-    'tor-toggle': 'spawn -u tor-toggle toggle',
-})
+c.aliases.update(
+    {
+        "tor-start": "spawn -u tor-toggle start",
+        "tor-stop": "spawn -u tor-toggle stop",
+        "tor-status": "spawn -u tor-toggle status",
+        "tor-toggle": "spawn -u tor-toggle toggle",
+    }
+)
 
 # Tor controls - Manage Tor service and proxy for .onion sites
-config.bind(leader + 'os', 'tor-start')    # Start Tor
-config.bind(leader + 'ox', 'tor-stop')     # Stop Tor
-config.bind(leader + 'oi', 'tor-status')   # Tor Info/Status
-config.bind(leader + 'oo', 'tor-toggle')   # Toggle Tor
+config.bind(leader + "os", "tor-start")  # Start Tor
+config.bind(leader + "ox", "tor-stop")  # Stop Tor
+config.bind(leader + "oi", "tor-status")  # Tor Info/Status
+config.bind(leader + "oo", "tor-toggle")  # Toggle Tor
 
 c.input.mode_override = None
 
 # Apple Passwords autofill (keychain-login)
-config.bind('<Ctrl-Shift-k>', 'spawn -u keychain-login')
-config.bind('<Ctrl-Shift-k>', 'spawn -u keychain-login', mode='insert')
-config.bind(leader + 'p', 'spawn -u keychain-login')
-config.bind(leader + 'P', 'spawn -u keychain-login --pick')
+config.bind("<Ctrl-Shift-k>", "spawn -u keychain-login")
+config.bind("<Ctrl-Shift-k>", "spawn -u keychain-login", mode="insert")
+config.bind(leader + "p", "spawn -u keychain-login")
+config.bind(leader + "P", "spawn -u keychain-login --pick")
 
 # Autofill password (qpw, WIP)
-config.bind(leader + 'l', 'spawn --userscript qpw')
-config.bind(leader + 'L', 'spawn --userscript qpw --pick')
+config.bind(leader + "l", "spawn --userscript qpw")
+config.bind(leader + "L", "spawn --userscript qpw --pick")
 
 
 # ActivityWatch heartbeat bridge controls
-config.bind(leader + 'aw', 'spawn -u aw-heartbeat-bridge start')
-config.bind(leader + 'aW', 'spawn -u aw-heartbeat-bridge stop')
-config.bind(leader + 'as', 'spawn -u aw-heartbeat-bridge status')
+config.bind(leader + "aw", "spawn -u aw-heartbeat-bridge start")
+config.bind(leader + "aW", "spawn -u aw-heartbeat-bridge stop")
+config.bind(leader + "as", "spawn -u aw-heartbeat-bridge status")
 
 # ActivityWatch tracking toggle (opt-out system: enabled by default)
 # Disable: sets flag in both localStorage (persistent) and sessionStorage (session-only for private windows)
-config.bind(leader + 'ad', 'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))')
+config.bind(
+    leader + "ad",
+    'jseval -q (localStorage.setItem("__qute_aw_tracking_disabled__", "1"), sessionStorage.setItem("__qute_aw_tracking_disabled__", "1"), alert("AW tracking DISABLED (reload pages)"))',
+)
 # Enable: removes flag from both storages
-config.bind(leader + 'ae', 'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))')
+config.bind(
+    leader + "ae",
+    'jseval -q (localStorage.removeItem("__qute_aw_tracking_disabled__"), sessionStorage.removeItem("__qute_aw_tracking_disabled__"), alert("AW tracking ENABLED (reload pages)"))',
+)
 
 # Insert mode binding moved to automatic layout switching section
-config.bind(leader + 'al', f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'")
+config.bind(
+    leader + "al",
+    f"spawn --detach {terminal} --config-file /Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml -e /bin/bash -c 'exec tail -f /tmp/aw-heartbeat-bridge.log'",
+)
 
 # Translation
-config.bind(leader + 'tR', 'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))') # tooltip translation
-config.bind(leader + 'tr', 'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();') # full page translation toggle
-config.bind(leader + 'ty', 'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();') # yandex translation toggle
+config.bind(
+    leader + "tR",
+    'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))',
+)  # tooltip translation
+config.bind(
+    leader + "tr",
+    'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();',
+)  # full page translation toggle
+config.bind(
+    leader + "ty",
+    'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
+)  # yandex translation toggle
 
 # Tab selection - moved to keyboard layout switching section
 
 config.bind(leader + "ce", "config-edit")
 config.bind(leader + "ch", "help")
-config.bind(leader + "cc", "config-source ;; message-info 'Config reloaded'") # reload config
-config.bind(leader + "сс", "config-source ;; message-info 'Config reloaded'") # reload config
+config.bind(
+    leader + "cc", "config-source ;; message-info 'Config reloaded'"
+)  # reload config
+config.bind(
+    leader + "сс", "config-source ;; message-info 'Config reloaded'"
+)  # reload config
 # Settings prompt - moved to keyboard layout switching section
 
 # ui
@@ -440,12 +479,16 @@ config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
 config.bind(leader + "uy", "config-cycle statusbar.show always in-mode")
 config.bind(leader + "гн", "config-cycle statusbar.show always in-mode")
 
-config.bind(leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'")
-config.bind(leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'")
+config.bind(
+    leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'"
+)
+config.bind(
+    leader + "uf", ":set content.autoplay false ;; message-info 'Autoplay disabled'"
+)
 
 # Dark mode controls
 # - Built-in Qt darkmode toggle on Space u n
-config.bind(leader + 'un', "config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "un", "config-cycle -p colors.webpage.darkmode.enabled true false")
 
 # dev tools
 config.bind(leader + "dd", "devtools")
@@ -456,23 +499,35 @@ config.bind(leader + "dp", "screenshot " + ss_dir + "qute-" + timestamp + ".png"
 config.bind(leader + "ds", "view-source --edit")
 config.bind(leader + "dz", "view-source")
 
-config.bind(leader + "fc", "hint links yank --rapid") # Yank link rapidly
-config.bind(leader + "ff", "hint links tab --rapid") # Open link in new tab (foreground)
-config.bind(leader + "fb", "hint links tab-bg --rapid") # Open link in new tab (foreground)
-config.bind(leader + "fi", "hint inputs") # Open link in new tab (foreground)
-config.bind(leader + "fo", "hint links window") # Open link in new tab (foreground)
-config.bind(leader + "fp", "hint links run :open -p {hint-url}") # Open link in new tab (foreground)
-config.bind(leader + "fv", "hint links spawn mpv {hint-url}") # Open link in new tab (foreground)
-config.bind(leader + "fI", "hint links spawn open -a IINA {hint-url}") # Open link in IINA (hint)
-config.bind(leader + "fy", "hint links yank") # Open link in new tab (foreground)
-config.bind(leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Helium' {hint-url}") # Open link in Helium (hint)
+config.bind(leader + "fc", "hint links yank --rapid")  # Yank link rapidly
+config.bind(
+    leader + "ff", "hint links tab --rapid"
+)  # Open link in new tab (foreground)
+config.bind(
+    leader + "fb", "hint links tab-bg --rapid"
+)  # Open link in new tab (foreground)
+config.bind(leader + "fi", "hint inputs")  # Open link in new tab (foreground)
+config.bind(leader + "fo", "hint links window")  # Open link in new tab (foreground)
+config.bind(
+    leader + "fp", "hint links run :open -p {hint-url}"
+)  # Open link in new tab (foreground)
+config.bind(
+    leader + "fv", "hint links spawn mpv {hint-url}"
+)  # Open link in new tab (foreground)
+config.bind(
+    leader + "fI", "hint links spawn open -a IINA {hint-url}"
+)  # Open link in IINA (hint)
+config.bind(leader + "fy", "hint links yank")  # Open link in new tab (foreground)
+config.bind(
+    leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Helium' {hint-url}"
+)  # Open link in Helium (hint)
 
 # quitting actions
 config.bind(leader + "qd", "tab-close")
 config.bind(leader + "qq", "close")
 config.bind(leader + "qr", "restart")
-config.bind(leader + "qt", "tab-only") # close all tabs except current
-config.bind(leader + "qw", "window-only") # close all windows except current
+config.bind(leader + "qt", "tab-only")  # close all tabs except current
+config.bind(leader + "qw", "window-only")  # close all windows except current
 config.bind(leader + "x", "quit --save")
 
 # cmd+q will be remapped to cmd+shift+w by Karabiner-Elements for qutebrowser
@@ -484,17 +539,27 @@ config.bind(leader + "ts", "bookmark-add")
 config.bind(leader + "tq", "bookmark-list")
 config.bind(leader + "tc", "tab-clone")
 config.bind(leader + "td", "tab-clone -w")
-config.bind(leader + "tn", "tab-give") # move tab to new window
+config.bind(leader + "tn", "tab-give")  # move tab to new window
 config.bind(leader + "th", "history")
 config.bind(leader + "tp", "tab-pin")
-config.bind(leader + "n", en(f"open -w {homepage}"))  # New window (leader+n) with EN layout
-config.bind(leader + "т", en(f"open -w {homepage}"))  # New window (leader+n, Russian layout) with EN layout
+config.bind(
+    leader + "n", en(f"open -w {homepage}")
+)  # New window (leader+n) with EN layout
+config.bind(
+    leader + "т", en(f"open -w {homepage}")
+)  # New window (leader+n, Russian layout) with EN layout
 config.bind("<Cmd-n>", en(f"open -w {homepage}"))  # New window (Cmd+N) with EN layout
-config.bind("<Cmd-т>", en(f"open -w {homepage}"))  # New window (Cmd+N, Russian layout) with EN layout
+config.bind(
+    "<Cmd-т>", en(f"open -w {homepage}")
+)  # New window (Cmd+N, Russian layout) with EN layout
 # Tab prompts with text input - moved to keyboard layout switching section
-config.bind(leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}") # Open current URL in Helium
-config.bind(leader + "ti", "open -p") # Open new private window
-config.bind("<Cmd-Shift-N>", "open -p")  # macOS standard incognito shortcut (Cmd+Shift+N)
+config.bind(
+    leader + "tx", "spawn --detach /usr/bin/open -a 'Helium' {url}"
+)  # Open current URL in Helium
+config.bind(leader + "ti", "open -p")  # Open new private window
+config.bind(
+    "<Cmd-Shift-N>", "open -p"
+)  # macOS standard incognito shortcut (Cmd+Shift+N)
 
 # sessions
 # Interactive prompts leverage completion for existing session names.
@@ -503,9 +568,11 @@ config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
 config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
 
 # Autostart ActivityWatch bridge
-userscript = os.path.expanduser('~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge')
+userscript = os.path.expanduser(
+    "~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge"
+)
 if os.path.exists(userscript):
-    os.system(f'{userscript} start &')
+    os.system(f"{userscript} start &")
 
 # Tor commands (aliases defined above in c.aliases dict)
 
@@ -518,24 +585,27 @@ if os.path.exists(userscript):
 # - Keep current layout when in insert mode for multilingual typing
 
 # Configure automatic insert mode behavior
-c.input.insert_mode.auto_enter = True   # Enter insert mode when clicking input fields
-c.input.insert_mode.auto_leave = True   # Leave insert mode when clicking outside
+c.input.insert_mode.auto_enter = True  # Enter insert mode when clicking input fields
+c.input.insert_mode.auto_leave = True  # Leave insert mode when clicking outside
+
 
 # Override mode-enter and mode-leave commands to include layout switching
 def en_mode_enter(mode):
     """Enter mode without switching layout (preserve current for typing)"""
     return f"mode-enter {mode}"
 
+
 def en_mode_leave():
     """Leave mode and switch to English layout"""
     return "spawn -u switch-to-english ;; mode-leave"
+
 
 # Override insert mode bindings to preserve layout when entering, switch when leaving
 config.bind("i", en_mode_enter("insert"))
 config.bind("ш", en_mode_enter("insert"))  # Russian layout
 config.bind("a", en_mode_enter("insert"))
 config.bind("ф", en_mode_enter("insert"))  # Russian layout
-config.bind(leader + 'aa', en_mode_enter("insert"))
+config.bind(leader + "aa", en_mode_enter("insert"))
 
 # Override Escape to switch to English when leaving insert mode
 config.bind("<Escape>", en_mode_leave(), mode="insert")
