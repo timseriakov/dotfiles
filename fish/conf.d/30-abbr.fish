@@ -122,6 +122,8 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 # OpenCode
 abbr -a o opencode
 abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+abbr -a oweb 'openchamber --daemon --port 1911'
+abbr -a o-manager 'bunx opencode-manager'
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim ./opencode.jsonc'
 abbr -a .o 'cd ~/dev/dotfiles/opencode'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'

@@ -33,5 +33,10 @@ use = "yazi-rs/plugins:toggle-pane"
 rev = "68f7d48"
 hash = "8a7c58225816a163a6e8730c0adafbc8"
 
+[[plugin.deps]]
+use = "MasouShizuka/close-and-restore-tab"
+rev = "5047217"
+hash = "bb24648b1f96f1cef8c1543742189aad"
+
 [flavor]
 deps = []
