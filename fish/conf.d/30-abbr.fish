@@ -63,6 +63,7 @@ abbr -a gvl 'git vlog'
 abbr -a gprune 'git remote prune origin'
 abbr -a gg lazygit
 abbr -a пп lazygit
+abbr -a prs 'env -u GITHUB_TOKEN gh dash'
 
 # Brew helpers
 abbr -a bri 'brew install'
@@ -154,10 +155,10 @@ abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
 abbr -a grc 'cd ~/.gemini'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
 abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
-abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish'
-abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish'
-abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish'
-abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish'
+abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish && exec fish'
+abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish && exec fish'
+abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
+abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
 
 # Misc
 abbr -a cls clear
