@@ -568,11 +568,13 @@ config.bind(leader + "sc", "session-clean ;; message-info 'Sessions cleaned'")
 config.bind(leader + "sz", "config-cycle -p session.lazy_restore true false")
 
 # Autostart ActivityWatch bridge
-userscript = os.path.expanduser(
-    "~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge"
-)
-if os.path.exists(userscript):
-    os.system(f"{userscript} start &")
+# DISABLED: os.system() causes Qt initialization crashes (Python 3.14 compatibility issue)
+# Use proper process manager (launchd/systemd) or manual startup instead
+# userscript = os.path.expanduser(
+#     "~/dev/dotfiles/qutebrowser/userscripts/aw-heartbeat-bridge"
+# )
+# if os.path.exists(userscript):
+#     os.system(f"{userscript} start &")
 
 # Tor commands (aliases defined above in c.aliases dict)
 
