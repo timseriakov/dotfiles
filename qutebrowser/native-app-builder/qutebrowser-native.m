@@ -10,7 +10,7 @@ int main(int argc, const char * argv[]) {
         
         // Set environment variables
         setenv("PATH", "/opt/homebrew/bin:/usr/local/bin", 1);
-        setenv("QT_PLUGIN_PATH", "/opt/homebrew/lib/qt6/plugins", 1);
+        setenv("QT_PLUGIN_PATH", "/opt/homebrew/share/qt/plugins", 1);
         setenv("QTWEBENGINE_RESOURCES_PATH", "/opt/homebrew/lib/QtWebEngineCore.framework/Resources", 1);
         
         // Qt flags for better macOS integration

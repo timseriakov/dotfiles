@@ -7,8 +7,8 @@
 # - Uses embedded Python interpreter for better process identification
 
 # Configuration
-PYTHON_VERSION = 3.14
 HOMEBREW_PREFIX = /opt/homebrew
+PYTHON_VERSION := $(shell $(HOMEBREW_PREFIX)/bin/python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 PYTHON_FRAMEWORK = $(HOMEBREW_PREFIX)/opt/python@$(PYTHON_VERSION)/Frameworks/Python.framework/Versions/$(PYTHON_VERSION)
 APP_BUNDLE = /Applications/qutebrowser.app
 BUILD_DIR = build
