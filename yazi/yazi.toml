@@ -12,7 +12,7 @@ sort_reverse = false
 sort_dir_first = true
 sort_translit = false
 linemode = "none"
-show_hidden = false
+show_hidden = true
 show_symlink = true
 scrolloff = 5
 mouse_events = ["click", "scroll"]
@@ -41,6 +41,8 @@ play = [
   { run = "xdg-open %s1", desc = "Play", for = "linux" },
   { run = "open %s", desc = "Play", for = "macos" },
   { run = 'start "" %s1', orphan = true, desc = "Play", for = "windows" },
+  { run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
+  { run = 'mpv --force-window %*', orphan = true, for = "windows" },
   { run = "termux-open %s1", desc = "Play", for = "android" },
   { run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
   { run = "mediainfo %s1 & pause", block = true, desc = "Show media info", for = "windows" },
@@ -63,56 +65,33 @@ download = [
   { run = "ya emit download --open %S", desc = "Download and open" },
   { run = "ya emit download %S", desc = "Download" },
 ]
+glow = [
+  { run = 'glow --style=dark --pager "$1"', block = true, desc = "Glow", for = "unix" },
+]
 
 [open]
 rules = [
   # Folder
-  { url = "*/", use = [
-    "edit",
-    "open",
-    "reveal",
-  ] },
+  { url = "*/", use = [ "edit", "open", "reveal", ] },
   # Text
-  { mime = "text/*", use = [
-    "edit",
-    "reveal",
-  ] },
+  { mime = "text/*", use = [ "edit", "reveal", ] },
   # Image
-  { mime = "image/*", use = [
-    "open",
-    "reveal",
-  ] },
+  { mime = "image/*", use = [ "open", "reveal", ] },
   # Media
-  { mime = "{audio,video}/*", use = [
-    "play",
-    "reveal",
-  ] },
+  { mime = "{audio,video}/*", use = [ "play", "reveal", ] },
   # Archive
-  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [
-    "extract",
-    "reveal",
-  ] },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "extract", "reveal", ] },
   # JSON
-  { mime = "application/{json,ndjson}", use = [
-    "edit",
-    "reveal",
-  ] },
-  { mime = "*/javascript", use = [
-    "edit",
-    "reveal",
-  ] },
+  { mime = "application/{json,ndjson}", use = [ "edit", "reveal", ] },
+  { mime = "*/javascript", use = [ "edit", "reveal", ] },
   # Empty file
-  { mime = "inode/empty", use = [
-    "edit",
-    "reveal",
-  ] },
+  { mime = "inode/empty", use = [ "edit", "reveal", ] },
+  # Markdown
+  { name = "*.md", use = [ "glow", "edit", "reveal", ] },
   # Virtual file system
   { mime = "vfs/{absent,stale}", use = "download" },
   # Fallback
-  { url = "*", use = [
-    "open",
-    "reveal",
-  ] },
+  { url = "*", use = [ "open", "reveal", ] },
 ]
 
 [tasks]
@@ -129,15 +108,15 @@ prepend_fetchers = [
   { id = "mime", name = "*", run = "mime", if = "!mime", prio = "high" },
 ]
 
-prepend_preloaders = [
+ prepend_preloaders = [
     { mime = "application/openxmlformats-officedocument.*", run = "office" },
     { mime = "application/oasis.opendocument.*", run = "office" },
     { mime = "application/ms-*", run = "office" },
     { mime = "application/msword", run = "office" },
-    { name = "*.docx", run = "office" },
+    { url = "*.docx", run = "office" },
 ]
 
-prepend_previewers = [
+ prepend_previewers = [
     { mime = "application/openxmlformats-officedocument.*", run = "office" },
     { mime = "application/oasis.opendocument.*", run = "office" },
     { mime = "application/ms-*", run = "office" },
@@ -175,8 +154,12 @@ preloaders = [
   { mime = "font/*", run = "font" },
   { mime = "application/ms-opentype", run = "font" },
 ]
-previewers = [
+  previewers = [
   { url = "*/", run = "folder" },
+
+  # JSON - use code previewer for syntax highlighting
+  { name = "*.json", run = "code" },
+
   # Code
   { mime = "text/*", run = "code" },
   { mime = "application/{mbox,javascript,wine-extension-ini}", run = "code" },
