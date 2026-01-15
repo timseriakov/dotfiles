@@ -14,7 +14,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2026-01-09T23:07:56.921477+03:00"
+      "updated": "2026-01-13T21:26:19.404748+03:00"
     },
     {
       "name": "lightpanda",
@@ -25,7 +25,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-01-09T23:07:56.937534+03:00"
+      "updated": "2026-01-13T21:26:19.412337+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -40,7 +40,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-09T23:07:56.944503+03:00"
+      "updated": "2026-01-13T21:26:19.41973+03:00"
     },
     {
       "name": "nx",
@@ -51,7 +51,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-12-24T12:20:49.488052+03:00",
-      "updated": "2026-01-09T23:08:43.031409+03:00"
+      "updated": "2026-01-13T21:26:19.427292+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -62,7 +62,18 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-09T23:07:56.960361+03:00"
+      "updated": "2026-01-13T21:26:19.435609+03:00"
+    },
+    {
+      "name": "playwright",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "oauth": null,
+      "enabled": true,
+      "quarantined": false,
+      "created": "2026-01-13T21:13:04.111801+03:00",
+      "updated": "2026-01-13T21:30:19.310847+03:00"
     },
     {
       "name": "repomix",
@@ -74,7 +85,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-09T23:07:56.969317+03:00"
+      "updated": "2026-01-13T21:26:19.451359+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -85,7 +96,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-09T23:07:56.976482+03:00"
+      "updated": "2026-01-13T21:26:19.459292+03:00"
     },
     {
       "name": "serena",
@@ -103,7 +114,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-09T23:07:56.985519+03:00"
+      "updated": "2026-01-13T21:26:19.467358+03:00"
     }
   ],
   "top_k": 5,
@@ -156,7 +167,7 @@
   "logging": {
     "level": "info",
     "enable_file": true,
-    "enable_console": true,
+    "enable_console": false,
     "filename": "main.log",
     "max_size": 10,
     "max_backups": 5,
@@ -164,7 +175,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "aac1f4b5abef910a5e2cdf8ddc6937563c078d9874474a7f0bf2cccface9770c",
+  "api_key": "6616c2b88cf3d91b691dbb846b7b8eba1eb0dec83569c4f69188f1472840c29b",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,
@@ -280,5 +291,12 @@
   },
   "enable_code_execution": false,
   "code_execution_timeout_ms": 120000,
-  "code_execution_pool_size": 10
+  "code_execution_pool_size": 10,
+  "activity_retention_days": 90,
+  "activity_max_records": 100000,
+  "activity_max_response_size": 65536,
+  "activity_cleanup_interval_min": 60,
+  "intent_declaration": {
+    "strict_server_validation": true
+  }
 }
