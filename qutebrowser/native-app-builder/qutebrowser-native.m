@@ -10,8 +10,16 @@ int main(int argc, const char * argv[]) {
         
         // Set environment variables
         setenv("PATH", "/opt/homebrew/bin:/usr/local/bin", 1);
-        setenv("QT_PLUGIN_PATH", "/opt/homebrew/share/qt/plugins", 1);
-        setenv("QTWEBENGINE_RESOURCES_PATH", "/opt/homebrew/lib/QtWebEngineCore.framework/Resources", 1);
+        
+        // Check for pip-installed PyQt6 location (Python 3.13)
+        if (access("/opt/homebrew/lib/python3.13/site-packages/PyQt6/Qt6/plugins", F_OK) == 0) {
+            setenv("QT_PLUGIN_PATH", "/opt/homebrew/lib/python3.13/site-packages/PyQt6/Qt6/plugins", 1);
+            setenv("QTWEBENGINE_RESOURCES_PATH", "/opt/homebrew/lib/python3.13/site-packages/PyQt6/Qt6/lib/QtWebEngineCore.framework/Resources", 1);
+        } else {
+            // Fallback to standard Homebrew location
+            setenv("QT_PLUGIN_PATH", "/opt/homebrew/share/qt/plugins", 1);
+            setenv("QTWEBENGINE_RESOURCES_PATH", "/opt/homebrew/lib/QtWebEngineCore.framework/Resources", 1);
+        }
         
         // Qt flags for better macOS integration
         setenv("QT_MAC_WANTS_LAYER", "1", 1);
