@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+
+  "google_auth": false,
+
+  "agents": {
+    "Sisyphus": { "model": "openai/gpt-5.2-high" },
+    "Planner-Sisyphus": { "model": "openai/gpt-5.2-medium" },
+
+    "oracle": { "model": "openai/gpt-5.2-xhigh" },
+    "librarian": { "model": "openai/gpt-5.2-low" },
+    "explore": { "model": "openai/gpt-5.2-codex-low" },
+
+    "frontend-ui-ux-engineer": { "model": "openai/gpt-5.2-codex-high" },
+    "document-writer": { "model": "openai/gpt-5.2-low" },
+    "multimodal-looker": { "model": "openai/gpt-5.2" },
+  },
+
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": false,
+    "agents": true,
+    "hooks": true,
+  },
+}

@@ -1,0 +1,267 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+
+  // Disable lists (empty means fully enabled)
+  "disabled_mcps": [],
+  "disabled_agents": [],
+  "disabled_skills": [],
+  "disabled_hooks": [],
+  "disabled_commands": [],
+
+  "agents": {
+    // Main orchestrator (primary agent)
+    "Sisyphus": {
+      "model": "openai/gpt-5.2",
+      "description": "Sisyphus - Powerful AI orchestrator from OhMyOpenCode. Plans obsessively with todos, assesses search complexity before exploration, delegates strategically to specialized agents. Uses explore for internal code (parallel-friendly), librarian only for external docs, and always delegates UI work to frontend engineer.",
+      "mode": "primary",
+      "color": "#00CED1",
+      "tools": {
+        "call_omo_agent": false,
+      },
+      // "temperature": 0.2,
+      // "top_p": 1,
+      // "prompt": "<built-in Sisyphus prompt>",
+      // "prompt_append": "<extra instructions>",
+      // "permission": { "edit": "ask", "bash": "ask", "webfetch": "ask" }
+    },
+
+    // Master orchestrator for TODO-list execution
+    "orchestrator-sisyphus": {
+      "model": "openai/gpt-5.2",
+      "description": "Orchestrates work via sisyphus_task() to complete ALL tasks in a todo list until fully done",
+      "mode": "primary",
+      "temperature": 0.1,
+      "color": "#10B981",
+      "tools": {
+        "task": false,
+        "call_omo_agent": false,
+      },
+    },
+
+    // Architecture and strategy advisor
+    "oracle": {
+      "model": "openai/gpt-5.2",
+      "description": "Read-only consultation agent. High-IQ reasoning specialist for debugging hard problems and high-difficulty architecture design.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "task": false,
+      },
+    },
+
+    // External docs + OSS reference lookup (cheap via Antigravity)
+    "librarian": {
+      "model": "google/antigravity-gemini-3-flash",
+      "description": "Specialized codebase understanding agent for multi-repository analysis, searching remote codebases, retrieving official documentation, and finding implementation examples using GitHub CLI, Context7, and Web Search. MUST BE USED when users ask to look up code in remote repositories, explain library internals, or find usage examples in open source.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "background_task": false,
+      },
+    },
+
+    // Codebase exploration agent (cheap via Antigravity)
+    "explore": {
+      "model": "google/antigravity-gemini-3-flash",
+      "description": "Contextual grep for codebases. Answers \"Where is X?\", \"Which file has Y?\", \"Find the code that does Z\". Fire multiple in parallel for broad searches. Specify thoroughness: \"quick\" for basic, \"medium\" for moderate, \"very thorough\" for comprehensive analysis.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "task": false,
+        "sisyphus_task": false,
+        "call_omo_agent": false,
+      },
+    },
+
+    // Frontend-only visuals (quality via Antigravity Pro)
+    "frontend-ui-ux-engineer": {
+      "model": "google/antigravity-gemini-3-pro-high",
+      "description": "A designer-turned-developer who crafts stunning UI/UX even without design mockups. Code may be a bit messy, but the visual output is always fire.",
+      "mode": "subagent",
+    },
+
+    // Documentation specialist (cheap via Antigravity)
+    "document-writer": {
+      "model": "google/antigravity-gemini-3-flash",
+      "description": "A technical writer who crafts clear, comprehensive documentation. Specializes in README files, API docs, architecture docs, and user guides. MUST BE USED when executing documentation tasks from ai-todo list plans.",
+      "mode": "subagent",
+    },
+
+    // Image/PDF analysis (cheap via Antigravity)
+    "multimodal-looker": {
+      "model": "google/antigravity-gemini-3-flash",
+      "description": "Analyze media files (PDFs, images, diagrams) that require interpretation beyond raw text. Extracts specific information or summaries from documents, describes visual content. Use when you need analyzed/extracted data rather than literal file contents.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+      },
+    },
+
+    // Pre-planning consultant
+    "Metis (Plan Consultant)": {
+      "model": "openai/gpt-5.2",
+      "description": "Pre-planning consultant that analyzes requests to identify hidden intentions, ambiguities, and AI failure points.",
+      "mode": "subagent",
+      "temperature": 0.3,
+    },
+
+    // Plan reviewer
+    "Momus (Plan Reviewer)": {
+      "model": "openai/gpt-5.2",
+      "description": "Expert reviewer for evaluating work plans against rigorous clarity, verifiability, and completeness standards.",
+      "mode": "subagent",
+      "temperature": 0.1,
+    },
+
+    // Category-based task runner (model is inherited from categories)
+    "Sisyphus-Junior": {
+      // "category": "general"
+    },
+
+    // OpenCode internal build/plan agents (leave empty to use OpenCode defaults)
+    "build": {},
+    "plan": {},
+    "OpenCode-Builder": {},
+    "Prometheus (Planner)": {},
+  },
+
+  // Category presets used by sisyphus_task(category=...)
+  "categories": {
+    "visual-engineering": {
+      "model": "google/antigravity-gemini-3-pro-high",
+      "temperature": 0.7,
+    },
+    "ultrabrain": {
+      "model": "openai/gpt-5.2",
+      "temperature": 0.1,
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3-pro-high",
+      "temperature": 0.9,
+    },
+    "quick": {
+      "model": "openai/gpt-5.1-codex-mini",
+      "temperature": 0.3,
+    },
+    "most-capable": {
+      "model": "openai/gpt-5.2",
+      "temperature": 0.1,
+    },
+    "writing": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.5,
+    },
+    "general": {
+      "model": "openai/gpt-5.2",
+      "temperature": 0.3,
+    },
+  },
+
+  // Claude Code compatibility toggles (all true by default)
+  "claude_code": {
+    "mcp": true,
+    "commands": true,
+    "skills": true,
+    "agents": true,
+    "hooks": true,
+    "plugins": true,
+    "plugins_override": {},
+  },
+
+  // Orchestrator switches
+  "sisyphus_agent": {
+    "disabled": false,
+    "default_builder_enabled": false,
+    "planner_enabled": true,
+    "replace_plan": true,
+  },
+
+  // Comment checker configuration
+  "comment_checker": {
+    // "custom_prompt": "<custom warning prompt>"
+  },
+
+  // Experimental behavior flags
+  "experimental": {
+    "aggressive_truncation": false,
+    "auto_resume": false,
+    "preemptive_compaction": true,
+    "preemptive_compaction_threshold": 0.8,
+    "truncate_all_tool_outputs": false,
+    "dcp_for_compaction": false,
+    "dynamic_context_pruning": {
+      "enabled": false,
+      "notification": "detailed",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3,
+      },
+      "protected_tools": [
+        "task",
+        "todowrite",
+        "todoread",
+        "lsp_rename",
+        "session_read",
+        "session_write",
+        "session_search",
+      ],
+      "strategies": {
+        "deduplication": {
+          "enabled": true,
+        },
+        "supersede_writes": {
+          "enabled": true,
+          "aggressive": false,
+        },
+        "purge_errors": {
+          "enabled": true,
+          "turns": 5,
+        },
+      },
+    },
+  },
+
+  // Auto-update behavior (schema + migrations)
+  "auto_update": true,
+
+  // Skill loader configuration (empty = defaults)
+  "skills": {
+    "sources": [],
+    "enable": [],
+    "disable": [],
+  },
+
+  // Self-referential loop (Ralph)
+  "ralph_loop": {
+    "enabled": false,
+    "default_max_iterations": 100,
+    "state_dir": ".opencode/",
+  },
+
+  // Background agent concurrency controls
+  "background_task": {
+    "defaultConcurrency": 5,
+    "providerConcurrency": {},
+    "modelConcurrency": {},
+  },
+
+  // Session notification control
+  "notification": {
+    "force_enable": false,
+  },
+
+  // Git master behavior
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true,
+  },
+}

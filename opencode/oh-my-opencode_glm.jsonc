@@ -5,7 +5,7 @@
 
   "agents": {
     "Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
-    "Planner-Sisyphus": { "model": "zai-coding-plan/glm-4.7" },
+    "Prometheus (Planner)": { "model": "zai-coding-plan/glm-4.7" },
 
     "oracle": { "model": "zai-coding-plan/glm-4.7" },
     "librarian": { "model": "zai-coding-plan/glm-4.5-flash" },
@@ -13,7 +13,7 @@
 
     "frontend-ui-ux-engineer": { "model": "zai-coding-plan/glm-4.7" },
     "document-writer": { "model": "zai-coding-plan/glm-4.7" },
-    "multimodal-looker": { "model": "zai-coding-plan/glm-4.5-flash" }
+    "multimodal-looker": { "model": "zai-coding-plan/glm-4.5-flash" },
   },
 
   "claude_code": {
@@ -21,8 +21,6 @@
     "commands": false,
     "skills": false,
     "agents": true,
-    "hooks": true
+    "hooks": true,
   },
-
-  "disabled_hooks": ["tool-output-truncator"]
 }

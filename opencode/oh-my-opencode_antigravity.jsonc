@@ -12,12 +12,12 @@
     "explore": { "model": "google/antigravity-gemini-3-flash" },
 
     "frontend-ui-ux-engineer": {
-      "model": "google/antigravity-claude-sonnet-4-5-thinking-high"
+      "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
     },
     "document-writer": {
-      "model": "google/antigravity-claude-sonnet-4-5-thinking-medium"
+      "model": "google/antigravity-claude-sonnet-4-5-thinking-medium",
     },
-    "multimodal-looker": { "model": "google/antigravity-gemini-3-pro-low" }
+    "multimodal-looker": { "model": "google/antigravity-gemini-3-pro-low" },
   },
 
   "claude_code": {
@@ -25,6 +25,6 @@
     "commands": false,
     "skills": false,
     "agents": true,
-    "hooks": true
-  }
+    "hooks": true,
+  },
 }
