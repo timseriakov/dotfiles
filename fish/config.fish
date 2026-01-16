@@ -21,3 +21,7 @@ end
 status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
 
 # Note: Antigravity PATH managed in conf.d/10-path.fish
+
+
+# Mole shell completion
+set -l output (mole completion fish 2>/dev/null); and echo "$output" | source
