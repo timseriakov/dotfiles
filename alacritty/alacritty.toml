@@ -1,3 +1,10 @@
+[env]
+TMUX_AUTO = "0"
+
+[terminal.shell]
+program = "/usr/local/bin/fish"
+args = ["--interactive", "--login"]
+
 [font]
 size = 18.0
 
