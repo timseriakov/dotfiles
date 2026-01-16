@@ -2,12 +2,13 @@ local M = {}
 
 function M:peek(job)
 	local child = Command("bat")
-		:arg("--color=always")
-		:arg("--style=plain")
-		:arg("-l")
-		:arg("json")
-		:arg("--paging=never")
-		:arg(tostring(job.file.url))
+		:args({
+			"--color=always",
+			"--style=plain",
+			"-l", "json",
+			"--paging=never",
+			tostring(job.file.url)
+		})
 		:stdout(Command.PIPED)
 		:stderr(Command.PIPED)
 		:spawn()
@@ -21,7 +22,7 @@ function M:peek(job)
 	repeat
 		local next, event = child:read_line()
 		if event == 1 then
-			return require("code").peek(job)
+			break
 		elseif event ~= 0 then
 			break
 		end
@@ -33,27 +34,16 @@ function M:peek(job)
 	until i >= job.skip + limit
 
 	child:start_kill()
-	if job.skip > 0 and i < job.skip + limit then
-		ya.mgr_emit("peek", {
-			tostring(math.max(0, i - limit)),
-			only_if = job.file.url,
-			upper_bound = true,
-		})
-	else
-		lines = lines:gsub("\t", string.rep(" ", 2))
-		ya.preview_widgets(job, { ui.Text.parse(lines):area(job.area) })
+
+	if i == 0 then
+		return require("code").peek(job)
 	end
+
+	ya.preview_widgets(job, { ui.Text.parse(lines):area(job.area) })
 end
 
 function M:seek(job)
-	local h = cx.active.current.hovered
-	if not h or h.url ~= job.file.url then
-		return
-	end
-	ya.mgr_emit("peek", {
-		math.max(0, cx.active.preview.skip + job.units),
-		only_if = job.file.url,
-	})
+	require("code").seek(job)
 end
 
 return M

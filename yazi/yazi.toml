@@ -122,6 +122,7 @@ prepend_fetchers = [
     { mime = "application/ms-*", run = "office" },
     { mime = "application/msword", run = "office" },
     { name = "*.docx", run = "office" },
+    { url = "*.jsonc", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
 ]
 spotters = [
   { url = "*/", run = "folder" },
