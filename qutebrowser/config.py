@@ -302,6 +302,9 @@ config.bind("<Ctrl-v>", "mode-enter passthrough", mode="normal")
 config.bind("<Ctrl-v>", "mode-leave", mode="passthrough")
 config.bind("<Ctrl-a>", "mode-enter passthrough", mode="normal")
 config.bind("<Ctrl-a>", "mode-leave", mode="passthrough")
+config.bind("<Ctrl-ф>", "mode-enter passthrough", mode="normal")
+config.bind("<Ctrl-ф>", "mode-leave", mode="passthrough")
+
 
 # Navigation
 config.bind("H", "back")
