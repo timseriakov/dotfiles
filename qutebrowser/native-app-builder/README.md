@@ -21,8 +21,8 @@ make install
 
 - macOS 10.15+
 - Homebrew
-- Python 3.13 (через Homebrew)
-- qutebrowser (через Homebrew: `brew install qutebrowser`)
+- Python 3 (через Homebrew)
+- qutebrowser (Python пакет + PyQt6 через Homebrew)
 - Qt6 (устанавливается автоматически с qutebrowser)
 
 ## Использование
