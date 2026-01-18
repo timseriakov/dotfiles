@@ -1,0 +1,17 @@
+# oh-my-opencode.jsonc symlink shortcuts
+# Run these from: /Users/tim/dev/dotfiles/opencode
+
+# OpenAI (current default)
+ln -sf "$(pwd)/oh-my-opencode_openai.jsonc" "$(pwd)/oh-my-opencode.jsonc"
+
+# OpenAI + antigravity (hybrid)
+ln -sf "$(pwd)/oh-my-opencode_openai_antigravity.jsonc" "$(pwd)/oh-my-opencode.jsonc"
+
+# GLM (paid)
+ln -sf "$(pwd)/oh-my-opencode_glm.jsonc" "$(pwd)/oh-my-opencode.jsonc"
+
+# GLM (free)
+ln -sf "$(pwd)/oh-my-opencode_glm_free.jsonc" "$(pwd)/oh-my-opencode.jsonc"
+
+# Antigravity
+ln -sf "$(pwd)/oh-my-opencode_antigravity.jsonc" "$(pwd)/oh-my-opencode.jsonc"
