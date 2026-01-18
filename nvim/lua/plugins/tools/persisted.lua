@@ -4,7 +4,7 @@ return {
   priority = 1000, -- load early
   config = function()
     require("persisted").setup({
-      autosave = true,
+      autostart = true,
       autoload = false, -- don't auto-restore on start; keep dashboard default
       follow_cwd = true,
       use_git_branch = true,
@@ -13,6 +13,20 @@ return {
 
     local persisted = require("persisted")
     local map = vim.keymap.set
+
+    local notify_group = vim.api.nvim_create_augroup("PersistedUserNotifications", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = notify_group,
+      pattern = "PersistedDeletePost",
+      callback = function(event)
+        local path = event.data and event.data.path or nil
+        if path then
+          vim.notify("Session deleted: " .. vim.fn.fnamemodify(path, ":~"), vim.log.levels.INFO)
+        else
+          vim.notify("Session deleted", vim.log.levels.INFO)
+        end
+      end,
+    })
 
     map("n", "<leader>qr", "<cmd>Telescope persisted<CR>", { desc = "Restore Session" })
     map("n", "<leader>ql", function()
@@ -28,7 +42,6 @@ return {
     end, { desc = "Save Session Now" })
     map("n", "<leader>qd", function()
       persisted.delete()
-      vim.notify("Session deleted", vim.log.levels.WARN)
-    end, { desc = "Delete Current Session" })
+    end, { desc = "Delete Session" })
   end,
 }
