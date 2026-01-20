@@ -206,3 +206,11 @@ vim.keymap.set("n", "<leader>;r", function()
 
   process_block(1)
 end, { desc = "Translate buffer" })
+
+-- Russian layout support
+-- ZZ equivalent (Save and Quit)
+vim.keymap.set("n", "ЯЯ", "ZZ", { desc = "Save and Quit", remap = true })
+
+-- <leader>qq equivalent (Quit All)
+-- Using remap=true to trigger the existing <leader>qq mapping
+vim.keymap.set("n", "<leader>йй", "<leader>qq", { desc = "Quit All", remap = true })
