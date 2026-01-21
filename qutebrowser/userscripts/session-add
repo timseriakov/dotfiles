@@ -1,83 +1,142 @@
-#!/usr/bin/env python3
-import sys
-import os
-import yaml
-import subprocess
+#!/bin/bash
 
-# Путь к сессиям на macOS
-SESSION_DIR = os.path.expanduser("~/Library/Application Support/qutebrowser/sessions")
+# Ensure Homebrew and system binaries are available inside Alacritty
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-def main():
-    if len(sys.argv) < 2:
-        # Если аргумент не передан, попробуем использовать QUTE_FIFO или просто вывести usage,
-        # но для userscript qutebrowser обычно передает аргументы, если они указаны в команде.
-        # Если вызывать через :spawn --userscript session-add <name>, имя будет в sys.argv[1]
-        print("Usage: session-add <session_name>")
-        sys.exit(1)
+# Пути
+SESSION_DIR="$HOME/Library/Application Support/qutebrowser/sessions"
+# Fallback для Linux
+if [ ! -d "$SESSION_DIR" ]; then
+  SESSION_DIR="$HOME/.local/share/qutebrowser/sessions"
+fi
 
-    session_name = sys.argv[1]
-    
-    # Если пользователь ввел путь или имя с .yml, учтем это
-    if session_name.endswith('.yml'):
-        filename = session_name
-    else:
-        filename = f"{session_name}.yml"
+TERMINAL="/opt/homebrew/bin/alacritty"
+CONFIG_FILE="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
+FZF="/opt/homebrew/bin/fzf"
+SELECT_FILE="/tmp/qute_session_selection"
 
-    session_file = os.path.join(SESSION_DIR, filename)
-    
-    if not os.path.exists(session_file):
-        # Fallback для Linux/XDG путей, если вдруг скрипт переедет
-        xdg_path = os.path.expanduser("~/.local/share/qutebrowser/sessions")
-        session_file_xdg = os.path.join(xdg_path, filename)
-        if os.path.exists(session_file_xdg):
-            session_file = session_file_xdg
-        else:
-            # Отправляем сообщение об ошибке в qutebrowser
-            with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
-                f.write(f"message-error 'Session file not found: {session_name}'\n")
-            sys.exit(1)
+# Очищаем файл выбора
+rm -f "$SELECT_FILE"
 
-    try:
-        with open(session_file, 'r') as f:
-            data = yaml.safe_load(f)
-    except Exception as e:
-        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
-            f.write(f"message-error 'Error reading session: {e}'\n")
-        sys.exit(1)
+# Если передан аргумент - используем его, иначе запускаем меню
+if [ -n "$1" ]; then
+  SESSION_NAME="$1"
+else
+  # Создаем скрипт-хелпер для запуска внутри Alacritty
+  # Это избавляет от ада с кавычками при передаче команды через -e bash -c "..."
+  HELPER_SCRIPT="/tmp/qute_session_helper.sh"
 
-    # Парсим структуру сессии qutebrowser и открываем каждое окно отдельно
+  cat <<EOF >"$HELPER_SCRIPT"
+#!/bin/bash
+cd "$SESSION_DIR" || { echo "Directory not found: $SESSION_DIR"; read -p "Press Enter..."; exit 1; }
+
+# Проверка, есть ли файлы
+ls -1 *.yml >/dev/null 2>&1
+if [ \$? -ne 0 ]; then
+    echo "No .yml sessions found in:"
+    pwd
+    echo "Check permissions or path."
+    read -p "Press Enter to close..."
+    exit 1
+fi
+
+# Nord theme for fzf
+export FZF_DEFAULT_OPTS="
+--ansi
+--height=100%
+--layout=reverse
+--border=none
+--prompt=' ❯ '
+--pointer='▶'
+--marker='✓'
+--info=inline
+--color=fg:#d8dee9,bg:#2e3440,hl:#81a1c1
+--color=fg+:#eceff4,bg+:#4c566a,hl+:#88c0d0
+--color=info:#e5e9f0,prompt:#81a1c1,pointer:#bf616a
+--color=marker:#a3be8c,spinner:#b48ead,header:#a3be8c
+--color=gutter:#2e3440
+--color=border:#4c566a,label:#81a1c1
+"
+
+ls -1 *.yml | sed 's/\.yml$//' | $FZF --cycle --prompt='Session > ' > "$SELECT_FILE"
+EOF
+
+  chmod +x "$HELPER_SCRIPT"
+
+  # Запускаем терминал и ЖДЕМ его завершения
+  # Используем компактный размер окна вместо фуллскрин конфига
+  "$TERMINAL" \
+    --title "Qutebrowser Session" \
+    --option window.dimensions.columns=60 \
+    --option window.dimensions.lines=15 \
+    --option window.padding.x=10 \
+    --option window.padding.y=10 \
+    --option window.decorations=buttonless \
+    --option font.size=18.0 \
+    -e "$HELPER_SCRIPT"
+
+  # Читаем выбор
+  if [ -f "$SELECT_FILE" ]; then
+    SESSION_NAME=$(cat "$SELECT_FILE" | tr -d '\n')
+  fi
+fi
+
+if [ -z "$SESSION_NAME" ]; then
+  echo "message-info 'Cancelled'" >"$QUTE_FIFO"
+  exit 0
+fi
+
+# Полный путь к сессии
+if [[ "$SESSION_NAME" != *.yml ]]; then
+  SESSION_FILE="$SESSION_DIR/$SESSION_NAME.yml"
+else
+  SESSION_FILE="$SESSION_DIR/$SESSION_NAME"
+fi
+
+if [ ! -f "$SESSION_FILE" ]; then
+  echo "message-error 'Session file not found: $SESSION_NAME'" >"$QUTE_FIFO"
+  exit 1
+fi
+
+# Используем Python для парсинга YAML и извлечения URL
+# Пишем команды прямо в QUTE_FIFO
+python3 -c "
+import sys, yaml, os
+
+try:
+    with open('$SESSION_FILE', 'r') as f:
+        data = yaml.safe_load(f)
+
     windows = data.get('windows', [])
-    if not windows:
-        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
-            f.write("message-warning 'No windows found in session.'\n")
-        sys.exit(0)
+    fifo = os.environ.get('QUTE_FIFO')
+
+    if not fifo:
+        print('Error: QUTE_FIFO not found', file=sys.stderr)
+        sys.exit(1)
 
     count = 0
-    for window in windows:
-        urls = []
-        for tab in window.get('tabs', []):
-            if 'history' in tab and tab['history']:
-                # Берем последний элемент истории (активная страница)
-                last_entry = tab['history'][-1]
-                if 'url' in last_entry:
-                    urls.append(last_entry['url'])
-        
-        if urls:
-            # Формируем команду: открыть новое окно (--target window) с этими URL
-            cmd = [qute_bin, "--target", "window"] + urls
-            # Запускаем в фоне каждое окно отдельно
-            subprocess.Popen(cmd, start_new_session=True)
-            count += 1
-            
-    if count == 0:
-        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
-            f.write("message-warning 'No URLs found in session.'\n")
-        sys.exit(0)
-    
-    # Сообщаем об успехе
-    with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
-        msg = f"Restoring session {session_name}: opened {count} window(s)."
-        f.write(f"message-info '{msg}'\n")
+    with open(fifo, 'w') as f:
+        for window in windows:
+            urls = []
+            for tab in window.get('tabs', []):
+                if 'history' in tab and tab['history']:
+                    last_entry = tab['history'][-1]
+                    if 'url' in last_entry:
+                        urls.append(last_entry['url'])
 
-if __name__ == "__main__":
-    main()
+            if urls:
+                # Первое окно
+                f.write(f'open -w {urls[0]}\n')
+                # Остальные табы
+                for url in urls[1:]:
+                    f.write(f'open -t {url}\n')
+                count += 1
+
+    # Сообщение об успехе (тоже в FIFO)
+    with open(fifo, 'w') as f:
+        f.write(f'message-info \"Restored {count} windows from $SESSION_NAME\"\n')
+
+except Exception as e:
+    with open(fifo, 'w') as f:
+        f.write(f'message-error \"Error: {e}\"\n')
+"
