@@ -11,10 +11,10 @@
       "command": "node",
       "args": ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"],
       "oauth": null,
-      "enabled": false,
+      "enabled": true,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2026-01-13T21:26:19.404748+03:00"
+      "updated": "2026-01-21T13:23:01.814156+03:00"
     },
     {
       "name": "lightpanda",
@@ -25,7 +25,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-01-13T21:26:19.412337+03:00"
+      "updated": "2026-01-21T13:22:45.850698+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -40,7 +40,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-13T21:26:19.41973+03:00"
+      "updated": "2026-01-21T13:22:45.862077+03:00"
     },
     {
       "name": "nx",
@@ -51,7 +51,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-12-24T12:20:49.488052+03:00",
-      "updated": "2026-01-13T21:26:19.427292+03:00"
+      "updated": "2026-01-21T13:22:45.869956+03:00"
     },
     {
       "name": "perplexity-mcp",
@@ -62,7 +62,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-13T21:26:19.435609+03:00"
+      "updated": "2026-01-21T13:22:45.87892+03:00"
     },
     {
       "name": "playwright",
@@ -70,10 +70,10 @@
       "command": "npx",
       "args": ["@playwright/mcp@latest"],
       "oauth": null,
-      "enabled": true,
+      "enabled": false,
       "quarantined": false,
       "created": "2026-01-13T21:13:04.111801+03:00",
-      "updated": "2026-01-13T21:30:19.310847+03:00"
+      "updated": "2026-01-21T13:22:45.888916+03:00"
     },
     {
       "name": "repomix",
@@ -85,7 +85,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-13T21:26:19.451359+03:00"
+      "updated": "2026-01-21T13:22:45.89715+03:00"
     },
     {
       "name": "sequential-thinking",
@@ -96,7 +96,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-13T21:26:19.459292+03:00"
+      "updated": "2026-01-21T13:22:45.906282+03:00"
     },
     {
       "name": "serena",
@@ -114,7 +114,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-13T21:26:19.467358+03:00"
+      "updated": "2026-01-21T13:22:45.915038+03:00"
     }
   ],
   "top_k": 5,
@@ -175,7 +175,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "6616c2b88cf3d91b691dbb846b7b8eba1eb0dec83569c4f69188f1472840c29b",
+  "api_key": "cb3a68273e695d89718cc2409e6163aaae06c7967795087b1ca2ae7d0c238703",
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,
