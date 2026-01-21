@@ -1,0 +1,94 @@
+# Nord Theme for Ekphos
+# An arctic, north-bluish color palette
+
+[base]
+background = "#2E3440"
+background_secondary = "#3B4252"
+foreground = "#ECEFF4"
+muted = "#4C566A"
+
+[accent]
+primary = "#88C0D0"
+secondary = "#81A1C1"
+
+[semantic]
+error = "#BF616A"
+warning = "#EBCB8B"
+success = "#A3BE8C"
+info = "#5E81AC"
+
+[ui]
+border = "#434C5E"
+border_focused = "#88C0D0"
+selection = "#434C5E"
+cursor = "#ECEFF4"
+
+# Status bar component
+[ui.statusbar]
+background = "#2E3440"
+foreground = "#ECEFF4"
+brand = "#88C0D0"
+mode = "#4C566A"
+separator = "#3B4252"
+
+# Dialog/popup component
+[ui.dialog]
+background = "#2E3440"
+border = "#88C0D0"
+title = "#88C0D0"
+text = "#ECEFF4"
+
+# Sidebar component
+[ui.sidebar]
+background = "#2E3440"
+item = "#ECEFF4"
+item_selected = "#88C0D0"
+folder = "#81A1C1"
+folder_expanded = "#5E81AC"
+
+# Content view component
+[ui.content]
+background = "#2E3440"
+text = "#ECEFF4"
+heading1 = "#88C0D0"
+heading2 = "#8FBCBB"
+heading3 = "#81A1C1"
+heading4 = "#5E81AC"
+link = "#88C0D0"
+link_invalid = "#BF616A"
+code = "#8FBCBB"
+code_background = "#3B4252"
+blockquote = "#4C566A"
+list_marker = "#B48EAD"
+
+# Outline component
+[ui.outline]
+background = "#2E3440"
+heading1 = "#88C0D0"
+heading2 = "#8FBCBB"
+heading3 = "#81A1C1"
+heading4 = "#5E81AC"
+
+# Search component
+[ui.search]
+background = "#3B4252"
+border = "#88C0D0"
+input = "#ECEFF4"
+match_highlight = "#4C566A"
+match_current = "#88C0D0"
+match_count = "#4C566A"
+
+# Editor highlighting component
+[ui.editor]
+heading1 = "#88C0D0"
+heading2 = "#8FBCBB"
+heading3 = "#81A1C1"
+heading4 = "#5E81AC"
+heading5 = "#B48EAD"
+heading6 = "#A3BE8C"
+code = "#8FBCBB"
+link = "#88C0D0"
+blockquote = "#4C566A"
+list_marker = "#B48EAD"
+bold = "#EBCB8B"
+italic = "#88C0D0"

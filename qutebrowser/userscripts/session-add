@@ -10,6 +10,135 @@ if [ ! -d "$SESSION_DIR" ]; then
   SESSION_DIR="$HOME/.local/share/qutebrowser/sessions"
 fi
 
+# ==============================================================================
+# PREVIEW MODE (вызывается из fzf для отображения инфо о сессии)
+# ==============================================================================
+if [ "$1" == "--preview" ] && [ -n "$2" ]; then
+  SESSION_FILE="$2"
+  # Если путь не абсолютный, ищем в SESSION_DIR
+  if [[ "$SESSION_FILE" != /* ]]; then
+    SESSION_FILE="$SESSION_DIR/$SESSION_FILE"
+  fi
+
+  # Если расширение не указано, добавляем .yml
+  if [[ "$SESSION_FILE" != *.yml ]]; then
+    SESSION_FILE="$SESSION_FILE.yml"
+  fi
+
+  if [ ! -f "$SESSION_FILE" ]; then
+    echo "File not found: $SESSION_FILE"
+    exit 1
+  fi
+
+  # Python скрипт для генерации красивого превью
+  python3 -c "
+import sys, yaml
+
+try:
+    with open('$SESSION_FILE', 'r') as f:
+        data = yaml.safe_load(f)
+
+    windows = data.get('windows', [])
+    total_wins = len(windows)
+    total_tabs = 0
+
+    print(f'  Session: {sys.argv[1]}')
+    print(f'  Windows: {total_wins}')
+
+    for idx, win in enumerate(windows, 1):
+        tabs = win.get('tabs', [])
+        total_tabs += len(tabs)
+        print(f'\n  Window {idx} ({len(tabs)} tabs):')
+
+        for t_idx, tab in enumerate(tabs, 1):
+            history = tab.get('history', [])
+            if not history: continue
+
+            page = history[-1]
+            title = page.get('title', 'No Title')
+
+            if len(title) > 80: title = title[:77] + '...'
+
+            marker = '' if tab.get('active') else ' '
+            print(f'  {marker} {title}')
+
+    print(f'\n  Total Tabs: {total_tabs}')
+
+except Exception as e:
+    print(f'Error reading session: {e}')
+" "$(basename "$SESSION_FILE" .yml)"
+  exit 0
+fi
+
+# ==============================================================================
+# MAIN LOGIC
+# ==============================================================================
+
+# ==============================================================================
+# PREVIEW MODE (вызывается из fzf для отображения инфо о сессии)
+# ==============================================================================
+if [ "$1" == "--preview" ] && [ -n "$2" ]; then
+  SESSION_FILE="$2"
+  # Если путь не абсолютный, ищем в SESSION_DIR
+  if [[ "$SESSION_FILE" != /* ]]; then
+    SESSION_FILE="$SESSION_DIR/$SESSION_FILE"
+  fi
+
+  # Если расширение не указано, добавляем .yml
+  if [[ "$SESSION_FILE" != *.yml ]]; then
+    SESSION_FILE="$SESSION_FILE.yml"
+  fi
+
+  if [ ! -f "$SESSION_FILE" ]; then
+    echo "File not found: $SESSION_FILE"
+    exit 1
+  fi
+
+  # Python скрипт для генерации красивого превью
+  python3 -c "
+import sys, yaml
+
+try:
+    with open('$SESSION_FILE', 'r') as f:
+        data = yaml.safe_load(f)
+
+    windows = data.get('windows', [])
+    total_wins = len(windows)
+    total_tabs = 0
+
+    print(f'  Session: {sys.argv[1]}')
+    print(f'  Windows: {total_wins}')
+
+    for idx, win in enumerate(windows, 1):
+        tabs = win.get('tabs', [])
+        total_tabs += len(tabs)
+        print(f'\n  Window {idx} ({len(tabs)} tabs):')
+
+        for t_idx, tab in enumerate(tabs, 1):
+            history = tab.get('history', [])
+            if not history: continue
+
+            page = history[-1]
+            title = page.get('title', 'No Title')
+
+            # Обрезаем слишком длинные заголовки
+            if len(title) > 80: title = title[:77] + '...'
+
+            marker = '' if tab.get('active') else ' '
+            print(f'  {marker} {title}')
+
+    print(f'\n  Total Tabs: {total_tabs}')
+
+except Exception as e:
+    print(f'Error reading session: {e}')
+" "$(basename "$SESSION_FILE" .yml)"
+  exit 0
+fi
+
+# ==============================================================================
+# MAIN LOGIC
+# ==============================================================================
+
 TERMINAL="/opt/homebrew/bin/alacritty"
 CONFIG_FILE="/Users/tim/dev/dotfiles/qutebrowser/alacritty-popup.toml"
 FZF="/opt/homebrew/bin/fzf"
@@ -23,8 +152,8 @@ if [ -n "$1" ]; then
   SESSION_NAME="$1"
 else
   # Создаем скрипт-хелпер для запуска внутри Alacritty
-  # Это избавляет от ада с кавычками при передаче команды через -e bash -c "..."
   HELPER_SCRIPT="/tmp/qute_session_helper.sh"
+  CURRENT_SCRIPT=$(realpath "$0")
 
   cat <<EOF >"$HELPER_SCRIPT"
 #!/bin/bash
@@ -45,9 +174,9 @@ export FZF_DEFAULT_OPTS="
 --ansi
 --height=100%
 --border=none
---prompt=' ❯ '
---pointer='▶'
---marker='✓'
+--prompt=' '
+--pointer=''
+--marker=''
 --info=inline
 --color=fg:#d8dee9,bg:#2e3440,hl:#81a1c1
 --color=fg+:#eceff4,bg+:#4c566a,hl+:#88c0d0
@@ -57,21 +186,25 @@ export FZF_DEFAULT_OPTS="
 --color=border:#4c566a,label:#81a1c1
 "
 
-ls -1 *.yml | sed 's/\.yml$//' | $FZF --cycle --prompt='Session > ' > "$SELECT_FILE"
+# Запускаем fzf с превью
+# Передаем текущий скрипт для генерации превью
+ls -1 *.yml | sed 's/\.yml$//' | $FZF \
+    --cycle \
+    --prompt='Session > ' \
+    --preview-window=right:70%:wrap \
+    --preview "bash '$CURRENT_SCRIPT' --preview {}" \
+    > "$SELECT_FILE"
 EOF
 
   chmod +x "$HELPER_SCRIPT"
 
   # Запускаем терминал и ЖДЕМ его завершения
-  # Используем компактный размер окна вместо фуллскрин конфига
+  # Используем специальный конфиг (без рамок, maximized, nord)
+  CONFIG_FILE="/Users/tim/dev/dotfiles/qutebrowser/alacritty-session-add.toml"
+
   "$TERMINAL" \
+    --config-file "$CONFIG_FILE" \
     --title "Qutebrowser Session" \
-    --option window.dimensions.columns=84 \
-    --option window.dimensions.lines=30 \
-    --option window.padding.x=10 \
-    --option window.padding.y=10 \
-    --option window.decorations=buttonless \
-    --option font.size=18.0 \
     -e "$HELPER_SCRIPT"
 
   # Читаем выбор
