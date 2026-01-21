@@ -43,3 +43,6 @@ node_modules
 
 # Beads cache/state
 .beads
+
+# OAuth refresh tokens (treat like passwords)
+antigravity-accounts*

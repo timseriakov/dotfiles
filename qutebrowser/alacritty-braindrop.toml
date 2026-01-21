@@ -4,7 +4,7 @@ opacity = 0.95
 startup_mode = "Maximized"
 
 [font]
-size = 17.5
+size = 18
 
 [font.normal]
 family = "ShureTechMono Nerd Font Mono"
