@@ -6,6 +6,7 @@ end
 # Editors and quick openers
 abbr -a v nvim
 abbr -a vv 'nvim .'
+abbr -a мм 'nvim .'
 abbr -a op open
 abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
@@ -64,6 +65,7 @@ abbr -a gprune 'git remote prune origin'
 abbr -a gg lazygit
 abbr -a пп lazygit
 abbr -a prs 'env -u GITHUB_TOKEN gh dash'
+abbr -a g-redeploy 'git commit --allow-empty -m "chore: trigger redeploy"'
 
 # Brew helpers
 abbr -a bri 'brew install'
@@ -128,6 +130,9 @@ abbr -a o-manager 'bunx opencode-manager'
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim ./opencode.jsonc'
 abbr -a .o 'cd ~/dev/dotfiles/opencode'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+
+# OpenSkills
+abbr -a oskl 'npx openskills'
 
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
@@ -201,6 +206,8 @@ abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
 
 abbr -a beads /Users/tim/.local/bin/bd
 abbr -a trrnts /opt/homebrew/bin/bv
+
+abbr -a va ekphos
 
 # Mole
 abbr -a mu 'mole uninstall'

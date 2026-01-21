@@ -53,3 +53,12 @@ set -gx DENO_UNSTABLE_TSGO 1
 # GO MCP Proxy
 set -gx MCPPROXY_DISABLE_OAUTH true
 set -gx MCPPROXY_UPDATE_APP_BUNDLE true
+
+source $HOME/.turso/env.fish
+
+# pnpm
+set -gx PNPM_HOME /Users/tim/Library/pnpm
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
