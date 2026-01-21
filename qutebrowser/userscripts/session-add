@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+import sys
+import os
+import yaml
+import subprocess
+
+# Путь к сессиям на macOS
+SESSION_DIR = os.path.expanduser("~/Library/Application Support/qutebrowser/sessions")
+
+def main():
+    if len(sys.argv) < 2:
+        # Если аргумент не передан, попробуем использовать QUTE_FIFO или просто вывести usage,
+        # но для userscript qutebrowser обычно передает аргументы, если они указаны в команде.
+        # Если вызывать через :spawn --userscript session-add <name>, имя будет в sys.argv[1]
+        print("Usage: session-add <session_name>")
+        sys.exit(1)
+
+    session_name = sys.argv[1]
+    
+    # Если пользователь ввел путь или имя с .yml, учтем это
+    if session_name.endswith('.yml'):
+        filename = session_name
+    else:
+        filename = f"{session_name}.yml"
+
+    session_file = os.path.join(SESSION_DIR, filename)
+    
+    if not os.path.exists(session_file):
+        # Fallback для Linux/XDG путей, если вдруг скрипт переедет
+        xdg_path = os.path.expanduser("~/.local/share/qutebrowser/sessions")
+        session_file_xdg = os.path.join(xdg_path, filename)
+        if os.path.exists(session_file_xdg):
+            session_file = session_file_xdg
+        else:
+            # Отправляем сообщение об ошибке в qutebrowser
+            with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
+                f.write(f"message-error 'Session file not found: {session_name}'\n")
+            sys.exit(1)
+
+    try:
+        with open(session_file, 'r') as f:
+            data = yaml.safe_load(f)
+    except Exception as e:
+        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
+            f.write(f"message-error 'Error reading session: {e}'\n")
+        sys.exit(1)
+
+    # Парсим структуру сессии qutebrowser и открываем каждое окно отдельно
+    windows = data.get('windows', [])
+    if not windows:
+        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
+            f.write("message-warning 'No windows found in session.'\n")
+        sys.exit(0)
+
+    count = 0
+    for window in windows:
+        urls = []
+        for tab in window.get('tabs', []):
+            if 'history' in tab and tab['history']:
+                # Берем последний элемент истории (активная страница)
+                last_entry = tab['history'][-1]
+                if 'url' in last_entry:
+                    urls.append(last_entry['url'])
+        
+        if urls:
+            # Формируем команду: открыть новое окно (--target window) с этими URL
+            cmd = [qute_bin, "--target", "window"] + urls
+            # Запускаем в фоне каждое окно отдельно
+            subprocess.Popen(cmd, start_new_session=True)
+            count += 1
+            
+    if count == 0:
+        with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
+            f.write("message-warning 'No URLs found in session.'\n")
+        sys.exit(0)
+    
+    # Сообщаем об успехе
+    with open(os.environ.get('QUTE_FIFO', '/dev/null'), 'w') as f:
+        msg = f"Restoring session {session_name}: opened {count} window(s)."
+        f.write(f"message-info '{msg}'\n")
+
+if __name__ == "__main__":
+    main()
