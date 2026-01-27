@@ -194,7 +194,8 @@ prepend_keymap = [
   { on = [ "g", "i", ], run = "plugin lazygit", desc = "Run lazygit" },
   { on = [ "g", "r", ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go root of the current Git repository" },
   { on = [ "c", "a", ], run = "plugin ouch", desc = "Archive selected files" },
-  { on = "f", run = "plugin searchjump", desc = "searchjump mode" },
+  { on = "f", run = "plugin searchjump -- autocd", desc = "searchjump mode" }, # "plugin searchjump -- autocd"
+
 ]
 
 [tasks]
