@@ -2,18 +2,33 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     // Core
-    "oh-my-opencode@3.0.0-beta.11",
+    "oh-my-opencode@3.0.0-beta.16",
 
     // Auth
     "opencode-openai-codex-auth@4.4.0",
-    "opencode-antigravity-auth@1.3.0",
+    "opencode-antigravity-auth@1.4.3",
 
     // Misc
-    "@plannotator/opencode@0.6.7",
+    "@plannotator/opencode@0.6.8",
     "@franlol/opencode-md-table-formatter@0.0.3",
     "@nick-vi/opencode-type-inject@1.3.1",
     "@bastiangx/opencode-unmoji@0.3.11",
   ],
+
+  // "model": "openai/gpt-5.2",
+  "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
+
+  // google/antigravity-claude-opus-4-5-thinking-high
+  // google/antigravity-claude-opus-4-5-thinking-low
+  // google/antigravity-claude-opus-4-5-thinking-medium
+  // google/antigravity-claude-sonnet-4-5
+  // google/antigravity-claude-sonnet-4-5-thinking-high
+  // google/antigravity-claude-sonnet-4-5-thinking-low
+  // google/antigravity-claude-sonnet-4-5-thinking-medium
+  // google/antigravity-gemini-3-flash
+  // google/antigravity-gemini-3-pro-high
+  // google/antigravity-gemini-3-pro-low
+
   "mcp": {
     "mcpproxy": {
       "type": "remote",
@@ -41,6 +56,7 @@
     "leader": "ctrl+s",
     "app_exit": "ctrl+x",
     "editor_open": "ctrl+e",
+    "session_rename": "ctrl+r",
   },
   "provider": {
     "openai": {

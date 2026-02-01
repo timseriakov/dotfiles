@@ -1,68 +1,39 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
-
-  // --------------------------------------------------------------------------------------
-  // НАСТРОЙКИ АГЕНТОВ (AGENTS)
-  // Переопределение моделей, температур и прав доступа для встроенных агентов.
-  // --------------------------------------------------------------------------------------
   "agents": {
-    // Sisyphus: Главный оркестратор.
-    // Рекомендуется: claude-opus-4-5 (лучший), gpt-5.2 (альтернатива)
-    "Sisyphus": {
+    "sisyphus": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
       "description": "Главный оркестратор. Планирует, делегирует и управляет задачами.",
     },
-
-    // orchestrator-sisyphus: Мастер-оркестратор (TODO loop).
-    "orchestrator-sisyphus": {
+    "atlas": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
     },
-
-    // Oracle: Архитектор и консультант.
-    // Используется для сложных решений и ревью кода.
     "oracle": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
     },
-
-    // Librarian: Библиотекарь.
-    // Поиск документации, примеров кода на GitHub и работа с внешними библиотками.
     "librarian": {
       "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.2,
     },
-
-    // Explore: Исследователь кодовой базы.
-    // Быстрый поиск по локальным файлам (grep/glob/ast).
     "explore": {
       "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.1,
     },
-
-    // Frontend UI/UX Engineer: Фронтендер.
-    // Специалист по верстке, CSS, анимациям и React компонентам.
     "frontend-ui-ux-engineer": {
       "model": "openai/gpt-5.2",
       "temperature": 0.4,
     },
-
-    // Document Writer: Технический писатель.
-    // Создание README, документации API и руководств.
     "document-writer": {
       "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.3,
     },
-
-    // Multimodal Looker: Визуальный аналитик.
-    // Анализ изображений, PDF и скриншотов.
     "multimodal-looker": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
     },
-
-    // Стандартные агенты OpenCode (можно переопределить)
     "build": {
       "model": "openai/gpt-5.1-codex-max",
       "temperature": 0.05,
@@ -71,87 +42,38 @@
       "model": "openai/gpt-5.2",
       "temperature": 0.2,
     },
-
-    // Специализированные версии Сизифа
     "OpenCode-Builder": {
       "model": "openai/gpt-5.2-codex",
       "temperature": 0.05,
     },
-
-    // ----------------------------------------------------------------
-    // Специализированные агенты планирования (The Planning Trinity)
-    // ----------------------------------------------------------------
-
-    // Prometheus (Planner): Стратег.
-    // Создает детальные планы работы, проводит интервью требований.
-    "Prometheus (Planner)": {
+    "prometheus": {
       "model": "openai/gpt-5.2",
       "temperature": 0.2,
     },
-
-    // Metis (Plan Consultant): Консультант.
-    // Анализирует задачу ДО составления плана на предмет рисков и скрытых требований.
-    "Metis (Plan Consultant)": {
+    "metis": {
       "model": "openai/gpt-5.2",
       "temperature": 0.3,
     },
-
-    // Momus (Plan Reviewer): Рецензент.
-    // Валидирует и проверяет планы на полноту и корректность (High Accuracy Mode).
-    "Momus (Plan Reviewer)": {
+    "momus": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
     },
   },
-
-  // --------------------------------------------------------------------------------------
-  // КОНФИГУРАЦИЯ СИЗИФА (SISYPHUS ORCHESTRATOR)
-  // Управление поведением главного агента.
-  // --------------------------------------------------------------------------------------
   "sisyphus_agent": {
-    // disabled: Полностью отключить Сизифа и использовать стандартных агентов OpenCode.
     "disabled": false,
-
-    // default_builder_enabled: Включить стандартного агента сборки OpenCode (обычно отключен в пользу Сизифа).
     "default_builder_enabled": false,
-
-    // planner_enabled: Включить агента планирования (Prometheus).
     "planner_enabled": true,
-
-    // replace_plan: Заменить стандартного агента планирования на Prometheus.
     "replace_plan": true,
   },
-
-  // --------------------------------------------------------------------------------------
-  // ЦИКЛ РАЛЬФА (RALPH LOOP)
-  // Автономный цикл выполнения задач ("работай пока не сделаешь").
-  // Запускается командой /ralph-loop
-  // --------------------------------------------------------------------------------------
   "ralph_loop": {
-    // enabled: Разрешить использование цикла.
     "enabled": true,
-
-    // default_max_iterations: Максимальное количество итераций до принудительной остановки.
     "default_max_iterations": 100,
-
-    // state_dir: Директория для хранения состояния цикла (опционально).
-    // "state_dir": "~/.opencode/ralph-state"
   },
-
-  // --------------------------------------------------------------------------------------
-  // ФОНОВЫЕ ЗАДАЧИ (BACKGROUND TASKS)
-  // Настройки параллельного выполнения агентов.
-  // --------------------------------------------------------------------------------------
   "background_task": {
-    // defaultConcurrency: Общее ограничение на количество одновременных задач.
     "defaultConcurrency": 5,
-
-    // providerConcurrency: Ограничения по провайдерам API.
     "providerConcurrency": {
       "openai": 5,
     },
-
-    // modelConcurrency: Ограничения для конкретных моделей (например, чтобы экономить дорогие токены Opus).
     "modelConcurrency": {
       "openai/gpt-5.2": 3,
       "openai/gpt-5.2-codex": 1,
@@ -159,30 +81,18 @@
       "openai/gpt-5.1-codex-mini": 8,
     },
   },
-
-  // --------------------------------------------------------------------------------------
-  // КАТЕГОРИИ ЗАДАЧ (CATEGORIES)
-  // Пресеты для делегирования задач (инструмент delegate_task).
-  // --------------------------------------------------------------------------------------
   "categories": {
-    // visual: Для работы с UI/UX. Высокая креативность.
     "visual": {
       "model": "openai/gpt-5.2",
       "temperature": 0.7,
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
-
-    // business-logic: Для бэкенда и сложной логики. Низкая температура.
     "business-logic": {
       "model": "openai/gpt-5.1-codex-max",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
   },
-
-  // --------------------------------------------------------------------------------------
-  // СОВМЕСТИМОСТЬ С CLAUDE CODE (CLAUDE CODE COMPATIBILITY)
-  // --------------------------------------------------------------------------------------
   "claude_code": {
     "mcp": false,
     "commands": false,
@@ -192,24 +102,15 @@
     "plugins": false,
     "plugins_override": {},
   },
-
-  // --------------------------------------------------------------------------------------
-  // GIT MASTER
-  // --------------------------------------------------------------------------------------
   "git_master": {
     "commit_footer": false,
     "include_co_authored_by": false,
   },
-
-  // --------------------------------------------------------------------------------------
-  // ЭКСПЕРИМЕНТАЛЬНЫЕ ФУНКЦИИ (EXPERIMENTAL)
-  // --------------------------------------------------------------------------------------
   "experimental": {
     "auto_resume": true,
     "aggressive_truncation": true,
     "truncate_all_tool_outputs": true,
     "preemptive_compaction": true,
-
     "dynamic_context_pruning": {
       "enabled": true,
       "notification": "detailed",
@@ -219,22 +120,10 @@
       },
     },
   },
-
-  // --------------------------------------------------------------------------------------
-  // ОТКЛЮЧЕНИЕ ФУНКЦИЙ (DISABLE FEATURES)
-  // --------------------------------------------------------------------------------------
   "disabled_mcps": [],
   "disabled_skills": ["playwright"],
   "disabled_agents": [],
   "disabled_hooks": [],
-
-  // --------------------------------------------------------------------------------------
-  // GOOGLE AUTH
-  // --------------------------------------------------------------------------------------
   "google_auth": false,
-
-  // --------------------------------------------------------------------------------------
-  // LSP (LANGUAGE SERVER PROTOCOL)
-  // --------------------------------------------------------------------------------------
   "lsp": {},
 }
