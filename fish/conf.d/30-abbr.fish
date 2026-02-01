@@ -146,7 +146,6 @@ abbr -a amp 'npx -y @sourcegraph/amp@latest'
 abbr -a dev 'cd ~/dev'
 abbr -a zd 'z dot'
 abbr -a zl 'z dl'
-abbr -a dl 'cd ~/dl'
 abbr -a do 'cd ~/dev/dotfiles'
 
 # Open configs
@@ -193,7 +192,6 @@ abbr -a fxp 'fx package.json'
 abbr -a srv 'npx http-server .'
 abbr -a serve 'npx serve .'
 abbr -a ff 'npx -y fast-cli'
-abbr -a ports snitch
 
 abbr -a ipinfo 'curl -s ipinfo.io'
 abbr -a ipinfo-more 'curl -s ipwho.is'
@@ -208,6 +206,10 @@ abbr -a beads /Users/tim/.local/bin/bd
 abbr -a trrnts /opt/homebrew/bin/bv
 
 abbr -a va ekphos
+
+abbr -a kkll rip
+abbr -a ports snitch
+abbr -a dl surge
 
 # Mole
 abbr -a mu 'mole uninstall'
