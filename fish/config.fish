@@ -2,7 +2,14 @@
 if status is-interactive
     # Skip if already inside tmux or explicitly disabled
     if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM
-        exec tmux
+        # Use bash for the countdown to avoid fish 'read' issues during startup (status 2)
+        if /bin/bash -c 'read -t 3 -n 1 -p "Starting tmux in 3 seconds... (n to skip) " key; echo; if [[ "$key" == "n" || "$key" == "N" ]]; then exit 1; fi'
+            # Bash returned 0 (timeout or other key) -> Start tmux
+            exec tmux
+        else
+            # Bash returned 1 (user pressed n) -> Skip tmux
+            echo "Tmux launch aborted."
+        end
     end
 end
 
