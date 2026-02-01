@@ -5,7 +5,12 @@ if status is-interactive
         # Use bash for the countdown to avoid fish 'read' issues during startup (status 2)
         if /bin/bash -c 'read -t 3 -n 1 -p "Starting tmux in 3 seconds... (n to skip) " key; echo; if [[ "$key" == "n" || "$key" == "N" ]]; then exit 1; fi'
             # Bash returned 0 (timeout or other key) -> Start tmux
-            exec tmux
+            # Try to attach to the most recent session, or create a new one if none exist
+            if tmux has-session 2>/dev/null
+                exec tmux attach
+            else
+                exec tmux
+            end
         else
             # Bash returned 1 (user pressed n) -> Skip tmux
             echo "Tmux launch aborted."
