@@ -51,3 +51,11 @@ end
 # Note: System paths (/usr/bin, /bin, /usr/sbin, /sbin) and Homebrew paths
 # (/opt/homebrew/bin, /opt/homebrew/sbin) are already in the default system PATH
 # Don't add them to fish_user_paths to avoid duplicates
+
+# IDEs
+fish_add_path -Ua /Applications/GoLand.app/Contents/MacOS
+
+# Zerobrew
+set -gx ZEROBREW_ROOT $HOME/.zerobrew
+set -gx ZEROBREW_PREFIX $HOME/.zerobrew
+fish_add_path -Ua $HOME/.zerobrew/bin
