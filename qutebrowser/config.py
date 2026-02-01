@@ -545,6 +545,9 @@ config.bind(leader + "td", "tab-clone -w")
 config.bind(leader + "tn", "tab-give")  # move tab to new window
 config.bind(leader + "th", "history")
 config.bind(leader + "tp", "tab-pin")
+config.bind(leader + "tt", "tab-pin")
+config.bind(leader + "ее", "tab-pin")  # ru
+
 config.bind(
     leader + "n", en(f"open -w {homepage}")
 )  # New window (leader+n) with EN layout
@@ -633,5 +636,4 @@ config.bind(leader + "sd", en("cmd-set-text -s :session-delete "))
 config.bind(leader + "sr", en("cmd-set-text -s :session-rename "))
 config.bind(leader + "tm", en("cmd-set-text -s :tab-move"))
 config.bind(leader + "tw", en("cmd-set-text -s :tab-take"))
-config.bind(leader + "tt", en("cmd-set-text -s :tab-select"))
 config.bind(leader + "cS", en("cmd-set-text -s :set -t"))
