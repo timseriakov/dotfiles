@@ -63,5 +63,10 @@ use = "ndtoan96/ouch"
 rev = "594b8a2"
 hash = "c9e628fc0312d198db22ae2fa74883b"
 
+[[plugin.deps]]
+use = "peterfication/mux"
+rev = "e76edd5"
+hash = "8e49c6f9b24993239c4d03a1aaabce80"
+
 [flavor]
 deps = []
