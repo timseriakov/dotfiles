@@ -16,6 +16,15 @@
     "multimodal-looker": { "model": "zai-coding-plan/glm-4.5-flash" },
   },
 
+  "categories": {
+    "visual": { "model": "zai-coding-plan/glm-4.7", "temperature": 0.7 },
+    "business-logic": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.1,
+    },
+    "quick": { "model": "zai-coding-plan/glm-4.5-flash", "temperature": 0.3 },
+  },
+
   "claude_code": {
     "mcp": false,
     "commands": false,

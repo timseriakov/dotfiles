@@ -30,14 +30,14 @@
     // Librarian: Библиотекарь.
     // Поиск документации, примеров кода на GitHub и работа с внешними библиотками.
     "librarian": {
-      "model": "zai-coding-plan/glm-4.5-flash",
+      "model": "zai-coding-plan/glm-4.7-flash",
       "temperature": 0.2,
     },
 
     // Explore: Исследователь кодовой базы.
     // Быстрый поиск по локальным файлам (grep/glob/ast).
     "explore": {
-      "model": "zai-coding-plan/glm-4.5-flash",
+      "model": "zai-coding-plan/glm-4.7-flash",
       "temperature": 0.1,
     },
 
@@ -51,14 +51,14 @@
     // Document Writer: Технический писатель.
     // Создание README, документации API и руководств.
     "document-writer": {
-      "model": "zai-coding-plan/glm-4.5-flash",
+      "model": "zai-coding-plan/glm-4.7-flash",
       "temperature": 0.3,
     },
 
     // Multimodal Looker: Визуальный аналитик.
     // Анализ изображений, PDF и скриншотов.
     "multimodal-looker": {
-      "model": "zai-coding-plan/glm-4.5-flash",
+      "model": "zai-coding-plan/glm-4.6v",
       "temperature": 0.1,
     },
 
@@ -154,7 +154,8 @@
     // modelConcurrency: Ограничения для конкретных моделей (например, чтобы экономить дорогие токены Opus).
     "modelConcurrency": {
       "zai-coding-plan/glm-4.7": 3,
-      "zai-coding-plan/glm-4.5-flash": 8,
+      "zai-coding-plan/glm-4.7-flash": 8,
+      "zai-coding-plan/glm-4.6v": 3,
     },
   },
 
@@ -175,6 +176,10 @@
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
+    },
+    "quick": {
+      "model": "zai-coding-plan/glm-4.7-flash",
+      "temperature": 0.3,
     },
   },
 

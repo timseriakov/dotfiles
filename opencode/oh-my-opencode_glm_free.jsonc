@@ -175,6 +175,10 @@
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
+    "quick": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3,
+    },
   },
 
   // --------------------------------------------------------------------------------------
