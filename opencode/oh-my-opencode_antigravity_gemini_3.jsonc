@@ -95,6 +95,10 @@
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
+    "quick": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
   },
   "claude_code": {
     "mcp": false,
