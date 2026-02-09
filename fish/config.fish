@@ -35,5 +35,10 @@ status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
 # Note: Antigravity PATH managed in conf.d/10-path.fish
 
 
-# Mole shell completion
-set -l output (mole completion fish 2>/dev/null); and echo "$output" | source
+# Mole shell completion (load only if mole is installed)
+if command -q mole
+    set -l output (mole completion fish 2>/dev/null); and echo "$output" | source
+end
+
+# Use Tailscale.app CLI (matches running daemon from the app)
+alias tailscale "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
