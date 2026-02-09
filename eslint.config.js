@@ -9,6 +9,11 @@ export default [
     languageOptions: { globals: globals.browser },
   },
   {
-    ignores: ["qutebrowser/greasemonkey/"],
+    ignores: [
+      "qutebrowser/greasemonkey/",
+      "codex/tmp/",
+      "codex/sqlite/",
+      "codex/vendor_imports/",
+    ],
   },
 ];

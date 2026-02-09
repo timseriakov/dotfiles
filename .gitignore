@@ -46,3 +46,19 @@ node_modules
 
 # OAuth refresh tokens (treat like passwords)
 antigravity-accounts*
+
+# Codex local state/cache (may contain secrets)
+codex/.codex-global-state.json
+codex/.personality_migration
+codex/models_cache.json
+codex/sqlite/
+codex/tmp/
+codex/vendor_imports/
+
+# AI agent artifacts
+.sisyphus/
+
+# Local yazi plugin clones (prefer `ya pkg add`)
+yazi/plugins/duckdb.yazi/
+yazi/plugins/yazi-plugins/
+yazi/plugins/preview-sqlite.yazi
