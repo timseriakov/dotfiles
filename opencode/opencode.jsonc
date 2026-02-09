@@ -6,7 +6,7 @@
 
     // Auth
     "opencode-openai-codex-auth@4.4.0",
-    "opencode-antigravity-auth@1.4.3",
+    "opencode-antigravity-auth@1.4.6",
 
     // Misc
     "@plannotator/opencode@0.6.8",
@@ -15,8 +15,8 @@
     "@bastiangx/opencode-unmoji@0.3.11",
   ],
 
-  // "model": "openai/gpt-5.2",
-  "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
+  "model": "openai/gpt-5.2",
+  // "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
 
   // google/antigravity-claude-opus-4-5-thinking-high
   // google/antigravity-claude-opus-4-5-thinking-low

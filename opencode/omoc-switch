@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf not found. Install fzf first." >&2
+  exit 1
+fi
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LINK="$DIR/oh-my-opencode.jsonc"
+
+shopt -s nullglob
+configs=("$DIR"/oh-my-opencode_*.jsonc)
+shopt -u nullglob
+
+if [ ${#configs[@]} -eq 0 ]; then
+  echo "No configs found matching oh-my-opencode_*.jsonc in $DIR" >&2
+  exit 1
+fi
+
+current=""
+if [ -L "$LINK" ]; then
+  current="$(readlink "$LINK")"
+  # If relative link, resolve to absolute for display consistency
+  if [[ "$current" != /* ]]; then
+    current="$DIR/$current"
+  fi
+fi
+
+choices=()
+for path in "${configs[@]}"; do
+  choices+=("$(basename "$path")")
+done
+
+header=""
+if [ -n "$current" ]; then
+  header="current: $(basename "$current")"
+else
+  header="current: (none)"
+fi
+
+selected="$(printf '%s\n' "${choices[@]}" | fzf --prompt='Config > ' --header "$header")"
+
+if [ -z "${selected:-}" ]; then
+  echo "No selection." >&2
+  exit 1
+fi
+
+ln -sfn "$DIR/$selected" "$LINK"
+
+echo "Activated: $selected"
