@@ -64,6 +64,7 @@ abbr -a gvl 'git vlog'
 abbr -a gprune 'git remote prune origin'
 abbr -a gg lazygit
 abbr -a пп lazygit
+abbr -a tg tig
 abbr -a prs 'env -u GITHUB_TOKEN gh dash'
 abbr -a g-redeploy 'git commit --allow-empty -m "chore: trigger redeploy"'
 
@@ -127,8 +128,8 @@ abbr -a o opencode
 abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a oweb 'openchamber --daemon --port 1911'
 abbr -a o-manager 'bunx opencode-manager'
-abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim ./opencode.jsonc'
-abbr -a .o 'cd ~/dev/dotfiles/opencode'
+abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
+abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 
 # OpenSkills
@@ -145,7 +146,7 @@ abbr -a amp 'npx -y @sourcegraph/amp@latest'
 # z jumps
 abbr -a dev 'cd ~/dev'
 abbr -a zd 'z dot'
-abbr -a zl 'z dl'
+abbr -a dl 'z dl'
 abbr -a do 'cd ~/dev/dotfiles'
 
 # Open configs
@@ -209,7 +210,7 @@ abbr -a va ekphos
 
 abbr -a kkll rip
 abbr -a ports snitch
-abbr -a dl surge
 
 # Mole
 abbr -a mu 'mole uninstall'
+abbr -a omoc '~/.config/opencode/omoc-switch'
