@@ -9,13 +9,13 @@
     <!-- Command to run -->
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/mcpproxy</string>
+        <string>/opt/homebrew/bin/mcpproxy</string>
         <string>serve</string>
     </array>
 
     <!-- Working directory (important for config.db and other files) -->
     <key>WorkingDirectory</key>
-    <string>/Users/tim/dev/dotfiles/mcpproxy</string>
+    <string>/Users/tim/.mcpproxy</string>
 
     <!-- Start at login/boot -->
     <key>RunAtLoad</key>
@@ -43,7 +43,7 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
 
     <!-- Process control -->

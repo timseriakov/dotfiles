@@ -23,8 +23,26 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-CONFIG_FILE="$HOME/dev/dotfiles/mcpproxy/mcp_config.json"
-LAUNCHD_SCRIPT="$HOME/dev/dotfiles/mcpproxy/launchd-control.sh"
+# Resolve script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Resolve launchd-control.sh path (relative to script directory)
+LAUNCHD_SCRIPT="$SCRIPT_DIR/launchd-control.sh"
+
+# Resolve config file path with precedence
+# 1. MCPPROXY_CONFIG_FILE environment variable
+# 2. ~/.mcpproxy/mcp_config.json (brew install location)
+# 3. ./mcp_config.json (script directory, for local dev)
+# 4. Default to ~/.mcpproxy/mcp_config.json
+if [ -n "${MCPPROXY_CONFIG_FILE:-}" ]; then
+    CONFIG_FILE="$MCPPROXY_CONFIG_FILE"
+elif [ -f "$HOME/.mcpproxy/mcp_config.json" ]; then
+    CONFIG_FILE="$HOME/.mcpproxy/mcp_config.json"
+elif [ -f "$SCRIPT_DIR/mcp_config.json" ]; then
+    CONFIG_FILE="$SCRIPT_DIR/mcp_config.json"
+else
+    CONFIG_FILE="$HOME/.mcpproxy/mcp_config.json"
+fi
 
 # Print colored message
 msg() {
