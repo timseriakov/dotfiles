@@ -1,10 +1,23 @@
 #!/bin/bash
 # mcpproxy launchd service control script
 
-PLIST_NAME="com.mcpproxy.server.plist"
-PLIST_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$PLIST_NAME"
-PLIST_DEST="$HOME/Library/LaunchAgents/$PLIST_NAME"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+CORE_PLIST_NAME="com.mcpproxy.server.plist"
+TRAY_PLIST_NAME="com.mcpproxy.tray.plist"
+
+CORE_PLIST_SRC="$SCRIPT_DIR/$CORE_PLIST_NAME"
+TRAY_PLIST_SRC="$SCRIPT_DIR/$TRAY_PLIST_NAME"
+
+CORE_PLIST_DEST="$HOME/Library/LaunchAgents/$CORE_PLIST_NAME"
+TRAY_PLIST_DEST="$HOME/Library/LaunchAgents/$TRAY_PLIST_NAME"
+
 LOG_DIR="$HOME/Library/Logs/mcpproxy"
+
+USER_UID=$(id -u)
+DOMAIN="gui/$USER_UID"
+SERVICE_CORE="${DOMAIN}/com.mcpproxy.server"
+SERVICE_TRAY="${DOMAIN}/com.mcpproxy.tray"
 
 # Colors
 RED='\033[0;31m'
@@ -14,94 +27,145 @@ NC='\033[0m' # No Color
 
 case "$1" in
     install)
-        echo -e "${GREEN}Installing mcpproxy launchd service...${NC}"
+        echo -e "${GREEN}Installing mcpproxy launchd services...${NC}"
 
         # Create log directory
         mkdir -p "$LOG_DIR"
         echo "Created log directory: $LOG_DIR"
 
-        # Copy plist to LaunchAgents
-        cp "$PLIST_SRC" "$PLIST_DEST"
-        echo "Copied plist to: $PLIST_DEST"
+        cp "$CORE_PLIST_SRC" "$CORE_PLIST_DEST"
+        cp "$TRAY_PLIST_SRC" "$TRAY_PLIST_DEST"
+        echo "Copied plists to:"
+        echo "  $CORE_PLIST_DEST"
+        echo "  $TRAY_PLIST_DEST"
 
-        # Load service
-        launchctl load "$PLIST_DEST"
-        echo -e "${GREEN}Service installed and started!${NC}"
+        launchctl bootout "$SERVICE_TRAY" 2>/dev/null || true
+        launchctl bootout "$SERVICE_CORE" 2>/dev/null || true
+        launchctl bootstrap "$DOMAIN" "$TRAY_PLIST_DEST" 2>/dev/null || true
+        launchctl kickstart -k "$SERVICE_TRAY" 2>/dev/null || true
+        echo -e "${GREEN}Services installed and started!${NC}"
 
         # Show status
         sleep 2
-        launchctl list | grep mcpproxy
+        launchctl list | grep com.mcpproxy
         ;;
 
     uninstall)
-        echo -e "${YELLOW}Uninstalling mcpproxy launchd service...${NC}"
+        echo -e "${YELLOW}Uninstalling mcpproxy launchd services...${NC}"
 
-        # Unload service
-        launchctl unload "$PLIST_DEST" 2>/dev/null
+        launchctl bootout "$SERVICE_TRAY" 2>/dev/null || true
+        launchctl bootout "$SERVICE_CORE" 2>/dev/null || true
 
-        # Remove plist
-        rm -f "$PLIST_DEST"
+        rm -f "$TRAY_PLIST_DEST" "$CORE_PLIST_DEST"
 
-        echo -e "${GREEN}Service uninstalled!${NC}"
+        echo -e "${GREEN}Services uninstalled!${NC}"
         ;;
 
     start)
-        echo -e "${GREEN}Starting mcpproxy service...${NC}"
-        launchctl load "$PLIST_DEST"
+        echo -e "${GREEN}Starting mcpproxy services...${NC}"
+
+        if [ ! -f "$TRAY_PLIST_DEST" ]; then
+            echo -e "${YELLOW}Plists not installed. Run: $0 install${NC}"
+            exit 1
+        fi
+
+        launchctl bootout "$SERVICE_CORE" 2>/dev/null || true
+
+        if ! launchctl kickstart -k "$SERVICE_TRAY" 2>/dev/null; then
+            launchctl bootstrap "$DOMAIN" "$TRAY_PLIST_DEST" 2>/dev/null || true
+            launchctl kickstart -k "$SERVICE_TRAY" 2>/dev/null || true
+        fi
+
         sleep 1
-        launchctl list | grep mcpproxy
+        launchctl list | grep com.mcpproxy
         ;;
 
     stop)
-        echo -e "${YELLOW}Stopping mcpproxy service...${NC}"
-        launchctl unload "$PLIST_DEST"
+        echo -e "${YELLOW}Stopping mcpproxy services...${NC}"
+        launchctl stop "$SERVICE_TRAY" 2>/dev/null || launchctl bootout "$SERVICE_TRAY" 2>/dev/null || true
+        launchctl bootout "$SERVICE_CORE" 2>/dev/null || true
+        killall mcpproxy 2>/dev/null || true
         ;;
 
     restart)
-        echo -e "${YELLOW}Restarting mcpproxy service...${NC}"
-        launchctl unload "$PLIST_DEST" 2>/dev/null
+        echo -e "${YELLOW}Restarting mcpproxy services...${NC}"
+
+        launchctl stop "$SERVICE_TRAY" 2>/dev/null || launchctl bootout "$SERVICE_TRAY" 2>/dev/null || true
+        launchctl bootout "$SERVICE_CORE" 2>/dev/null || true
+        killall mcpproxy 2>/dev/null || true
         sleep 1
-        launchctl load "$PLIST_DEST"
+
+        if ! launchctl kickstart -k "$SERVICE_TRAY" 2>/dev/null; then
+            launchctl bootstrap "$DOMAIN" "$TRAY_PLIST_DEST" 2>/dev/null || true
+            launchctl kickstart -k "$SERVICE_TRAY" 2>/dev/null || true
+        fi
+
         sleep 1
-        launchctl list | grep mcpproxy
+        launchctl list | grep com.mcpproxy
         ;;
 
     status)
         echo -e "${GREEN}mcpproxy service status:${NC}"
-        if launchctl list | grep -q mcpproxy; then
-            echo -e "${GREEN}✓ Running${NC}"
-            launchctl list | grep mcpproxy
+
+        CORE_PIDS=$(pgrep -x mcpproxy 2>/dev/null || true)
+        if [ -n "$CORE_PIDS" ]; then
+            CORE_COUNT=$(echo "$CORE_PIDS" | wc -l | tr -d ' ')
+            echo -e "${GREEN}✓ Core running ($CORE_COUNT process(es))${NC}"
+            echo "  PIDs: $(echo "$CORE_PIDS" | tr '\n' ' ')"
+            if curl -s http://localhost:8080/health 2>/dev/null | grep -q '"status":"ok"'; then
+                echo -e "${GREEN}  Health: OK${NC}"
+            else
+                echo -e "${YELLOW}  Health: FAILED${NC}"
+            fi
         else
-            echo -e "${RED}✗ Not running${NC}"
+            echo -e "${RED}✗ Core not running${NC}"
+        fi
+
+        TRAY_PID=$(launchctl list | awk '$3=="com.mcpproxy.tray" {print $1}')
+        if [ "$TRAY_PID" != "-" ] && [ -n "$TRAY_PID" ]; then
+            echo -e "${GREEN}✓ Tray running (PID: $TRAY_PID)${NC}"
+            launchctl list | grep com.mcpproxy.tray
+        else
+            echo -e "${RED}✗ Tray not running${NC}"
+            if launchctl list | grep -q com.mcpproxy.tray; then
+                echo "  (Tray job loaded but not running)"
+            fi
         fi
 
         echo -e "\n${GREEN}Process status:${NC}"
         ps aux | grep mcpproxy | grep -v grep
 
         echo -e "\n${GREEN}Socket status:${NC}"
-        if [ -e "/Users/tim/dev/dotfiles/mcpproxy/mcpproxy.sock" ]; then
+        SOCKET_PATH="$HOME/.mcpproxy/mcpproxy.sock"
+        if [ -e "$SOCKET_PATH" ]; then
             echo -e "${GREEN}✓ Socket exists${NC}"
-            ls -la /Users/tim/dev/dotfiles/mcpproxy/mcpproxy.sock
+            ls -la "$SOCKET_PATH"
         else
             echo -e "${RED}✗ Socket not found${NC}"
         fi
         ;;
 
     logs)
-        echo -e "${GREEN}Recent logs (stdout):${NC}"
-        tail -50 "$LOG_DIR/stdout.log" 2>/dev/null || echo "No stdout logs yet"
+        echo -e "${GREEN}Recent logs (core stdout):${NC}"
+        tail -50 "$LOG_DIR/stdout.log" 2>/dev/null || echo "No core stdout logs yet"
 
-        echo -e "\n${GREEN}Recent errors (stderr):${NC}"
-        tail -50 "$LOG_DIR/stderr.log" 2>/dev/null || echo "No stderr logs yet"
+        echo -e "\n${GREEN}Recent errors (core stderr):${NC}"
+        tail -50 "$LOG_DIR/stderr.log" 2>/dev/null || echo "No core stderr logs yet"
+
+        echo -e "\n${GREEN}Recent logs (tray stdout):${NC}"
+        tail -50 "$LOG_DIR/tray-stdout.log" 2>/dev/null || echo "No tray stdout logs yet"
+
+        echo -e "\n${GREEN}Recent errors (tray stderr):${NC}"
+        tail -50 "$LOG_DIR/tray-stderr.log" 2>/dev/null || echo "No tray stderr logs yet"
         ;;
 
     follow)
         echo -e "${GREEN}Following logs (Ctrl+C to stop)...${NC}"
-        tail -f "$LOG_DIR/stdout.log" "$LOG_DIR/stderr.log"
+        tail -f "$LOG_DIR/stdout.log" "$LOG_DIR/stderr.log" "$LOG_DIR/tray-stdout.log" "$LOG_DIR/tray-stderr.log"
         ;;
 
     *)
-        echo "mcpproxy launchd service control"
+        echo "mcpproxy launchd services control"
         echo ""
         echo "Usage: $0 {install|uninstall|start|stop|restart|status|logs|follow}"
         echo ""
