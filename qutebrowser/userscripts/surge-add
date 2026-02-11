@@ -1,0 +1,226 @@
+#!/bin/bash
+# Qutebrowser userscript for Surge queueing
+# Usage:
+#   Space f d  - hint links userscript surge-add (queue a chosen link)
+#   Space f D  - spawn -u surge-add --force (queue current tab URL)
+#
+# Requirements: SURGE_TOKEN environment variable (set surge token) or 'surge token' command
+
+set -euo pipefail
+
+# Ensure proper PATH for Homebrew and system binaries
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# Surge daemon base URL
+#
+# Priority:
+# 1) `SURGE_API` (full URL, e.g. http://127.0.0.1:1700)
+# 2) `SURGE_HOST` + `SURGE_PORT`
+SURGE_HOST="${SURGE_HOST:-127.0.0.1}"
+SURGE_PORT="${SURGE_PORT:-1700}"
+SURGE_API="${SURGE_API:-http://${SURGE_HOST}:${SURGE_PORT}}"
+
+# Function to send message to qutebrowser
+send_message() {
+  local level="$1"  # info, warning, error
+  local message="$2"
+  local escaped
+  escaped=$(printf '%s' "$message" | sed 's/\\/\\\\/g; s/"/\\"/g')
+  printf 'message-%s "%s"\n' "$level" "$escaped" >>"$QUTE_FIFO"
+}
+
+# Function to send an error and exit
+die() {
+  send_message error "$*"
+  exit 1
+}
+
+# Function to check if URL is likely an HTML page (no file extension)
+is_html_page() {
+  local url="$1"
+
+  # Strip query and fragment from URL
+  local stripped_url
+  stripped_url=$(echo "$url" | sed 's?[?#].*$??')
+
+  # Extract basename (path component after last slash)
+  local basename
+  basename=$(echo "$stripped_url" | sed 's|.*/||')
+
+  # Check if basename contains a dot and it's not just a leading dot or trailing dot
+  if [[ "$basename" == .* ]]; then
+    # Starts with dot - could be hidden file
+    return 0  # Treat as HTML-like (no meaningful extension)
+  fi
+
+  # Check if basename ends with dot
+  if [[ "$basename" == *.* ]]; then
+    # Has extension - get it
+    local extension
+    extension=$(echo "$basename" | sed 's/.*\.//')
+    if [[ -n "$extension" ]]; then
+      # Extension exists and is non-empty
+      return 1  # Not HTML (has valid extension)
+    fi
+  fi
+
+  # No extension or invalid extension - likely HTML
+  return 0  # True: it's likely HTML
+}
+
+# Function to get token from environment or command
+get_token() {
+  local token="${SURGE_TOKEN:-}"
+  if [[ -n "$token" ]]; then
+    # Trim whitespace
+    token=$(echo "$token" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    if [[ -n "$token" ]]; then
+      echo "$token"
+      return 0
+    fi
+  fi
+
+  # Fallback: run 'surge token' command
+  local cmd_output
+  cmd_output=$(surge token 2>/dev/null || true)
+
+  if [[ -n "$cmd_output" ]]; then
+    local cmd_token
+    cmd_token=$(echo "$cmd_output" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    if [[ -n "$cmd_token" ]]; then
+      echo "$cmd_token"
+      return 0
+    fi
+  fi
+
+  echo ""  # Empty token
+}
+
+# Check if running as qutebrowser userscript
+# NOTE: we cannot send qutebrowser messages without QUTE_FIFO.
+if [[ -z "${QUTE_FIFO:-}" ]]; then
+  echo "Error: Must be run as qutebrowser userscript (QUTE_FIFO not set)" >&2
+  exit 1
+fi
+
+# Check if running with explicit URL argument
+FORCE_MODE=false
+EXPLICIT_URL=""
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force)
+      FORCE_MODE=true
+      shift
+      ;;
+    *)
+      EXPLICIT_URL="$1"
+      shift
+      ;;
+  esac
+done
+
+# Extract URL (explicit argument > QUTE_URL)
+URL="${EXPLICIT_URL:-${QUTE_URL:-}}"
+
+if [[ -z "$URL" ]]; then
+  die "No URL provided (QUTE_URL not set)"
+fi
+
+# Get token
+TOKEN=$(get_token)
+
+if [[ -z "$TOKEN" ]]; then
+  die "Cannot get SURGE_TOKEN. Run: surge token"
+fi
+
+# Check if URL is likely an HTML page
+if [[ "$FORCE_MODE" != "true" ]]; then
+  if is_html_page "$URL"; then
+    send_message warning "URL appears to be an HTML page (no file extension). Use --force to queue anyway."
+    exit 0  # No error, just exit without queueing
+  fi
+fi
+
+# Function to check Surge daemon health
+check_health() {
+  local status
+  status=$(curl -s -o /dev/null -w "%{http_code}" \
+    --max-time 5 \
+    "$SURGE_API/health" \
+    --header "Authorization: Bearer $TOKEN" \
+    2>/dev/null || echo "000")
+
+  case "$status" in
+    "200")
+      return 0  # Healthy
+      ;;
+    "000")
+      die "Cannot connect to Surge daemon at $SURGE_API (connection refused)"
+      ;;
+    *)
+      die "Surge daemon unhealthy (HTTP $status)"
+      ;;
+  esac
+}
+
+# Check Surge daemon health
+send_message info "Checking Surge daemon..."
+if ! check_health; then
+  die "Surge daemon check failed"
+fi
+
+# Queue the URL in Surge
+send_message info "Queueing URL: $URL"
+
+response=""
+exit_code=0
+set +e
+response=$(curl -s -w "\n%{http_code}" \
+  --max-time 10 \
+  --request POST \
+  --header "Authorization: Bearer $TOKEN" \
+  --header "Content-Type: application/json" \
+  --data '{"url":"'"$URL"'","skip_approval":true}' \
+  "$SURGE_API/download" \
+  2>/dev/null)
+exit_code=$?
+set -e
+
+if [[ $exit_code -ne 0 ]]; then
+  send_message error "Failed to reach Surge daemon (curl exit $exit_code)"
+  exit 1
+fi
+
+# Extract HTTP status code (last line)
+http_code=$(echo "$response" | tail -n1)
+
+# Parse response body (all but last line)
+# macOS/BSD `head` does not support `-n -1`
+json_response=$(echo "$response" | sed '$d')
+
+if [[ -z "$json_response" ]]; then
+  send_message error "No response from Surge daemon"
+  exit 1
+fi
+
+# Check if queueing was successful
+if [[ "$http_code" == "200" ]]; then
+  send_message info "Successfully queued: $URL"
+  exit 0
+elif [[ "$http_code" == "400" ]]; then
+  # Already queued or invalid URL
+  send_message warning "Already queued or invalid URL: $URL"
+  exit 0
+else
+  # Error response
+  error_msg=$(echo "$json_response" | grep -o '"error":"[^"]*"' | cut -d'"' -f4 || true)
+  if [[ -z "$error_msg" ]]; then
+    error_msg=$(echo "$json_response" | head -c 200 | tr '\n' ' ')
+  fi
+
+  send_message error "Failed to queue URL (HTTP $http_code): $error_msg"
+  exit 1
+fi
+

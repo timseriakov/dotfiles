@@ -237,7 +237,7 @@ c.fonts.prompts = f"{font_size} {font_family}"
 c.fonts.statusbar = f"{font_size} {font_family}"
 
 # Webpage BG
-c.colors.webpage.bg = black
+c.colors.webpage.bg = nord0
 
 # Home page
 c.url.default_page = homepage
@@ -524,6 +524,10 @@ config.bind(leader + "fy", "hint links yank")  # Open link in new tab (foregroun
 config.bind(
     leader + "fx", "hint links spawn --detach /usr/bin/open -a 'Helium' {hint-url}"
 )  # Open link in Helium (hint)
+config.bind(
+    leader + "fd", "hint links userscript surge-add"
+)  # Queue link in Surge (hint)
+config.bind(leader + "fD", "spawn -u surge-add --force")  # Queue current URL in Surge
 
 # quitting actions
 config.bind(leader + "qd", "tab-close")
