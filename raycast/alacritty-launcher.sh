@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# Alacritty launcher with configurable vertical offset
-# Usage: ./raycast/alacritty-launcher.sh [offset_percentage]
-# Example: ./raycast/alacritty-launcher.sh 30  (moves window 30% down from top)
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title Alacritty Launcher
+# @raycast.mode compact
+
+# Optional parameters:
+# @raycast.icon 🦊
+# @raycast.arguments [{ "type": "text", "placeholder": "10" }]
+
+# Documentation:
+# @raycast.author timseriakov
+# @raycast.authorURL https://raycast.com/timseriakov
+# @raycast.description Launch Alacritty with configurable vertical offset (0-100%, default 10%)
 
 set -e
 
