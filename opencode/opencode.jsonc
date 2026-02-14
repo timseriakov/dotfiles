@@ -6,7 +6,7 @@
 
     // Auth
     "opencode-openai-codex-auth@4.4.0",
-    "opencode-antigravity-auth@1.4.6",
+    "opencode-antigravity-auth@1.5.1",
 
     // Misc
     "@plannotator/opencode@0.6.8",
