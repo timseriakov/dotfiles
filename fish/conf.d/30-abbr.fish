@@ -214,3 +214,10 @@ abbr -a ports snitch
 # Mole
 abbr -a mu 'mole uninstall'
 abbr -a omoc '~/.config/opencode/omoc-switch'
+
+abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
+  -movflags +faststart \
+  -pix_fmt yuv420p \
+  -vf "fps=30,scale=512:-2:flags=lanczos" \
+  -c:v libx264 -profile:v baseline -level 3.0 \
+  -an -loop 0 output.mp4'
