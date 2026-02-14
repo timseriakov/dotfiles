@@ -4,13 +4,13 @@ function _fifc_preview_file -d "Preview the selected file with the right tool de
     switch $file_type
         case txt
             if type -q bat
-                bat --color=always --decorations=never $fifc_bat_opts "$fifc_candidate"
+                bat --style=plain --color=always --decorations=never $fifc_bat_opts "$fifc_candidate"
             else
                 cat "$fifc_candidate"
             end
         case json
             if type -q bat
-                bat --color=always -l json $fifc_bat_opts "$fifc_candidate"
+                bat --style=plain --color=always --decorations=never -l json $fifc_bat_opts "$fifc_candidate"
             else
                 cat "$fifc_candidate"
             end

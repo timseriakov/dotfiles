@@ -29,6 +29,8 @@ set -gx COMPOSE_BAKE true
 
 # bat
 set -gx BAT_THEME Nord
+set -gx BAT_STYLE plain
+set -gx BAT_DECORATIONS never
 
 # posting
 set -gx POSTING_PAGER moar

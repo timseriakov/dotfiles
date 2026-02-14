@@ -114,7 +114,7 @@ abbr -a lm lsh # Translates natural language to shell commands using LLM
 abbr -a ge gemini
 abbr -a geup 'npm install -g @google/gemini-cli'
 # abbr -a geup 'brew install gemini-cli'
-abbr -a geclear 'bat google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+abbr -a geclear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
 
 # Codex
 abbr -a cx codex
@@ -179,7 +179,7 @@ abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'
 
 abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
-abbr -a c bat
+abbr -a c 'bat --style=plain --decorations=never --color=always'
 abbr -a chmd chmod-cli
 abbr -a m mmv
 abbr -a mtrx 'cmatrix -C blue -s'
@@ -194,7 +194,7 @@ abbr -a srv 'npx http-server .'
 abbr -a serve 'npx serve .'
 abbr -a ff 'npx -y fast-cli'
 
-abbr -a ipinfo 'curl -s ipinfo.io'
+abbr -a ipinfo 'curl -s -H "Authorization: Bearer $IPINFO_TOKEN" https://api.ipinfo.io/lite/me'
 abbr -a ipinfo-more 'curl -s ipwho.is'
 
 abbr -a bt btop

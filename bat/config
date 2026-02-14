@@ -1,0 +1,6 @@
+# Show only syntax highlighting (no line numbers / borders)
+--style=plain
+--decorations=never
+
+# Keep colors even when piped
+--color=always

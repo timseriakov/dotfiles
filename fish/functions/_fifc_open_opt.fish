@@ -5,7 +5,7 @@ function _fifc_open_opt -d "Open a man page starting at the selected option"
 
     if type -q bat
         man $cmd \
-            | bat --color=always --decorations=never --language man $fifc_bat_opts \
+            | bat --style=plain --color=always --decorations=never --language man $fifc_bat_opts \
             # --RAW-CONTROL-CHARS allow color output of bat to be displayed
             | less --RAW-CONTROL-CHARS --pattern "$regex"
     else
