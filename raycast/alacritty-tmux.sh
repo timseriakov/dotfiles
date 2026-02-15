@@ -17,11 +17,15 @@
 # TMUX_AUTO_SESSION=alacritty: specifies tmux session name
 env NO_TMUX=0 TMUX_AUTO=1 TMUX_AUTO_SESSION=alacritty /opt/homebrew/bin/alacritty >/dev/null 2>&1 &
 
-# Check if alacritty session exists, create or attach
-if ! tmux has-session -t alacritty 2>/dev/null; then
-  tmux new-session -d -s alacritty -c "env NO_TMUX=0 TMUX_AUTO=1 TMUX_AUTO_SESSION=alacritty /opt/homebrew/bin/alacritty" 2>&1
+# Attach to existing alacritty session if available, otherwise create new
+if tmux has-session -t alacritty 2>/dev/null; then
+  # Session exists, attach to it
+  tmux attach-session -t alacritty &
 else
-  echo "Alacritty tmux session already exists"
+  # No session exists, create new one
+  tmux new-session -d -s alacritty -c "env NO_TMUX=0 TMUX_AUTO=1 TMUX_AUTO_SESSION=alacritty /opt/homebrew/bin/alacritty" 2>&1
+  sleep 0.5
+  tmux attach-session -t alacritty
 fi
 
 exit 0
