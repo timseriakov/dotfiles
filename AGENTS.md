@@ -112,3 +112,18 @@ Warp-grep is a semantic search subagent that takes a search query and finds rele
 - Ideal for broader semantic queries, not keyword pinpointing
 - Good queries: "Find the XYZ flow", "How does XYZ work", "Where is XYZ handled?", "Where is <error message> coming from?"
 - Not for: finding exact function names or simple string matching (use `grep` or `ast-grep` instead)
+
+## LikeC4 Architecture Workflow
+
+When a task is about architecture diagrams, C4, system landscape, dependency maps, or "visualize architecture from code", agents MUST follow `opencode/LIKEC4_AGENT_PLAYBOOK.md`.
+
+Required behavior:
+
+- Build or update architecture using LikeC4 DSL (`*.c4` / `*.likec4`)
+- If model is missing, bootstrap from `/Users/tim/dev/dotfiles/opencode/templates/likec4-starter/docs/architecture/model.c4`
+- Validate with CLI before finishing (`npx likec4 validate`)
+- Provide a runnable preview command (`npx likec4 start`)
+- For shareable outputs, build static site (`npx likec4 build -o ./dist`)
+- If needed, export artifacts (`npx likec4 export png -o ./assets/architecture`)
+
+Never finish an architecture task with prose-only output when diagram/model changes are requested.

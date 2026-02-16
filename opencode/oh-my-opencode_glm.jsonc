@@ -177,6 +177,11 @@
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
+    "architecture": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.15,
+      "prompt_append": "For architecture tasks, follow /Users/tim/dev/dotfiles/opencode/LIKEC4_AGENT_PLAYBOOK.md. Prefer LikeC4 DSL changes, then validate with `npx likec4 validate`, and return preview/build commands.",
+    },
     "quick": {
       "model": "zai-coding-plan/glm-4.7-flash",
       "temperature": 0.3,

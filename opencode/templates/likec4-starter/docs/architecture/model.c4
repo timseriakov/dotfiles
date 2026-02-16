@@ -1,0 +1,47 @@
+specification {
+  element actor
+  element system
+  element container
+}
+
+model {
+  user = actor "User"
+
+  product = system "Product"
+
+  web = container "Web App" {
+    technology "Next.js"
+    description "UI and user-facing workflows"
+  }
+
+  api = container "API" {
+    technology "Node.js"
+    description "Business logic and public/internal endpoints"
+  }
+
+  db = container "Primary DB" {
+    technology "PostgreSQL"
+    description "Transactional storage"
+  }
+
+  user -> web "Uses"
+  web -> api "Calls"
+  api -> db "Reads/Writes"
+}
+
+views {
+  view context {
+    title "System Context"
+    include user
+    include product
+  }
+
+  view containers {
+    title "Container View"
+    include user
+    include web
+    include api
+    include db
+    autoLayout TopBottom
+  }
+}

@@ -35,7 +35,7 @@ end
 return {
   {
     "likec4/likec4.nvim",
-    ft = { "likec4" },
+    lazy = false,
     init = function()
       vim.filetype.add({
         extension = {
