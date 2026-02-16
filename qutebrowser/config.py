@@ -261,6 +261,8 @@ c.aliases = {
     "w": "session-save",
     "x": "quit --save",
     "ms": "messages",
+    "log": "messages",
+    "l": "messages",
     "qq": "quit --save",  # Safe quit alias for intentional app exit
 }
 
@@ -499,6 +501,17 @@ config.bind(leader + "de", "edit-text")
 config.bind(leader + "dc", "cmd-edit")
 config.bind(leader + "df", "devtools-focus")
 config.bind(leader + "dp", "screenshot " + ss_dir + "qute-" + timestamp + ".png")
+config.bind(
+    leader + "dy",
+    "screenshot --force /tmp/qute-clipboard.png"
+    " ;; spawn --userscript copy-png-to-clipboard /tmp/qute-clipboard.png"
+    " ;; message-info 'Screenshot copied to clipboard'",
+)
+config.bind(
+    leader + "dY",
+    "spawn --userscript fullpage-to-clipboard"
+    " ;; message-info 'Full-page capture started'",
+)
 config.bind(leader + "ds", "view-source --edit")
 config.bind(leader + "dz", "view-source")
 
