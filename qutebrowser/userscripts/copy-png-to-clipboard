@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 /path/to/image" >&2
+  exit 2
+fi
+
+file="$1"
+
+# Many apps paste more faithfully from TIFF.
+# Convert to a temporary TIFF (lossless) and set that on the clipboard.
+
+tmp_dir="$(/usr/bin/mktemp -d /tmp/qute-clipboard-XXXXXX)"
+tmp_tiff="$tmp_dir/image.tiff"
+cleanup() {
+  /bin/rm -rf "$tmp_dir"
+}
+trap cleanup EXIT
+
+/usr/bin/sips -s format tiff "$file" --out "$tmp_tiff" >/dev/null
+
+# Use argv to avoid quoting issues.
+/usr/bin/osascript \
+  -e 'on run argv' \
+  -e 'set f to POSIX file (item 1 of argv)' \
+  -e 'set tiff_data to read f as «class TIFF»' \
+  -e 'set the clipboard to tiff_data' \
+  -e 'end run' \
+  "$tmp_tiff"

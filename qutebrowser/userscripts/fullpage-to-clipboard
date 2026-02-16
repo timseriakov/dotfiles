@@ -1,0 +1,91 @@
+#!/bin/bash
+set -euo pipefail
+
+# Ensure proper PATH for Homebrew and system binaries
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+send_message() {
+  local level="$1" # info, warning, error
+  local message="$2"
+  local escaped
+  escaped=$(printf '%s' "$message" | sed 's/\\/\\\\/g; s/"/\\"/g')
+  printf 'message-%s "%s"\n' "$level" "$escaped" >>"$QUTE_FIFO"
+}
+
+die() {
+  send_message error "$*"
+  exit 1
+}
+
+if [[ -z "${QUTE_FIFO:-}" || ! -p "$QUTE_FIFO" ]]; then
+  echo "Error: Must be run as qutebrowser userscript (QUTE_FIFO not set)" >&2
+  exit 1
+fi
+
+if ! command -v pdftoppm >/dev/null; then
+  die "pdftoppm not found (install poppler)"
+fi
+if ! command -v magick >/dev/null; then
+  die "ImageMagick not found (install imagemagick)"
+fi
+
+workdir="$(mktemp -d /tmp/qute-fullpage-XXXXXX)"
+pdf="$workdir/page.pdf"
+prefix="$workdir/page"
+out_png="$workdir/fullpage.png"
+
+cleanup() {
+  rm -rf "$workdir"
+}
+trap cleanup EXIT
+
+send_message info "Full page capture: rendering PDF…"
+printf 'print --pdf %s\n' "$pdf" >>"$QUTE_FIFO"
+
+# Wait until the PDF exists and its size stabilizes.
+prev_size="-1"
+stable=0
+for _ in $(seq 1 200); do
+  if [[ -f "$pdf" ]]; then
+    size=$(stat -f%z "$pdf" 2>/dev/null || stat -c%s "$pdf" 2>/dev/null || echo 0)
+    if [[ "$size" -gt 0 && "$size" -eq "$prev_size" ]]; then
+      stable=$((stable + 1))
+    else
+      stable=0
+    fi
+    prev_size="$size"
+
+    if [[ "$stable" -ge 3 ]]; then
+      break
+    fi
+  fi
+  sleep 0.05
+done
+
+if [[ ! -f "$pdf" || "$stable" -lt 3 ]]; then
+  die "Timed out waiting for PDF from qutebrowser"
+fi
+
+# Render all pages to PNGs at decent DPI, then stitch vertically.
+# Higher DPI = sharper output, but more memory.
+DPI="${QUTE_FULLPAGE_DPI:-220}"
+
+send_message info "Full page capture: rasterizing (${DPI} DPI)…"
+pdftoppm -png -r "$DPI" "$pdf" "$prefix" >/dev/null
+
+shopt -s nullglob
+pages=("$prefix"-*.png)
+if [[ ${#pages[@]} -eq 0 ]]; then
+  die "No PNG pages rendered from PDF"
+fi
+
+send_message info "Full page capture: stitching ${#pages[@]} page(s)…"
+
+magick convert "${pages[@]}" -append "$out_png"
+
+# Copy to clipboard (TIFF-backed clipboard for better fidelity).
+# Use absolute path to sibling script for reliability.
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$script_dir/copy-png-to-clipboard" "$out_png"
+
+send_message info "Full page screenshot copied to clipboard"
