@@ -1,5 +1,6 @@
 [env]
-TMUX_AUTO = "0"
+TMUX_AUTO = "1"
+TMUX_AUTO_SESSION = "alacritty"
 
 [terminal.shell]
 program = "/usr/local/bin/fish"

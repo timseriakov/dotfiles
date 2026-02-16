@@ -1,18 +1,22 @@
 # Start tmux automatically only when allowed
 if status is-interactive
-    # Skip if already inside tmux or explicitly disabled
     if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM
-        # Use bash for the countdown to avoid fish 'read' issues during startup (status 2)
+        if test "$TMUX_AUTO_SESSION" = "alacritty"
+            if not tmux has-session -t alacritty 2>/dev/null
+                tmux new-session -d -s alacritty
+            end
+
+            tmux set-option -t alacritty status off
+            exec tmux attach-session -t alacritty
+        end
+
         if /bin/bash -c 'read -t 3 -n 1 -p "Starting tmux in 3 seconds... (n to skip) " key; echo; if [[ "$key" == "n" || "$key" == "N" ]]; then exit 1; fi'
-            # Bash returned 0 (timeout or other key) -> Start tmux
-            # Try to attach to the most recent session, or create a new one if none exist
             if tmux has-session 2>/dev/null
                 exec tmux attach
             else
                 exec tmux
             end
         else
-            # Bash returned 1 (user pressed n) -> Skip tmux
             echo "Tmux launch aborted."
         end
     end
