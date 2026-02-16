@@ -50,15 +50,17 @@ fish_add_path -Ua ~/oracle/instantclient_23_3
 fish_add_path -Ua ~/Qt/6.7.0-custom/bin
 fish_add_path -Ua /opt/homebrew/opt/qt@5/bin
 
+# Homebrew (give brewed tools precedence over system ones, e.g. `less`)
+fish_add_path -Ua /opt/homebrew/bin
+
 # MacPorts (if installed)
 if test -d /opt/local/bin
     fish_add_path -Ua /opt/local/bin
     fish_add_path -Ua /opt/local/sbin
 end
 
-# Note: System paths (/usr/bin, /bin, /usr/sbin, /sbin) and Homebrew paths
-# (/opt/homebrew/bin, /opt/homebrew/sbin) are already in the default system PATH
-# Don't add them to fish_user_paths to avoid duplicates
+# Note: System paths (/usr/bin, /bin, /usr/sbin, /sbin) are already in the default PATH
+# and shouldn't be added to fish_user_paths.
 
 # IDEs
 fish_add_path -Ua /Applications/GoLand.app/Contents/MacOS

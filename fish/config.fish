@@ -33,6 +33,7 @@ end
 status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536
 
 # Note: Antigravity PATH managed in conf.d/10-path.fish
+# Note: Homebrew PATH managed in conf.d/10-path.fish
 
 
 # Mole shell completion (load only if mole is installed)
