@@ -26,15 +26,17 @@
 
 ## Developer Bindings
 
-| Shortcut                        | Action                   |
-| ------------------------------- | ------------------------ |
-| <kbd>Leader</kbd> <kbd>dd</kbd> | devtools                 |
-| <kbd>Leader</kbd> <kbd>de</kbd> | edit-text                |
-| <kbd>Leader</kbd> <kbd>dc</kbd> | cmd-edit                 |
-| <kbd>Leader</kbd> <kbd>df</kbd> | devtools-focus           |
-| <kbd>Leader</kbd> <kbd>dp</kbd> | screenshot (timestamped) |
-| <kbd>Leader</kbd> <kbd>ds</kbd> | view-source --edit       |
-| <kbd>Leader</kbd> <kbd>dz</kbd> | view-source              |
+| Shortcut                        | Action                             |
+| ------------------------------- | ---------------------------------- |
+| <kbd>Leader</kbd> <kbd>dd</kbd> | devtools                           |
+| <kbd>Leader</kbd> <kbd>de</kbd> | edit-text                          |
+| <kbd>Leader</kbd> <kbd>dc</kbd> | cmd-edit                           |
+| <kbd>Leader</kbd> <kbd>df</kbd> | devtools-focus                     |
+| <kbd>Leader</kbd> <kbd>dp</kbd> | screenshot (timestamped)           |
+| <kbd>Leader</kbd> <kbd>dy</kbd> | screenshot to clipboard (viewport) |
+| <kbd>Leader</kbd> <kbd>dY</kbd> | full page capture to clipboard     |
+| <kbd>Leader</kbd> <kbd>ds</kbd> | view-source --edit                 |
+| <kbd>Leader</kbd> <kbd>dz</kbd> | view-source                        |
 
 ## Find Bindings
 
@@ -81,13 +83,14 @@
 
 ## Mode Bindings
 
-| Shortcut          | Action                          |
-| ----------------- | ------------------------------- |
-| <kbd>i</kbd>      | mode-enter insert               |
-| <kbd>a</kbd>      | mode-enter insert               |
-| <kbd>v</kbd>      | mode-enter caret                |
-| <kbd>Ctrl+v</kbd> | mode-enter passthrough (toggle) |
-| <kbd>Ctrl+a</kbd> | mode-enter passthrough (toggle) |
+| Shortcut                        | Action                                  |
+| ------------------------------- | --------------------------------------- |
+| <kbd>i</kbd>                    | mode-enter insert                       |
+| <kbd>a</kbd>                    | mode-enter insert                       |
+| <kbd>Leader</kbd> <kbd>aa</kbd> | mode-enter insert (keep English layout) |
+| <kbd>v</kbd>                    | mode-enter caret                        |
+| <kbd>Ctrl+v</kbd>               | mode-enter passthrough (toggle)         |
+| <kbd>Ctrl+a</kbd>               | mode-enter passthrough (toggle)         |
 
 ## Quit Bindings
 
@@ -106,26 +109,26 @@
 | ------------ | -------- |
 | <kbd>w</kbd> | tab-prev |
 | <kbd>r</kbd> | tab-next |
-| <kbd>K</kbd> | tab-prev |
-| <kbd>J</kbd> | tab-next |
+| <kbd>K</kbd> | tab-next |
+| <kbd>J</kbd> | tab-prev |
 | <kbd>q</kbd> | undo     |
 
 ## Tabs Bindings
 
-| Shortcut                        | Action                                                  |
-| ------------------------------- | ------------------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>ta</kbd> | bookmark-add                                            |
-| <kbd>Leader</kbd> <kbd>tb</kbd> | bookmark-list                                           |
-| <kbd>Leader</kbd> <kbd>tc</kbd> | tab-clone                                               |
-| <kbd>Leader</kbd> <kbd>td</kbd> | tab-clone -w                                            |
-| <kbd>Leader</kbd> <kbd>tn</kbd> | tab-give (move tab to new window)                       |
-| <kbd>Leader</kbd> <kbd>tw</kbd> | cmd-set-text -s :tab-take (move tab to selected window) |
-| <kbd>Leader</kbd> <kbd>th</kbd> | history                                                 |
-| <kbd>Leader</kbd> <kbd>tm</kbd> | cmd-set-text -s :tab-move                               |
-| <kbd>Leader</kbd> <kbd>tp</kbd> | tab-pin                                                 |
-| <kbd>Leader</kbd> <kbd>tt</kbd> | cmd-set-text -s :tab-select                             |
-| <kbd>Leader</kbd> <kbd>tx</kbd> | spawn --detach /usr/bin/open -a 'Helium' {url}          |
-| <kbd>Leader</kbd> <kbd>ti</kbd> | open -p (new private window)                            |
+| Shortcut                        | Action                                         |
+| ------------------------------- | ---------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>ts</kbd> | bookmark-add                                   |
+| <kbd>Leader</kbd> <kbd>tq</kbd> | bookmark-list                                  |
+| <kbd>Leader</kbd> <kbd>tc</kbd> | tab-clone                                      |
+| <kbd>Leader</kbd> <kbd>td</kbd> | tab-clone -w                                   |
+| <kbd>Leader</kbd> <kbd>tn</kbd> | tab-give (move tab to new window)              |
+| <kbd>Leader</kbd> <kbd>tw</kbd> | cmd-set-text -s :tab-take (window picker)      |
+| <kbd>Leader</kbd> <kbd>th</kbd> | history                                        |
+| <kbd>Leader</kbd> <kbd>tm</kbd> | cmd-set-text -s :tab-move                      |
+| <kbd>Leader</kbd> <kbd>tp</kbd> | tab-pin                                        |
+| <kbd>Leader</kbd> <kbd>tt</kbd> | tab-pin                                        |
+| <kbd>Leader</kbd> <kbd>tx</kbd> | spawn --detach /usr/bin/open -a 'Helium' {url} |
+| <kbd>Leader</kbd> <kbd>ti</kbd> | open -p (new private window)                   |
 
 ## UI Bindings
 
@@ -146,13 +149,12 @@
 
 ## Media & External Apps
 
-| Shortcut                        | Action                            |
-| ------------------------------- | --------------------------------- |
-| <kbd>Leader</kbd> <kbd>m</kbd>  | spawn /opt/homebrew/bin/mpv {url} |
-| <kbd>Leader</kbd> <kbd>ad</kbd> | download {url}                    |
-| <kbd>Leader</kbd> <kbd>aa</kbd> | download-cancel                   |
-| <kbd>Leader</kbd> <kbd>b</kbd>  | spawn -u braindrop                |
-| <kbd>Leader</kbd> <kbd>r</kbd>  | spawn -u raindrop {url} {title}   |
+| Shortcut                       | Action                            |
+| ------------------------------ | --------------------------------- |
+| <kbd>Leader</kbd> <kbd>m</kbd> | spawn /opt/homebrew/bin/mpv {url} |
+| <kbd>Leader</kbd> <kbd>i</kbd> | spawn open -a IINA {url}          |
+| <kbd>Leader</kbd> <kbd>b</kbd> | spawn -u braindrop                |
+| <kbd>Leader</kbd> <kbd>r</kbd> | spawn -u raindrop {url} {title}   |
 
 ## Password Management (Login)
 
@@ -168,16 +170,18 @@
 
 ## History & Sessions
 
-| Shortcut                        | Action                                          |
-| ------------------------------- | ----------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>h</kbd>  | spawn -u fzfhistory-userscript                  |
-| <kbd>Leader</kbd> <kbd>H</kbd>  | spawn -u fzfhistory-userscript closed-tabs      |
-| <kbd>Leader</kbd> <kbd>ss</kbd> | cmd-set-text -s :session-save                   |
-| <kbd>Leader</kbd> <kbd>sl</kbd> | cmd-set-text -s :session-load                   |
-| <kbd>Leader</kbd> <kbd>sd</kbd> | cmd-set-text -s :session-delete                 |
-| <kbd>Leader</kbd> <kbd>sr</kbd> | cmd-set-text -s :session-rename                 |
-| <kbd>Leader</kbd> <kbd>sc</kbd> | session-clean                                   |
-| <kbd>Leader</kbd> <kbd>sz</kbd> | config-cycle -p session.lazy_restore true false |
+| Shortcut                        | Action                                             |
+| ------------------------------- | -------------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>h</kbd>  | spawn -u fzfhistory-userscript                     |
+| <kbd>Leader</kbd> <kbd>H</kbd>  | spawn -u fzfhistory-userscript closed-tabs         |
+| <kbd>Leader</kbd> <kbd>ss</kbd> | cmd-set-text -s :session-save                      |
+| <kbd>Leader</kbd> <kbd>sw</kbd> | cmd-set-text -s :session-save --only-active-window |
+| <kbd>Leader</kbd> <kbd>sl</kbd> | spawn --userscript session-add                     |
+| <kbd>Leader</kbd> <kbd>sL</kbd> | cmd-set-text -s :spawn --userscript session-add    |
+| <kbd>Leader</kbd> <kbd>sd</kbd> | cmd-set-text -s :session-delete                    |
+| <kbd>Leader</kbd> <kbd>sr</kbd> | cmd-set-text -s :session-rename                    |
+| <kbd>Leader</kbd> <kbd>sc</kbd> | session-clean                                      |
+| <kbd>Leader</kbd> <kbd>sz</kbd> | config-cycle -p session.lazy_restore true false    |
 
 ## Translation
 
@@ -185,15 +189,18 @@
 | ------------------------------- | ------------------------------------- |
 | <kbd>Leader</kbd> <kbd>tR</kbd> | tooltip translation (F2 key dispatch) |
 | <kbd>Leader</kbd> <kbd>tr</kbd> | full page translation toggle          |
+| <kbd>Leader</kbd> <kbd>ty</kbd> | yandex translation toggle             |
 
 ## ActivityWatch
 
-| Shortcut                        | Action                                                       |
-| ------------------------------- | ------------------------------------------------------------ |
-| <kbd>Leader</kbd> <kbd>aw</kbd> | spawn -u aw-heartbeat-bridge start                           |
-| <kbd>Leader</kbd> <kbd>aW</kbd> | spawn -u aw-heartbeat-bridge stop                            |
-| <kbd>Leader</kbd> <kbd>as</kbd> | spawn -u aw-heartbeat-bridge status                          |
-| <kbd>Leader</kbd> <kbd>al</kbd> | spawn --detach kitty -e tail -f /tmp/aw-heartbeat-bridge.log |
+| Shortcut                        | Action                                            |
+| ------------------------------- | ------------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>aw</kbd> | spawn -u aw-heartbeat-bridge start                |
+| <kbd>Leader</kbd> <kbd>aW</kbd> | spawn -u aw-heartbeat-bridge stop                 |
+| <kbd>Leader</kbd> <kbd>as</kbd> | spawn -u aw-heartbeat-bridge status               |
+| <kbd>Leader</kbd> <kbd>ad</kbd> | disable AW tracking (per-tab flag; reload needed) |
+| <kbd>Leader</kbd> <kbd>ae</kbd> | enable AW tracking (per-tab flag; reload needed)  |
+| <kbd>Leader</kbd> <kbd>al</kbd> | tail AW log in Alacritty popup                    |
 
 ## Zoom Bindings
 
