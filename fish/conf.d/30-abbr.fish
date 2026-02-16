@@ -214,6 +214,7 @@ abbr -a ports snitch
 # Mole
 abbr -a mu 'mole uninstall'
 abbr -a omoc '~/.config/opencode/omoc-switch'
+abbr -a take tmux-take-alacritty
 
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -movflags +faststart \
