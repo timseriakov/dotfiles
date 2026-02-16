@@ -115,12 +115,12 @@ Warp-grep is a semantic search subagent that takes a search query and finds rele
 
 ## LikeC4 Architecture Workflow
 
-When a task is about architecture diagrams, C4, system landscape, dependency maps, or "visualize architecture from code", agents MUST follow `opencode/LIKEC4_AGENT_PLAYBOOK.md`.
+When a task is about architecture diagrams, C4, system landscape, dependency maps, or "visualize architecture from code", agents MUST use `codex/skills/likec4-architecture/SKILL.md`.
 
 Required behavior:
 
 - Build or update architecture using LikeC4 DSL (`*.c4` / `*.likec4`)
-- If model is missing, bootstrap from `/Users/tim/dev/dotfiles/opencode/templates/likec4-starter/docs/architecture/model.c4`
+- If model is missing, bootstrap from `codex/skills/likec4-architecture/assets/likec4-starter/docs/architecture/model.c4` (or run `codex/skills/likec4-architecture/scripts/bootstrap_likec4_starter.sh`)
 - Validate with CLI before finishing (`npx likec4 validate`)
 - Provide a runnable preview command (`npx likec4 start`)
 - For shareable outputs, build static site (`npx likec4 build -o ./dist`)

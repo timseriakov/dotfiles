@@ -1,0 +1,4 @@
+interface:
+  display_name: "LikeC4 Architecture"
+  short_description: "Model software architecture with LikeC4 workflows"
+  default_prompt: "Use $likec4-architecture to create or update LikeC4 architecture models, validate, and prepare export commands."

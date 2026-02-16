@@ -180,7 +180,7 @@
     "architecture": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.15,
-      "prompt_append": "For architecture tasks, follow /Users/tim/dev/dotfiles/opencode/LIKEC4_AGENT_PLAYBOOK.md. Prefer LikeC4 DSL changes, then validate with `npx likec4 validate`, and return preview/build commands.",
+      "prompt_append": "For architecture tasks, use $likec4-architecture and follow /Users/tim/dev/dotfiles/codex/skills/likec4-architecture/SKILL.md. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
     },
     "quick": {
       "model": "zai-coding-plan/glm-4.7-flash",
