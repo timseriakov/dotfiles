@@ -33,3 +33,6 @@ c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
 
 c.input.mode_override = None
+
+# Disable Yes/No prompt for JS clipboard access requests.
+c.content.javascript.clipboard = "access"
