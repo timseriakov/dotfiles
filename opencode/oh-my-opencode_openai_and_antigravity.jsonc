@@ -69,7 +69,7 @@
       "google": 10,
     },
     "modelConcurrency": {
-      "anthropic/claude-opus-4-5": 2,
+      "anthropic/claude-opus-4-6": 2,
       "google/gemini-3-flash": 10,
     },
   },

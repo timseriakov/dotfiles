@@ -2,77 +2,77 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "google/antigravity-gemini-3-pro-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking-high",
       "temperature": 0.1,
-      "description": "Главный оркестратор. Планирует, делегирует и управляет задачами.",
+      "description": "Главный оркестратор. Планирует, делегирует и управляет задачами."
     },
     "atlas": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "oracle": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.1,
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "temperature": 0.1
     },
     "librarian": {
       "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.2,
+      "temperature": 0.2
     },
     "explore": {
       "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "frontend-ui-ux-engineer": {
       "model": "google/antigravity-claude-sonnet-4-6-thinking-high",
-      "temperature": 0.4,
+      "temperature": 0.4
     },
     "document-writer": {
       "model": "google/antigravity-claude-sonnet-4-6-thinking-medium",
-      "temperature": 0.3,
+      "temperature": 0.3
     },
     "multimodal-looker": {
       "model": "google/antigravity-gemini-3-pro-low",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "build": {
       "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.05,
+      "temperature": 0.05
     },
     "plan": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.2,
+      "temperature": 0.2
     },
     "OpenCode-Builder": {
       "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.05,
+      "temperature": 0.05
     },
     "prometheus": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.2,
+      "model": "google/antigravity-claude-opus-4-6-thinking-high",
+      "temperature": 0.2
     },
     "metis": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.3,
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "temperature": 0.3
     },
     "momus": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.1,
-    },
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "temperature": 0.1
+    }
   },
   "sisyphus_agent": {
     "disabled": false,
     "default_builder_enabled": false,
     "planner_enabled": true,
-    "replace_plan": true,
+    "replace_plan": true
   },
   "ralph_loop": {
     "enabled": true,
-    "default_max_iterations": 100,
+    "default_max_iterations": 100
   },
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
-      "google": 5,
+      "google": 5
     },
     "modelConcurrency": {
       "google/antigravity-claude-opus-4-6-thinking-high": 2,
@@ -81,29 +81,24 @@
       "google/antigravity-claude-sonnet-4-6-thinking-medium": 5,
       "google/antigravity-gemini-3-pro-high": 3,
       "google/antigravity-gemini-3-flash": 8,
-      "google/antigravity-gemini-3-pro-low": 5,
-    },
+      "google/antigravity-gemini-3-pro-low": 5
+    }
   },
   "categories": {
     "visual": {
       "model": "google/antigravity-claude-sonnet-4-6-thinking-high",
       "temperature": 0.7,
-      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind."
     },
     "business-logic": {
-      "model": "google/antigravity-gemini-3-pro-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
       "temperature": 0.1,
-      "prompt_append": "Focus on robustness, error handling, and type safety.",
-    },
-    "architecture": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.15,
-      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+      "prompt_append": "Focus on robustness, error handling, and type safety."
     },
     "quick": {
       "model": "google/antigravity-gemini-3-flash",
-      "temperature": 0.3,
-    },
+      "temperature": 0.3
+    }
   },
   "claude_code": {
     "mcp": false,
@@ -112,11 +107,11 @@
     "agents": true,
     "hooks": false,
     "plugins": true,
-    "plugins_override": {},
+    "plugins_override": {}
   },
   "git_master": {
     "commit_footer": false,
-    "include_co_authored_by": false,
+    "include_co_authored_by": false
   },
   "experimental": {
     "auto_resume": true,
@@ -128,14 +123,16 @@
       "notification": "detailed",
       "turn_protection": {
         "enabled": true,
-        "turns": 3,
-      },
-    },
+        "turns": 3
+      }
+    }
   },
   "disabled_mcps": [],
-  "disabled_skills": ["playwright"],
+  "disabled_skills": [
+    "playwright"
+  ],
   "disabled_agents": [],
   "disabled_hooks": [],
   "google_auth": false,
-  "lsp": {},
+  "lsp": {}
 }

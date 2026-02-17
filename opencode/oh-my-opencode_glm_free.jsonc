@@ -7,7 +7,7 @@
   // --------------------------------------------------------------------------------------
   "agents": {
     // Sisyphus: Главный оркестратор.
-    // Рекомендуется: claude-opus-4-5 (лучший), gpt-5.2 (альтернатива)
+    // Рекомендуется: claude-opus-4-6 (лучший), gpt-5.2 (альтернатива)
     "Sisyphus": {
       "model": "opencode/glm-4.7-free",
       "temperature": 0.1,
@@ -187,10 +187,10 @@
   "claude_code": {
     "mcp": false,
     "commands": false,
-    "skills": false,
-    "agents": false,
+    "skills": true,
+    "agents": true,
     "hooks": false,
-    "plugins": false,
+    "plugins": true,
     "plugins_override": {},
   },
 

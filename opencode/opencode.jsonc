@@ -16,15 +16,15 @@
   ],
 
   "model": "openai/gpt-5.2",
-  // "model": "google/antigravity-claude-sonnet-4-5-thinking-high",
+  // "model": "google/antigravity-claude-sonnet-4-6-thinking-high",
 
-  // google/antigravity-claude-opus-4-5-thinking-high
-  // google/antigravity-claude-opus-4-5-thinking-low
-  // google/antigravity-claude-opus-4-5-thinking-medium
-  // google/antigravity-claude-sonnet-4-5
-  // google/antigravity-claude-sonnet-4-5-thinking-high
-  // google/antigravity-claude-sonnet-4-5-thinking-low
-  // google/antigravity-claude-sonnet-4-5-thinking-medium
+  // google/antigravity-claude-opus-4-6-thinking-high
+  // google/antigravity-claude-opus-4-6-thinking-low
+  // google/antigravity-claude-opus-4-6-thinking-medium
+  // google/antigravity-claude-sonnet-4-6
+  // google/antigravity-claude-sonnet-4-6-thinking-high
+  // google/antigravity-claude-sonnet-4-6-thinking-low
+  // google/antigravity-claude-sonnet-4-6-thinking-medium
   // google/antigravity-gemini-3-flash
   // google/antigravity-gemini-3-pro-high
   // google/antigravity-gemini-3-pro-low
@@ -210,7 +210,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-sonnet-4-5": {
+        "antigravity-claude-sonnet-4-6": {
           "name": "Claude Sonnet 4.5 (Antigravity)",
           "limit": {
             "context": 200000,
@@ -221,7 +221,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-sonnet-4-5-thinking-low": {
+        "antigravity-claude-sonnet-4-6-thinking-low": {
           "name": "Claude Sonnet 4.5 Thinking Low (Antigravity)",
           "limit": {
             "context": 200000,
@@ -232,7 +232,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-sonnet-4-5-thinking-medium": {
+        "antigravity-claude-sonnet-4-6-thinking-medium": {
           "name": "Claude Sonnet 4.5 Thinking Medium (Antigravity)",
           "limit": {
             "context": 200000,
@@ -243,7 +243,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-sonnet-4-5-thinking-high": {
+        "antigravity-claude-sonnet-4-6-thinking-high": {
           "name": "Claude Sonnet 4.5 Thinking High (Antigravity)",
           "limit": {
             "context": 200000,
@@ -254,7 +254,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-opus-4-5-thinking-low": {
+        "antigravity-claude-opus-4-6-thinking-low": {
           "name": "Claude Opus 4.5 Thinking Low (Antigravity)",
           "limit": {
             "context": 200000,
@@ -265,7 +265,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-opus-4-5-thinking-medium": {
+        "antigravity-claude-opus-4-6-thinking-medium": {
           "name": "Claude Opus 4.5 Thinking Medium (Antigravity)",
           "limit": {
             "context": 200000,
@@ -276,7 +276,7 @@
             "output": ["text"],
           },
         },
-        "antigravity-claude-opus-4-5-thinking-high": {
+        "antigravity-claude-opus-4-6-thinking-high": {
           "name": "Claude Opus 4.5 Thinking High (Antigravity)",
           "limit": {
             "context": 200000,
@@ -287,7 +287,7 @@
             "output": ["text"],
           },
         },
-        "claude-sonnet-4-5": {
+        "claude-sonnet-4-6": {
           "name": "Claude Sonnet 4.5 (Fallback)",
           "limit": {
             "context": 200000,

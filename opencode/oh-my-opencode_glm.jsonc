@@ -7,7 +7,7 @@
   // --------------------------------------------------------------------------------------
   "agents": {
     // Sisyphus: Главный оркестратор.
-    // Рекомендуется: claude-opus-4-5 (лучший), gpt-5.2 (альтернатива)
+    // Рекомендуется: claude-opus-4-6 (лучший), gpt-5.2 (альтернатива)
     "Sisyphus": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1,
@@ -180,7 +180,7 @@
     "architecture": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.15,
-      "prompt_append": "For architecture tasks, use $likec4-architecture and follow /Users/tim/dev/dotfiles/.agents/skills/likec4-architecture/SKILL.md. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
     },
     "quick": {
       "model": "zai-coding-plan/glm-4.7-flash",
@@ -194,10 +194,10 @@
   "claude_code": {
     "mcp": false,
     "commands": false,
-    "skills": false,
-    "agents": false,
+    "skills": true,
+    "agents": true,
     "hooks": false,
-    "plugins": false,
+    "plugins": true,
     "plugins_override": {},
   },
 

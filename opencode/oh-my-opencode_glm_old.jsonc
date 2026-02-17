@@ -28,7 +28,7 @@
   "claude_code": {
     "mcp": false,
     "commands": false,
-    "skills": false,
+    "skills": true,
     "agents": true,
     "hooks": true,
   },
