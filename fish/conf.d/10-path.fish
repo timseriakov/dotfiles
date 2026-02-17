@@ -69,3 +69,5 @@ fish_add_path -Ua /Applications/GoLand.app/Contents/MacOS
 set -gx ZEROBREW_ROOT $HOME/.zerobrew
 set -gx ZEROBREW_PREFIX $HOME/.zerobrew
 fish_add_path -Ua $HOME/.zerobrew/bin
+
+true

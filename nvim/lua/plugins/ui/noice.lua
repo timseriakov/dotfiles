@@ -1,6 +1,14 @@
 return {
   "folke/noice.nvim",
+  keys = {
+    { "<leader>n", function() require("noice").cmd("history") end, desc = "Noice History" },
+  },
   opts = {
+    commands = {
+      history = {
+        view = "popup",
+      },
+    },
     views = {
       mini = {
         win_options = {

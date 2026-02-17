@@ -32,6 +32,28 @@ local function toggle_float_term(cmd)
     :toggle()
 end
 
+local function ensure_likec4_lsp(bufnr)
+  if vim.fn.executable("likec4-language-server") ~= 1 then
+    return
+  end
+
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+    if client.name == "likec4" then
+      return
+    end
+  end
+
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  local startpath = (bufname ~= "" and bufname) or vim.loop.cwd()
+  local root_dir = vim.fs.root(startpath, { "likec4.config.json", ".git" }) or vim.loop.cwd()
+
+  vim.lsp.start({
+    name = "likec4",
+    cmd = { "likec4-language-server", "--stdio" },
+    root_dir = root_dir,
+  })
+end
+
 return {
   {
     "likec4/likec4.nvim",
@@ -46,30 +68,8 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "likec4",
         callback = function(args)
-          if vim.fn.executable("likec4-language-server") ~= 1 then
-            return
-          end
-
-          local clients = vim.lsp.get_clients({ bufnr = args.buf })
-          for _, client in ipairs(clients) do
-            if client.name == "likec4" then
-              return
-            end
-          end
-
-          local bufname = vim.api.nvim_buf_get_name(args.buf)
-          local startpath = (bufname ~= "" and bufname) or vim.loop.cwd()
-          local root_dir = vim.fs.root(startpath, { "likec4.config.json", ".git" }) or vim.loop.cwd()
-
-          vim.lsp.start({
-            name = "likec4",
-            cmd = { "likec4-language-server", "--stdio" },
-            root_dir = root_dir,
-          })
+          ensure_likec4_lsp(args.buf)
         end,
-      })
-    end,
-  },
       })
     end,
   },
