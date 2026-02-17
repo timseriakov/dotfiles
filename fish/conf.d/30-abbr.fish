@@ -143,6 +143,9 @@ abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claud
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
 
+abbr -a qw qwen
+abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
+
 # z jumps
 abbr -a dev 'cd ~/dev'
 abbr -a zd 'z dot'

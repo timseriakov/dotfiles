@@ -1,6 +1,6 @@
 # Start tmux automatically only when allowed
 if status is-interactive
-    if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM
+    if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT
         if test "$TMUX_AUTO_SESSION" = "alacritty"
             if not tmux has-session -t alacritty 2>/dev/null
                 tmux new-session -d -s alacritty
@@ -57,10 +57,6 @@ end
 
 # Use Tailscale.app CLI (matches running daemon from the app)
 alias tailscale "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
