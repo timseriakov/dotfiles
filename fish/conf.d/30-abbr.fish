@@ -132,6 +132,7 @@ abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a oskills 'npx -y openskills'
+abbr -a os '~/.config/opencode/omoc-switch'
 
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
@@ -213,11 +214,10 @@ abbr -a va ekphos
 abbr -a kkll rip
 abbr -a ports snitch
 
-# Mole
 abbr -a mu 'mole uninstall'
-abbr -a omoc '~/.config/opencode/omoc-switch'
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
+abbr -a tk tmux-take-alacritty
 
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -movflags +faststart \
