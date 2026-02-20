@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.local.battery.maintenance</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-lc</string>
+    <string>exec "$HOME/.local/bin/battery-maintenance.sh"</string>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/tmp/battery-maintenance.out</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/battery-maintenance.err</string>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>0</integer>
+    <key>Hour</key>
+    <integer>4</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+</dict>
+</plist>
