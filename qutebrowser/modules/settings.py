@@ -32,6 +32,9 @@ c.downloads.location.suggestion = "both"
 c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
 
+# config.set("colors.webpage.darkmode.enabled", False, "http://localhost:*")
+# config.set("colors.webpage.darkmode.enabled", False, "http://127.0.0.1:*")
+
 c.input.mode_override = None
 
 # Disable Yes/No prompt for JS clipboard access requests.

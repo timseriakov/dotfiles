@@ -284,7 +284,7 @@ config.bind(
     "<Cmd-т>", en(f"open -w {homepage}")
 )  # New window (Cmd+N, Russian layout) with EN layout
 config.bind(
-    leader + "tx",
+    leader + "tg",
     "spawn --detach /usr/bin/open -a 'Helium' {url}",
 )  # Open current URL in Helium
 config.bind(leader + "ti", "open -p")  # Open new private window

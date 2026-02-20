@@ -99,8 +99,8 @@ abbr -a mpr '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
-abbr -a cc-update 'npm install -g @anthropic-ai/claude-code'
-abbr -a ccline-update 'npm update -g @cometix/ccline'
+abbr -a ccup 'npm install -g @anthropic-ai/claude-code'
+abbr -a ccline-up 'npm update -g @cometix/ccline'
 abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
 abbr -a cc-history 'npx -y cchistory@latest'
 abbr -a cc-logviewer 'cclogviewer -input'
@@ -131,9 +131,7 @@ abbr -a o-manager 'bunx opencode-manager'
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
-
-# OpenSkills
-abbr -a oskl 'npx openskills'
+abbr -a oskills 'npx -y openskills'
 
 # Other AI tools
 abbr -a aid 'aider -c $HOME/.aider.conf.yml'
@@ -142,6 +140,7 @@ abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
+abbr -a add-mcp 'npx -y add-mcp'
 
 abbr -a qw qwen
 abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
