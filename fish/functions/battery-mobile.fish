@@ -1,0 +1,1 @@
+/Users/tim/dev/dotfiles/battery/fish/battery-mobile.fish
