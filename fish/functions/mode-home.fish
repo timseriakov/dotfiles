@@ -1,0 +1,1 @@
+/Users/tim/dev/dotfiles/battery/fish/mode-home.fish

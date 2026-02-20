@@ -105,11 +105,15 @@ main() {
   ensure_symlink "$REPO/bin/battery-mode.sh" "$HOME/.local/bin/battery-mode.sh"
   ensure_symlink "$REPO/bin/battery-auto-return.sh" "$HOME/.local/bin/battery-auto-return.sh"
   ensure_symlink "$REPO/bin/battery-maintenance.sh" "$HOME/.local/bin/battery-maintenance.sh"
+  ensure_symlink "$REPO/bin/pmset-server.sh" "$HOME/.local/bin/pmset-server.sh"
+  ensure_symlink "$REPO/bin/pmset-mobile.sh" "$HOME/.local/bin/pmset-mobile.sh"
   ensure_symlink "$REPO/launchd/com.local.battery.servermode.plist" "$HOME/Library/LaunchAgents/com.local.battery.servermode.plist"
   ensure_symlink "$REPO/launchd/com.local.battery.autoreturn.plist" "$HOME/Library/LaunchAgents/com.local.battery.autoreturn.plist"
   ensure_symlink "$REPO/launchd/com.local.battery.maintenance.plist" "$HOME/Library/LaunchAgents/com.local.battery.maintenance.plist"
   ensure_symlink "$REPO/fish/battery-mobile.fish" "$HOME/.config/fish/functions/battery-mobile.fish"
   ensure_symlink "$REPO/fish/battery-server.fish" "$HOME/.config/fish/functions/battery-server.fish"
+  ensure_symlink "$REPO/fish/mode-home.fish" "$HOME/.config/fish/functions/mode-home.fish"
+  ensure_symlink "$REPO/fish/mode-away.fish" "$HOME/.config/fish/functions/mode-away.fish"
   ensure_symlink "$REPO/config" "$HOME/.config/battery-automation"
 
   for script in "$REPO"/bin/*.sh; do
@@ -135,7 +139,7 @@ main() {
     echo " - $label"
   done
 
-  echo "Fish commands available: battery-mobile, battery-server"
+  echo "Fish commands available: battery-mobile, battery-server, mode-home, mode-away"
 }
 
 main "$@"

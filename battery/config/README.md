@@ -1,63 +1,94 @@
-# Battery Automation Configuration
+# Автоматизация батареи (macOS)
 
-This directory contains the configuration and documentation for the macOS battery automation system.
+Этот каталог содержит конфиг и документацию для управления батареей Mac через `battery` CLI.
 
-## System Overview
+## Что делает система
 
-The system automates battery health management using the `battery` CLI (v1.3.2) as the backend. It manages charging thresholds based on the current operational mode.
+- Держит батарею в "домашнем" режиме на 75% (`server`).
+- Переключает в "мобильный" режим на заданное время (`mobile`).
+- Автоматически возвращает `mobile -> server` по таймеру (и опционально по домашнему Wi-Fi SSID).
+- Раз в неделю выполняет обслуживание батареи (разряд до 60%, потом обратно в 75%).
+- Позволяет одной командой переключать `pmset` профиль "дом/вне дома".
 
-### Operational Behaviors
-
-- **Server Mode**: Maintains the battery at 75% charge level (`battery maintain 75`) to maximize longevity while connected to power indefinitely.
-- **Mobile Mode**: Stops the maintenance cap (`battery maintain stop`) to allow standard macOS charging behavior. Full charge to 100% is opt-in via `battery charge 100`.
-- **Auto-Return**: A KeepAlive supervisor loop (running every 120 seconds) that automatically returns the system from Mobile to Server mode based on a timer or home WiFi SSID detection.
-- **Weekly Maintenance**: Every Sunday at 04:00, the system discharges the battery to 60% (`battery discharge 60`) and then restores Server Mode to maintain chemical health.
-
-### Important Constraints
-
-- **No Automatic Sleep Prevention**: The system does NOT automatically prevent system sleep.
-- **No Automatic pmset Changes**: The system does NOT apply any `pmset` changes automatically.
-- **Manual Opt-in for Full Charge**: Mobile mode defaults to stopping the maintenance cap; charging to 100% must be explicitly requested.
-
-## Log Locations
-
-Logs for the LaunchAgents are stored in the following locations:
-
-- **Server Mode Agent**:
-  - `/tmp/battery-servermode.out`
-  - `/tmp/battery-servermode.err`
-- **Auto-Return Agent**:
-  - `/tmp/battery-autoreturn.out`
-  - `/tmp/battery-autoreturn.err`
-- **Weekly Maintenance Agent**:
-  - `/tmp/battery-maintenance.out`
-  - `/tmp/battery-maintenance.err`
-
-## Recommended Power Management Settings
-
-For optimal automation performance, the following `pmset` configurations are recommended. These should be applied manually via Terminal; the automation system does not modify these settings automatically.
+## Быстрый старт
 
 ```bash
-sudo pmset -a sleep 0
-sudo pmset -a disksleep 0
-sudo pmset -a displaysleep 5
-sudo pmset -a standby 0
-sudo pmset -a autopoweroff 0
-sudo pmset -a powernap 1
-sudo pmset -a tcpkeepalive 1
-sudo pmset -a womp 1
+cd ~/dev/dotfiles/battery
+./install.sh
 ```
 
-## Caffeinate Usage
+После установки основные команды:
 
-The `caffeinate` utility can be used to prevent system sleep during critical tasks.
+- `mode-home`  
+  Включает "домашний" профиль: `pmset-server.sh` + `battery server`.
+- `mode-away [hours] [--charge]`  
+  Включает "мобильный" профиль: `pmset-mobile.sh` + `battery mobile ...`.
+- `battery-server`  
+  Только батарея: держать 75%.
+- `battery-mobile [hours] [--charge]`  
+  Только батарея: мобильный режим на `hours` часов (по умолчанию 6).
 
-Examples:
+## Что делает `--charge`
 
-- Prevent sleep while a command runs: `caffeinate -i <command>`
-- Prevent sleep for a specific duration (e.g., 1 hour): `caffeinate -u -t 3600`
-- Prevent sleep until a specific process ID exits: `caffeinate -w <pid>`
+Флаг `--charge` для `battery-mobile`/`mode-away` включает принудительный заряд до 100%.
 
-## Installation and Symlinks
+Примеры:
 
-The system components (launch agents, scripts, and configurations) are managed via symlinks. These links are created and managed by the `install.sh` script located in the repository root. All real files reside in `$HOME/dev/dotfiles/battery/`.
+- `battery-mobile 8 --charge`  
+  8 часов mobile + заряд до 100%.
+- `mode-away 8 --charge`  
+  То же самое, но ещё и с "мобильным" `pmset` профилем.
+
+Если `--charge` не указан, система просто снимает cap `75%` (`battery maintain stop`) и не форсирует заряд до 100%.
+
+## Рекомендуемый сценарий
+
+- Уходишь с ноутом:
+  - `mode-away` (или `mode-away 3`, `mode-away 8 --charge`)
+- Вернулся домой:
+  - `mode-home`
+
+## PMSET-профили
+
+- `~/.local/bin/pmset-server.sh`  
+  Сохраняет текущие настройки питания в `config/pmset.before-server.env`, затем включает профиль "не засыпать".
+- `~/.local/bin/pmset-mobile.sh`  
+  Восстанавливает настройки из `config/pmset.before-server.env`.
+
+Важно: `pmset-mobile.sh` сработает только если раньше запускался `pmset-server.sh` (чтобы был backup-файл).
+
+## Где смотреть логи
+
+- `/tmp/battery-servermode.out`
+- `/tmp/battery-servermode.err`
+- `/tmp/battery-autoreturn.out`
+- `/tmp/battery-autoreturn.err`
+- `/tmp/battery-maintenance.out`
+- `/tmp/battery-maintenance.err`
+
+Логи самого `battery`:
+
+- `~/.battery/battery.log`
+- `~/.battery/gui.log`
+
+## Диагностика
+
+Проверка текущего режима:
+
+```bash
+cat ~/dev/dotfiles/battery/config/state.env
+```
+
+Проверка текущих `pmset` значений:
+
+```bash
+pmset -g custom
+```
+
+Проверка launchd-агентов:
+
+```bash
+launchctl print "gui/$(id -u)/com.local.battery.servermode" | head
+launchctl print "gui/$(id -u)/com.local.battery.autoreturn" | head
+launchctl print "gui/$(id -u)/com.local.battery.maintenance" | head
+```
