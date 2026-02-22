@@ -1,6 +1,6 @@
 # Start tmux automatically only when allowed
 if status is-interactive
-    if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT
+    if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT; and not set -q CODEX_SHELL
         if test "$TMUX_AUTO_SESSION" = "alacritty"
             if not tmux has-session -t alacritty 2>/dev/null
                 tmux new-session -d -s alacritty
