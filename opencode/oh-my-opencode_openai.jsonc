@@ -4,116 +4,116 @@
     "sisyphus": {
       "model": "openai/gpt-5.2",
       "temperature": 0.1,
-      "description": "Главный оркестратор. Планирует, делегирует и управляет задачами.",
+      "description": "Главный оркестратор. Планирует, делегирует и управляет задачами."
     },
     "atlas": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "oracle": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "librarian": {
       "model": "openai/gpt-5.1-codex-mini",
-      "temperature": 0.2,
+      "temperature": 0.2
     },
     "explore": {
       "model": "openai/gpt-5.1-codex-mini",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "frontend-ui-ux-engineer": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.4,
+      "temperature": 0.4
     },
     "document-writer": {
       "model": "openai/gpt-5.1-codex-mini",
-      "temperature": 0.3,
+      "temperature": 0.3
     },
     "multimodal-looker": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.1,
+      "temperature": 0.1
     },
     "build": {
       "model": "openai/gpt-5.1-codex-max",
-      "temperature": 0.05,
+      "temperature": 0.05
     },
     "plan": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.2,
+      "temperature": 0.2
     },
     "OpenCode-Builder": {
       "model": "openai/gpt-5.2-codex",
-      "temperature": 0.05,
+      "temperature": 0.05
     },
     "prometheus": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.2,
+      "temperature": 0.2
     },
     "metis": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.3,
+      "temperature": 0.3
     },
     "momus": {
       "model": "openai/gpt-5.2",
-      "temperature": 0.1,
-    },
+      "temperature": 0.1
+    }
   },
   "sisyphus_agent": {
     "disabled": false,
     "default_builder_enabled": false,
     "planner_enabled": true,
-    "replace_plan": true,
+    "replace_plan": true
   },
   "ralph_loop": {
     "enabled": true,
-    "default_max_iterations": 100,
+    "default_max_iterations": 100
   },
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
-      "openai": 5,
+      "openai": 5
     },
     "modelConcurrency": {
       "openai/gpt-5.2": 3,
       "openai/gpt-5.2-codex": 1,
       "openai/gpt-5.1-codex-max": 3,
-      "openai/gpt-5.1-codex-mini": 8,
-    },
+      "openai/gpt-5.1-codex-mini": 8
+    }
   },
   "categories": {
     "visual": {
       "model": "openai/gpt-5.2",
       "temperature": 0.7,
-      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind."
     },
     "business-logic": {
       "model": "openai/gpt-5.1-codex-max",
       "temperature": 0.1,
-      "prompt_append": "Focus on robustness, error handling, and type safety.",
+      "prompt_append": "Focus on robustness, error handling, and type safety."
     },
     "architecture": {
       "model": "openai/gpt-5.2",
       "temperature": 0.15,
-      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands."
     },
     "quick": {
       "model": "openai/gpt-5.1-codex-mini",
-      "temperature": 0.3,
-    },
+      "temperature": 0.3
+    }
   },
   "claude_code": {
     "mcp": false,
     "commands": false,
     "skills": true,
     "agents": true,
-    "hooks": false,
+    "hooks": true,
     "plugins": true,
-    "plugins_override": {},
+    "plugins_override": {}
   },
   "git_master": {
     "commit_footer": false,
-    "include_co_authored_by": false,
+    "include_co_authored_by": false
   },
   "experimental": {
     "auto_resume": true,
@@ -125,14 +125,16 @@
       "notification": "detailed",
       "turn_protection": {
         "enabled": true,
-        "turns": 3,
-      },
-    },
+        "turns": 3
+      }
+    }
   },
   "disabled_mcps": [],
-  "disabled_skills": ["playwright"],
+  "disabled_skills": [
+    "playwright"
+  ],
   "disabled_agents": [],
   "disabled_hooks": [],
   "google_auth": false,
-  "lsp": {},
+  "lsp": {}
 }
