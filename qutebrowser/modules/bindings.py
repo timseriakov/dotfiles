@@ -166,6 +166,11 @@ config.bind(
     leader + "ty",
     'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
 )  # yandex translation toggle
+config.bind(
+    leader + "te",
+    'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
+)  # yandex translation toggle
+
 
 # Tab selection - moved to keyboard layout switching section
 
