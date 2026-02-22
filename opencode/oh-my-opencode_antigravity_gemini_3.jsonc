@@ -110,7 +110,7 @@
     "commands": false,
     "skills": true,
     "agents": true,
-    "hooks": false,
+    "hooks": true,
     "plugins": true,
     "plugins_override": {},
   },
