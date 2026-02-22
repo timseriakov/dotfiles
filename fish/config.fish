@@ -61,3 +61,9 @@ alias tailscale "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# OpenClaw Completion
+set -l openclaw_completions "$HOME/.openclaw/completions/openclaw.fish"
+if test -f "$openclaw_completions"
+    source "$openclaw_completions"
+end
