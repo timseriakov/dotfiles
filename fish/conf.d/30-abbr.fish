@@ -133,15 +133,15 @@ abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a oskills 'npx -y openskills'
 abbr -a os '~/.config/opencode/omoc-switch'
+abbr -a ss ccbox
+abbr -a add-mcp 'npx -y add-mcp'
 
 # Other AI tools
-abbr -a aid 'aider -c $HOME/.aider.conf.yml'
 abbr -a cr cursor-agent
 abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
 abbr -a goo goose
 abbr -a amp 'npx -y @sourcegraph/amp@latest'
-abbr -a add-mcp 'npx -y add-mcp'
 
 abbr -a qw qwen
 abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
@@ -162,7 +162,6 @@ abbr -a glarc 'nvim ~/Library/LaunchAgents/app.glance.plist'
 abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
 abbr -a grc 'cd ~/.gemini'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
-abbr -a aidrc 'nvim ~/dev/dotfiles/.aider.conf.yml'
 abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish && exec fish'
 abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish && exec fish'
 abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
@@ -171,12 +170,13 @@ abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
 # Misc
 abbr -a cls clear
 
+abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
+
+# Copy/Paste
 abbr -a cbs 'cb show'
 abbr -a ccc 'cb cp'
 abbr -a ppp 'cb p'
 abbr -a cpr 'cp -r'
-
-abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
 
 abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'

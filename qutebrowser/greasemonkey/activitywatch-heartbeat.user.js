@@ -1,11 +1,14 @@
 // ==UserScript==
 // @name         ActivityWatch Heartbeat for qutebrowser
 // @namespace    https://github.com/timhq/dotfiles
-// @version      4.0.0
+// @version      4.0.1
 // @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs. Enabled by default. Automatically detects and blocks tracking in private/incognito windows.
 // @match        *://*/*
 // @run-at       document-start
-// @grant        none
+// @grant        GM_xmlhttpRequest
+// @grant        GM.xmlHttpRequest
+// @connect      127.0.0.1
+// @connect      localhost
 // ==/UserScript==
 
 (function () {
@@ -176,43 +179,12 @@
       /* ignore */
     }
 
-    try {
-      // Keep requests lightweight to avoid CORS preflight; server should accept plain JSON bytes.
-      // no-cors means the response is opaque, but the request will be sent.
-      // PRIVACY: Add header to mark private window heartbeats
-      const headers = isPrivateMode ? { "X-Private-Window": "1" } : {};
-
-      fetch(ENDPOINT, {
-        method: "POST",
-        headers: headers,
-        body,
-        keepalive: true,
-        mode: "no-cors",
-        cache: "no-store",
-        credentials: "omit",
-      }).catch((err) => {
-        // Likely blocked by CSP or network error — enqueue for later flush.
-        enqueue(payload);
-        noteBackoff("fetch-error");
-        debug("enqueue (fetch error)", err && "" + err);
-      });
-    } catch (e) {
-      // Fallback to sendBeacon if fetch fails synchronously.
-      try {
-        if (navigator.sendBeacon) {
-          const blob = new Blob([body], { type: "text/plain" });
-          const ok = navigator.sendBeacon(ENDPOINT, blob);
-          if (!ok) {
-            enqueue(payload);
-            noteBackoff("beacon-false");
-            debug("enqueue (beacon false)");
-          }
-        }
-      } catch (_) {
-        enqueue(payload);
-        noteBackoff("beacon-throw");
-      }
-    }
+    postHeartbeat(payload).catch((err) => {
+      // Likely blocked by CSP/network/runtime — enqueue for later flush.
+      enqueue(payload);
+      noteBackoff("post-error");
+      debug("enqueue (post error)", err && "" + err);
+    });
   }
 
   // Simple queue in localStorage to avoid losing events on restrictive CSP pages.
@@ -241,15 +213,7 @@
     if (!q.length) return;
     // Try to send oldest first; stop on first failure to keep order
     const rest = [];
-    const sendOne = (p) =>
-      fetch(ENDPOINT, {
-        method: "POST",
-        body: JSON.stringify(p),
-        keepalive: true,
-        mode: "no-cors",
-        cache: "no-store",
-        credentials: "omit",
-      });
+    const sendOne = (p) => postHeartbeat(p);
     let sent = 0;
     const attempt = q.reduce(
       (prev, p) =>
@@ -314,6 +278,68 @@
     } catch (_) {
       /* ignore */
     }
+  }
+
+  function postHeartbeat(payload) {
+    const body = JSON.stringify(payload);
+    const headers = isPrivateMode
+      ? {
+          "Content-Type": "application/json",
+          "X-Private-Window": "1",
+        }
+      : { "Content-Type": "application/json" };
+
+    const gmXhr =
+      typeof GM_xmlhttpRequest === "function"
+        ? GM_xmlhttpRequest
+        : typeof GM === "object" &&
+            GM &&
+            typeof GM.xmlHttpRequest === "function"
+          ? GM.xmlHttpRequest.bind(GM)
+          : null;
+
+    // Prefer userscript transport: bypasses page CSP and works on locked-down sites.
+    if (gmXhr) {
+      return new Promise((resolve, reject) => {
+        gmXhr({
+          method: "POST",
+          url: ENDPOINT,
+          headers,
+          data: body,
+          timeout: 5000,
+          onload: (resp) => {
+            if (resp.status >= 200 && resp.status < 300) {
+              resolve();
+              return;
+            }
+            reject(new Error("http " + resp.status));
+          },
+          onerror: () => reject(new Error("gm-xhr-error")),
+          ontimeout: () => reject(new Error("gm-xhr-timeout")),
+        });
+      });
+    }
+
+    // Fallback for environments without GM_xmlhttpRequest.
+    return fetch(ENDPOINT, {
+      method: "POST",
+      headers,
+      body,
+      keepalive: true,
+      mode: "no-cors",
+      cache: "no-store",
+      credentials: "omit",
+    }).catch(() => {
+      // Last-resort fallback for unload/navigation races.
+      if (navigator.sendBeacon) {
+        const ok = navigator.sendBeacon(
+          ENDPOINT,
+          new Blob([body], { type: "application/json" }),
+        );
+        if (ok) return;
+      }
+      throw new Error("fetch-and-beacon-failed");
+    });
   }
 
   /**
