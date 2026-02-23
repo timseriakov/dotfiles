@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.opencode.serve</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/tim/.volta/tools/image/packages/opencode-ai/bin/opencode</string>
+        <string>serve</string>
+        <string>--hostname</string>
+        <string>127.0.0.1</string>
+        <string>--port</string>
+        <string>4096</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tim</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tim/tmp/opencode/serve-stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/tmp/opencode/serve-stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tim/.volta/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/tim</string>
+    </dict>
+
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>
