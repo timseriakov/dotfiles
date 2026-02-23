@@ -125,6 +125,8 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
 # OpenCode
 abbr -a o opencode
+abbr -a oa 'opencode attach http://127.0.0.1:4096'
+abbr -a on 'opencode'
 abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a oweb 'openchamber --daemon --port 1911'
 abbr -a o-manager 'bunx opencode-manager'
@@ -148,8 +150,8 @@ abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
 
 # z jumps
 abbr -a dev 'cd ~/dev'
-abbr -a zd 'z dot'
 abbr -a dl 'z dl'
+abbr -a zd 'cd ~/dev/dotfiles'
 abbr -a do 'cd ~/dev/dotfiles'
 
 # Open configs
