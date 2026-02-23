@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openchamber.web</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/tim/.bun/bin/bun</string>
+        <string>/Users/tim/.volta/tools/image/packages/@openchamber/web/lib/node_modules/@openchamber/web/server/index.js</string>
+        <string>--port</string>
+        <string>1911</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tim</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tim/tmp/openchamber/stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/tmp/openchamber/stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tim/.volta/bin:/Users/tim/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/tim</string>
+    </dict>
+
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>
