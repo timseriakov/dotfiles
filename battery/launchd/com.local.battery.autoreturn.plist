@@ -6,9 +6,7 @@
   <string>com.local.battery.autoreturn</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/bin/bash</string>
-    <string>-lc</string>
-    <string>exec "$HOME/.local/bin/battery-auto-return.sh"</string>
+    <string>/Users/tim/.local/bin/battery-auto-return.sh</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

@@ -6,9 +6,7 @@
   <string>com.local.battery.maintenance</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/bin/bash</string>
-    <string>-lc</string>
-    <string>exec "$HOME/.local/bin/battery-maintenance.sh"</string>
+    <string>/Users/tim/.local/bin/battery-maintenance.sh</string>
   </array>
   <key>StandardOutPath</key>
   <string>/tmp/battery-maintenance.out</string>
