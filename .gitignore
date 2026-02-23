@@ -21,6 +21,7 @@ mpv/watch_later
 
 fish/fishd.tmp*
 fish/fish_variables
+fish/fish_variables.*
 
 tweakcc/cli.js.backup
 
