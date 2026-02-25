@@ -22,6 +22,17 @@ return {
       hide_unstable_versions = false,
     })
 
+    -- Патчим парсер, чтобы он не выкидывал traceback при невалидном JSON (во время редактирования)
+    local parser = require("package-info.parser")
+    local original_parse_buffer = parser.parse_buffer
+    parser.parse_buffer = function(...)
+      local ok = pcall(original_parse_buffer, ...)
+      if not ok then
+        -- Просто игнорируем ошибку парсинга, пока файл в процессе редактирования
+        return
+      end
+    end
+
     -- Кастомные биндинги
     -- local map = vim.keymap.set
     -- local opts = { silent = true, noremap = true }
