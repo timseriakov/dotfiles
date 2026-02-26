@@ -51,6 +51,18 @@
       "type": "local"
     }
   },
+  "tui": {
+    "scroll_speed": 2,
+    "scroll_acceleration": {
+      "enabled": false,
+    },
+  },
+  "keybinds": {
+    "leader": "ctrl+s",
+    "app_exit": "ctrl+x",
+    "editor_open": "ctrl+e",
+    "session_rename": "ctrl+r",
+  },
   "provider": {
     "openai": {
       "name": "OpenAI",
@@ -271,6 +283,17 @@
         },
         "antigravity-claude-opus-4-6-thinking-high": {
           "name": "Claude Opus 4.5 Thinking High (Antigravity)",
+          "limit": {
+            "context": 200000,
+            "output": 64000,
+          },
+          "modalities": {
+            "input": ["text", "image", "pdf"],
+            "output": ["text"],
+          },
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.5 (Fallback)",
           "limit": {
             "context": 200000,
             "output": 64000,
