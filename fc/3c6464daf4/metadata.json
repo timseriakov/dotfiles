@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "fc3c6464daf4",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".husky/commit-msg",
+    ".husky/post-commit",
+    ".husky/pre-push",
+    ".husky/prepare-commit-msg"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fc/3c6464daf4/0/metadata.json",
+      "transcript": "/fc/3c6464daf4/0/full.jsonl",
+      "context": "",
+      "content_hash": "/fc/3c6464daf4/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
