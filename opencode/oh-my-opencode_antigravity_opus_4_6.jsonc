@@ -3,7 +3,7 @@
   "agents": {
     "sisyphus": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.1,
+      "temperature": 0.3,
       "description": "Главный оркестратор. Планирует, делегирует и управляет задачами."
     },
     "atlas": {
@@ -34,13 +34,9 @@
       "model": "google/antigravity-gemini-3-pro-low",
       "temperature": 0.1
     },
-    "build": {
-      "model": "google/antigravity-gemini-3-pro-high",
-      "temperature": 0.05
-    },
     "plan": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.2
+      "temperature": 0.3
     },
     "OpenCode-Builder": {
       "model": "google/antigravity-gemini-3-pro-high",
@@ -48,7 +44,7 @@
     },
     "prometheus": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "temperature": 0.2
+      "temperature": 0.3
     },
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking-medium",

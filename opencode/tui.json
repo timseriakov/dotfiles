@@ -3,7 +3,7 @@
   "keybinds": {
     "leader": "ctrl+s",
     "app_exit": "ctrl+x",
-    "editor_open": "ctrl+e",
+    "editor_open": "ctrl+g",
     "session_rename": "ctrl+r"
   },
   "scroll_speed": 2,

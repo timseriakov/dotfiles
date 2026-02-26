@@ -34,10 +34,6 @@
       "model": "zai-coding-plan/glm-4.6v",
       "temperature": 0.1
     },
-    "build": {
-      "model": "zai-coding-plan/glm-4.7",
-      "temperature": 0.05
-    },
     "plan": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.2
@@ -118,7 +114,6 @@
     "auto_resume": true,
     "aggressive_truncation": true,
     "truncate_all_tool_outputs": true,
-    "preemptive_compaction": true,
     "dynamic_context_pruning": {
       "enabled": true,
       "notification": "detailed",
@@ -134,6 +129,5 @@
   ],
   "disabled_agents": [],
   "disabled_hooks": [],
-  "google_auth": false,
   "lsp": {}
 }
