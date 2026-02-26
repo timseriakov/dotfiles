@@ -22,13 +22,13 @@
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.1
     },
-    "frontend-ui-ux-engineer": {
-      "model": "google/antigravity-claude-sonnet-4-6-thinking-high",
-      "temperature": 0.4
+    "hephaestus": {
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "temperature": 0.1
     },
-    "document-writer": {
-      "model": "google/antigravity-claude-sonnet-4-6-thinking-medium",
-      "temperature": 0.3
+    "sisyphus-junior": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.1
     },
     "multimodal-looker": {
       "model": "google/antigravity-gemini-3-pro-low",
