@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "c5fbbecff882",
+  "session_id": "1ecc7f52-384f-456d-a6f7-6de29982d7d8",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-26T13:31:59.237271Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/quickmarks",
+    "nvim/lazy-lock.json"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "46e6204500d7",
+  "checkpoint_transcript_start": 14,
+  "transcript_lines_at_start": 14,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-26T13:31:59.07906Z",
+    "agent_lines": 29,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 29,
+    "agent_percentage": 100
+  }
+}
