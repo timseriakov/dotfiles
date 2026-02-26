@@ -9,6 +9,7 @@ function fish_user_key_bindings
         bind -M $mode \cb 'cd -; commandline -f repaint'
         bind -M $mode \cl accept-autosuggestion
         bind -M $mode \cf forward-word
+        bind -M $mode alt-backspace backward-kill-word  # Option+Backspace to delete word
     end
 
     # jj to escape insert → normal with correct cursor mode

@@ -13,7 +13,6 @@ abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
 abbr -a fe 'exec fish'
-abbr -a wt branchlet
 
 # npm
 abbr -a n npm
@@ -67,6 +66,7 @@ abbr -a пп lazygit
 abbr -a tg tig
 abbr -a prs 'env -u GITHUB_TOKEN gh dash'
 abbr -a g-redeploy 'git commit --allow-empty -m "chore: trigger redeploy"'
+abbr -a bl 'npx -y branchlet'
 
 # Brew helpers
 abbr -a bri 'brew install'
