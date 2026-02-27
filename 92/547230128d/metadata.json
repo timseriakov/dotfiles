@@ -300,6 +300,13 @@
       "context": "",
       "content_hash": "/92/547230128d/21/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/92/547230128d/22/metadata.json",
+      "transcript": "/92/547230128d/22/full.jsonl",
+      "context": "",
+      "content_hash": "/92/547230128d/22/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
