@@ -141,11 +141,27 @@ case "$1" in
             echo "Check logs: $0 logs"
         fi
         ;;
+    dashboard-stop)
+        PORT=${2:-9867}
+        PID=$(lsof -i :"$PORT" -t)
+        if [ -n "$PID" ]; then
+            kill -TERM "$PID" 2>/dev/null
+            sleep 0.5
+            if lsof -i :"$PORT" -t >/dev/null 2>&1; then
+                echo -e "${RED}✗ Failed to stop dashboard on $PORT${NC}"
+                exit 1
+            else
+                echo -e "${GREEN}✓ Stopped dashboard on $PORT${NC}"
+            fi
+        else
+            echo -e "${YELLOW}• No process listening on $PORT${NC}"
+        fi
+        ;;
 
     *)
         echo "pinchtab launchd service control"
         echo ""
-        echo "Usage: $0 {install|uninstall|start|stop|restart|status|logs|follow|dashboard [port]}"
+        echo "Usage: $0 {install|uninstall|start|stop|restart|status|logs|follow|dashboard [port]|dashboard-stop [port]}"
         echo ""
         echo "Commands:"
         echo "  install    - Install and start the service"
@@ -157,6 +173,7 @@ case "$1" in
         echo "  logs       - Show recent logs"
         echo "  follow     - Follow logs in real-time"
         echo "  dashboard  - Start dashboard on optional port (default: 9867)"
+        echo "  dashboard-stop  - Stop dashboard on optional port (default: 9867)"
         exit 1
         ;;
 
