@@ -288,6 +288,13 @@
       "context": "",
       "content_hash": "/72/34b108db51/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/72/34b108db51/23/metadata.json",
+      "transcript": "/72/34b108db51/23/full.jsonl",
+      "context": "",
+      "content_hash": "/72/34b108db51/23/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
