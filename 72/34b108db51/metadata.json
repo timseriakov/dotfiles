@@ -316,6 +316,13 @@
       "context": "",
       "content_hash": "/72/34b108db51/26/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/72/34b108db51/27/metadata.json",
+      "transcript": "/72/34b108db51/27/full.jsonl",
+      "context": "",
+      "content_hash": "/72/34b108db51/27/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
