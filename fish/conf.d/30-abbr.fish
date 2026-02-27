@@ -214,7 +214,7 @@ abbr -a trrnts /opt/homebrew/bin/bv
 abbr -a va ekphos
 
 abbr -a kkll rip
-abbr -a ports snitch
+abbr -a ports 'snitch -t -l -e'
 
 abbr -a mu 'mole uninstall'
 abbr -a hn clx
