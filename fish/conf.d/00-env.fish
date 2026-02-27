@@ -44,9 +44,16 @@ set --export MANPATH "$HOME/.vapi"/share/man $MANPATH
 
 # QtWebEngine (Homebrew on macOS ARM)
 if type -q brew
-    set -gx QTWEBENGINE_RESOURCES_PATH (brew --prefix qt@6)/lib/QtWebEngineCore.framework/Resources
-    set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
-    set -gx QT_PLUGIN_PATH (brew --prefix qt@6)/plugins
+    set qtwebengine_prefix (brew --prefix qtwebengine 2>/dev/null)
+    if test -n "$qtwebengine_prefix"
+        set -gx QTWEBENGINE_RESOURCES_PATH $qtwebengine_prefix/lib/QtWebEngineCore.framework/Resources
+        set -gx QTWEBENGINE_LOCALES_PATH $QTWEBENGINE_RESOURCES_PATH/qtwebengine_locales
+    end
+
+    set qtbase_prefix (brew --prefix qtbase 2>/dev/null)
+    if test -n "$qtbase_prefix"
+        set -gx QT_PLUGIN_PATH $qtbase_prefix/share/qt/plugins
+    end
 end
 
 # Deno experemental tsgo flag
