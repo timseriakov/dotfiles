@@ -217,6 +217,13 @@
       "context": "",
       "content_hash": "/d2/5c749c4d94/29/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/d2/5c749c4d94/30/metadata.json",
+      "transcript": "/d2/5c749c4d94/30/full.jsonl",
+      "context": "",
+      "content_hash": "/d2/5c749c4d94/30/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
