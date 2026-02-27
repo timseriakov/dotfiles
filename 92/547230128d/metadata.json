@@ -195,6 +195,13 @@
       "context": "",
       "content_hash": "/92/547230128d/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/92/547230128d/7/metadata.json",
+      "transcript": "/92/547230128d/7/full.jsonl",
+      "context": "",
+      "content_hash": "/92/547230128d/7/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
