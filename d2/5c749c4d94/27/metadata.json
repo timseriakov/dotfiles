@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "d25c749c4d94",
+  "session_id": "ses_360ab8da0ffeMwAx8rnQOX7pRG",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-27T18:11:32.647707Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/30-abbr.fish"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "ccce2fd5a910",
+  "initial_attribution": {
+    "calculated_at": "2026-02-27T18:11:32.645871Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
