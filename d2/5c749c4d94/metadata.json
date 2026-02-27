@@ -203,6 +203,13 @@
       "context": "",
       "content_hash": "/d2/5c749c4d94/27/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/d2/5c749c4d94/28/metadata.json",
+      "transcript": "/d2/5c749c4d94/28/full.jsonl",
+      "context": "",
+      "content_hash": "/d2/5c749c4d94/28/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
