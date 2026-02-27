@@ -175,6 +175,13 @@
       "context": "",
       "content_hash": "/d2/5c749c4d94/23/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/d2/5c749c4d94/24/metadata.json",
+      "transcript": "/d2/5c749c4d94/24/full.jsonl",
+      "context": "",
+      "content_hash": "/d2/5c749c4d94/24/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
