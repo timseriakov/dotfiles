@@ -1,0 +1,4 @@
+function restart-launch-servises --wraps='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f ~/dev/dotfiles/qutebrowser/qutebrowser.app' --wraps='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/qutebrowser/qutebrowser.app' --wraps='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/qutebrowser.app' --description 'alias restart-launch-servises /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/qutebrowser.app'
+  /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/qutebrowser.app $argv
+        
+end
