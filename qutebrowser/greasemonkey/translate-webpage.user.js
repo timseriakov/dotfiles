@@ -5,6 +5,8 @@
 // @description  Mimicks chrome's built-in page translator. Can be used as a userscript (from the context menu or always on) or as a bookmarklet (clicking the bookmark translates the page). For Firefox and chrome
 // @author       Achernar
 // @match        *://*/*
+// @exclude      https://accounts.google.com/*
+// @exclude      https://accounts.youtube.com/*
 // @run-at       context-menu
 // @run-at       document-idle
 // @grant   GM_setValue

@@ -37,5 +37,7 @@ c.colors.webpage.preferred_color_scheme = "dark"
 
 c.input.mode_override = None
 
+c.qt.workarounds.disable_hangouts_extension = True
+
 # Disable Yes/No prompt for JS clipboard access requests.
 c.content.javascript.clipboard = "access"

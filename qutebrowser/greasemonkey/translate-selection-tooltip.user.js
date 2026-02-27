@@ -5,6 +5,8 @@
 // @description  Translate selected text and show in tooltip with Google Translate API
 // @author       tim
 // @match        *://*/*
+// @exclude      https://accounts.google.com/*
+// @exclude      https://accounts.youtube.com/*
 // @run-at       document-end
 // @grant        none
 // ==/UserScript==

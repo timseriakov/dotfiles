@@ -4,6 +4,8 @@
 // @version      4.0.1
 // @description  Sends 5s heartbeats with URL, title, and timestamp to ActivityWatch; hooks history and visibility to track active tabs. Enabled by default. Automatically detects and blocks tracking in private/incognito windows.
 // @match        *://*/*
+// @exclude      https://accounts.google.com/*
+// @exclude      https://accounts.youtube.com/*
 // @run-at       document-start
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest

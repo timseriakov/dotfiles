@@ -5,6 +5,8 @@
 // @description  Switch to English layout when leaving input fields (simulating insert mode leave)
 // @author       You
 // @match        *://*/*
+// @exclude      https://accounts.google.com/*
+// @exclude      https://accounts.youtube.com/*
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==

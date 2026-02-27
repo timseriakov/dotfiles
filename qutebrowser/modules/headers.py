@@ -10,15 +10,15 @@ config.set(
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/134.0.6998.208 Safari/537.36",
 )
-# Google-specific UA override
+
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "Mozilla/5.0 ({os_info}) Gecko/20100101 Firefox/135.0",
     "https://accounts.google.com/*",
 )
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "Mozilla/5.0 ({os_info}) Gecko/20100101 Firefox/135.0",
     "https://accounts.youtube.com/*",
 )
 # Standard headers for all sites (навигационный профиль)
