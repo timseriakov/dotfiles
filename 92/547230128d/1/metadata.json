@@ -1,7 +1,9 @@
 {
   "cli_version": "0.4.6",
   "checkpoint_id": "92547230128d",
+  "session_id": "ses_360035b83ffePSPct6ru93CODm",
   "strategy": "manual-commit",
+  "created_at": "2026-02-27T17:37:33.255129Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
@@ -11,27 +13,22 @@
     "pinchtab/launchd-control.sh",
     "pinchtab/launchd/com.local.pinchtab.server.plist"
   ],
-  "sessions": [
-    {
-      "metadata": "/92/547230128d/0/metadata.json",
-      "transcript": "/92/547230128d/0/full.jsonl",
-      "context": "",
-      "content_hash": "/92/547230128d/0/content_hash.txt",
-      "prompt": ""
-    },
-    {
-      "metadata": "/92/547230128d/1/metadata.json",
-      "transcript": "/92/547230128d/1/full.jsonl",
-      "context": "",
-      "content_hash": "/92/547230128d/1/content_hash.txt",
-      "prompt": ""
-    }
-  ],
+  "agent": "Claude Code",
+  "turn_id": "dcaac0782f7b",
   "token_usage": {
     "input_tokens": 0,
     "cache_creation_tokens": 0,
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-27T17:37:33.252536Z",
+    "agent_lines": 490,
+    "human_added": 316,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 806,
+    "agent_percentage": 60.7940446650124
   }
 }
