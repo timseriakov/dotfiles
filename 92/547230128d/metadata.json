@@ -307,6 +307,13 @@
       "context": "",
       "content_hash": "/92/547230128d/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/92/547230128d/23/metadata.json",
+      "transcript": "/92/547230128d/23/full.jsonl",
+      "context": "",
+      "content_hash": "/92/547230128d/23/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
