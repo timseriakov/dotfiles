@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "d25c749c4d94",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/30-abbr.fish"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d2/5c749c4d94/0/metadata.json",
+      "transcript": "/d2/5c749c4d94/0/full.jsonl",
+      "context": "",
+      "content_hash": "/d2/5c749c4d94/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
