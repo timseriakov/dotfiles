@@ -1,1 +1,0 @@
-/Users/tim/dev/dotfiles/battery/fish/battery-server.fish

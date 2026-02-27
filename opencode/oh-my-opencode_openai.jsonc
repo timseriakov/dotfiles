@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.2",
+      "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1,
       "description": "Главный оркестратор. Планирует, делегирует и управляет задачами."
     },
@@ -27,7 +27,7 @@
       "variant": "medium"
     },
     "sisyphus-junior": {
-      "model": "openai/gpt-5.2",
+      "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1
     },
     "multimodal-looker": {
@@ -68,9 +68,11 @@
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
+    "zai-coding-plan": 5,
       "openai": 5
     },
     "modelConcurrency": {
+      "zai-coding-plan/glm-4.7": 3,
       "openai/gpt-5.2": 3,
       "openai/gpt-5.2-codex": 1,
       "openai/gpt-5.1-codex-max": 3,

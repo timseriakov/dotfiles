@@ -15,11 +15,11 @@
       "temperature": 0.1
     },
     "librarian": {
-      "model": "zai-coding-plan/glm-4.7-flash",
+      "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.2
     },
     "explore": {
-      "model": "zai-coding-plan/glm-4.7-flash",
+      "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.1
     },
     "hephaestus": {
@@ -68,11 +68,12 @@
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
+    "openai": 5,
       "zai-coding-plan": 5
     },
     "modelConcurrency": {
+      "openai/gpt-5.1-codex-mini": 8,
       "zai-coding-plan/glm-4.7": 3,
-      "zai-coding-plan/glm-4.7-flash": 8,
       "zai-coding-plan/glm-4.6v": 3
     }
   },
@@ -93,7 +94,7 @@
       "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands."
     },
     "quick": {
-      "model": "zai-coding-plan/glm-4.7-flash",
+      "model": "openai/gpt-5.1-codex-mini",
       "temperature": 0.3
     }
   },

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.pinchtab.server</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/tim/.pinchtab/bin/0.7.6/pinchtab-darwin-arm64</string>
+	</array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tim</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tim/Library/Logs/pinchtab/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/Library/Logs/pinchtab/stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+		<key>PATH</key>
+		<string>/Users/tim/.pinchtab/bin:/Users/tim/.volta/bin:/Users/tim/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>HOME</key>
+		<string>/Users/tim</string>
+
+        <key>BRIDGE_CONFIG</key>
+        <string>/Users/tim/dev/dotfiles/pinchtab/config.json</string>
+        <key>BRIDGE_BIND</key>
+        <string>127.0.0.1</string>
+        <key>BRIDGE_PORT</key>
+        <string>9867</string>
+        <key>BRIDGE_HEADLESS</key>
+        <string>true</string>
+    </dict>
+
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>

@@ -1,0 +1,7 @@
+[defaults]
+numeric = false
+dns_cache = true
+theme = "nord"
+
+[tui]
+remember_state = false

@@ -23,7 +23,8 @@
       "temperature": 0.1
     },
     "hephaestus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
       "temperature": 0.1
     },
     "sisyphus-junior": {
@@ -68,9 +69,11 @@
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
+    "openai": 5,
       "google": 5
     },
     "modelConcurrency": {
+      "openai/gpt-5.1-codex-mini": 8,
       "google/antigravity-claude-opus-4-6-thinking-high": 2,
       "google/antigravity-claude-opus-4-6-thinking-medium": 3,
       "google/antigravity-claude-sonnet-4-6-thinking-high": 3,

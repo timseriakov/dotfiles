@@ -1,0 +1,10 @@
+{
+  "listen": "127.0.0.1:9867",
+  "env": {
+    "BRIDGE_BIND": "127.0.0.1",
+    "BRIDGE_PORT": "9867",
+    "BRIDGE_HEADLESS": "true",
+    "BRIDGE_STATE_DIR": "~/.pinchtab",
+    "BRIDGE_PROFILE": "~/.pinchtab/chrome-profile"
+  }
+}

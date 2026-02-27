@@ -1,2 +1,0 @@
-/var/log/tailscale-pf.log
-/var/log/tailscale-pf.err
