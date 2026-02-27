@@ -188,6 +188,13 @@
       "context": "",
       "content_hash": "/92/547230128d/5/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/92/547230128d/6/metadata.json",
+      "transcript": "/92/547230128d/6/full.jsonl",
+      "context": "",
+      "content_hash": "/92/547230128d/6/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
