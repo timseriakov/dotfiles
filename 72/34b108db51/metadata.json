@@ -323,6 +323,13 @@
       "context": "",
       "content_hash": "/72/34b108db51/27/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/72/34b108db51/28/metadata.json",
+      "transcript": "/72/34b108db51/28/full.jsonl",
+      "context": "",
+      "content_hash": "/72/34b108db51/28/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
