@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "9407ff3913be",
+  "session_id": "ses_35a1448f2ffeihpKmsws7oT8BI",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-28T21:13:33.894064Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "tmuxai/README.md",
+    "tmuxai/config.yaml",
+    "tmuxai/install.sh",
+    "tmuxai/kb/tmux.md"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "8b8d70ee2ca1",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-28T21:13:33.852017Z",
+    "agent_lines": 158,
+    "human_added": 105,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 263,
+    "agent_percentage": 60.07604562737643
+  }
+}
