@@ -68,6 +68,8 @@ local Menu = require("nui.menu")
 local event = require("nui.utils.autocmd")
 local map = vim.keymap.set
 
+vim.keymap.set({ "n", "v" }, "<D-c>", "y", { desc = "Yank (Cmd+C)" })
+
 local langs = {
   { "JavaScript", "javascript" },
   { "TypeScript", "typescript" },
