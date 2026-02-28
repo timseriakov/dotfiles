@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "2947c794263e",
+  "session_id": "ses_35a1448f2ffeihpKmsws7oT8BI",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-28T21:50:54.044691Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "opencode/skills/react-doctor/AGENTS.md",
+    "opencode/skills/react-doctor/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "950d0e86eba0",
+  "initial_attribution": {
+    "calculated_at": "2026-02-28T21:50:54.042902Z",
+    "agent_lines": 0,
+    "human_added": 7,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 7,
+    "agent_percentage": 0
+  }
+}

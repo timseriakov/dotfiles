@@ -3,7 +3,7 @@
   "checkpoint_id": "2947c794263e",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/skills/react-doctor/AGENTS.md",
     "opencode/skills/react-doctor/SKILL.md"
@@ -14,6 +14,13 @@
       "transcript": "/29/47c794263e/0/full.jsonl",
       "context": "",
       "content_hash": "/29/47c794263e/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/29/47c794263e/1/metadata.json",
+      "transcript": "/29/47c794263e/1/full.jsonl",
+      "context": "",
+      "content_hash": "/29/47c794263e/1/content_hash.txt",
       "prompt": ""
     }
   ],
