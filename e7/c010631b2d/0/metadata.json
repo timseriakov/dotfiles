@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "e7c010631b2d",
+  "session_id": "ses_35a5505d6fferQkBNdVs1GjBPn",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-28T19:51:38.42949Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/plugins/rtk-rewrite.ts"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "601cc552b300",
+  "initial_attribution": {
+    "calculated_at": "2026-02-28T19:51:38.413974Z",
+    "agent_lines": 0,
+    "human_added": 171,
+    "human_modified": 79,
+    "human_removed": 0,
+    "total_committed": 171,
+    "agent_percentage": 0
+  }
+}

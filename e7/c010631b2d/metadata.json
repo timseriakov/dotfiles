@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "e7c010631b2d",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/plugins/rtk-rewrite.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e7/c010631b2d/0/metadata.json",
+      "transcript": "/e7/c010631b2d/0/full.jsonl",
+      "context": "",
+      "content_hash": "/e7/c010631b2d/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
