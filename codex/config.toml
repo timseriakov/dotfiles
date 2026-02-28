@@ -1,6 +1,7 @@
 model = "gpt-5.3-codex"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
+suppress_unstable_features_warning = true
 
 [projects."/Users/tim/dev/dotfiles"]
 trust_level = "trusted"
@@ -56,6 +57,9 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/pet-new/test-task"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/pet-new/rentgen-crm"]
+trust_level = "trusted"
+
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp/"
@@ -70,3 +74,6 @@ hide_gpt5_1_migration_prompt = true
 [features]
 unified_exec = true
 shell_snapshot = true
+default_mode_request_user_input = true
+multi_agent = true
+apps = true

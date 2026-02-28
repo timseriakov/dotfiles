@@ -66,3 +66,5 @@ yazi/plugins/yazi-plugins/
 yazi/plugins/preview-sqlite.yazi
 sourcegit/preference.json
 sourcegit/avatars/
+codex/cache/codex_apps_tools/
+*.sqlite
