@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "80289cd93ce6",
+  "session_id": "ses_35a22ae5dffeK4nUg94bIrc8T0",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-28T20:51:08.719084Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".tmux.conf"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "e4ef291f361e",
+  "initial_attribution": {
+    "calculated_at": "2026-02-28T20:51:08.708359Z",
+    "agent_lines": 0,
+    "human_added": 15,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 15,
+    "agent_percentage": 0
+  }
+}
