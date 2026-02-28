@@ -1,0 +1,26 @@
+debug: false
+yolo: false
+max_context_size: 100000
+max_capture_lines: 200
+wait_interval: 5
+
+default_model: fast
+
+models:
+  fast:
+    provider: openrouter
+    model: "anthropic/claude-haiku-4.5"
+    api_key: "${OPENROUTER_API_KEY}"
+  codex:
+    provider: openai
+    model: "gpt-5-codex"
+    api_key: "${OPENAI_API_KEY}"
+    # Optional: enable when you have an OPENAI_API_KEY and need a fallback model for codex-only workflows.
+  gemini-flash:
+    provider: gemini
+    model: "gemini-2.5-flash"
+    api_key: "${GOOGLE_API_KEY}"
+
+exec_confirm: true
+send_keys_confirm: true
+paste_multiline_confirm: true
