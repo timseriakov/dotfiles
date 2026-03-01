@@ -32,6 +32,18 @@ set -gx BAT_THEME Nord
 set -gx BAT_STYLE plain
 set -gx BAT_DECORATIONS never
 
+# Nord file type colors for tools that use LS_COLORS (fd/eza/ls)
+if type -q gdircolors
+    set -l dir_colors_file "$HOME/.dir_colors"
+    if test -f "$dir_colors_file"
+        set -l ls_colors_line (gdircolors -b "$dir_colors_file" | head -n 1)
+        if test -n "$ls_colors_line"
+            set -l ls_colors_value (string replace "LS_COLORS='" "" -- "$ls_colors_line")
+            set -gx LS_COLORS (string replace "';" "" -- "$ls_colors_value")
+        end
+    end
+end
+
 # posting
 set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full

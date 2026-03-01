@@ -15,6 +15,15 @@ set -gx fzf_git_status_opts --color=border:#81A1C1
 set -gx fzf_history_opts --color=border:#81A1C1
 set -gx fzf_processes_opts --color=border:#81A1C1
 set -gx fzf_variables_opts --color=border:#81A1C1
+set -gx FZF_DEFAULT_OPTS \
+    --height=85% \
+    --layout=reverse \
+    --border=none \
+    --preview-window=right:60%:wrap:border-left \
+    --bind=ctrl-d:preview-down,ctrl-u:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up \
+    --color=fg:#D8DEE9,bg:#2E3440,hl:#BF616A,fg+:#E5E9F0,bg+:#3B4252,hl+:#BF616A \
+    --color=info:#81A1C1,prompt:#81A1C1,pointer:#BF616A,marker:#EBCB8B,spinner:#5E81AC,header:#5E81AC,border:#81A1C1 \
+    --marker='*'
 
 # Atuin
 if type -q atuin
