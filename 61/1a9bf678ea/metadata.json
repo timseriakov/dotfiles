@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "611a9bf678ea",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".tmux.conf",
+    "fish/conf.d/40-plugins.fish",
+    "tmux/sesh-fzf-picker.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/61/1a9bf678ea/0/metadata.json",
+      "transcript": "/61/1a9bf678ea/0/full.jsonl",
+      "context": "",
+      "content_hash": "/61/1a9bf678ea/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}

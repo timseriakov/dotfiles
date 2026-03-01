@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.4.6",
+  "checkpoint_id": "611a9bf678ea",
+  "session_id": "ses_354962854ffe06AYItN0PRcBrt",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-01T22:09:09.747553Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".tmux.conf",
+    "fish/conf.d/40-plugins.fish",
+    "tmux/sesh-fzf-picker.sh"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "88c0f9b80aeb",
+  "initial_attribution": {
+    "calculated_at": "2026-03-01T22:09:09.734535Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 3,
+    "human_removed": 1,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
