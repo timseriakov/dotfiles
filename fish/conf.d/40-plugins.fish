@@ -56,7 +56,7 @@ set --global _fzf_search_vars_command '_fzf_search_variables (set --show | psub)
 fzf_configure_bindings \
     --directory=\ef \
     --git_log=\el \
-    --git_status=\es \
+    --git_status=\ed \
     --history=\er \
     --processes=\ep \
     --variables=\ev
