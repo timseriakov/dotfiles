@@ -17,4 +17,5 @@ function fish_user_key_bindings
 
     # Execute 'f' immediately on space
     bind -M insert ' ' 'if commandline | string match -q -- "f"; commandline -f execute; else; commandline -f expand-abbr; commandline -i " "; end'
+
 end
