@@ -246,7 +246,7 @@
           }
         },
         "antigravity-claude-sonnet-4-6": {
-          "name": "Claude Sonnet 4.5 (Antigravity)",
+          "name": "Claude Sonnet 4.6 (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -257,7 +257,7 @@
           }
         },
         "antigravity-claude-sonnet-4-6-thinking-low": {
-          "name": "Claude Sonnet 4.5 Thinking Low (Antigravity)",
+          "name": "Claude Sonnet 4.6 Thinking Low (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -268,7 +268,7 @@
           }
         },
         "antigravity-claude-sonnet-4-6-thinking-medium": {
-          "name": "Claude Sonnet 4.5 Thinking Medium (Antigravity)",
+          "name": "Claude Sonnet 4.6 Thinking Medium (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -279,7 +279,7 @@
           }
         },
         "antigravity-claude-sonnet-4-6-thinking-high": {
-          "name": "Claude Sonnet 4.5 Thinking High (Antigravity)",
+          "name": "Claude Sonnet 4.6 Thinking High (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -290,7 +290,7 @@
           }
         },
         "antigravity-claude-opus-4-6-thinking-low": {
-          "name": "Claude Opus 4.5 Thinking Low (Antigravity)",
+          "name": "Claude Opus 4.6 Thinking Low (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -301,7 +301,7 @@
           }
         },
         "antigravity-claude-opus-4-6-thinking-medium": {
-          "name": "Claude Opus 4.5 Thinking Medium (Antigravity)",
+          "name": "Claude Opus 4.6 Thinking Medium (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000
@@ -312,7 +312,7 @@
           }
         },
         "antigravity-claude-opus-4-6-thinking-high": {
-          "name": "Claude Opus 4.5 Thinking High (Antigravity)",
+          "name": "Claude Opus 4.6 Thinking High (Antigravity)",
           "limit": {
             "context": 200000,
             "output": 64000

@@ -24,9 +24,9 @@
     },
     "hephaestus": {
       "model": "openai/gpt-5.3-codex",
-      "variant": "high"
-    }
-      "variant": "medium"$3,
+      "variant": "high",
+      "temperature": 0.1
+    },
     "sisyphus-junior": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1
