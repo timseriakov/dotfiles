@@ -2,7 +2,7 @@
 
 selected="$(
   sesh list -t --icons | fzf-tmux -p 100%,100% \
-    --no-sort --ansi --layout=reverse --border=none \
+    --no-sort --ansi --cycle --layout=reverse --border=none \
     --prompt=' ' \
     --header='  ^a-all ^t-tmux ^g-cfgs ^s-find ^x-kill' \
     --bind='tab:down,btab:up' \
