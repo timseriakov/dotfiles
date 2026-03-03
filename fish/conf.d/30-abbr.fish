@@ -217,6 +217,7 @@ abbr -a kkll rip
 abbr -a ports 'snitch -t -l -e'
 
 abbr -a mu 'mole uninstall'
+abbr -a un 'mole uninstall'
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
 abbr -a tk tmux-take-alacritty

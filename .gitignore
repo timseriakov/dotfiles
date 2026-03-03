@@ -68,3 +68,5 @@ sourcegit/preference.json
 sourcegit/avatars/
 codex/cache/codex_apps_tools/
 *.sqlite
+*.sqlite-shm
+*.sqlite-wal
