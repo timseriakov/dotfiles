@@ -1,0 +1,125 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "agents": {
+    "sisyphus": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "atlas": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "oracle": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "librarian": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.2,
+    },
+    "explore": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "hephaestus": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "sisyphus-junior": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "multimodal-looker": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "plan": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "OpenCode-Builder": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.05,
+    },
+    "prometheus": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "metis": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "momus": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+  },
+  "sisyphus_agent": {
+    "disabled": false,
+    "default_builder_enabled": false,
+    "planner_enabled": true,
+    "replace_plan": true,
+  },
+  "ralph_loop": {
+    "enabled": true,
+    "default_max_iterations": 100,
+  },
+  "background_task": {
+    "defaultConcurrency": 10,
+    "providerConcurrency": {
+      "google": 10,
+    },
+    "modelConcurrency": {
+      "google/antigravity-gemini-3-flash": 10,
+    },
+  },
+  "categories": {
+    "visual": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.7,
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+    },
+    "business-logic": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+      "prompt_append": "Focus on robustness, error handling, and type safety.",
+    },
+    "quick": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+  },
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": true,
+    "agents": true,
+    "hooks": true,
+    "plugins": true,
+    "plugins_override": {},
+  },
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false,
+  },
+  "experimental": {
+    "auto_resume": true,
+    "aggressive_truncation": true,
+    "truncate_all_tool_outputs": true,
+    "preemptive_compaction": true,
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "detailed",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3,
+      },
+    },
+  },
+  "disabled_mcps": [],
+  "disabled_skills": ["playwright"],
+  "disabled_agents": [],
+  "disabled_hooks": [],
+  "google_auth": false,
+  "lsp": {},
+}
