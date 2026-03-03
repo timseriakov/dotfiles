@@ -4,7 +4,6 @@
     "sisyphus": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
       "temperature": 0.3,
-      "description": "Главный оркестратор. Планирует, делегирует и управляет задачами."
     },
     "atlas": {
       "model": "google/antigravity-claude-opus-4-6-thinking-high",
@@ -23,12 +22,12 @@
       "temperature": 0.1
     },
     "hephaestus": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "google/antigravity-claude-opus-4-6-thinking-high",
       "variant": "medium",
       "temperature": 0.1
     },
     "sisyphus-junior": {
-      "model": "zai-coding-plan/glm-4.7",
+      "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.1
     },
     "multimodal-looker": {
@@ -40,7 +39,7 @@
       "temperature": 0.3
     },
     "OpenCode-Builder": {
-      "model": "google/antigravity-gemini-3-pro-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
       "temperature": 0.05
     },
     "prometheus": {
