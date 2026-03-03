@@ -6,7 +6,7 @@
     "editor_open": "ctrl+g",
     "session_rename": "ctrl+r"
   },
-  "scroll_speed": 2,
+  "scroll_speed": 1,
   "scroll_acceleration": {
     "enabled": false
   }
