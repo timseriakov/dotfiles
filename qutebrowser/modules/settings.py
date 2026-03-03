@@ -41,3 +41,5 @@ c.qt.workarounds.disable_hangouts_extension = True
 
 # Disable Yes/No prompt for JS clipboard access requests.
 c.content.javascript.clipboard = "access"
+# Desktop notifications
+c.content.notifications.enabled = False
