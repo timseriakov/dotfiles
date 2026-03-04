@@ -137,6 +137,3 @@ c.fonts.hints = f"15pt {font_family}"
 c.fonts.debug_console = f"{font_size} {font_family}"
 c.fonts.prompts = f"{font_size} {font_family}"
 c.fonts.statusbar = f"{font_size} {font_family}"
-
-# Webpage BG
-c.colors.webpage.bg = nord0
