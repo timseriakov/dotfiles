@@ -215,6 +215,7 @@ abbr -a va ekphos
 
 abbr -a kkll rip
 abbr -a ports 'snitch -t -l -e'
+abbr -a battery-monitor jolt
 
 abbr -a mu 'mole uninstall'
 abbr -a un 'mole uninstall'
