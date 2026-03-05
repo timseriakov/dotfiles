@@ -7,67 +7,67 @@ set -eU fish_user_paths
 # Don't add them manually here to avoid duplicates
 
 # Antigravity (high priority)
-fish_add_path -Ua ~/.antigravity/antigravity/bin
+fish_add_path -ga ~/.antigravity/antigravity/bin
 
 # User/local tool bins
-fish_add_path -Ua ~/.local/bin
-fish_add_path -Ua ~/dev/dotfiles/qutebrowser/bin
-fish_add_path -Ua ~/.vapi/bin
-fish_add_path -Ua ~/.bun/bin
-fish_add_path -Ua ~/.volta/bin
+fish_add_path -ga ~/.local/bin
+fish_add_path -ga ~/dev/dotfiles/qutebrowser/bin
+fish_add_path -ga ~/.vapi/bin
+fish_add_path -ga ~/.bun/bin
+fish_add_path -ga ~/.volta/bin
 
 # Volta per-node "global npm bin" (npm -g sometimes lands here)
 if set -q VOLTA_HOME; and test -d "$VOLTA_HOME/tools/image/node"
     for node_bin in (command ls -d "$VOLTA_HOME/tools/image/node"/*/bin 2>/dev/null)
-        test -d $node_bin; and fish_add_path -Ua $node_bin
+        test -d $node_bin; and fish_add_path -ga $node_bin
     end
 end
 
-fish_add_path -Ua ~/.cargo/bin
-fish_add_path -Ua ~/.nix-profile/bin
-fish_add_path -Ua ~/.swiftly/bin
-fish_add_path -Ua ~/.lmstudio/bin
-fish_add_path -Ua ~/.orbstack/bin
-fish_add_path -Ua ~/.lazyshell/bin
+fish_add_path -ga ~/.cargo/bin
+fish_add_path -ga ~/.nix-profile/bin
+fish_add_path -ga ~/.swiftly/bin
+fish_add_path -ga ~/.lmstudio/bin
+fish_add_path -ga ~/.orbstack/bin
+fish_add_path -ga ~/.lazyshell/bin
 
 # Go
-fish_add_path -Ua ~/go/bin
+fish_add_path -ga ~/go/bin
 set -gx GOPATH $HOME/go
 set -gx GOBIN $HOME/.local/bin
 
 # Java SDKs (prefer 11 to match JAVA_HOME)
-fish_add_path -Ua /opt/homebrew/opt/openjdk@11/bin
-fish_add_path -Ua /opt/homebrew/opt/openjdk@17/bin
+fish_add_path -ga /opt/homebrew/opt/openjdk@11/bin
+fish_add_path -ga /opt/homebrew/opt/openjdk@17/bin
 
 # Android SDK
-fish_add_path -Ua ~/Library/Android/sdk/platform-tools
-fish_add_path -Ua ~/Library/Android/sdk/emulator
+fish_add_path -ga ~/Library/Android/sdk/platform-tools
+fish_add_path -ga ~/Library/Android/sdk/emulator
 
 # Oracle Instant Client
-fish_add_path -Ua ~/oracle/instantclient_23_3
+fish_add_path -ga ~/oracle/instantclient_23_3
 
 # Qt
-fish_add_path -Ua ~/Qt/6.7.0-custom/bin
-fish_add_path -Ua /opt/homebrew/opt/qt@5/bin
+fish_add_path -ga ~/Qt/6.7.0-custom/bin
+fish_add_path -ga /opt/homebrew/opt/qt@5/bin
 
 # Homebrew (give brewed tools precedence over system ones, e.g. `less`)
-fish_add_path -Ua /opt/homebrew/bin
+fish_add_path -ga /opt/homebrew/bin
 
 # MacPorts (if installed)
 if test -d /opt/local/bin
-    fish_add_path -Ua /opt/local/bin
-    fish_add_path -Ua /opt/local/sbin
+    fish_add_path -ga /opt/local/bin
+    fish_add_path -ga /opt/local/sbin
 end
 
 # Note: System paths (/usr/bin, /bin, /usr/sbin, /sbin) are already in the default PATH
 # and shouldn't be added to fish_user_paths.
 
 # IDEs
-fish_add_path -Ua /Applications/GoLand.app/Contents/MacOS
+fish_add_path -ga /Applications/GoLand.app/Contents/MacOS
 
 # Zerobrew
 set -gx ZEROBREW_ROOT $HOME/.zerobrew
 set -gx ZEROBREW_PREFIX $HOME/.zerobrew
-fish_add_path -Ua $HOME/.zerobrew/bin
+fish_add_path -ga $HOME/.zerobrew/bin
 
 true

@@ -15,7 +15,7 @@ function path_sanitize_once --description "Clean legacy Ruby 2.6 bins and confli
     end
 
     # --- Force rbenv shims first in fish_user_paths
-    set -U fish_user_paths ~/.rbenv/shims ~/.rbenv/bin $cleaned
+    set -g fish_user_paths ~/.rbenv/shims ~/.rbenv/bin $cleaned
 
     # --- Remove leftover user gem bin for Ruby 2.6 (avoid accidental execution)
     test -e ~/.gem/ruby/2.6.0/bin/bundle; and rm ~/.gem/ruby/2.6.0/bin/bundle
