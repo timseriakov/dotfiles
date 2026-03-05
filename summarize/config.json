@@ -1,0 +1,6 @@
+{
+  "model": "openai/gpt-4o-mini",
+  "output": {
+    "language": "ru"
+  }
+}
