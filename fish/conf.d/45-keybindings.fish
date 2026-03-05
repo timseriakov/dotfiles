@@ -6,13 +6,14 @@ if not status is-interactive
     return
 end
 
-# Use custom keybindings function
-set -U fish_key_bindings fish_user_key_bindings
+# Explicitly erase old universal variable to complete migration to fish 4.3+
+set -eU fish_key_bindings
+set -g fish_key_bindings fish_user_key_bindings
 
 # Apply custom keybindings if function exists
 if type -q fish_user_key_bindings
     fish_user_key_bindings
-    set -U fish_key_bindings fish_user_key_bindings
+    set -g fish_key_bindings fish_user_key_bindings
 end
 
 # Cursor shapes
