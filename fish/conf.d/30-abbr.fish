@@ -13,7 +13,6 @@ abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
 abbr -a fe 'exec fish'
-abbr -a ffix fish-fix43
 
 # npm
 abbr -a n npm

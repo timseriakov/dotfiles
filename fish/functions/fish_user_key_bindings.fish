@@ -16,7 +16,8 @@ function fish_user_key_bindings
     bind -M insert -m default jj 'set -g fish_bind_mode default; commandline -f backward-char repaint'
 
     # In visual mode, yank to both fish killring and system clipboard.
-    bind -M visual -m default y 'fish_vi_yank_selection; fish_clipboard_copy; end-selection repaint-mode'
+    bind -M visual -m default y 'fish_vi_yank_selection; fish_clipboard_copy; commandline -f end-selection repaint-mode'
+
 
 
     # Execute 'f' immediately on space
