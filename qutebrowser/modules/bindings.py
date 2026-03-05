@@ -201,10 +201,10 @@ config.bind(
 
 # Dark mode controls
 # - Built-in Qt darkmode toggle on Space u n
-config.bind(leader + "un", "config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гт", "config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "ui", "config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гш", "config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "un", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
+config.bind(leader + "гт", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
+config.bind(leader + "ui", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
+config.bind(leader + "гш", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
 
 # dev tools
 config.bind(leader + "dd", "devtools")
