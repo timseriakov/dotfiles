@@ -1,5 +1,13 @@
 {
-  "model": "openai/gpt-4o-mini",
+  "model": "fast",
+  "models": {
+    "fast": {
+      "id": "openai/gpt-4o-mini"
+    },
+    "quality": {
+      "id": "openai/gpt-5-mini"
+    }
+  },
   "output": {
     "language": "ru"
   }

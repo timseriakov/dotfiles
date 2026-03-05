@@ -75,6 +75,4 @@ set -gx DENO_UNSTABLE_TSGO 1
 set -gx MCPPROXY_DISABLE_OAUTH true
 set -gx MCPPROXY_UPDATE_APP_BUNDLE true
 
-# pnpm end
-
-true
+set -gx YT_DLP_PATH /opt/homebrew/bin/yt-dlp

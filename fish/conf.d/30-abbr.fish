@@ -148,6 +148,14 @@ abbr -a amp 'npx -y @sourcegraph/amp@latest'
 abbr -a qw qwen
 abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
 
+# Summarize
+abbr -a sum summarize
+abbr -a sumq 'summarize --model quality'
+abbr -a sumx 'summarize --extract --format md'
+abbr -a sumsl 'summarize --slides'
+abbr -a sumso 'summarize --slides --slides-ocr'
+abbr -a sumsj 'summarize --slides --json'
+
 # z jumps
 abbr -a dev 'cd ~/dev'
 abbr -a dl 'z dl'
@@ -216,6 +224,9 @@ abbr -a va ekphos
 abbr -a kkll rip
 abbr -a ports 'snitch -t -l -e'
 abbr -a battery-monitor jolt
+abbr -a json-view otree
+abbr -a lan whosthere
+abbr -a why-run witr
 
 abbr -a mu 'mole uninstall'
 abbr -a un 'mole uninstall'
