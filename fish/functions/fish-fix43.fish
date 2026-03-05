@@ -18,7 +18,6 @@ function fish-fix43 --description 'Fix Fish 4.3+ migration issues by clearing le
 
     set -l frozen_files (ls ~/.config/fish/conf.d/fish_frozen_*.fish 2>/dev/null; or true)
     if test -n "$frozen_files" -a "$frozen_files" != "true"
-    if test -n "$frozen_files"
         echo "Found regenerated frozen files:"
         for f in $frozen_files
             echo "  - $f"
