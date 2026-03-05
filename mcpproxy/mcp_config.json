@@ -9,29 +9,47 @@
       "name": "activitywatch",
       "protocol": "stdio",
       "command": "node",
-      "args": ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"],
+      "args": [
+        "/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2026-01-21T13:23:01.814156+03:00"
+      "updated": "2026-03-04T18:11:58.875945+03:00"
     },
     {
       "name": "lightpanda",
       "protocol": "stdio",
       "command": "fish",
-      "args": ["-lc", "gomcp stdio"],
+      "args": [
+        "-lc",
+        "gomcp stdio"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-01-21T13:22:45.850698+03:00"
+      "updated": "2026-03-04T18:11:58.885909+03:00"
+    },
+    {
+      "name": "linear",
+      "url": "https://mcp.linear.app/mcp",
+      "protocol": "streamable-http",
+      "oauth": null,
+      "enabled": true,
+      "quarantined": false,
+      "created": "2026-03-04T18:11:52.959671+03:00",
+      "updated": "2026-03-04T18:11:58.897212+03:00"
     },
     {
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
@@ -40,63 +58,49 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-21T13:22:45.862077+03:00"
-    },
-    {
-      "name": "nx",
-      "protocol": "stdio",
-      "command": "npx",
-      "args": ["nx-mcp@latest"],
-      "oauth": null,
-      "enabled": false,
-      "quarantined": false,
-      "created": "2025-12-24T12:20:49.488052+03:00",
-      "updated": "2026-01-21T13:22:45.869956+03:00"
-    },
-    {
-      "name": "perplexity-mcp",
-      "protocol": "stdio",
-      "command": "fish",
-      "args": ["-lc", "perplexity-mcp"],
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-21T13:22:45.87892+03:00"
+      "updated": "2026-03-04T18:11:58.905892+03:00"
     },
     {
       "name": "playwright",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["@playwright/mcp@latest"],
+      "args": [
+        "@playwright/mcp@latest"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
       "created": "2026-01-13T21:13:04.111801+03:00",
-      "updated": "2026-01-21T13:22:45.888916+03:00"
+      "updated": "2026-03-04T18:11:58.930906+03:00"
     },
     {
       "name": "repomix",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["repomix", "serve"],
+      "args": [
+        "repomix",
+        "serve"
+      ],
       "working_dir": "/Users/tim/dev",
       "oauth": null,
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-21T13:22:45.89715+03:00"
+      "updated": "2026-03-04T18:11:58.939087+03:00"
     },
     {
       "name": "sequential-thinking",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-21T13:22:45.906282+03:00"
+      "updated": "2026-03-04T18:11:58.946984+03:00"
     },
     {
       "name": "serena",
@@ -114,7 +118,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-01-21T13:22:45.915038+03:00"
+      "updated": "2026-03-04T18:11:58.955939+03:00"
     }
   ],
   "top_k": 5,
@@ -220,7 +224,9 @@
       "description": "Browse and discover MCP use-cases, servers, clients, and news",
       "url": "https://www.pulsemcp.com/",
       "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/pulse"
     },
     {
@@ -229,7 +235,9 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/docker"
     },
     {
@@ -238,7 +246,9 @@
       "description": "Fleur is the app store for Claude",
       "url": "https://www.fleurmcp.com/",
       "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/fleur"
     },
     {
@@ -247,7 +257,12 @@
       "description": "A reference implementation of MCP registry using Azure API Center",
       "url": "https://demo.registry.azure-mcp.net/",
       "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": ["verified", "demo", "azure", "reference"],
+      "tags": [
+        "verified",
+        "demo",
+        "azure",
+        "reference"
+      ],
       "protocol": "mcp/v0"
     },
     {
@@ -256,7 +271,11 @@
       "description": "Community-maintained list of remote Model Context Protocol servers",
       "url": "https://remote-mcp-servers.com/",
       "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": ["verified", "community", "remote"],
+      "tags": [
+        "verified",
+        "community",
+        "remote"
+      ],
       "protocol": "custom/remote"
     }
   ],
@@ -298,5 +317,22 @@
   "activity_cleanup_interval_min": 60,
   "intent_declaration": {
     "strict_server_validation": true
+  },
+  "sensitive_data_detection": {
+    "enabled": true,
+    "scan_requests": true,
+    "scan_responses": true,
+    "max_payload_size_kb": 1024,
+    "entropy_threshold": 4.5,
+    "categories": {
+      "api_token": true,
+      "auth_token": true,
+      "cloud_credentials": true,
+      "credit_card": true,
+      "database_credential": true,
+      "high_entropy": true,
+      "private_key": true,
+      "sensitive_file": true
+    }
   }
 }

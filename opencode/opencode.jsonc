@@ -28,25 +28,30 @@
   // google/antigravity-gemini-3-flash
   "mcp": {
     "mcpproxy": {
-      "type": "remote",
       "url": "http://localhost:8080/mcp/",
+      "type": "remote",
       "enabled": true
     },
     "vercel": {
-      "type": "remote",
       "url": "https://mcp.vercel.com",
+      "type": "remote",
       "enabled": false
     },
     "playwriter": {
-      "type": "local",
       "command": ["npx", "-y", "playwriter@latest"],
+      "type": "local",
       "enabled": true
     },
     "engram": {
       "command": ["engram", "mcp"],
-      "enabled": true,
-      "type": "local"
-    }
+      "type": "local",
+      "enabled": false,
+    },
+    "frame0": {
+      "command": ["npx", "-y", "frame0-mcp-server"],
+      "type": "local",
+      "enabled": false
+    },
   },
 
   "provider": {

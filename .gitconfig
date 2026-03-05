@@ -12,7 +12,7 @@
 	defaultBranch = master
 
 [core]
-    pager = delta
+	pager = delta
     autocrlf = input
 
 [interactive]
@@ -35,7 +35,6 @@
 
 [diff]
 	colorMoved = default
-	external = difft           # use difftastic for `git diff`
 	tool = nvimdiff            # use Neovim for `git difftool` (Ctrl+T in LazyGit)
 
 [difftool]
@@ -64,6 +63,7 @@
     slog  = !sh -c 'git log -p --color=always "$@" | git-split-diffs --color=16m | less -RFX' -
     vdiff = !sh -c 'git diff --no-ext-diff --color=always "$@" | diff-so-fancy | less -RFX' -
     vlog  = !sh -c 'git log -p --color=always "$@" | diff-so-fancy | less -RFX' -
+	difi = !difi
 
 [split-diffs]
     # Allow split view on narrower panes (e.g. LazyGit panel widths)

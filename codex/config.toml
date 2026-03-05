@@ -64,6 +64,9 @@ trust_level = "trusted"
 type = "http"
 url = "http://localhost:8080/mcp/"
 
+[mcp_servers.linear]
+url = "https://mcp.linear.app/mcp"
+
 [notice]
 hide_gpt5_1_migration_prompt = true
 "hide_gpt-5.1-codex-max_migration_prompt" = true
@@ -77,3 +80,4 @@ shell_snapshot = true
 default_mode_request_user_input = true
 multi_agent = true
 apps = true
+rmcp_client = true
