@@ -13,6 +13,7 @@ abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
 abbr -a fe 'exec fish'
+abbr -a ffix fish-fix43
 
 # npm
 abbr -a n npm
@@ -152,9 +153,11 @@ abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
 abbr -a sum summarize
 abbr -a sumq 'summarize --model quality'
 abbr -a sumx 'summarize --extract --format md'
-abbr -a sumsl 'summarize --slides'
-abbr -a sumso 'summarize --slides --slides-ocr'
-abbr -a sumsj 'summarize --slides --json'
+abbr -a sumss 'summarize --slides'
+abbr -a sumsl 'summarize slides --render kitty'
+abbr -a sumso 'summarize slides --slides-ocr --render kitty'
+abbr -a sumso 'summarize slides --slides-ocr'
+abbr -a sumsj 'summarize slides --json'
 
 # z jumps
 abbr -a dev 'cd ~/dev'
@@ -233,6 +236,7 @@ abbr -a un 'mole uninstall'
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
 abbr -a tk tmux-take-alacritty
+abbr -a surge-up 'brew install surge-downloader/tap/surge'
 
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -movflags +faststart \
