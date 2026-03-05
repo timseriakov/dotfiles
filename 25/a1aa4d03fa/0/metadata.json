@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "25a1aa4d03fa",
+  "session_id": "ses_35a1448f2ffeihpKmsws7oT8BI",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-05T18:38:27.471557Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "fish/conf.d/00-env.fish",
+    "fish/conf.d/30-abbr.fish",
+    "opencode/opencode.jsonc",
+    "summarize/config.json"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "772ac209055b",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-05T18:38:27.288119Z",
+    "agent_lines": 60,
+    "human_added": 839,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 900,
+    "agent_percentage": 6.666666666666667
+  }
+}
