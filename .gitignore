@@ -70,3 +70,4 @@ codex/cache/codex_apps_tools/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+codex/session_index.jsonl

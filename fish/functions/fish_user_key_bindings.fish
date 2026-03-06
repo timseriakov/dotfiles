@@ -10,6 +10,7 @@ function fish_user_key_bindings
         bind -M $mode \cl accept-autosuggestion
         bind -M $mode \cf forward-word
         bind -M $mode alt-backspace backward-kill-word  # Option+Backspace to delete word
+        bind -M $mode \ct try-rs-picker # Ctrl+T for try-rs-picker
     end
 
     # jj to escape insert → normal with correct cursor mode

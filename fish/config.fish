@@ -67,3 +67,4 @@ set -l openclaw_completions "$HOME/.openclaw/completions/openclaw.fish"
 if test -f "$openclaw_completions"
     source "$openclaw_completions"
 end
+
