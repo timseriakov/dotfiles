@@ -44,7 +44,12 @@ end
 
 
 # Increase file descriptor limit for interactive shells (macOS)
-status --is-interactive; and test (ulimit -n) -lt 65536; and ulimit -n 65536; or true
+if status --is-interactive
+    set -l nofile_limit (ulimit -n)
+    if string match -rq '^[0-9]+$' -- $nofile_limit
+        test $nofile_limit -lt 65536; and ulimit -n 65536
+    end
+end
 
 # Note: Antigravity PATH managed in conf.d/10-path.fish
 # Note: Homebrew PATH managed in conf.d/10-path.fish
@@ -67,4 +72,3 @@ set -l openclaw_completions "$HOME/.openclaw/completions/openclaw.fish"
 if test -f "$openclaw_completions"
     source "$openclaw_completions"
 end
-
