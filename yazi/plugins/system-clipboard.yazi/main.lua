@@ -41,15 +41,22 @@ return {
 			cmd:arg(path)
 		end
 
-		local status, err = cmd:spawn():wait()
-
-		if not status or not status.success then
+		local child, err = cmd:spawn()
+		if not child then
 			ya.notify({
 				title = "System Clipboard",
-				content = string.format("Could not copy file(s): %s", status and status.code or err),
+				content = string.format("Could not start copy: %s", err or "unknown error"),
 				level = "error",
 				timeout = 5,
 			})
+			return
 		end
+
+		ya.notify({
+			title = "System Clipboard",
+			content = string.format("Copied %d item(s)", #urls),
+			level = "info",
+			timeout = 2,
+		})
 	end,
 }

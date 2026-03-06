@@ -7,9 +7,8 @@
 keymap = [
 	{ on = "<Esc>", run = "escape",             desc = "Exit visual mode, clear selection, or cancel search" },
 	{ on = "<C-[>", run = "escape",             desc = "Exit visual mode, clear selection, or cancel search" },
-	# { on = "q",     run = "quit",               desc = "Quit the process" },
-	{ on = "q",     run = "plugin close-and-restore-tab close_to_left",               desc = "Quit the process" },
-	{ on = "й",     run = "plugin close-and-restore-tab close_to_left",               desc = "Quit the process" },
+	{ on = "q",     run = "quit",               desc = "Quit the process" },
+	{ on = "й",     run = "quit",               desc = "Quit the process" },
 	{ on = "Q",     run = "quit --no-cwd-file", desc = "Quit without outputting cwd-file" },
 	{ on = "<C-w>", run = "plugin close-and-restore-tab close_to_left", desc = "Close the current tab and turn to left tab, or quit if it is last tab" },
 	{ on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
