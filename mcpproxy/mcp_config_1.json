@@ -9,7 +9,9 @@
       "name": "Homebrew",
       "protocol": "stdio",
       "command": "/opt/homebrew/bin/brew",
-      "args": ["mcp-server"],
+      "args": [
+        "mcp-server"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -17,21 +19,14 @@
       "updated": "2025-12-21T22:46:44.910667+03:00"
     },
     {
-      "name": "activitywatch",
-      "protocol": "stdio",
-      "command": "node",
-      "args": ["/Users/tim/dev/tmp/activitywatch-mcp-server/dist/index.js"],
-      "oauth": null,
-      "enabled": false,
-      "quarantined": false,
-      "created": "2025-10-21T19:04:57.9416+03:00",
-      "updated": "2025-12-21T22:46:44.925468+03:00"
-    },
-    {
       "name": "atlassian",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"],
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.atlassian.com/v1/sse"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -42,7 +37,10 @@
       "name": "context7",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -53,7 +51,10 @@
       "name": "gitlab",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@zereight/mcp-gitlab"],
+      "args": [
+        "-y",
+        "@zereight/mcp-gitlab"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -64,7 +65,10 @@
       "name": "lightpanda",
       "protocol": "stdio",
       "command": "fish",
-      "args": ["-lc", "gomcp stdio"],
+      "args": [
+        "-lc",
+        "gomcp stdio"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -75,7 +79,10 @@
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
       "env": {
         "MORPH_API_KEY": "${keyring:morph_api_key}"
       },
@@ -89,7 +96,9 @@
       "name": "nx",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["nx-mcp@latest"],
+      "args": [
+        "nx-mcp@latest"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -100,7 +109,10 @@
       "name": "perplexity-mcp",
       "protocol": "stdio",
       "command": "fish",
-      "args": ["-lc", "perplexity-mcp"],
+      "args": [
+        "-lc",
+        "perplexity-mcp"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -111,7 +123,9 @@
       "name": "playwright",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["@playwright/mcp@latest"],
+      "args": [
+        "@playwright/mcp@latest"
+      ],
       "env": {
         "PLAYWRIGHT_BROWSERS_PATH": "0",
         "PLAYWRIGHT_MCP_CDP_ENDPOINT": "ws://127.0.0.1:9222/",
@@ -127,7 +141,10 @@
       "name": "repomix",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["repomix", "serve"],
+      "args": [
+        "repomix",
+        "serve"
+      ],
       "working_dir": "/Users/tim/dev",
       "oauth": null,
       "enabled": false,
@@ -139,7 +156,10 @@
       "name": "sequential-thinking",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -168,7 +188,10 @@
       "name": "shadcn-svelte-extras",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["jsrepo", "mcp"],
+      "args": [
+        "jsrepo",
+        "mcp"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -179,7 +202,9 @@
       "name": "svelte-mcp",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["@sveltejs/mcp"],
+      "args": [
+        "@sveltejs/mcp"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -290,7 +315,9 @@
       "description": "Browse and discover MCP use-cases, servers, clients, and news",
       "url": "https://www.pulsemcp.com/",
       "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/pulse"
     },
     {
@@ -299,7 +326,9 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/docker"
     },
     {
@@ -308,7 +337,9 @@
       "description": "Fleur is the app store for Claude",
       "url": "https://www.fleurmcp.com/",
       "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/fleur"
     },
     {
@@ -317,7 +348,12 @@
       "description": "A reference implementation of MCP registry using Azure API Center",
       "url": "https://demo.registry.azure-mcp.net/",
       "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": ["verified", "demo", "azure", "reference"],
+      "tags": [
+        "verified",
+        "demo",
+        "azure",
+        "reference"
+      ],
       "protocol": "mcp/v0"
     },
     {
@@ -326,7 +362,11 @@
       "description": "Community-maintained list of remote Model Context Protocol servers",
       "url": "https://remote-mcp-servers.com/",
       "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": ["verified", "community", "remote"],
+      "tags": [
+        "verified",
+        "community",
+        "remote"
+      ],
       "protocol": "custom/remote"
     }
   ],

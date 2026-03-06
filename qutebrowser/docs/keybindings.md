@@ -191,17 +191,6 @@
 | <kbd>Leader</kbd> <kbd>tr</kbd> | full page translation toggle          |
 | <kbd>Leader</kbd> <kbd>ty</kbd> | yandex translation toggle             |
 
-## ActivityWatch
-
-| Shortcut                        | Action                                            |
-| ------------------------------- | ------------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>aw</kbd> | spawn -u aw-heartbeat-bridge start                |
-| <kbd>Leader</kbd> <kbd>aW</kbd> | spawn -u aw-heartbeat-bridge stop                 |
-| <kbd>Leader</kbd> <kbd>as</kbd> | spawn -u aw-heartbeat-bridge status               |
-| <kbd>Leader</kbd> <kbd>ad</kbd> | disable AW tracking (per-tab flag; reload needed) |
-| <kbd>Leader</kbd> <kbd>ae</kbd> | enable AW tracking (per-tab flag; reload needed)  |
-| <kbd>Leader</kbd> <kbd>al</kbd> | tail AW log in Alacritty popup                    |
-
 ## Zoom Bindings
 
 | Shortcut          | Action   |

@@ -434,7 +434,6 @@ brew "sst/tap/opencode"
 brew "tokuhirom/tap/dcv"
 brew "tursodatabase/tap/turso"
 # Time tracker
-cask "activitywatch"
 # GPU-accelerated terminal emulator
 cask "alacritty"
 # Enable Windows-like alt-tab
