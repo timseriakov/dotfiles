@@ -71,3 +71,4 @@ codex/cache/codex_apps_tools/
 *.sqlite-shm
 *.sqlite-wal
 codex/session_index.jsonl
+opencode/skills/rtk-compress/_meta.json

@@ -243,3 +243,5 @@ abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -vf "fps=30,scale=512:-2:flags=lanczos" \
   -c:v libx264 -profile:v baseline -level 3.0 \
   -an -loop 0 output.mp4'
+
+abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
