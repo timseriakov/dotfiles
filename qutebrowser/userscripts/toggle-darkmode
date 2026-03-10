@@ -37,4 +37,4 @@ else
 fi
 
 printf '%s\n' "$next_mode" >"$state_file"
-echo "message-info '$current_mode' ;; cmd-later 500 clear-messages ;; set colors.webpage.preferred_color_scheme $next_mode ;; set colors.webpage.darkmode.enabled $next_enabled" >>"$QUTE_FIFO"
+echo "set colors.webpage.preferred_color_scheme $next_mode ;; set colors.webpage.darkmode.enabled $next_enabled" >>"$QUTE_FIFO"
