@@ -17,7 +17,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-03-04T18:11:58.885909+03:00"
+      "updated": "2026-03-11T00:22:00.937994+03:00"
     },
     {
       "name": "linear",
@@ -27,7 +27,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2026-03-04T18:11:52.959671+03:00",
-      "updated": "2026-03-04T18:11:58.897212+03:00"
+      "updated": "2026-03-11T00:22:00.946632+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -45,7 +45,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-04T18:11:58.905892+03:00"
+      "updated": "2026-03-11T00:22:00.95468+03:00"
     },
     {
       "name": "playwright",
@@ -58,7 +58,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2026-01-13T21:13:04.111801+03:00",
-      "updated": "2026-03-04T18:11:58.930906+03:00"
+      "updated": "2026-03-11T00:22:00.962641+03:00"
     },
     {
       "name": "repomix",
@@ -73,39 +73,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-04T18:11:58.939087+03:00"
-    },
-    {
-      "name": "sequential-thinking",
-      "protocol": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-04T18:11:58.946984+03:00"
-    },
-    {
-      "name": "serena",
-      "protocol": "stdio",
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--context",
-        "ide-assistant"
-      ],
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-04T18:11:58.955939+03:00"
+      "updated": "2026-03-11T00:22:00.972627+03:00"
     }
   ],
   "top_k": 5,
@@ -167,6 +135,7 @@
     "json_format": false
   },
   "api_key": "1e7d1d1e0e47bb02692be01479e3547ff227c09ce60159b3e0d13e383b509fbe",
+  "require_mcp_auth": false,
   "read_only_mode": false,
   "disable_management": false,
   "allow_server_add": true,

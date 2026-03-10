@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "hashline_edit": true,
   "agents": {
     "sisyphus": {
@@ -75,17 +75,34 @@
     },
   },
   "categories": {
-    "visual": {
+    "visual-engineering": {
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.7,
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
-    "business-logic": {
+    "ultrabrain": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+      "prompt_append": "Focus on robustness, error handling, and type safety.",
+    },
+    "deep": {
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "unspecified-low": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.3,
+    },
+    "unspecified-high": {
+      "model": "google/antigravity-gemini-3-flash",
+      "temperature": 0.1,
+    },
+    "writing": {
       "model": "google/antigravity-gemini-3-flash",
       "temperature": 0.3,
     },

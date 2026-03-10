@@ -10,7 +10,19 @@ return {
     config = function()
       ---@type opencode.Opts
       vim.g.opencode_opts = {
-        -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
+        server = {
+          port = 4096,
+          start = function()
+            require("opencode.terminal").start("opencode serve --hostname 127.0.0.1 --port 4096", {
+              width = math.floor(vim.o.columns * 0.45),
+            })
+          end,
+          toggle = function()
+            require("opencode.terminal").toggle("opencode attach http://127.0.0.1:4096", {
+              width = math.floor(vim.o.columns * 0.45),
+            })
+          end,
+        },
       }
 
       -- Required for `opts.events.reload`.
@@ -18,19 +30,33 @@ return {
 
       -- Keymaps: Space A and then letter
       -- Ask
-      vim.keymap.set({ "n", "x" }, "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Opencode: Ask" })
+      vim.keymap.set({ "n", "x" }, "<leader>aa", function()
+        require("opencode").ask("@this: ", { submit = true })
+      end, { desc = "Opencode: Ask" })
       -- Select (Actions)
-      vim.keymap.set({ "n", "x" }, "<leader>as", function() require("opencode").select() end, { desc = "Opencode: Select/Actions" })
+      vim.keymap.set({ "n", "x" }, "<leader>as", function()
+        require("opencode").select()
+      end, { desc = "Opencode: Select/Actions" })
       -- Toggle
-      vim.keymap.set({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Opencode: Toggle" })
+      vim.keymap.set({ "n", "t" }, "<leader>at", function()
+        require("opencode").toggle()
+      end, { desc = "Opencode: Toggle" })
       -- Operator (Range)
-      vim.keymap.set({ "n", "x" }, "<leader>ao", function() return require("opencode").operator("@this ") end, { expr = true, desc = "Opencode: Operator (Range)" })
+      vim.keymap.set({ "n", "x" }, "<leader>ao", function()
+        return require("opencode").operator("@this ")
+      end, { expr = true, desc = "Opencode: Operator (Range)" })
       -- Operator (Line)
-      vim.keymap.set("n", "<leader>al", function() return require("opencode").operator("@this ") .. "_" end, { expr = true, desc = "Opencode: Operator (Line)" })
+      vim.keymap.set("n", "<leader>al", function()
+        return require("opencode").operator("@this ") .. "_"
+      end, { expr = true, desc = "Opencode: Operator (Line)" })
 
       -- Scrolling in session
-      vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end, { desc = "Opencode: Half page up" })
-      vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Opencode: Half page down" })
+      vim.keymap.set("n", "<S-C-u>", function()
+        require("opencode").command("session.half.page.up")
+      end, { desc = "Opencode: Half page up" })
+      vim.keymap.set("n", "<S-C-d>", function()
+        require("opencode").command("session.half.page.down")
+      end, { desc = "Opencode: Half page down" })
     end,
   },
 }
