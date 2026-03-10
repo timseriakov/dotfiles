@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "2a576e53e28e",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "codex/rules/default.rules",
+    "mcpproxy/mcp_config.json",
+    "nvim/lazy-lock.json",
+    "nvim/lua/plugins/ai/opencode.lua",
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_antigravity_3_flash_only.jsonc",
+    "opencode/oh-my-opencode_antigravity_opus_4_6.jsonc",
+    "opencode/oh-my-opencode_generated.json",
+    "opencode/oh-my-opencode_glm.jsonc",
+    "opencode/oh-my-opencode_openai.jsonc",
+    "opencode/oh-my-opencode_openai_glm.jsonc",
+    "opencode/opencode.jsonc",
+    "opencode/opencode_1.jsonc",
+    "package.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2a/576e53e28e/0/metadata.json",
+      "transcript": "/2a/576e53e28e/0/full.jsonl",
+      "context": "",
+      "content_hash": "/2a/576e53e28e/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
