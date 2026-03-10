@@ -31,6 +31,7 @@ c.downloads.location.suggestion = "both"
 # Dark mode
 c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
+c.colors.webpage.bg = "#ffffff"
 
 # config.set("colors.webpage.darkmode.enabled", False, "http://localhost:*")
 # config.set("colors.webpage.darkmode.enabled", False, "http://127.0.0.1:*")
