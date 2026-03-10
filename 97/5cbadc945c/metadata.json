@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "975cbadc945c",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "openclaw/README.md",
+    "openclaw/TAILSCALE-PRIVILEGES.md",
+    "openclaw/omo-release-watcher.js"
+  ],
+  "sessions": [
+    {
+      "metadata": "/97/5cbadc945c/0/metadata.json",
+      "transcript": "/97/5cbadc945c/0/full.jsonl",
+      "context": "",
+      "content_hash": "/97/5cbadc945c/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}

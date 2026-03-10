@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "975cbadc945c",
+  "session_id": "ses_325ff3bc5ffeZysR3Sck3FgpjG",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-10T23:11:37.83457Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "openclaw/README.md",
+    "openclaw/TAILSCALE-PRIVILEGES.md",
+    "openclaw/omo-release-watcher.js"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "c562ad801e56",
+  "initial_attribution": {
+    "calculated_at": "2026-03-10T23:11:37.834123Z",
+    "agent_lines": 33,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 33,
+    "agent_percentage": 100
+  }
+}
