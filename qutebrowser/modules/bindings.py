@@ -177,12 +177,12 @@ config.bind(
 
 # Dark mode controls
 # - Shift+d (D) for quick left-hand access
-config.bind("D", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind("В", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "un", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гт", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "ui", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гш", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind("D", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind("В", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "un", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "гт", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "ui", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "гш", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
 
 # dev tools
 config.bind(leader + "dd", "devtools")
