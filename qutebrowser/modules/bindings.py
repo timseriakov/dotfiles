@@ -162,12 +162,11 @@ config.bind(
 # Settings prompt - moved to keyboard layout switching section
 
 # ui
-config.bind(leader + "uu", "config-cycle tabs.show multiple never")
-config.bind(leader + "гг", "config-cycle tabs.show multiple never")
+config.bind(leader + "uy", "config-cycle tabs.show multiple never")
+config.bind(leader + "гн", "config-cycle tabs.show multiple never")
 
-config.bind(leader + "us", "config-cycle statusbar.show always in-mode")
-config.bind(leader + "uy", "config-cycle statusbar.show always in-mode")
-config.bind(leader + "гн", "config-cycle statusbar.show always in-mode")
+config.bind(leader + "uu", "config-cycle statusbar.show always in-mode")
+config.bind(leader + "гг", "config-cycle statusbar.show always in-mode")
 
 config.bind(
     leader + "ua", ":set content.autoplay true ;; message-info 'Autoplay enabled'"
@@ -177,11 +176,13 @@ config.bind(
 )
 
 # Dark mode controls
-# - Built-in Qt darkmode toggle on Space u n
-config.bind(leader + "un", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
-config.bind(leader + "гт", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
-config.bind(leader + "ui", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
-config.bind(leader + "гш", "config-cycle -p colors.webpage.darkmode.enabled true false ;; config-cycle -p colors.webpage.preferred_color_scheme dark light")
+# - Shift+d (D) for quick left-hand access
+config.bind("D", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind("В", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "un", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "гт", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "ui", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind(leader + "гш", "config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
 
 # dev tools
 config.bind(leader + "dd", "devtools")
