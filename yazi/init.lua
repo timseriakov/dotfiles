@@ -28,7 +28,6 @@ require("searchjump"):setup({
 	opt_search_patterns = {}, -- demo:{"%.e%d+","s%d+e%d+"}
 })
 
-
-if os.getenv("NVIM") then
-	require("toggle-pane"):entry("min-preview")
-end
+-- if os.getenv("NVIM") then
+-- 	require("toggle-pane"):entry("min-preview")
+-- end

@@ -1,0 +1,40 @@
+#!/bin/bash
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
+state_file="${QUTE_DATA_DIR:-$HOME/.local/share/qutebrowser}/darkmode-state"
+current_mode="dark"
+
+infer_mode_from_autoconfig() {
+  local autoconfig_file="${QUTE_CONFIG_DIR:-$HOME/.config/qutebrowser}/autoconfig.yml"
+  if [ ! -f "$autoconfig_file" ]; then
+    return
+  fi
+
+  local inferred
+  inferred=$(grep -E "colors\.webpage\.preferred_color_scheme:" "$autoconfig_file" | tail -n 1 | awk -F': ' '{print $2}' | tr -d '"[:space:]' || true)
+  if [ "$inferred" = "dark" ] || [ "$inferred" = "light" ]; then
+    current_mode="$inferred"
+  fi
+}
+
+if [ -f "$state_file" ]; then
+  stored_mode=$(tr '[:upper:]' '[:lower:]' <"$state_file" | tr -d '[:space:]')
+  if [ "$stored_mode" = "light" ]; then
+    current_mode="light"
+  fi
+else
+  infer_mode_from_autoconfig
+fi
+
+if [ "$current_mode" = "dark" ]; then
+  next_mode="light"
+  next_enabled="false"
+else
+  next_mode="dark"
+  next_enabled="true"
+fi
+
+printf '%s\n' "$next_mode" >"$state_file"
+echo "message-info '$current_mode' ;; cmd-later 500 clear-messages ;; set colors.webpage.preferred_color_scheme $next_mode ;; set colors.webpage.darkmode.enabled $next_enabled" >>"$QUTE_FIFO"

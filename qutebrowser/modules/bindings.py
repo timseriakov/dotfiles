@@ -177,12 +177,12 @@ config.bind(
 
 # Dark mode controls
 # - Shift+d (D) for quick left-hand access
-config.bind("D", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind("В", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "un", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гт", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "ui", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
-config.bind(leader + "гш", "jseval -q (function(){let mode=config.get('colors.webpage.preferred_color_scheme');qutebrowser.message.info(mode);})();cmd-later 500 clear-messages ;; config-cycle -p colors.webpage.preferred_color_scheme dark light ;; config-cycle -p colors.webpage.darkmode.enabled true false")
+config.bind("D", "spawn --userscript toggle-darkmode")
+config.bind("В", "spawn --userscript toggle-darkmode")
+config.bind(leader + "un", "spawn --userscript toggle-darkmode")
+config.bind(leader + "гт", "spawn --userscript toggle-darkmode")
+config.bind(leader + "ui", "spawn --userscript toggle-darkmode")
+config.bind(leader + "гш", "spawn --userscript toggle-darkmode")
 
 # dev tools
 config.bind(leader + "dd", "devtools")
