@@ -8,6 +8,7 @@ JS watcher for `code-yeongyu/oh-my-openagent` releases with explanatory Telegram
 - Tracks the last seen tag in `~/.openclaw-watch/omo_last_tag.txt`.
 - Generates a practical Russian summary via OpenAI (not a raw changelog).
 - Sends one Telegram message only when a new release appears.
+- Uses Telegram HTML formatting for stable rendering in chat.
 
 Summary structure:
 

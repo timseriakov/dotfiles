@@ -135,12 +135,26 @@ ${commits
   .map((c) => `- ${c.sha} ${c.message}`)
   .join("\n")}
 
-Сформируй ответ в формате Markdown:
-1) Что нового (3-7 пунктов)
-2) Кому важно (dev/maintainer/power user)
-3) Как использовать (конкретные шаги/команды/настройки)
-4) Что проверить после обновления (чеклист)
-5) Риски/совместимость (если есть)
+Сформируй ответ СТРОГО в формате Telegram HTML (parse_mode=HTML), не Markdown.
+Разрешены только теги: <b>, <i>, <code>, <pre>.
+Не используй заголовки с решетками, fenced code blocks и markdown-списки.
+
+Структура:
+<b>Что нового</b>
+• пункт
+
+<b>Кому важно</b>
+• пункт
+
+<b>Как использовать</b>
+• пункт
+
+<b>Что проверить после обновления</b>
+• пункт
+
+<b>Риски/совместимость</b>
+• пункт
+
 Пиши по-русски, без воды, максимально прикладно.
 `;
 
@@ -166,7 +180,8 @@ ${commits
           try {
             const response = JSON.parse(data);
             const output = response.output?.[0]?.content?.[0]?.text || "";
-            resolve(output);
+            const normalized = output.replace(/^\s*-\s+/gm, "• ");
+            resolve(normalized);
           } catch (e) {
             reject(new Error(`Parse LLM response failed: ${e.message}`));
           }
@@ -199,7 +214,7 @@ function sendTelegram(text) {
   const body = JSON.stringify({
     chat_id: TELEGRAM_CHAT_ID,
     text: text,
-    parse_mode: "Markdown",
+    parse_mode: "HTML",
   });
 
   return new Promise((resolve, reject) => {
@@ -306,7 +321,7 @@ async function checkForNewRelease() {
     const summary = await generateSummary(latest, prev, commits);
 
     // Send notification
-    const message = `*Новый релиз ${CONFIG.repo}:* \`${latestTag}\`\n${latest.html_url}\n\n${summary}`;
+    const message = `<b>Новый релиз ${CONFIG.repo}: ${latestTag}</b>\n${latest.html_url}\n\n${summary}`;
     console.log("[INFO] Sending Telegram notification...");
     await sendTelegram(message);
 
