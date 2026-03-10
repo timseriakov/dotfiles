@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "a2b647a00847",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/functions/ts-admin.fish",
+    "fish/scripts/setup-openclaw-tailscale-sudo.sh",
+    "openclaw/TAILSCALE-PRIVILEGES.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a2/b647a00847/0/metadata.json",
+      "transcript": "/a2/b647a00847/0/full.jsonl",
+      "context": "",
+      "content_hash": "/a2/b647a00847/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

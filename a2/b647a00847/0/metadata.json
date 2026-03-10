@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "a2b647a00847",
+  "session_id": "ses_3268142dbffeBgkgPr3j17AzAv",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-10T20:57:24.597625Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/functions/ts-admin.fish",
+    "fish/scripts/setup-openclaw-tailscale-sudo.sh",
+    "openclaw/TAILSCALE-PRIVILEGES.md"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "4afff01615a4",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-10T20:57:24.580726Z",
+    "agent_lines": 80,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 80,
+    "agent_percentage": 100
+  }
+}
