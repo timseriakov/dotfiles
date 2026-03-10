@@ -3,7 +3,7 @@
   "checkpoint_id": "975cbadc945c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "openclaw/README.md",
     "openclaw/TAILSCALE-PRIVILEGES.md",
@@ -16,6 +16,20 @@
       "context": "",
       "content_hash": "/97/5cbadc945c/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/97/5cbadc945c/1/metadata.json",
+      "transcript": "/97/5cbadc945c/1/full.jsonl",
+      "context": "",
+      "content_hash": "/97/5cbadc945c/1/content_hash.txt",
+      "prompt": ""
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
