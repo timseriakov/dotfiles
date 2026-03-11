@@ -3,8 +3,7 @@
   "hashline_edit": true,
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "low",
+      "model": "openai/gpt-5.4",
       "temperature": 0.1,
     },
     "atlas": {
