@@ -3,7 +3,7 @@
   "checkpoint_id": "8b623f529642",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "nvim/lua/plugins/ai/opencode.lua"
   ],
@@ -55,6 +55,13 @@
       "transcript": "/8b/623f529642/6/full.jsonl",
       "context": "",
       "content_hash": "/8b/623f529642/6/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/8b/623f529642/7/metadata.json",
+      "transcript": "/8b/623f529642/7/full.jsonl",
+      "context": "",
+      "content_hash": "/8b/623f529642/7/content_hash.txt",
       "prompt": ""
     }
   ],
