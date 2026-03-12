@@ -3,18 +3,19 @@
   "checkpoint_id": "8b623f529642",
   "session_id": "ses_3232a700fffeHXsxXv5nYVNk8s",
   "strategy": "manual-commit",
-  "created_at": "2026-03-12T13:53:20.371176Z",
+  "created_at": "2026-03-12T14:05:18.439104Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
+    "opencode/oh-my-opencode_openai_glm.jsonc",
+    "fish/conf.d/40-plugins.fish",
     "nvim/lua/plugins/ai/opencode.lua",
-    "opencode/oh-my-opencode_openai.jsonc",
-    "opencode/oh-my-opencode_openai_glm.jsonc"
+    "opencode/oh-my-opencode_openai.jsonc"
   ],
   "agent": "Claude Code",
   "turn_id": "ff777526ac6c",
   "initial_attribution": {
-    "calculated_at": "2026-03-12T13:53:20.370724Z",
+    "calculated_at": "2026-03-12T14:05:18.438622Z",
     "agent_lines": 1,
     "human_added": 0,
     "human_modified": 0,
