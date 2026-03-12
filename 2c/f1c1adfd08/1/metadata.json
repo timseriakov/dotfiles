@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "2cf1c1adfd08",
+  "session_id": "ses_31da091e6ffefr6fe2R1mkBSUf",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-12T15:16:33.328967Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "qutebrowser/modules/locale.py"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "808d8eebb30f",
+  "initial_attribution": {
+    "calculated_at": "2026-03-12T15:16:33.328578Z",
+    "agent_lines": 0,
+    "human_added": 469,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 469,
+    "agent_percentage": 0
+  }
+}
