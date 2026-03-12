@@ -3,7 +3,7 @@
   "checkpoint_id": "8b623f529642",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "nvim/lua/plugins/ai/opencode.lua",
     "opencode/oh-my-opencode_openai.jsonc",
