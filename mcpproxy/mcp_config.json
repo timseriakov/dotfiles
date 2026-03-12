@@ -9,10 +9,7 @@
       "name": "lightpanda",
       "protocol": "stdio",
       "command": "fish",
-      "args": [
-        "-lc",
-        "gomcp stdio"
-      ],
+      "args": ["-lc", "gomcp stdio"],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
@@ -33,10 +30,7 @@
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@morph-llm/morph-fast-apply"
-      ],
+      "args": ["-y", "@morph-llm/morph-fast-apply"],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
@@ -51,9 +45,7 @@
       "name": "playwright",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ],
+      "args": ["@playwright/mcp@latest"],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
@@ -64,10 +56,7 @@
       "name": "repomix",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "repomix",
-        "serve"
-      ],
+      "args": ["repomix", "serve"],
       "working_dir": "/Users/tim/dev",
       "oauth": null,
       "enabled": false,
@@ -180,9 +169,7 @@
       "description": "Browse and discover MCP use-cases, servers, clients, and news",
       "url": "https://www.pulsemcp.com/",
       "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/pulse"
     },
     {
@@ -191,9 +178,7 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/docker"
     },
     {
@@ -202,9 +187,7 @@
       "description": "Fleur is the app store for Claude",
       "url": "https://www.fleurmcp.com/",
       "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/fleur"
     },
     {
@@ -213,12 +196,7 @@
       "description": "A reference implementation of MCP registry using Azure API Center",
       "url": "https://demo.registry.azure-mcp.net/",
       "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": [
-        "verified",
-        "demo",
-        "azure",
-        "reference"
-      ],
+      "tags": ["verified", "demo", "azure", "reference"],
       "protocol": "mcp/v0"
     },
     {
@@ -227,11 +205,7 @@
       "description": "Community-maintained list of remote Model Context Protocol servers",
       "url": "https://remote-mcp-servers.com/",
       "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": [
-        "verified",
-        "community",
-        "remote"
-      ],
+      "tags": ["verified", "community", "remote"],
       "protocol": "custom/remote"
     }
   ],
