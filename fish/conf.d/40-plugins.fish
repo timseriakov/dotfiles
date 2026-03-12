@@ -38,7 +38,7 @@ end
 
 # Zoxide
 if type -q zoxide
-    set -gx _ZO_FZF_OPTS "--exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --height=45% --info=inline --layout=reverse --tabstop=1 --exit-0 --preview='\\command -p ls -Cp {2..}' --preview-window=down,30%,sharp --border=none --color=fg:#D8DEE9,bg:#2E3440,hl:#BF616A,fg+:#E5E9F0,bg+:#3B4252,hl+:#BF616A --color=info:#81A1C1,prompt:#81A1C1,pointer:#BF616A,marker:#EBCB8B,spinner:#5E81AC,header:#5E81AC,border:#81A1C1"
+    set -gx _ZO_FZF_OPTS "--exact --no-sort --bind=ctrl-z:ignore,btab:up,tab:down --cycle --keep-right --height=45% --info=inline --layout=reverse --tabstop=1 --exit-0 --preview='eza --icons --group-directories-first --color=always -- {2..}' --preview-window=down,30%,sharp --border=none --color=fg:#D8DEE9,bg:#2E3440,hl:#BF616A,fg+:#E5E9F0,bg+:#3B4252,hl+:#BF616A --color=info:#81A1C1,prompt:#81A1C1,pointer:#BF616A,marker:#EBCB8B,spinner:#5E81AC,header:#5E81AC,border:#81A1C1"
     zoxide init fish | source
     # ensure `z` function override (compat)
     functions -e z 2>/dev/null
