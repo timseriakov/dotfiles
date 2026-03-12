@@ -3,4 +3,5 @@
 path=$1
 path=${path%0}
 
-nohup sh -c 'sleep 1; zoxide remove -- "$1"' sh "$path" >/dev/null 2>&1 &
+# Delete immediately
+zoxide remove -- "$path"
