@@ -5,6 +5,7 @@
   "branch": "master",
   "checkpoints_count": 2,
   "files_touched": [
+    "fish/conf.d/40-plugins.fish",
     "nvim/lua/plugins/ai/opencode.lua",
     "opencode/oh-my-opencode_openai.jsonc",
     "opencode/oh-my-opencode_openai_glm.jsonc"
@@ -85,6 +86,13 @@
       "transcript": "/8b/623f529642/10/full.jsonl",
       "context": "",
       "content_hash": "/8b/623f529642/10/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/8b/623f529642/11/metadata.json",
+      "transcript": "/8b/623f529642/11/full.jsonl",
+      "context": "",
+      "content_hash": "/8b/623f529642/11/content_hash.txt",
       "prompt": ""
     }
   ],
