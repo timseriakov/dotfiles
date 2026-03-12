@@ -5,12 +5,31 @@ set -euo pipefail
 pane_current_command=${1:-}
 pane_pid=${2:-}
 pane_tty=${3:-}
+pane_current_path=${4:-}
+
+MAPPINGS_FILE="$(dirname "$0")/title-mappings.conf"
 
 sanitize_comm() {
     local comm=${1:-}
     comm=${comm##*/}
     comm=${comm#-}
     printf '%s' "$comm"
+}
+
+apply_mappings() {
+    local input=$1
+    if [[ ! -f "$MAPPINGS_FILE" ]]; then
+        printf '%s' "$input"
+        return
+    fi
+    
+    local output="$input"
+    while IFS=: read -r key val || [[ -n "$key" ]]; do
+        [[ -z "$key" || "$key" == \#* ]] && continue
+        # Replace occurrences of key with val
+        output="${output//$key/$val}"
+    done < "$MAPPINGS_FILE"
+    printf '%s' "$output"
 }
 
 child_comm() {
@@ -28,47 +47,50 @@ child_comm() {
     return 1
 }
 
-if [[ -z "$pane_current_command" || -z "$pane_pid" || -z "$pane_tty" ]]; then
-    exit 0
-fi
-
+# 1. Resolve App Name
+resolved_app=""
 if [[ "$pane_current_command" != "volta-shim" ]]; then
-    printf '%s\n' "$(sanitize_comm "$pane_current_command")"
-    exit 0
-fi
-
-if child=$(child_comm "$pane_pid"); then
-    printf '%s\n' "$child"
-    exit 0
-fi
-
-tty_short=${pane_tty#/dev/}
-fg_pid=""
-fg_comm=""
-while read -r pid stat comm; do
-    if [[ "$stat" == *+* ]]; then
-        fg_pid=$pid
-        fg_comm=$(sanitize_comm "$comm")
-        break
-    fi
-done < <(ps -t "$tty_short" -o pid= -o stat= -o comm= 2>/dev/null || true)
-
-if [[ -n "$fg_comm" && "$fg_comm" != "volta-shim" ]]; then
-    printf '%s\n' "$fg_comm"
-    exit 0
-fi
-
-if [[ -n "$fg_pid" ]]; then
-    if child=$(child_comm "$fg_pid"); then
-        printf '%s\n' "$child"
-        exit 0
-    fi
-fi
-
-fallback=$(ps -p "$pane_pid" -o comm= 2>/dev/null | head -n1)
-fallback=$(sanitize_comm "$fallback")
-if [[ -n "$fallback" ]]; then
-    printf '%s\n' "$fallback"
+    resolved_app=$(sanitize_comm "$pane_current_command")
 else
-    printf '%s\n' "$(sanitize_comm "$pane_current_command")"
+    if child=$(child_comm "$pane_pid"); then
+        resolved_app="$child"
+    else
+        tty_short=${pane_tty#/dev/}
+        fg_pid=""
+        fg_comm=""
+        while read -r pid stat comm; do
+            if [[ "$stat" == *+* ]]; then
+                fg_pid=$pid
+                fg_comm=$(sanitize_comm "$comm")
+                break
+            fi
+        done < <(ps -t "$tty_short" -o pid= -o stat= -o comm= 2>/dev/null || true)
+        
+        if [[ -n "$fg_comm" && "$fg_comm" != "volta-shim" ]]; then
+            resolved_app="$fg_comm"
+        elif [[ -n "$fg_pid" ]]; then
+            if child=$(child_comm "$fg_pid"); then
+                resolved_app="$child"
+            fi
+        fi
+    fi
+fi
+
+if [[ -z "$resolved_app" ]]; then
+    resolved_app=$(sanitize_comm "$pane_current_command")
+fi
+
+# 2. Resolve Path Basename
+path_base=${pane_current_path##*/}
+[[ -z "$path_base" ]] && path_base="/"
+
+# 3. Apply Mappings
+final_app=$(apply_mappings "$resolved_app")
+final_path=$(apply_mappings "$path_base")
+
+# 4. Output final string
+if [[ "$final_app" == "$final_path" ]]; then
+    printf '%s\n' "$final_app"
+else
+    printf '%s /%s\n' "$final_app" "$final_path"
 fi
