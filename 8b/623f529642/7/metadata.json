@@ -3,28 +3,21 @@
   "checkpoint_id": "8b623f529642",
   "session_id": "ses_326841b8bffeKfWT7U00CUsoDR",
   "strategy": "manual-commit",
-  "created_at": "2026-03-11T15:12:11.707385Z",
+  "created_at": "2026-03-12T13:53:20.495194Z",
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
-    "nvim/lua/plugins/ai/opencode.lua"
+    "opencode/oh-my-opencode_openai.jsonc"
   ],
   "agent": "Claude Code",
-  "turn_id": "f415d15746e2",
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  },
+  "turn_id": "e23ad362af1e",
   "initial_attribution": {
-    "calculated_at": "2026-03-11T15:12:11.655164Z",
-    "agent_lines": 43,
+    "calculated_at": "2026-03-12T13:53:20.494634Z",
+    "agent_lines": 1,
     "human_added": 0,
-    "human_modified": 4,
-    "human_removed": 52,
-    "total_committed": 47,
-    "agent_percentage": 91.48936170212765
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1,
+    "agent_percentage": 100
   }
 }
