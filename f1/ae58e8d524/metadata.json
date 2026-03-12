@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "f1ae58e8d524",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "bin/zoxide-remove-entry",
+    "fish/conf.d/40-plugins.fish"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f1/ae58e8d524/0/metadata.json",
+      "transcript": "/f1/ae58e8d524/0/full.jsonl",
+      "context": "",
+      "content_hash": "/f1/ae58e8d524/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
