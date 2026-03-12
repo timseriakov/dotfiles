@@ -5,7 +5,9 @@
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
-    "nvim/lua/plugins/ai/opencode.lua"
+    "nvim/lua/plugins/ai/opencode.lua",
+    "opencode/oh-my-opencode_openai.jsonc",
+    "opencode/oh-my-opencode_openai_glm.jsonc"
   ],
   "sessions": [
     {
@@ -62,6 +64,13 @@
       "transcript": "/8b/623f529642/7/full.jsonl",
       "context": "",
       "content_hash": "/8b/623f529642/7/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/8b/623f529642/8/metadata.json",
+      "transcript": "/8b/623f529642/8/full.jsonl",
+      "context": "",
+      "content_hash": "/8b/623f529642/8/content_hash.txt",
       "prompt": ""
     }
   ],
