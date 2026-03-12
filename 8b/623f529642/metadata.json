@@ -3,9 +3,10 @@
   "checkpoint_id": "8b623f529642",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
     "fish/conf.d/40-plugins.fish",
+    "fish/functions/f.fish",
     "nvim/lua/plugins/ai/opencode.lua",
     "opencode/oh-my-opencode_openai.jsonc",
     "opencode/oh-my-opencode_openai_glm.jsonc"
