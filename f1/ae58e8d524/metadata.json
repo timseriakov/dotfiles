@@ -3,7 +3,7 @@
   "checkpoint_id": "f1ae58e8d524",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "bin/zoxide-remove-entry",
     "fish/conf.d/40-plugins.fish"
@@ -14,6 +14,13 @@
       "transcript": "/f1/ae58e8d524/0/full.jsonl",
       "context": "",
       "content_hash": "/f1/ae58e8d524/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/f1/ae58e8d524/1/metadata.json",
+      "transcript": "/f1/ae58e8d524/1/full.jsonl",
+      "context": "",
+      "content_hash": "/f1/ae58e8d524/1/content_hash.txt",
       "prompt": ""
     }
   ],
