@@ -10,23 +10,28 @@ Model software architecture in LikeC4, keep it executable, and return validation
 ## Workflow
 
 1. Scope the model:
+
 - Identify system boundary and audience.
 - Start with context and container views unless user asks otherwise.
 
 2. Locate model files:
+
 - Reuse existing `.c4`/`.likec4` files when present.
 - If missing, bootstrap from `assets/likec4-starter/docs/architecture/model.c4`.
 
 3. Model structure before visuals:
+
 - Define stable element IDs and meaningful names.
 - Add explicit directional relationships with short labels.
 - Add technology/description fields where helpful.
 
 4. Keep views focused:
+
 - Build small, purposeful views.
 - Split crowded diagrams by domain, team, or bounded context.
 
 5. Validate and package:
+
 - Run `npx likec4 validate` and fix all errors.
 - Provide `npx likec4 start` preview command.
 - If requested, provide `build`/`export` commands.
