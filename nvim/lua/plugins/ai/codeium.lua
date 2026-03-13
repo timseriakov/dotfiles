@@ -17,8 +17,10 @@ return {
         local original_notify = vim.notify
         ---@diagnostic disable-next-line: duplicate-set-field
         vim.notify = function(msg, level, opts)
-          if level == vim.log.levels.DEBUG and type(msg) == "string" and msg:match("Codeium") then
-            return
+          if level == vim.log.levels.DEBUG and type(msg) == "string" then
+            if msg == "Ignoring completion, line number is not the current line." or msg:match("Codeium") then
+              return
+            end
           end
           return original_notify(msg, level, opts)
         end
