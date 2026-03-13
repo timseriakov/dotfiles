@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "652c4677ee9d",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "nvim/lua/plugins/ai/codeium.lua"
+  ],
+  "sessions": [
+    {
+      "metadata": "/65/2c4677ee9d/0/metadata.json",
+      "transcript": "/65/2c4677ee9d/0/full.jsonl",
+      "context": "",
+      "content_hash": "/65/2c4677ee9d/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}

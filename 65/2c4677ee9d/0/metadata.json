@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "652c4677ee9d",
+  "session_id": "ses_317a5166effeGvLiGJw6B71eSs",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T18:09:27.421438Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "nvim/lua/plugins/ai/codeium.lua"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "da49f7230bd9",
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T18:09:27.420555Z",
+    "agent_lines": 0,
+    "human_added": 2,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 2,
+    "agent_percentage": 0
+  }
+}
