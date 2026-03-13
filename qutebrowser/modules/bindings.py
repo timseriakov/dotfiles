@@ -307,4 +307,11 @@ BINDING_SPECS: list[BindingSpec] = [
 run_generator(config, c, BINDING_SPECS)
 
 # Special bindings and unbinds that are not in specs
+config.unbind("ss")
+config.unbind("sq")
+config.unbind("sl")
 config.unbind("m")
+config.bind("ss", "spawn -u summarize-url {url}")
+config.bind("sq", "spawn -u summarize-url --quality {url}")
+config.bind("sS", "cmd-set-text -s :set")
+config.bind("sL", "cmd-set-text -s :set -t")

@@ -23,6 +23,8 @@ abbr -a nd 'npm run dev'
 abbr -a nb 'npm run build'
 abbr -a nrm 'npm uninstall'
 abbr -a npk 'npx npkill'
+abbr -a npm-explore forage
+abbr -a n-explore forage
 
 # pnpm
 abbr -a p pnpm

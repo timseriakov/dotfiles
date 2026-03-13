@@ -59,6 +59,10 @@
 | <kbd>L</kbd>  | forward                                |
 | <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url) |
 | <kbd>gu</kbd> | navigate up                            |
+| <kbd>ss</kbd> | spawn -u summarize-url {url}           |
+| <kbd>sq</kbd> | spawn -u summarize-url --quality {url} |
+
+This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and invokes `summarize <url>` or `summarize --model quality <url>` in the current tmux workflow.
 
 ## Hints Bindings
 
