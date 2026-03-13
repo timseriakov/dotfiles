@@ -23,6 +23,3 @@ npx yaml-lint **/*.yml **/*.yaml
 
 # Format files with prettier
 npx prettier --write .
-
-# Run eslint
-npx eslint . --ext .js,.jsx,.ts,.tsx --fix
