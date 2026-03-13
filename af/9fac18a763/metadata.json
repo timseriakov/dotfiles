@@ -3,7 +3,7 @@
   "checkpoint_id": "af9fac18a763",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "fish/conf.d/30-abbr.fish",
     "opencode/oh-my-opencode.jsonc",
@@ -30,6 +30,13 @@
       "transcript": "/af/9fac18a763/2/full.jsonl",
       "context": "",
       "content_hash": "/af/9fac18a763/2/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/af/9fac18a763/3/metadata.json",
+      "transcript": "/af/9fac18a763/3/full.jsonl",
+      "context": "",
+      "content_hash": "/af/9fac18a763/3/content_hash.txt",
       "prompt": ""
     }
   ],
