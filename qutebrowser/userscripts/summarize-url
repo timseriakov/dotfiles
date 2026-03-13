@@ -1,0 +1,335 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Ensure Homebrew and system binaries are available from GUI-launched qutebrowser.
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  summarize-url <url>
+  summarize-url --quality <url>
+  summarize-url --dry-run <url>
+  summarize-url --quality --dry-run <url>
+  summarize-url --self-test
+EOF
+}
+
+die() {
+  echo "summarize-url: $*" >&2
+  exit 1
+}
+
+choose_tmux_session() {
+  # Args:
+  #  1) env_target (may be empty)
+  #  2) tmux list-clients output (may be empty)
+  #  3) fallback session name
+  local env_target="$1"
+  local clients_out="$2"
+  local fallback="$3"
+
+  if [[ -n "$env_target" ]]; then
+    printf '%s\n' "$env_target"
+    return 0
+  fi
+
+  local best_activity=""
+  local best_session=""
+  local line activity session
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+
+    activity="${line%% *}"
+    session="${line#* }"
+
+    # Skip malformed lines (no space separator).
+    [[ "$activity" == "$line" ]] && continue
+    [[ "$activity" =~ ^[0-9]+$ ]] || continue
+
+    if [[ -z "$best_activity" ]]; then
+      best_activity="$activity"
+      best_session="$session"
+      continue
+    fi
+
+    if (( activity > best_activity )); then
+      best_activity="$activity"
+      best_session="$session"
+    elif (( activity == best_activity )); then
+      # Deterministic tie-breaker.
+      if [[ "$session" < "$best_session" ]]; then
+        best_session="$session"
+      fi
+    fi
+  done <<<"$clients_out"
+
+  if [[ -n "$best_session" ]]; then
+    printf '%s\n' "$best_session"
+  else
+    printf '%s\n' "$fallback"
+  fi
+}
+
+ensure_tmux_session() {
+  local session="$1"
+  if tmux has-session -t "$session" 2>/dev/null; then
+    return 0
+  fi
+
+  tmux new-session -d -s "$session"
+}
+
+find_target_window_id() {
+  local session="$1"
+  local target_name="$2"
+  local windows_out line window_id rest marker window_name
+  local fallback_id=""
+
+  windows_out="$(tmux list-windows -t "$session" -F "#{window_id} #{@qute_summarize_window} #{window_name}" 2>/dev/null || true)"
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    window_id="${line%% *}"
+    rest="${line#* }"
+    marker="${rest%% *}"
+    window_name="${rest#* }"
+
+    if [[ "$marker" == "1" ]]; then
+      printf '%s\n' "$window_id"
+      return 0
+    fi
+
+    if [[ -z "$fallback_id" && "$window_name" == "$target_name" ]]; then
+      fallback_id="$window_id"
+    fi
+  done <<<"$windows_out"
+
+  if [[ -n "$fallback_id" ]]; then
+    printf '%s\n' "$fallback_id"
+  fi
+}
+
+build_summarize_command() {
+  local quality_mode="$1"
+  local url="$2"
+  local sanitized
+  sanitized="$(sanitize_url "$url")"
+  local escaped="${sanitized//\'/\'\\\'\'}"
+  if [[ "$quality_mode" == "1" ]]; then
+    printf "summarize --model quality '%s'" "$escaped"
+  else
+    printf "summarize '%s'" "$escaped"
+  fi
+}
+
+sanitize_url() {
+  local url="$1"
+
+  if ! command -v python3 >/dev/null 2>&1; then
+    printf '%s\n' "$url"
+    return 0
+  fi
+
+  python3 - <<'PY' "$url"
+import sys
+import urllib.parse
+
+raw = sys.argv[1]
+parsed = urllib.parse.urlsplit(raw)
+query_pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+filtered = [(k, v) for (k, v) in query_pairs if not k.lower().startswith("utm_")]
+new_query = urllib.parse.urlencode(filtered, doseq=True)
+cleaned = urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, new_query, parsed.fragment))
+print(cleaned)
+PY
+}
+
+choose_interactive_shell() {
+  if command -v fish >/dev/null 2>&1; then
+    printf '%s\n' "fish -il"
+    return 0
+  fi
+
+  if [[ -n "${SHELL:-}" ]]; then
+    printf '%s\n' "${SHELL} -il"
+    return 0
+  fi
+
+  printf '%s\n' "/bin/bash -il"
+}
+
+wait_for_pane_command() {
+  local pane_id="$1"
+  local expected_cmd="$2"
+  local max_attempts="${3:-60}"
+  local sleep_seconds="${4:-0.05}"
+  local current_cmd=""
+  local attempt
+
+  for ((attempt = 0; attempt < max_attempts; attempt++)); do
+    current_cmd="$(tmux display-message -p -t "$pane_id" "#{pane_current_command}" 2>/dev/null || true)"
+    if [[ "$current_cmd" == "$expected_cmd" ]]; then
+      return 0
+    fi
+    sleep "$sleep_seconds"
+  done
+
+  return 1
+}
+
+self_test() {
+  local fallback="summarize"
+
+  local out got expected
+
+  out=$'1700000000 work\n1700001000 play\n1699999999 other\n'
+  got="$(choose_tmux_session "" "$out" "$fallback")"
+  expected="play"
+  [[ "$got" == "$expected" ]] || { echo "FAIL: max activity => '$got' (expected '$expected')" >&2; return 1; }
+
+  out=$'1700000000 zeta\n1700000000 alpha\n'
+  got="$(choose_tmux_session "" "$out" "$fallback")"
+  expected="alpha"
+  [[ "$got" == "$expected" ]] || { echo "FAIL: tie break => '$got' (expected '$expected')" >&2; return 1; }
+
+  out=$'notanumber one\n\n'
+  got="$(choose_tmux_session "" "$out" "$fallback")"
+  expected="$fallback"
+  [[ "$got" == "$expected" ]] || { echo "FAIL: malformed lines => '$got' (expected '$expected')" >&2; return 1; }
+
+  out=$''
+  got="$(choose_tmux_session "" "$out" "$fallback")"
+  expected="$fallback"
+  [[ "$got" == "$expected" ]] || { echo "FAIL: empty => '$got' (expected '$expected')" >&2; return 1; }
+
+  out=$'1700000000 work\n'
+  got="$(choose_tmux_session "from-env" "$out" "$fallback")"
+  expected="from-env"
+  [[ "$got" == "$expected" ]] || { echo "FAIL: env override => '$got' (expected '$expected')" >&2; return 1; }
+
+  return 0
+}
+
+main() {
+  if [[ "${1:-}" == "--self-test" ]]; then
+    shift
+    if [[ "$#" -ne 0 ]]; then
+      usage
+      exit 2
+    fi
+    self_test
+    exit 0
+  fi
+
+  local dry_run="0"
+  local quality_mode="0"
+  if [[ "${1:-}" == "--quality" ]]; then
+    quality_mode="1"
+    shift
+  fi
+  if [[ "${1:-}" == "--dry-run" ]]; then
+    dry_run="1"
+    shift
+  fi
+  if [[ "${1:-}" == "--quality" ]]; then
+    quality_mode="1"
+    shift
+  fi
+
+  local url="${1:-}"
+  if [[ -z "$url" ]]; then
+    usage
+    exit 2
+  fi
+
+  command -v tmux >/dev/null 2>&1 || die "tmux not found"
+
+  local clients_out=""
+  if [[ -z "${SUMMARIZE_TMUX_TARGET:-}" ]]; then
+    clients_out="$(tmux list-clients -F "#{client_activity} #{client_session}" 2>/dev/null || true)"
+  fi
+
+  local session
+  session="$(choose_tmux_session "${SUMMARIZE_TMUX_TARGET:-}" "$clients_out" "summarize")"
+  [[ -n "$session" ]] || die "empty tmux session name"
+
+  local target_dir
+  target_dir="${HOME:-/}"
+  local target_name="summarize"
+  local summarize_cmd
+  summarize_cmd="$(build_summarize_command "$quality_mode" "$url")"
+  local existing_window_id=""
+  local pane_id=""
+  local shell_cmd
+  shell_cmd="$(choose_interactive_shell)"
+  local prefer_fish="0"
+  if command -v fish >/dev/null 2>&1; then
+    prefer_fish="1"
+  fi
+
+  existing_window_id="$(find_target_window_id "$session" "$target_name")"
+
+  if [[ "$dry_run" == "1" ]]; then
+    echo "session=$session"
+    echo "url=$url"
+    echo
+    echo "# Commands (no side effects in --dry-run)"
+    echo "tmux has-session -t $(printf '%q' "$session") 2>/dev/null || tmux new-session -d -s $(printf '%q' "$session")"
+    if [[ -n "$existing_window_id" ]]; then
+      echo "window_id=$(printf '%q' "$existing_window_id")"
+      echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
+    else
+      echo "shell_cmd=$(printf '%q' "$shell_cmd")"
+      echo "window_id=\"\
+\$(tmux new-window -P -F '#{window_id}' -t $(printf '%q' "$session") -n $(printf '%q' "$target_name") -c $(printf '%q' "$target_dir") \"\$shell_cmd\")\""
+      echo "tmux set-window-option -q -t \"\$window_id\" @qute_summarize_window 1"
+      echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
+    fi
+    if [[ "$prefer_fish" == "1" ]]; then
+      echo "tmux wait-for-shell fish on pane_id (retry loop)"
+      echo "if shell is not fish -> tmux send-keys -t \"\$pane_id\" fish Enter"
+      echo "tmux wait-for-shell fish on pane_id (retry loop)"
+    fi
+    echo "tmux send-keys -t \"\$pane_id\" C-u"
+    echo "tmux set-buffer -- $(printf '%q' "$summarize_cmd")"
+    echo "tmux paste-buffer -d -t \"\$pane_id\""
+    echo "tmux send-keys -t \"\$pane_id\" C-m"
+    echo "tmux select-window -t \"\$window_id\""
+    exit 0
+  fi
+
+  ensure_tmux_session "$session"
+
+  local window_id
+  if [[ -n "$existing_window_id" ]]; then
+    window_id="$existing_window_id"
+    pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
+  else
+    window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" "$shell_cmd")"
+    [[ -n "$window_id" ]] || die "failed to create tmux window"
+    tmux set-window-option -q -t "$window_id" @qute_summarize_window 1 || true
+    pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
+  fi
+
+  [[ -n "$pane_id" ]] || die "failed to resolve target pane"
+
+  if [[ "$prefer_fish" == "1" ]]; then
+    if ! wait_for_pane_command "$pane_id" "fish"; then
+      tmux send-keys -t "$pane_id" "fish" Enter
+      wait_for_pane_command "$pane_id" "fish" || die "failed to start fish in target pane"
+    fi
+  fi
+
+  tmux send-keys -t "$pane_id" C-u
+  tmux set-buffer -- "$summarize_cmd"
+  tmux paste-buffer -d -t "$pane_id"
+  tmux send-keys -t "$pane_id" C-m
+
+  tmux select-window -t "$window_id" >/dev/null 2>&1 || true
+  exit 0
+}
+
+main "$@"
