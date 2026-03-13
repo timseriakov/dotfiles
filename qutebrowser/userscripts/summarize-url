@@ -161,6 +161,37 @@ choose_interactive_shell() {
   printf '%s\n' "/bin/bash -il"
 }
 
+make_shell_launcher() {
+  local launcher
+
+  launcher="$(mktemp /tmp/qute-summarize-shell.XXXXXX)"
+  cat >"$launcher" <<'EOF'
+#!/bin/bash
+
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+
+rm -f -- "$0" >/dev/null 2>&1 || true
+
+if command -v fish >/dev/null 2>&1; then
+  if [[ -n "${QUTE_READY_KEY:-}" ]]; then
+    exec fish -ilC 'function __qute_ready --on-event fish_prompt; tmux wait-for -S "$QUTE_READY_KEY"; functions -e __qute_ready; end'
+  fi
+  exec fish -il
+fi
+
+if [[ -n "${SHELL:-}" ]]; then
+  exec "$SHELL" -il
+fi
+
+exec /bin/bash -il
+EOF
+
+  chmod +x "$launcher"
+  printf '%s\n' "$launcher"
+}
+
 wait_for_pane_command() {
   local pane_id="$1"
   local expected_cmd="$2"
@@ -178,6 +209,11 @@ wait_for_pane_command() {
   done
 
   return 1
+}
+
+wait_for_prompt_redraw() {
+  local sleep_seconds="${1:-0.08}"
+  sleep "$sleep_seconds"
 }
 
 self_test() {
@@ -266,6 +302,9 @@ main() {
   local shell_cmd
   shell_cmd="$(choose_interactive_shell)"
   local prefer_fish="0"
+  local ready_key=""
+  local launcher_cmd=""
+  local window_created="0"
   if command -v fish >/dev/null 2>&1; then
     prefer_fish="1"
   fi
@@ -282,9 +321,17 @@ main() {
       echo "window_id=$(printf '%q' "$existing_window_id")"
       echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
     else
-      echo "shell_cmd=$(printf '%q' "$shell_cmd")"
-      echo "window_id=\"\
+      if [[ "$prefer_fish" == "1" ]]; then
+        echo "ready_key=qute-summarize-ready-<unique>"
+        echo "launcher_cmd=\$(mktemp /tmp/qute-summarize-shell.XXXXXX) # launcher script"
+        echo "window_id=\"\
+\$(tmux new-window -P -F '#{window_id}' -t $(printf '%q' "$session") -n $(printf '%q' "$target_name") -c $(printf '%q' "$target_dir") -e QUTE_READY_KEY=\"\$ready_key\" \"\$launcher_cmd\")\""
+        echo "tmux wait-for \"\$ready_key\""
+      else
+        echo "shell_cmd=$(printf '%q' "$shell_cmd")"
+        echo "window_id=\"\
 \$(tmux new-window -P -F '#{window_id}' -t $(printf '%q' "$session") -n $(printf '%q' "$target_name") -c $(printf '%q' "$target_dir") \"\$shell_cmd\")\""
+      fi
       echo "tmux set-window-option -q -t \"\$window_id\" @qute_summarize_window 1"
       echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
     fi
@@ -296,7 +343,8 @@ main() {
     echo "tmux send-keys -t \"\$pane_id\" C-u"
     echo "tmux set-buffer -- $(printf '%q' "$summarize_cmd")"
     echo "tmux paste-buffer -d -t \"\$pane_id\""
-    echo "tmux send-keys -t \"\$pane_id\" C-m"
+    echo "sleep 0.08"
+    echo "tmux send-keys -t \"\$pane_id\" Enter"
     echo "tmux select-window -t \"\$window_id\""
     exit 0
   fi
@@ -308,7 +356,15 @@ main() {
     window_id="$existing_window_id"
     pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
   else
-    window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" "$shell_cmd")"
+    window_created="1"
+    if [[ "$prefer_fish" == "1" ]]; then
+      ready_key="qute-summarize-ready-$$-$RANDOM"
+      launcher_cmd="$(make_shell_launcher)"
+      window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" -e "QUTE_READY_KEY=$ready_key" "$launcher_cmd")"
+      tmux wait-for "$ready_key"
+    else
+      window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" "$shell_cmd")"
+    fi
     [[ -n "$window_id" ]] || die "failed to create tmux window"
     tmux set-window-option -q -t "$window_id" @qute_summarize_window 1 || true
     pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
@@ -317,16 +373,21 @@ main() {
   [[ -n "$pane_id" ]] || die "failed to resolve target pane"
 
   if [[ "$prefer_fish" == "1" ]]; then
-    if ! wait_for_pane_command "$pane_id" "fish"; then
-      tmux send-keys -t "$pane_id" "fish" Enter
-      wait_for_pane_command "$pane_id" "fish" || die "failed to start fish in target pane"
+    if [[ "$window_created" == "1" ]]; then
+      wait_for_prompt_redraw 0.05
+    else
+      if ! wait_for_pane_command "$pane_id" "fish"; then
+        tmux send-keys -t "$pane_id" "fish" Enter
+        wait_for_pane_command "$pane_id" "fish" || die "failed to start fish in target pane"
+      fi
     fi
   fi
 
   tmux send-keys -t "$pane_id" C-u
   tmux set-buffer -- "$summarize_cmd"
   tmux paste-buffer -d -t "$pane_id"
-  tmux send-keys -t "$pane_id" C-m
+  wait_for_prompt_redraw
+  tmux send-keys -t "$pane_id" Enter
 
   tmux select-window -t "$window_id" >/dev/null 2>&1 || true
   exit 0
