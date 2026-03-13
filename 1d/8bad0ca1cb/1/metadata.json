@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "1d8bad0ca1cb",
+  "session_id": "ses_318a06bd2ffenmzhgaY550FTJm",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T18:08:35.518191Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".husky/pre-commit"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "345bdce2d624",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T18:08:35.490951Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
