@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)/$(basename "${BASH_SOURCE[0]:-$0}")"
+
+REAL_MCAT=""
+if [[ -x "/opt/homebrew/bin/mcat" && "/opt/homebrew/bin/mcat" != "$SCRIPT_PATH" ]]; then
+  REAL_MCAT="/opt/homebrew/bin/mcat"
+else
+  CANDIDATE="$(command -v mcat 2>/dev/null || true)"
+  if [[ -n "$CANDIDATE" && "$CANDIDATE" != "$SCRIPT_PATH" ]]; then
+    REAL_MCAT="$CANDIDATE"
+  fi
+fi
+
+require_real_mcat() {
+  if [[ -z "$REAL_MCAT" ]]; then
+    echo "mcat shim: Homebrew mcat not found" >&2
+    exit 1
+  fi
+}
+
+is_image_path() {
+  local value="$1"
+  local lower
+  lower="$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]')"
+  case "$lower" in
+    *.png|*.jpg|*.jpeg|*.gif|*.webp|*.bmp|*.tiff|*.tif|*.avif|*.jxl)
+      return 0
+      ;;
+  esac
+  return 1
+}
+
+has_option=0
+inputs=()
+for arg in "$@"; do
+  if [[ "$arg" == -* ]]; then
+    has_option=1
+  else
+    inputs+=("$arg")
+  fi
+done
+
+if [[ "$has_option" == "0" && "${#inputs[@]}" -gt 0 ]]; then
+  all_images=1
+  for input in "${inputs[@]}"; do
+    if ! is_image_path "$input"; then
+      all_images=0
+      break
+    fi
+  done
+
+  if [[ "$all_images" == "1" ]]; then
+    if command -v chafa >/dev/null 2>&1; then
+      for input in "${inputs[@]}"; do
+        chafa "$input"
+      done
+      exit 0
+    fi
+  fi
+fi
+
+require_real_mcat
+exec "$REAL_MCAT" "$@"
