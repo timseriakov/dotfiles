@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# Drop-in chafa replacement rendering via Kitty icat
+# - Respects FZF preview pane size (FZF_PREVIEW_COLUMNS/LINES)
+# - Does NOT clear previously printed text in the pane
+# - Compatible with both "chafa <file>" and "cat file | chafa"
+
+set -euo pipefail
+
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd)/$(basename "${BASH_SOURCE[0]:-$0}")"
+
+BREWED_CHAFA=""
+if [[ -x "/opt/homebrew/bin/chafa" && "/opt/homebrew/bin/chafa" != "$SCRIPT_PATH" ]]; then
+  BREWED_CHAFA="/opt/homebrew/bin/chafa"
+else
+  CANDIDATE="$(command -v chafa 2>/dev/null || true)"
+  if [[ -n "$CANDIDATE" && "$CANDIDATE" != "$SCRIPT_PATH" ]]; then
+    BREWED_CHAFA="$CANDIDATE"
+  fi
+fi
+
+KITTY_BIN="$(command -v kitty 2>/dev/null || true)"
+if [[ -z "$KITTY_BIN" && -x "/Applications/kitty.app/Contents/MacOS/kitty" ]]; then
+  KITTY_BIN="/Applications/kitty.app/Contents/MacOS/kitty"
+fi
+
+KITTY_CAPABLE=0
+TERM_VALUE="${TERM:-}"
+case "$TERM_VALUE" in
+  *kitty*|*KITTY*)
+    KITTY_CAPABLE=1
+    ;;
+esac
+if [[ -n "${KITTY_WINDOW_ID:-}" ]]; then
+  KITTY_CAPABLE=1
+fi
+if [[ -z "$KITTY_BIN" ]]; then
+  KITTY_CAPABLE=0
+fi
+
+ARGS=("$@")
+HELP_FLAG=0
+for arg in "${ARGS[@]}"; do
+  case "$arg" in
+    -h|--help|-v|--version)
+      HELP_FLAG=1
+      break
+      ;;
+  esac
+done
+
+require_brewed() {
+  if [[ -z "$BREWED_CHAFA" ]]; then
+    echo "chafa shim: Homebrew chafa not found" >&2
+    exit 1
+  fi
+}
+
+if [[ "$HELP_FLAG" == "1" ]]; then
+  require_brewed
+  exec "$BREWED_CHAFA" "${ARGS[@]}"
+fi
+
+cleanup_temp() {
+  if [[ "${CLEANUP:-0}" == "1" && -n "${TMP:-}" ]]; then
+    rm -f "$TMP"
+  fi
+}
+trap cleanup_temp EXIT
+
+IMG=""
+for arg in "${ARGS[@]}"; do
+  if [[ "$arg" != -* ]]; then
+    IMG="$arg"
+  fi
+done
+
+CLEANUP=0
+TMP=""
+if [[ -z "$IMG" ]]; then
+  if [[ -t 0 ]]; then
+    require_brewed
+    exec "$BREWED_CHAFA" "${ARGS[@]}"
+  fi
+  TMP="$(mktemp -t chafa-stdin-XXXXXXXX).img"
+  cat >"$TMP"
+  IMG="$TMP"
+  CLEANUP=1
+fi
+
+COLS="${FZF_PREVIEW_COLUMNS:-0}"
+LINES="${FZF_PREVIEW_LINES:-0}"
+PLACE_ARGS=()
+if [[ "$COLS" -gt 0 && "$LINES" -gt 0 ]]; then
+  PLACE_ARGS=(--place="${COLS}x${LINES}@1x1")
+fi
+
+run_brewed() {
+  local brew_args=("${ARGS[@]}")
+  if [[ "$CLEANUP" == "1" ]]; then
+    brew_args+=("$IMG")
+  fi
+  require_brewed
+  "$BREWED_CHAFA" "${brew_args[@]}"
+}
+
+if [[ "$KITTY_CAPABLE" == "1" && -t 1 ]]; then
+  if "$KITTY_BIN" +kitten icat --stdin=no "${PLACE_ARGS[@]}" "$IMG"; then
+    cleanup_temp
+    exit 0
+  fi
+fi
+
+run_brewed
