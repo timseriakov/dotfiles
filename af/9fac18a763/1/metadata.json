@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "af9fac18a763",
+  "session_id": "ses_317a5166effeGvLiGJw6B71eSs",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T20:54:58.275081Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "opencode/oh-my-opencode.jsonc",
+    "qutebrowser/docs/keybindings.md",
+    "qutebrowser/modules/bindings.py"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "b13c2d2591b4",
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T20:54:58.274728Z",
+    "agent_lines": 11,
+    "human_added": 192,
+    "human_modified": 146,
+    "human_removed": 0,
+    "total_committed": 349,
+    "agent_percentage": 3.151862464183381
+  }
+}
