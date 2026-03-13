@@ -13,6 +13,16 @@ return {
         },
       },
     },
+    routes = {
+      {
+        filter = {
+          event = "notify",
+          kind = "debug",
+          find = "Ignoring completion, line number is not the current line.",
+        },
+        opts = { skip = true },
+      },
+    },
   },
   config = function(_, opts)
     require("noice").setup(opts)
