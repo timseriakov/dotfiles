@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "ba425be47666",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "qutebrowser/userscripts/summarize-url"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ba/425be47666/0/metadata.json",
+      "transcript": "/ba/425be47666/0/full.jsonl",
+      "context": "",
+      "content_hash": "/ba/425be47666/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
