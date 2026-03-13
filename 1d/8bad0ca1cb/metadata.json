@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "1d8bad0ca1cb",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".husky/pre-commit"
+  ],
+  "sessions": [
+    {
+      "metadata": "/1d/8bad0ca1cb/0/metadata.json",
+      "transcript": "/1d/8bad0ca1cb/0/full.jsonl",
+      "context": "",
+      "content_hash": "/1d/8bad0ca1cb/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
