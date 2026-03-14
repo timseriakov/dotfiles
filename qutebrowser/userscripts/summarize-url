@@ -16,6 +16,7 @@ Usage:
   summarize-url --quality --dry-run <url>
   summarize-url --analyze-quick --dry-run <url>
   summarize-url --analyze-deep --dry-run <url>
+  summarize-url --run-summary <default|quality> <url>
   summarize-url --run-analysis <quick|deep> <url>
   summarize-url --self-test
 EOF
@@ -124,19 +125,22 @@ build_summarize_command() {
   local sanitized
   sanitized="$(sanitize_url "$url")"
   local escaped_url="${sanitized//\'/\'\\\'\'}"
+  local script_abs
+  script_abs="$(resolve_script_path)"
+  local escaped_script="${script_abs//\'/\'\\\'\'}"
 
   if [[ "$analyze_mode" == "quick" || "$analyze_mode" == "deep" ]]; then
     local shared_abs
     shared_abs="$(resolve_shared_entrypoint)"
     local escaped_shared="${shared_abs//\'/\'\\\'\'}"
-    printf "bash '%s' %s '%s'" "$escaped_shared" "$analyze_mode" "$escaped_url"
+    printf "bash '%s' --mcat-inline %s '%s'" "$escaped_shared" "$analyze_mode" "$escaped_url"
     return 0
   fi
 
   if [[ "$quality_mode" == "1" ]]; then
-    printf "summarize --model quality '%s'" "$escaped_url"
+    printf "bash '%s' --run-summary quality '%s'" "$escaped_script" "$escaped_url"
   else
-    printf "summarize '%s'" "$escaped_url"
+    printf "bash '%s' --run-summary default '%s'" "$escaped_script" "$escaped_url"
   fi
 }
 
@@ -181,6 +185,60 @@ run_analysis_pipeline() {
   [[ -x "$shared_abs" ]] || die "shared entrypoint not executable: $shared_abs"
 
   "$shared_abs" "$analyze_mode" "$url"
+}
+
+run_summary_pipeline() {
+  local summary_mode="$1"
+  local url="$2"
+
+  local sanitized
+  sanitized="$(sanitize_url "$url")"
+
+  command -v summarize >/dev/null 2>&1 || die "summarize not found"
+  command -v mcat >/dev/null 2>&1 || die "mcat not found"
+
+  local temp_output_base temp_output temp_render
+  temp_output_base="$(mktemp /tmp/qute-summarize-output.XXXXXX)"
+  temp_output="$temp_output_base.md"
+  temp_render="$temp_output_base.render.md"
+
+  if [[ "$summary_mode" == "quality" ]]; then
+    summarize --plain --model quality "$sanitized" | tee "$temp_output"
+  else
+    summarize --plain "$sanitized" | tee "$temp_output"
+  fi
+
+  printf '\n'
+  python3 - <<'PY' < "$temp_output" > "$temp_render"
+import sys
+
+lines = sys.stdin.read().splitlines()
+if len(lines) >= 3 and lines[0] == '---':
+    end = None
+    for i in range(1, len(lines)):
+        if lines[i] == '---':
+            end = i
+            break
+    if end is not None:
+        frontmatter = lines[1:end]
+        body = lines[end + 1:]
+        print('## Metadata')
+        print()
+        for line in frontmatter:
+            if ':' in line:
+                key, value = line.split(':', 1)
+                print(f'- **{key.strip()}**: {value.strip()}')
+            elif line.strip():
+                print(f'- {line.strip()}')
+        print()
+        print('\n'.join(body))
+        raise SystemExit(0)
+
+print('\n'.join(lines))
+PY
+  cat "$temp_render" | mcat -P -t nord --output md
+
+  rm -f "$temp_output" "$temp_render"
 }
 
 resolve_shared_entrypoint() {
@@ -334,6 +392,23 @@ self_test() {
 }
 
 main() {
+  if [[ "${1:-}" == "--run-summary" ]]; then
+    shift
+    local summary_mode="${1:-}"
+    shift || true
+    local url="${1:-}"
+    if [[ "$summary_mode" != "default" && "$summary_mode" != "quality" ]]; then
+      usage
+      exit 2
+    fi
+    if [[ -z "$url" ]]; then
+      usage
+      exit 2
+    fi
+    run_summary_pipeline "$summary_mode" "$url"
+    exit 0
+  fi
+
   if [[ "${1:-}" == "--run-analysis" ]]; then
     shift
     local analyze_mode="${1:-}"

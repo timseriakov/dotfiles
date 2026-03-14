@@ -8,6 +8,8 @@ usage() {
 Usage:
   sum-analyze [--mcat] quick <url>
   sum-analyze [--mcat] deep <url>
+  sum-analyze [--mcat-inline] quick <url>
+  sum-analyze [--mcat-inline] deep <url>
 EOF
 }
 
@@ -55,16 +57,65 @@ extract_markdown() {
   summarize "$url" --extract --format md --plain 2> >(grep -v '^Decompression error: ZlibError$' >&2)
 }
 
-render_output() {
-  local use_mcat="$1"
+prepare_mcat_render() {
+  if ! command -v python3 >/dev/null 2>&1; then
+    cat
+    return 0
+  fi
 
-  if [[ "$use_mcat" == "1" ]]; then
+  python3 - <<'PY'
+import sys
+
+lines = sys.stdin.read().splitlines()
+if len(lines) >= 3 and lines[0] == '---':
+    end = None
+    for i in range(1, len(lines)):
+        if lines[i] == '---':
+            end = i
+            break
+    if end is not None:
+        frontmatter = lines[1:end]
+        body = lines[end + 1:]
+        print('## Metadata')
+        print()
+        for line in frontmatter:
+            if ':' in line:
+                key, value = line.split(':', 1)
+                print(f'- **{key.strip()}**: {value.strip()}')
+            elif line.strip():
+                print(f'- {line.strip()}')
+        print()
+        print('\n'.join(body))
+        sys.exit(0)
+
+print('\n'.join(lines))
+PY
+}
+
+render_output() {
+  local render_mode="$1"
+
+  if [[ "$render_mode" == "inline" ]]; then
     command -v mcat >/dev/null 2>&1 || die "mcat not found"
-    local temp_output
-    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX.md)"
+    local temp_output_base temp_output temp_render
+    temp_output_base="$(mktemp /tmp/sum-analyze-output.XXXXXX)"
+    temp_output="$temp_output_base.md"
+    temp_render="$temp_output_base.render.md"
     tee "$temp_output"
     printf '\n'
-    mcat -p -t nord "$temp_output"
+    prepare_mcat_render < "$temp_output" > "$temp_render"
+    cat "$temp_render" | mcat -P -t nord --output md
+    rm -f "$temp_output" "$temp_render"
+    return 0
+  fi
+
+  if [[ "$render_mode" == "pager" ]]; then
+    command -v mcat >/dev/null 2>&1 || die "mcat not found"
+    local temp_output
+    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX)"
+    tee "$temp_output"
+    printf '\n'
+    prepare_mcat_render < "$temp_output" | mcat -p -t nord --output md
     rm -f "$temp_output"
     return 0
   fi
@@ -73,9 +124,13 @@ render_output() {
 }
 
 main() {
-  local use_mcat="0"
+  local render_mode="plain"
   if [[ "${1:-}" == "--mcat" ]]; then
-    use_mcat="1"
+    render_mode="pager"
+    shift
+  fi
+  if [[ "${1:-}" == "--mcat-inline" ]]; then
+    render_mode="inline"
     shift
   fi
 
@@ -116,11 +171,11 @@ main() {
   local length_arg="medium"
   if [[ "$mode" == "deep" ]]; then
     length_arg="xxl"
-    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality | render_output "$use_mcat"
+    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality | render_output "$render_mode"
     exit 0
   fi
 
-  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" | render_output "$use_mcat"
+  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" | render_output "$render_mode"
 }
 
 main "$@"

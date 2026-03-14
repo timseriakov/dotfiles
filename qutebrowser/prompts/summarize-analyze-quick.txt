@@ -28,10 +28,8 @@ Rules:
 16. Allowed indented lines: markdown list items only (`- `, `* `, `+ `, `1. `). All other lines must begin with a non-space character.
 17. Wrong: ` Paragraph text`
 18. Correct: `Paragraph text`
-19. Immediately after the closing `---` of the frontmatter, output exactly one line containing only the actual source_url value.
-20. Example: `https://example.com/tool`
-21. Then output exactly one empty line.
-22. After that empty line, start with `## One-liner`.
+19. Immediately after the closing `---` of the frontmatter, output exactly one empty line.
+20. After that empty line, start with `## One-liner`.
 
 Required body sections:
 ## One-liner
