@@ -28,6 +28,7 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec("f", "hint links"),
     BindingSpec("F", "hint links tab-bg"),
     BindingSpec("yy", "yank"),
+    BindingSpec("sr", 'jseval -q document.querySelector("[data-readme-copy-button]")?.click()'),
     BindingSpec("yl", "hint links yank"),
     BindingSpec("p", "open {clipboard}"),
     BindingSpec("P", "open --tab {clipboard}"),

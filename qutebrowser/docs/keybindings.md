@@ -9,10 +9,11 @@
 
 ## Clipboard Bindings
 
-| Shortcut     | Action                 |
-| ------------ | ---------------------- |
-| <kbd>p</kbd> | open {clipboard}       |
-| <kbd>P</kbd> | open --tab {clipboard} |
+| Shortcut      | Action                          |
+| ------------- | ------------------------------- |
+| <kbd>p</kbd>  | open {clipboard}                |
+| <kbd>P</kbd>  | open --tab {clipboard}          |
+| <kbd>sr</kbd> | copy GitHub README to clipboard |
 
 ## Config Bindings
 
