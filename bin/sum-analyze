@@ -18,31 +18,17 @@ die() {
 
 sanitize_url() {
   local url="$1"
-
   if ! command -v python3 >/dev/null 2>&1; then
     printf '%s\n' "$url"
     return 0
   fi
-
-  python3 - <<'PY' "$url"
-import sys
-import urllib.parse
-
-raw = sys.argv[1]
-parsed = urllib.parse.urlsplit(raw)
-query_pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
-filtered = [(k, v) for (k, v) in query_pairs if not k.lower().startswith("utm_")]
-new_query = urllib.parse.urlencode(filtered, doseq=True)
-cleaned = urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, new_query, parsed.fragment))
-print(cleaned)
-PY
+  python3 -c "import sys, urllib.parse; raw=sys.argv[1]; parsed=urllib.parse.urlsplit(raw); query_pairs=urllib.parse.parse_qsl(parsed.query, keep_blank_values=True); filtered=[(k,v) for (k,v) in query_pairs if not k.lower().startswith('utm_')]; print(urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urllib.parse.urlencode(filtered, doseq=True), parsed.fragment)))" "$url"
 }
 
 prompt_template_path() {
   local mode="$1"
   local repo_root
   repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
   if [[ "$mode" == "deep" ]]; then
     printf '%s\n' "$repo_root/qutebrowser/prompts/summarize-analyze-deep.txt"
   else
@@ -55,45 +41,45 @@ extract_markdown() {
   summarize "$url" --extract --format md --plain 2> >(grep -v '^Decompression error: ZlibError$' >&2)
 }
 
+# Transform YAML frontmatter to markdown block safely without Python SyntaxErrors.
 prepare_mcat_render() {
-  if ! command -v python3 >/dev/null 2>&1; then
-    cat
-    return 0
-  fi
-
-  local python_code
-  python_code=$(cat <<'PY'
-import sys
-lines = sys.stdin.read().splitlines()
-if len(lines) >= 3 and lines[0] == '---':
-    end = None
-    for i in range(1, len(lines)):
-        if lines[i] == '---':
-            end = i
-            break
-    if end is not None:
-        frontmatter = lines[1:end]
-        body = lines[end + 1:]
-        print('## Metadata')
-        print()
-        for line in frontmatter:
-            if ':' in line:
-                key, value = line.split(':', 1)
-                print(f'- **{key.strip()}**: {value.strip()}')
-            elif line.strip():
-                print(f'- {line.strip()}')
-        print()
-        print('\n'.join(body))
-        sys.exit(0)
-print('\n'.join(lines))
-PY
-)
-  python3 -c "$python_code"
+  awk '
+    BEGIN { in_fm = 0; done_fm = 0; }
+    /^---$/ && done_fm == 0 {
+      if (in_fm == 0) {
+        in_fm = 1;
+        print "## Metadata\n";
+        next;
+      } else {
+        in_fm = 0;
+        done_fm = 1;
+        print "";
+        next;
+      }
+    }
+    in_fm == 1 {
+      if (index($0, ":") > 0) {
+        split($0, a, ":");
+        key = a[1];
+        sub(/^[ \t]+/, "", key);
+        sub(/[ \t]+$/, "", key);
+        val = substr($0, index($0, ":") + 1);
+        sub(/^[ \t]+/, "", val);
+        sub(/[ \t]+$/, "", val);
+        printf "- **%s**: %s\n", key, val;
+      } else if (length($0) > 0) {
+        line = $0;
+        sub(/^[ \t]+/, "", line);
+        printf "- %s\n", line;
+      }
+      next;
+    }
+    { print $0; }
+  '
 }
 
 render_output() {
   local render_mode="$1"
-
   if [[ "$render_mode" == "inline" ]]; then
     command -v mcat >/dev/null 2>&1 || die "mcat not found"
     local temp_output_base temp_output temp_render
@@ -107,40 +93,29 @@ render_output() {
     rm -f "$temp_output" "$temp_render"
     return 0
   fi
-
   if [[ "$render_mode" == "pager" ]]; then
     command -v mcat >/dev/null 2>&1 || die "mcat not found"
-    local temp_output
+    local temp_output temp_render
     temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX)"
+    temp_render="$temp_output.render.md"
     tee "$temp_output"
     printf '\n'
-    prepare_mcat_render < "$temp_output" | mcat -p -t nord --output md
-    rm -f "$temp_output"
+    prepare_mcat_render < "$temp_output" > "$temp_render"
+    cat "$temp_render" | mcat -p -t nord --output md
+    rm -f "$temp_output" "$temp_render"
     return 0
   fi
-
   cat
 }
 
 main() {
   local render_mode="plain"
-  if [[ "${1:-}" == "--mcat" ]]; then
-    render_mode="pager"
-    shift
-  fi
-  if [[ "${1:-}" == "--mcat-inline" ]]; then
-    render_mode="inline"
-    shift
-  fi
+  [[ "${1:-}" == "--mcat" ]] && { render_mode="pager"; shift; }
+  [[ "${1:-}" == "--mcat-inline" ]] && { render_mode="inline"; shift; }
 
   local mode="${1:-}"
   local url="${2:-}"
-
-  if [[ -z "$mode" || -z "$url" ]]; then
-    usage
-    exit 2
-  fi
-
+  [[ -z "$mode" || -z "$url" ]] && { usage; exit 2; }
   command -v summarize >/dev/null 2>&1 || die "summarize not found"
 
   local sanitized
@@ -148,45 +123,29 @@ main() {
 
   case "$mode" in
     quick|deep)
-      local prompt_template
+      local prompt_template prompt_runtime
       prompt_template="$(prompt_template_path "$mode")"
       [[ -f "$prompt_template" ]] || die "prompt template not found: $prompt_template"
-
-      local analyzed_at
-      analyzed_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-
-      local prompt_runtime
       prompt_runtime="$(mktemp /tmp/sum-analyze-prompt.XXXXXX)"
       {
-        printf 'source_url: %s\n' "$sanitized"
-        printf 'analyzed_at: %s\n' "$analyzed_at"
-        printf 'mode: %s\n' "$mode"
-        printf '\n'
+        printf 'source_url: %s\nanalyzed_at: %s\nmode: %s\n\n' "$sanitized" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$mode"
         cat "$prompt_template"
       } >"$prompt_runtime"
-
       local length_arg="medium"
-      local model_args=()
-      if [[ "$mode" == "deep" ]]; then
-        length_arg="xxl"
-        model_args=(--model quality)
-      fi
-
-      extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" "${model_args[@]}" | render_output "$render_mode"
+      [[ "$mode" == "deep" ]] && length_arg="xxl"
+      local model_arg=""
+      [[ "$mode" == "deep" ]] && model_arg="--model quality"
+      extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg | render_output "$render_mode"
       rm -f "$prompt_runtime"
       ;;
-
     summary)
       summarize --plain "$sanitized" | render_output "$render_mode"
       ;;
-
     quality-summary)
       summarize --plain --model quality "$sanitized" | render_output "$render_mode"
       ;;
-
     *)
-      usage
-      exit 2
+      usage; exit 2
       ;;
   esac
 }
