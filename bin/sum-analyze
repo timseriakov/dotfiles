@@ -6,10 +6,8 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 usage() {
   cat >&2 <<'EOF'
 Usage:
-  sum-analyze [--mcat] quick <url>
-  sum-analyze [--mcat] deep <url>
-  sum-analyze [--mcat-inline] quick <url>
-  sum-analyze [--mcat-inline] deep <url>
+  sum-analyze [--mcat] quick|deep|summary|quality-summary <url>
+  sum-analyze [--mcat-inline] quick|deep|summary|quality-summary <url>
 EOF
 }
 
@@ -63,9 +61,9 @@ prepare_mcat_render() {
     return 0
   fi
 
-  python3 - <<'PY'
+  local python_code
+  python_code=$(cat <<'PY'
 import sys
-
 lines = sys.stdin.read().splitlines()
 if len(lines) >= 3 and lines[0] == '---':
     end = None
@@ -87,9 +85,10 @@ if len(lines) >= 3 and lines[0] == '---':
         print()
         print('\n'.join(body))
         sys.exit(0)
-
 print('\n'.join(lines))
 PY
+)
+  python3 -c "$python_code"
 }
 
 render_output() {
@@ -137,11 +136,7 @@ main() {
   local mode="${1:-}"
   local url="${2:-}"
 
-  if [[ "$mode" != "quick" && "$mode" != "deep" ]]; then
-    usage
-    exit 2
-  fi
-  if [[ -z "$url" ]]; then
+  if [[ -z "$mode" || -z "$url" ]]; then
     usage
     exit 2
   fi
@@ -151,31 +146,49 @@ main() {
   local sanitized
   sanitized="$(sanitize_url "$url")"
 
-  local prompt_template
-  prompt_template="$(prompt_template_path "$mode")"
-  [[ -f "$prompt_template" ]] || die "prompt template not found: $prompt_template"
+  case "$mode" in
+    quick|deep)
+      local prompt_template
+      prompt_template="$(prompt_template_path "$mode")"
+      [[ -f "$prompt_template" ]] || die "prompt template not found: $prompt_template"
 
-  local analyzed_at
-  analyzed_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+      local analyzed_at
+      analyzed_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
-  local prompt_runtime
-  prompt_runtime="$(mktemp /tmp/sum-analyze-prompt.XXXXXX)"
-  {
-    printf 'source_url: %s\n' "$sanitized"
-    printf 'analyzed_at: %s\n' "$analyzed_at"
-    printf 'mode: %s\n' "$mode"
-    printf '\n'
-    cat "$prompt_template"
-  } >"$prompt_runtime"
+      local prompt_runtime
+      prompt_runtime="$(mktemp /tmp/sum-analyze-prompt.XXXXXX)"
+      {
+        printf 'source_url: %s\n' "$sanitized"
+        printf 'analyzed_at: %s\n' "$analyzed_at"
+        printf 'mode: %s\n' "$mode"
+        printf '\n'
+        cat "$prompt_template"
+      } >"$prompt_runtime"
 
-  local length_arg="medium"
-  if [[ "$mode" == "deep" ]]; then
-    length_arg="xxl"
-    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality | render_output "$render_mode"
-    exit 0
-  fi
+      local length_arg="medium"
+      local model_args=()
+      if [[ "$mode" == "deep" ]]; then
+        length_arg="xxl"
+        model_args=(--model quality)
+      fi
 
-  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" | render_output "$render_mode"
+      extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" "${model_args[@]}" | render_output "$render_mode"
+      rm -f "$prompt_runtime"
+      ;;
+
+    summary)
+      summarize --plain "$sanitized" | render_output "$render_mode"
+      ;;
+
+    quality-summary)
+      summarize --plain --model quality "$sanitized" | render_output "$render_mode"
+      ;;
+
+    *)
+      usage
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

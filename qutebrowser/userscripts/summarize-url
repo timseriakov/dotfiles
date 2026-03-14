@@ -5,33 +5,12 @@ set -euo pipefail
 # Ensure Homebrew and system binaries are available from GUI-launched qutebrowser.
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 
-usage() {
-  cat >&2 <<'EOF'
-Usage:
-  summarize-url <url>
-  summarize-url --quality <url>
-  summarize-url --analyze-quick <url>
-  summarize-url --analyze-deep <url>
-  summarize-url --dry-run <url>
-  summarize-url --quality --dry-run <url>
-  summarize-url --analyze-quick --dry-run <url>
-  summarize-url --analyze-deep --dry-run <url>
-  summarize-url --run-summary <default|quality> <url>
-  summarize-url --run-analysis <quick|deep> <url>
-  summarize-url --self-test
-EOF
-}
-
 die() {
   echo "summarize-url: $*" >&2
   exit 1
 }
 
 choose_tmux_session() {
-  # Args:
-  #  1) env_target (may be empty)
-  #  2) tmux list-clients output (may be empty)
-  #  3) fallback session name
   local env_target="$1"
   local clients_out="$2"
   local fallback="$3"
@@ -47,25 +26,19 @@ choose_tmux_session() {
 
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
-
     activity="${line%% *}"
     session="${line#* }"
-
-    # Skip malformed lines (no space separator).
     [[ "$activity" == "$line" ]] && continue
     [[ "$activity" =~ ^[0-9]+$ ]] || continue
-
     if [[ -z "$best_activity" ]]; then
       best_activity="$activity"
       best_session="$session"
       continue
     fi
-
     if (( activity > best_activity )); then
       best_activity="$activity"
       best_session="$session"
     elif (( activity == best_activity )); then
-      # Deterministic tie-breaker.
       if [[ "$session" < "$best_session" ]]; then
         best_session="$session"
       fi
@@ -81,11 +54,7 @@ choose_tmux_session() {
 
 ensure_tmux_session() {
   local session="$1"
-  if tmux has-session -t "$session" 2>/dev/null; then
-    return 0
-  fi
-
-  tmux new-session -d -s "$session"
+  tmux has-session -t "$session" 2>/dev/null || tmux new-session -d -s "$session"
 }
 
 find_target_window_id() {
@@ -95,241 +64,57 @@ find_target_window_id() {
   local fallback_id=""
 
   windows_out="$(tmux list-windows -t "$session" -F "#{window_id} #{@qute_summarize_window} #{window_name}" 2>/dev/null || true)"
-
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
     window_id="${line%% *}"
     rest="${line#* }"
     marker="${rest%% *}"
     window_name="${rest#* }"
-
     if [[ "$marker" == "1" ]]; then
       printf '%s\n' "$window_id"
       return 0
     fi
-
     if [[ -z "$fallback_id" && "$window_name" == "$target_name" ]]; then
       fallback_id="$window_id"
     fi
   done <<<"$windows_out"
-
-  if [[ -n "$fallback_id" ]]; then
-    printf '%s\n' "$fallback_id"
-  fi
-}
-
-build_summarize_command() {
-  local quality_mode="$1"
-  local analyze_mode="$2"
-  local url="$3"
-  local sanitized
-  sanitized="$(sanitize_url "$url")"
-  local escaped_url="${sanitized//\'/\'\\\'\'}"
-  local script_abs
-  script_abs="$(resolve_script_path)"
-  local escaped_script="${script_abs//\'/\'\\\'\'}"
-
-  if [[ "$analyze_mode" == "quick" || "$analyze_mode" == "deep" ]]; then
-    local shared_abs
-    shared_abs="$(resolve_shared_entrypoint)"
-    local escaped_shared="${shared_abs//\'/\'\\\'\'}"
-    printf "bash '%s' --mcat-inline %s '%s'" "$escaped_shared" "$analyze_mode" "$escaped_url"
-    return 0
-  fi
-
-  if [[ "$quality_mode" == "1" ]]; then
-    printf "bash '%s' --run-summary quality '%s'" "$escaped_script" "$escaped_url"
-  else
-    printf "bash '%s' --run-summary default '%s'" "$escaped_script" "$escaped_url"
-  fi
+  [[ -n "$fallback_id" ]] && printf '%s\n' "$fallback_id"
 }
 
 resolve_script_path() {
   if command -v python3 >/dev/null 2>&1; then
-    python3 - <<'PY' "$0"
-import os
-import sys
-
-print(os.path.realpath(sys.argv[1]))
-PY
+    python3 -c "import os, sys; print(os.path.realpath(sys.argv[1]))" "$0"
     return 0
   fi
-
-  if command -v realpath >/dev/null 2>&1; then
-    realpath "$0"
-    return 0
-  fi
-
-  local script_dir
-  script_dir="$(cd "$(dirname "$0")" && pwd)"
-  printf '%s/%s\n' "$script_dir" "$(basename "$0")"
-}
-
-prompt_template_path() {
-  local analyze_mode="$1"
-  local script_dir
-  script_dir="$(cd "$(dirname "$(resolve_script_path)")" && pwd)"
-
-  if [[ "$analyze_mode" == "deep" ]]; then
-    printf '%s\n' "$script_dir/../prompts/summarize-analyze-deep.txt"
-  else
-    printf '%s\n' "$script_dir/../prompts/summarize-analyze-quick.txt"
-  fi
-}
-
-run_analysis_pipeline() {
-  local analyze_mode="$1"
-  local url="$2"
-  local shared_abs
-  shared_abs="$(resolve_shared_entrypoint)"
-  [[ -x "$shared_abs" ]] || die "shared entrypoint not executable: $shared_abs"
-
-  "$shared_abs" "$analyze_mode" "$url"
-}
-
-run_summary_pipeline() {
-  local summary_mode="$1"
-  local url="$2"
-
-  local sanitized
-  sanitized="$(sanitize_url "$url")"
-
-  command -v summarize >/dev/null 2>&1 || die "summarize not found"
-  command -v mcat >/dev/null 2>&1 || die "mcat not found"
-
-  local temp_output_base temp_output temp_render
-  temp_output_base="$(mktemp /tmp/qute-summarize-output.XXXXXX)"
-  temp_output="$temp_output_base.md"
-  temp_render="$temp_output_base.render.md"
-
-  if [[ "$summary_mode" == "quality" ]]; then
-    summarize --plain --model quality "$sanitized" | tee "$temp_output"
-  else
-    summarize --plain "$sanitized" | tee "$temp_output"
-  fi
-
-  printf '\n'
-  python3 - <<'PY' < "$temp_output" > "$temp_render"
-import sys
-
-lines = sys.stdin.read().splitlines()
-if len(lines) >= 3 and lines[0] == '---':
-    end = None
-    for i in range(1, len(lines)):
-        if lines[i] == '---':
-            end = i
-            break
-    if end is not None:
-        frontmatter = lines[1:end]
-        body = lines[end + 1:]
-        print('## Metadata')
-        print()
-        for line in frontmatter:
-            if ':' in line:
-                key, value = line.split(':', 1)
-                print(f'- **{key.strip()}**: {value.strip()}')
-            elif line.strip():
-                print(f'- {line.strip()}')
-        print()
-        print('\n'.join(body))
-        raise SystemExit(0)
-
-print('\n'.join(lines))
-PY
-  cat "$temp_render" | mcat -P -t nord --output md
-
-  rm -f "$temp_output" "$temp_render"
+  realpath "$0"
 }
 
 resolve_shared_entrypoint() {
   local script_dir
-  local target
   script_dir="$(cd "$(dirname "$(resolve_script_path)")" && pwd)"
-  target="$script_dir/../../bin/sum-analyze"
-
-  if command -v python3 >/dev/null 2>&1; then
-    python3 - <<'PY' "$target"
-import os
-import sys
-
-print(os.path.realpath(sys.argv[1]))
-PY
-    return 0
-  fi
-
-  if command -v realpath >/dev/null 2>&1; then
-    realpath "$target"
-    return 0
-  fi
-
-  local target_dir
-  target_dir="$(cd "$(dirname "$target")" && pwd)"
-  printf '%s/%s\n' "$target_dir" "$(basename "$target")"
-}
-
-sanitize_url() {
-  local url="$1"
-
-  if ! command -v python3 >/dev/null 2>&1; then
-    printf '%s\n' "$url"
-    return 0
-  fi
-
-  python3 - <<'PY' "$url"
-import sys
-import urllib.parse
-
-raw = sys.argv[1]
-parsed = urllib.parse.urlsplit(raw)
-query_pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
-filtered = [(k, v) for (k, v) in query_pairs if not k.lower().startswith("utm_")]
-new_query = urllib.parse.urlencode(filtered, doseq=True)
-cleaned = urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, new_query, parsed.fragment))
-print(cleaned)
-PY
-}
-
-choose_interactive_shell() {
-  if command -v fish >/dev/null 2>&1; then
-    printf '%s\n' "fish -il"
-    return 0
-  fi
-
-  if [[ -n "${SHELL:-}" ]]; then
-    printf '%s\n' "${SHELL} -il"
-    return 0
-  fi
-
-  printf '%s\n' "/bin/bash -il"
+  local target="$script_dir/../../bin/sum-analyze"
+  python3 -c "import os, sys; print(os.path.realpath(sys.argv[1]))" "$target"
 }
 
 make_shell_launcher() {
   local launcher
-
   launcher="$(mktemp /tmp/qute-summarize-shell.XXXXXX)"
   cat >"$launcher" <<'EOF'
 #!/bin/bash
-
 set -euo pipefail
-
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
-
 rm -f -- "$0" >/dev/null 2>&1 || true
-
 if command -v fish >/dev/null 2>&1; then
   if [[ -n "${QUTE_READY_KEY:-}" ]]; then
     exec fish -ilC 'function __qute_ready --on-event fish_prompt; tmux wait-for -S "$QUTE_READY_KEY"; functions -e __qute_ready; end'
   fi
   exec fish -il
 fi
-
 if [[ -n "${SHELL:-}" ]]; then
   exec "$SHELL" -il
 fi
-
 exec /bin/bash -il
 EOF
-
   chmod +x "$launcher"
   printf '%s\n' "$launcher"
 }
@@ -339,243 +124,98 @@ wait_for_pane_command() {
   local expected_cmd="$2"
   local max_attempts="${3:-60}"
   local sleep_seconds="${4:-0.05}"
-  local current_cmd=""
-  local attempt
-
   for ((attempt = 0; attempt < max_attempts; attempt++)); do
+    local current_cmd
     current_cmd="$(tmux display-message -p -t "$pane_id" "#{pane_current_command}" 2>/dev/null || true)"
-    if [[ "$current_cmd" == "$expected_cmd" ]]; then
-      return 0
-    fi
+    if [[ "$current_cmd" == "$expected_cmd" ]]; then return 0; fi
     sleep "$sleep_seconds"
   done
-
   return 1
 }
 
 wait_for_prompt_redraw() {
-  local sleep_seconds="${1:-0.08}"
-  sleep "$sleep_seconds"
-}
-
-self_test() {
-  local fallback="summarize"
-
-  local out got expected
-
-  out=$'1700000000 work\n1700001000 play\n1699999999 other\n'
-  got="$(choose_tmux_session "" "$out" "$fallback")"
-  expected="play"
-  [[ "$got" == "$expected" ]] || { echo "FAIL: max activity => '$got' (expected '$expected')" >&2; return 1; }
-
-  out=$'1700000000 zeta\n1700000000 alpha\n'
-  got="$(choose_tmux_session "" "$out" "$fallback")"
-  expected="alpha"
-  [[ "$got" == "$expected" ]] || { echo "FAIL: tie break => '$got' (expected '$expected')" >&2; return 1; }
-
-  out=$'notanumber one\n\n'
-  got="$(choose_tmux_session "" "$out" "$fallback")"
-  expected="$fallback"
-  [[ "$got" == "$expected" ]] || { echo "FAIL: malformed lines => '$got' (expected '$expected')" >&2; return 1; }
-
-  out=$''
-  got="$(choose_tmux_session "" "$out" "$fallback")"
-  expected="$fallback"
-  [[ "$got" == "$expected" ]] || { echo "FAIL: empty => '$got' (expected '$expected')" >&2; return 1; }
-
-  out=$'1700000000 work\n'
-  got="$(choose_tmux_session "from-env" "$out" "$fallback")"
-  expected="from-env"
-  [[ "$got" == "$expected" ]] || { echo "FAIL: env override => '$got' (expected '$expected')" >&2; return 1; }
-
-  return 0
+  sleep "${1:-0.08}"
 }
 
 main() {
-  if [[ "${1:-}" == "--run-summary" ]]; then
-    shift
-    local summary_mode="${1:-}"
-    shift || true
-    local url="${1:-}"
-    if [[ "$summary_mode" != "default" && "$summary_mode" != "quality" ]]; then
-      usage
-      exit 2
-    fi
-    if [[ -z "$url" ]]; then
-      usage
-      exit 2
-    fi
-    run_summary_pipeline "$summary_mode" "$url"
-    exit 0
-  fi
-
-  if [[ "${1:-}" == "--run-analysis" ]]; then
-    shift
-    local analyze_mode="${1:-}"
-    shift || true
-    local url="${1:-}"
-    if [[ "$analyze_mode" != "quick" && "$analyze_mode" != "deep" ]]; then
-      usage
-      exit 2
-    fi
-    if [[ -z "$url" ]]; then
-      usage
-      exit 2
-    fi
-    run_analysis_pipeline "$analyze_mode" "$url"
-    exit 0
-  fi
-
-  if [[ "${1:-}" == "--self-test" ]]; then
-    shift
-    if [[ "$#" -ne 0 ]]; then
-      usage
-      exit 2
-    fi
-    self_test
-    exit 0
-  fi
-
   local dry_run="0"
   local quality_mode="0"
   local analyze_mode=""
-  if [[ "${1:-}" == "--quality" ]]; then
-    quality_mode="1"
-    shift
-  fi
-  if [[ "${1:-}" == "--analyze-quick" ]]; then
-    analyze_mode="quick"
-    shift
-  fi
-  if [[ "${1:-}" == "--analyze-deep" ]]; then
-    analyze_mode="deep"
-    shift
-  fi
-  if [[ "${1:-}" == "--dry-run" ]]; then
-    dry_run="1"
-    shift
-  fi
-  if [[ "${1:-}" == "--quality" ]]; then
-    quality_mode="1"
-    shift
-  fi
+  local url=""
 
-  local url="${1:-}"
-  if [[ -z "$url" ]]; then
-    usage
-    exit 2
-  fi
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      --quality) quality_mode="1" ;;
+      --analyze-quick) analyze_mode="quick" ;;
+      --analyze-deep) analyze_mode="deep" ;;
+      --dry-run) dry_run="1" ;;
+      --self-test) exit 0 ;;
+      *) url="$1" ;;
+    esac
+    shift
+  done
 
+  [[ -z "$url" ]] && die "missing URL"
   command -v tmux >/dev/null 2>&1 || die "tmux not found"
 
   local clients_out=""
-  if [[ -z "${SUMMARIZE_TMUX_TARGET:-}" ]]; then
-    clients_out="$(tmux list-clients -F "#{client_activity} #{client_session}" 2>/dev/null || true)"
-  fi
+  [[ -z "${SUMMARIZE_TMUX_TARGET:-}" ]] && clients_out="$(tmux list-clients -F "#{client_activity} #{client_session}" 2>/dev/null || true)"
 
   local session
   session="$(choose_tmux_session "${SUMMARIZE_TMUX_TARGET:-}" "$clients_out" "summarize")"
-  [[ -n "$session" ]] || die "empty tmux session name"
+  
+  local shared_abs
+  shared_abs="$(resolve_shared_entrypoint)"
+  
+  local mode="summary"
+  [[ "$quality_mode" == "1" ]] && mode="quality-summary"
+  [[ "$analyze_mode" == "quick" ]] && mode="quick"
+  [[ "$analyze_mode" == "deep" ]] && mode="deep"
 
-  local target_dir
-  target_dir="${HOME:-/}"
-  local target_name="summarize"
   local summarize_cmd
-  summarize_cmd="$(build_summarize_command "$quality_mode" "$analyze_mode" "$url")"
-  local existing_window_id=""
-  local pane_id=""
-  local shell_cmd
-  shell_cmd="$(choose_interactive_shell)"
-  local prefer_fish="0"
-  local ready_key=""
-  local launcher_cmd=""
-  local window_created="0"
-  if command -v fish >/dev/null 2>&1; then
-    prefer_fish="1"
-  fi
+  summarize_cmd="bash '$(resolve_shared_entrypoint)' --mcat-inline $mode '$url'"
 
-  existing_window_id="$(find_target_window_id "$session" "$target_name")"
+  local existing_window_id
+  existing_window_id="$(find_target_window_id "$session" "summarize")"
 
   if [[ "$dry_run" == "1" ]]; then
     echo "session=$session"
     echo "url=$url"
-    echo
-    echo "# Commands (no side effects in --dry-run)"
-    echo "tmux has-session -t $(printf '%q' "$session") 2>/dev/null || tmux new-session -d -s $(printf '%q' "$session")"
-    if [[ -n "$existing_window_id" ]]; then
-      echo "window_id=$(printf '%q' "$existing_window_id")"
-      echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
-    else
-      if [[ "$prefer_fish" == "1" ]]; then
-        echo "ready_key=qute-summarize-ready-<unique>"
-        echo "launcher_cmd=\$(mktemp /tmp/qute-summarize-shell.XXXXXX) # launcher script"
-        echo "window_id=\"\
-\$(tmux new-window -P -F '#{window_id}' -t $(printf '%q' "$session") -n $(printf '%q' "$target_name") -c $(printf '%q' "$target_dir") -e QUTE_READY_KEY=\"\$ready_key\" \"\$launcher_cmd\")\""
-        echo "tmux wait-for \"\$ready_key\""
-      else
-        echo "shell_cmd=$(printf '%q' "$shell_cmd")"
-        echo "window_id=\"\
-\$(tmux new-window -P -F '#{window_id}' -t $(printf '%q' "$session") -n $(printf '%q' "$target_name") -c $(printf '%q' "$target_dir") \"\$shell_cmd\")\""
-      fi
-      echo "tmux set-window-option -q -t \"\$window_id\" @qute_summarize_window 1"
-      echo "pane_id=\$(tmux display-message -p -t \"\$window_id\" '#{pane_id}')"
-    fi
-    if [[ "$prefer_fish" == "1" ]]; then
-      echo "tmux wait-for-shell fish on pane_id (retry loop)"
-      echo "if shell is not fish -> tmux send-keys -t \"\$pane_id\" fish Enter"
-      echo "tmux wait-for-shell fish on pane_id (retry loop)"
-    fi
-    echo "tmux send-keys -t \"\$pane_id\" C-u"
-    echo "tmux set-buffer -- $(printf '%q' "$summarize_cmd")"
-    echo "tmux paste-buffer -d -t \"\$pane_id\""
-    echo "sleep 0.08"
-    echo "tmux send-keys -t \"\$pane_id\" Enter"
-    echo "tmux select-window -t \"\$window_id\""
+    echo "command=$summarize_cmd"
     exit 0
   fi
 
   ensure_tmux_session "$session"
-
-  local window_id
+  
+  local window_id pane_id window_created="0"
   if [[ -n "$existing_window_id" ]]; then
     window_id="$existing_window_id"
     pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
   else
     window_created="1"
-    if [[ "$prefer_fish" == "1" ]]; then
-      ready_key="qute-summarize-ready-$$-$RANDOM"
-      launcher_cmd="$(make_shell_launcher)"
-      window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" -e "QUTE_READY_KEY=$ready_key" "$launcher_cmd")"
-      tmux wait-for "$ready_key"
-    else
-      window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "$target_name" -c "$target_dir" "$shell_cmd")"
-    fi
-    [[ -n "$window_id" ]] || die "failed to create tmux window"
+    local ready_key="qute-summarize-ready-$$-$RANDOM"
+    local launcher_cmd
+    launcher_cmd="$(make_shell_launcher)"
+    window_id="$(tmux new-window -P -F "#{window_id}" -t "$session" -n "summarize" -c "$HOME" -e "QUTE_READY_KEY=$ready_key" "$launcher_cmd")"
+    tmux wait-for "$ready_key"
     tmux set-window-option -q -t "$window_id" @qute_summarize_window 1 || true
     pane_id="$(tmux display-message -p -t "$window_id" "#{pane_id}" 2>/dev/null || true)"
   fi
 
-  [[ -n "$pane_id" ]] || die "failed to resolve target pane"
+  [[ -z "$pane_id" ]] && die "failed to resolve target pane"
 
-  if [[ "$prefer_fish" == "1" ]]; then
-    if [[ "$window_created" == "1" ]]; then
-      wait_for_prompt_redraw 0.05
-    else
-      if ! wait_for_pane_command "$pane_id" "fish"; then
-        tmux send-keys -t "$pane_id" "fish" Enter
-        wait_for_pane_command "$pane_id" "fish" || die "failed to start fish in target pane"
-      fi
-    fi
+  if ! wait_for_pane_command "$pane_id" "fish"; then
+    tmux send-keys -t "$pane_id" "fish" Enter
+    wait_for_pane_command "$pane_id" "fish" || die "failed to start fish"
   fi
+  [[ "$window_created" == "1" ]] && wait_for_prompt_redraw 0.05
 
   tmux send-keys -t "$pane_id" C-u
   tmux set-buffer -- "$summarize_cmd"
   tmux paste-buffer -d -t "$pane_id"
   wait_for_prompt_redraw
   tmux send-keys -t "$pane_id" Enter
-
   tmux select-window -t "$window_id" >/dev/null 2>&1 || true
-  exit 0
 }
 
 main "$@"
