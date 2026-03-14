@@ -3,7 +3,7 @@
   "checkpoint_id": "83e5b31a4f02",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "bin/sum-analyze",
     "qutebrowser/prompts/summarize-analyze-deep.txt",
@@ -23,6 +23,13 @@
       "transcript": "/83/e5b31a4f02/1/full.jsonl",
       "context": "",
       "content_hash": "/83/e5b31a4f02/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/83/e5b31a4f02/2/metadata.json",
+      "transcript": "/83/e5b31a4f02/2/full.jsonl",
+      "context": "",
+      "content_hash": "/83/e5b31a4f02/2/content_hash.txt",
       "prompt": ""
     }
   ],
