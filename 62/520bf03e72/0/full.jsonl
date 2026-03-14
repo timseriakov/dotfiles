@@ -1,0 +1,4 @@
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"description":"List openclaw files and read configuration","command":"ls -R ~/.openclaw && cat ~/.openclaw/openclaw.json"}}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"command":"/opt/homebrew/bin/rtk read ~/.openclaw/openclaw.json","description":"Read openclaw configuration"}}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"description":"Check gateway logs","command":"tail -n 50 ~/.openclaw/logs/gateway.log"}}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","name":"Task","input":{}}]}}
