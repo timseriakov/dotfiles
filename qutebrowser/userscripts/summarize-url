@@ -11,9 +11,9 @@ die() {
 }
 
 choose_tmux_session() {
-  local env_target="$1"
-  local clients_out="$2"
-  local fallback="$3"
+  local env_target="${1:-}"
+  local clients_out="${2:-}"
+  local fallback="${3:-summarize}"
 
   if [[ -n "$env_target" ]]; then
     printf '%s\n' "$env_target"
@@ -78,22 +78,22 @@ find_target_window_id() {
       fallback_id="$window_id"
     fi
   done <<<"$windows_out"
-  [[ -n "$fallback_id" ]] && printf '%s\n' "$fallback_id"
-}
-
-resolve_script_path() {
-  if command -v python3 >/dev/null 2>&1; then
-    python3 -c "import os, sys; print(os.path.realpath(sys.argv[1]))" "$0"
-    return 0
+  if [[ -n "$fallback_id" ]]; then
+    printf '%s\n' "$fallback_id"
   fi
-  realpath "$0"
+  return 0
 }
 
 resolve_shared_entrypoint() {
   local script_dir
-  script_dir="$(cd "$(dirname "$(resolve_script_path)")" && pwd)"
+  script_dir="$(cd "$(dirname "$0")" && pwd)"
+  # If we're in qutebrowser/userscripts/, sum-analyze is in ../../bin/sum-analyze
   local target="$script_dir/../../bin/sum-analyze"
-  python3 -c "import os, sys; print(os.path.realpath(sys.argv[1]))" "$target"
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c "import os, sys; print(os.path.realpath(sys.argv[1]))" "$target"
+  else
+    realpath "$target" 2>/dev/null || echo "$target"
+  fi
 }
 
 make_shell_launcher() {
@@ -159,7 +159,7 @@ main() {
   command -v tmux >/dev/null 2>&1 || die "tmux not found"
 
   local clients_out=""
-  [[ -z "${SUMMARIZE_TMUX_TARGET:-}" ]] && clients_out="$(tmux list-clients -F "#{client_activity} #{client_session}" 2>/dev/null || true)"
+  clients_out="$(tmux list-clients -F "#{client_activity} #{client_session}" 2>/dev/null || true)"
 
   local session
   session="$(choose_tmux_session "${SUMMARIZE_TMUX_TARGET:-}" "$clients_out" "summarize")"
@@ -172,8 +172,9 @@ main() {
   [[ "$analyze_mode" == "quick" ]] && mode="quick"
   [[ "$analyze_mode" == "deep" ]] && mode="deep"
 
+  # Properly escape URL and mode for tmux send-keys
   local summarize_cmd
-  summarize_cmd="$(resolve_shared_entrypoint) --mcat $mode '$url'"
+  summarize_cmd="'$shared_abs' --mcat $mode '$url'"
 
   local existing_window_id
   existing_window_id="$(find_target_window_id "$session" "summarize")"
@@ -182,6 +183,7 @@ main() {
     echo "session=$session"
     echo "url=$url"
     echo "command=$summarize_cmd"
+    echo "shared_abs=$shared_abs"
     exit 0
   fi
 
