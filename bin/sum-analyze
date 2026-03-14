@@ -6,8 +6,8 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 usage() {
   cat >&2 <<'EOF'
 Usage:
-  sum-analyze quick <url>
-  sum-analyze deep <url>
+  sum-analyze [--mcat] quick <url>
+  sum-analyze [--mcat] deep <url>
 EOF
 }
 
@@ -55,7 +55,30 @@ extract_markdown() {
   summarize "$url" --extract --format md --plain 2> >(grep -v '^Decompression error: ZlibError$' >&2)
 }
 
+render_output() {
+  local use_mcat="$1"
+
+  if [[ "$use_mcat" == "1" ]]; then
+    command -v mcat >/dev/null 2>&1 || die "mcat not found"
+    local temp_output
+    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX.md)"
+    tee "$temp_output"
+    printf '\n'
+    mcat -p -t nord "$temp_output"
+    rm -f "$temp_output"
+    return 0
+  fi
+
+  cat
+}
+
 main() {
+  local use_mcat="0"
+  if [[ "${1:-}" == "--mcat" ]]; then
+    use_mcat="1"
+    shift
+  fi
+
   local mode="${1:-}"
   local url="${2:-}"
 
@@ -93,11 +116,11 @@ main() {
   local length_arg="medium"
   if [[ "$mode" == "deep" ]]; then
     length_arg="xxl"
-    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality
+    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality | render_output "$use_mcat"
     exit 0
   fi
 
-  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg"
+  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" | render_output "$use_mcat"
 }
 
 main "$@"
