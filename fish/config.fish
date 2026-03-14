@@ -1,3 +1,7 @@
+if test -f ~/dev/dotfiles/fish/secrets.fish
+    source ~/dev/dotfiles/fish/secrets.fish
+end
+
 # Start tmux automatically only when allowed
 if status is-interactive
     if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT; and not set -q CODEX_SHELL
@@ -27,10 +31,6 @@ if set -q NVIM
 end
 
 # Prompt initialized from conf.d/40-plugins.fish (interactive only)
-
-if test -f ~/dev/dotfiles/fish/secrets.fish
-    source ~/dev/dotfiles/fish/secrets.fish
-end
 
 # Make API keys visible to GUI apps launched by macOS (SourceGit, etc.).
 if status is-interactive
