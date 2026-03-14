@@ -107,10 +107,10 @@ main() {
       rm -f "$prompt_runtime"
       ;;
     summary)
-      summarize --plain "$sanitized" | render_output "$render_mode"
+      summarize --plain "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       ;;
     quality-summary)
-      summarize --plain --model quality "$sanitized" | render_output "$render_mode"
+      summarize --plain --model quality "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       ;;
     *)
       usage; exit 2
