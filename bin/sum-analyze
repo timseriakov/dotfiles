@@ -89,7 +89,7 @@ render_output() {
     tee "$temp_output"
     printf '\n'
     prepare_mcat_render < "$temp_output" > "$temp_render"
-    cat "$temp_render" | mcat -P -t nord --output md
+    mcat -P -t nord --output md < "$temp_render"
     rm -f "$temp_output" "$temp_render"
     return 0
   fi
@@ -101,7 +101,7 @@ render_output() {
     tee "$temp_output"
     printf '\n'
     prepare_mcat_render < "$temp_output" > "$temp_render"
-    cat "$temp_render" | mcat -p -t nord --output md
+    mcat -p -t nord --output md < "$temp_render"
     rm -f "$temp_output" "$temp_render"
     return 0
   fi
