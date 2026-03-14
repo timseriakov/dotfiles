@@ -10,8 +10,13 @@ usage() {
 Usage:
   summarize-url <url>
   summarize-url --quality <url>
+  summarize-url --analyze-quick <url>
+  summarize-url --analyze-deep <url>
   summarize-url --dry-run <url>
   summarize-url --quality --dry-run <url>
+  summarize-url --analyze-quick --dry-run <url>
+  summarize-url --analyze-deep --dry-run <url>
+  summarize-url --run-analysis <quick|deep> <url>
   summarize-url --self-test
 EOF
 }
@@ -114,15 +119,94 @@ find_target_window_id() {
 
 build_summarize_command() {
   local quality_mode="$1"
-  local url="$2"
+  local analyze_mode="$2"
+  local url="$3"
   local sanitized
   sanitized="$(sanitize_url "$url")"
-  local escaped="${sanitized//\'/\'\\\'\'}"
-  if [[ "$quality_mode" == "1" ]]; then
-    printf "summarize --model quality '%s'" "$escaped"
-  else
-    printf "summarize '%s'" "$escaped"
+  local escaped_url="${sanitized//\'/\'\\\'\'}"
+
+  if [[ "$analyze_mode" == "quick" || "$analyze_mode" == "deep" ]]; then
+    local shared_abs
+    shared_abs="$(resolve_shared_entrypoint)"
+    local escaped_shared="${shared_abs//\'/\'\\\'\'}"
+    printf "bash '%s' %s '%s'" "$escaped_shared" "$analyze_mode" "$escaped_url"
+    return 0
   fi
+
+  if [[ "$quality_mode" == "1" ]]; then
+    printf "summarize --model quality '%s'" "$escaped_url"
+  else
+    printf "summarize '%s'" "$escaped_url"
+  fi
+}
+
+resolve_script_path() {
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - <<'PY' "$0"
+import os
+import sys
+
+print(os.path.realpath(sys.argv[1]))
+PY
+    return 0
+  fi
+
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$0"
+    return 0
+  fi
+
+  local script_dir
+  script_dir="$(cd "$(dirname "$0")" && pwd)"
+  printf '%s/%s\n' "$script_dir" "$(basename "$0")"
+}
+
+prompt_template_path() {
+  local analyze_mode="$1"
+  local script_dir
+  script_dir="$(cd "$(dirname "$(resolve_script_path)")" && pwd)"
+
+  if [[ "$analyze_mode" == "deep" ]]; then
+    printf '%s\n' "$script_dir/../prompts/summarize-analyze-deep.txt"
+  else
+    printf '%s\n' "$script_dir/../prompts/summarize-analyze-quick.txt"
+  fi
+}
+
+run_analysis_pipeline() {
+  local analyze_mode="$1"
+  local url="$2"
+  local shared_abs
+  shared_abs="$(resolve_shared_entrypoint)"
+  [[ -x "$shared_abs" ]] || die "shared entrypoint not executable: $shared_abs"
+
+  "$shared_abs" "$analyze_mode" "$url"
+}
+
+resolve_shared_entrypoint() {
+  local script_dir
+  local target
+  script_dir="$(cd "$(dirname "$(resolve_script_path)")" && pwd)"
+  target="$script_dir/../../bin/sum-analyze"
+
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - <<'PY' "$target"
+import os
+import sys
+
+print(os.path.realpath(sys.argv[1]))
+PY
+    return 0
+  fi
+
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$target"
+    return 0
+  fi
+
+  local target_dir
+  target_dir="$(cd "$(dirname "$target")" && pwd)"
+  printf '%s/%s\n' "$target_dir" "$(basename "$target")"
 }
 
 sanitize_url() {
@@ -250,6 +334,23 @@ self_test() {
 }
 
 main() {
+  if [[ "${1:-}" == "--run-analysis" ]]; then
+    shift
+    local analyze_mode="${1:-}"
+    shift || true
+    local url="${1:-}"
+    if [[ "$analyze_mode" != "quick" && "$analyze_mode" != "deep" ]]; then
+      usage
+      exit 2
+    fi
+    if [[ -z "$url" ]]; then
+      usage
+      exit 2
+    fi
+    run_analysis_pipeline "$analyze_mode" "$url"
+    exit 0
+  fi
+
   if [[ "${1:-}" == "--self-test" ]]; then
     shift
     if [[ "$#" -ne 0 ]]; then
@@ -262,8 +363,17 @@ main() {
 
   local dry_run="0"
   local quality_mode="0"
+  local analyze_mode=""
   if [[ "${1:-}" == "--quality" ]]; then
     quality_mode="1"
+    shift
+  fi
+  if [[ "${1:-}" == "--analyze-quick" ]]; then
+    analyze_mode="quick"
+    shift
+  fi
+  if [[ "${1:-}" == "--analyze-deep" ]]; then
+    analyze_mode="deep"
     shift
   fi
   if [[ "${1:-}" == "--dry-run" ]]; then
@@ -296,7 +406,7 @@ main() {
   target_dir="${HOME:-/}"
   local target_name="summarize"
   local summarize_cmd
-  summarize_cmd="$(build_summarize_command "$quality_mode" "$url")"
+  summarize_cmd="$(build_summarize_command "$quality_mode" "$analyze_mode" "$url")"
   local existing_window_id=""
   local pane_id=""
   local shell_cmd

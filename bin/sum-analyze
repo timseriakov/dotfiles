@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+
+usage() {
+  cat >&2 <<'EOF'
+Usage:
+  sum-analyze quick <url>
+  sum-analyze deep <url>
+EOF
+}
+
+die() {
+  echo "sum-analyze: $*" >&2
+  exit 1
+}
+
+sanitize_url() {
+  local url="$1"
+
+  if ! command -v python3 >/dev/null 2>&1; then
+    printf '%s\n' "$url"
+    return 0
+  fi
+
+  python3 - <<'PY' "$url"
+import sys
+import urllib.parse
+
+raw = sys.argv[1]
+parsed = urllib.parse.urlsplit(raw)
+query_pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+filtered = [(k, v) for (k, v) in query_pairs if not k.lower().startswith("utm_")]
+new_query = urllib.parse.urlencode(filtered, doseq=True)
+cleaned = urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, new_query, parsed.fragment))
+print(cleaned)
+PY
+}
+
+prompt_template_path() {
+  local mode="$1"
+  local repo_root
+  repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+  if [[ "$mode" == "deep" ]]; then
+    printf '%s\n' "$repo_root/qutebrowser/prompts/summarize-analyze-deep.txt"
+  else
+    printf '%s\n' "$repo_root/qutebrowser/prompts/summarize-analyze-quick.txt"
+  fi
+}
+
+extract_markdown() {
+  local url="$1"
+  summarize "$url" --extract --format md --plain 2> >(grep -v '^Decompression error: ZlibError$' >&2)
+}
+
+main() {
+  local mode="${1:-}"
+  local url="${2:-}"
+
+  if [[ "$mode" != "quick" && "$mode" != "deep" ]]; then
+    usage
+    exit 2
+  fi
+  if [[ -z "$url" ]]; then
+    usage
+    exit 2
+  fi
+
+  command -v summarize >/dev/null 2>&1 || die "summarize not found"
+
+  local sanitized
+  sanitized="$(sanitize_url "$url")"
+
+  local prompt_template
+  prompt_template="$(prompt_template_path "$mode")"
+  [[ -f "$prompt_template" ]] || die "prompt template not found: $prompt_template"
+
+  local analyzed_at
+  analyzed_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+  local prompt_runtime
+  prompt_runtime="$(mktemp /tmp/sum-analyze-prompt.XXXXXX)"
+  {
+    printf 'source_url: %s\n' "$sanitized"
+    printf 'analyzed_at: %s\n' "$analyzed_at"
+    printf 'mode: %s\n' "$mode"
+    printf '\n'
+    cat "$prompt_template"
+  } >"$prompt_runtime"
+
+  local length_arg="medium"
+  if [[ "$mode" == "deep" ]]; then
+    length_arg="xxl"
+    extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" --model quality
+    exit 0
+  fi
+
+  extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg"
+}
+
+main "$@"

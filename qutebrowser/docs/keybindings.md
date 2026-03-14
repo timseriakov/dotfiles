@@ -47,22 +47,24 @@
 
 ## Generic Bindings
 
-| Shortcut      | Action                                 |
-| ------------- | -------------------------------------- |
-| <kbd>d</kbd>  | scroll-page 0 0.5                      |
-| <kbd>u</kbd>  | scroll-page 0 -0.5                     |
-| <kbd>t</kbd>  | cmd-set-text -s :open -t               |
-| <kbd>x</kbd>  | tab-close                              |
-| <kbd><</kbd>  | tab-move -                             |
-| <kbd>></kbd>  | tab-move +                             |
-| <kbd>H</kbd>  | back                                   |
-| <kbd>L</kbd>  | forward                                |
-| <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url) |
-| <kbd>gu</kbd> | navigate up                            |
-| <kbd>ss</kbd> | spawn -u summarize-url {url}           |
-| <kbd>sq</kbd> | spawn -u summarize-url --quality {url} |
+| Shortcut      | Action                                       |
+| ------------- | -------------------------------------------- |
+| <kbd>d</kbd>  | scroll-page 0 0.5                            |
+| <kbd>u</kbd>  | scroll-page 0 -0.5                           |
+| <kbd>t</kbd>  | cmd-set-text -s :open -t                     |
+| <kbd>x</kbd>  | tab-close                                    |
+| <kbd><</kbd>  | tab-move -                                   |
+| <kbd>></kbd>  | tab-move +                                   |
+| <kbd>H</kbd>  | back                                         |
+| <kbd>L</kbd>  | forward                                      |
+| <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url)       |
+| <kbd>gu</kbd> | navigate up                                  |
+| <kbd>ss</kbd> | spawn -u summarize-url {url}                 |
+| <kbd>sq</kbd> | spawn -u summarize-url --quality {url}       |
+| <kbd>sw</kbd> | spawn -u summarize-url --analyze-quick {url} |
+| <kbd>sd</kbd> | spawn -u summarize-url --analyze-deep {url}  |
 
-This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and invokes `summarize <url>` or `summarize --model quality <url>` in the current tmux workflow.
+This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and invokes summarize workflows in the current tmux session: normal summary (`ss`), quality summary (`sq`), quick analysis (`sw`), and deep analysis (`sd`).
 
 ## Hints Bindings
 
