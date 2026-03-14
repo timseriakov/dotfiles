@@ -49,6 +49,12 @@ set -gx POSTING_PAGER moar
 set -gx POSTING_ANIMATION full
 set -gx POSTING_THEME alpine
 
+# mcat
+set -gx MCAT_THEME nord
+set -gx MCAT_PAGER "less -rX"
+set -gx MCAT_NO_LINENUMBERS true
+set -gx MCAT_MD_IMAGE all
+
 set -gx REACT_EDITOR /opt/homebrew/bin/nvim
 
 # vapi manpath

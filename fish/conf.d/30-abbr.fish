@@ -198,8 +198,14 @@ abbr -a rfl 'rm -rf *.lock'
 
 abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
 abbr -a c 'bat --style=plain --decorations=never --color=always'
+
+# mcat
+abbr -a m 'mcat .'
+abbr -a mcopy 'mcat . | pbcopy'
+abbr -a mls 'mcat ls'
+
 abbr -a chmd chmod-cli
-abbr -a m mmv
+
 abbr -a mtrx 'cmatrix -C blue -s'
 abbr -a mtrx-cyan 'cmatrix -C cyan -s'
 abbr -a sshh ggh
