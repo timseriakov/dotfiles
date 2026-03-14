@@ -173,7 +173,7 @@ main() {
   [[ "$analyze_mode" == "deep" ]] && mode="deep"
 
   local summarize_cmd
-  summarize_cmd="'$(resolve_shared_entrypoint)' --mcat $mode '$url'"
+  summarize_cmd="$(resolve_shared_entrypoint) --mcat $mode '$url'"
 
   local existing_window_id
   existing_window_id="$(find_target_window_id "$session" "summarize")"
