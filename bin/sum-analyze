@@ -18,21 +18,19 @@ die() {
 
 sanitize_url() {
   local url="$1"
-  if ! command -v python3 >/dev/null 2>&1; then
-    printf '%s\n' "$url"
-    return 0
-  fi
-  python3 -c "import sys, urllib.parse; raw=sys.argv[1]; parsed=urllib.parse.urlsplit(raw); query_pairs=urllib.parse.parse_qsl(parsed.query, keep_blank_values=True); filtered=[(k,v) for (k,v) in query_pairs if not k.lower().startswith('utm_')]; print(urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urllib.parse.urlencode(filtered, doseq=True), parsed.fragment)))" "$url"
+  # Clean UTM parameters using sed
+  echo "$url" | sed -E 's/([?&])utm_[^&]*&?/\1/g; s/[?&]$//'
 }
 
 prompt_template_path() {
   local mode="$1"
-  local repo_root
-  repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local repo_root="$script_dir/.."
   if [[ "$mode" == "deep" ]]; then
-    printf '%s\n' "$repo_root/qutebrowser/prompts/summarize-analyze-deep.txt"
+    echo "$repo_root/qutebrowser/prompts/summarize-analyze-deep.txt"
   else
-    printf '%s\n' "$repo_root/qutebrowser/prompts/summarize-analyze-quick.txt"
+    echo "$repo_root/qutebrowser/prompts/summarize-analyze-quick.txt"
   fi
 }
 
@@ -41,68 +39,37 @@ extract_markdown() {
   summarize "$url" --extract --format md --plain 2> >(grep -v '^Decompression error: ZlibError$' >&2)
 }
 
-# Transform YAML frontmatter to markdown block safely without Python SyntaxErrors.
-prepare_mcat_render() {
-  awk '
-    BEGIN { in_fm = 0; done_fm = 0; }
-    /^---$/ && done_fm == 0 {
-      if (in_fm == 0) {
-        in_fm = 1;
-        print "## Metadata\n";
-        next;
-      } else {
-        in_fm = 0;
-        done_fm = 1;
-        print "";
-        next;
-      }
-    }
-    in_fm == 1 {
-      if (index($0, ":") > 0) {
-        split($0, a, ":");
-        key = a[1];
-        sub(/^[ \t]+/, "", key);
-        sub(/[ \t]+$/, "", key);
-        val = substr($0, index($0, ":") + 1);
-        sub(/^[ \t]+/, "", val);
-        sub(/[ \t]+$/, "", val);
-        printf "- **%s**: %s\n", key, val;
-      } else if (length($0) > 0) {
-        line = $0;
-        sub(/^[ \t]+/, "", line);
-        printf "- %s\n", line;
-      }
-      next;
-    }
-    { print $0; }
-  '
-}
-
 render_output() {
   local render_mode="$1"
   if [[ "$render_mode" == "inline" ]]; then
     command -v mcat >/dev/null 2>&1 || die "mcat not found"
-    local temp_output_base temp_output temp_render
-    temp_output_base="$(mktemp /tmp/sum-analyze-output.XXXXXX)"
-    temp_output="$temp_output_base.md"
-    temp_render="$temp_output_base.render.md"
+    local temp_output
+    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX).md"
+    
+    # First pass: plaintext to console
     tee "$temp_output"
     printf '\n'
-    prepare_mcat_render < "$temp_output" > "$temp_render"
-    mcat -P -t nord --output md < "$temp_render"
-    rm -f "$temp_output" "$temp_render"
+    
+    # Second pass: rendered mcat inline
+    # --header ensures YAML frontmatter is rendered beautifully
+    cat "$temp_output" | mcat -P -t nord --header
+    
+    rm -f "$temp_output"
     return 0
   fi
   if [[ "$render_mode" == "pager" ]]; then
     command -v mcat >/dev/null 2>&1 || die "mcat not found"
-    local temp_output temp_render
-    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX)"
-    temp_render="$temp_output.render.md"
+    local temp_output
+    temp_output="$(mktemp /tmp/sum-analyze-output.XXXXXX).md"
+    
+    # First pass: plaintext to console
     tee "$temp_output"
     printf '\n'
-    prepare_mcat_render < "$temp_output" > "$temp_render"
-    mcat -p -t nord --output md < "$temp_render"
-    rm -f "$temp_output" "$temp_render"
+    
+    # Second pass: rendered mcat in pager mode
+    cat "$temp_output" | mcat -p -t nord --header
+    
+    rm -f "$temp_output"
     return 0
   fi
   cat
@@ -135,6 +102,7 @@ main() {
       [[ "$mode" == "deep" ]] && length_arg="xxl"
       local model_arg=""
       [[ "$mode" == "deep" ]] && model_arg="--model quality"
+      
       extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg | render_output "$render_mode"
       rm -f "$prompt_runtime"
       ;;
