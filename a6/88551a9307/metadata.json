@@ -3,7 +3,7 @@
   "checkpoint_id": "a688551a9307",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/30-abbr.fish",
     "qutebrowser/docs/keybindings.md",
@@ -16,6 +16,13 @@
       "transcript": "/a6/88551a9307/0/full.jsonl",
       "context": "",
       "content_hash": "/a6/88551a9307/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/a6/88551a9307/1/metadata.json",
+      "transcript": "/a6/88551a9307/1/full.jsonl",
+      "context": "",
+      "content_hash": "/a6/88551a9307/1/content_hash.txt",
       "prompt": ""
     }
   ],

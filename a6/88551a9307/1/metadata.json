@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "a688551a9307",
+  "session_id": "ses_3189f0cb0ffeh973KsmgOdrtPg",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-14T09:59:41.43742Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "qutebrowser/modules/bindings.py"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "a9771bc265f2",
+  "initial_attribution": {
+    "calculated_at": "2026-03-14T09:59:41.437105Z",
+    "agent_lines": 8,
+    "human_added": 1090,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 1099,
+    "agent_percentage": 0.7279344858962694
+  }
+}
