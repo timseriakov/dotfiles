@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.4.9",
+  "checkpoint_id": "83e5b31a4f02",
+  "session_id": "ses_313b5997cffezpJcgBZFlMPKVP",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-14T12:49:12.555355Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "bin/sum-analyze",
+    "qutebrowser/prompts/summarize-analyze-deep.txt",
+    "qutebrowser/prompts/summarize-analyze-quick.txt",
+    "qutebrowser/userscripts/summarize-url"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "dccb039408b0",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-14T12:49:12.519396Z",
+    "agent_lines": 140,
+    "human_added": 0,
+    "human_modified": 5,
+    "human_removed": 0,
+    "total_committed": 145,
+    "agent_percentage": 96.55172413793103
+  }
+}
