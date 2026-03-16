@@ -1,0 +1,7 @@
+ui:
+  show_counts: true
+  show_status_bar: true
+  vim_mode: true
+
+theme:
+  preset: nord
