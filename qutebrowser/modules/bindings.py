@@ -248,6 +248,13 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
         wrap_ru_with_en=False,
     ),
+    BindingSpec(
+        "<Cmd-s>",
+        en("cmd-set-text -s :tab-select"),
+        hide_ru_in_keyhint=True,
+        wrap_ru_with_en=False,
+    ),
+    BindingSpec("<Cmd-s>", "mode-leave", mode="command", wrap_ru_with_en=False),
     BindingSpec("ge", en("cmd-set-text -s :open {url}"), wrap_ru_with_en=False),
     BindingSpec(
         leader + "ss",

@@ -9,12 +9,15 @@
       "name": "lightpanda",
       "protocol": "stdio",
       "command": "fish",
-      "args": ["-lc", "gomcp stdio"],
+      "args": [
+        "-lc",
+        "gomcp stdio"
+      ],
       "oauth": null,
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-03-11T00:22:00.937994+03:00"
+      "updated": "2026-03-16T14:01:59.183835+03:00"
     },
     {
       "name": "linear",
@@ -24,45 +27,63 @@
       "enabled": true,
       "quarantined": false,
       "created": "2026-03-04T18:11:52.959671+03:00",
-      "updated": "2026-03-11T00:22:00.946632+03:00"
+      "updated": "2026-03-16T14:10:21.897494+03:00"
     },
     {
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
       },
       "oauth": null,
-      "enabled": true,
+      "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-11T00:22:00.95468+03:00"
+      "updated": "2026-03-16T14:01:59.206658+03:00"
     },
     {
       "name": "playwright",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["@playwright/mcp@latest"],
+      "args": [
+        "@playwright/mcp@latest"
+      ],
       "oauth": null,
       "enabled": false,
       "quarantined": false,
       "created": "2026-01-13T21:13:04.111801+03:00",
-      "updated": "2026-03-11T00:22:00.962641+03:00"
+      "updated": "2026-03-16T14:01:59.214567+03:00"
     },
     {
       "name": "repomix",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["repomix", "serve"],
+      "args": [
+        "repomix",
+        "serve"
+      ],
       "working_dir": "/Users/tim/dev",
       "oauth": null,
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-11T00:22:00.972627+03:00"
+      "updated": "2026-03-16T14:01:59.222633+03:00"
+    },
+    {
+      "name": "shoogle",
+      "url": "https://mcp.shoogle.dev/mcp",
+      "protocol": "http",
+      "oauth": null,
+      "enabled": true,
+      "quarantined": false,
+      "created": "2026-03-16T13:45:57.221182+03:00",
+      "updated": "2026-03-16T14:01:59.230572+03:00"
     }
   ],
   "top_k": 5,
@@ -169,7 +190,9 @@
       "description": "Browse and discover MCP use-cases, servers, clients, and news",
       "url": "https://www.pulsemcp.com/",
       "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/pulse"
     },
     {
@@ -178,7 +201,9 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/docker"
     },
     {
@@ -187,7 +212,9 @@
       "description": "Fleur is the app store for Claude",
       "url": "https://www.fleurmcp.com/",
       "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/fleur"
     },
     {
@@ -196,7 +223,12 @@
       "description": "A reference implementation of MCP registry using Azure API Center",
       "url": "https://demo.registry.azure-mcp.net/",
       "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": ["verified", "demo", "azure", "reference"],
+      "tags": [
+        "verified",
+        "demo",
+        "azure",
+        "reference"
+      ],
       "protocol": "mcp/v0"
     },
     {
@@ -205,7 +237,11 @@
       "description": "Community-maintained list of remote Model Context Protocol servers",
       "url": "https://remote-mcp-servers.com/",
       "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": ["verified", "community", "remote"],
+      "tags": [
+        "verified",
+        "community",
+        "remote"
+      ],
       "protocol": "custom/remote"
     }
   ],
@@ -264,5 +300,6 @@
       "private_key": true,
       "sensitive_file": true
     }
-  }
+  },
+  "routing_mode": "retrieve_tools"
 }

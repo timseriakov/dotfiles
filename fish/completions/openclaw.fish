@@ -1,0 +1,1 @@
+/Users/tim/.openclaw/completions/openclaw.fish

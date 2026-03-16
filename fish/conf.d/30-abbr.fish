@@ -200,7 +200,8 @@ abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
 abbr -a c 'bat --style=plain --decorations=never --color=always'
 
 # mcat
-abbr -a m 'mcat .'
+abbr -a m mcat
+abbr -a mm 'mcat .'
 abbr -a mcopy 'mcat . | pbcopy'
 abbr -a mls 'mcat ls'
 
