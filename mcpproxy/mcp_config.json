@@ -40,16 +40,6 @@
       "quarantined": false,
       "created": "2026-03-16T13:45:57.221182+03:00",
       "updated": "2026-03-16T15:28:52.459058+03:00"
-    },
-    {
-      "name": "linear",
-      "url": "https://mcp.linear.app/mcp",
-      "protocol": "streamable-http",
-      "oauth": null,
-      "enabled": false,
-      "quarantined": false,
-      "created": "2026-03-04T18:11:52.959671+03:00",
-      "updated": "2026-03-16T15:00:00.000000+03:00"
     }
   ],
   "top_k": 5,
