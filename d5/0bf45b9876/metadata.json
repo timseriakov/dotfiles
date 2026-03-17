@@ -3,7 +3,7 @@
   "checkpoint_id": "d50bf45b9876",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     ".tmux.conf"
   ],
@@ -48,6 +48,12 @@
       "metadata": "/d5/0bf45b9876/6/metadata.json",
       "transcript": "/d5/0bf45b9876/6/full.jsonl",
       "content_hash": "/d5/0bf45b9876/6/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/d5/0bf45b9876/7/metadata.json",
+      "transcript": "/d5/0bf45b9876/7/full.jsonl",
+      "content_hash": "/d5/0bf45b9876/7/content_hash.txt",
       "prompt": ""
     }
   ]
