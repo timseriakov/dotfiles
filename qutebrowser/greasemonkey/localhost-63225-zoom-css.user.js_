@@ -1,0 +1,36 @@
+// ==UserScript==
+// @name         localhost-63225 scale 110
+// @namespace    local
+// @version      1.0.0
+// @description  Apply 110% scale to localhost:63225
+// @match        http://localhost:63225/*
+// @match        http://127.0.0.1:63225/*
+// @run-at       document-start
+// ==/UserScript==
+
+(function () {
+  'use strict';
+
+  const applyScale = () => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (!html) return;
+
+    html.style.transform = 'scale(1.1)';
+    html.style.transformOrigin = 'top left';
+    html.style.width = '90.9091%';
+
+    if (body) {
+      body.style.overflowX = 'hidden';
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyScale, { once: true });
+  } else {
+    applyScale();
+  }
+
+  applyScale();
+})();

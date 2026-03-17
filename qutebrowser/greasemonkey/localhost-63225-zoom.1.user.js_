@@ -1,0 +1,22 @@
+// ==UserScript==
+// @name         localhost-63225-zoom
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Set zoom to 110% for localhost:63225
+// @match        http://localhost:63225/*
+// @grant        none
+// ==/UserScript==
+(function () {
+  "use strict";
+  // Wait for page to load, then set zoom
+  function setZoom() {
+    document.body.style.zoom = "110%";
+  }
+  // Try immediately
+  if (document.body) {
+    setZoom();
+  } else {
+    // Or wait for DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", setZoom);
+  }
+})();
