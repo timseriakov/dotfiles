@@ -3,7 +3,7 @@
   "checkpoint_id": "64202cb17656",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "openclaw/opencode-release-watcher-control.sh",
     "openclaw/opencode-release-watcher.js",
@@ -56,6 +56,12 @@
       "metadata": "/64/202cb17656/7/metadata.json",
       "transcript": "/64/202cb17656/7/full.jsonl",
       "content_hash": "/64/202cb17656/7/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/64/202cb17656/8/metadata.json",
+      "transcript": "/64/202cb17656/8/full.jsonl",
+      "content_hash": "/64/202cb17656/8/content_hash.txt",
       "prompt": ""
     }
   ]
