@@ -23,4 +23,9 @@ function cd
     else
         eza --all --long --icons --group-directories-first
     end
+
+    # Refresh tmux pane title after directory change
+    if set -q TMUX
+        tmux refresh-client -S 2>/dev/null || true
+    end
 end
