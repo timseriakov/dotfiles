@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "19d96748ecf9",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "openclaw/plannotator-release-watcher-control.sh",
+    "openclaw/plannotator-release-watcher.js",
+    "openclaw/plannotator-release-watcher.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/19/d96748ecf9/0/metadata.json",
+      "transcript": "/19/d96748ecf9/0/full.jsonl",
+      "content_hash": "/19/d96748ecf9/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
