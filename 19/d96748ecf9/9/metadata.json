@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "19d96748ecf9",
+  "session_id": "ses_303aa2d50ffeioIiRTsINAeq2m",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-18T18:32:50.25666Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "openclaw/plannotator-release-watcher-control.sh",
+    "openclaw/plannotator-release-watcher.js",
+    "openclaw/plannotator-release-watcher.sh"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "c254444e89d6",
+  "initial_attribution": {
+    "calculated_at": "2026-03-18T18:32:50.255871Z",
+    "agent_lines": 0,
+    "human_added": 516,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 516,
+    "agent_percentage": 0
+  }
+}
