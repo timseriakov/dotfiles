@@ -129,16 +129,15 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 abbr -a o opencode
 abbr -a oa 'opencode attach http://127.0.0.1:4096'
 abbr -a on opencode
-# abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
-abbr -a oup 'brew install anomalyco/tap/opencode'
-abbr -a oweb 'openchamber --daemon --port 1911'
-abbr -a o-manager 'bunx opencode-manager'
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
-abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
-abbr -a oskills 'npx -y openskills'
+abbr -a oup 'brew install anomalyco/tap/opencode'
 abbr -a os '~/.config/opencode/omo-switch'
-abbr -a ss ccbox
+# abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+#
+abbr -a o-web 'openchamber --daemon --port 1911'
+abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+abbr -a o-skills 'npx -y openskills'
 abbr -a add-mcp 'npx -y add-mcp'
 
 # Other AI tools
