@@ -8,22 +8,22 @@
     "vercel": {
       "url": "https://mcp.vercel.com",
       "type": "remote",
-      "enabled": false
+      "enabled": true
     },
     "playwriter": {
       "command": ["npx", "-y", "playwriter@latest"],
       "type": "local",
-      "enabled": false
+      "enabled": true
     },
     "engram": {
       "command": ["engram", "mcp"],
       "type": "local",
-      "enabled": false
+      "enabled": true
     },
     "frame0": {
       "command": ["npx", "-y", "frame0-mcp-server"],
       "type": "local",
-      "enabled": false
+      "enabled": true
     },
     "pencil": {
       "command": [
@@ -32,12 +32,12 @@
         "desktop"
       ],
       "type": "local",
-      "enabled": false
+      "enabled": true
     },
     "grepai": {
       "command": ["grepai", "mcp-serve"],
       "type": "local",
-      "enabled": false
+      "enabled": true
     }
   }
 }
