@@ -1,0 +1,3555 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+dotfiles/yazi on  master [!?] via 🌙 v5.5.0
+ cb -h
+┃ This is the Clipboard Project 0.10.0 (commit , branch ), the cut, copy, and paste system for the command line.
+┃ Examples
+┃ cb ct Nuclear_Launch_Codes.txt contactsfolder (This cuts the following items into the default clipboard, 0.)
+┃ cb cp1 dogfood.conf (This copies the following items into clipboard 1.)
+┃ cb p1 (This pastes clipboard 1.)
+┃ cb sh4 (This shows the contents of clipboard 4.)
+┃ cb clr (This clears the contents of the default clipboard.)
+┃ You can also choose which clipboard you want to use by adding a number to the end, or _ to use a persistent clipboard.
+┃ More Info
+┃ See the complete online documentation for CB at https://github.com/Slackadays/Clipboard.
+┃ Show this help screen anytime with cb -h, cb --help, or cb help.
+┃ You can also get more help in our Discord server at https://discord.gg/J6asnc3pEG
+┃ All Actions Available
+┃ cut,     ct │ Cut items into a clipboard.
+┃ copy,    cp │ Copy items into a clipboard.
+┃ paste,   p  │ Paste items from a clipboard.
+┃ clear,   clr│ Clear a clipboard.
+┃ show,    sh │ Show the contents of a clipboard.
+┃ edit,    ed │ Edit the contents of a clipboard.
+┃ add,     ad │ Add items to a clipboard.
+┃ remove,  rm │ Remove items from a clipboard.
+┃ note,    nt │ Add a note to a clipboard.
+┃ swap,    sw │ Swap the contents of multiple clipboards.
+┃ status,  st │ Check the status of a clipboard.
+┃ info,    in │ Show info about a clipboard.
+┃ load,    ld │ Load a clipboard into another clipboard.
+┃ import,  imp│ Import a clipboard from a file.
+┃ export,  ex │ Export a clipboard to a file.
+┃ history, hs │ Show the history of a clipboard.
+┃ ignore,  ig │ Ignore types of content in a clipboard.
+┃ search,  sr │ Search for items in a clipboard.
+┃ undo,    u  │ Placeholder: Not implemented yet
+┃ redo,    r  │ Placeholder: Not implemented yet
+┃ config,  cfg│ Show the configuration of CB.
+┃ script,  sc │ Set a script to run for this clipboard.
+┃ share,   shr│ Share a clipboard with others.
+┃ Copyright (C) 2022-2024 Jackson Huff. Licensed under the GPLv3.
+┃ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.
+
+dotfiles/yazi on  master [!?] via 🌙 v5.5.0
+ У нее есть кастомные темы. Можем ли мы перекрасить ее в цвета Nord Colors Theme?
+
+<div align="center" markdown="1">
+   <sup>Special thanks to:</sup>
+   <br>
+   <br>
+   <a href="https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard">
+      <img alt="Warp sponsorship" width="400" src="https://github.com/user-attachments/assets/ab8dd143-b0fd-4904-bdc5-dd7ecac94eae">
+   </a>
+
+### [Warp, the intelligent terminal for developers](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard)
+[Available for MacOS, Linux, & Windows](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard)<br>
+
+</div>
+<br>
+
+### ![The Clipboard Project](documentation/readme-assets/CBBanner.png)
+
+<br>
+
+<br>
+
+<img src="documentation/readme-assets/ProductivityTools.png" alt="The fully-featured yet oh-so-easy-to-use clipboard manager for everyone." />
+
+<br>
+
+The Clipboard Project is a fast and lightweight, feature packed, and user friendly tool that lets you do more on the computer in _style_. Seriously.
+
+Say hello to one of the most cutting-edge clipboard managers ever. Save time and effort easier and more powerfully than ever before.
+
+Don't just take my word for it!
+
+<br>
+
+<img src="documentation/readme-assets/Features.png" alt="Just let the features speak for themselves." height=35px>
+
+- Copy and paste text, files, directories, binary data, your goat, _anything_
+- Infinite numbers of clipboards with unlimited capacity **and** history each,
+- Seriously kickASS performance 🥾🤯 because I'm sick of slow software,
+- Seamless integration with your [existing clipboard systems](https://github.com/Slackadays/Clipboard/wiki/GUI-Clipboard-Compat),
+- Support for your favorite languages like español, português, Türkçe, and Français,
+- A superbly scriptable API to automate your workflows in a cinch, 
+- Gorgeous <img src="documentation/readme-assets/eyecandy.svg" height="16px" alt="eye candy"/> and ear candy for your viewing and listening pleasure,
+- Documentation you'll actually want to read <sub>(all in this readme)</sub>
+- And oodles more!
+
+<br>
+
+<i>I believe Clipboard is <b>the best tool for clipboard interaction</b>. As a matter of fact, as of today you have 2713 stars on github, kudos! Keep up the good work.</i>
+
+\- pidario on GitHub.com
+
+<br>
+
+<i>Thanks for your work! This is by-far <b>one of my favourite projects</b> on GitHub!</i>
+
+\- MaddyGuthridge on GitHub.com
+
+<br>
+
+<i>...I've just discovered CB & <b>it's suiting my needs very well!</b></i>
+
+\- all64bits on Discord.com
+
+<br>
+
+<i>I started using this because <b>I just wanted an easy "cb copy && cb paste"</b> VS trying to remember the correct input AND output flags when Im using xclip with different file types. I write a lot of shell scripts that copy certain stuff like images and text and <b>this makes it a lot easier.</b></i>
+
+\- SweetBabyAlaska on Reddit.com
+
+<br>
+
+<i>As a sysadmin and hourly terminal user, <b>I found it so useful.</b> Making stuffs some easier.</i>
+
+\- Simpleboy_ir on Reddit.com
+
+<br>
+
+<i>Thank you for this app, <b>so simple yet effective!</b> Hats off 🎩 👌</i>
+
+\- GlassGruber on GitHub.com
+
+<br>
+
+<i>BTW, really LOVE this project. Its [sic] <b>so unbelievable it isn't already in Linux.</b></i>
+
+\- AtomicRobotMan0101 on GitHub.com
+
+<br>
+
+<i>...Thank you again for <b>this great application!</b></i>
+
+\- kohane27 on GitHub.com
+
+<br>
+
+![CB Demo Video](documentation/readme-assets/ClipboardDemo.gif)
+
+<p align="center" id="dummy">
+    <a href="https://github.com/Slackadays/Clipboard/actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/Slackadays/Clipboard/build-clipboard.yml?branch=main&label=BUILDS&style=for-the-badge&logo=githubactions&labelColor=rgb(55,55,55)">
+        <img src="https://img.shields.io/github/actions/workflow/status/slackadays/Clipboard/lint-clipboard.yml?branch=main&label=CHECKS&style=for-the-badge&logo=githubactions&labelColor=rgb(55,55,55)">
+    </a>
+    <a href="https://app.codecov.io/gh/Slackadays/Clipboard">
+        <img src="https://img.shields.io/codecov/c/github/slackadays/Clipboard/main?style=for-the-badge&label=COVERAGE&token=RO7KDOZ6Q2&logo=codecov&labelColor=rgb(55,55,55)">
+    </a>
+    <img src="https://img.shields.io/github/downloads/Slackadays/Clipboard/total?style=for-the-badge&labelColor=rgb(55,55,55)&logo=github">
+    <br>
+    <a href="https://github.com/Slackadays/Clipboard/releases">
+        <img src="https://img.shields.io/github/v/release/slackadays/clipboard?label=latest%20release&style=for-the-badge&logo=github&labelColor=rgb(55,55,55)&color=brightgreen">
+    </a>
+    <a href="https://discord.gg/J6asnc3pEG"><img src="documentation/readme-assets/join-our-discord.svg" alt="Discord Chat"></a>
+    <img src="https://img.shields.io/github/license/slackadays/clipboard?label=FREE%20%26%20OPEN%20SOURCE&logo=gnu&style=for-the-badge&labelColor=rgb(55,55,55)">
+    <br>
+    <img src="https://img.shields.io/maintenance/yes/2025?style=for-the-badge&labelColor=rgb(55%2C55%2C55)">
+</p>
+
+<br>
+
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/GetStartedBelow.png" alt="Ready to turbocharge your productivity? Then let's get started with CB." height="100px" />
+</p>
+
+<br>
+
+<br>
+
+### ![Quick Installation](documentation/readme-assets/CBQuickInstallation.png)
+
+### <a href="https://github.com/Slackadays/Clipboard/blob/main/install.sh"><img src="documentation/readme-assets/AllExceptWindows.png" alt="All Except Windows" height=25px /></a>
+```bash
+curl -sSL https://github.com/Slackadays/Clipboard/raw/main/install.sh | sh
+```
+### <a href="https://github.com/Slackadays/Clipboard/blob/main/install.ps1"><img src="documentation/readme-assets/WindowsRunAsAdmin.png" alt="Windows (run as Administrator)" height=30px /></a>
+```powershell
+(Invoke-WebRequest -UseBasicParsing https://github.com/Slackadays/Clipboard/raw/main/install.ps1).Content | powershell
+```
+
+<br>
+<br>
+
+### <img src="documentation/readme-assets/PremadeBuilds.png" alt="Premade Builds" height=25px />
+
+<a href="https://repology.org/project/clipboard/versions"><img src="https://repology.org/badge/vertical-allrepos/clipboard.svg" alt="Packaging status" align="right"></a>
+
+**Alpine Linux** (you'll need to enable the Community packages first)
+```sh
+apk add clipboard
+```
+
+<br>
+
+**AUR** (Use your favorite AUR helper such as `yay`. You can also get `clipboard-bin` and `clipboard-git`)
+```sh
+yay -S clipboard
+
+yay -S clipboard-bin
+
+yay -S clipboard-git
+```
+
+<br>
+
+**Conda-forge** (Use any Conda package manager such as conda, mamba, or pixi)
+```sh
+conda install -c conda-forge cb-clipboard
+
+mamba install -c conda-forge cb-clipboard
+
+micromamba install -c conda-forge cb-clipboard
+
+pixi global install cb-clipboard
+```
+
+<br>
+
+**Flatpak Flathub** (You can also get our nightly Flatpak builds under **GitHub Downloads**)
+```sh
+flatpak install app.getclipboard.Clipboard
+# After installing, do "alias cb='flatpak run app.getclipboard.Clipboard'" to use CB easily.
+# Then, add that command to your terminal profile (like .bashrc) to make it work every time.
+```
+
+<a href="https://flathub.org/apps/app.getclipboard.Clipboard"><img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.svg' align="right"/></a>
+
+<br>
+
+**Gentoo GURU and LiGurOS** (For Gentoo, enable the GURU repo first)
+```sh
+emerge -av app-misc/clipboard
+```
+
+<br>
+
+**Homebrew**
+```sh
+brew install clipboard
+```
+
+<br>
+
+**Nix**
+```sh
+nix-env -iA nixpkgs.clipboard-jh
+```
+
+<br>
+
+**Pacstall**
+```sh
+pacstall -I clipboard-bin
+```
+
+<br>
+
+**Scoop**
+```powershell
+scoop install clipboard
+```
+
+<br>
+
+**Snap** (You can also get our nightly Snap builds under **GitHub Downloads**)
+```sh
+sudo snap install clipboard
+# After installing, do "alias cb='snap run clipboard'" to use CB easily.
+# Then, add that command to your terminal profile (like .bashrc) to make it work every time.
+```
+
+<a href="https://snapcraft.io/clipboard">
+  <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" align="right"/>
+</a>
+
+<br>
+
+**Void Linux**
+```sh
+sudo xbps-install -S Clipboard
+```
+
+<br>
+
+**Winget**
+```powershell
+winget install -e --id Slackadays.Clipboard
+```
+
+<br>
+
+**GitHub Downloads**
+
+First, get the latest revision of the Clipboard Project [from GitHub Actions](https://nightly.link/Slackadays/Clipboard/workflows/build-clipboard/main) or the latest release [from GitHub Releases.](https://github.com/Slackadays/Clipboard/releases/latest)
+
+Then, unpack what you just downloaded to a nice place anywhere on your system.
+
+If you downloaded the Flatpak, now do `flatpak install what-you-downloaded.flatpak`. Or if you downloaded the Snap, now do `sudo snap install --dangerous what_you_downloaded.snap`.
+
+Finally, add CB to your PATH (so that you can run it anywhere) by doing one of the following:
+
+```sh
+# For all platforms except Windows, Flatpak, and Snap
+$ export PATH=$PATH:/where/you/unpacked/cb
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+# To get the current path (in case you don't know it), do the "pwd" command.
+
+# For Flatpak
+$ alias cb='flatpak run app.getclipboard.Clipboard'
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+
+# For Snap
+$ alias cb='snap run clipboard'
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+
+# For Windows PowerShell
+> $Env:PATH += ";C:\where\you\unpacked\cb"
+# Add this to your PowerShell profile (which is located in $profile) so that this works every time.
+# To get the current path (in case you don't know it), do the "Get-Location" command.
+```
+
+<br>
+<br>
+
+### <img src="documentation/readme-assets/InstallManually.png" alt="Install Manually" height=25px />
+You'll need CMake, C++20 support, and OpenSSL, and if you want X11 or Wayland support, you'll also need libx11 or libwayland plus Wayland Protocols respectively. If you're on Linux, you'll need ALSA.
+
+Get the latest release instead of the latest commit by adding `--branch 0.9.1` right after `git clone...`.
+
+Change the system installation prefix by adding `-DCMAKE_INSTALL_PREFIX=/custom/prefix` to `cmake ..`, or the library install location by adding `-DCMAKE_INSTALL_LIBDIR=/custom/dir`.
+```bash
+# First, let's download the code and go a nice place to build everything.
+$ git clone https://github.com/Slackadays/Clipboard 
+$ cd Clipboard/build
+
+# Now let's set up CMake and build CB.
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ cmake --build . -j 12
+
+# Finally, let's install it onto our system.
+$ cmake --install .
+```
+
+### <img src="documentation/readme-assets/Uninstall.png" alt="Uninstall" height=25px />
+
+Remove everything listed in `install_manifest.txt`. If you're not using Windows, you can also do `xargs rm < install_manifest.txt`.
+
+<br>
+
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/HowToUsePrompt.png" alt="Now let's start saving time and effort." height="40px" />
+</p>
+
+<br>
+
+<br>
+
+### ![How To Use](documentation/readme-assets/CBHowToUse.png)
+
+### <img src="documentation/readme-assets/Examples.png" alt="Examples" height=25px />
+
+```sh
+# Let's start by copying a file.
+$ cb copy NuclearLaunchCodes.pdf
+
+# Now, let's paste this file.
+$ cb paste
+
+# Not bad, right?
+
+# Let's make a note for this clipboard.
+$ cb note "Keep this a secret"
+
+# What if you wanted to pipe the note in?
+$ echo "Keep this a secret OR ELSE" | cb note
+
+# Now let's cut a directory to a different clipboard.
+$ cb cut69 MyDirectory
+
+# We put the 69 right after "cut" to tell CB to put MyDirectory in clipboard 69.
+
+# Let's add a file to this same clipboard.
+$ cb add69 SomeFile
+
+# To remove a file, enter its name to remove just that file.
+$ cb remove69 SomeFile
+
+# Alternatively, you can put in a regex pattern instead to generalize the removal.
+$ cb remove69 "So.*le"
+
+# Finally, let's paste what we have in clipboard 69.
+$ cb paste69
+
+# You can copy multiple files at the same time. 
+# Let's try the "_420" persistent clipboard for this one.
+$ cb copy_420 foo.bar NotAVirus.bar.mp3.exe
+
+# Like before, we can remove anything with a regex patttern.
+$ cb remove_420 "*.mp3\.exe"
+
+# Notes work exactly the same way for every clipboard.
+$ cb note_420 "Some kosher content here"
+
+# Let's look at everything we've stored in clipboard _420.
+$ cb show_420
+
+# Now let's see our original note and then clear that clipboard. 
+$ cb note
+$ cb clear
+
+# This is the same as "cb note" but for clipboard "_420" again.
+$ cb note_420
+
+# Let's shake things up. Say you have some kind of content you want to ignore.
+# This content could be anything from a password to raw binary data.
+# To ignore certain kinds of content, use a regex pattern of your choice.
+
+# Let's try this with a classic example.
+$ cb ignore "H.*2"
+
+# This pattern will ignore anything starting with "H" and ending with "2."
+
+# Now, this next command will fail because CB will ignore the content in it through the pattern.
+$ cb copy "Hunter2"
+
+# Let's get some more detailed information about our clipboards.
+$ cb info
+$ cb info69
+$ cb info_420
+
+# To wrap things up, let's get a bird's eye view of everything so far.
+$ cb
+# Doing "cb" is the exact same as "cb status."
+$ cb status
+
+# These are just a handful of examples. 
+# Check the documentation below for tons more examples of all the commands!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/TheBasics.png" alt="The Basics" height=25px />
+
+Add a number to the end of your action to choose which temporary clipboard you want to use (the default is 0). Or, add `_` to use a persistent clipboard instead.
+
+<h3><b>Copy</b> &emsp; <code>cb [--](copy|cp)[(num)|_(id)] (file) [files]</code> or <code>(something) | cb [[--](copy|cp)][(num)|_(id)]</code></h3>
+
+Copy a file.
+```sh
+$ cb copy FooFile
+$ cb --copy FooFile
+$ cb cp FooFile 
+$ cb --cp FooFile
+# These are the same!
+```
+
+Copy a file and a directory.
+```sh
+$ cb copy FooFile BarDir
+# These are also the same!
+```
+
+Copy piped in data.
+```sh
+$ echo "Foobar" | cb
+$ echo "Foobar" | cb copy 
+# The "copy" action is optional here since the only possible action here in the first place is "copy"
+```
+
+Copy text directly.
+```sh
+$ cb copy "Aventura was the best bachata band"
+```
+Note: This happens instead of copying a file/directory if there is only one item present and that item doesn't exist as a file/directory.
+
+Copy a file to the clipboard named "4"
+```sh
+$ cb copy4 FooFile
+```
+
+Copy piped in data to the persistent clipboard named "hello"
+```sh
+$ echo "Foobar" | cb copy_hello
+```
+
+Copy text to the clipboard named "hey"
+```sh
+$ cb --clipboard hey copy "Aventura was the best bachata band"
+$ cb -c hey copy "Aventura was the best bachata band" 
+# These are the same!
+```
+
+Copy a file with spaces and many directories to clipboard "50" using the abbreviated action name.
+```sh
+$ cb cp50 "Aventura/God's Project/04 Un Chi Chi.flac" BarDir BazDir
+```
+
+<br>
+
+<h3><b>Cut</b> &emsp; <code>cb [--](cut|ct)[(num)|_(id)] (file) [files]</code> or <code>(something) | cb [[--](cut|ct)][(num)|_(id)]</code></h3>
+
+Cut a file.
+```sh
+$ cb cut FooFile
+$ cb --cut FooFile
+$ cb ct FooFile 
+$ cb --ct FooFile
+# These are the same!
+```
+
+Cut a file and a directory.
+```sh
+$ cb cut FooFile BarDir
+# These are also the same!
+```
+
+Cut piped in data.
+```sh
+$ echo "Foobar" | cb cut
+```
+Note: Cutting piped in data is the same as copying, except that CB will delete all content after you paste it somewhere.
+
+Cut text directly.
+```sh
+$ cb cut "Hunter2"
+```
+Note: This happens instead of cutting a file/directory if there is only one item present and that item doesn't exist as a file/directory.
+
+Cut a file to the clipboard named "4"
+```sh
+$ cb cut4 FooFile
+```
+
+Cut piped in data to the persistent clipboard named "hello"
+```sh
+$ echo "Foobar" | cb cut_hello
+```
+
+Cut text to the clipboard named "hey"
+```sh
+$ cb --clipboard hey cut "Aventura was the best bachata band"
+$ cb -c hey cut "Aventura was the best bachata band"
+# These are the same!
+```
+
+Cut a file with spaces and many directories to clipboard "50" using the abbreviated action name.
+```sh
+$ cb ct50 "Aventura/God's Project/04 Un Chi Chi.flac" BarDir BazDir
+```
+
+<br>
+
+<h3><b>Paste</b> &emsp; <code>cb [--](paste|p)[(num)|_(id)] [regex] [regexes]</code> or <code>cb [[--](paste|p][(num)|_(id)] | (something)</code> or <code>cb [[--](paste|p)][(num)|_(id)] > (some file)</code></h3>
+
+Start by copying or cutting something.
+```sh
+$ cb copy FooFile WhyAventuraIsTheBest.pdf
+```
+
+Paste in the current working directory.
+```sh
+$ cb paste
+$ cb --paste
+$ cb p
+$ cb --p
+# These are the same!
+```
+Note: If you paste after cutting, then CB will delete the original files that you cut.
+
+Paste anything containing "Aventura."
+
+```sh
+$ cb p ".*Aventura.*"
+```
+
+Now, let's copy some raw data.
+```sh
+$ echo "Bananas!" | cb
+```
+
+Paste the raw data file in the current working directory.
+```sh
+$ cb paste
+# Also the same
+```
+
+Pipe everything out to some file.
+```sh
+$ cb paste > SomeFile
+```
+
+Pipe everything from clipboard "42" out to some file.
+```sh
+$ cb paste42 > SomeFile
+$ cb p42 > SomeFile
+$ cb -c 42 > SomeFile 
+# These three versions all work great!
+```
+
+Pipe everything out to some program.
+```sh
+$ cb | cat
+# These three versions also all work great.
+$ cb | Write-Output 
+# The version for PowerShell
+```
+
+Pipe everything from persistent clipboard "2" out to some program.
+```sh
+$ cb paste_2 | cat
+$ cb p_2 | cat
+$ cb -c _2 | cat 
+# These three versions also all work great.
+$ cb -c _2 | Write-Output 
+# The version for PowerShell
+```
+
+Note: If you paste after cutting, then CB will delete the raw data afterwards, effectively only letting you paste once.
+
+<br>
+
+<h3><b>Add Contents</b> &emsp; <code>cb [--](add|ad)[(num)|_(id)] (file|text) [files]</code> or <code>(something) | cb [[--](add|ad)][(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile
+```
+
+Add a file.
+```sh
+$ cb add SomeOtherFile
+$ cb --add SomeOtherFile
+$ cb ad SomeOtherFile 
+$ cb --ad SomeOtherFile
+# CB now holds FooFile and SomeOtherFile
+```
+
+Add a directory.
+```sh
+$ cb add "We Broke The Rules"
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "'Let me find that'"
+```
+
+Add raw data to the end of what's stored.
+```sh
+$ cb add " is one of Romeo Santos' catchphrases."
+# The content is now: 'Let me find that' is one of Romeo Santos' catchphrases.
+```
+
+Add raw data by piping it in.
+```sh
+$ echo " What's yours?" | cb add 
+# The content is now: 'Let me find that' is one of Romeo Santos' catchphrases. What's yours?
+```
+
+<br>
+
+<h3><b>Remove Contents</b> &emsp; <code>cb [--](remove|rm)[(num)|_(id)] (regex) [regexes]</code> or <code>(some regex) | cb [[--](remove|rm)][(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+Remove everything starting with "B"
+```sh
+$ cb remove "B.*"
+$ cb --remove "B.*"
+$ cb rm "B.*"
+$ cb --rm "B.*"
+# CB will match this against "BarDir" and "BazDir" and remove them
+```
+
+Remove everything matching a specific name
+```sh
+$ cb remove "BarDir"
+# CB will match this against "BarDir" only and remove it
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "A bachatero is someone who makes bachata music."
+```
+
+Remove anything with a space beforehand and that ends with "-ero"
+```sh
+$ cb remove "(?<= ).*ero"
+# The content is now: A  is someone who makes bachata music.
+```
+
+Remove anything matching "music" by piping the pattern in.
+```sh
+$ echo "music" | cb remove
+# The content is now: A  is someone who makes bachata .
+```
+
+<br>
+
+<h3><b>Show Contents</b> &emsp; <code>cb [--](show|sh)[(num)|_(id)] [regex] [regexes]</code> or <code>cb [--](show|sh)[(num)|_(id)] [regex] [regexes] | (something)</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+List all the items in the clipboard.
+```sh
+$ cb show
+$ cb --show
+$ cb sh 
+$ cb --sh
+# These all work great!
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "Those who are tired of bachata are tired of life"
+```
+
+Show the contents of the clipboard.
+```sh
+$ cb show
+```
+
+Show the raw filepaths of everything in the clipboard.
+```sh
+$ cb sh | cat
+```
+
+Show raw filepaths to a program.
+```sh
+$ cb copy "02 I Believe.flac"
+$ eval vlc $(cb sh)
+# Use the eval command here to process the raw filepath (which in this case looks like "/tmp/Clipboard/0/02 I Believe.flac") as if it were entered in a shell
+# Otherwise, you'll likely get errors complaining about being unable to process quote characters.
+```
+
+<br>
+
+<h3><b>Clear Clipboard</b> &emsp; <code>cb [--](clear|clr)[(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+Clear the clipboard of all data.
+```sh
+$ cb clear
+$ cb --clear
+$ cb clr 
+$ cb --clr
+# These all work great!
+```
+
+Clear a certain range of history entries.
+```sh
+$ cb clear 69-420
+# Clears entries 69 through 420 inclusive
+$ cb clr 0-100
+# Clears entries 0 through 100 inclusive
+# Note: Entry 0 is always the most recent one
+```
+
+Just clear everything.
+```sh
+$ cb clear -a
+# Note: This will really clear everything in all clipboards!
+```
+
+<br>
+
+<h3><b>Edit Clipboard Content</b> &emsp; <code>cb [--](edit|ed)[(num)|_(id)] [editor]</code></h3>
+
+Start by copying some text.
+```sh
+$ cb copy "Hello Clipboard! This is just some example content."
+```
+
+Edit the clipboard content.
+```sh
+$ cb edit
+$ cb --edit
+$ cb ed
+$ cb --ed
+# These all work great!
+```
+
+Use a custom editor to edit with.
+```sh
+cb edit nano
+cb ed vim
+cb ed code
+```
+
+<br>
+
+<h3><b>Add Script to Clipboard</b> &emsp; <code>cb [--](script|sc)[(num)|_(id)] [script path|content]</code></h3>
+
+Start simple.
+```sh
+$ cb script pwd # Note: The exact output of "pwd" will vary depending on your system.
+$ cb
+/run/user/1000/Clipboard/0/data/0
+# The output of CB will be here
+/run/user/1000/Clipboard/0/data/0
+```
+
+Use a script file instead.
+```sh
+$ cat myscript.sh
+echo "Hello Clipboard!"
+echo "Here's what's in the directory:"
+ls
+$ cb script myscript.sh
+$ cb
+Hello Clipboard!
+Here's what's in the directory:
+rawdata.clipboard
+# The output of CB will be here
+Hello Clipboard!
+Here's what's in the directory:
+rawdata.clipboard
+```
+
+Customize during what action the script runs.
+```sh
+$ cb script ls --actions search,history
+$ cb
+$ cb history
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+$ cb search
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+$ cb copy
+$
+```
+
+Customize if the script runs before, after, or both.
+```sh
+$ cb script ls --timings before
+$ cb
+rawdata.clipboard
+# The output of CB will be here
+$ cb script ls --timings after
+$ cb
+# The output of CB will be here
+rawdata.clipboard
+$ cb script ls --timings before,after
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+```
+
+Customize both during what action the script runs and if the script runs before, after, or both.
+```sh
+$ cb script ls --actions copy --timings before
+$ cb
+$ cb copy
+rawdata.clipboard
+# The output of CB will be here
+```
+
+View the current script.
+```sh
+$ cb script
+# Script content shows here
+```
+
+<br>
+
+### <img src="documentation/readme-assets/MoveThingsAround.png" alt="Move Things Around" height=25px />
+
+<h3><b>Load Contents</b> &emsp; <code>cb [--](load|ld)[(num)|_(id)] [clipboard] [clipboards]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy "Yo dawg! I heard you liked bachata music."
+```
+
+Load the contents of the clipboard into other clipboards.
+
+```sh
+$ cb load 1 2 3 _foo
+$ cb --load 1 2 3 _foo
+$ cb ld 1 2 3 _foo
+$ cb --ld 1 2 3 _foo
+# All work great!
+```
+
+Note: If you don't provide a destination clipboard, then the Load action will load the contents into the default clipboard.
+
+Load the contents of some clipboard into the default.
+
+```sh
+$ cb load_foo
+```
+
+Note: This is useful if you want to load content into GUI clipboard systems, as they only connect to the default clipboard.
+
+<br>
+
+<h3><b>Swap Contents</b> &emsp; <code>cb [--](swap|sw)[(num)|_(id)] [clipboard]</code></h3>
+
+Start by copying something to two clipboards.
+```sh
+$ cb copy "After breaking up from Aventura, Romeo Santos' music just wasn't up to snuff."
+$ cb copy2 "I'd just like to interject for a moment. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux."
+```
+
+Swap the contents of two clipboards.
+
+```sh
+$ cb swap 2
+$ cb --swap 2
+$ cb sw 2
+$ cb --sw 2
+# All work great!
+
+$ cb swap2
+$ cb --swap2
+$ cb sw2
+$ cb --sw2
+# Since swapping is commutative, the target can be freely swapped with the destination.
+```
+
+Note: If you don't provide a destination clipboard, then the Swap action will swap the contents into the default clipboard.
+
+<br>
+
+<h3><b>Import Clipboards</b> &emsp; <code>cb [--](import|imp) [source folder]</code></h3>
+
+Start by exporting a clipboard.
+```sh
+$ cb copy "The reason Aventura was so popular was because the music was so well-written as well as the luscious guitar chorus effect."
+$ cb export
+```
+
+Import all clipboards from a folder.
+```sh
+$ cb import
+$ cb --import
+$ cb imp
+$ cb --imp
+# These all work great!
+```
+
+Note: Currently, CB imports from a folder called `Exported_Clipboards`.
+
+Choose what folder to import from.
+```sh
+$ cb import MySavedClipboards
+```
+
+<br>
+
+<h3><b>Export Clipboards</b> &emsp; <code>cb [--](export|ex) [clipboard] [clipboards]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy "Aventura's music is some of the most erotic you'll find anywhere."
+```
+
+Export all clipboards to a folder.
+```sh
+$ cb export
+$ cb --export
+$ cb ex
+$ cb --ex
+# These all work great!
+```
+
+Note: Currently, CB exports to a folder called `Exported_Clipboards`.
+
+Choose what clipboards to export.
+```sh
+$ cb export 1 2 3
+```
+
+<br>
+
+<h3><b>Queue Clipboard History</b> &emsp; <code>cb [--](history|hs)[(num)|_(id)]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy "There are at least two \"Anthony Santos\" who are known for bachata music: the \"regular\" Anthony Santos and Anthony \"Romeo\" Santos."
+$ cb copy "blah blah blah"
+$ cb copy "Clipboard Project is the best clipboard manager around"
+```
+
+Show the history.
+```sh
+$ cb history
+$ cb --history
+$ cb hs
+$ cb --hs
+# These all work great!
+```
+
+<br>
+
+<h3><b>Get Older Clipboard Entries</b> &emsp; <code>cb [--](history|hs)[(num)|_(id)] (clipboard) [clipboards]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy "There are at least two \"Anthony Santos\" who are known for bachata music: the \"regular\" Anthony Santos and Anthony \"Romeo\" Santos."
+$ cb copy "blah blah blah"
+$ cb copy "Clipboard Project is the best clipboard manager around"
+```
+
+Bring an older entry (or entries) to the front.
+```sh
+$ cb history 1
+$ cb --history 2
+$ cb hs 1
+$ cb --hs 1 2
+# These all work great!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/SeeEverything.png" alt="See Everything" height=25px />
+
+<h3><b>Set Note</b> &emsp; <code>cb [--](note|nt)[(num)|_(id)] (text)</code> or <code>(something) | cb [[--](note|nt)][(num)|_(id)]</code></h3>
+
+Add a personal note to a clipboard.
+```sh
+$ cb note "For my Aventura music collection"
+$ cb --note "For my Aventura music collection"
+$ cb nt "For my Aventura music collection"
+$ cb --nt "For my Aventura music collection"
+# All work great!
+```
+
+Add a personal note to a clipboard by piping it in.
+```sh
+$ echo "For my Aventura music collection" | cb note
+```
+
+Remove a note from a clipboard.
+```sh
+$ cb note ""
+```
+
+<br>
+
+<h3><b>Show Note</b> &emsp; <code>cb [--](note|nt)[(num)|_(id)]</code></h3>
+
+Start by adding a note to a clipboard.
+```sh
+$ cb note "For my Aventura music collection"
+```
+
+Show the note you added.
+```sh
+$ cb note
+$ cb --note
+$ cb nt
+$ cb --nt
+```
+
+<br>
+
+<h3><b>Set Ignore Rules</b> &emsp; <code>cb [--](ignore|ig)[(num)|_(id)] (regex) [regexes]</code> or <code>(regex) | cb [[--](ignore|ig)][(num)|_(id)]</code></h3>
+
+Set some kinds of content to always ignore.
+```sh
+$ cb ignore "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb --ignore "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb ig "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb --ig "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+# All work great!
+# "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])" is the regex for an AWS SK secret.
+```
+
+Set an ignore regex rule by piping it in.
+```sh
+$ echo "[abc]{10}" | cb ignore
+```
+
+Remove all ignore regex rules from a clipboard.
+```sh
+$ cb ignore ""
+```
+
+<br>
+
+<h3><b>Show Ignore Rules</b> &emsp; <code>cb [--](ignore|ig)[(num)|_(id)]</code></h3>
+
+Start by adding some ignore regex rules to a clipboard.
+```sh
+$ cb ignore "Foo" "Bar" "Baz"
+```
+
+Show the rules you just added.
+```sh
+$ cb ignore
+$ cb --ignore
+$ cb ig
+$ cb --ig
+```
+
+<br>
+
+<h3><b>Show Detailed Info</b> &emsp; <code>cb [--](info|in)[(num)|_(id)]</code> or <code>cb [--](info|in)[(num)|_(id)] | (something)</code></h3>
+
+Show helpful details for a clipboard.
+```sh
+$ cb info
+$ cb --info
+$ cb in
+$ cb --in
+# All are the same!
+```
+
+Output these helpful details in JSON format.
+```sh
+$ cb info | cat
+$ cb info | jq
+```
+
+<br>
+
+<h3><b>Search Clipboard Contents</b> &emsp; <code>cb [--](search|sr)[(num)|_(id)] (query) [queries]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy Foo Bar Baz
+$ cb copy "Some example content"
+$ cb copy2 "Blah bleh bluh bloh"
+```
+
+Search a clipboard's contents.
+```sh
+$ cb search Foo
+$ cb --search Blah
+$ cb sr Bar
+$ cb --sr Baz
+# All are the same!
+```
+
+<br>
+
+<h3><b>Show Help Message</b> &emsp; <code>cb (-h|[--]help)</code></h3>
+
+Show the help message.
+```sh
+$ cb help
+$ cb --help
+$ cb -h 
+# These three versions all work great!
+```
+
+<br>
+
+<h3><b>Check All Clipboards' Status</b> &emsp; <code>cb [[--]status|st]</code> or <code>cb [--](status|st) | (something)</code></h3>
+
+Check the status of all clipboards that have content.
+```sh
+$ cb status
+$ cb --status
+$ cb st
+$ cb --st
+$ cb 
+# These all work great!
+```
+
+Get the status of all clipboards in JSON format.
+```sh
+$ cb status | cat
+```
+
+<br>
+
+<h3><b>Check Your Configuration</b> &emsp; <code>cb [[--]config|cfg]</code></h3>
+
+Check your configuration of CB.
+```sh
+$ cb config
+$ cb --config
+$ cb cfg
+$ cb --cfg
+# These all work great!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/TipsAndTricks.png" alt="Tips And Tricks" height=25px />
+
+Need to paste a funky symbol somewhere a lot? Copy it to a persistent clipboard.
+```sh
+$ cb cp_theta θ
+$ cb -c amog cp ඞ
+```
+
+Paste whatever's in the clipboard straight into your favorite text editor.
+```sh
+# Vim
+:r !cb
+# Nano
+[Ctrl-T] cb
+# VSCode
+cb | code -
+```
+
+Copy a password securely by deleting it once you've pasted it.
+```sh
+$ cb cut "AVeryStrongPassword!"
+$ cb | some-program
+# Now gone
+```
+
+On a slow system? Cache certain things so you don't have to do them again.
+```sh
+$ neofetch | cb cp_neo
+$ cb | cat
+```
+    
+Yank anything sitting in your terminal without ever touching the mouse.
+```sh
+$ env | yank -d = -- cb
+```
+    
+Instantly copy to the main clipboard using your favorite dmenu tool.
+```sh
+$ cb cp "$(cb st | jq -r '.[] | if type=="array" then .[].path else if type=="object" then .path else . end end' | dmenu)"
+# For copying the latest entry from any of your clipboards
+$ cb cp "$(cb hs | jq -r '.[].content | if type=="array" then .[].path else if type=="object" then .path else . end end' | dmenu)"
+# For copying any entry from a specific clipboard
+```
+
+Need to share or pore over log files? Copy them in one step!
+```sh
+$ journalctl | cb
+# For systemd
+$ sudo dmesg | cb
+# For Linux; note that you're not running "sudo cb" here
+$ cb copy logs/latest.log
+# For Minecraft servers
+```
+
+Want CB to look different? Change up the color scheme.
+```sh
+# This one looks like The Matrix
+$ export CLIPBOARD_THEME=green
+$ cb
+# This one is for light backgrounds
+$ export CLIPBOARD_THEME=light
+$ cb
+# Check out the other themes too!
+```
+
+Here's what some of these themes might look like.
+
+<img src="documentation/readme-assets/CBThemes.png" width=600px />
+
+Make your own scripts that can fully automate your workflows.
+```sh
+#!/bin/sh
+# This script does nothing except serve as an example of automating CB.
+link="https://SomeWebsiteWithLotsOfContent"
+wget link
+cb copy *.jpg *.png
+cb remove "AZ.*\.png"
+cb | tar -cf foobar.tar
+cb -c footar < foobar.tar
+cb note "Latest files from website ABCXYZ"
+```
+
+<br>
+    
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/CustomizeClipboard.png" alt="Let's make CB our own." height="40px" />
+</p>
+
+<br>
+    
+<br>
+
+### ![Simple Configuration](documentation/readme-assets/CBSimpleConfiguration.png)
+
+### <img src="documentation/readme-assets/Flags.png" alt="Flags" height=25px />
+
+<h3><b><code>--all</code>, <code>-a</code> &emsp; Add this when clearing to clear all clipboards at once, or when searching to search all clipboards.</b></h3>
+
+Start from a blank slate.
+```sh
+$ cb --all clear
+```
+WARNING! This will get rid of everything you've stored with CB, so be very careful when clearing with this option.
+
+<br>
+
+<h3><b><code>--clipboard (clipboard)</code>, <code>-c (clipboard)</code> &emsp; Add this to choose which clipboard you want to use. </b></h3>
+
+Choose a non-default clipboard.
+```sh
+$ cb -c 5 copy Foobar
+$ cb --clipboard 10 copy BarBaz
+```
+
+Copy to a temporary clipboard that doesn't start with a number.
+```sh
+$ cb -c SomeCB copy "A really really long sentence, and I mean really really super DUPER long!"
+```
+
+Note: Although copying to a temporary clipboard that doesn't start with a number is impossible using the conventional method of adding it to the end of the action, this alternative method is completely supported and works great.
+
+Choose a persistent clipboard.
+```sh
+$ cb -c _ copy "Generation Next"/*
+```
+
+<br>
+
+<h3><b><code>--entry (entry)</code>, <code>-e (entry)</code> &emsp; Add this to choose which history entry you want to use. </b></h3>
+
+Choose a non-default history entry.
+```sh
+$ cb -e 5 copy Foobar
+$ cb --entry 10 copy BarBaz
+```
+
+Note: To copy to a non-default entry, that entry must exist already.
+
+<br>
+
+<h3><b><code>--fast-copy</code>, <code>-fc</code> &emsp; Add this to use links when copying, cutting, pasting, or loading. If you modify the items that you used with this flag, then the items you paste will have the same changes.</b></h3>
+
+Copy a lot of files in much less time than before.
+```sh
+$ cb --fast-copy copy /usr/bin/*
+```
+
+<br>
+
+<h3><b><code>--mime</code>, <code>-m</code> &emsp; Add this to request a specific content MIME type from GUI clipboard systems.</b></h3>
+
+Save GUI clipboard content of a specific MIME type to the main clipboard.
+```sh
+$ cb --mime text/html | cb
+```
+
+<br>
+
+<h3><b><code>--no-confirmation</code>, <code>-nc</code> &emsp; Add this to disable confirmation messages from CB. </b></h3>
+
+Reduce distractions after showing some text content.
+```sh
+$ cb -nc sh | cat
+```
+
+<br>
+
+<h3><b><code>--no-progress</code>, <code>-np</code> &emsp; Add this to disable progress messages from CB. </b></h3>
+
+Reduce distractions while doing a search that takes a while.
+```sh
+$ fzf | cb -np
+```
+
+<br>
+
+<h3><b><code>--secret</code> &emsp; Add this when ignoring content to ignore a secret (or secrets) instead. </b></h3>
+
+Ignore a password.
+```sh
+$ cb ignore --secret MyVerySecurePassword
+$ cb ignore --secret # This will show the SHA512 hash of MyVerySecurePassword
+$ cb ignore --secret MyVerySecurePassword2 "someOTHER secret1 banana"
+$ cb ignore --secret # Now it will show the SHA512 hashes of MyVerySecurePassword2 and someOTHER secret1 banana
+```
+
+Clear all your passwords.
+```sh
+$ cb ignore --secret ""
+# WARNING: Once you clear all secrets, there is no going back.
+```
+
+<br>
+
+<h3><b><code>--bachata</code> &emsp; Add this for something special! </b></h3>
+
+Make your life less boring.
+```sh
+$ cb --bachata
+```
+
+
+    
+<br>
+<br>
+
+### <img src="documentation/readme-assets/EnvironmentVariables.png" alt="Environment Variables" height=25px />
+
+<h3><b><code>CI</code> &emsp; Set this to "true" or "1" to make CB overwrite existing items without a user prompt when pasting. This variable is intended for Continuous Integration scripts where a live human is not present to make decisions.</b></h3>
+
+Use CB in a CI script.
+```sh
+...
+cb cp Temp/*
+...
+cb p
+...
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_ACTION</code> &emsp; CB will set this to the current action when running a script. </b></h3>
+
+Start with a script.
+```sh
+$ cb script ls
+$ cb history
+# Now, whatever script CB runs will have access to the CLIPBOARD_ACTION environment variable, here with value "history"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_EDITOR</code> &emsp; Set this to the editor you want to use for the Edit action. </b></h3>
+
+Set a custom editor to use.
+```sh
+$ export CLIPBOARD_EDITOR=nano
+```
+
+Note: The environment variables `EDITOR` and `VISUAL` by default take precedence if `CLIPBOARD_EDITOR` isn't set.
+
+<br>
+
+<h3><b><code>CLIPBOARD_HISTORY</code> &emsp; Set this to the maximum history size you want to keep, like <code>10000</code> or <code>50gb</code>. </b></h3>
+
+`CLIPBOARD_HISTORY` supports up to 2^32 - 1 as a value. So, go ahead. Crank that b*tch up to a billion.
+```sh
+$ export CLIPBOARD_HISTORY=1000000000
+$ cb copy "Oh yeah!"
+```
+
+Only keep a certain amount of data.
+```sh
+$ export CLIPBOARD_HISTORY=100tb
+$ cb copy Yo_Mama.tar.gz
+```
+
+Note: You can choose between `tb`, `gb`, `mb`, `kb`, and `b` to specify amounts for terabytes, gigabytes, megabytes, kilobytes, and bytes respectively.
+
+Only keep a certain time length.
+```sh
+$ export CLIPBOARD_HISTORY=52w
+```
+
+Note: You can choose between `y`, `m`, `w`, `d`, and `h` to specify amounts for years, months, weeks, days, and hours respectively.
+
+<br>
+
+<h3><b><code>CLIPBOARD_LOCALE</code> &emsp; Set this to the locale that only CB will use for its commands and output, like <code>en_US.UTF-8</code> or <code>es_DO.UTF-8</code>. </b></h3>
+
+Change the locale to match what you're more comfortable with.
+```sh
+$ export CLIPBOARD_LOCALE=es_DO.UTF-8
+$ cb cp "Amo a Aventura"
+
+> $Env:CLIPBOARD_LOCALE=es_DO.UTF-8
+# Powershell version
+```
+
+Override the locale case-by-case.
+```sh
+$ export CLIPBOARD_LOCALE=fr_CA.UTF-8
+...
+$ CLIPBOARD_LOCALE="" cb cp Foobar
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_SCRIPT_TIMING</code> &emsp; CB will set this to the timing of the script that it runs.</b></h3>
+
+Start with a script.
+```sh
+$ cb script ls
+$ cb history
+# Now, whatever script CB runs will have access to the CLIPBOARD_SCRIPT_TIMING environment variable, here with value "before"
+# (output of "cb history")
+# Now, CLIPBOARD_SCRIPT_TIMING will have value "after"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_TMPDIR</code> &emsp; Set this to the directory that only CB will use to hold the items you cut or copy into a temporary directory.</b></h3>
+
+Choose a special place to put your temporary clipboards this one time.
+```sh
+$ CLIPBOARD_TMPDIR=/home/jackson/SomeDirectory cb copy *
+```
+
+Choose a special place to put your temporary clipboards every time.
+
+```sh
+$ export CLIPBOARD_TMPDIR=/home/jackson/SomeDirectory
+$ cb copy *
+> $Env:CLIPBOARD_TMPDIR = /home/jackson/SomeDirectory
+# Powershell
+```
+
+Note: By default, CB uses the C++ filesystem library function `fs::temp_directory_path()` to generate the temporary directory, prioritizing `CLIPBOARD_TMPDIR` and then `XDG_RUNTIME_DIR` respectively first if CB can get a value from them.
+
+<br>
+
+<h3><b><code>CLIPBOARD_PERSISTDIR</code> &emsp; Set this to the directory that only CB will use to hold the items you cut or copy into a persistent directory.</b></h3>
+
+Choose a special place to put your persistent clipboards this one time.
+```sh
+$ CLIPBOARD_PERSISTDIR=/home/jackson/SomeDirectory cb copy *
+```
+
+Choose a special place to put your persistent clipboards every time.
+
+```sh
+$ export CLIPBOARD_PERSISTDIR=/home/jackson/SomeDirectory
+$ cb copy *
+> $Env:CLIPBOARD_PERSISTDIR = /home/jackson/SomeDirectory
+# Powershell
+```
+
+Note: By default, CB uses the user's home directory to generate the persistent directory, prioritizing `CLIPBOARD_PERSISTDIR` and then `XDG_STATE_HOME` first respectively if CB can get a value from them.
+
+<br>
+
+<h3><b><code>CLIPBOARD_CUSTOMPERSIST</code> &emsp; Set this to the clipboards you want to make persistent, using regex.</b></h3>
+
+Make everything you copy persistent.
+
+```sh
+$ export CLIPBOARD_CUSTOMPERSIST=".*"
+$ cb copy Foo Bar Baz
+# This puts everything in the persistent directory but still with the clipboard name "0"
+```
+
+Make some clipboards persistent.
+
+```sh
+$ export CLIPBOARD_CUSTOMPERSIST=5
+$ cb copy5 Foo Bar Baz
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOAUDIO</code> &emsp; Set this to "true" or "1" to disable audio coming from CB.</b></h3>
+
+Turn off those sound effects.
+```sh
+$ export CLIPBOARD_NOAUDIO=1
+$ cb ffksdjfdj 
+# No more error sounds after doing a nonexistent command
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOGUI</code> &emsp; Set this to "true" or "1" to disable integration with GUI clipboards.</b></h3>
+
+Debug a flaky GUI system by disabling its integration with CB.
+
+```sh
+$ CLIPBOARD_NOGUI=1 cb show
+$ export CLIPBOARD_NOGUI=1
+$ cb show
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOPROGRESS</code> &emsp; Set this to "true" or "1" to disable only progress messages from CB.</b></h3>
+
+Reduce distractions while doing a search that takes a while.
+```sh
+$ fzf | CLIPBOARD_NOPROGRESS=1 cb
+```
+
+Disable progress messages from CB entirely.
+```sh
+$ export CLIPBOARD_NOPROGRESS=1
+$ fzf | cb
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOREMOTE</code> &emsp; Set this to "true" or "1" to disable remote clipboard sharing.</b></h3>
+
+Disable all clipboard content transfers through the terminal.
+```sh
+$ export CLIPBOARD_NOREMOTE=1
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_SILENT</code> &emsp; Set this to "true" or "1" to disable progress and confirmation messages from CB.</b></h3>
+
+Rest in peace by seeing nothing that isn't an error.
+```sh
+$ export CLIPBOARD_SILENT=1
+$ cb cp "I'm running out of Aventura references"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_THEME</code> &emsp; Set this to the color theme that CB will use. Choose between <code>light</code>, <code>darkhighcontrast</code>, <code>lighthighcontrast</code>, <code>amber</code>, <code>green</code>, and <code>ansi</code> (the default is <code>dark</code>).</b></h3>
+
+Remind yourself of the terminals of the past.
+```sh
+$ export CLIPBOARD_THEME=green
+$ cb cp "I'm in the Matrix now"
+$ export CLIPBOARD_THEME=amber
+$ cb cp "Yellow terminals feel just like sitting in front of a nice campfire"
+```
+
+Make CB more accessible.
+```sh
+$ export REDACTED
+$ cb show
+```
+
+Fully customize your style.
+```sh
+$ export CLIPBOARD_THEME=help=r;g;b,info=r;g;b,error=r;g;b,success=r;g;b,progress=r;g;b
+# Note: You must put in a number within range 0-255 for each r, g, and b
+```
+
+<br>
+
+<h3><b><code>FORCE_COLOR</code> &emsp; Set this to "true" or "1" to make CB always show color regardless of what you set <code>NO_COLOR</code> to.</b></h3>
+
+Override somebody else's choice to disable colors.
+```sh
+$ export NO_COLOR=1
+...
+$ FORCE_COLOR=1 cb copy "There are almost no bachateros where I live right now"
+```
+
+Note: CB also supports `CLICOLOR_FORCE`.
+
+Override somebody else's choice to disable colors, but in a different way.
+```sh
+$ export CLICOLOR=0
+...
+$ CLICOLOR_FORCE=1 cb copy "There are almost no bachateros where I live right now"
+```
+
+<br>
+
+<h3><b><code>NO_COLOR</code> &emsp; Set this to anything to make CB not show any colors.</b></h3>
+
+Make CB look boring.
+```sh
+$ export NO_COLOR=1
+$ cb cp "From the 1960s until the 1990s, bachata was perceived as boring music for poor Dominicans."
+```
+
+Note: CB also supports `CLICOLOR`.
+
+Make CB look boring, but in a different way.
+```sh
+$ export CLICOLOR=0
+$ cb cp "In the 1990s, though, several innovative musicians reinvigorated bachata by using electric guitars with fancy effects."
+```
+
+
+ 
+<br>
+<br>
+<br>
+
+### ![Need Help?](documentation/readme-assets/NeedHelp.png)
+
+We're here for you! Check out [the Clipboard Project Wiki](https://github.com/Slackadays/Clipboard/wiki) for even more information, ask all your burning questions in [GitHub Discussions](https://github.com/Slackadays/Clipboard/discussions), or join [the awesome Discord group](https://discord.gg/J6asnc3pEG)!
+
+<p align="center">
+    <a href="https://github.com/Slackadays/Clipboard/wiki"><img src="https://img.shields.io/badge/Docs-Wiki-green?style=for-the-badge&labelColor=rgb(55,55,55)" alt="CB Wiki">
+    <a href="https://github.com/Slackadays/Clipboard/discussions"><img src="https://img.shields.io/badge/Questions%3F-Ask%20Away-red?style=for-the-badge&labelColor=rgb(55,55,55)" alt="Questions? Ask Away!"></a>
+    <a href="https://twitter.com/GetClipboard"><img src="https://img.shields.io/badge/FOLLOW-%40GETCLIPBOARD-blue?logo=twitter&style=for-the-badge&labelColor=rgb(55,55,55)" alt="Follow us on Twitter"></a>
+    <br>
+    <a href="https://discord.gg/J6asnc3pEG"><img src="documentation/readme-assets/join-our-discord.svg" alt="Discord Chat"></a>
+</p>
+
+<br>
+<br>
+
+### ![Thank You!](documentation/readme-assets/ThankYou.png)
+
+
+Say thank you to all our beautiful contributors who have helped make the Clipboard Project incredible[.](https://www.youtube.com/watch?v=yjdHGmRKz08)
+ Want to join the club? We're always accepting [new contributions](https://github.com/Slackadays/Clipboard/blob/main/CONTRIBUTING.md) too.
+
+Special thanks to [MacStadium](https://www.macstadium.com/) for sponsoring the Clipboard Project by providing a Mac Mini for macOS development!
+
+And if you're feeling generous, feel free to give us a :star:! We appreciate every single one - including yours.
+    
+<br>
+
+<p align="center"> 
+    <img src="documentation/readme-assets/ClipboardMakesYourLifeEasy.png" alt="CB makes your life easy." />
+</p>
+
+<br>
+
+<p align="right"><sub><code>cb copy haters && cb > /dev/null</code></sub></p>
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+dotfiles/yazi on  master [!?] via 🌙 v5.5.0
+ cb -h
+┃ This is the Clipboard Project 0.10.0 (commit , branch ), the cut, copy, and paste system for the command line.
+┃ Examples
+┃ cb ct Nuclear_Launch_Codes.txt contactsfolder (This cuts the following items into the default clipboard, 0.)
+┃ cb cp1 dogfood.conf (This copies the following items into clipboard 1.)
+┃ cb p1 (This pastes clipboard 1.)
+┃ cb sh4 (This shows the contents of clipboard 4.)
+┃ cb clr (This clears the contents of the default clipboard.)
+┃ You can also choose which clipboard you want to use by adding a number to the end, or _ to use a persistent clipboard.
+┃ More Info
+┃ See the complete online documentation for CB at https://github.com/Slackadays/Clipboard.
+┃ Show this help screen anytime with cb -h, cb --help, or cb help.
+┃ You can also get more help in our Discord server at https://discord.gg/J6asnc3pEG
+┃ All Actions Available
+┃ cut,     ct │ Cut items into a clipboard.
+┃ copy,    cp │ Copy items into a clipboard.
+┃ paste,   p  │ Paste items from a clipboard.
+┃ clear,   clr│ Clear a clipboard.
+┃ show,    sh │ Show the contents of a clipboard.
+┃ edit,    ed │ Edit the contents of a clipboard.
+┃ add,     ad │ Add items to a clipboard.
+┃ remove,  rm │ Remove items from a clipboard.
+┃ note,    nt │ Add a note to a clipboard.
+┃ swap,    sw │ Swap the contents of multiple clipboards.
+┃ status,  st │ Check the status of a clipboard.
+┃ info,    in │ Show info about a clipboard.
+┃ load,    ld │ Load a clipboard into another clipboard.
+┃ import,  imp│ Import a clipboard from a file.
+┃ export,  ex │ Export a clipboard to a file.
+┃ history, hs │ Show the history of a clipboard.
+┃ ignore,  ig │ Ignore types of content in a clipboard.
+┃ search,  sr │ Search for items in a clipboard.
+┃ undo,    u  │ Placeholder: Not implemented yet
+┃ redo,    r  │ Placeholder: Not implemented yet
+┃ config,  cfg│ Show the configuration of CB.
+┃ script,  sc │ Set a script to run for this clipboard.
+┃ share,   shr│ Share a clipboard with others.
+┃ Copyright (C) 2022-2024 Jackson Huff. Licensed under the GPLv3.
+┃ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.
+
+dotfiles/yazi on  master [!?] via 🌙 v5.5.0
+ У нее есть кастомные темы. Можем ли мы перекрасить ее в цвета Nord Colors Theme?
+
+<div align="center" markdown="1">
+   <sup>Special thanks to:</sup>
+   <br>
+   <br>
+   <a href="https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard">
+      <img alt="Warp sponsorship" width="400" src="https://github.com/user-attachments/assets/ab8dd143-b0fd-4904-bdc5-dd7ecac94eae">
+   </a>
+
+### [Warp, the intelligent terminal for developers](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard)
+[Available for MacOS, Linux, & Windows](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=clipboard)<br>
+
+</div>
+<br>
+
+### ![The Clipboard Project](documentation/readme-assets/CBBanner.png)
+
+<br>
+
+<br>
+
+<img src="documentation/readme-assets/ProductivityTools.png" alt="The fully-featured yet oh-so-easy-to-use clipboard manager for everyone." />
+
+<br>
+
+The Clipboard Project is a fast and lightweight, feature packed, and user friendly tool that lets you do more on the computer in _style_. Seriously.
+
+Say hello to one of the most cutting-edge clipboard managers ever. Save time and effort easier and more powerfully than ever before.
+
+Don't just take my word for it!
+
+<br>
+
+<img src="documentation/readme-assets/Features.png" alt="Just let the features speak for themselves." height=35px>
+
+- Copy and paste text, files, directories, binary data, your goat, _anything_
+- Infinite numbers of clipboards with unlimited capacity **and** history each,
+- Seriously kickASS performance 🥾🤯 because I'm sick of slow software,
+- Seamless integration with your [existing clipboard systems](https://github.com/Slackadays/Clipboard/wiki/GUI-Clipboard-Compat),
+- Support for your favorite languages like español, português, Türkçe, and Français,
+- A superbly scriptable API to automate your workflows in a cinch, 
+- Gorgeous <img src="documentation/readme-assets/eyecandy.svg" height="16px" alt="eye candy"/> and ear candy for your viewing and listening pleasure,
+- Documentation you'll actually want to read <sub>(all in this readme)</sub>
+- And oodles more!
+
+<br>
+
+<i>I believe Clipboard is <b>the best tool for clipboard interaction</b>. As a matter of fact, as of today you have 2713 stars on github, kudos! Keep up the good work.</i>
+
+\- pidario on GitHub.com
+
+<br>
+
+<i>Thanks for your work! This is by-far <b>one of my favourite projects</b> on GitHub!</i>
+
+\- MaddyGuthridge on GitHub.com
+
+<br>
+
+<i>...I've just discovered CB & <b>it's suiting my needs very well!</b></i>
+
+\- all64bits on Discord.com
+
+<br>
+
+<i>I started using this because <b>I just wanted an easy "cb copy && cb paste"</b> VS trying to remember the correct input AND output flags when Im using xclip with different file types. I write a lot of shell scripts that copy certain stuff like images and text and <b>this makes it a lot easier.</b></i>
+
+\- SweetBabyAlaska on Reddit.com
+
+<br>
+
+<i>As a sysadmin and hourly terminal user, <b>I found it so useful.</b> Making stuffs some easier.</i>
+
+\- Simpleboy_ir on Reddit.com
+
+<br>
+
+<i>Thank you for this app, <b>so simple yet effective!</b> Hats off 🎩 👌</i>
+
+\- GlassGruber on GitHub.com
+
+<br>
+
+<i>BTW, really LOVE this project. Its [sic] <b>so unbelievable it isn't already in Linux.</b></i>
+
+\- AtomicRobotMan0101 on GitHub.com
+
+<br>
+
+<i>...Thank you again for <b>this great application!</b></i>
+
+\- kohane27 on GitHub.com
+
+<br>
+
+![CB Demo Video](documentation/readme-assets/ClipboardDemo.gif)
+
+<p align="center" id="dummy">
+    <a href="https://github.com/Slackadays/Clipboard/actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/Slackadays/Clipboard/build-clipboard.yml?branch=main&label=BUILDS&style=for-the-badge&logo=githubactions&labelColor=rgb(55,55,55)">
+        <img src="https://img.shields.io/github/actions/workflow/status/slackadays/Clipboard/lint-clipboard.yml?branch=main&label=CHECKS&style=for-the-badge&logo=githubactions&labelColor=rgb(55,55,55)">
+    </a>
+    <a href="https://app.codecov.io/gh/Slackadays/Clipboard">
+        <img src="https://img.shields.io/codecov/c/github/slackadays/Clipboard/main?style=for-the-badge&label=COVERAGE&token=RO7KDOZ6Q2&logo=codecov&labelColor=rgb(55,55,55)">
+    </a>
+    <img src="https://img.shields.io/github/downloads/Slackadays/Clipboard/total?style=for-the-badge&labelColor=rgb(55,55,55)&logo=github">
+    <br>
+    <a href="https://github.com/Slackadays/Clipboard/releases">
+        <img src="https://img.shields.io/github/v/release/slackadays/clipboard?label=latest%20release&style=for-the-badge&logo=github&labelColor=rgb(55,55,55)&color=brightgreen">
+    </a>
+    <a href="https://discord.gg/J6asnc3pEG"><img src="documentation/readme-assets/join-our-discord.svg" alt="Discord Chat"></a>
+    <img src="https://img.shields.io/github/license/slackadays/clipboard?label=FREE%20%26%20OPEN%20SOURCE&logo=gnu&style=for-the-badge&labelColor=rgb(55,55,55)">
+    <br>
+    <img src="https://img.shields.io/maintenance/yes/2025?style=for-the-badge&labelColor=rgb(55%2C55%2C55)">
+</p>
+
+<br>
+
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/GetStartedBelow.png" alt="Ready to turbocharge your productivity? Then let's get started with CB." height="100px" />
+</p>
+
+<br>
+
+<br>
+
+### ![Quick Installation](documentation/readme-assets/CBQuickInstallation.png)
+
+### <a href="https://github.com/Slackadays/Clipboard/blob/main/install.sh"><img src="documentation/readme-assets/AllExceptWindows.png" alt="All Except Windows" height=25px /></a>
+```bash
+curl -sSL https://github.com/Slackadays/Clipboard/raw/main/install.sh | sh
+```
+### <a href="https://github.com/Slackadays/Clipboard/blob/main/install.ps1"><img src="documentation/readme-assets/WindowsRunAsAdmin.png" alt="Windows (run as Administrator)" height=30px /></a>
+```powershell
+(Invoke-WebRequest -UseBasicParsing https://github.com/Slackadays/Clipboard/raw/main/install.ps1).Content | powershell
+```
+
+<br>
+<br>
+
+### <img src="documentation/readme-assets/PremadeBuilds.png" alt="Premade Builds" height=25px />
+
+<a href="https://repology.org/project/clipboard/versions"><img src="https://repology.org/badge/vertical-allrepos/clipboard.svg" alt="Packaging status" align="right"></a>
+
+**Alpine Linux** (you'll need to enable the Community packages first)
+```sh
+apk add clipboard
+```
+
+<br>
+
+**AUR** (Use your favorite AUR helper such as `yay`. You can also get `clipboard-bin` and `clipboard-git`)
+```sh
+yay -S clipboard
+
+yay -S clipboard-bin
+
+yay -S clipboard-git
+```
+
+<br>
+
+**Conda-forge** (Use any Conda package manager such as conda, mamba, or pixi)
+```sh
+conda install -c conda-forge cb-clipboard
+
+mamba install -c conda-forge cb-clipboard
+
+micromamba install -c conda-forge cb-clipboard
+
+pixi global install cb-clipboard
+```
+
+<br>
+
+**Flatpak Flathub** (You can also get our nightly Flatpak builds under **GitHub Downloads**)
+```sh
+flatpak install app.getclipboard.Clipboard
+# After installing, do "alias cb='flatpak run app.getclipboard.Clipboard'" to use CB easily.
+# Then, add that command to your terminal profile (like .bashrc) to make it work every time.
+```
+
+<a href="https://flathub.org/apps/app.getclipboard.Clipboard"><img width='240' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.svg' align="right"/></a>
+
+<br>
+
+**Gentoo GURU and LiGurOS** (For Gentoo, enable the GURU repo first)
+```sh
+emerge -av app-misc/clipboard
+```
+
+<br>
+
+**Homebrew**
+```sh
+brew install clipboard
+```
+
+<br>
+
+**Nix**
+```sh
+nix-env -iA nixpkgs.clipboard-jh
+```
+
+<br>
+
+**Pacstall**
+```sh
+pacstall -I clipboard-bin
+```
+
+<br>
+
+**Scoop**
+```powershell
+scoop install clipboard
+```
+
+<br>
+
+**Snap** (You can also get our nightly Snap builds under **GitHub Downloads**)
+```sh
+sudo snap install clipboard
+# After installing, do "alias cb='snap run clipboard'" to use CB easily.
+# Then, add that command to your terminal profile (like .bashrc) to make it work every time.
+```
+
+<a href="https://snapcraft.io/clipboard">
+  <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" align="right"/>
+</a>
+
+<br>
+
+**Void Linux**
+```sh
+sudo xbps-install -S Clipboard
+```
+
+<br>
+
+**Winget**
+```powershell
+winget install -e --id Slackadays.Clipboard
+```
+
+<br>
+
+**GitHub Downloads**
+
+First, get the latest revision of the Clipboard Project [from GitHub Actions](https://nightly.link/Slackadays/Clipboard/workflows/build-clipboard/main) or the latest release [from GitHub Releases.](https://github.com/Slackadays/Clipboard/releases/latest)
+
+Then, unpack what you just downloaded to a nice place anywhere on your system.
+
+If you downloaded the Flatpak, now do `flatpak install what-you-downloaded.flatpak`. Or if you downloaded the Snap, now do `sudo snap install --dangerous what_you_downloaded.snap`.
+
+Finally, add CB to your PATH (so that you can run it anywhere) by doing one of the following:
+
+```sh
+# For all platforms except Windows, Flatpak, and Snap
+$ export PATH=$PATH:/where/you/unpacked/cb
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+# To get the current path (in case you don't know it), do the "pwd" command.
+
+# For Flatpak
+$ alias cb='flatpak run app.getclipboard.Clipboard'
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+
+# For Snap
+$ alias cb='snap run clipboard'
+# Add this to your terminal startup file like .bashrc or the equivalent so that it works every time.
+
+# For Windows PowerShell
+> $Env:PATH += ";C:\where\you\unpacked\cb"
+# Add this to your PowerShell profile (which is located in $profile) so that this works every time.
+# To get the current path (in case you don't know it), do the "Get-Location" command.
+```
+
+<br>
+<br>
+
+### <img src="documentation/readme-assets/InstallManually.png" alt="Install Manually" height=25px />
+You'll need CMake, C++20 support, and OpenSSL, and if you want X11 or Wayland support, you'll also need libx11 or libwayland plus Wayland Protocols respectively. If you're on Linux, you'll need ALSA.
+
+Get the latest release instead of the latest commit by adding `--branch 0.9.1` right after `git clone...`.
+
+Change the system installation prefix by adding `-DCMAKE_INSTALL_PREFIX=/custom/prefix` to `cmake ..`, or the library install location by adding `-DCMAKE_INSTALL_LIBDIR=/custom/dir`.
+```bash
+# First, let's download the code and go a nice place to build everything.
+$ git clone https://github.com/Slackadays/Clipboard 
+$ cd Clipboard/build
+
+# Now let's set up CMake and build CB.
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ cmake --build . -j 12
+
+# Finally, let's install it onto our system.
+$ cmake --install .
+```
+
+### <img src="documentation/readme-assets/Uninstall.png" alt="Uninstall" height=25px />
+
+Remove everything listed in `install_manifest.txt`. If you're not using Windows, you can also do `xargs rm < install_manifest.txt`.
+
+<br>
+
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/HowToUsePrompt.png" alt="Now let's start saving time and effort." height="40px" />
+</p>
+
+<br>
+
+<br>
+
+### ![How To Use](documentation/readme-assets/CBHowToUse.png)
+
+### <img src="documentation/readme-assets/Examples.png" alt="Examples" height=25px />
+
+```sh
+# Let's start by copying a file.
+$ cb copy NuclearLaunchCodes.pdf
+
+# Now, let's paste this file.
+$ cb paste
+
+# Not bad, right?
+
+# Let's make a note for this clipboard.
+$ cb note "Keep this a secret"
+
+# What if you wanted to pipe the note in?
+$ echo "Keep this a secret OR ELSE" | cb note
+
+# Now let's cut a directory to a different clipboard.
+$ cb cut69 MyDirectory
+
+# We put the 69 right after "cut" to tell CB to put MyDirectory in clipboard 69.
+
+# Let's add a file to this same clipboard.
+$ cb add69 SomeFile
+
+# To remove a file, enter its name to remove just that file.
+$ cb remove69 SomeFile
+
+# Alternatively, you can put in a regex pattern instead to generalize the removal.
+$ cb remove69 "So.*le"
+
+# Finally, let's paste what we have in clipboard 69.
+$ cb paste69
+
+# You can copy multiple files at the same time. 
+# Let's try the "_420" persistent clipboard for this one.
+$ cb copy_420 foo.bar NotAVirus.bar.mp3.exe
+
+# Like before, we can remove anything with a regex patttern.
+$ cb remove_420 "*.mp3\.exe"
+
+# Notes work exactly the same way for every clipboard.
+$ cb note_420 "Some kosher content here"
+
+# Let's look at everything we've stored in clipboard _420.
+$ cb show_420
+
+# Now let's see our original note and then clear that clipboard. 
+$ cb note
+$ cb clear
+
+# This is the same as "cb note" but for clipboard "_420" again.
+$ cb note_420
+
+# Let's shake things up. Say you have some kind of content you want to ignore.
+# This content could be anything from a password to raw binary data.
+# To ignore certain kinds of content, use a regex pattern of your choice.
+
+# Let's try this with a classic example.
+$ cb ignore "H.*2"
+
+# This pattern will ignore anything starting with "H" and ending with "2."
+
+# Now, this next command will fail because CB will ignore the content in it through the pattern.
+$ cb copy "Hunter2"
+
+# Let's get some more detailed information about our clipboards.
+$ cb info
+$ cb info69
+$ cb info_420
+
+# To wrap things up, let's get a bird's eye view of everything so far.
+$ cb
+# Doing "cb" is the exact same as "cb status."
+$ cb status
+
+# These are just a handful of examples. 
+# Check the documentation below for tons more examples of all the commands!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/TheBasics.png" alt="The Basics" height=25px />
+
+Add a number to the end of your action to choose which temporary clipboard you want to use (the default is 0). Or, add `_` to use a persistent clipboard instead.
+
+<h3><b>Copy</b> &emsp; <code>cb [--](copy|cp)[(num)|_(id)] (file) [files]</code> or <code>(something) | cb [[--](copy|cp)][(num)|_(id)]</code></h3>
+
+Copy a file.
+```sh
+$ cb copy FooFile
+$ cb --copy FooFile
+$ cb cp FooFile 
+$ cb --cp FooFile
+# These are the same!
+```
+
+Copy a file and a directory.
+```sh
+$ cb copy FooFile BarDir
+# These are also the same!
+```
+
+Copy piped in data.
+```sh
+$ echo "Foobar" | cb
+$ echo "Foobar" | cb copy 
+# The "copy" action is optional here since the only possible action here in the first place is "copy"
+```
+
+Copy text directly.
+```sh
+$ cb copy "Aventura was the best bachata band"
+```
+Note: This happens instead of copying a file/directory if there is only one item present and that item doesn't exist as a file/directory.
+
+Copy a file to the clipboard named "4"
+```sh
+$ cb copy4 FooFile
+```
+
+Copy piped in data to the persistent clipboard named "hello"
+```sh
+$ echo "Foobar" | cb copy_hello
+```
+
+Copy text to the clipboard named "hey"
+```sh
+$ cb --clipboard hey copy "Aventura was the best bachata band"
+$ cb -c hey copy "Aventura was the best bachata band" 
+# These are the same!
+```
+
+Copy a file with spaces and many directories to clipboard "50" using the abbreviated action name.
+```sh
+$ cb cp50 "Aventura/God's Project/04 Un Chi Chi.flac" BarDir BazDir
+```
+
+<br>
+
+<h3><b>Cut</b> &emsp; <code>cb [--](cut|ct)[(num)|_(id)] (file) [files]</code> or <code>(something) | cb [[--](cut|ct)][(num)|_(id)]</code></h3>
+
+Cut a file.
+```sh
+$ cb cut FooFile
+$ cb --cut FooFile
+$ cb ct FooFile 
+$ cb --ct FooFile
+# These are the same!
+```
+
+Cut a file and a directory.
+```sh
+$ cb cut FooFile BarDir
+# These are also the same!
+```
+
+Cut piped in data.
+```sh
+$ echo "Foobar" | cb cut
+```
+Note: Cutting piped in data is the same as copying, except that CB will delete all content after you paste it somewhere.
+
+Cut text directly.
+```sh
+$ cb cut "Hunter2"
+```
+Note: This happens instead of cutting a file/directory if there is only one item present and that item doesn't exist as a file/directory.
+
+Cut a file to the clipboard named "4"
+```sh
+$ cb cut4 FooFile
+```
+
+Cut piped in data to the persistent clipboard named "hello"
+```sh
+$ echo "Foobar" | cb cut_hello
+```
+
+Cut text to the clipboard named "hey"
+```sh
+$ cb --clipboard hey cut "Aventura was the best bachata band"
+$ cb -c hey cut "Aventura was the best bachata band"
+# These are the same!
+```
+
+Cut a file with spaces and many directories to clipboard "50" using the abbreviated action name.
+```sh
+$ cb ct50 "Aventura/God's Project/04 Un Chi Chi.flac" BarDir BazDir
+```
+
+<br>
+
+<h3><b>Paste</b> &emsp; <code>cb [--](paste|p)[(num)|_(id)] [regex] [regexes]</code> or <code>cb [[--](paste|p][(num)|_(id)] | (something)</code> or <code>cb [[--](paste|p)][(num)|_(id)] > (some file)</code></h3>
+
+Start by copying or cutting something.
+```sh
+$ cb copy FooFile WhyAventuraIsTheBest.pdf
+```
+
+Paste in the current working directory.
+```sh
+$ cb paste
+$ cb --paste
+$ cb p
+$ cb --p
+# These are the same!
+```
+Note: If you paste after cutting, then CB will delete the original files that you cut.
+
+Paste anything containing "Aventura."
+
+```sh
+$ cb p ".*Aventura.*"
+```
+
+Now, let's copy some raw data.
+```sh
+$ echo "Bananas!" | cb
+```
+
+Paste the raw data file in the current working directory.
+```sh
+$ cb paste
+# Also the same
+```
+
+Pipe everything out to some file.
+```sh
+$ cb paste > SomeFile
+```
+
+Pipe everything from clipboard "42" out to some file.
+```sh
+$ cb paste42 > SomeFile
+$ cb p42 > SomeFile
+$ cb -c 42 > SomeFile 
+# These three versions all work great!
+```
+
+Pipe everything out to some program.
+```sh
+$ cb | cat
+# These three versions also all work great.
+$ cb | Write-Output 
+# The version for PowerShell
+```
+
+Pipe everything from persistent clipboard "2" out to some program.
+```sh
+$ cb paste_2 | cat
+$ cb p_2 | cat
+$ cb -c _2 | cat 
+# These three versions also all work great.
+$ cb -c _2 | Write-Output 
+# The version for PowerShell
+```
+
+Note: If you paste after cutting, then CB will delete the raw data afterwards, effectively only letting you paste once.
+
+<br>
+
+<h3><b>Add Contents</b> &emsp; <code>cb [--](add|ad)[(num)|_(id)] (file|text) [files]</code> or <code>(something) | cb [[--](add|ad)][(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile
+```
+
+Add a file.
+```sh
+$ cb add SomeOtherFile
+$ cb --add SomeOtherFile
+$ cb ad SomeOtherFile 
+$ cb --ad SomeOtherFile
+# CB now holds FooFile and SomeOtherFile
+```
+
+Add a directory.
+```sh
+$ cb add "We Broke The Rules"
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "'Let me find that'"
+```
+
+Add raw data to the end of what's stored.
+```sh
+$ cb add " is one of Romeo Santos' catchphrases."
+# The content is now: 'Let me find that' is one of Romeo Santos' catchphrases.
+```
+
+Add raw data by piping it in.
+```sh
+$ echo " What's yours?" | cb add 
+# The content is now: 'Let me find that' is one of Romeo Santos' catchphrases. What's yours?
+```
+
+<br>
+
+<h3><b>Remove Contents</b> &emsp; <code>cb [--](remove|rm)[(num)|_(id)] (regex) [regexes]</code> or <code>(some regex) | cb [[--](remove|rm)][(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+Remove everything starting with "B"
+```sh
+$ cb remove "B.*"
+$ cb --remove "B.*"
+$ cb rm "B.*"
+$ cb --rm "B.*"
+# CB will match this against "BarDir" and "BazDir" and remove them
+```
+
+Remove everything matching a specific name
+```sh
+$ cb remove "BarDir"
+# CB will match this against "BarDir" only and remove it
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "A bachatero is someone who makes bachata music."
+```
+
+Remove anything with a space beforehand and that ends with "-ero"
+```sh
+$ cb remove "(?<= ).*ero"
+# The content is now: A  is someone who makes bachata music.
+```
+
+Remove anything matching "music" by piping the pattern in.
+```sh
+$ echo "music" | cb remove
+# The content is now: A  is someone who makes bachata .
+```
+
+<br>
+
+<h3><b>Show Contents</b> &emsp; <code>cb [--](show|sh)[(num)|_(id)] [regex] [regexes]</code> or <code>cb [--](show|sh)[(num)|_(id)] [regex] [regexes] | (something)</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+List all the items in the clipboard.
+```sh
+$ cb show
+$ cb --show
+$ cb sh 
+$ cb --sh
+# These all work great!
+```
+
+Now let's copy some raw data.
+```sh
+$ cb copy "Those who are tired of bachata are tired of life"
+```
+
+Show the contents of the clipboard.
+```sh
+$ cb show
+```
+
+Show the raw filepaths of everything in the clipboard.
+```sh
+$ cb sh | cat
+```
+
+Show raw filepaths to a program.
+```sh
+$ cb copy "02 I Believe.flac"
+$ eval vlc $(cb sh)
+# Use the eval command here to process the raw filepath (which in this case looks like "/tmp/Clipboard/0/02 I Believe.flac") as if it were entered in a shell
+# Otherwise, you'll likely get errors complaining about being unable to process quote characters.
+```
+
+<br>
+
+<h3><b>Clear Clipboard</b> &emsp; <code>cb [--](clear|clr)[(num)|_(id)]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy FooFile BarDir BazDir
+```
+
+Clear the clipboard of all data.
+```sh
+$ cb clear
+$ cb --clear
+$ cb clr 
+$ cb --clr
+# These all work great!
+```
+
+Clear a certain range of history entries.
+```sh
+$ cb clear 69-420
+# Clears entries 69 through 420 inclusive
+$ cb clr 0-100
+# Clears entries 0 through 100 inclusive
+# Note: Entry 0 is always the most recent one
+```
+
+Just clear everything.
+```sh
+$ cb clear -a
+# Note: This will really clear everything in all clipboards!
+```
+
+<br>
+
+<h3><b>Edit Clipboard Content</b> &emsp; <code>cb [--](edit|ed)[(num)|_(id)] [editor]</code></h3>
+
+Start by copying some text.
+```sh
+$ cb copy "Hello Clipboard! This is just some example content."
+```
+
+Edit the clipboard content.
+```sh
+$ cb edit
+$ cb --edit
+$ cb ed
+$ cb --ed
+# These all work great!
+```
+
+Use a custom editor to edit with.
+```sh
+cb edit nano
+cb ed vim
+cb ed code
+```
+
+<br>
+
+<h3><b>Add Script to Clipboard</b> &emsp; <code>cb [--](script|sc)[(num)|_(id)] [script path|content]</code></h3>
+
+Start simple.
+```sh
+$ cb script pwd # Note: The exact output of "pwd" will vary depending on your system.
+$ cb
+/run/user/1000/Clipboard/0/data/0
+# The output of CB will be here
+/run/user/1000/Clipboard/0/data/0
+```
+
+Use a script file instead.
+```sh
+$ cat myscript.sh
+echo "Hello Clipboard!"
+echo "Here's what's in the directory:"
+ls
+$ cb script myscript.sh
+$ cb
+Hello Clipboard!
+Here's what's in the directory:
+rawdata.clipboard
+# The output of CB will be here
+Hello Clipboard!
+Here's what's in the directory:
+rawdata.clipboard
+```
+
+Customize during what action the script runs.
+```sh
+$ cb script ls --actions search,history
+$ cb
+$ cb history
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+$ cb search
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+$ cb copy
+$
+```
+
+Customize if the script runs before, after, or both.
+```sh
+$ cb script ls --timings before
+$ cb
+rawdata.clipboard
+# The output of CB will be here
+$ cb script ls --timings after
+$ cb
+# The output of CB will be here
+rawdata.clipboard
+$ cb script ls --timings before,after
+rawdata.clipboard
+# The output of CB will be here
+rawdata.clipboard
+```
+
+Customize both during what action the script runs and if the script runs before, after, or both.
+```sh
+$ cb script ls --actions copy --timings before
+$ cb
+$ cb copy
+rawdata.clipboard
+# The output of CB will be here
+```
+
+View the current script.
+```sh
+$ cb script
+# Script content shows here
+```
+
+<br>
+
+### <img src="documentation/readme-assets/MoveThingsAround.png" alt="Move Things Around" height=25px />
+
+<h3><b>Load Contents</b> &emsp; <code>cb [--](load|ld)[(num)|_(id)] [clipboard] [clipboards]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy "Yo dawg! I heard you liked bachata music."
+```
+
+Load the contents of the clipboard into other clipboards.
+
+```sh
+$ cb load 1 2 3 _foo
+$ cb --load 1 2 3 _foo
+$ cb ld 1 2 3 _foo
+$ cb --ld 1 2 3 _foo
+# All work great!
+```
+
+Note: If you don't provide a destination clipboard, then the Load action will load the contents into the default clipboard.
+
+Load the contents of some clipboard into the default.
+
+```sh
+$ cb load_foo
+```
+
+Note: This is useful if you want to load content into GUI clipboard systems, as they only connect to the default clipboard.
+
+<br>
+
+<h3><b>Swap Contents</b> &emsp; <code>cb [--](swap|sw)[(num)|_(id)] [clipboard]</code></h3>
+
+Start by copying something to two clipboards.
+```sh
+$ cb copy "After breaking up from Aventura, Romeo Santos' music just wasn't up to snuff."
+$ cb copy2 "I'd just like to interject for a moment. What you're referring to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux."
+```
+
+Swap the contents of two clipboards.
+
+```sh
+$ cb swap 2
+$ cb --swap 2
+$ cb sw 2
+$ cb --sw 2
+# All work great!
+
+$ cb swap2
+$ cb --swap2
+$ cb sw2
+$ cb --sw2
+# Since swapping is commutative, the target can be freely swapped with the destination.
+```
+
+Note: If you don't provide a destination clipboard, then the Swap action will swap the contents into the default clipboard.
+
+<br>
+
+<h3><b>Import Clipboards</b> &emsp; <code>cb [--](import|imp) [source folder]</code></h3>
+
+Start by exporting a clipboard.
+```sh
+$ cb copy "The reason Aventura was so popular was because the music was so well-written as well as the luscious guitar chorus effect."
+$ cb export
+```
+
+Import all clipboards from a folder.
+```sh
+$ cb import
+$ cb --import
+$ cb imp
+$ cb --imp
+# These all work great!
+```
+
+Note: Currently, CB imports from a folder called `Exported_Clipboards`.
+
+Choose what folder to import from.
+```sh
+$ cb import MySavedClipboards
+```
+
+<br>
+
+<h3><b>Export Clipboards</b> &emsp; <code>cb [--](export|ex) [clipboard] [clipboards]</code></h3>
+
+Start by copying something.
+```sh
+$ cb copy "Aventura's music is some of the most erotic you'll find anywhere."
+```
+
+Export all clipboards to a folder.
+```sh
+$ cb export
+$ cb --export
+$ cb ex
+$ cb --ex
+# These all work great!
+```
+
+Note: Currently, CB exports to a folder called `Exported_Clipboards`.
+
+Choose what clipboards to export.
+```sh
+$ cb export 1 2 3
+```
+
+<br>
+
+<h3><b>Queue Clipboard History</b> &emsp; <code>cb [--](history|hs)[(num)|_(id)]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy "There are at least two \"Anthony Santos\" who are known for bachata music: the \"regular\" Anthony Santos and Anthony \"Romeo\" Santos."
+$ cb copy "blah blah blah"
+$ cb copy "Clipboard Project is the best clipboard manager around"
+```
+
+Show the history.
+```sh
+$ cb history
+$ cb --history
+$ cb hs
+$ cb --hs
+# These all work great!
+```
+
+<br>
+
+<h3><b>Get Older Clipboard Entries</b> &emsp; <code>cb [--](history|hs)[(num)|_(id)] (clipboard) [clipboards]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy "There are at least two \"Anthony Santos\" who are known for bachata music: the \"regular\" Anthony Santos and Anthony \"Romeo\" Santos."
+$ cb copy "blah blah blah"
+$ cb copy "Clipboard Project is the best clipboard manager around"
+```
+
+Bring an older entry (or entries) to the front.
+```sh
+$ cb history 1
+$ cb --history 2
+$ cb hs 1
+$ cb --hs 1 2
+# These all work great!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/SeeEverything.png" alt="See Everything" height=25px />
+
+<h3><b>Set Note</b> &emsp; <code>cb [--](note|nt)[(num)|_(id)] (text)</code> or <code>(something) | cb [[--](note|nt)][(num)|_(id)]</code></h3>
+
+Add a personal note to a clipboard.
+```sh
+$ cb note "For my Aventura music collection"
+$ cb --note "For my Aventura music collection"
+$ cb nt "For my Aventura music collection"
+$ cb --nt "For my Aventura music collection"
+# All work great!
+```
+
+Add a personal note to a clipboard by piping it in.
+```sh
+$ echo "For my Aventura music collection" | cb note
+```
+
+Remove a note from a clipboard.
+```sh
+$ cb note ""
+```
+
+<br>
+
+<h3><b>Show Note</b> &emsp; <code>cb [--](note|nt)[(num)|_(id)]</code></h3>
+
+Start by adding a note to a clipboard.
+```sh
+$ cb note "For my Aventura music collection"
+```
+
+Show the note you added.
+```sh
+$ cb note
+$ cb --note
+$ cb nt
+$ cb --nt
+```
+
+<br>
+
+<h3><b>Set Ignore Rules</b> &emsp; <code>cb [--](ignore|ig)[(num)|_(id)] (regex) [regexes]</code> or <code>(regex) | cb [[--](ignore|ig)][(num)|_(id)]</code></h3>
+
+Set some kinds of content to always ignore.
+```sh
+$ cb ignore "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb --ignore "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb ig "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+$ cb --ig "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])"
+# All work great!
+# "(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])" is the regex for an AWS SK secret.
+```
+
+Set an ignore regex rule by piping it in.
+```sh
+$ echo "[abc]{10}" | cb ignore
+```
+
+Remove all ignore regex rules from a clipboard.
+```sh
+$ cb ignore ""
+```
+
+<br>
+
+<h3><b>Show Ignore Rules</b> &emsp; <code>cb [--](ignore|ig)[(num)|_(id)]</code></h3>
+
+Start by adding some ignore regex rules to a clipboard.
+```sh
+$ cb ignore "Foo" "Bar" "Baz"
+```
+
+Show the rules you just added.
+```sh
+$ cb ignore
+$ cb --ignore
+$ cb ig
+$ cb --ig
+```
+
+<br>
+
+<h3><b>Show Detailed Info</b> &emsp; <code>cb [--](info|in)[(num)|_(id)]</code> or <code>cb [--](info|in)[(num)|_(id)] | (something)</code></h3>
+
+Show helpful details for a clipboard.
+```sh
+$ cb info
+$ cb --info
+$ cb in
+$ cb --in
+# All are the same!
+```
+
+Output these helpful details in JSON format.
+```sh
+$ cb info | cat
+$ cb info | jq
+```
+
+<br>
+
+<h3><b>Search Clipboard Contents</b> &emsp; <code>cb [--](search|sr)[(num)|_(id)] (query) [queries]</code></h3>
+
+Start by copying several things.
+```sh
+$ cb copy Foo Bar Baz
+$ cb copy "Some example content"
+$ cb copy2 "Blah bleh bluh bloh"
+```
+
+Search a clipboard's contents.
+```sh
+$ cb search Foo
+$ cb --search Blah
+$ cb sr Bar
+$ cb --sr Baz
+# All are the same!
+```
+
+<br>
+
+<h3><b>Show Help Message</b> &emsp; <code>cb (-h|[--]help)</code></h3>
+
+Show the help message.
+```sh
+$ cb help
+$ cb --help
+$ cb -h 
+# These three versions all work great!
+```
+
+<br>
+
+<h3><b>Check All Clipboards' Status</b> &emsp; <code>cb [[--]status|st]</code> or <code>cb [--](status|st) | (something)</code></h3>
+
+Check the status of all clipboards that have content.
+```sh
+$ cb status
+$ cb --status
+$ cb st
+$ cb --st
+$ cb 
+# These all work great!
+```
+
+Get the status of all clipboards in JSON format.
+```sh
+$ cb status | cat
+```
+
+<br>
+
+<h3><b>Check Your Configuration</b> &emsp; <code>cb [[--]config|cfg]</code></h3>
+
+Check your configuration of CB.
+```sh
+$ cb config
+$ cb --config
+$ cb cfg
+$ cb --cfg
+# These all work great!
+```
+
+<br>
+
+### <img src="documentation/readme-assets/TipsAndTricks.png" alt="Tips And Tricks" height=25px />
+
+Need to paste a funky symbol somewhere a lot? Copy it to a persistent clipboard.
+```sh
+$ cb cp_theta θ
+$ cb -c amog cp ඞ
+```
+
+Paste whatever's in the clipboard straight into your favorite text editor.
+```sh
+# Vim
+:r !cb
+# Nano
+[Ctrl-T] cb
+# VSCode
+cb | code -
+```
+
+Copy a password securely by deleting it once you've pasted it.
+```sh
+$ cb cut "AVeryStrongPassword!"
+$ cb | some-program
+# Now gone
+```
+
+On a slow system? Cache certain things so you don't have to do them again.
+```sh
+$ neofetch | cb cp_neo
+$ cb | cat
+```
+    
+Yank anything sitting in your terminal without ever touching the mouse.
+```sh
+$ env | yank -d = -- cb
+```
+    
+Instantly copy to the main clipboard using your favorite dmenu tool.
+```sh
+$ cb cp "$(cb st | jq -r '.[] | if type=="array" then .[].path else if type=="object" then .path else . end end' | dmenu)"
+# For copying the latest entry from any of your clipboards
+$ cb cp "$(cb hs | jq -r '.[].content | if type=="array" then .[].path else if type=="object" then .path else . end end' | dmenu)"
+# For copying any entry from a specific clipboard
+```
+
+Need to share or pore over log files? Copy them in one step!
+```sh
+$ journalctl | cb
+# For systemd
+$ sudo dmesg | cb
+# For Linux; note that you're not running "sudo cb" here
+$ cb copy logs/latest.log
+# For Minecraft servers
+```
+
+Want CB to look different? Change up the color scheme.
+```sh
+# This one looks like The Matrix
+$ export CLIPBOARD_THEME=green
+$ cb
+# This one is for light backgrounds
+$ export CLIPBOARD_THEME=light
+$ cb
+# Check out the other themes too!
+```
+
+Here's what some of these themes might look like.
+
+<img src="documentation/readme-assets/CBThemes.png" width=600px />
+
+Make your own scripts that can fully automate your workflows.
+```sh
+#!/bin/sh
+# This script does nothing except serve as an example of automating CB.
+link="https://SomeWebsiteWithLotsOfContent"
+wget link
+cb copy *.jpg *.png
+cb remove "AZ.*\.png"
+cb | tar -cf foobar.tar
+cb -c footar < foobar.tar
+cb note "Latest files from website ABCXYZ"
+```
+
+<br>
+    
+<br>
+
+<p align="center">
+    <img src="documentation/readme-assets/CustomizeClipboard.png" alt="Let's make CB our own." height="40px" />
+</p>
+
+<br>
+    
+<br>
+
+### ![Simple Configuration](documentation/readme-assets/CBSimpleConfiguration.png)
+
+### <img src="documentation/readme-assets/Flags.png" alt="Flags" height=25px />
+
+<h3><b><code>--all</code>, <code>-a</code> &emsp; Add this when clearing to clear all clipboards at once, or when searching to search all clipboards.</b></h3>
+
+Start from a blank slate.
+```sh
+$ cb --all clear
+```
+WARNING! This will get rid of everything you've stored with CB, so be very careful when clearing with this option.
+
+<br>
+
+<h3><b><code>--clipboard (clipboard)</code>, <code>-c (clipboard)</code> &emsp; Add this to choose which clipboard you want to use. </b></h3>
+
+Choose a non-default clipboard.
+```sh
+$ cb -c 5 copy Foobar
+$ cb --clipboard 10 copy BarBaz
+```
+
+Copy to a temporary clipboard that doesn't start with a number.
+```sh
+$ cb -c SomeCB copy "A really really long sentence, and I mean really really super DUPER long!"
+```
+
+Note: Although copying to a temporary clipboard that doesn't start with a number is impossible using the conventional method of adding it to the end of the action, this alternative method is completely supported and works great.
+
+Choose a persistent clipboard.
+```sh
+$ cb -c _ copy "Generation Next"/*
+```
+
+<br>
+
+<h3><b><code>--entry (entry)</code>, <code>-e (entry)</code> &emsp; Add this to choose which history entry you want to use. </b></h3>
+
+Choose a non-default history entry.
+```sh
+$ cb -e 5 copy Foobar
+$ cb --entry 10 copy BarBaz
+```
+
+Note: To copy to a non-default entry, that entry must exist already.
+
+<br>
+
+<h3><b><code>--fast-copy</code>, <code>-fc</code> &emsp; Add this to use links when copying, cutting, pasting, or loading. If you modify the items that you used with this flag, then the items you paste will have the same changes.</b></h3>
+
+Copy a lot of files in much less time than before.
+```sh
+$ cb --fast-copy copy /usr/bin/*
+```
+
+<br>
+
+<h3><b><code>--mime</code>, <code>-m</code> &emsp; Add this to request a specific content MIME type from GUI clipboard systems.</b></h3>
+
+Save GUI clipboard content of a specific MIME type to the main clipboard.
+```sh
+$ cb --mime text/html | cb
+```
+
+<br>
+
+<h3><b><code>--no-confirmation</code>, <code>-nc</code> &emsp; Add this to disable confirmation messages from CB. </b></h3>
+
+Reduce distractions after showing some text content.
+```sh
+$ cb -nc sh | cat
+```
+
+<br>
+
+<h3><b><code>--no-progress</code>, <code>-np</code> &emsp; Add this to disable progress messages from CB. </b></h3>
+
+Reduce distractions while doing a search that takes a while.
+```sh
+$ fzf | cb -np
+```
+
+<br>
+
+<h3><b><code>--secret</code> &emsp; Add this when ignoring content to ignore a secret (or secrets) instead. </b></h3>
+
+Ignore a password.
+```sh
+$ cb ignore --secret MyVerySecurePassword
+$ cb ignore --secret # This will show the SHA512 hash of MyVerySecurePassword
+$ cb ignore --secret MyVerySecurePassword2 "someOTHER secret1 banana"
+$ cb ignore --secret # Now it will show the SHA512 hashes of MyVerySecurePassword2 and someOTHER secret1 banana
+```
+
+Clear all your passwords.
+```sh
+$ cb ignore --secret ""
+# WARNING: Once you clear all secrets, there is no going back.
+```
+
+<br>
+
+<h3><b><code>--bachata</code> &emsp; Add this for something special! </b></h3>
+
+Make your life less boring.
+```sh
+$ cb --bachata
+```
+
+
+    
+<br>
+<br>
+
+### <img src="documentation/readme-assets/EnvironmentVariables.png" alt="Environment Variables" height=25px />
+
+<h3><b><code>CI</code> &emsp; Set this to "true" or "1" to make CB overwrite existing items without a user prompt when pasting. This variable is intended for Continuous Integration scripts where a live human is not present to make decisions.</b></h3>
+
+Use CB in a CI script.
+```sh
+...
+cb cp Temp/*
+...
+cb p
+...
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_ACTION</code> &emsp; CB will set this to the current action when running a script. </b></h3>
+
+Start with a script.
+```sh
+$ cb script ls
+$ cb history
+# Now, whatever script CB runs will have access to the CLIPBOARD_ACTION environment variable, here with value "history"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_EDITOR</code> &emsp; Set this to the editor you want to use for the Edit action. </b></h3>
+
+Set a custom editor to use.
+```sh
+$ export CLIPBOARD_EDITOR=nano
+```
+
+Note: The environment variables `EDITOR` and `VISUAL` by default take precedence if `CLIPBOARD_EDITOR` isn't set.
+
+<br>
+
+<h3><b><code>CLIPBOARD_HISTORY</code> &emsp; Set this to the maximum history size you want to keep, like <code>10000</code> or <code>50gb</code>. </b></h3>
+
+`CLIPBOARD_HISTORY` supports up to 2^32 - 1 as a value. So, go ahead. Crank that b*tch up to a billion.
+```sh
+$ export CLIPBOARD_HISTORY=1000000000
+$ cb copy "Oh yeah!"
+```
+
+Only keep a certain amount of data.
+```sh
+$ export CLIPBOARD_HISTORY=100tb
+$ cb copy Yo_Mama.tar.gz
+```
+
+Note: You can choose between `tb`, `gb`, `mb`, `kb`, and `b` to specify amounts for terabytes, gigabytes, megabytes, kilobytes, and bytes respectively.
+
+Only keep a certain time length.
+```sh
+$ export CLIPBOARD_HISTORY=52w
+```
+
+Note: You can choose between `y`, `m`, `w`, `d`, and `h` to specify amounts for years, months, weeks, days, and hours respectively.
+
+<br>
+
+<h3><b><code>CLIPBOARD_LOCALE</code> &emsp; Set this to the locale that only CB will use for its commands and output, like <code>en_US.UTF-8</code> or <code>es_DO.UTF-8</code>. </b></h3>
+
+Change the locale to match what you're more comfortable with.
+```sh
+$ export CLIPBOARD_LOCALE=es_DO.UTF-8
+$ cb cp "Amo a Aventura"
+
+> $Env:CLIPBOARD_LOCALE=es_DO.UTF-8
+# Powershell version
+```
+
+Override the locale case-by-case.
+```sh
+$ export CLIPBOARD_LOCALE=fr_CA.UTF-8
+...
+$ CLIPBOARD_LOCALE="" cb cp Foobar
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_SCRIPT_TIMING</code> &emsp; CB will set this to the timing of the script that it runs.</b></h3>
+
+Start with a script.
+```sh
+$ cb script ls
+$ cb history
+# Now, whatever script CB runs will have access to the CLIPBOARD_SCRIPT_TIMING environment variable, here with value "before"
+# (output of "cb history")
+# Now, CLIPBOARD_SCRIPT_TIMING will have value "after"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_TMPDIR</code> &emsp; Set this to the directory that only CB will use to hold the items you cut or copy into a temporary directory.</b></h3>
+
+Choose a special place to put your temporary clipboards this one time.
+```sh
+$ CLIPBOARD_TMPDIR=/home/jackson/SomeDirectory cb copy *
+```
+
+Choose a special place to put your temporary clipboards every time.
+
+```sh
+$ export CLIPBOARD_TMPDIR=/home/jackson/SomeDirectory
+$ cb copy *
+> $Env:CLIPBOARD_TMPDIR = /home/jackson/SomeDirectory
+# Powershell
+```
+
+Note: By default, CB uses the C++ filesystem library function `fs::temp_directory_path()` to generate the temporary directory, prioritizing `CLIPBOARD_TMPDIR` and then `XDG_RUNTIME_DIR` respectively first if CB can get a value from them.
+
+<br>
+
+<h3><b><code>CLIPBOARD_PERSISTDIR</code> &emsp; Set this to the directory that only CB will use to hold the items you cut or copy into a persistent directory.</b></h3>
+
+Choose a special place to put your persistent clipboards this one time.
+```sh
+$ CLIPBOARD_PERSISTDIR=/home/jackson/SomeDirectory cb copy *
+```
+
+Choose a special place to put your persistent clipboards every time.
+
+```sh
+$ export CLIPBOARD_PERSISTDIR=/home/jackson/SomeDirectory
+$ cb copy *
+> $Env:CLIPBOARD_PERSISTDIR = /home/jackson/SomeDirectory
+# Powershell
+```
+
+Note: By default, CB uses the user's home directory to generate the persistent directory, prioritizing `CLIPBOARD_PERSISTDIR` and then `XDG_STATE_HOME` first respectively if CB can get a value from them.
+
+<br>
+
+<h3><b><code>CLIPBOARD_CUSTOMPERSIST</code> &emsp; Set this to the clipboards you want to make persistent, using regex.</b></h3>
+
+Make everything you copy persistent.
+
+```sh
+$ export CLIPBOARD_CUSTOMPERSIST=".*"
+$ cb copy Foo Bar Baz
+# This puts everything in the persistent directory but still with the clipboard name "0"
+```
+
+Make some clipboards persistent.
+
+```sh
+$ export CLIPBOARD_CUSTOMPERSIST=5
+$ cb copy5 Foo Bar Baz
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOAUDIO</code> &emsp; Set this to "true" or "1" to disable audio coming from CB.</b></h3>
+
+Turn off those sound effects.
+```sh
+$ export CLIPBOARD_NOAUDIO=1
+$ cb ffksdjfdj 
+# No more error sounds after doing a nonexistent command
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOGUI</code> &emsp; Set this to "true" or "1" to disable integration with GUI clipboards.</b></h3>
+
+Debug a flaky GUI system by disabling its integration with CB.
+
+```sh
+$ CLIPBOARD_NOGUI=1 cb show
+$ export CLIPBOARD_NOGUI=1
+$ cb show
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOPROGRESS</code> &emsp; Set this to "true" or "1" to disable only progress messages from CB.</b></h3>
+
+Reduce distractions while doing a search that takes a while.
+```sh
+$ fzf | CLIPBOARD_NOPROGRESS=1 cb
+```
+
+Disable progress messages from CB entirely.
+```sh
+$ export CLIPBOARD_NOPROGRESS=1
+$ fzf | cb
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_NOREMOTE</code> &emsp; Set this to "true" or "1" to disable remote clipboard sharing.</b></h3>
+
+Disable all clipboard content transfers through the terminal.
+```sh
+$ export CLIPBOARD_NOREMOTE=1
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_SILENT</code> &emsp; Set this to "true" or "1" to disable progress and confirmation messages from CB.</b></h3>
+
+Rest in peace by seeing nothing that isn't an error.
+```sh
+$ export CLIPBOARD_SILENT=1
+$ cb cp "I'm running out of Aventura references"
+```
+
+<br>
+
+<h3><b><code>CLIPBOARD_THEME</code> &emsp; Set this to the color theme that CB will use. Choose between <code>light</code>, <code>darkhighcontrast</code>, <code>lighthighcontrast</code>, <code>amber</code>, <code>green</code>, and <code>ansi</code> (the default is <code>dark</code>).</b></h3>
+
+Remind yourself of the terminals of the past.
+```sh
+$ export CLIPBOARD_THEME=green
+$ cb cp "I'm in the Matrix now"
+$ export CLIPBOARD_THEME=amber
+$ cb cp "Yellow terminals feel just like sitting in front of a nice campfire"
+```
+
+Make CB more accessible.
+```sh
+$ export REDACTED
+$ cb show
+```
+
+Fully customize your style.
+```sh
+$ export CLIPBOARD_THEME=help=r;g;b,info=r;g;b,error=r;g;b,success=r;g;b,progress=r;g;b
+# Note: You must put in a number within range 0-255 for each r, g, and b
+```
+
+<br>
+
+<h3><b><code>FORCE_COLOR</code> &emsp; Set this to "true" or "1" to make CB always show color regardless of what you set <code>NO_COLOR</code> to.</b></h3>
+
+Override somebody else's choice to disable colors.
+```sh
+$ export NO_COLOR=1
+...
+$ FORCE_COLOR=1 cb copy "There are almost no bachateros where I live right now"
+```
+
+Note: CB also supports `CLICOLOR_FORCE`.
+
+Override somebody else's choice to disable colors, but in a different way.
+```sh
+$ export CLICOLOR=0
+...
+$ CLICOLOR_FORCE=1 cb copy "There are almost no bachateros where I live right now"
+```
+
+<br>
+
+<h3><b><code>NO_COLOR</code> &emsp; Set this to anything to make CB not show any colors.</b></h3>
+
+Make CB look boring.
+```sh
+$ export NO_COLOR=1
+$ cb cp "From the 1960s until the 1990s, bachata was perceived as boring music for poor Dominicans."
+```
+
+Note: CB also supports `CLICOLOR`.
+
+Make CB look boring, but in a different way.
+```sh
+$ export CLICOLOR=0
+$ cb cp "In the 1990s, though, several innovative musicians reinvigorated bachata by using electric guitars with fancy effects."
+```
+
+
+ 
+<br>
+<br>
+<br>
+
+### ![Need Help?](documentation/readme-assets/NeedHelp.png)
+
+We're here for you! Check out [the Clipboard Project Wiki](https://github.com/Slackadays/Clipboard/wiki) for even more information, ask all your burning questions in [GitHub Discussions](https://github.com/Slackadays/Clipboard/discussions), or join [the awesome Discord group](https://discord.gg/J6asnc3pEG)!
+
+<p align="center">
+    <a href="https://github.com/Slackadays/Clipboard/wiki"><img src="https://img.shields.io/badge/Docs-Wiki-green?style=for-the-badge&labelColor=rgb(55,55,55)" alt="CB Wiki">
+    <a href="https://github.com/Slackadays/Clipboard/discussions"><img src="https://img.shields.io/badge/Questions%3F-Ask%20Away-red?style=for-the-badge&labelColor=rgb(55,55,55)" alt="Questions? Ask Away!"></a>
+    <a href="https://twitter.com/GetClipboard"><img src="https://img.shields.io/badge/FOLLOW-%40GETCLIPBOARD-blue?logo=twitter&style=for-the-badge&labelColor=rgb(55,55,55)" alt="Follow us on Twitter"></a>
+    <br>
+    <a href="https://discord.gg/J6asnc3pEG"><img src="documentation/readme-assets/join-our-discord.svg" alt="Discord Chat"></a>
+</p>
+
+<br>
+<br>
+
+### ![Thank You!](documentation/readme-assets/ThankYou.png)
+
+
+Say thank you to all our beautiful contributors who have helped make the Clipboard Project incredible[.](https://www.youtube.com/watch?v=yjdHGmRKz08)
+ Want to join the club? We're always accepting [new contributions](https://github.com/Slackadays/Clipboard/blob/main/CONTRIBUTING.md) too.
+
+Special thanks to [MacStadium](https://www.macstadium.com/) for sponsoring the Clipboard Project by providing a Mac Mini for macOS development!
+
+And if you're feeling generous, feel free to give us a :star:! We appreciate every single one - including yours.
+    
+<br>
+
+<p align="center"> 
+    <img src="documentation/readme-assets/ClipboardMakesYourLifeEasy.png" alt="CB makes your life easy." />
+</p>
+
+<br>
+
+<p align="right"><sub><code>cb copy haters && cb > /dev/null</code></sub></p>
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_a69c9c05`
+**Description:** Find cb theme configuration
+**Duration:** 58s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_a69c9c05")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_a69c9c05`
+**Description:** Find cb theme configuration
+**Duration:** 58s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_a69c9c05")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_a69c9c05`: Find cb theme configuration
+- `bg_73e93eb7`: Find Nord theme examples
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_a69c9c05`: Find cb theme configuration
+- `bg_73e93eb7`: Find Nord theme examples
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+Add to your shell config (~/.config/fish/config.fish Да, блять, изучили, как у меня устроена конфигурация. У меня там есть специализированный конфиг, где я указываю цвета.
+
+---
+
+Add to your shell config (~/.config/fish/config.fish Да, блять, изучили, как у меня устроена конфигурация. У меня там есть специализированный конфиг, где я указываю цвета.
+
+---
+
+commit
+
+---
+
+commit
