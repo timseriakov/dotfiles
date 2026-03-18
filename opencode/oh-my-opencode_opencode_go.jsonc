@@ -3,7 +3,7 @@
   "hashline_edit": true,
   "agents": {
     "sisyphus": {
-      "model": "opencode-go/kimi-k2.5",
+      "model": "opencode-go/glm-5",
       "temperature": 0.1,
     },
     "atlas": {
@@ -129,7 +129,7 @@
     "truncate_all_tool_outputs": true,
     "dynamic_context_pruning": {
       "enabled": true,
-      "notification": "detailed",
+      "notification": "minimal",
       "turn_protection": {
         "enabled": true,
         "turns": 3,
