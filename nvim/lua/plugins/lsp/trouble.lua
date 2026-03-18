@@ -16,10 +16,12 @@ return {
           return
         end
         local lines_to_copy = {}
+        local filename = vim.api.nvim_buf_get_name(0)
+        local relative_path = vim.fn.fnamemodify(filename, ":.")
         for _, d in ipairs(diagnostics) do
           table.insert(
             lines_to_copy,
-            string.format("L%d: [%s]: %s", d.lnum + 1, vim.diagnostic.severity[d.severity]:upper(), d.message)
+            string.format("%s:%d: [%s]: %s", relative_path, d.lnum + 1, vim.diagnostic.severity[d.severity]:upper(), d.message)
           )
         end
         local content = table.concat(lines_to_copy, "\n")
