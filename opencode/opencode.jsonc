@@ -2,10 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
 
   "plugin": [
-    "oh-my-opencode@3.11.2",
+    "oh-my-opencode@3.12.0",
     "opencode-openai-codex-auth@4.4.0",
     "opencode-antigravity-auth@1.6.0",
-    "@plannotator/opencode@0.12.0",
+    "@plannotator/opencode@0.13.1",
     "@franlol/opencode-md-table-formatter@0.0.3",
     "@nick-vi/opencode-type-inject@1.3.1",
     "@bastiangx/opencode-unmoji@0.3.11",
@@ -26,40 +26,6 @@
       "url": "http://localhost:8080/mcp/",
       "type": "remote",
       "enabled": true,
-    },
-    "vercel": {
-      "url": "https://mcp.vercel.com",
-      "type": "remote",
-      "enabled": false,
-    },
-    "playwriter": {
-      "command": ["npx", "-y", "playwriter@latest"],
-      "type": "local",
-      "enabled": true,
-    },
-    "engram": {
-      "command": ["engram", "mcp"],
-      "type": "local",
-      "enabled": false,
-    },
-    "frame0": {
-      "command": ["npx", "-y", "frame0-mcp-server"],
-      "type": "local",
-      "enabled": false,
-    },
-    "pencil": {
-      "command": [
-        "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
-        "--app",
-        "desktop",
-      ],
-      "type": "local",
-      "enabled": false,
-    },
-    "grepai": {
-      "command": ["grepai", "mcp-serve"],
-      "type": "local",
-      "enabled": false,
     },
   },
 
