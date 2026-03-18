@@ -22,6 +22,10 @@ set -l nord13 ebcb8b
 set -l nord14 a3be8c
 set -l nord15 b48ead
 
+# Clipboard Project (cb) Nord theme
+# Format: help=R;G;B,info=R;G;B,error=R;G;B,success=R;G;B,progress=R;G;B
+set -gx CLIPBOARD_THEME "help=136;192;208,info=129;161;193,error=191;97;106,success=163;190;140,progress=235;203;139"
+
 # Pager / completions — remove harsh yellow descriptions
 set -g fish_pager_color_prefix $nord8 # typed prefix
 set -g fish_pager_color_completion $nord5 # candidates
