@@ -5,7 +5,7 @@ end
 # Start tmux automatically only when allowed
 if status is-interactive
     if not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT; and not set -q CODEX_SHELL
-        if test "$TMUX_AUTO_SESSION" = "alacritty"
+        if test "$TMUX_AUTO_SESSION" = alacritty
             if not tmux has-session -t alacritty 2>/dev/null
                 tmux new-session -d -s alacritty
             end
@@ -42,7 +42,6 @@ if status is-interactive
     end
 end
 
-
 # Increase file descriptor limit for interactive shells (macOS)
 if status --is-interactive
     set -l nofile_limit (ulimit -n)
@@ -53,7 +52,6 @@ end
 
 # Note: Antigravity PATH managed in conf.d/10-path.fish
 # Note: Homebrew PATH managed in conf.d/10-path.fish
-
 
 # Mole shell completion (load only if mole is installed)
 if command -q mole
@@ -72,3 +70,6 @@ set -l openclaw_completions "$HOME/.openclaw/completions/openclaw.fish"
 if test -f "$openclaw_completions"
     source "$openclaw_completions"
 end
+
+# x-cmd
+test ! -e "$HOME/.x-cmd.root/local/data/fish/rc.fish" || source "$HOME/.x-cmd.root/local/data/fish/rc.fish" # boot up x-cmd.
