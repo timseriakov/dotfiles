@@ -3,22 +3,22 @@
   "checkpoint_id": "6511eb4cc71c",
   "session_id": "ses_2ff0a6493ffe2d24j35R3iG5tj",
   "strategy": "manual-commit",
-  "created_at": "2026-03-18T17:32:20.643912Z",
+  "created_at": "2026-03-18T17:34:24.249732Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
-    "yazi/keymap.toml",
-    "yazi/plugins/copy-content.yazi/main.lua"
+    "yazi/plugins/copy-content.yazi/main.lua",
+    "yazi/keymap.toml"
   ],
   "agent": "Claude Code",
   "turn_id": "cc5c2aa1c74c",
   "initial_attribution": {
-    "calculated_at": "2026-03-18T17:32:20.643244Z",
+    "calculated_at": "2026-03-18T17:34:24.249151Z",
     "agent_lines": 0,
-    "human_added": 1,
-    "human_modified": 0,
+    "human_added": 0,
+    "human_modified": 1,
     "human_removed": 0,
-    "total_committed": 1,
+    "total_committed": 0,
     "agent_percentage": 0
   }
 }
