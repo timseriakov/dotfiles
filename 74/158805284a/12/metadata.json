@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "74158805284a",
+  "session_id": "ses_2f9ed61b5ffel7ZM07TSZmjJiu",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T14:14:40.198552Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-opencode_opencode_go.jsonc",
+    "opencode/opencode.jsonc",
+    "opencode/opencode_mcps.json",
+    "opencode/octto.json",
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_glm.jsonc",
+    "opencode/oh-my-opencode_openai.jsonc",
+    "opencode/oh-my-opencode_openai_economy.jsonc",
+    "opencode/dcp.jsonc",
+    "opencode/oh-my-opencode_antigravity_3_flash_only.jsonc",
+    "opencode/oh-my-opencode_antigravity_opus_4_6.jsonc"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "98b78a51f493",
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T14:14:40.197671Z",
+    "agent_lines": 49,
+    "human_added": 5,
+    "human_modified": 148,
+    "human_removed": 0,
+    "total_committed": 202,
+    "agent_percentage": 24.257425742574256
+  }
+}
