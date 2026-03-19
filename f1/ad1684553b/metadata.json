@@ -3,7 +3,7 @@
   "checkpoint_id": "f1ad1684553b",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "yazi/keymap.toml"
   ],
@@ -18,6 +18,12 @@
       "metadata": "/f1/ad1684553b/1/metadata.json",
       "transcript": "/f1/ad1684553b/1/full.jsonl",
       "content_hash": "/f1/ad1684553b/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/f1/ad1684553b/2/metadata.json",
+      "transcript": "/f1/ad1684553b/2/full.jsonl",
+      "content_hash": "/f1/ad1684553b/2/content_hash.txt",
       "prompt": ""
     }
   ],
