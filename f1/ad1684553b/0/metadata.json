@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "f1ad1684553b",
+  "session_id": "ses_2f9fb98f4ffePw1T3vkI47l7mF",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T12:15:39.120823Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "yazi/keymap.toml"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "b1498bd091a9",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T12:15:39.093467Z",
+    "agent_lines": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2,
+    "agent_percentage": 100
+  }
+}
