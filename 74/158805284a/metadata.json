@@ -100,7 +100,7 @@
       "metadata": "/74/158805284a/13/metadata.json",
       "transcript": "/74/158805284a/13/full.jsonl",
       "content_hash": "/74/158805284a/13/content_hash.txt",
-      "prompt": "/74/158805284a/13/prompt.txt"
+      "prompt": ""
     },
     {
       "metadata": "/74/158805284a/14/metadata.json",
@@ -258,12 +258,5 @@
       "content_hash": "/74/158805284a/39/content_hash.txt",
       "prompt": ""
     }
-  ],
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  }
+  ]
 }
