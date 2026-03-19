@@ -129,7 +129,7 @@
     "truncate_all_tool_outputs": true,
     "preemptive_compaction": true,
     "dynamic_context_pruning": {
-      "enabled": true,
+      "enabled": false,
       "notification": "minimal",
       "turn_protection": {
         "enabled": true,
