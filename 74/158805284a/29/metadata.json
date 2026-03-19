@@ -3,21 +3,21 @@
   "checkpoint_id": "74158805284a",
   "session_id": "ses_313b5997cffezpJcgBZFlMPKVP",
   "strategy": "manual-commit",
-  "created_at": "2026-03-19T14:14:40.654223Z",
+  "created_at": "2026-03-19T14:15:05.117503Z",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 0,
   "files_touched": [
     "opencode/oh-my-opencode.jsonc"
   ],
   "agent": "Claude Code",
   "turn_id": "dccb039408b0",
   "initial_attribution": {
-    "calculated_at": "2026-03-19T14:14:40.65269Z",
+    "calculated_at": "2026-03-19T14:15:05.115877Z",
     "agent_lines": 0,
-    "human_added": 2041,
-    "human_modified": 148,
-    "human_removed": 0,
-    "total_committed": 2189,
+    "human_added": 0,
+    "human_modified": 36,
+    "human_removed": 110,
+    "total_committed": 36,
     "agent_percentage": 0
   }
 }
