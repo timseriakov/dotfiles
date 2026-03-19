@@ -150,7 +150,7 @@ keymap = [
 	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
 	{ on = [ "g", "s" ],       run = "plugin vcs-files", desc = "Show Git file changes" },
 	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go ~/Downloads" },
-	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
+	{ on = [ "g", "<Space>" ], run = "plugin searchjump -- autocd", desc = "searchjump mode" },
 	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
 
 	# Tabs
@@ -193,7 +193,7 @@ prepend_keymap = [
   { on = [ "g", "i", ], run = "plugin lazygit", desc = "Run lazygit" },
   { on = [ "g", "r", ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go root of the current Git repository" },
   { on = [ "c", "a", ], run = "plugin ouch", desc = "Archive selected files" },
-  { on = "f", run = "plugin searchjump -- autocd", desc = "searchjump mode" }, # "plugin searchjump -- autocd"
+  { on = "f", run = "cd --interactive", desc = "Jump interactively" },
   { on = "<C-p>", run = "plugin mux next", desc = "Next SQLite preview" },
   { on = "<A-y>", run = "plugin copy-content", desc = "Copy content of text files" },
 
