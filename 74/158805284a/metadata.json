@@ -155,6 +155,12 @@
       "transcript": "/74/158805284a/22/full.jsonl",
       "content_hash": "/74/158805284a/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/74/158805284a/23/metadata.json",
+      "transcript": "/74/158805284a/23/full.jsonl",
+      "content_hash": "/74/158805284a/23/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
