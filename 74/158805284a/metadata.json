@@ -3,7 +3,7 @@
   "checkpoint_id": "74158805284a",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "opencode/dcp.jsonc",
     "opencode/octto.json",
@@ -148,6 +148,12 @@
       "metadata": "/74/158805284a/21/metadata.json",
       "transcript": "/74/158805284a/21/full.jsonl",
       "content_hash": "/74/158805284a/21/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/74/158805284a/22/metadata.json",
+      "transcript": "/74/158805284a/22/full.jsonl",
+      "content_hash": "/74/158805284a/22/content_hash.txt",
       "prompt": ""
     }
   ],
