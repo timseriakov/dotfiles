@@ -23,6 +23,7 @@ abbr -a nd 'npm run dev'
 abbr -a nb 'npm run build'
 abbr -a nrm 'npm uninstall'
 abbr -a npk 'npx npkill'
+abbr -a npxy 'npx -y'
 abbr -a npm-explore forage
 abbr -a n-explore forage
 
@@ -127,14 +128,18 @@ abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
 # OpenCode
 abbr -a o opencode
-abbr -a oa 'opencode attach http://127.0.0.1:4096'
+abbr -a oa 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
+abbr -a oc 'opencode --continue'
 abbr -a on opencode
+
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
+abbr -a orcc 'cd ~/dev/dotfiles/opencode && nvim opencode.jsonc'
 abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
+
 abbr -a oup 'brew install anomalyco/tap/opencode'
 abbr -a os '~/.config/opencode/omo-switch'
 # abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
-#
+
 abbr -a o-web 'openchamber --daemon --port 1911'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a o-skills 'npx -y openskills'
@@ -177,7 +182,7 @@ abbr -a glarc 'nvim ~/Library/LaunchAgents/app.glance.plist'
 abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
 abbr -a grc 'cd ~/.gemini'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
-abbr -a frc 'nvim ~/dev/dotfiles/fish/config.fish && exec fish'
+abbr -a frc 'cd ~/dev/dotfiles/fish && nvim . && exec fish'
 abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish && exec fish'
 abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
 abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
@@ -185,6 +190,7 @@ abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
 # Misc
 abbr -a cls clear
 
+abbr -a pb pbcopy
 abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
 
 # Copy/Paste
@@ -253,5 +259,6 @@ abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -vf "fps=30,scale=512:-2:flags=lanczos" \
   -c:v libx264 -profile:v baseline -level 3.0 \
   -an -loop 0 output.mp4'
+abbr -a yts yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
 abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
