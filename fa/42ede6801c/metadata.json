@@ -3,7 +3,7 @@
   "checkpoint_id": "fa42ede6801c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/20-tooling.fish"
   ],
@@ -60,6 +60,12 @@
       "metadata": "/fa/42ede6801c/8/metadata.json",
       "transcript": "/fa/42ede6801c/8/full.jsonl",
       "content_hash": "/fa/42ede6801c/8/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/fa/42ede6801c/9/metadata.json",
+      "transcript": "/fa/42ede6801c/9/full.jsonl",
+      "content_hash": "/fa/42ede6801c/9/content_hash.txt",
       "prompt": ""
     }
   ],
