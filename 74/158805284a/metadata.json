@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "74158805284a",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/dcp.jsonc",
+    "opencode/octto.json",
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_antigravity_3_flash_only.jsonc",
+    "opencode/oh-my-opencode_antigravity_opus_4_6.jsonc",
+    "opencode/oh-my-opencode_glm.jsonc",
+    "opencode/oh-my-opencode_openai.jsonc",
+    "opencode/oh-my-opencode_openai_economy.jsonc",
+    "opencode/oh-my-opencode_opencode_go.jsonc",
+    "opencode/opencode.jsonc",
+    "opencode/opencode_mcps.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/74/158805284a/0/metadata.json",
+      "transcript": "/74/158805284a/0/full.jsonl",
+      "content_hash": "/74/158805284a/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
