@@ -83,6 +83,19 @@
       "transcript": "/74/158805284a/10/full.jsonl",
       "content_hash": "/74/158805284a/10/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/74/158805284a/11/metadata.json",
+      "transcript": "/74/158805284a/11/full.jsonl",
+      "content_hash": "/74/158805284a/11/content_hash.txt",
+      "prompt": "/74/158805284a/11/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
