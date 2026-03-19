@@ -1,0 +1,593 @@
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+блять спасай, я заебался. 
+
+<p align="center">
+  <img src="apps/marketing/public/og-image.webp" alt="Plannotator" width="80%" />
+</p>
+
+# Plannotator
+
+Interactive Plan & Code Review for AI Coding Agents. Mark up and refine your plans or code diffs using a visual UI, share for team collaboration, and seamlessly integrate with **Claude Code**, **OpenCode**, **Pi**, and **Codex**.
+
+**Plan Mode Demos:**
+<table>
+<tr>
+<td align="center" width="50%">
+<h3>Claude Code</h3>
+<a href="https://www.youtube.com/watch?v=a_AT7cEN_9I">
+<img src="apps/marketing/public/youtube.png" alt="Claude Code Demo" width="100%" />
+</a>
+<p><a href="https://www.youtube.com/watch?v=a_AT7cEN_9I">Watch Demo</a></p>
+</td>
+<td align="center" width="50%">
+<h3>OpenCode</h3>
+<a href="https://youtu.be/_N7uo0EFI-U">
+<img src="apps/marketing/public/youtube-opencode.png" alt="OpenCode Demo" width="100%" />
+</a>
+<p><a href="https://youtu.be/_N7uo0EFI-U">Watch Demo</a></p>
+</td>
+</tr>
+</table>
+
+**New:** [Code Review](https://x.com/backnotprop/status/2031145299738263567?s=20)
+
+
+### Features
+
+<table>
+<tr><td><strong>Visual Plan Review</strong></td><td>Built-in hook</td><td>Approve or deny agent plans with inline annotations</td></tr>
+<tr><td><strong>Plan Diff</strong></td><td>Automatic</td><td>See what changed when the agent revises a plan</td></tr>
+<tr><td><strong>Code Review</strong></td><td><code>/plannotator-review</code></td><td>Review git diffs or GitHub PRs with line-level annotations</td></tr>
+<tr><td><strong>Annotate Any File</strong></td><td><code>/plannotator-annotate</code></td><td>Annotate any markdown file and send feedback to your agent</td></tr>
+<tr><td><strong>Annotate Last Message</strong></td><td><code>/plannotator-last</code></td><td>Annotate the agent's last response and send structured feedback</td></tr>
+</table>
+
+#### Sharing Plans
+
+Plannotator lets you privately share plans, annotations, and feedback with colleagues. For example, a colleague can annotate a shared plan, and you can import their feedback to send directly back to the coding agent.
+
+**Small plans** are encoded entirely in the URL hash. No server involved, nothing stored anywhere.
+
+**Large plans** use a short link service with **end-to-end encryption**. Your plan is encrypted with AES-256-GCM in your browser before upload. The server stores only ciphertext it cannot read. The decryption key lives only in the URL you share. Pastes auto-delete after 7 days.
+
+- Zero-knowledge storage, similar to [PrivateBin](https://privatebin.info/)
+- Fully open source and self-hostable ([see docs](https://plannotator.ai/docs/guides/sharing-and-collaboration/))
+
+## Install
+
+- [Claude Code](#install-for-claude-code)
+- [OpenCode](#install-for-opencode)
+- [Pi](#install-for-pi)
+- [Codex](#install-for-codex)
+
+## Install for Claude Code
+
+**Install the `plannotator` command:**
+
+**macOS / Linux / WSL:**
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+**Then in Claude Code:**
+
+```
+/plugin marketplace add backnotprop/plannotator
+/plugin install plannotator@plannotator
+
+# IMPORTANT: Restart Claude Code after plugin install
+```
+
+See [apps/hook/README.md](apps/hook/README.md) for detailed installation instructions including a `manual hook` approach.
+
+---
+
+## Install for OpenCode
+
+Add to your `opencode.json`:
+
+```json
+{
+  "plugin": ["@plannotator/opencode@latest"]
+}
+```
+
+**Run the install script** to get `/plannotator-review`:
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows:**
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+This also clears any cached plugin versions. Then restart OpenCode.
+
+---
+
+## Install for Pi
+
+```bash
+pi install npm:@plannotator/pi-extension
+```
+
+Then start Pi with `--plan` to enter plan mode, or toggle it during a session with `/plannotator`.
+
+See [apps/pi-extension/README.md](apps/pi-extension/README.md) for full usage details, commands, and flags.
+
+---
+
+## Install for Codex
+
+**Install the `plannotator` command:**
+
+**macOS / Linux / WSL:**
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+**Then in Codex — feedback flows back into the agent loop automatically:**
+
+```
+!plannotator review           # Code review for current changes
+!plannotator review <pr-url>  # Review a GitHub pull request
+!plannotator annotate file.md # Annotate a markdown file
+!plannotator last             # Annotate the last agent message
+```
+
+Plan mode is not yet supported.
+
+See [apps/codex/README.md](apps/codex/README.md) for details.
+
+---
+
+## How It Works
+
+When your AI agent finishes planning, Plannotator:
+
+1. Opens the Plannotator UI in your browser
+2. Lets you annotate the plan visually (delete, insert, replace, comment)
+3. **Approve** → Agent proceeds with implementation
+4. **Request changes** → Your annotations are sent back as structured feedback
+
+---
+
+## License
+
+Copyright 2025-2026 backnotprop
+
+This project is licensed under either of
+
+- [Apache License, Version 2.0](LICENSE-APACHE) ([http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0))
+- [MIT license](LICENSE-MIT) ([http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT))
+
+at your option.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this project by you, as defined in the Apache-2.0 license,
+shall be dual licensed as above, without any additional terms or conditions.
+
+
+сломался механизм открытия в браузере...
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+блять спасай, я заебался. 
+
+<p align="center">
+  <img src="apps/marketing/public/og-image.webp" alt="Plannotator" width="80%" />
+</p>
+
+# Plannotator
+
+Interactive Plan & Code Review for AI Coding Agents. Mark up and refine your plans or code diffs using a visual UI, share for team collaboration, and seamlessly integrate with **Claude Code**, **OpenCode**, **Pi**, and **Codex**.
+
+**Plan Mode Demos:**
+<table>
+<tr>
+<td align="center" width="50%">
+<h3>Claude Code</h3>
+<a href="https://www.youtube.com/watch?v=a_AT7cEN_9I">
+<img src="apps/marketing/public/youtube.png" alt="Claude Code Demo" width="100%" />
+</a>
+<p><a href="https://www.youtube.com/watch?v=a_AT7cEN_9I">Watch Demo</a></p>
+</td>
+<td align="center" width="50%">
+<h3>OpenCode</h3>
+<a href="https://youtu.be/_N7uo0EFI-U">
+<img src="apps/marketing/public/youtube-opencode.png" alt="OpenCode Demo" width="100%" />
+</a>
+<p><a href="https://youtu.be/_N7uo0EFI-U">Watch Demo</a></p>
+</td>
+</tr>
+</table>
+
+**New:** [Code Review](https://x.com/backnotprop/status/2031145299738263567?s=20)
+
+
+### Features
+
+<table>
+<tr><td><strong>Visual Plan Review</strong></td><td>Built-in hook</td><td>Approve or deny agent plans with inline annotations</td></tr>
+<tr><td><strong>Plan Diff</strong></td><td>Automatic</td><td>See what changed when the agent revises a plan</td></tr>
+<tr><td><strong>Code Review</strong></td><td><code>/plannotator-review</code></td><td>Review git diffs or GitHub PRs with line-level annotations</td></tr>
+<tr><td><strong>Annotate Any File</strong></td><td><code>/plannotator-annotate</code></td><td>Annotate any markdown file and send feedback to your agent</td></tr>
+<tr><td><strong>Annotate Last Message</strong></td><td><code>/plannotator-last</code></td><td>Annotate the agent's last response and send structured feedback</td></tr>
+</table>
+
+#### Sharing Plans
+
+Plannotator lets you privately share plans, annotations, and feedback with colleagues. For example, a colleague can annotate a shared plan, and you can import their feedback to send directly back to the coding agent.
+
+**Small plans** are encoded entirely in the URL hash. No server involved, nothing stored anywhere.
+
+**Large plans** use a short link service with **end-to-end encryption**. Your plan is encrypted with AES-256-GCM in your browser before upload. The server stores only ciphertext it cannot read. The decryption key lives only in the URL you share. Pastes auto-delete after 7 days.
+
+- Zero-knowledge storage, similar to [PrivateBin](https://privatebin.info/)
+- Fully open source and self-hostable ([see docs](https://plannotator.ai/docs/guides/sharing-and-collaboration/))
+
+## Install
+
+- [Claude Code](#install-for-claude-code)
+- [OpenCode](#install-for-opencode)
+- [Pi](#install-for-pi)
+- [Codex](#install-for-codex)
+
+## Install for Claude Code
+
+**Install the `plannotator` command:**
+
+**macOS / Linux / WSL:**
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+**Then in Claude Code:**
+
+```
+/plugin marketplace add backnotprop/plannotator
+/plugin install plannotator@plannotator
+
+# IMPORTANT: Restart Claude Code after plugin install
+```
+
+See [apps/hook/README.md](apps/hook/README.md) for detailed installation instructions including a `manual hook` approach.
+
+---
+
+## Install for OpenCode
+
+Add to your `opencode.json`:
+
+```json
+{
+  "plugin": ["@plannotator/opencode@latest"]
+}
+```
+
+**Run the install script** to get `/plannotator-review`:
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows:**
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+This also clears any cached plugin versions. Then restart OpenCode.
+
+---
+
+## Install for Pi
+
+```bash
+pi install npm:@plannotator/pi-extension
+```
+
+Then start Pi with `--plan` to enter plan mode, or toggle it during a session with `/plannotator`.
+
+See [apps/pi-extension/README.md](apps/pi-extension/README.md) for full usage details, commands, and flags.
+
+---
+
+## Install for Codex
+
+**Install the `plannotator` command:**
+
+**macOS / Linux / WSL:**
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+**Windows PowerShell:**
+
+```powershell
+irm https://plannotator.ai/install.ps1 | iex
+```
+
+**Then in Codex — feedback flows back into the agent loop automatically:**
+
+```
+!plannotator review           # Code review for current changes
+!plannotator review <pr-url>  # Review a GitHub pull request
+!plannotator annotate file.md # Annotate a markdown file
+!plannotator last             # Annotate the last agent message
+```
+
+Plan mode is not yet supported.
+
+See [apps/codex/README.md](apps/codex/README.md) for details.
+
+---
+
+## How It Works
+
+When your AI agent finishes planning, Plannotator:
+
+1. Opens the Plannotator UI in your browser
+2. Lets you annotate the plan visually (delete, insert, replace, comment)
+3. **Approve** → Agent proceeds with implementation
+4. **Request changes** → Your annotations are sent back as structured feedback
+
+---
+
+## License
+
+Copyright 2025-2026 backnotprop
+
+This project is licensed under either of
+
+- [Apache License, Version 2.0](LICENSE-APACHE) ([http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0))
+- [MIT license](LICENSE-MIT) ([http://opensource.org/licenses/MIT](http://opensource.org/licenses/MIT))
+
+at your option.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this project by you, as defined in the Apache-2.0 license,
+shall be dual licensed as above, without any additional terms or conditions.
+
+
+сломался механизм открытия в браузере...
+
+---
+
+убери
+
+---
+
+убери
+
+---
+
+раньше и без нее работало
+
+---
+
+раньше и без нее работало
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_9c50eb1e`: Find browser opening code
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_9c50eb1e`: Find browser opening code
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+протестируй, я перезапустил тебя и fish
+
+---
+
+протестируй, я перезапустил тебя и fish
+
+---
+
+да, только почемуто написано Plannotator
+v0.14.0
+Claude Code
+
+---
+
+да, только почемуто написано Plannotator
+v0.14.0
+Claude Code
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+[Image 1]
+
+---
+
+[Image 1]
+
+---
+
+[Image 1] это немного странно, раньше такого не было
+
+---
+
+[Image 1] это немного странно, раньше такого не было
+
+---
+
+но возможно если в обчном flow а не в ручную то будет ок
+
+---
+
+но возможно если в обчном flow а не в ручную то будет ок
+
+---
+
+[Image 1]
+
+---
+
+[Image 1]
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_2a458811`: Search for "Claude Code" text in Plannotator files
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_2a458811`: Search for "Claude Code" text in Plannotator files
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+продолжай
+
+---
+
+ты ебнутый? кто так делает? а главное нахуя?
+
+---
+
+ты ебнутый? кто так делает? а главное нахуя?
+
+---
+
+[restore checkpointed session agent configuration after compaction]
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[restore checkpointed session agent configuration after compaction]
+<!-- OMO_INTERNAL_INITIATOR -->
