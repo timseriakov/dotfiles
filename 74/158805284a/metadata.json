@@ -3,7 +3,7 @@
   "checkpoint_id": "74158805284a",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 13,
+  "checkpoints_count": 12,
   "files_touched": [
     "opencode/dcp.jsonc",
     "opencode/octto.json",
