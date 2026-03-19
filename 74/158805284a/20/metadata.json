@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "74158805284a",
+  "session_id": "ses_2fcf7d38effeaAlJ3CdqVdJTC5",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T14:14:40.399098Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/opencode.jsonc",
+    "opencode/opencode_mcps.json"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "059a243dc3a3",
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T14:14:40.398015Z",
+    "agent_lines": 8,
+    "human_added": 46,
+    "human_modified": 148,
+    "human_removed": 0,
+    "total_committed": 202,
+    "agent_percentage": 3.9603960396039604
+  }
+}
