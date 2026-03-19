@@ -3,7 +3,7 @@
   "checkpoint_id": "f20b3c36938d",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "fish/conf.d/30-abbr.fish"
   ],
@@ -48,6 +48,12 @@
       "metadata": "/f2/0b3c36938d/6/metadata.json",
       "transcript": "/f2/0b3c36938d/6/full.jsonl",
       "content_hash": "/f2/0b3c36938d/6/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/f2/0b3c36938d/7/metadata.json",
+      "transcript": "/f2/0b3c36938d/7/full.jsonl",
+      "content_hash": "/f2/0b3c36938d/7/content_hash.txt",
       "prompt": ""
     }
   ]
