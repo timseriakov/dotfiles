@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "0e1f83ea86e2",
+  "session_id": "ses_2f9fb98f4ffePw1T3vkI47l7mF",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:26:48.208941Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "atuin/config.toml"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "4e98f5bb67ae",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T08:26:48.065512Z",
+    "agent_lines": 247,
+    "human_added": 420,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 667,
+    "agent_percentage": 37.031484257871064
+  }
+}
