@@ -3,7 +3,7 @@
   "checkpoint_id": "0e1f83ea86e2",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "atuin/README.md",
     "atuin/config.toml",
@@ -86,6 +86,12 @@
       "metadata": "/0e/1f83ea86e2/12/metadata.json",
       "transcript": "/0e/1f83ea86e2/12/full.jsonl",
       "content_hash": "/0e/1f83ea86e2/12/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/0e/1f83ea86e2/13/metadata.json",
+      "transcript": "/0e/1f83ea86e2/13/full.jsonl",
+      "content_hash": "/0e/1f83ea86e2/13/content_hash.txt",
       "prompt": ""
     }
   ]
