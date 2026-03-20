@@ -3,30 +3,30 @@
   "checkpoint_id": "2e4ffbf49698",
   "session_id": "ses_2f5912679ffesl773YeJHbuo7y",
   "strategy": "manual-commit",
-  "created_at": "2026-03-20T08:54:06.660265Z",
+  "created_at": "2026-03-20T08:54:34.217229Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
-    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js",
-    "qutebrowser/userscripts/translate-selection-daemon",
-    "qutebrowser/userscripts/translate-selection-daemon.test.mjs",
-    "qutebrowser/greasemonkey/tests/package-lock.json",
     "qutebrowser/greasemonkey/tests/package.json",
     "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js",
     "qutebrowser/greasemonkey/translate-selection-tooltip.user.js_",
-    "qutebrowser/modules/bindings.py",
+    "qutebrowser/userscripts/translate-selection-daemon",
     "qutebrowser/userscripts/translate-selection-daemon-control",
-    "qutebrowser/docs/keybindings.md"
+    "qutebrowser/userscripts/translate-selection-daemon.test.mjs",
+    "qutebrowser/docs/keybindings.md",
+    "qutebrowser/greasemonkey/tests/package-lock.json",
+    "qutebrowser/modules/bindings.py"
   ],
   "agent": "Claude Code",
   "turn_id": "75fa409b5235",
   "initial_attribution": {
-    "calculated_at": "2026-03-20T08:54:06.659341Z",
-    "agent_lines": 2747,
-    "human_added": 1399,
-    "human_modified": 4,
+    "calculated_at": "2026-03-20T08:54:34.212165Z",
+    "agent_lines": 9,
+    "human_added": 0,
+    "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 4150,
-    "agent_percentage": 66.19277108433735
+    "total_committed": 9,
+    "agent_percentage": 100
   }
 }
