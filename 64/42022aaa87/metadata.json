@@ -146,6 +146,12 @@
       "transcript": "/64/42022aaa87/22/full.jsonl",
       "content_hash": "/64/42022aaa87/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/64/42022aaa87/23/metadata.json",
+      "transcript": "/64/42022aaa87/23/full.jsonl",
+      "content_hash": "/64/42022aaa87/23/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
