@@ -178,6 +178,12 @@
       "transcript": "/2e/4ffbf49698/26/full.jsonl",
       "content_hash": "/2e/4ffbf49698/26/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/2e/4ffbf49698/27/metadata.json",
+      "transcript": "/2e/4ffbf49698/27/full.jsonl",
+      "content_hash": "/2e/4ffbf49698/27/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
