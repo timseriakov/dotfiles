@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "852c36aa0a1e",
+  "session_id": "ses_2fa4b0d21ffeAKMIdieF9ue4G8",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T07:23:58.249797Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/40-plugins.fish",
+    "atuin/config.toml"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "597043d17b1e",
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T07:23:58.248662Z",
+    "agent_lines": 16,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 16,
+    "agent_percentage": 100
+  }
+}
