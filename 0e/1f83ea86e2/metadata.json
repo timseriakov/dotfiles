@@ -123,6 +123,12 @@
       "transcript": "/0e/1f83ea86e2/18/full.jsonl",
       "content_hash": "/0e/1f83ea86e2/18/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/0e/1f83ea86e2/19/metadata.json",
+      "transcript": "/0e/1f83ea86e2/19/full.jsonl",
+      "content_hash": "/0e/1f83ea86e2/19/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
