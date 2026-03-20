@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "b1647f2e9fad",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b1/647f2e9fad/0/metadata.json",
+      "transcript": "/b1/647f2e9fad/0/full.jsonl",
+      "content_hash": "/b1/647f2e9fad/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
