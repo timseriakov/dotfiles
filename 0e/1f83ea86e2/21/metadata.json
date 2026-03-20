@@ -1,0 +1,12 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "0e1f83ea86e2",
+  "session_id": "ses_2fda42aaeffeUyRjo6In7oY98p",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:26:48.298085Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "turn_id": "64ac1029701d"
+}
