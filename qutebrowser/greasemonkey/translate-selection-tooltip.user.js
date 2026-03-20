@@ -853,6 +853,7 @@
     clearTimer("errorHide");
     clearTimer("loading");
 
+    ui.popup.dataset.theme = resolveTooltipTheme();
     ui.popup.dataset.mode = mode;
     ui.content.textContent = String(text || "");
 
@@ -987,6 +988,7 @@
     popup.dataset.open = "0";
     popup.dataset.mode = "hidden";
     popup.dataset.placement = "top";
+    popup.dataset.theme = resolveTooltipTheme();
 
     const content = document.createElement("div");
     content.className = "Content";
@@ -1034,9 +1036,9 @@
         font-size: 0.875rem;
         line-height: 1.25;
         letter-spacing: 0;
-        color: #111827;
-        background: #ffffff;
-        border: 1px solid rgba(17, 24, 39, 0.18);
+        color: var(--qute-tts-fg, #111827);
+        background: var(--qute-tts-bg, #ffffff);
+        border: 1px solid var(--qute-tts-border, rgba(17, 24, 39, 0.18));
         box-shadow:
           0 10px 30px rgba(17, 24, 39, 0.14),
           0 2px 10px rgba(17, 24, 39, 0.10);
@@ -1058,12 +1060,12 @@
       }
 
       .Popup[data-mode="loading"] {
-        color: rgba(17, 24, 39, 0.78);
+        color: var(--qute-tts-loading, rgba(17, 24, 39, 0.78));
       }
 
       .Popup[data-mode="error"] {
-        color: #991b1b;
-        border-color: rgba(153, 27, 27, 0.25);
+        color: var(--qute-tts-error, #991b1b);
+        border-color: var(--qute-tts-error-border, rgba(153, 27, 27, 0.25));
       }
 
       .Content {
@@ -1079,10 +1081,28 @@
       }
 
       .ArrowPath {
-        fill: #ffffff;
-        stroke: rgba(17, 24, 39, 0.18);
+        fill: var(--qute-tts-bg, #ffffff);
+        stroke: var(--qute-tts-border, rgba(17, 24, 39, 0.18));
         stroke-width: 1;
         vector-effect: non-scaling-stroke;
+      }
+
+      .Popup[data-theme="light"] {
+        --qute-tts-fg: #111827;
+        --qute-tts-bg: #ffffff;
+        --qute-tts-border: rgba(17, 24, 39, 0.18);
+        --qute-tts-loading: rgba(17, 24, 39, 0.78);
+        --qute-tts-error: #991b1b;
+        --qute-tts-error-border: rgba(153, 27, 27, 0.25);
+      }
+
+      .Popup[data-theme="dark"] {
+        --qute-tts-fg: rgba(255, 255, 255, 0.92);
+        --qute-tts-bg: #0b0f17;
+        --qute-tts-border: rgba(255, 255, 255, 0.14);
+        --qute-tts-loading: rgba(255, 255, 255, 0.72);
+        --qute-tts-error: #fecaca;
+        --qute-tts-error-border: rgba(254, 202, 202, 0.22);
       }
 
       .Popup[data-placement="top"] .Arrow {
@@ -1095,25 +1115,17 @@
         transform-origin: 50% 50%;
       }
 
+      .Popup[data-theme="dark"] {
+        box-shadow:
+          0 14px 38px rgba(0, 0, 0, 0.45),
+          0 2px 10px rgba(0, 0, 0, 0.32);
+      }
+
       @media (prefers-color-scheme: dark) {
-        .Popup {
-          color: rgba(255, 255, 255, 0.92);
-          background: #0b0f17;
-          border-color: rgba(255, 255, 255, 0.14);
+        .Popup[data-theme="light"] {
           box-shadow:
-            0 14px 38px rgba(0, 0, 0, 0.45),
-            0 2px 10px rgba(0, 0, 0, 0.32);
-        }
-        .Popup[data-mode="loading"] {
-          color: rgba(255, 255, 255, 0.72);
-        }
-        .Popup[data-mode="error"] {
-          color: #fecaca;
-          border-color: rgba(254, 202, 202, 0.22);
-        }
-        .ArrowPath {
-          fill: #0b0f17;
-          stroke: rgba(255, 255, 255, 0.14);
+            0 10px 30px rgba(17, 24, 39, 0.14),
+            0 2px 10px rgba(17, 24, 39, 0.10);
         }
       }
 
@@ -1134,6 +1146,73 @@
       clearTimeout(state.errorHideTimer);
       state.errorHideTimer = null;
     }
+  }
+
+  function resolveTooltipTheme() {
+    const styleTarget = document.documentElement || document.body;
+    if (styleTarget && typeof window.getComputedStyle === "function") {
+      try {
+        const rootStyle = window.getComputedStyle(styleTarget);
+        const colorScheme = (
+          rootStyle && typeof rootStyle.colorScheme === "string"
+            ? rootStyle.colorScheme
+            : ""
+        )
+          .toLowerCase()
+          .trim();
+        if (colorScheme.includes("dark")) {
+          return "dark";
+        }
+        if (colorScheme.includes("light")) {
+          return "light";
+        }
+
+        const bodyStyle = window.getComputedStyle(document.body || styleTarget);
+        const bg =
+          bodyStyle && typeof bodyStyle.backgroundColor === "string"
+            ? bodyStyle.backgroundColor
+            : "";
+        if (bg) {
+          const rgb = parseRgb(bg);
+          if (rgb) {
+            const luminance =
+              (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+            return luminance < 0.5 ? "dark" : "light";
+          }
+        }
+      } catch {}
+    }
+
+    try {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        return "dark";
+      }
+    } catch {}
+
+    return "light";
+  }
+
+  function parseRgb(value) {
+    const m = value.match(
+      /^rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})(?:[\s,\/]+[0-9.]+)?\s*\)$/i,
+    );
+    if (!m) {
+      return null;
+    }
+    const r = Number(m[1]);
+    const g = Number(m[2]);
+    const b = Number(m[3]);
+    if (!isFiniteNumber(r) || !isFiniteNumber(g) || !isFiniteNumber(b)) {
+      return null;
+    }
+    return {
+      r: clamp(r, 0, 255),
+      g: clamp(g, 0, 255),
+      b: clamp(b, 0, 255),
+    };
   }
 
   function gmTransport({ url, json, timeoutMs }) {

@@ -133,6 +133,35 @@ test("renders daemon output as plain text only", async () => {
   dom.window.close();
 });
 
+test("tooltip theme follows page/browser dark scheme", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const originalGetComputedStyle = window.getComputedStyle.bind(window);
+  window.getComputedStyle = (node) => {
+    if (node === window.document.documentElement) {
+      return {
+        colorScheme: "dark",
+        backgroundColor: "rgb(255, 255, 255)",
+      };
+    }
+    return originalGetComputedStyle(node);
+  };
+
+  api.setTransport(({ json }) => ({
+    requestId: json.requestId,
+    translation: "Привет мир",
+  }));
+
+  await api.show({ text: "Hello world", rect: rect() });
+  await wait(5);
+
+  const ui = api.getUi();
+  assert.equal(ui.popup.dataset.theme, "dark");
+  dom.window.close();
+});
+
 test("dedupes repeated normalized selections", async () => {
   const dom = createDom();
   const window = loadScript(dom);
