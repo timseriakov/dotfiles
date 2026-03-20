@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "0e1f83ea86e2",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "atuin/README.md",
+    "atuin/config.toml",
+    "atuin/default-config.toml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0e/1f83ea86e2/0/metadata.json",
+      "transcript": "/0e/1f83ea86e2/0/full.jsonl",
+      "content_hash": "/0e/1f83ea86e2/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
