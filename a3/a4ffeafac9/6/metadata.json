@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "a3a4ffeafac9",
+  "session_id": "ses_2f4326461ffex5s1eGwf8xtGwc",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T15:29:23.165272Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "tmux/pane-app-name.sh"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "7b403e6b9eec",
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T15:29:23.164612Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
