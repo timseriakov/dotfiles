@@ -32,7 +32,7 @@
 # auto_sync = true
 
 ## enable or disable automatic update checks
-update_check = true
+# update_check = true
 
 ## address of the sync server
 # sync_address = "https://api.atuin.sh"
@@ -40,16 +40,16 @@ update_check = true
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
 ## set it to 0 to sync after every command
-sync_frequency = "1m"
+# sync_frequency = "10m"
 
 ## which search mode to use
 ## possible values: prefix, fulltext, fuzzy, skim
-search_mode = "daemon-fuzzy"
+# search_mode = "fuzzy"
 
 ## which filter mode to use by default
 ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
 ## consider using search.filters to customize the enablement and order of filter modes
-filter_mode = "host"
+# filter_mode = "global"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false).
@@ -57,7 +57,7 @@ filter_mode = "host"
 ## To use workspace mode by default when available, set this to true and
 ## set filter_mode to "workspace" or leave it unspecified and
 ## set search.filters to include "workspace" before other filter modes.
-workspaces = true
+# workspaces = false
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
@@ -83,7 +83,7 @@ workspaces = true
 # inline_height_shell_up_key_binding = 0
 
 ## Invert the UI - put the search bar at the top , Default to `false`
-invert = true
+# invert = false
 
 ## enable or disable showing a preview of the selected command
 ## useful when the command is longer than the terminal width and is cut off
@@ -104,7 +104,7 @@ invert = true
 
 ## use ctrl instead of alt as the shortcut modifier key for numerical UI shortcuts
 ## alt-0 .. alt-9
-ctrl_n_shortcuts = true
+# ctrl_n_shortcuts = false
 
 ## Show numeric shortcuts (1..9) beside list items in the TUI
 ## set to false to hide the moving numbers if you find them distracting
@@ -135,7 +135,7 @@ ctrl_n_shortcuts = true
 ## Configure the maximum height of the preview to show.
 ## Useful when you have long scripts in your history that you want to distinguish
 ## by more than the first few lines.
-max_preview_height = 20
+# max_preview_height = 4
 
 ## Configure whether or not to show the help row, which includes the current Atuin
 ## version (and whether an update is available), a keymap hint, and the total
@@ -175,7 +175,7 @@ enter_accept = true
 ## keybinding is defined.  If this is set to "emacs", "vim-insert", or
 ## "vim-normal", the startup keymap mode in the Atuin search is forced to be
 ## the specified one.
-keymap_mode = "vim-insert"
+# keymap_mode = "auto"
 
 ## Cursor style in each keymap mode.  If specified, the cursor style is changed
 ## in entering the cursor shape.  Available values are "default" and
@@ -217,23 +217,6 @@ keymap_mode = "vim-insert"
 #   "tmux",
 #   "yarn",
 # ]
-
-common_subcommands = [
-  "brew",
-  "cargo",
-  "docker",
-  "git",
-  "go",
-  "ip",
-  "kubectl",
-  "npm",
-  "pnpm",
-  "port",
-  "systemctl",
-  "tmux",
-  "yarn",
-  "bun",
-]
 
 ## Set commands that should be totally stripped and ignored from stats
 # common_prefix = ["sudo"]
@@ -277,11 +260,11 @@ records = true
 
 [daemon]
 ## Enables using the daemon to sync.
-enabled = true
+# enabled = false
 
 ## Automatically start and manage the daemon when needed.
 ## Not compatible with `systemd_socket = true`.
-autostart = true
+# autostart = false
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
@@ -381,6 +364,3 @@ autostart = true
 ##
 ## Make directory expand instead of command:
 # columns = ["duration", "time", { type = "directory", expand = true }, { type = "command", expand = false }]
-
-[ai]
-enabled = true
