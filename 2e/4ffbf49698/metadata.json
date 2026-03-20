@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "2e4ffbf49698",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/docs/keybindings.md",
+    "qutebrowser/greasemonkey/tests/package-lock.json",
+    "qutebrowser/greasemonkey/tests/package.json",
+    "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js_",
+    "qutebrowser/modules/bindings.py",
+    "qutebrowser/userscripts/translate-selection-daemon",
+    "qutebrowser/userscripts/translate-selection-daemon-control",
+    "qutebrowser/userscripts/translate-selection-daemon.test.mjs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2e/4ffbf49698/0/metadata.json",
+      "transcript": "/2e/4ffbf49698/0/full.jsonl",
+      "content_hash": "/2e/4ffbf49698/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
