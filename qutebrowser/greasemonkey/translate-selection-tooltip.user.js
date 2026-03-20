@@ -853,7 +853,7 @@
     clearTimer("errorHide");
     clearTimer("loading");
 
-    ui.popup.dataset.theme = resolveTooltipTheme();
+    ui.popup.dataset.theme = resolveTooltipTheme(anchor);
     ui.popup.dataset.mode = mode;
     ui.content.textContent = String(text || "");
 
@@ -1148,10 +1148,41 @@
     }
   }
 
-  function resolveTooltipTheme() {
+  function resolveTooltipTheme(anchor) {
     const styleTarget = document.documentElement || document.body;
     if (styleTarget && typeof window.getComputedStyle === "function") {
       try {
+        const probe = getThemeProbeElement(anchor);
+        if (probe) {
+          const fromProbeBackground = detectThemeFromElementBackground(probe);
+          if (fromProbeBackground) {
+            return fromProbeBackground;
+          }
+          const fromProbeText = detectThemeFromElementText(probe);
+          if (fromProbeText) {
+            return fromProbeText;
+          }
+        }
+
+        const styleCandidates = [document.body, document.documentElement];
+        for (const candidate of styleCandidates) {
+          if (!candidate) {
+            continue;
+          }
+          const candidateStyle = window.getComputedStyle(candidate);
+          const bg =
+            candidateStyle && typeof candidateStyle.backgroundColor === "string"
+              ? candidateStyle.backgroundColor
+              : "";
+          const rgba = parseRgba(bg);
+          if (!rgba || rgba.a <= 0.01) {
+            continue;
+          }
+          const luminance =
+            (0.2126 * rgba.r + 0.7152 * rgba.g + 0.0722 * rgba.b) / 255;
+          return luminance < 0.5 ? "dark" : "light";
+        }
+
         const rootStyle = window.getComputedStyle(styleTarget);
         const colorScheme = (
           rootStyle && typeof rootStyle.colorScheme === "string"
@@ -1165,20 +1196,6 @@
         }
         if (colorScheme.includes("light")) {
           return "light";
-        }
-
-        const bodyStyle = window.getComputedStyle(document.body || styleTarget);
-        const bg =
-          bodyStyle && typeof bodyStyle.backgroundColor === "string"
-            ? bodyStyle.backgroundColor
-            : "";
-        if (bg) {
-          const rgb = parseRgb(bg);
-          if (rgb) {
-            const luminance =
-              (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
-            return luminance < 0.5 ? "dark" : "light";
-          }
         }
       } catch {}
     }
@@ -1195,9 +1212,79 @@
     return "light";
   }
 
+  function getThemeProbeElement(anchor) {
+    if (typeof document.elementFromPoint !== "function") {
+      return null;
+    }
+    const point = resolveAnchorPoint(anchor);
+    if (!point) {
+      return null;
+    }
+    const x = clamp(point.x, 0, Math.max(0, (window.innerWidth || 1) - 1));
+    const y = clamp(point.y, 0, Math.max(0, (window.innerHeight || 1) - 1));
+    const node = document.elementFromPoint(x, y);
+    return node instanceof Element ? node : null;
+  }
+
+  function resolveAnchorPoint(anchor) {
+    if (anchor && anchor.mouse) {
+      const mx = Number(anchor.mouse.x);
+      const my = Number(anchor.mouse.y);
+      if (isFiniteNumber(mx) && isFiniteNumber(my)) {
+        return { x: mx, y: my };
+      }
+    }
+    if (anchor && anchor.rect) {
+      const r = anchor.rect;
+      const cx = Number((r.left + r.right) / 2);
+      const cy = Number((r.top + r.bottom) / 2);
+      if (isFiniteNumber(cx) && isFiniteNumber(cy)) {
+        return { x: cx, y: cy };
+      }
+    }
+    return null;
+  }
+
+  function detectThemeFromElementBackground(el) {
+    for (let node = el; node; node = node.parentElement) {
+      const style = window.getComputedStyle(node);
+      const rgba = parseRgba(style.backgroundColor || "");
+      if (!rgba || rgba.a <= 0.01) {
+        continue;
+      }
+      const luminance =
+        (0.2126 * rgba.r + 0.7152 * rgba.g + 0.0722 * rgba.b) / 255;
+      return luminance < 0.5 ? "dark" : "light";
+    }
+    return null;
+  }
+
+  function detectThemeFromElementText(el) {
+    const style = window.getComputedStyle(el);
+    const rgba = parseRgba(style.color || "");
+    if (!rgba || rgba.a <= 0.01) {
+      return null;
+    }
+    const luminance =
+      (0.2126 * rgba.r + 0.7152 * rgba.g + 0.0722 * rgba.b) / 255;
+    return luminance < 0.5 ? "light" : "dark";
+  }
+
   function parseRgb(value) {
+    const rgba = parseRgba(value);
+    if (!rgba) {
+      return null;
+    }
+    return {
+      r: rgba.r,
+      g: rgba.g,
+      b: rgba.b,
+    };
+  }
+
+  function parseRgba(value) {
     const m = value.match(
-      /^rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})(?:[\s,\/]+[0-9.]+)?\s*\)$/i,
+      /^rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})(?:[\s,\/]+([0-9.]+))?\s*\)$/i,
     );
     if (!m) {
       return null;
@@ -1208,10 +1295,13 @@
     if (!isFiniteNumber(r) || !isFiniteNumber(g) || !isFiniteNumber(b)) {
       return null;
     }
+    const alphaRaw = m[4] == null ? 1 : Number(m[4]);
+    const a = isFiniteNumber(alphaRaw) ? clamp(alphaRaw, 0, 1) : 1;
     return {
       r: clamp(r, 0, 255),
       g: clamp(g, 0, 255),
       b: clamp(b, 0, 255),
+      a,
     };
   }
 

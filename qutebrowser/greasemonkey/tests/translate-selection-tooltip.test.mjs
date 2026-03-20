@@ -133,7 +133,7 @@ test("renders daemon output as plain text only", async () => {
   dom.window.close();
 });
 
-test("tooltip theme follows page/browser dark scheme", async () => {
+test("tooltip theme prefers page background over colorScheme hint", async () => {
   const dom = createDom();
   const window = loadScript(dom);
   const api = window.__quteTranslateSelectionTooltipTest;
@@ -141,6 +141,12 @@ test("tooltip theme follows page/browser dark scheme", async () => {
   const originalGetComputedStyle = window.getComputedStyle.bind(window);
   window.getComputedStyle = (node) => {
     if (node === window.document.documentElement) {
+      return {
+        colorScheme: "dark",
+        backgroundColor: "rgb(255, 255, 255)",
+      };
+    }
+    if (node === window.document.body) {
       return {
         colorScheme: "dark",
         backgroundColor: "rgb(255, 255, 255)",
@@ -158,7 +164,93 @@ test("tooltip theme follows page/browser dark scheme", async () => {
   await wait(5);
 
   const ui = api.getUi();
+  assert.equal(ui.popup.dataset.theme, "light");
+  dom.window.close();
+});
+
+test("tooltip theme resolves dark from dark page background", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const originalGetComputedStyle = window.getComputedStyle.bind(window);
+  window.getComputedStyle = (node) => {
+    if (
+      node === window.document.documentElement ||
+      node === window.document.body
+    ) {
+      return {
+        colorScheme: "light",
+        backgroundColor: "rgb(12, 18, 30)",
+      };
+    }
+    return originalGetComputedStyle(node);
+  };
+
+  api.setTransport(({ json }) => ({
+    requestId: json.requestId,
+    translation: "Привет мир",
+  }));
+
+  await api.show({ text: "Hello world", rect: rect() });
+  await wait(5);
+
+  const ui = api.getUi();
   assert.equal(ui.popup.dataset.theme, "dark");
+  dom.window.close();
+});
+
+test("tooltip theme follows element under selection point", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const lightBlock = window.document.createElement("div");
+  lightBlock.style.backgroundColor = "rgb(252, 252, 252)";
+  lightBlock.style.color = "rgb(20, 20, 20)";
+  window.document.body.appendChild(lightBlock);
+
+  const originalElementFromPoint =
+    typeof window.document.elementFromPoint === "function"
+      ? window.document.elementFromPoint.bind(window.document)
+      : null;
+  window.document.elementFromPoint = () => lightBlock;
+
+  const originalGetComputedStyle = window.getComputedStyle.bind(window);
+  window.getComputedStyle = (node) => {
+    if (
+      node === window.document.documentElement ||
+      node === window.document.body
+    ) {
+      return {
+        colorScheme: "dark",
+        backgroundColor: "rgb(10, 10, 10)",
+        color: "rgb(240, 240, 240)",
+      };
+    }
+    return originalGetComputedStyle(node);
+  };
+
+  api.setTransport(({ json }) => ({
+    requestId: json.requestId,
+    translation: "Привет мир",
+  }));
+
+  await api.show({
+    text: "Hello world",
+    rect: rect(60, 60),
+    mouse: { x: 61, y: 61 },
+  });
+  await wait(5);
+
+  const ui = api.getUi();
+  assert.equal(ui.popup.dataset.theme, "light");
+
+  if (originalElementFromPoint) {
+    window.document.elementFromPoint = originalElementFromPoint;
+  } else {
+    delete window.document.elementFromPoint;
+  }
   dom.window.close();
 });
 
