@@ -26,15 +26,18 @@ set -gx FZF_DEFAULT_OPTS \
     --marker='*'
 
 # Atuin
-if type -q atuin
+if status --is-interactive; and type -q atuin
     set -gx ATUIN_NOBIND true
     atuin init fish | source
-    if test -f "$HOME/.atuin/bin/env.fish"
-        source "$HOME/.atuin/bin/env.fish"
-    end
+    atuin ai init fish | source
+    bind '?' _atuin_ai_question_mark
+    bind -M insert '?' _atuin_ai_question_mark
+    # Keep Homebrew's atuin ahead of ~/.atuin/bin/env.fish to avoid path drift.
     bind \cr _atuin_search
     bind -M insert \cr _atuin_search
 end
+
+
 
 # Zoxide
 if type -q zoxide
