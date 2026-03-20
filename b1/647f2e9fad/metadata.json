@@ -170,6 +170,12 @@
       "transcript": "/b1/647f2e9fad/26/full.jsonl",
       "content_hash": "/b1/647f2e9fad/26/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/b1/647f2e9fad/27/metadata.json",
+      "transcript": "/b1/647f2e9fad/27/full.jsonl",
+      "content_hash": "/b1/647f2e9fad/27/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
