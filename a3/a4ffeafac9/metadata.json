@@ -3,7 +3,7 @@
   "checkpoint_id": "a3a4ffeafac9",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "tmux/pane-app-name.sh"
   ],
@@ -84,6 +84,12 @@
       "metadata": "/a3/a4ffeafac9/12/metadata.json",
       "transcript": "/a3/a4ffeafac9/12/full.jsonl",
       "content_hash": "/a3/a4ffeafac9/12/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/a3/a4ffeafac9/13/metadata.json",
+      "transcript": "/a3/a4ffeafac9/13/full.jsonl",
+      "content_hash": "/a3/a4ffeafac9/13/content_hash.txt",
       "prompt": ""
     }
   ]
