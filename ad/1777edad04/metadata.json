@@ -19,6 +19,12 @@
       "transcript": "/ad/1777edad04/1/full.jsonl",
       "content_hash": "/ad/1777edad04/1/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/ad/1777edad04/2/metadata.json",
+      "transcript": "/ad/1777edad04/2/full.jsonl",
+      "content_hash": "/ad/1777edad04/2/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
