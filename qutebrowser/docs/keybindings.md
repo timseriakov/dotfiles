@@ -195,6 +195,7 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 | Shortcut                        | Action                                |
 | ------------------------------- | ------------------------------------- |
 | <kbd>Leader</kbd> <kbd>tR</kbd> | tooltip translation (F2 key dispatch) |
+| <kbd>Leader</kbd> <kbd>tf</kbd> | tooltip translation (F2 key dispatch) |
 | <kbd>Leader</kbd> <kbd>tr</kbd> | full page translation toggle          |
 | <kbd>Leader</kbd> <kbd>ty</kbd> | yandex translation toggle             |
 

@@ -1,0 +1,11 @@
+{
+  "name": "qutebrowser-translate-selection-tooltip-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0"
+  }
+}

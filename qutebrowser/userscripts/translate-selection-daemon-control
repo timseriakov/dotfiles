@@ -1,0 +1,352 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+
+: "${HOME:?HOME is required for translate-selection-daemon-control}"
+
+SCRIPT_NAME="translate-selection-daemon-control"
+DAEMON_NAME="translate-selection-daemon"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DAEMON_PATH="$SCRIPT_DIR/$DAEMON_NAME"
+PID_DIR="$HOME/tmp/qute-translate-selection"
+PID_FILE="$PID_DIR/$DAEMON_NAME.pid"
+LOG_FILE="$PID_DIR/$DAEMON_NAME.log"
+HOST="127.0.0.1"
+PORT=38123
+HEALTH_URL="http://${HOST}:${PORT}/health"
+META_URL="http://${HOST}:${PORT}/meta"
+LAUNCHD_LABEL="com.timhq.translate-selection-daemon"
+LAUNCHD_DIR="$HOME/Library/LaunchAgents"
+LAUNCHD_PLIST="$LAUNCHD_DIR/${LAUNCHD_LABEL}.plist"
+
+PROBE_STATUS=1
+PROBE_META_NAME=""
+PROBE_META_BODY=""
+FOREIGN_REASON=""
+
+die() {
+  echo "$SCRIPT_NAME: $*" >&2
+  exit 1
+}
+
+info() {
+  echo "$SCRIPT_NAME: $*"
+}
+
+ensure_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    die "$1 is required but not found in PATH"
+  fi
+}
+
+require_runtime() {
+  ensure_command node
+  ensure_command opencode
+  require_node_version
+}
+
+require_node_version() {
+  local major
+  major="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || true)"
+  if [[ -z "$major" || ! "$major" =~ ^[0-9]+$ ]]; then
+    die "unable to determine Node.js version"
+  fi
+  if (( major < 20 )); then
+    die "Node.js >= 20 is required (found $(node -v 2>/dev/null || echo unknown))"
+  fi
+}
+
+ensure_directories() {
+  mkdir -p "$PID_DIR"
+  chmod 700 "$PID_DIR"
+}
+
+ensure_log_file() {
+  touch "$LOG_FILE"
+  chmod 600 "$LOG_FILE"
+}
+
+extract_meta_field() {
+  local field="$1"
+  python3 -c '
+import json
+import sys
+
+field = sys.argv[1]
+try:
+    data = json.load(sys.stdin)
+except json.JSONDecodeError:
+    sys.exit(1)
+
+value = data.get(field, "")
+if value is None:
+    value = ""
+sys.stdout.write(str(value))
+' "$field"
+}
+
+probe_meta() {
+  PROBE_STATUS=1
+  PROBE_META_NAME=""
+  PROBE_META_BODY=""
+  FOREIGN_REASON=""
+
+  local meta_output
+  if meta_output="$(curl --silent --show-error --max-time 2 "$META_URL")"; then
+    PROBE_META_BODY="$meta_output"
+    local parsed name
+    if ! parsed="$(extract_meta_field name <<<"$meta_output")"; then
+      FOREIGN_REASON="meta JSON is malformed"
+      PROBE_STATUS=2
+      return 2
+    fi
+    name="$parsed"
+    PROBE_META_NAME="$name"
+    if [[ "$name" == "$DAEMON_NAME" ]]; then
+      PROBE_STATUS=0
+      return 0
+    fi
+    FOREIGN_REASON="meta.name=${name:-unknown}"
+    PROBE_STATUS=2
+    return 2
+  else
+    local curl_exit=$?
+  if ((curl_exit == 7 || curl_exit == 28)); then
+    PROBE_STATUS=1
+    return 1
+  fi
+
+  FOREIGN_REASON="curl exit $curl_exit"
+  PROBE_STATUS=2
+  return 2
+  fi
+}
+
+read_pid_file() {
+  if [[ -f "$PID_FILE" ]]; then
+    local pid
+    pid="$(<"$PID_FILE")"
+    printf '%s\n' "$pid"
+  fi
+}
+
+remove_pid_file() {
+  rm -f "$PID_FILE"
+}
+
+is_pid_ours() {
+  local pid="$1"
+  if [[ -z "$pid" || ! "$pid" =~ ^[0-9]+$ ]]; then
+    return 1
+  fi
+  if ! ps -p "$pid" -o command= >/dev/null 2>&1; then
+    return 1
+  fi
+  local command
+  command="$(ps -p "$pid" -o command= 2>/dev/null || true)"
+  [[ "$command" == *"$DAEMON_NAME"* ]]
+}
+
+terminate_pid() {
+  local pid="$1"
+  if [[ -z "$pid" ]]; then
+    return 0
+  fi
+  if ! is_pid_ours "$pid"; then
+    return 0
+  fi
+  if ! kill -0 "$pid" >/dev/null 2>&1; then
+    return 0
+  fi
+  kill "$pid" >/dev/null 2>&1 || true
+  local attempt=0
+  while kill -0 "$pid" >/dev/null 2>&1 && ((attempt < 20)); do
+    sleep 0.1
+    ((attempt++))
+  done
+  if kill -0 "$pid" >/dev/null 2>&1; then
+    kill -9 "$pid" >/dev/null 2>&1 || true
+  fi
+}
+
+wait_for_health() {
+  local attempt=0
+  local max_attempts=30
+  while ((attempt < max_attempts)); do
+    if curl --silent --show-error --max-time 1 "$HEALTH_URL" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.2
+    ((attempt++))
+  done
+  return 1
+}
+
+start_daemon() {
+  require_runtime
+  ensure_directories
+  ensure_log_file
+
+  if [[ ! -f "$DAEMON_PATH" ]]; then
+    die "daemon entrypoint not found: $DAEMON_PATH"
+  fi
+
+  if probe_meta; then
+    info "daemon already running on port $PORT (meta.name=$PROBE_META_NAME)."
+    return 0
+  fi
+
+  if ((PROBE_STATUS == 2)); then
+    die "port $PORT is already reserved by another service ($FOREIGN_REASON)"
+  fi
+
+  if [[ -f "$PID_FILE" ]]; then
+    local existing_pid
+    existing_pid="$(<"$PID_FILE")"
+    if [[ -n "$existing_pid" ]] && ! kill -0 "$existing_pid" >/dev/null 2>&1; then
+      info "removing stale pid file (pid $existing_pid)"
+      remove_pid_file
+    fi
+  fi
+
+  nohup node "$DAEMON_PATH" >>"$LOG_FILE" 2>&1 &
+  local pid=$!
+  printf '%s\n' "$pid" >"$PID_FILE"
+  info "starting $DAEMON_NAME (pid $pid, log=$LOG_FILE)"
+
+  if wait_for_health; then
+    info "daemon is healthy on $HOST:$PORT"
+    return 0
+  fi
+
+  info "health probe timed out; shutting down pid $pid"
+  terminate_pid "$pid"
+  remove_pid_file
+  die "daemon failed to signal readiness (see $LOG_FILE)"
+}
+
+stop_daemon() {
+  ensure_directories
+
+  local pid
+  pid="$(read_pid_file)"
+  if [[ -n "$pid" && -n "$DAEMON_NAME" ]]; then
+    if is_pid_ours "$pid"; then
+      info "stopping $DAEMON_NAME (pid $pid)"
+      terminate_pid "$pid"
+      remove_pid_file
+      info "daemon stopped"
+      return 0
+    fi
+    info "pid file points to a different process ($pid); removing stale pid file"
+    remove_pid_file
+  fi
+
+  if probe_meta && ((PROBE_STATUS == 0)); then
+    info "daemon still responds on $HOST:$PORT but pid file is missing"
+    info "leave it running or remove pid file and try stop again"
+    return 0
+  fi
+
+  info "$DAEMON_NAME is not running"
+}
+
+status_daemon() {
+  if probe_meta; then
+    local version ready
+    version="$(extract_meta_field version <<<"$PROBE_META_BODY")"
+    ready="$(extract_meta_field ready <<<"$PROBE_META_BODY")"
+    local pid
+    pid="$(read_pid_file)"
+    info "$DAEMON_NAME is running on $HOST:$PORT (version=${version:-unknown}, ready=${ready:-unknown})"
+    if [[ -n "$pid" ]]; then
+      info "tracked pid=$pid"
+    fi
+    return 0
+  fi
+
+  if ((PROBE_STATUS == 2)); then
+    die "port $PORT is claimed by another service ($FOREIGN_REASON)"
+  fi
+
+  info "$DAEMON_NAME is stopped"
+}
+
+install_daemon() {
+  require_runtime
+  ensure_directories
+  ensure_log_file
+  chmod +x "$DAEMON_PATH" >/dev/null 2>&1 || true
+  mkdir -p "$LAUNCHD_DIR"
+  if [[ -e "$LAUNCHD_PLIST" ]]; then
+    if ! grep -q "$LAUNCHD_LABEL" "$LAUNCHD_PLIST" 2>/dev/null; then
+      die "launchd plist already exists and does not belong to $LAUNCHD_LABEL: $LAUNCHD_PLIST"
+    fi
+    info "launchd plist already installed at $LAUNCHD_PLIST"
+    return 0
+  fi
+
+  cat >"$LAUNCHD_PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>$LAUNCHD_LABEL</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>$SCRIPT_DIR/translate-selection-daemon</string>
+  </array>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>WorkingDirectory</key>
+  <string>$SCRIPT_DIR</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>$LOG_FILE</string>
+  <key>StandardErrorPath</key>
+  <string>$LOG_FILE</string>
+</dict>
+</plist>
+EOF
+  info "installed launchd plist at $LAUNCHD_PLIST"
+}
+
+usage() {
+  cat <<EOF
+Usage: $SCRIPT_NAME <start|stop|status|install>
+Commands:
+  start   Launch translate-selection daemon and wait for /health
+  stop    Terminate the tracked daemon (idempotent)
+  status  Query /meta and /health to report the current state
+  install Prepare runtime directories/logs and ensure node/opencode are present
+EOF
+  exit 1
+}
+
+main() {
+  ensure_command curl
+  ensure_command python3
+
+  if [[ $# -lt 1 ]]; then
+    usage
+  fi
+
+  case "$1" in
+    start) start_daemon ;;
+    stop) stop_daemon ;;
+    status) status_daemon ;;
+    install) install_daemon ;;
+    --help|-h) usage ;;
+    *) usage ;;
+  esac
+}
+
+main "$@"

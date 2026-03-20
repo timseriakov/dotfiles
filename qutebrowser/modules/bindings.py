@@ -28,7 +28,9 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec("f", "hint links"),
     BindingSpec("F", "hint links tab-bg"),
     BindingSpec("yy", "yank"),
-    BindingSpec("sr", 'jseval -q document.querySelector("[data-readme-copy-button]")?.click()'),
+    BindingSpec(
+        "sr", 'jseval -q document.querySelector("[data-readme-copy-button]")?.click()'
+    ),
     BindingSpec("yl", "hint links yank"),
     BindingSpec("p", "open {clipboard}"),
     BindingSpec("P", "open --tab {clipboard}"),
@@ -93,6 +95,11 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
+        leader + "tf",
+        'jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113}))',
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
         leader + "tr",
         'jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&&(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&tl=${e}&u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();',
         hide_ru_in_keyhint=True,
@@ -103,8 +110,18 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
-        leader + "te",
-        'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
+        leader + "tS",
+        "spawn --userscript translate-selection-daemon-control start",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "tX",
+        "spawn --userscript translate-selection-daemon-control stop",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "tT",
+        "spawn --userscript translate-selection-daemon-control status",
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(leader + "ce", "config-edit", hide_ru_in_keyhint=True),
@@ -316,7 +333,6 @@ run_generator(config, c, BINDING_SPECS)
 
 # Special bindings and unbinds that are not in specs
 config.unbind("ss")
-config.unbind("sq")
 config.unbind("sl")
 config.unbind("m")
 config.bind("ss", "spawn -u summarize-url {url}")
