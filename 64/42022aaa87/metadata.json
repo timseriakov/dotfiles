@@ -98,6 +98,12 @@
       "transcript": "/64/42022aaa87/14/full.jsonl",
       "content_hash": "/64/42022aaa87/14/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/64/42022aaa87/15/metadata.json",
+      "transcript": "/64/42022aaa87/15/full.jsonl",
+      "content_hash": "/64/42022aaa87/15/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
