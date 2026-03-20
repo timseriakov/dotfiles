@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "a3a4ffeafac9",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "tmux/pane-app-name.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a3/a4ffeafac9/0/metadata.json",
+      "transcript": "/a3/a4ffeafac9/0/full.jsonl",
+      "content_hash": "/a3/a4ffeafac9/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
