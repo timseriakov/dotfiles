@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "b1647f2e9fad",
+  "session_id": "ses_2fa4b0d21ffeAKMIdieF9ue4G8",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T09:26:48.957993Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "597043d17b1e",
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T09:26:48.956823Z",
+    "agent_lines": 0,
+    "human_added": 182,
+    "human_modified": 18,
+    "human_removed": 0,
+    "total_committed": 182,
+    "agent_percentage": 0
+  }
+}
