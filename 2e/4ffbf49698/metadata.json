@@ -124,6 +124,12 @@
       "transcript": "/2e/4ffbf49698/17/full.jsonl",
       "content_hash": "/2e/4ffbf49698/17/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/2e/4ffbf49698/18/metadata.json",
+      "transcript": "/2e/4ffbf49698/18/full.jsonl",
+      "content_hash": "/2e/4ffbf49698/18/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
