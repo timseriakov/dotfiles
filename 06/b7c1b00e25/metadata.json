@@ -3,7 +3,7 @@
   "checkpoint_id": "06b7c1b00e25",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "qutebrowser/REPAIR_JOURNAL.md",
     "qutebrowser/prompts/REPAIR_JOURNAL.md"
@@ -79,6 +79,12 @@
       "metadata": "/06/b7c1b00e25/11/metadata.json",
       "transcript": "/06/b7c1b00e25/11/full.jsonl",
       "content_hash": "/06/b7c1b00e25/11/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/06/b7c1b00e25/12/metadata.json",
+      "transcript": "/06/b7c1b00e25/12/full.jsonl",
+      "content_hash": "/06/b7c1b00e25/12/content_hash.txt",
       "prompt": ""
     }
   ]
