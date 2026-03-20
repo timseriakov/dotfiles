@@ -103,6 +103,12 @@
       "transcript": "/ad/1777edad04/15/full.jsonl",
       "content_hash": "/ad/1777edad04/15/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/ad/1777edad04/16/metadata.json",
+      "transcript": "/ad/1777edad04/16/full.jsonl",
+      "content_hash": "/ad/1777edad04/16/content_hash.txt",
+      "prompt": "/ad/1777edad04/16/prompt.txt"
     }
   ],
   "token_usage": {
