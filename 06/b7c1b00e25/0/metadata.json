@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "06b7c1b00e25",
+  "session_id": "ses_2f432577fffew0IiKyHjz7c5Kw",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T15:23:49.976442Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/REPAIR_JOURNAL.md",
+    "qutebrowser/prompts/REPAIR_JOURNAL.md"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "9dfe9e23b3f4",
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T15:23:49.969982Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 89,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
