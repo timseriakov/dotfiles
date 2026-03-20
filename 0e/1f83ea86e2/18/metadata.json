@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "0e1f83ea86e2",
+  "session_id": "ses_2fa4b0d21ffeAKMIdieF9ue4G8",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:26:48.260775Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "atuin/default-config.toml",
+    "atuin/README.md",
+    "atuin/config.toml"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "597043d17b1e",
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T08:26:48.259735Z",
+    "agent_lines": 247,
+    "human_added": 420,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 667,
+    "agent_percentage": 37.031484257871064
+  }
+}
