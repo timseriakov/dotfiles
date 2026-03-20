@@ -3,7 +3,7 @@
   "checkpoint_id": "852c36aa0a1e",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     "atuin/config.toml",
     "fish/conf.d/40-plugins.fish"
@@ -127,6 +127,12 @@
       "metadata": "/85/2c36aa0a1e/19/metadata.json",
       "transcript": "/85/2c36aa0a1e/19/full.jsonl",
       "content_hash": "/85/2c36aa0a1e/19/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/85/2c36aa0a1e/20/metadata.json",
+      "transcript": "/85/2c36aa0a1e/20/full.jsonl",
+      "content_hash": "/85/2c36aa0a1e/20/content_hash.txt",
       "prompt": ""
     }
   ],
