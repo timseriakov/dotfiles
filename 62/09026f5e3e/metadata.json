@@ -190,6 +190,12 @@
       "transcript": "/62/09026f5e3e/29/full.jsonl",
       "content_hash": "/62/09026f5e3e/29/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/62/09026f5e3e/30/metadata.json",
+      "transcript": "/62/09026f5e3e/30/full.jsonl",
+      "content_hash": "/62/09026f5e3e/30/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
