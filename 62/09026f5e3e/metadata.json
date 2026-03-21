@@ -238,6 +238,12 @@
       "transcript": "/62/09026f5e3e/37/full.jsonl",
       "content_hash": "/62/09026f5e3e/37/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/62/09026f5e3e/38/metadata.json",
+      "transcript": "/62/09026f5e3e/38/full.jsonl",
+      "content_hash": "/62/09026f5e3e/38/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
