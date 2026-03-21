@@ -369,6 +369,12 @@
       "transcript": "/87/fe55ccc16c/59/full.jsonl",
       "content_hash": "/87/fe55ccc16c/59/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/60/metadata.json",
+      "transcript": "/87/fe55ccc16c/60/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/60/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
