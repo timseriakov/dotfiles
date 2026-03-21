@@ -3,7 +3,7 @@
   "checkpoint_id": "87fe55ccc16c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "qutebrowser/greasemonkey/hover-link-bubble.user.js",
     "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
@@ -531,6 +531,19 @@
       "transcript": "/87/fe55ccc16c/86/full.jsonl",
       "content_hash": "/87/fe55ccc16c/86/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/87/metadata.json",
+      "transcript": "/87/fe55ccc16c/87/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/87/content_hash.txt",
+      "prompt": "/87/fe55ccc16c/87/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
