@@ -271,6 +271,12 @@
       "transcript": "/36/3914ba441f/42/full.jsonl",
       "content_hash": "/36/3914ba441f/42/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/36/3914ba441f/43/metadata.json",
+      "transcript": "/36/3914ba441f/43/full.jsonl",
+      "content_hash": "/36/3914ba441f/43/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
