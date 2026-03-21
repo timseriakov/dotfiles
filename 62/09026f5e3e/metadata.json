@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "6209026f5e3e",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_antigravity_opus_4_6.jsonc",
+    "opencode/oh-my-opencode_copilot-free.jsonc",
+    "opencode/opencode.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/62/09026f5e3e/0/metadata.json",
+      "transcript": "/62/09026f5e3e/0/full.jsonl",
+      "content_hash": "/62/09026f5e3e/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
