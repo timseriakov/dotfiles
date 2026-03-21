@@ -289,6 +289,12 @@
       "transcript": "/71/d7c398cc7a/46/full.jsonl",
       "content_hash": "/71/d7c398cc7a/46/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/71/d7c398cc7a/47/metadata.json",
+      "transcript": "/71/d7c398cc7a/47/full.jsonl",
+      "content_hash": "/71/d7c398cc7a/47/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
