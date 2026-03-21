@@ -507,6 +507,12 @@
       "transcript": "/87/fe55ccc16c/82/full.jsonl",
       "content_hash": "/87/fe55ccc16c/82/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/83/metadata.json",
+      "transcript": "/87/fe55ccc16c/83/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/83/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
