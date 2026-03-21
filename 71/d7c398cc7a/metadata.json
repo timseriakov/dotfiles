@@ -3,7 +3,7 @@
   "checkpoint_id": "71d7c398cc7a",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/magic-enter.fish"
   ],
@@ -336,6 +336,12 @@
       "metadata": "/71/d7c398cc7a/54/metadata.json",
       "transcript": "/71/d7c398cc7a/54/full.jsonl",
       "content_hash": "/71/d7c398cc7a/54/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/71/d7c398cc7a/55/metadata.json",
+      "transcript": "/71/d7c398cc7a/55/full.jsonl",
+      "content_hash": "/71/d7c398cc7a/55/content_hash.txt",
       "prompt": ""
     }
   ]
