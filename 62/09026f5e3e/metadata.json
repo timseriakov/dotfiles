@@ -256,6 +256,12 @@
       "transcript": "/62/09026f5e3e/40/full.jsonl",
       "content_hash": "/62/09026f5e3e/40/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/62/09026f5e3e/41/metadata.json",
+      "transcript": "/62/09026f5e3e/41/full.jsonl",
+      "content_hash": "/62/09026f5e3e/41/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
