@@ -1,7 +1,7 @@
 function _fifc
     set -f --export SHELL (command --search fish)
     set -l result
-    set -gx _fifc_extract_regex
+    set -Ux _fifc_extract_regex
     set -gx _fifc_complist_path (string join '' (mktemp) "_fifc")
     set -gx _fifc_custom_fzf_opts
     set -gx fifc_extracted
@@ -28,7 +28,7 @@ function _fifc
     set fifc_fzf_query (string trim --chars '\'' -- "$fifc_fzf_query")
 
     set -l fzf_cmd "
-        fzf \
+        _fifc_launched_by_fzf=1 SHELL=fish fzf \
             -d \t \
             --exact \
             --tiebreak=length \

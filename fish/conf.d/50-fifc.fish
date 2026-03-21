@@ -1,46 +1,26 @@
 #!/usr/bin/env fish
-# fifc (fuzzy insert from candidates)
+# Конфигурация fifc (gazorby) в стиле Nord
 
-function __fifc_unique --description 'filter unique values preserving order'
-    awk '!(x[$0]++)'
+# Основные инструменты
+set -gx fifc_editor nvim
+set -gx fifc_browser open
+
+# Стиль fzf для fifc (без рамок, левый разделитель для превью)
+# Подхватываем твои FZF_DEFAULT_OPTS из 40-plugins.fish, но уточняем для fifc
+set -gx fifc_fzf_opts --border=none --preview-window='right:70%:wrap:border-left'
+
+# Переназначаем клавиши:
+# 1. Плагин gazorby/fifc по умолчанию занимает Tab (функция _fifc)
+# 2. Переносим стандартное дополнение (complete) на Ctrl+X (\cx)
+# (Биндинг Tab для _fifc настраивается через переменную fifc_keybinding в плагине, 
+# либо он сам встаёт на Tab если не задано иное).
+
+if status is-interactive
+    bind \cx complete
+    bind -M insert \cx complete
 end
 
-set -g __fifc_version 2
-set -q FIFC_HISTORY || set -g FIFC_HISTORY ~/.cache/fifc
-set -q FIFC_MAX  || set -g FIFC_MAX 10000
-set -q FIFC_FZF_OPTS || set -g FIFC_FZF_OPTS "--height 40% --reverse --ansi"
-
-function _fifc_hist_file; echo "$FIFC_HISTORY/$argv[1].txt"; end
-function _fifc_hist_save
-    set -l file (_fifc_hist_file $argv[1])
-    mkdir -p (dirname $file)
-    printf %s\n $argv[2..-1] | __fifc_unique | tail -n $FIFC_MAX >$file
-end
-function _fifc_hist_load
-    set -l file (_fifc_hist_file $argv[1])
-    test -f $file; and cat $file
-end
-
-function fifc --description 'Fuzzy select from candidates and insert'
-    set -l name $argv[1]
-    set -l prompt $argv[2]
-    set -l src_fn $argv[3]
-    set -l cmp_fn $argv[4]
-    set -l cb_fn  $argv[5]
-
-    set -l src (eval $src_fn)
-    set -l hist (_fifc_hist_load $name)
-    set -l list (printf %s\n $hist $src | __fifc_unique)
-    if test (count $list) -eq 0
-        commandline -f repaint
-        return
-    end
-
-    set -l chosen (printf %s\n $list | fzf $FIFC_FZF_OPTS --prompt "$prompt> ")
-    test -n "$chosen"; or return
-    set -l result (eval $cb_fn "$chosen")
-    if test -n "$result"
-        commandline -it -- $result
-        _fifc_hist_save $name $chosen $hist
-    end
-end
+# Опции инструментов
+set -gx fifc_bat_opts --style=numbers --color=always --theme=Nord
+set -gx fifc_fd_opts --hidden --exclude=.git
+set -gx fifc_exa_opts --icons --group-directories-first --color=always
