@@ -270,6 +270,12 @@
       "transcript": "/33/b51a28cf78/42/full.jsonl",
       "content_hash": "/33/b51a28cf78/42/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/33/b51a28cf78/43/metadata.json",
+      "transcript": "/33/b51a28cf78/43/full.jsonl",
+      "content_hash": "/33/b51a28cf78/43/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
