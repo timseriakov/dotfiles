@@ -177,6 +177,12 @@
       "transcript": "/87/fe55ccc16c/27/full.jsonl",
       "content_hash": "/87/fe55ccc16c/27/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/28/metadata.json",
+      "transcript": "/87/fe55ccc16c/28/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/28/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
