@@ -363,6 +363,12 @@
       "transcript": "/87/fe55ccc16c/58/full.jsonl",
       "content_hash": "/87/fe55ccc16c/58/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/59/metadata.json",
+      "transcript": "/87/fe55ccc16c/59/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/59/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
