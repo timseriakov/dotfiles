@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "71d7c398cc7a",
+  "session_id": "ses_2efc7e5eeffeS9Eit4bKNR9rAt",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-21T12:44:46.344447Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/magic-enter.fish"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "f27f14ced731",
+  "initial_attribution": {
+    "calculated_at": "2026-03-21T12:44:46.342263Z",
+    "agent_lines": 25,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 25,
+    "agent_percentage": 100
+  }
+}
