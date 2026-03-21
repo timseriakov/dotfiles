@@ -43,6 +43,12 @@
       "transcript": "/71/d7c398cc7a/5/full.jsonl",
       "content_hash": "/71/d7c398cc7a/5/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/71/d7c398cc7a/6/metadata.json",
+      "transcript": "/71/d7c398cc7a/6/full.jsonl",
+      "content_hash": "/71/d7c398cc7a/6/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
