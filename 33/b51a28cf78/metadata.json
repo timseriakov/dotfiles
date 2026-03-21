@@ -180,6 +180,12 @@
       "transcript": "/33/b51a28cf78/27/full.jsonl",
       "content_hash": "/33/b51a28cf78/27/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/33/b51a28cf78/28/metadata.json",
+      "transcript": "/33/b51a28cf78/28/full.jsonl",
+      "content_hash": "/33/b51a28cf78/28/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
