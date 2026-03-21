@@ -9,6 +9,15 @@ set -gx fifc_browser open
 # Подхватываем твои FZF_DEFAULT_OPTS из 40-plugins.fish, но уточняем для fifc
 set -gx fifc_fzf_opts --border=none --preview-window='right:70%:wrap:border-left'
 
+# Хак для принудительного сдвига разделителя в fifc
+function fzf --wraps fzf
+    if set -q _fifc_launched_by_fzf
+        command fzf --preview-window='right:70%:wrap:border-left' $argv
+    else
+        command fzf $argv
+    end
+end
+
 # Переназначаем клавиши:
 # 1. Плагин gazorby/fifc по умолчанию занимает Tab (функция _fifc)
 # 2. Переносим стандартное дополнение (complete) на Ctrl+X (\cx)
