@@ -1,0 +1,24 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "363914ba441f",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/autopair.fish",
+    "fish/fish_plugins",
+    "fish/functions/_autopair_backspace.fish",
+    "fish/functions/_autopair_insert_left.fish",
+    "fish/functions/_autopair_insert_right.fish",
+    "fish/functions/_autopair_insert_same.fish",
+    "fish/functions/_autopair_tab.fish"
+  ],
+  "sessions": [
+    {
+      "metadata": "/36/3914ba441f/0/metadata.json",
+      "transcript": "/36/3914ba441f/0/full.jsonl",
+      "content_hash": "/36/3914ba441f/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
