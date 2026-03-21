@@ -153,6 +153,12 @@
       "transcript": "/87/fe55ccc16c/23/full.jsonl",
       "content_hash": "/87/fe55ccc16c/23/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/24/metadata.json",
+      "transcript": "/87/fe55ccc16c/24/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/24/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
