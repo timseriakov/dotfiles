@@ -31,6 +31,12 @@
       "transcript": "/71/d7c398cc7a/3/full.jsonl",
       "content_hash": "/71/d7c398cc7a/3/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/71/d7c398cc7a/4/metadata.json",
+      "transcript": "/71/d7c398cc7a/4/full.jsonl",
+      "content_hash": "/71/d7c398cc7a/4/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
