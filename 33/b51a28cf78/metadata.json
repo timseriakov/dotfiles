@@ -360,6 +360,12 @@
       "transcript": "/33/b51a28cf78/57/full.jsonl",
       "content_hash": "/33/b51a28cf78/57/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/33/b51a28cf78/58/metadata.json",
+      "transcript": "/33/b51a28cf78/58/full.jsonl",
+      "content_hash": "/33/b51a28cf78/58/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
