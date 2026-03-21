@@ -501,6 +501,12 @@
       "transcript": "/87/fe55ccc16c/81/full.jsonl",
       "content_hash": "/87/fe55ccc16c/81/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/82/metadata.json",
+      "transcript": "/87/fe55ccc16c/82/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/82/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
