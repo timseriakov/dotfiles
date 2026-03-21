@@ -361,6 +361,12 @@
       "transcript": "/36/3914ba441f/57/full.jsonl",
       "content_hash": "/36/3914ba441f/57/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/36/3914ba441f/58/metadata.json",
+      "transcript": "/36/3914ba441f/58/full.jsonl",
+      "content_hash": "/36/3914ba441f/58/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
