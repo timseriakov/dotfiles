@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "6209026f5e3e",
+  "session_id": "ses_2efc38e97ffeDXq7k0u9605506",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-21T12:45:38.16877Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_antigravity_opus_4_6.jsonc",
+    "opencode/oh-my-opencode_copilot-free.jsonc",
+    "opencode/opencode.jsonc"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "1c02b2a9b8ba",
+  "initial_attribution": {
+    "calculated_at": "2026-03-21T12:45:38.167708Z",
+    "agent_lines": 217,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 143,
+    "total_committed": 218,
+    "agent_percentage": 99.54128440366972
+  }
+}
