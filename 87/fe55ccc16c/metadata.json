@@ -417,6 +417,12 @@
       "transcript": "/87/fe55ccc16c/67/full.jsonl",
       "content_hash": "/87/fe55ccc16c/67/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/87/fe55ccc16c/68/metadata.json",
+      "transcript": "/87/fe55ccc16c/68/full.jsonl",
+      "content_hash": "/87/fe55ccc16c/68/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
