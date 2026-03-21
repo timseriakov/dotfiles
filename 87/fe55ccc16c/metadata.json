@@ -536,7 +536,7 @@
       "metadata": "/87/fe55ccc16c/87/metadata.json",
       "transcript": "/87/fe55ccc16c/87/full.jsonl",
       "content_hash": "/87/fe55ccc16c/87/content_hash.txt",
-      "prompt": "/87/fe55ccc16c/87/prompt.txt"
+      "prompt": ""
     },
     {
       "metadata": "/87/fe55ccc16c/88/metadata.json",
@@ -556,12 +556,5 @@
       "content_hash": "/87/fe55ccc16c/90/content_hash.txt",
       "prompt": ""
     }
-  ],
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  }
+  ]
 }
