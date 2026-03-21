@@ -3,7 +3,7 @@
   "checkpoint_id": "363914ba441f",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/autopair.fish",
     "fish/fish_plugins",
@@ -343,6 +343,19 @@
       "transcript": "/36/3914ba441f/54/full.jsonl",
       "content_hash": "/36/3914ba441f/54/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/36/3914ba441f/55/metadata.json",
+      "transcript": "/36/3914ba441f/55/full.jsonl",
+      "content_hash": "/36/3914ba441f/55/content_hash.txt",
+      "prompt": "/36/3914ba441f/55/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
