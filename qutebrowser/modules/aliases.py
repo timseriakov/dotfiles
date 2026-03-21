@@ -9,6 +9,7 @@ c.aliases = {
     "ms": "messages",
     "log": "messages",
     "l": "messages",
+    "gr": "greasemonkey-reload",
     "qq": "quit --save",  # Safe quit alias for intentional app exit
 }
 

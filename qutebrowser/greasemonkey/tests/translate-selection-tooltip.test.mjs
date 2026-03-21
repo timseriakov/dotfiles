@@ -622,3 +622,409 @@ test("Escape closes active tooltip and starts cooldown", async () => {
   assert.equal(calls, 1);
   dom.window.close();
 });
+
+test("hover bubble shows on valid http link mouseover", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com/path";
+  link.textContent = "Example Link";
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, true);
+  assert.equal(state.hoveredUrl, "https://example.com/path");
+  assert.equal(state.open, "1");
+  assert.equal(state.text, "https://example.com/path");
+
+  dom.window.close();
+});
+
+test("hover bubble shows on valid https link mouseover", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com";
+  link.textContent = "Secure Link";
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, true);
+  assert.equal(state.hoveredUrl, "https://example.com");
+  assert.equal(state.open, "1");
+
+  dom.window.close();
+});
+
+test("hover bubble shows on link keyboard focus", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com/focus";
+  link.textContent = "Focus Link";
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.FocusEvent("focusin", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, true);
+  assert.equal(state.hoveredUrl, "https://example.com/focus");
+  assert.equal(state.open, "1");
+
+  dom.window.close();
+});
+
+test("hover bubble ignores empty hash links", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "#section";
+  link.textContent = "Hash Link";
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble ignores javascript: links", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "javascript:void(0)";
+  link.textContent = "JS Link";
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on mouseout to non-link element", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com";
+  link.textContent = "Test Link";
+  window.document.body.appendChild(link);
+
+  const otherElement = window.document.createElement("div");
+  otherElement.textContent = "Other";
+  window.document.body.appendChild(otherElement);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseover", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  link.dispatchEvent(
+    new window.MouseEvent("mouseout", {
+      bubbles: true,
+      cancelable: true,
+      relatedTarget: otherElement,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on focusout to non-link element", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com";
+  link.textContent = "Focus Link";
+  window.document.body.appendChild(link);
+
+  const otherElement = window.document.createElement("button");
+  otherElement.textContent = "Button";
+  window.document.body.appendChild(otherElement);
+
+  link.dispatchEvent(
+    new window.FocusEvent("focusin", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  link.dispatchEvent(
+    new window.FocusEvent("focusout", {
+      bubbles: true,
+      cancelable: true,
+      relatedTarget: otherElement,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on Escape key", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  window.document.dispatchEvent(
+    new window.KeyboardEvent("keydown", {
+      key: "Escape",
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on window blur", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  window.dispatchEvent(new window.Event("blur", { bubbles: true }));
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on visibility change to hidden", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  Object.defineProperty(window.document, "visibilityState", {
+    configurable: true,
+    value: "hidden",
+  });
+  window.document.dispatchEvent(
+    new window.Event("visibilitychange", { bubbles: true }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on scroll", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  window.dispatchEvent(new window.Event("scroll", { bubbles: true }));
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on resize", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  window.dispatchEvent(new window.Event("resize", { bubbles: true }));
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("hover bubble hides on drag start", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://example.com");
+  await wait(5);
+
+  assert.equal(api.getHoverBubbleState().active, true);
+
+  const link = window.document.createElement("a");
+  link.href = "https://example.com";
+  link.draggable = true;
+  window.document.body.appendChild(link);
+
+  link.dispatchEvent(
+    new window.Event("dragstart", {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, false);
+  assert.equal(state.open, "0");
+
+  dom.window.close();
+});
+
+test("test API getHoverBubbleState returns correct state", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  const initialState = api.getHoverBubbleState();
+  assert.equal(initialState.active, false);
+  assert.equal(initialState.hoveredUrl, null);
+  assert.equal(initialState.open, "0");
+
+  api.triggerHoverBubble("https://example.com/test");
+  await wait(5);
+
+  const activeState = api.getHoverBubbleState();
+  assert.equal(activeState.active, true);
+  assert.equal(activeState.hoveredUrl, "https://example.com/test");
+  assert.equal(activeState.open, "1");
+  assert.equal(activeState.text, "https://example.com/test");
+  assert.ok(activeState.theme === "light" || activeState.theme === "dark");
+
+  dom.window.close();
+});
+
+test("test API triggerHoverBubble shows bubble", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.triggerHoverBubble("https://manual-test.com");
+  await wait(5);
+
+  const state = api.getHoverBubbleState();
+  assert.equal(state.active, true);
+  assert.equal(state.hoveredUrl, "https://manual-test.com");
+  assert.equal(state.open, "1");
+  assert.equal(state.text, "https://manual-test.com");
+
+  dom.window.close();
+});

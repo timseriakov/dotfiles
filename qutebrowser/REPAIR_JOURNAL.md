@@ -12,7 +12,7 @@
 
 ### Шаг 2: Метод `_remove_tab`
 
-Найдите метод `TabbedBrowser._remove_tab`. Внутри него, после блока `elif add_undo:`, вставьте следующий код:
+Найдите метод `TabbedBrowser._remove_tab`. Внутри него, сразу после блока `elif add_undo:` (то есть вне самого блока `add_undo`), вставьте следующий код:
 
 ```python
                 if not self.is_private:
