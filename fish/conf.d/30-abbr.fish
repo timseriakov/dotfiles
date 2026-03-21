@@ -96,13 +96,10 @@ abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt
 abbr -a clc 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --continue'
 abbr -a .c 'cd ~/.claude'
 abbr -a c. 'cd ~/.claude'
-abbr -a mp mcpproxy
-abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
-abbr -a mpr '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
 abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
 abbr -a cl-opus 'claude --model claude-opus-4-20250514'
 # Claude Code tools
-abbr -a ccup 'npm install -g @anthropic-ai/claude-code'
+abbr -a cc-up 'npm install -g @anthropic-ai/claude-code'
 abbr -a ccline-up 'npm update -g @cometix/ccline'
 abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
 abbr -a cc-history 'npx -y cchistory@latest'
@@ -115,13 +112,13 @@ abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
 abbr -a ge gemini
-abbr -a geup 'npm install -g @google/gemini-cli'
+abbr -a ge-up 'npm install -g @google/gemini-cli'
 # abbr -a geup 'brew install gemini-cli'
-abbr -a geclear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+abbr -a ge-clear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
 
 # Codex
 abbr -a cx codex
-abbr -a cxup 'npm install -g @openai/codex'
+abbr -a cx-up 'npm install -g @openai/codex'
 abbr -a cx-4.1 'codex -m gpt-4.1'
 abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
@@ -144,6 +141,11 @@ abbr -a o-web 'openchamber --daemon --port 1911'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a o-skills 'npx -y openskills'
 abbr -a add-mcp 'npx -y add-mcp'
+
+# mcpproxy
+abbr -a mp mcpproxy
+abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mpr '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
 
 # Other AI tools
 abbr -a cr cursor-agent
