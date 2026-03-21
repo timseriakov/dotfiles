@@ -439,6 +439,7 @@ test("runtime path keeps context disabled by default", async () => {
   await wait(380);
 
   assert.ok(payload);
+  assert.equal(payload.auth, "qute-translate-v1");
   assert.equal("context" in payload, false);
   dom.window.close();
 });

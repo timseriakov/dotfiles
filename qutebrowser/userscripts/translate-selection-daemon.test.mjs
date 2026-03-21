@@ -47,7 +47,7 @@ test("preflight returns CORS headers", async () => {
       headers: {
         Origin: origin,
         "Access-Control-Request-Method": "POST",
-        "Access-Control-Request-Headers": "content-type,x-qute-translate",
+        "Access-Control-Request-Headers": "content-type, x-qute-translate",
       },
     });
 
@@ -73,7 +73,7 @@ test("preflight returns CORS headers", async () => {
   });
 });
 
-test("rejects missing header", async () => {
+test("rejects missing auth field", async () => {
   await withDaemon({}, async (port) => {
     const res = await fetch(`http://${HOST}:${port}/translate`, {
       method: "POST",
@@ -92,10 +92,10 @@ test("rejects too long text", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
       body: JSON.stringify({
         requestId: "abc",
+        auth: "qute-translate-v1",
         targetLang: "ru",
         text: "x".repeat(MAX_TEXT_CHARS + 1),
       }),
@@ -132,9 +132,13 @@ test("successful translation uses runner", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
-      body: JSON.stringify({ requestId: "abc", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "abc",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -149,10 +153,14 @@ test("POST success includes CORS headers when origin set", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
         Origin: origin,
       },
-      body: JSON.stringify({ requestId: "abc", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "abc",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
 
     assert.equal(res.status, 200);
@@ -174,18 +182,26 @@ test("busy when another request in flight", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
-      body: JSON.stringify({ requestId: "one", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "one",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
 
     const second = await fetch(`http://${HOST}:${port}/translate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
-      body: JSON.stringify({ requestId: "two", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "two",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
     assert.equal(second.status, 503);
     const body = await second.json();
@@ -204,10 +220,10 @@ test("rate limit triggers", async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Qute-Translate": "1",
         },
         body: JSON.stringify({
           requestId: "one",
+          auth: "qute-translate-v1",
           targetLang: "ru",
           text: "hi",
         }),
@@ -218,10 +234,10 @@ test("rate limit triggers", async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Qute-Translate": "1",
         },
         body: JSON.stringify({
           requestId: "two",
+          auth: "qute-translate-v1",
           targetLang: "ru",
           text: "hi",
         }),
@@ -240,9 +256,13 @@ test("runner timeout returns 504", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
-      body: JSON.stringify({ requestId: "abc", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "abc",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
     assert.equal(res.status, 504);
     const body = await res.json();
@@ -261,9 +281,13 @@ test("parse_error surfaced when runner throws", async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
-      body: JSON.stringify({ requestId: "abc", targetLang: "ru", text: "hi" }),
+      body: JSON.stringify({
+        requestId: "abc",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "hi",
+      }),
     });
     assert.equal(res.status, 502);
     const body = await res.json();

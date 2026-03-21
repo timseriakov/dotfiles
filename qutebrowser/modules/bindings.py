@@ -327,6 +327,8 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
         wrap_ru_with_en=False,
     ),
+    BindingSpec("gt", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
+
 ]
 
 run_generator(config, c, BINDING_SPECS)

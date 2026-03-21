@@ -21,6 +21,7 @@
 
   const CONFIG = {
     endpointUrl: "http://127.0.0.1:38123/translate",
+    authToken: "qute-translate-v1",
     targetLang: "ru",
     requestTimeoutMs: 45000,
     debounceMs: 320,
@@ -62,6 +63,7 @@
     "paypal",
     "stripe",
     "admin",
+    "github.com",
   ];
 
   const UI_STRINGS = {
@@ -81,9 +83,6 @@
       return;
     }
     if (!isHttpOrHttps(location.protocol)) {
-      return;
-    }
-    if (isLocationDenied(location.hostname, location.pathname)) {
       return;
     }
   }
@@ -129,6 +128,7 @@
     document.addEventListener("visibilitychange", onVisibilityChange, true);
     window.addEventListener("scroll", onScrollOrResize, true);
     window.addEventListener("resize", onScrollOrResize, true);
+    document.addEventListener("qute-translate-show", onTranslateShow, true);
   }
 
   function onMouseup(e) {
@@ -189,6 +189,46 @@
 
   function onScrollOrResize() {
     hideTooltip("viewport");
+  }
+
+  function onTranslateShow(e) {
+    console.log(
+      "[Translate Tooltip] onTranslateShow event received",
+      e && e.detail,
+    );
+    const text = e && e.detail ? String(e.detail) : "";
+    if (!text) {
+      console.log("[Translate Tooltip] No translation text provided");
+      return;
+    }
+    hideTooltip("manual");
+
+    const snapshot = snapshotSelection(null);
+    let anchor;
+    if (snapshot && snapshot.anchor) {
+      anchor = snapshot.anchor;
+    } else {
+      const mouse = state.lastMouse || { x: 0, y: 0 };
+      anchor = {
+        rect: {
+          left: mouse.x,
+          right: mouse.x,
+          top: mouse.y,
+          bottom: mouse.y,
+          width: 0,
+          height: 0,
+        },
+        mouse,
+      };
+    }
+    const key = `manual-${Date.now()}`;
+    showTooltip({
+      mode: "success",
+      text,
+      anchor,
+      requestId: null,
+      key,
+    });
   }
 
   async function handleSnapshot(snapshot) {
@@ -291,6 +331,7 @@
 
     const payload = {
       requestId,
+      auth: CONFIG.authToken,
       text: normalized,
       targetLang: CONFIG.targetLang,
     };
@@ -1030,10 +1071,10 @@
         max-height: ${maxH};
         overflow: auto;
         box-sizing: border-box;
-        padding: 0.25rem 0.5rem;
+        padding: 0.7rem 0.7rem;
         border-radius: 0.375rem;
         font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-size: 0.875rem;
+        font-size: calc(0.875rem * 1.15);
         line-height: 1.25;
         letter-spacing: 0;
         color: var(--qute-tts-fg, #111827);

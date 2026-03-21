@@ -5,7 +5,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
-const HOST = "127.0.0.1";
+const HOST = "0.0.0.0";
 const PORT = 38123;
 const MODEL_ID = "google/translate-web";
 const VARIANT = "low";
@@ -160,9 +160,7 @@ const clampText = (value, limit) => value.slice(0, limit);
 
 const buildCorsHeaders = (origin) => {
   const headers = { Vary: "Origin" };
-  if (typeof origin === "string" && origin) {
-    headers["Access-Control-Allow-Origin"] = origin;
-  }
+  headers["Access-Control-Allow-Origin"] = origin || "*";
   return headers;
 };
 
@@ -222,6 +220,7 @@ const runOpencode = (prompt, state, timeoutMs = TIMEOUT_MS) => {
       let collectedText = "";
       let stderr = "";
       let lineBuffer = "";
+      let sessionID = null;
 
       let child;
       try {
@@ -251,6 +250,9 @@ const runOpencode = (prompt, state, timeoutMs = TIMEOUT_MS) => {
           if (!line) continue;
           try {
             const obj = JSON.parse(line);
+            if (obj && obj.sessionID) {
+              sessionID = obj.sessionID;
+            }
             if (
               obj &&
               obj.type === "text" &&
@@ -292,7 +294,7 @@ const runOpencode = (prompt, state, timeoutMs = TIMEOUT_MS) => {
           err.httpStatus = 502;
           return reject(err);
         }
-        resolve({ stdout, collectedText });
+        resolve({ stdout, collectedText, sessionID });
       });
 
       child.stdin.write(prompt);
@@ -365,12 +367,18 @@ const translateViaGoogle = async ({
     clearTimeout(timer);
   }
 };
-
 const translateViaOpencode = async ({ text, context, state }) => {
   const prompt = buildPrompt(text, context);
-  const { collectedText, stdout } = await runOpencode(prompt, state);
+  const { collectedText, stdout, sessionID } = await runOpencode(prompt, state);
   const merged = collectedText || stdout;
   const translation = extractTranslation(merged);
+  if (sessionID) {
+    spawn(
+      "opencode",
+      ["session", "delete", sessionID, "--log-level", "ERROR"],
+      { detached: true, stdio: "ignore" },
+    ).unref();
+  }
   return translation;
 };
 
@@ -466,6 +474,7 @@ const createDaemon = (options = {}) => {
         ...corsHeaders,
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, X-Qute-Translate",
+        "Access-Control-Allow-Private-Network": "true",
         "Access-Control-Max-Age": "600",
       });
       res.end();
@@ -499,18 +508,6 @@ const createDaemon = (options = {}) => {
       return;
     }
 
-    if (req.headers["x-qute-translate"] !== "1") {
-      const payload = { requestId: requestIdFallback(), code: "unauthorized" };
-      respondJson(res, 401, payload, corsHeaders);
-      logEvent({
-        requestId: payload.requestId,
-        status: 401,
-        code: payload.code,
-        elapsedMs: Date.now() - started,
-      });
-      return;
-    }
-
     let body;
     try {
       body = await readJsonBody(req);
@@ -527,6 +524,18 @@ const createDaemon = (options = {}) => {
         requestId: payload.requestId,
         status,
         code,
+        elapsedMs: Date.now() - started,
+      });
+      return;
+    }
+
+    if (body.auth !== "qute-translate-v1") {
+      const payload = { requestId: requestIdFallback(), code: "unauthorized" };
+      respondJson(res, 401, payload, corsHeaders);
+      logEvent({
+        requestId: payload.requestId,
+        status: 401,
+        code: payload.code,
         elapsedMs: Date.now() - started,
       });
       return;
@@ -724,9 +733,12 @@ const runSelfTest = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Qute-Translate": "1",
       },
       body: JSON.stringify({
+        requestId: "abc",
+        auth: "qute-translate-v1",
+        targetLang: "ru",
+        text: "x".repeat(MAX_TEXT_CHARS + 1),
         requestId: "abc",
         targetLang: "ru",
         text: "x".repeat(MAX_TEXT_CHARS + 1),
@@ -753,6 +765,7 @@ const runIntegrationTest = async () => {
   }
   const sample = {
     requestId: "integration-1",
+    auth: "qute-translate-v1",
     targetLang: "ru",
     text: "Hello world",
     context: "sample",
@@ -763,7 +776,6 @@ const runIntegrationTest = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Qute-Translate": "1",
     },
     body: JSON.stringify(sample),
   });
