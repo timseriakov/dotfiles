@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "363914ba441f",
+  "session_id": "ses_2efd6bf5effeEXW9GtjnKybuP0",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-21T12:44:26.881627Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/functions/_autopair_insert_right.fish",
+    "fish/functions/_autopair_insert_same.fish",
+    "fish/functions/_autopair_tab.fish",
+    "fish/conf.d/autopair.fish",
+    "fish/fish_plugins",
+    "fish/functions/_autopair_backspace.fish",
+    "fish/functions/_autopair_insert_left.fish"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "cb5b6a6f886a",
+  "initial_attribution": {
+    "calculated_at": "2026-03-21T12:44:26.878904Z",
+    "agent_lines": 101,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 101,
+    "agent_percentage": 100
+  }
+}
