@@ -150,6 +150,12 @@
       "transcript": "/33/b51a28cf78/22/full.jsonl",
       "content_hash": "/33/b51a28cf78/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/33/b51a28cf78/23/metadata.json",
+      "transcript": "/33/b51a28cf78/23/full.jsonl",
+      "content_hash": "/33/b51a28cf78/23/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
