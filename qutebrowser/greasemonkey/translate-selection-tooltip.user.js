@@ -43,13 +43,6 @@
     tooltipGapPx: 8,
     arrowWidthPx: 16,
     arrowHeightPx: 8,
-    hoverBubbleEnabled: true,
-    hoverBubblePadding: "0.6rem 0.85rem",
-    hoverBubbleBorderRadius: "0.5rem",
-    hoverBubbleFontSize: "calc(0.8rem * 1.1)",
-    hoverBubbleMaxWidthPx: 700,
-    hoverBubbleMarginBottom: "1rem",
-    hoverBubbleMarginLeft: "1rem",
   };
   const STORAGE_KEYS = {
     disabledHosts: "quteTranslateSelectionTooltip.disabledHosts",
@@ -103,14 +96,8 @@
     activeAbort: null,
 
     loadingTimer: null,
-    errorHideTimer: null,
-
-    lastMouse: { x: 0, y: 0 },
-    hoverBubbleActive: false,
-    hoveredLink: null,
-    hoveredUrl: null,
+    loadingTimer: null,
   };
-
   let requestCounter = 0;
   const cache = new LruTtlCache(CONFIG.cacheMaxEntries, CONFIG.cacheTtlMs);
   const inFlight = new Map();
@@ -129,158 +116,6 @@
 
   attachListeners();
 
-  function findNearestLink(node) {
-    if (!node) {
-      return null;
-    }
-    if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === "A") {
-      return node;
-    }
-    if (typeof node.closest === "function") {
-      return node.closest("a[href]");
-    }
-    let current = node;
-    while (current && current !== document) {
-      if (current.nodeType === Node.ELEMENT_NODE && current.nodeName === "A") {
-        return current;
-      }
-      current = current.parentNode;
-    }
-    return null;
-  }
-
-  function isValidLinkUrl(href) {
-    if (!href || typeof href !== "string") {
-      return false;
-    }
-    const trimmed = href.trim();
-    if (!trimmed) {
-      return false;
-    }
-    if (trimmed.startsWith("#") || trimmed === "#") {
-      return false;
-    }
-    if (trimmed.toLowerCase().startsWith("javascript:")) {
-      return false;
-    }
-    return /^(https?:|\/[a-zA-Z0-9+.-]*:|\.\/|\.\.\/[a-zA-Z][a-zA-Z0-9+.-]*:)/i.test(trimmed);
-  }
-
-  function onLinkMouseover(e) {
-    if (!CONFIG.hoverBubbleEnabled) {
-      return;
-    }
-    const target = e && e.target;
-    if (!target) {
-      return;
-    }
-    const link = findNearestLink(target);
-    if (!link) {
-      return;
-    }
-    const href = link.getAttribute && link.getAttribute("href");
-    if (!isValidLinkUrl(href)) {
-      return;
-    }
-    state.hoveredLink = link;
-    state.hoveredUrl = href;
-    showHoverBubble(href);
-  }
-
-  function onLinkMouseout(e) {
-    if (!CONFIG.hoverBubbleEnabled) {
-      return;
-    }
-    const target = e && e.relatedTarget;
-    const link = findNearestLink(target);
-    if (link && link === state.hoveredLink) {
-      return;
-    }
-    hideHoverBubble("leave");
-  }
-
-  function onLinkFocusin(e) {
-    if (!CONFIG.hoverBubbleEnabled) {
-      return;
-    }
-    const target = e && e.target;
-    if (!target) {
-      return;
-    }
-    const link = findNearestLink(target);
-    if (!link) {
-      return;
-    }
-    const href = link.getAttribute && link.getAttribute("href");
-    if (!isValidLinkUrl(href)) {
-      return;
-    }
-    state.hoveredLink = link;
-    state.hoveredUrl = href;
-    showHoverBubble(href);
-  }
-
-  function onLinkFocusout(e) {
-    if (!CONFIG.hoverBubbleEnabled) {
-      return;
-    }
-    const target = e && e.relatedTarget;
-    const link = findNearestLink(target);
-    if (link && link === state.hoveredLink) {
-      return;
-    }
-    hideHoverBubble("leave");
-  }
-
-  function onDragstart(e) {
-    if (!CONFIG.hoverBubbleEnabled) {
-      return;
-    }
-    hideHoverBubble("drag");
-  }
-
-  function showHoverBubble(url) {
-    if (!url) {
-      return;
-    }
-    ensureHoverBubbleUi();
-    if (!ui || !ui.hoverBubble || !ui.hoverBubbleContent) {
-      return;
-    }
-    state.hoverBubbleActive = true;
-    ui.hoverBubbleContent.textContent = url;
-    ui.hoverBubble.dataset.theme = resolveTooltipTheme();
-    ui.hoverBubble.dataset.open = "1";
-    requestAnimationFrame(() => {
-      if (ui && ui.hoverBubble) {
-        const mb = CONFIG.hoverBubbleMarginBottom;
-        const ml = CONFIG.hoverBubbleMarginLeft;
-        ui.hoverBubble.style.bottom = mb;
-        ui.hoverBubble.style.left = ml;
-      }
-    });
-  }
-
-  function hideHoverBubble(reason) {
-    if (!state.hoverBubbleActive) {
-      return;
-    }
-    state.hoverBubbleActive = false;
-    state.hoveredLink = null;
-    state.hoveredUrl = null;
-    if (ui && ui.hoverBubble) {
-      ui.hoverBubble.dataset.open = "0";
-    }
-  }
-
-  function ensureHoverBubbleUi() {
-    if (ui && ui.hoverBubble) {
-      return;
-    }
-    ensureUi();
-  }
-
-
   function attachListeners() {
     document.addEventListener("mouseup", onMouseup, true);
     document.addEventListener("mousedown", onMousedown, true);
@@ -290,11 +125,6 @@
     window.addEventListener("scroll", onScrollOrResize, true);
     window.addEventListener("resize", onScrollOrResize, true);
     document.addEventListener("qute-translate-show", onTranslateShow, true);
-    document.addEventListener("mouseover", onLinkMouseover, true);
-    document.addEventListener("mouseout", onLinkMouseout, true);
-    document.addEventListener("focusin", onLinkFocusin, true);
-    document.addEventListener("focusout", onLinkFocusout, true);
-    document.addEventListener("dragstart", onDragstart, true);
   }
 
   function onMouseup(e) {
@@ -318,7 +148,7 @@
   }
 
   function onMousedown(e) {
-    if (!isTooltipVisible() && !state.hoverBubbleActive) {
+    if (!isTooltipVisible()) {
       return;
     }
 
@@ -327,12 +157,11 @@
       return;
     }
     hideTooltip("outside");
-    hideHoverBubble("outside");
+    hideTooltip("outside");
   }
 
-
   function onKeydown(e) {
-    if (!isTooltipVisible() && !state.hoverBubbleActive) {
+    if (!isTooltipVisible()) {
       return;
     }
     if (!e || e.key !== "Escape") {
@@ -340,7 +169,7 @@
     }
 
     hideTooltip("esc");
-    hideHoverBubble("esc");
+    hideTooltip("esc");
     state.suppressUntilTs = Date.now() + CONFIG.escCooldownMs;
     e.preventDefault();
     e.stopPropagation();
@@ -348,19 +177,19 @@
 
   function onBlur() {
     hideTooltip("blur");
-    hideHoverBubble("blur");
+    hideTooltip("blur");
   }
 
   function onVisibilityChange() {
     if (document.visibilityState !== "visible") {
       hideTooltip("visibility");
-    hideHoverBubble("visibility");
+      hideTooltip("visibility");
     }
   }
 
   function onScrollOrResize() {
     hideTooltip("viewport");
-    hideHoverBubble("viewport");
+    hideTooltip("viewport");
   }
 
   function onTranslateShow(e) {
@@ -1225,17 +1054,7 @@
     shadow.appendChild(popup);
     (document.documentElement || document.body).appendChild(host);
 
-    const hoverBubble = document.createElement("div");
-    hoverBubble.className = "HoverBubble";
-    hoverBubble.dataset.open = "0";
-    hoverBubble.dataset.theme = resolveTooltipTheme();
-
-    const hoverBubbleContent = document.createElement("div");
-    hoverBubbleContent.className = "HoverBubbleContent";
-
-    hoverBubble.appendChild(hoverBubbleContent);
-    shadow.appendChild(hoverBubble);
-    ui = { host, shadow, popup, content, hoverBubble, hoverBubbleContent };
+    ui = { host, shadow, popup, content };
   }
 
   function buildTooltipCss() {
@@ -1358,55 +1177,6 @@
         }
       }
 
-      .HoverBubble {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        max-width: min(${CONFIG.hoverBubbleMaxWidthPx}px, calc(100vw - ${CONFIG.hoverBubbleMarginLeft} * 2));
-        padding: ${CONFIG.hoverBubblePadding};
-        border-radius: ${CONFIG.hoverBubbleBorderRadius};
-        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        font-size: ${CONFIG.hoverBubbleFontSize};
-        line-height: 1.3;
-        color: var(--qute-tts-fg, rgba(255, 255, 255, 0.92));
-        background: var(--qute-tts-bg, #0b0f17);
-        border: 1px solid var(--qute-tts-border, rgba(255, 255, 255, 0.14));
-        box-shadow:
-          0 14px 38px rgba(0, 0, 0, 0.45),
-          0 2px 10px rgba(0, 0, 0, 0.32);
-        opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 150ms ease, transform 150ms ease;
-        pointer-events: none;
-        z-index: 2147483646;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .HoverBubble[data-open="1"] {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .HoverBubble[data-theme="light"] {
-        --qute-tts-fg: #111827;
-        --qute-tts-bg: #ffffff;
-        --qute-tts-border: rgba(17, 24, 39, 0.18);
-      }
-
-      .HoverBubble[data-theme="dark"] {
-        --qute-tts-fg: rgba(255, 255, 255, 0.92);
-        --qute-tts-bg: #0b0f17;
-        --qute-tts-border: rgba(255, 255, 255, 0.14);
-      }
-
-      .HoverBubbleContent {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
     `;
   }
 
@@ -1824,22 +1594,6 @@
         };
       },
       getUi: () => ui,
-      getHoverBubbleState: () => {
-        return {
-          active: state.hoverBubbleActive,
-          hoveredUrl: state.hoveredUrl,
-          open: ui && ui.hoverBubble ? ui.hoverBubble.dataset.open : "0",
-          theme: ui && ui.hoverBubble ? ui.hoverBubble.dataset.theme : null,
-          text: ui && ui.hoverBubbleContent ? ui.hoverBubbleContent.textContent : "",
-        };
-      },
-      triggerHoverBubble: (url) => {
-        if (!url) {
-          return;
-        }
-        state.hoveredUrl = url;
-        showHoverBubble(url);
-      },
     };
     return api;
   }
