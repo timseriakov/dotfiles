@@ -172,6 +172,12 @@
       "transcript": "/62/09026f5e3e/26/full.jsonl",
       "content_hash": "/62/09026f5e3e/26/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/62/09026f5e3e/27/metadata.json",
+      "transcript": "/62/09026f5e3e/27/full.jsonl",
+      "content_hash": "/62/09026f5e3e/27/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
