@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "33b51a28cf78",
+  "session_id": "ses_2efc7a797ffe6oVVIXUGyB3j4Q",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-21T12:38:13.041504Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js_",
+    "qutebrowser/modules/aliases.py",
+    "qutebrowser/prompts/REPAIR_JOURNAL.md",
+    "qutebrowser/REPAIR_JOURNAL.md",
+    "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
+    "qutebrowser/greasemonkey/translate-selection-tooltip.user.js"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "fc2e91022edc",
+  "initial_attribution": {
+    "calculated_at": "2026-03-21T12:38:13.039873Z",
+    "agent_lines": 659,
+    "human_added": 89,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 748,
+    "agent_percentage": 88.10160427807486
+  }
+}

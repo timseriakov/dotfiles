@@ -210,6 +210,12 @@
       "transcript": "/33/b51a28cf78/32/full.jsonl",
       "content_hash": "/33/b51a28cf78/32/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/33/b51a28cf78/33/metadata.json",
+      "transcript": "/33/b51a28cf78/33/full.jsonl",
+      "content_hash": "/33/b51a28cf78/33/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
