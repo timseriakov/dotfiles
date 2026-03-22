@@ -1065,18 +1065,26 @@ template = Template('''
       } else if (hasOtp) {
         heading += ': OTP filled';
       }
-      const subtitle = infoLine ? '<br><small>' + infoLine + '</small>' : '';
-      notification.innerHTML = heading + subtitle;
+
+      notification.textContent = heading;
+      if (infoLine) {
+        const subtitleElem = document.createElement('small');
+        subtitleElem.style.display = 'block';
+        subtitleElem.style.marginTop = '4px';
+        subtitleElem.textContent = infoLine;
+        notification.appendChild(document.createElement('br'));
+        notification.appendChild(subtitleElem);
+      }
     } else if (filled > 0) {
       // Partial fill
       notification.style.background = '#FF9800';
       notification.style.color = 'white';
-      notification.innerHTML = '⚠️ Filled fields: ' + filled + ' of ' + expectedFields;
+      notification.textContent = '⚠️ Filled fields: ' + filled + ' of ' + expectedFields;
     } else {
       // Nothing filled
       notification.style.background = '#f44336';
       notification.style.color = 'white';
-      notification.innerHTML = '❌ Input fields not found on page';
+      notification.textContent = '❌ Input fields not found on page';
     }
 
     document.body.appendChild(notification);

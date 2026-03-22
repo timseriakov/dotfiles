@@ -327,7 +327,6 @@ BINDING_SPECS: list[BindingSpec] = [
         wrap_ru_with_en=False,
     ),
     BindingSpec("cS", en("cmd-set-text -s :set -t"), hide_ru_in_keyhint=True, wrap_ru_with_en=False),
-    BindingSpec("gt", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
     BindingSpec("cc", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
 ]
 
