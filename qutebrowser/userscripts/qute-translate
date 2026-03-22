@@ -73,7 +73,7 @@ def main():
     text = get_selected_text()
     if not text:
         # Show a helpful message to user
-        send_command(":message-warning 'No text selected. Please select some text first, then press gt'")
+        send_command(":message-warning 'No text selected. Please select some text first, then press cc or gt'")
         sys.exit(0)
 
     result = translate_text(text)

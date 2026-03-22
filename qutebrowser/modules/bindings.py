@@ -105,6 +105,11 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
+        leader + "te",
+        'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
         leader + "ty",
         'jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&&(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&lang=auto-ru`}})();',
         hide_ru_in_keyhint=True,
@@ -321,14 +326,9 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
         wrap_ru_with_en=False,
     ),
-    BindingSpec(
-        leader + "cS",
-        en("cmd-set-text -s :set -t"),
-        hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
-    ),
+    BindingSpec("cS", en("cmd-set-text -s :set -t"), hide_ru_in_keyhint=True, wrap_ru_with_en=False),
     BindingSpec("gt", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
-
+    BindingSpec("cc", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
 ]
 
 run_generator(config, c, BINDING_SPECS)
