@@ -17,6 +17,44 @@
 (function () {
   "use strict";
 
+  class LruTtlCache {
+    constructor(maxEntries, ttlMs) {
+      this._max = maxEntries;
+      this._ttl = ttlMs;
+      this._map = new Map();
+    }
+    get(key) {
+      const now = Date.now();
+      const hit = this._map.get(key);
+      if (!hit) {
+        return null;
+      }
+      if (hit.expiresAt <= now) {
+        this._map.delete(key);
+        return null;
+      }
+      this._map.delete(key);
+      this._map.set(key, hit);
+      return hit.value;
+    }
+    set(key, value) {
+      const now = Date.now();
+      this._map.delete(key);
+      this._map.set(key, { value, expiresAt: now + this._ttl });
+      while (this._map.size > this._max) {
+        const first = this._map.keys().next();
+        if (first && !first.done) {
+          this._map.delete(first.value);
+        } else {
+          break;
+        }
+      }
+    }
+    clear() {
+      this._map.clear();
+    }
+  }
+
   const TEST_MODE = window.__QUTE_TRANSLATE_TEST__ === true;
 
   const CONFIG = {
@@ -96,7 +134,8 @@
     activeAbort: null,
 
     loadingTimer: null,
-    loadingTimer: null,
+    errorHideTimer: null,
+    lastMouse: { x: 0, y: 0 },
   };
   let requestCounter = 0;
   const cache = new LruTtlCache(CONFIG.cacheMaxEntries, CONFIG.cacheTtlMs);
@@ -114,17 +153,35 @@
     return;
   }
 
-  attachListeners();
+  try {
+    attachListeners();
+  } catch (err) {
+    console.error("[Translate Tooltip] Critical failure in attachListeners:", err);
+  }
 
   function attachListeners() {
-    document.addEventListener("mouseup", onMouseup, true);
-    document.addEventListener("mousedown", onMousedown, true);
-    document.addEventListener("keydown", onKeydown, true);
-    window.addEventListener("blur", onBlur, true);
-    document.addEventListener("visibilitychange", onVisibilityChange, true);
-    window.addEventListener("scroll", onScrollOrResize, true);
-    window.addEventListener("resize", onScrollOrResize, true);
-    document.addEventListener("qute-translate-show", onTranslateShow, true);
+    const nativeAdd = EventTarget.prototype.addEventListener;
+    const safeAdd = (target, type, fn, capture) => {
+      try {
+        nativeAdd.call(target, type, fn, capture);
+      } catch (e) {
+        console.warn(`[Translate Tooltip] Failed to add ${type} listener via native method:`, e);
+        try {
+          target.addEventListener(type, fn, capture);
+        } catch (e2) {
+          console.error(`[Translate Tooltip] Total failure adding ${type} listener:`, e2);
+        }
+      }
+    };
+
+    safeAdd(document, "mouseup", onMouseup, true);
+    safeAdd(document, "mousedown", onMousedown, true);
+    safeAdd(document, "keydown", onKeydown, true);
+    safeAdd(window, "blur", onBlur, true);
+    safeAdd(document, "visibilitychange", onVisibilityChange, true);
+    safeAdd(window, "scroll", onScrollOrResize, true);
+    safeAdd(window, "resize", onScrollOrResize, true);
+    safeAdd(document, "qute-translate-show", onTranslateShow, true);
   }
 
   function onMouseup(e) {
@@ -157,7 +214,6 @@
       return;
     }
     hideTooltip("outside");
-    hideTooltip("outside");
   }
 
   function onKeydown(e) {
@@ -169,7 +225,6 @@
     }
 
     hideTooltip("esc");
-    hideTooltip("esc");
     state.suppressUntilTs = Date.now() + CONFIG.escCooldownMs;
     e.preventDefault();
     e.stopPropagation();
@@ -177,18 +232,15 @@
 
   function onBlur() {
     hideTooltip("blur");
-    hideTooltip("blur");
   }
 
   function onVisibilityChange() {
     if (document.visibilityState !== "visible") {
       hideTooltip("visibility");
-      hideTooltip("visibility");
     }
   }
 
   function onScrollOrResize() {
-    hideTooltip("viewport");
     hideTooltip("viewport");
   }
 
@@ -895,13 +947,37 @@
     clearTimer("errorHide");
     clearTimer("loading");
 
-    ui.popup.dataset.theme = resolveTooltipTheme(anchor);
+    const theme = resolveTooltipTheme(anchor);
+    ui.popup.dataset.theme = theme;
     ui.popup.dataset.mode = mode;
     ui.content.textContent = String(text || "");
 
+    // Apply critical styles directly for CSP fallback
+    const styles = getThemeStyles(theme, mode);
+    Object.assign(ui.popup.style, {
+      position: "fixed",
+      zIndex: "2147483647",
+      display: "block",
+      visibility: "visible",
+      padding: "0.7rem",
+      borderRadius: "0.375rem",
+      boxShadow: styles.boxShadow,
+      border: `1px solid ${styles.border}`,
+      background: styles.bg,
+      color: styles.fg,
+      fontFamily: "ui-sans-serif, -apple-system, sans-serif",
+      fontSize: "0.96rem",
+      lineHeight: "1.25",
+      maxWidth: `min(560px, calc(100vw - ${CONFIG.viewportMarginPx * 2}px))`,
+      maxHeight: `${CONFIG.tooltipMaxHeightPx}px`,
+      overflow: "auto",
+      boxSizing: "border-box",
+      transition: "opacity 150ms ease, transform 150ms ease",
+    });
+
     ui.popup.dataset.open = "1";
-    ui.popup.style.left = "0px";
-    ui.popup.style.top = "0px";
+    ui.popup.style.opacity = "0";
+    ui.popup.style.transform = "translateY(2px) scale(0.96)";
 
     requestAnimationFrame(() => {
       if (!ui || ui.popup.dataset.open !== "1") {
@@ -911,8 +987,29 @@
         return;
       }
       positionTooltip(anchor);
-      ui.popup.dataset.open = "1";
+      ui.popup.style.opacity = "1";
+      ui.popup.style.transform = "translateY(0) scale(1)";
     });
+  }
+
+  function getThemeStyles(theme, mode) {
+    const isDark = theme === "dark";
+    const styles = {
+      bg: isDark ? "#0b0f17" : "#ffffff",
+      fg: isDark ? "rgba(255, 255, 255, 0.92)" : "#111827",
+      border: isDark ? "rgba(255, 255, 255, 0.14)" : "rgba(17, 24, 39, 0.18)",
+      boxShadow: isDark
+        ? "0 14px 38px rgba(0, 0, 0, 0.45), 0 2px 10px rgba(0, 0, 0, 0.32)"
+        : "0 10px 30px rgba(17, 24, 39, 0.14), 0 2px 10px rgba(17, 24, 39, 0.10)",
+    };
+
+    if (mode === "loading") {
+      styles.fg = isDark ? "rgba(255, 255, 255, 0.72)" : "rgba(17, 24, 39, 0.78)";
+    } else if (mode === "error") {
+      styles.fg = isDark ? "#fecaca" : "#991b1b";
+      styles.border = isDark ? "rgba(254, 202, 202, 0.22)" : "rgba(153, 27, 27, 0.25)";
+    }
+    return styles;
   }
 
   function positionTooltip(anchor) {
@@ -984,6 +1081,8 @@
     ui.popup.dataset.mode = "hidden";
     ui.content.textContent = "";
     ui.popup.dataset.lastHide = String(reason || "");
+    ui.popup.style.opacity = "0";
+    ui.popup.style.transform = "translateY(2px) scale(0.96)";
   }
 
   function isTooltipVisible() {
@@ -1634,40 +1733,4 @@
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {}
   }
-
-  function LruTtlCache(maxEntries, ttlMs) {
-    this._max = maxEntries;
-    this._ttl = ttlMs;
-    this._map = new Map();
-  }
-  LruTtlCache.prototype.get = function (key) {
-    const now = Date.now();
-    const hit = this._map.get(key);
-    if (!hit) {
-      return null;
-    }
-    if (hit.expiresAt <= now) {
-      this._map.delete(key);
-      return null;
-    }
-    this._map.delete(key);
-    this._map.set(key, hit);
-    return hit.value;
-  };
-  LruTtlCache.prototype.set = function (key, value) {
-    const now = Date.now();
-    this._map.delete(key);
-    this._map.set(key, { value, expiresAt: now + this._ttl });
-    while (this._map.size > this._max) {
-      const first = this._map.keys().next();
-      if (first && !first.done) {
-        this._map.delete(first.value);
-      } else {
-        break;
-      }
-    }
-  };
-  LruTtlCache.prototype.clear = function () {
-    this._map.clear();
-  };
 })();
