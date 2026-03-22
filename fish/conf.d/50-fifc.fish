@@ -7,12 +7,12 @@ set -gx fifc_browser open
 
 # Стиль fzf для fifc (без рамок, левый разделитель для превью)
 # Подхватываем твои FZF_DEFAULT_OPTS из 40-plugins.fish, но уточняем для fifc
-set -gx fifc_fzf_opts --border=none --preview-window='right:70%:wrap:border-left'
+set -gx fifc_fzf_opts --border=none --preview-window='right:70%:nowrap:border-left'
 
 # Хак для принудительного сдвига разделителя в fifc
 function fzf --wraps fzf
     if set -q _fifc_launched_by_fzf
-        command fzf --preview-window='right:70%:wrap:border-left' $argv
+        command fzf --preview-window='right:70%:nowrap:border-left' $argv
     else
         command fzf $argv
     end
@@ -33,3 +33,4 @@ end
 set -gx fifc_bat_opts --style=numbers --color=always --theme=Nord
 set -gx fifc_fd_opts --hidden --exclude=.git
 set -gx fifc_exa_opts --icons --group-directories-first --color=always
+set -gx fifc_chafa_opts --symbols block --color 24bit --animate false

@@ -42,7 +42,10 @@
   try {
     attachListeners();
   } catch (err) {
-    console.error("[Hover Link Bubble] Critical failure in attachListeners:", err);
+    console.error(
+      "[Hover Link Bubble] Critical failure in attachListeners:",
+      err,
+    );
   }
 
   function attachListeners() {
