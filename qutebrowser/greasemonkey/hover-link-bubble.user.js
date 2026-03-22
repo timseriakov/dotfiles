@@ -39,18 +39,52 @@
     window.__quteHoverBubbleTest = testApi;
   }
 
-  attachListeners();
+  try {
+    attachListeners();
+  } catch (err) {
+    console.error("[Hover Link Bubble] Critical failure in attachListeners:", err);
+  }
 
   function attachListeners() {
-    document.addEventListener("mouseover", onLinkMouseover, true);
-    document.addEventListener("mouseout", onLinkMouseout, true);
-    document.addEventListener("focusin", onLinkFocusin, true);
-    document.addEventListener("focusout", onLinkFocusout, true);
-    document.addEventListener("dragstart", onDragstart, true);
-    window.addEventListener("blur", onBlur, true);
-    document.addEventListener("visibilitychange", onVisibilityChange, true);
-    window.addEventListener("scroll", onScrollOrResize, true);
-    window.addEventListener("resize", onScrollOrResize, true);
+    let nativeAdd;
+    try {
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      document.documentElement.appendChild(iframe);
+      nativeAdd = iframe.contentWindow.EventTarget.prototype.addEventListener;
+      document.documentElement.removeChild(iframe);
+    } catch (e) {
+      nativeAdd = EventTarget.prototype.addEventListener;
+    }
+
+    const safeAdd = (target, type, fn, capture) => {
+      try {
+        nativeAdd.call(target, type, fn, capture);
+      } catch (e) {
+        console.warn(
+          `[Hover Link Bubble] Failed to add ${type} listener via native method:`,
+          e,
+        );
+        try {
+          target.addEventListener(type, fn, capture);
+        } catch (e2) {
+          console.error(
+            `[Hover Link Bubble] Total failure adding ${type} listener:`,
+            e2,
+          );
+        }
+      }
+    };
+
+    safeAdd(document, "mouseover", onLinkMouseover, true);
+    safeAdd(document, "mouseout", onLinkMouseout, true);
+    safeAdd(document, "focusin", onLinkFocusin, true);
+    safeAdd(document, "focusout", onLinkFocusout, true);
+    safeAdd(document, "dragstart", onDragstart, true);
+    safeAdd(window, "blur", onBlur, true);
+    safeAdd(document, "visibilitychange", onVisibilityChange, true);
+    safeAdd(window, "scroll", onScrollOrResize, true);
+    safeAdd(window, "resize", onScrollOrResize, true);
   }
 
   function findNearestLink(node) {

@@ -156,20 +156,39 @@
   try {
     attachListeners();
   } catch (err) {
-    console.error("[Translate Tooltip] Critical failure in attachListeners:", err);
+    console.error(
+      "[Translate Tooltip] Critical failure in attachListeners:",
+      err,
+    );
   }
 
   function attachListeners() {
-    const nativeAdd = EventTarget.prototype.addEventListener;
+    let nativeAdd;
+    try {
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      document.documentElement.appendChild(iframe);
+      nativeAdd = iframe.contentWindow.EventTarget.prototype.addEventListener;
+      document.documentElement.removeChild(iframe);
+    } catch (e) {
+      nativeAdd = EventTarget.prototype.addEventListener;
+    }
+
     const safeAdd = (target, type, fn, capture) => {
       try {
         nativeAdd.call(target, type, fn, capture);
       } catch (e) {
-        console.warn(`[Translate Tooltip] Failed to add ${type} listener via native method:`, e);
+        console.warn(
+          `[Translate Tooltip] Failed to add ${type} listener via native method:`,
+          e,
+        );
         try {
           target.addEventListener(type, fn, capture);
         } catch (e2) {
-          console.error(`[Translate Tooltip] Total failure adding ${type} listener:`, e2);
+          console.error(
+            `[Translate Tooltip] Total failure adding ${type} listener:`,
+            e2,
+          );
         }
       }
     };
@@ -1004,10 +1023,14 @@
     };
 
     if (mode === "loading") {
-      styles.fg = isDark ? "rgba(255, 255, 255, 0.72)" : "rgba(17, 24, 39, 0.78)";
+      styles.fg = isDark
+        ? "rgba(255, 255, 255, 0.72)"
+        : "rgba(17, 24, 39, 0.78)";
     } else if (mode === "error") {
       styles.fg = isDark ? "#fecaca" : "#991b1b";
-      styles.border = isDark ? "rgba(254, 202, 202, 0.22)" : "rgba(153, 27, 27, 0.25)";
+      styles.border = isDark
+        ? "rgba(254, 202, 202, 0.22)"
+        : "rgba(153, 27, 27, 0.25)";
     }
     return styles;
   }
