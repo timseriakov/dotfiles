@@ -19,6 +19,8 @@ if [ -f "$HOME/dev/dotfiles/fish/secrets.fish" ]; then
   # Extract OPENAI_API_KEY from fish set command
   OPENAI_API_KEY=$(grep '^set -gx OPENAI_API_KEY' "$HOME/dev/dotfiles/fish/secrets.fish" | sed 's/set -gx OPENAI_API_KEY //' | sed 's/^ *//' || true)
   export OPENAI_API_KEY
+  ZAI_API_KEY=$(grep "^set -gx ZAI_API_KEY" "$HOME/dev/dotfiles/fish/secrets.fish" | sed "s/set -gx ZAI_API_KEY //" | sed "s/^ *//" || true) 
+  export ZAI_API_KEY
 else
   echo "[ERROR] fish/secrets.fish not found in $HOME/dev/dotfiles/fish/"
   exit 1
@@ -37,12 +39,13 @@ if [ -z "${GITHUB_TOKEN:-}" ] && [ -f "$HOME/dev/dotfiles/fish/secrets.fish" ]; 
   fi
 fi
 
-if [ -z "${GITHUB_TOKEN:-}" ] && command -v gh >/dev/null 2>&1; then
-  GITHUB_TOKEN="$(gh auth token 2>/dev/null || true)"
+if command -v gh >/dev/null 2>&1; then
+  GITHUB_TOKEN="$(gh auth token || true)"
   if [ -n "$GITHUB_TOKEN" ]; then
     export GITHUB_TOKEN
   fi
 fi
 
 # Run the Node.js watcher
+echo "DEBUG: GITHUB_TOKEN starts with ${GITHUB_TOKEN:0:10}"
 exec /Users/tim/.volta/tools/image/node/22.22.0/bin/node "$WATCHER_JS" "$@"
