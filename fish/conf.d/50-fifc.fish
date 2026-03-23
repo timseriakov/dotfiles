@@ -33,4 +33,5 @@ end
 set -gx fifc_bat_opts --style=numbers --color=always --theme=Nord
 set -gx fifc_fd_opts --hidden --exclude=.git
 set -gx fifc_exa_opts --icons --group-directories-first --color=always
+set -gx fifc_chafa_opts --animate off --work 1
 
