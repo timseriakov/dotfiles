@@ -1,0 +1,105 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+ебаный в рот почини это говно, ключ же есть в secrets.fish
+
+o
+Type '/help' for a list of commands, '/exit' to quit
+
+TmuxAI » /prepare fish
+Id: 284
+Command: fish
+Args: -fish
+Shell: fish
+OS: macOS 15.7.4 24G517 - arm64
+TmuxAI Pane: false
+TmuxAI Exec Pane: true
+Prepared: true
+Sub Shell: false
+
+TmuxAI » как получить в нормальном виде?
+Failed to get response from AI: API returned error: {
+  "error": {
+    "message": "Incorrect API key provided: ${OPENAI*****KEY}. You can find your API key at https://platform.openai.com/account/api-keys.",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_api_key"
+  }
+}
+TmuxAI »
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+ебаный в рот почини это говно, ключ же есть в secrets.fish
+
+o
+Type '/help' for a list of commands, '/exit' to quit
+
+TmuxAI » /prepare fish
+Id: 284
+Command: fish
+Args: -fish
+Shell: fish
+OS: macOS 15.7.4 24G517 - arm64
+TmuxAI Pane: false
+TmuxAI Exec Pane: true
+Prepared: true
+Sub Shell: false
+
+TmuxAI » как получить в нормальном виде?
+Failed to get response from AI: API returned error: {
+  "error": {
+    "message": "Incorrect API key provided: ${OPENAI*****KEY}. You can find your API key at https://platform.openai.com/account/api-keys.",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_api_key"
+  }
+}
+TmuxAI »
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_96c389d7`: Find TmuxAI config docs
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_96c389d7`: Find TmuxAI config docs
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+какя модель выставлена?
+
+---
+
+какя модель выставлена?
