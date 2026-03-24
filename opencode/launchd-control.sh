@@ -12,6 +12,7 @@ LOG_DIR="$HOME/tmp/opencode"
 USER_UID=$(id -u)
 DOMAIN="gui/$USER_UID"
 SERVICE="${DOMAIN}/com.opencode.serve"
+LABEL="com.opencode.serve"
 
 # Colors
 RED='\033[0;31m'
@@ -67,13 +68,13 @@ case "$1" in
 
     stop)
         echo -e "${YELLOW}Stopping opencode service...${NC}"
-        launchctl stop "$SERVICE" 2>/dev/null || launchctl bootout "$SERVICE" 2>/dev/null || true
+        launchctl stop "$LABEL" 2>/dev/null || true
         pkill -f "opencode serve" 2>/dev/null || true
         ;;
 
     restart)
         echo -e "${YELLOW}Restarting opencode service...${NC}"
-        launchctl stop "$SERVICE" 2>/dev/null || launchctl bootout "$SERVICE" 2>/dev/null || true
+        launchctl stop "$LABEL" 2>/dev/null || true
         pkill -f "opencode serve" 2>/dev/null || true
         sleep 1
 
@@ -99,11 +100,11 @@ case "$1" in
             fi
         fi
 
-        OPCODE_PIDS=$(pgrep -f "opencode serve" 2>/dev/null || true)
-        if [ -n "$OPCODE_PIDS" ]; then
-            COUNT=$(echo "$OPCODE_PIDS" | wc -l | tr -d ' ')
+        OPENCODE_PIDS=$(pgrep -f "opencode serve" 2>/dev/null || true)
+        if [ -n "$OPENCODE_PIDS" ]; then
+            COUNT=$(echo "$OPENCODE_PIDS" | wc -l | tr -d ' ')
             echo -e "${GREEN}✓ opencode serve process running ($COUNT process(es))${NC}"
-            echo "  PIDs: $(echo "$OPCODE_PIDS" | tr '\n' ' ')"
+            echo "  PIDs: $(echo "$OPENCODE_PIDS" | tr '\n' ' ')"
         else
             echo -e "${RED}✗ opencode serve process not running${NC}"
         fi
@@ -127,7 +128,10 @@ case "$1" in
 
     follow)
         echo -e "${GREEN}Following logs (Ctrl+C to stop)...${NC}"
-        tail -f "$LOG_DIR/serve-stdout.log" "$LOG_DIR/serve-stderr.log"
+        tail -F "$LOG_DIR/serve-stdout.log" "$LOG_DIR/serve-stderr.log" 2>/dev/null || {
+            echo "Log files not found. Service may not be running."
+            echo "Run: $0 logs to check if logs exist"
+        }
         ;;
 
     *)

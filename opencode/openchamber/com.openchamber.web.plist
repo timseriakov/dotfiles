@@ -8,7 +8,7 @@
     <key>ProgramArguments</key>
     <array>
         <string>/Users/tim/.bun/bin/bun</string>
-        <string>/Users/tim/.volta/tools/image/packages/@openchamber/web/lib/node_modules/@openchamber/web/server/index.js</string>
+        <string>/Users/tim/.bun/install/global/node_modules/@openchamber/web/server/index.js</string>
         <string>--port</string>
         <string>1911</string>
     </array>

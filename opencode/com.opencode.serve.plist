@@ -7,10 +7,10 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/tim/.volta/tools/image/packages/opencode-ai/bin/opencode</string>
+        <string>/opt/homebrew/bin/opencode</string>
         <string>serve</string>
         <string>--hostname</string>
-        <string>127.0.0.1</string>
+        <string>0.0.0.0</string>
         <string>--port</string>
         <string>4096</string>
     </array>

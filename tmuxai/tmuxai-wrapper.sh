@@ -5,6 +5,13 @@
 # This wrapper bypasses the bug by forcing a fallback to the legacy 'openai'
 # configuration and supplying the API key via environment variables.
 
+# Ensure secrets are loaded
+if not set -q OPENAI_API_KEY
+    if test -f ~/dev/dotfiles/fish/secrets.fish
+        source ~/dev/dotfiles/fish/secrets.fish
+    end
+end
+
 # Force top-level OpenAI config which TmuxAI expands correctly
 set -gx TMUXAI_OPENAI_API_KEY "$OPENAI_API_KEY"
 set -gx TMUXAI_OPENAI_MODEL "gpt-5-mini"

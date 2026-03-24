@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-OPENCODE_PLIST="$REPO_ROOT/opencode/com.opencode.serve.plist"
+OPENCODE_PLIST="$REPO_ROOT/com.opencode.serve.plist"
 OPENCHAMBER_PLIST="$REPO_ROOT/openchamber/com.openchamber.web.plist"
 
 if ! command -v volta >/dev/null 2>&1; then
@@ -13,16 +13,14 @@ if ! command -v volta >/dev/null 2>&1; then
 fi
 
 OPENCODE_BIN="$(volta which opencode)"
-OPENCHAMBER_BIN="$(volta which openchamber)"
+OPENCHAMBER_BIN="$HOME/.bun/bin/openchamber"
 
 if [ ! -x "$OPENCODE_BIN" ]; then
   echo "Error: opencode binary not found: $OPENCODE_BIN"
   exit 1
 fi
 
-OPENCHAMBER_PKG_DIR="$(cd "$(dirname "$OPENCHAMBER_BIN")/.." && pwd -P)"
-OPENCHAMBER_SERVER_JS="$OPENCHAMBER_PKG_DIR/lib/node_modules/@openchamber/web/server/index.js"
-
+OPENCHAMBER_SERVER_JS="$HOME/.bun/install/global/node_modules/@openchamber/web/server/index.js"
 if [ ! -f "$OPENCHAMBER_SERVER_JS" ]; then
   echo "Error: openchamber server entrypoint not found: $OPENCHAMBER_SERVER_JS"
   exit 1
@@ -50,7 +48,7 @@ cat > "$OPENCODE_PLIST" <<EOF
         <string>$OPENCODE_BIN</string>
         <string>serve</string>
         <string>--hostname</string>
-        <string>127.0.0.1</string>
+        <string>0.0.0.0</string>
         <string>--port</string>
         <string>4096</string>
     </array>
@@ -133,11 +131,11 @@ echo "Updated plist files:"
 echo "  $OPENCODE_PLIST"
 echo "  $OPENCHAMBER_PLIST"
 
-"$REPO_ROOT/opencode/launchd-control.sh" install
-"$REPO_ROOT/openchamber/launchd-control.sh" install
+"$REPO_ROOT/launchd-control.sh" install
+"$SCRIPT_DIR/launchd-control.sh" install
 
 echo
 echo "Service status:"
-"$REPO_ROOT/opencode/launchd-control.sh" status
-"$REPO_ROOT/openchamber/launchd-control.sh" status
+"$REPO_ROOT/launchd-control.sh" status
+"$SCRIPT_DIR/launchd-control.sh" status
 

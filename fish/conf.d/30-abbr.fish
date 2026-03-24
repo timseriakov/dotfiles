@@ -133,7 +133,7 @@ abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a orcc 'cd ~/dev/dotfiles/opencode && nvim opencode.jsonc'
 abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
 
-abbr -a oup 'brew install anomalyco/tap/opencode'
+abbr -a o-up 'brew install anomalyco/tap/opencode'
 abbr -a os '~/.config/opencode/omo-switch'
 # abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 

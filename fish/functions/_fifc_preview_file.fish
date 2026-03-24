@@ -1,5 +1,11 @@
 function _fifc_preview_file -d "Preview the selected file with the right tool depending on its type"
     set -l file_type (_fifc_file_type "$fifc_candidate")
+    
+    # Path to real chafa binary (bypass local shim)
+    set -l real_chafa "/opt/homebrew/bin/chafa"
+    if not test -x "$real_chafa"
+        set real_chafa (command -v chafa)
+    end
 
     switch $file_type
         case txt
@@ -15,34 +21,41 @@ function _fifc_preview_file -d "Preview the selected file with the right tool de
                 cat "$fifc_candidate"
             end
         case image pdf
-            # Kitty native high-res preview (best for tmux/fzf)
             if set -q KITTY_WINDOW_ID; or string match -q "xterm-kitty" "$TERM"
-                # kitten icat handles tmux passthrough automatically and correctly
-                # --place specifies dimensions in cells (cols x rows) @ offset
-                # --clear ensures no ghosting from previous previews
-                /Applications/kitty.app/Contents/MacOS/kitten icat --clear --transfer-mode=memory --stdin=no --place="$FZF_PREVIEW_COLUMNS"x"$FZF_PREVIEW_LINES"@0x0 "$fifc_candidate"
-                
-                # We still need to output newlines so fzf 'scrolls' correctly
-                # and doesn't draw text over our image.
+                set -l kitten_cmd "kitten"
+                if test -x "/Applications/kitty.app/Contents/MacOS/kitten"
+                    set kitten_cmd "/Applications/kitty.app/Contents/MacOS/kitten"
+                end
+                $kitten_cmd icat --clear --transfer-mode=memory --stdin=no --place="$FZF_PREVIEW_COLUMNS"x"$FZF_PREVIEW_LINES"@0x0 "$fifc_candidate"
                 for i in (seq $FZF_PREVIEW_LINES)
                     echo
                 end
-            else if type -q chafa
+            else if test -x "$real_chafa"
                 set -l chafa_flags
+                set -l needs_padding 0
+                
                 if set -q TERM_PROGRAM; and string match -q "iTerm.app" "$TERM_PROGRAM"
                     set -a chafa_flags --format iterm
-                end
-                if set -q TMUX
-                    set -a chafa_flags --passthrough tmux
-                end
-                if not contains -- --format $chafa_flags
-                    set -a chafa_flags --format symbols --symbols all
+                    if set -q TMUX
+                        set -a chafa_flags --passthrough tmux
+                    end
+                    set needs_padding 1
+                else
+                    # Alacritty / Fallback
+                    # Force safe symbols and restrict colors to 256 to avoid issues
+                    set -a chafa_flags --format symbols --symbols -all+block+ascii --colors 256
+                    set needs_padding 0
                 end
 
-                chafa -s "$FZF_PREVIEW_COLUMNS"x"$FZF_PREVIEW_LINES" $chafa_flags $fifc_chafa_opts "$fifc_candidate"
+                # DEBUG: Log the command being executed
+                # echo "CMD: $real_chafa -s "$FZF_PREVIEW_COLUMNS"x"$FZF_PREVIEW_LINES" $chafa_flags $fifc_chafa_opts $fifc_candidate" >> /tmp/fifc_debug.log
+
+                $real_chafa -s "$FZF_PREVIEW_COLUMNS"x"$FZF_PREVIEW_LINES" $chafa_flags $fifc_chafa_opts "$fifc_candidate"
                 
-                for i in (seq $FZF_PREVIEW_LINES)
-                    echo
+                if test "$needs_padding" = 1
+                    for i in (seq $FZF_PREVIEW_LINES)
+                        echo
+                    end
                 end
             else
                 _fifc_preview_file_default "$fifc_candidate"
