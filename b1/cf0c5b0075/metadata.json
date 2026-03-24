@@ -3,7 +3,7 @@
   "checkpoint_id": "b1cf0c5b0075",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     ".tmux.conf",
     "fish/completions/openspec.fish",
@@ -60,6 +60,12 @@
       "transcript": "/b1/cf0c5b0075/3/full.jsonl",
       "content_hash": "/b1/cf0c5b0075/3/content_hash.txt",
       "prompt": "/b1/cf0c5b0075/3/prompt.txt"
+    },
+    {
+      "metadata": "/b1/cf0c5b0075/4/metadata.json",
+      "transcript": "/b1/cf0c5b0075/4/full.jsonl",
+      "content_hash": "/b1/cf0c5b0075/4/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
