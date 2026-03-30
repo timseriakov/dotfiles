@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "caac517a1342",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/40-plugins.fish",
+    "fish/functions/fish_user_key_bindings.fish"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ca/ac517a1342/0/metadata.json",
+      "transcript": "/ca/ac517a1342/0/full.jsonl",
+      "content_hash": "/ca/ac517a1342/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
