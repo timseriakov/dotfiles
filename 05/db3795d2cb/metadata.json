@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "05db3795d2cb",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "codex/config.toml",
+    "codex/hooks.json",
+    "opencode/plugin/workmux-status.ts",
+    "workmux/config.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/05/db3795d2cb/0/metadata.json",
+      "transcript": "/05/db3795d2cb/0/full.jsonl",
+      "content_hash": "/05/db3795d2cb/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
