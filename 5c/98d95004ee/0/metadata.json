@@ -3,21 +3,22 @@
   "checkpoint_id": "5c98d95004ee",
   "session_id": "ses_2bfc93586ffes16AN9LEeqw3zd",
   "strategy": "manual-commit",
-  "created_at": "2026-03-30T20:37:23.182905Z",
+  "created_at": "2026-03-30T20:41:26.02418Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
+    ".tmux.conf",
     "tmux/title-mappings.conf"
   ],
   "agent": "Claude Code",
   "turn_id": "2a423724d9a7",
   "initial_attribution": {
-    "calculated_at": "2026-03-30T20:37:23.182445Z",
+    "calculated_at": "2026-03-30T20:41:26.023176Z",
     "agent_lines": 0,
-    "human_added": 2,
-    "human_modified": 0,
+    "human_added": 0,
+    "human_modified": 2,
     "human_removed": 0,
-    "total_committed": 2,
+    "total_committed": 0,
     "agent_percentage": 0
   }
 }

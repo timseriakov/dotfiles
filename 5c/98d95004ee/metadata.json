@@ -5,6 +5,7 @@
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
+    ".tmux.conf",
     "tmux/title-mappings.conf"
   ],
   "sessions": [
