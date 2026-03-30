@@ -46,6 +46,19 @@
       "transcript": "/c4/ead7215f13/5/full.jsonl",
       "content_hash": "/c4/ead7215f13/5/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/c4/ead7215f13/6/metadata.json",
+      "transcript": "/c4/ead7215f13/6/full.jsonl",
+      "content_hash": "/c4/ead7215f13/6/content_hash.txt",
+      "prompt": ""
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
