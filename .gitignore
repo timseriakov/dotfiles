@@ -1,3 +1,9 @@
+.xdg-cache/
+.xdg-data/
+.xdg-state/
+
+.husky/
+
 .DS_Store
 .idea
 .aider*
