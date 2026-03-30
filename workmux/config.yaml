@@ -102,9 +102,9 @@ panes:
 
 # Custom icons for agent status display.
 status_icons:
-  working: "󰚩"
-  waiting: "󰍩"
-  done: "󰄬"
+  working: "󰚩 "
+  waiting: "󰍩 "
+  done: "󰄬 "
 
 #-------------------------------------------------------------------------------
 # Agent & AI
