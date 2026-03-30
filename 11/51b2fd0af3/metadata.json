@@ -3,7 +3,7 @@
   "checkpoint_id": "1151b2fd0af3",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "qutebrowser/greasemonkey/hover-link-bubble.user.js"
   ],
@@ -30,6 +30,12 @@
       "metadata": "/11/51b2fd0af3/3/metadata.json",
       "transcript": "/11/51b2fd0af3/3/full.jsonl",
       "content_hash": "/11/51b2fd0af3/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/11/51b2fd0af3/4/metadata.json",
+      "transcript": "/11/51b2fd0af3/4/full.jsonl",
+      "content_hash": "/11/51b2fd0af3/4/content_hash.txt",
       "prompt": ""
     }
   ]
