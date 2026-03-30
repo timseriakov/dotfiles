@@ -49,33 +49,11 @@
   }
 
   function attachListeners() {
-    let nativeAdd;
-    try {
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      document.documentElement.appendChild(iframe);
-      nativeAdd = iframe.contentWindow.EventTarget.prototype.addEventListener;
-      document.documentElement.removeChild(iframe);
-    } catch (e) {
-      nativeAdd = EventTarget.prototype.addEventListener;
-    }
-
     const safeAdd = (target, type, fn, capture) => {
       try {
-        nativeAdd.call(target, type, fn, capture);
+        target.addEventListener(type, fn, capture);
       } catch (e) {
-        console.warn(
-          `[Hover Link Bubble] Failed to add ${type} listener via native method:`,
-          e,
-        );
-        try {
-          target.addEventListener(type, fn, capture);
-        } catch (e2) {
-          console.error(
-            `[Hover Link Bubble] Total failure adding ${type} listener:`,
-            e2,
-          );
-        }
+        console.error(`[Hover Link Bubble] Failed to add ${type} listener:`, e);
       }
     };
 
