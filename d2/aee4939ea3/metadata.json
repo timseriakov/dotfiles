@@ -3,7 +3,7 @@
   "checkpoint_id": "d2aee4939ea3",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/skills/merge/SKILL.md",
     "opencode/skills/open-pr/SKILL.md",
@@ -32,6 +32,12 @@
       "metadata": "/d2/aee4939ea3/3/metadata.json",
       "transcript": "/d2/aee4939ea3/3/full.jsonl",
       "content_hash": "/d2/aee4939ea3/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/d2/aee4939ea3/4/metadata.json",
+      "transcript": "/d2/aee4939ea3/4/full.jsonl",
+      "content_hash": "/d2/aee4939ea3/4/content_hash.txt",
       "prompt": ""
     }
   ]
