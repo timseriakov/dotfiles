@@ -52,7 +52,10 @@ abbr -a b bun
 abbr -a ba 'bun a'
 abbr -a bi 'bun i'
 abbr -a bid 'bun i -D'
+# because of a bd (beads) cli conflict
 abbr -a bde 'bun dev'
+abbr -a be 'bun dev'
+
 abbr -a bdd 'bun add'
 abbr -a bddd 'bun add -D'
 abbr -a bx bunx
@@ -140,6 +143,12 @@ abbr -a os '~/.config/opencode/omo-switch'
 abbr -a o-web 'openchamber --daemon --port 1911'
 abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 abbr -a o-skills 'npx -y openskills'
+abbr -a o-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/opencode.jsonc'
+
+abbr -a omniroute-models 'curl -sS \
+  -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
+  https://omniroute.e6ejok.easypanel.host/v1/models | jq'
+
 abbr -a add-mcp 'npx -y add-mcp'
 
 # mcpproxy
@@ -253,6 +262,7 @@ abbr -a un 'mole uninstall'
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
 abbr -a tk tmux-take-alacritty
+abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
 
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
