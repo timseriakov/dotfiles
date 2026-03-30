@@ -81,7 +81,7 @@ c.colors.statusbar.normal.fg = "#8B95A7"
 c.colors.statusbar.command.bg = nord0
 c.colors.statusbar.command.fg = white
 c.colors.statusbar.insert.bg = (
-    "#00754a" # "#5E81AC"  # "#A3BE8C" #  "#00BAC7" # "#3D6164" # "#00754a"
+    "#009668"  # "#5E81AC"  # "#A3BE8C" #  "#00BAC7" # "#3D6164" # "#00754a"
 )
 c.colors.statusbar.insert.fg = black
 c.colors.statusbar.passthrough.bg = (
@@ -92,7 +92,7 @@ c.colors.statusbar.private.bg = nord3
 c.colors.statusbar.private.fg = "#8B95A7"
 c.colors.statusbar.url.fg = nord4
 c.colors.statusbar.url.error.fg = red
-c.colors.statusbar.url.hover.fg = nord4
+c.colors.statusbar.url.hover.fg = blue
 c.colors.statusbar.url.success.http.fg = nord4
 c.colors.statusbar.url.success.https.fg = nord4
 c.colors.statusbar.url.warn.fg = yellow
