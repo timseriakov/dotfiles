@@ -4,6 +4,9 @@
 set -gx LANG en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
 
+# ZeroClaw
+set -gx ZEROCLAW_CONFIG_DIR /Users/tim/dev/ai/zeroclaw
+
 # Shell UX
 set -gx fish_command_timeout 8000
 set -gx fish_greeting Welcome
