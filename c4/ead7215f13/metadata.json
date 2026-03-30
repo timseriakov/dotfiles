@@ -52,6 +52,12 @@
       "transcript": "/c4/ead7215f13/6/full.jsonl",
       "content_hash": "/c4/ead7215f13/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/c4/ead7215f13/7/metadata.json",
+      "transcript": "/c4/ead7215f13/7/full.jsonl",
+      "content_hash": "/c4/ead7215f13/7/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
