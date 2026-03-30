@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "a64b30808539",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "qutebrowser/quickmarks"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a6/4b30808539/0/metadata.json",
+      "transcript": "/a6/4b30808539/0/full.jsonl",
+      "content_hash": "/a6/4b30808539/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
