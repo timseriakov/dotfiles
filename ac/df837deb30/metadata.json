@@ -33,6 +33,12 @@
       "transcript": "/ac/df837deb30/3/full.jsonl",
       "content_hash": "/ac/df837deb30/3/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/ac/df837deb30/4/metadata.json",
+      "transcript": "/ac/df837deb30/4/full.jsonl",
+      "content_hash": "/ac/df837deb30/4/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
