@@ -1,0 +1,53 @@
+нужно добавить в конфиг 
+
+omniroute
+
+api key OMNIROUTE_TOKEN
+
+endpoint https://omniroute.e6ejok.easypanel.host/v1
+
+[Image 1] [Image 2] [Image 3] [Image 4] указать вот эти модели
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_b247c22f`
+**Description:** Find provider patterns
+**Duration:** 48s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_b247c22f")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_b247c22f`: Find provider patterns
+- `bg_a8f02033`: Check opencode provider docs
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+да!
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_19f15ff6`: Review omniroute profile
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->

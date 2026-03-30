@@ -34,6 +34,19 @@
       "transcript": "/05/db3795d2cb/3/full.jsonl",
       "content_hash": "/05/db3795d2cb/3/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/05/db3795d2cb/4/metadata.json",
+      "transcript": "/05/db3795d2cb/4/full.jsonl",
+      "content_hash": "/05/db3795d2cb/4/content_hash.txt",
+      "prompt": "/05/db3795d2cb/4/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
