@@ -3,7 +3,7 @@
   "checkpoint_id": "986b9f05265a",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "qutebrowser/greasemonkey/tests/translate-selection-tooltip.test.mjs",
     "qutebrowser/greasemonkey/translate-selection-tooltip.user.js"
@@ -31,6 +31,12 @@
       "metadata": "/98/6b9f05265a/3/metadata.json",
       "transcript": "/98/6b9f05265a/3/full.jsonl",
       "content_hash": "/98/6b9f05265a/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/98/6b9f05265a/4/metadata.json",
+      "transcript": "/98/6b9f05265a/4/full.jsonl",
+      "content_hash": "/98/6b9f05265a/4/content_hash.txt",
       "prompt": ""
     }
   ]
