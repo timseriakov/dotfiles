@@ -8,6 +8,107 @@ local builtin = require("telescope.builtin")
 
 local M = {}
 
+local function strip_ansi(line)
+  return (line or ""):gsub("\27%[[0-9;?]*[ -/]*[@-~]", "")
+end
+
+local function parse_lazycommit_suggestions(data)
+  local results = {}
+  local seen = {}
+  local cleaned_lines = {}
+
+  local function add_result(value)
+    local msg = vim.trim(strip_ansi(value))
+    if msg == "" or seen[msg] then
+      return
+    end
+    seen[msg] = true
+    table.insert(results, msg)
+  end
+
+  local function ingest_decoded(value)
+    if type(value) == "string" then
+      add_result(value)
+      return
+    end
+
+    if type(value) ~= "table" then
+      return
+    end
+
+    for _, key in ipairs({ "suggestions", "messages", "commits", "results" }) do
+      if value[key] ~= nil then
+        ingest_decoded(value[key])
+      end
+    end
+
+    for _, item in ipairs(value) do
+      ingest_decoded(item)
+    end
+  end
+
+  for _, line in ipairs(data or {}) do
+    if type(line) == "string" then
+      local cleaned = vim.trim(strip_ansi(line))
+      if cleaned ~= "" then
+        table.insert(cleaned_lines, cleaned)
+
+        local numbered = cleaned:match("^%d+[%.)%-]%s*(.+)$")
+        local bulleted = cleaned:match("^[-*•]%s*(.+)$")
+
+        if numbered then
+          add_result(numbered)
+        elseif bulleted then
+          add_result(bulleted)
+        end
+      end
+    end
+  end
+
+  if not vim.tbl_isempty(results) then
+    return results
+  end
+
+  local ok, decoded = pcall(vim.json.decode, table.concat(cleaned_lines, "\n"))
+  if ok then
+    ingest_decoded(decoded)
+  end
+
+  if not vim.tbl_isempty(results) then
+    return results
+  end
+
+  local ignore_patterns = {
+    "^suggested commit messages?:?$",
+    "^commit messages?:?$",
+    "^here are",
+    "^generating",
+    "^warning[:%- ]",
+    "^error[:%- ]",
+    "^info[:%- ]",
+    "^no changes to commit$",
+    "^nothing to commit$",
+  }
+
+  for _, line in ipairs(cleaned_lines) do
+    local ignored = false
+    local lowered = line:lower()
+
+    for _, pattern in ipairs(ignore_patterns) do
+      if lowered:match(pattern) then
+        ignored = true
+        break
+      end
+    end
+
+    if not ignored then
+      add_result(line)
+    end
+  end
+
+  return results
+end
+
 local function get_git_root()
   local ok, result = pcall(function()
     local out = vim.fn.system("git rev-parse --show-toplevel")
@@ -69,15 +170,7 @@ local function run_ai_commit(git_root, desc, opts)
           return
         end
 
-        local results = {}
-        for _, line in ipairs(data) do
-          if type(line) == "string" and line:match("^%d+%.%s*.+") then
-            local msg = line:gsub("^%d+%.%s*", "")
-            if msg and msg ~= "" then
-              table.insert(results, msg)
-            end
-          end
-        end
+        local results = parse_lazycommit_suggestions(data)
 
         if vim.tbl_isempty(results) then
           vim.notify("⚠️ lazycommit: no AI suggestions found", vim.log.levels.WARN)
