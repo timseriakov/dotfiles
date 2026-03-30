@@ -76,6 +76,7 @@ hide_gpt5_1_migration_prompt = true
 "gpt-5.3-codex" = "gpt-5.4"
 
 [features]
+codex_hooks = true
 unified_exec = true
 shell_snapshot = true
 default_mode_request_user_input = true
