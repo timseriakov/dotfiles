@@ -3,7 +3,7 @@
   "checkpoint_id": "a64b30808539",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "qutebrowser/quickmarks"
   ],
@@ -30,6 +30,12 @@
       "metadata": "/a6/4b30808539/3/metadata.json",
       "transcript": "/a6/4b30808539/3/full.jsonl",
       "content_hash": "/a6/4b30808539/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/a6/4b30808539/4/metadata.json",
+      "transcript": "/a6/4b30808539/4/full.jsonl",
+      "content_hash": "/a6/4b30808539/4/content_hash.txt",
       "prompt": ""
     }
   ]
