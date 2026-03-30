@@ -50,6 +50,12 @@
       "transcript": "/98/6b9f05265a/6/full.jsonl",
       "content_hash": "/98/6b9f05265a/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/98/6b9f05265a/7/metadata.json",
+      "transcript": "/98/6b9f05265a/7/full.jsonl",
+      "content_hash": "/98/6b9f05265a/7/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
