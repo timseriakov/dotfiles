@@ -62,7 +62,7 @@ fzf_configure_bindings \
     --git_log=\el \
     --git_status=\ed \
     --history=\er \
-    --processes=\ep \
+    --processes= \
     --variables=\ev
 function _fzf_uninstall --on-event fzf_uninstall
     _fzf_uninstall_bindings
