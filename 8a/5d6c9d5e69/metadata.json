@@ -3,7 +3,7 @@
   "checkpoint_id": "8a5d6c9d5e69",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/plugin/workmux-status.ts",
     "workmux/config.yaml"
@@ -31,6 +31,12 @@
       "metadata": "/8a/5d6c9d5e69/3/metadata.json",
       "transcript": "/8a/5d6c9d5e69/3/full.jsonl",
       "content_hash": "/8a/5d6c9d5e69/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/8a/5d6c9d5e69/4/metadata.json",
+      "transcript": "/8a/5d6c9d5e69/4/full.jsonl",
+      "content_hash": "/8a/5d6c9d5e69/4/content_hash.txt",
       "prompt": ""
     }
   ]
