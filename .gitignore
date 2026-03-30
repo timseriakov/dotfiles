@@ -3,6 +3,12 @@
 .aider*
 !.aider.conf.yml
 
+.xdg-cache/
+.xdg-data/
+.xdg-state/
+
+nvim/lazy-lock.json
+
 zed/conversations
 zed/prompts
 
