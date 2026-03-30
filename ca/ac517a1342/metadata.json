@@ -32,6 +32,12 @@
       "transcript": "/ca/ac517a1342/3/full.jsonl",
       "content_hash": "/ca/ac517a1342/3/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/ca/ac517a1342/4/metadata.json",
+      "transcript": "/ca/ac517a1342/4/full.jsonl",
+      "content_hash": "/ca/ac517a1342/4/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
