@@ -550,6 +550,31 @@ test("scroll and resize hide an open tooltip", async () => {
   dom.window.close();
 });
 
+test("network error shows CSP-specific message when details indicate connect-src blocking", async () => {
+  const dom = createDom();
+  const window = loadScript(dom);
+  const api = window.__quteTranslateSelectionTooltipTest;
+
+  api.setTransport(() =>
+    Promise.reject({
+      code: "network_error",
+      err: {
+        message:
+          "Refused to connect because it violates the following Content Security Policy directive: connect-src 'self'",
+      },
+    }),
+  );
+
+  await api.show({ text: "Hello world", rect: rect() });
+  await wait(5);
+
+  const state = api.getState();
+  assert.equal(state.mode, "error");
+  assert.equal(state.text, "Blocked by page CSP (connect-src)");
+
+  dom.window.close();
+});
+
 test("cache hit does not show loading flicker", async () => {
   const dom = createDom();
   const window = loadScript(dom);

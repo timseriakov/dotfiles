@@ -112,7 +112,9 @@
     errorUnauthorized: "Daemon rejected request",
     errorTooLarge: "Selection too large",
     errorParse: "Bad daemon response",
-    errorOffline: "Daemon not reachable",
+    errorOffline: "Local request failed",
+    errorBlocked: "Blocked by page CSP (connect-src)",
+    errorBlockedFallback: "Blocked by page policy or daemon unavailable",
   };
 
   if (!TEST_MODE) {
@@ -163,33 +165,11 @@
   }
 
   function attachListeners() {
-    let nativeAdd;
-    try {
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      document.documentElement.appendChild(iframe);
-      nativeAdd = iframe.contentWindow.EventTarget.prototype.addEventListener;
-      document.documentElement.removeChild(iframe);
-    } catch (e) {
-      nativeAdd = EventTarget.prototype.addEventListener;
-    }
-
     const safeAdd = (target, type, fn, capture) => {
       try {
-        nativeAdd.call(target, type, fn, capture);
+        target.addEventListener(type, fn, capture);
       } catch (e) {
-        console.warn(
-          `[Translate Tooltip] Failed to add ${type} listener via native method:`,
-          e,
-        );
-        try {
-          target.addEventListener(type, fn, capture);
-        } catch (e2) {
-          console.error(
-            `[Translate Tooltip] Total failure adding ${type} listener:`,
-            e2,
-          );
-        }
+        console.error(`[Translate Tooltip] Failed to add ${type} listener:`, e);
       }
     };
 
@@ -503,11 +483,11 @@
     }
 
     const code = err && typeof err.code === "string" ? err.code : null;
-    showErrorTooltip({ requestId, key, anchor, code });
+    showErrorTooltip({ requestId, key, anchor, code, err });
   }
 
-  function showErrorTooltip({ requestId, key, anchor, code }) {
-    const msg = mapErrorCodeToMessage(code);
+  function showErrorTooltip({ requestId, key, anchor, code, err }) {
+    const msg = mapErrorCodeToMessage(code, err);
     showTooltip({ mode: "error", text: msg, anchor, requestId, key });
 
     clearTimer("errorHide");
@@ -519,7 +499,7 @@
     }, CONFIG.errorAutoHideMs);
   }
 
-  function mapErrorCodeToMessage(code) {
+  function mapErrorCodeToMessage(code, err) {
     switch (code) {
       case "unauthorized":
         return UI_STRINGS.errorUnauthorized;
@@ -536,10 +516,78 @@
       case "invalid_response":
         return UI_STRINGS.errorParse;
       case "network_error":
-        return UI_STRINGS.errorOffline;
+        return describeNetworkError(err);
       default:
         return UI_STRINGS.errorGeneric;
     }
+  }
+
+  function describeNetworkError(err) {
+    const details = collectErrorText(err).toLowerCase();
+    if (
+      details.includes("content security policy") ||
+      details.includes("connect-src") ||
+      details.includes("refused to connect") ||
+      details.includes(
+        "violates the following content security policy directive",
+      ) ||
+      details.includes("csp")
+    ) {
+      return UI_STRINGS.errorBlocked;
+    }
+    if (details.includes("blocked") || details.includes("forbidden")) {
+      return UI_STRINGS.errorBlockedFallback;
+    }
+    return UI_STRINGS.errorBlockedFallback;
+  }
+
+  function collectErrorText(value) {
+    if (!value) {
+      return "";
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+
+    const parts = [];
+    const queue = [value];
+    const seen = new Set();
+
+    while (queue.length) {
+      const current = queue.shift();
+      if (!current || typeof current !== "object") {
+        continue;
+      }
+      if (seen.has(current)) {
+        continue;
+      }
+      seen.add(current);
+
+      if (typeof current.message === "string") {
+        parts.push(current.message);
+      }
+      if (typeof current.reason === "string") {
+        parts.push(current.reason);
+      }
+      if (typeof current.code === "string") {
+        parts.push(current.code);
+      }
+      if (typeof current.statusText === "string") {
+        parts.push(current.statusText);
+      }
+
+      if (current.error && typeof current.error === "object") {
+        queue.push(current.error);
+      }
+      if (current.err && typeof current.err === "object") {
+        queue.push(current.err);
+      }
+      if (current.target && typeof current.target === "object") {
+        queue.push(current.target);
+      }
+    }
+
+    return parts.join(" ");
   }
 
   function isActiveRequest(requestId, key) {
