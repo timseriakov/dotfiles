@@ -35,7 +35,7 @@ nerdfont: true
 # Default merge strategy for `workmux merge`.
 # Options: merge (default), rebase, squash
 # CLI flags (--rebase, --squash) always override this.
-# merge_strategy: rebase
+merge_strategy: rebase
 
 #-------------------------------------------------------------------------------
 # Naming & Paths

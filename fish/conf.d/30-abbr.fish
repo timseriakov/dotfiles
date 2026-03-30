@@ -265,6 +265,15 @@ abbr -a tk tmux-take-alacritty
 abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
 
+# workmux
+abbr -a wo workmux
+abbr -a woa 'workmux add'
+abbr -a wol 'workmux list'
+abbr -a wor 'workmux remove'
+abbr -a wom 'workmux merge'
+abbr -a wod 'workmux dashboard'
+abbr -a wos 'workmux sidebar'
+
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -movflags +faststart \
   -pix_fmt yuv420p \
