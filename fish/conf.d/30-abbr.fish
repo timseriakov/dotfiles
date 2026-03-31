@@ -266,13 +266,16 @@ abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
 
 # workmux
-abbr -a wo workmux
-abbr -a woa 'workmux add'
-abbr -a wol 'workmux list'
-abbr -a wor 'workmux remove'
-abbr -a wom 'workmux merge'
-abbr -a wod 'workmux dashboard'
-abbr -a wos 'workmux sidebar'
+abbr -a wm workmux
+abbr -a wma 'workmux add'
+abbr -a wml 'workmux list'
+abbr -a wmr 'workmux remove'
+abbr -a wmm 'workmux merge'
+abbr -a wmd 'workmux dashboard'
+abbr -a wms 'workmux sidebar'
+abbr -a wm-up 'brew install raine/workmux/workmux'
+abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
+abbr -a wmrc 'nvim ./.workmux.yaml'
 
 abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
   -movflags +faststart \
