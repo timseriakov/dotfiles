@@ -1,0 +1,131 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ nvim ~/dev/dotfiles/fish/secrets.fish && exec fish
+Welcome
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ curl -X GET "https://context7.com/api/v2/libs/search?libraryName=next.js&query=setup+ssr" \
+        -H "Authorization: Bearer REDACTED"
+HTTP/2 401
+cache-control: public, max-age=0, must-revalidate
+content-type: application/json
+date: Wed, 01 Apr 2026 13:44:42 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+x-clerk-auth-message: Invalid JWT form. A JWT consists of three parts separated by dots. (reason=token-invalid, token-carrier=header)
+x-clerk-auth-reason: token-invalid
+x-clerk-auth-status: signed-out
+x-vercel-id: arn1::nd4kc-1775051082481-135d68a0b21d
+
+{
+    "error": "invalid_api_key",
+    "message": "Invalid API key. Please check your API key. API keys should start with ctx7sk prefix."
+}
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ Что, блядь, не так? Я скопировал свеженький, создал ключ и установил в shell.
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ nvim ~/dev/dotfiles/fish/secrets.fish && exec fish
+Welcome
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ curl -X GET "https://context7.com/api/v2/libs/search?libraryName=next.js&query=setup+ssr" \
+        -H "Authorization: Bearer REDACTED"
+HTTP/2 401
+cache-control: public, max-age=0, must-revalidate
+content-type: application/json
+date: Wed, 01 Apr 2026 13:44:42 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+x-clerk-auth-message: Invalid JWT form. A JWT consists of three parts separated by dots. (reason=token-invalid, token-carrier=header)
+x-clerk-auth-reason: token-invalid
+x-clerk-auth-status: signed-out
+x-vercel-id: arn1::nd4kc-1775051082481-135d68a0b21d
+
+{
+    "error": "invalid_api_key",
+    "message": "Invalid API key. Please check your API key. API keys should start with ctx7sk prefix."
+}
+
+dotfiles/yazi on  master [!?] via  v5.5.0
+❯ Что, блядь, не так? Я скопировал свеженький, создал ключ и установил в shell.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_ce6d9131`
+**Description:** Context7 auth docs
+**Duration:** 13s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_ce6d9131")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_ce6d9131`
+**Description:** Context7 auth docs
+**Duration:** 13s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_ce6d9131")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_27322c5a`
+**Description:** Find Context7 examples
+**Duration:** 21s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_27322c5a")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_27322c5a`
+**Description:** Find Context7 examples
+**Duration:** 21s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_27322c5a")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
