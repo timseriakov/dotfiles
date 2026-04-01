@@ -3,28 +3,21 @@
   "checkpoint_id": "f25d97437329",
   "session_id": "ses_2b68fab6bffenMYfAb9qfL7w3X",
   "strategy": "manual-commit",
-  "created_at": "2026-04-01T15:47:59.537492Z",
+  "created_at": "2026-04-01T15:48:06.972018Z",
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
-    "opencode/oh-my-opencode_antigravity-flash_only.jsonc",
-    "opencode/oh-my-opencode_antigravity-opus_4_6.jsonc",
-    "opencode/oh-my-opencode_copilot-economy.jsonc",
-    "opencode/oh-my-opencode_copilot-free.jsonc",
-    "opencode/oh-my-opencode_copilot.jsonc",
-    "opencode/oh-my-opencode_glm.jsonc",
-    "opencode/oh-my-opencode_omniroute-raw.jsonc",
-    "opencode/oh-my-opencode_opencode-go.jsonc"
+    "tmux/title-mappings.conf"
   ],
   "agent": "Claude Code",
   "turn_id": "01fa97bbc5d0",
   "initial_attribution": {
-    "calculated_at": "2026-04-01T15:47:59.535395Z",
-    "agent_lines": 8,
-    "human_added": 63,
+    "calculated_at": "2026-04-01T15:48:06.969934Z",
+    "agent_lines": 1,
+    "human_added": 0,
     "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 71,
-    "agent_percentage": 11.267605633802818
+    "total_committed": 1,
+    "agent_percentage": 100
   }
 }
