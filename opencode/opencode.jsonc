@@ -38,6 +38,13 @@
     "github-copilot",
   ],
 
+  "lsp": {
+    "markdown": {
+      "command": ["npx", "-y", "remark-language-server", "--stdio"],
+      "extensions": [".md"],
+    },
+  },
+
   "provider": {
     "openai": {
       "name": "OpenAI",

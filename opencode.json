@@ -6,5 +6,11 @@
       "type": "local",
       "enabled": true
     }
+  },
+  "lsp": {
+    "remark": {
+      "command": ["npx", "-y", "remark-language-server", "--stdio"],
+      "extensions": [".md"]
+    }
   }
 }
