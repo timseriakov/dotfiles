@@ -3,21 +3,23 @@
   "checkpoint_id": "f25d97437329",
   "session_id": "ses_2b68fab6bffenMYfAb9qfL7w3X",
   "strategy": "manual-commit",
-  "created_at": "2026-04-01T15:48:06.972018Z",
+  "created_at": "2026-04-01T15:48:17.412953Z",
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
-    "tmux/title-mappings.conf"
+    "fish/conf.d/30-abbr.fish",
+    "mcpproxy/mcp_config.json",
+    "qutebrowser/quickmarks"
   ],
   "agent": "Claude Code",
   "turn_id": "01fa97bbc5d0",
   "initial_attribution": {
-    "calculated_at": "2026-04-01T15:48:06.969934Z",
-    "agent_lines": 1,
+    "calculated_at": "2026-04-01T15:48:17.41104Z",
+    "agent_lines": 11,
     "human_added": 0,
     "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 1,
+    "total_committed": 11,
     "agent_percentage": 100
   }
 }
