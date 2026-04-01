@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "f25d97437329",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-opencode_gemini-only.jsonc",
+    "opencode/oh-my-opencode_openai-google-hybrid.jsonc",
+    "opencode/oh-my-opencode_openai.jsonc",
+    "opencode/opencode.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f2/5d97437329/0/metadata.json",
+      "transcript": "/f2/5d97437329/0/full.jsonl",
+      "content_hash": "/f2/5d97437329/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
