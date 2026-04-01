@@ -1,0 +1,41 @@
+можно заглушить нотификации для срабатывания этой логики в opencode? /Users/tim/dev/dotfiles/opencode/plugin/workmux-status.ts
+
+---
+
+получилось?
+
+---
+
+да, возможно в opencode есть такая функциональность что можно отключить
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_b6c1a48e`
+**Description:** Find plugin event docs
+**Duration:** 6m 19s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_b6c1a48e")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_b6c1a48e`: Find plugin event docs
+- `bg_430f9823`: Find notification sources
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+2
