@@ -22,7 +22,8 @@
     "opencode/plugin/workmux-status.ts",
     "opencode/plugins/workmux-status.ts",
     "qutebrowser/quickmarks",
-    "tmux/title-mappings.conf"
+    "tmux/title-mappings.conf",
+    "yazi/theme.toml"
   ],
   "sessions": [
     {
