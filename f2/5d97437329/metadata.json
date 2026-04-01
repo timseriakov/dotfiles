@@ -5,6 +5,8 @@
   "branch": "master",
   "checkpoints_count": 2,
   "files_touched": [
+    "fish/conf.d/30-abbr.fish",
+    "mcpproxy/mcp_config.json",
     "opencode/oh-my-opencode_antigravity-flash_only.jsonc",
     "opencode/oh-my-opencode_antigravity-opus_4_6.jsonc",
     "opencode/oh-my-opencode_copilot-economy.jsonc",
@@ -19,6 +21,7 @@
     "opencode/opencode.jsonc",
     "opencode/plugin/workmux-status.ts",
     "opencode/plugins/workmux-status.ts",
+    "qutebrowser/quickmarks",
     "tmux/title-mappings.conf"
   ],
   "sessions": [
