@@ -3,12 +3,21 @@
   "checkpoint_id": "85dd2adc06a2",
   "session_id": "ses_2b59353ccffefst7yhiRusmT4Z",
   "strategy": "manual-commit",
-  "created_at": "2026-04-01T20:57:34.511208Z",
+  "created_at": "2026-04-01T20:57:54.993477Z",
   "branch": "master",
-  "checkpoints_count": 0,
-  "files_touched": [],
+  "checkpoints_count": 1,
+  "files_touched": [
+    "qutebrowser/quickmarks"
+  ],
   "agent": "Claude Code",
   "turn_id": "ff055fbd5aab",
-  "checkpoint_transcript_start": 75,
-  "transcript_lines_at_start": 75
+  "initial_attribution": {
+    "calculated_at": "2026-04-01T20:57:54.991975Z",
+    "agent_lines": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1,
+    "agent_percentage": 100
+  }
 }
