@@ -3,7 +3,7 @@
   "checkpoint_id": "f25d97437329",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "opencode/oh-my-opencode_antigravity-flash_only.jsonc",
     "opencode/oh-my-opencode_antigravity-opus_4_6.jsonc",
