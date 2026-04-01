@@ -82,6 +82,12 @@
       "transcript": "/f2/5d97437329/11/full.jsonl",
       "content_hash": "/f2/5d97437329/11/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f2/5d97437329/12/metadata.json",
+      "transcript": "/f2/5d97437329/12/full.jsonl",
+      "content_hash": "/f2/5d97437329/12/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
