@@ -3,7 +3,7 @@
   "checkpoint_id": "85dd2adc06a2",
   "session_id": "ses_2b66d98e7ffemfBOtQIhc21qVr",
   "strategy": "manual-commit",
-  "created_at": "2026-04-01T20:48:08.211368Z",
+  "created_at": "2026-04-01T20:57:34.605421Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
@@ -12,12 +12,12 @@
   "agent": "Claude Code",
   "turn_id": "077b90a03dfd",
   "initial_attribution": {
-    "calculated_at": "2026-04-01T20:48:08.210249Z",
-    "agent_lines": 8,
+    "calculated_at": "2026-04-01T20:57:34.604242Z",
+    "agent_lines": 0,
     "human_added": 0,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 8,
-    "agent_percentage": 100
+    "human_modified": 2,
+    "human_removed": 1,
+    "total_committed": 0,
+    "agent_percentage": 0
   }
 }
