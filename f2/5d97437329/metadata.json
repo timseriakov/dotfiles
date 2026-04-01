@@ -220,6 +220,12 @@
       "transcript": "/f2/5d97437329/34/full.jsonl",
       "content_hash": "/f2/5d97437329/34/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f2/5d97437329/35/metadata.json",
+      "transcript": "/f2/5d97437329/35/full.jsonl",
+      "content_hash": "/f2/5d97437329/35/content_hash.txt",
+      "prompt": "/f2/5d97437329/35/prompt.txt"
     }
   ],
   "token_usage": {
