@@ -150,7 +150,7 @@
     "truncate_all_tool_outputs": true,
     "dynamic_context_pruning": {
       "enabled": false,
-      "notification": "minimal",
+      "notification": "off",
       "turn_protection": {
         "enabled": true,
         "turns": 3,

@@ -154,7 +154,8 @@ abbr -a add-mcp 'npx -y add-mcp'
 # mcpproxy
 abbr -a mp mcpproxy
 abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
-abbr -a mpr '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mp-fix '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mp-up 'brew install smart-mcp-proxy/mcpproxy/mcpproxy'
 
 # Other AI tools
 abbr -a cr cursor-agent

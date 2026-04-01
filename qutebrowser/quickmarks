@@ -45,3 +45,7 @@ wg http://103.231.72.175:51821/login
 ge https://business.gemini.google/home/cid/969f3a2f-7316-4e98-b453-0d3a3ba2c27b?csesidx=1565544068&utm_source=gemini-business&utm_medium=email&utm_campaign=mandatory-emails-welcome&utm_content=sign-in&mods=
 tg https://web.telegram.org/k/
 logs https://logs.e6ejok.easypanel.host/
+gmi https://mail.google.com/mail/u/1/#inbox
+gmts https://mail.google.com/mail/u/2/#inbox
+gmu https://mail.google.com/mail/u/3/#inbox
+rlogs https://omniroute.e6ejok.easypanel.host/dashboard/logs

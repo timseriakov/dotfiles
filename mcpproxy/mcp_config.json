@@ -14,7 +14,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-03-16T15:28:52.433303+03:00"
+      "updated": "2026-04-01T14:54:24.475502+03:00"
     },
     {
       "name": "morphllm-fast-apply",
@@ -29,7 +29,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-03-16T15:28:52.450909+03:00"
+      "updated": "2026-04-01T14:54:24.484153+03:00"
     },
     {
       "name": "shoogle",
@@ -39,7 +39,7 @@
       "enabled": true,
       "quarantined": false,
       "created": "2026-03-16T13:45:57.221182+03:00",
-      "updated": "2026-03-16T15:28:52.459058+03:00"
+      "updated": "2026-04-01T14:54:24.499111+03:00"
     }
   ],
   "top_k": 5,
@@ -100,7 +100,7 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "1e7d1d1e0e47bb02692be01479e3547ff227c09ce60159b3e0d13e383b509fbe",
+  "api_key": "1b1f9176cb2c4cce9610251ee944639e1fd19efc905d4f9572c3a6220e0a3d69",
   "require_mcp_auth": false,
   "read_only_mode": false,
   "disable_management": false,
@@ -241,6 +241,5 @@
       "private_key": true,
       "sensitive_file": true
     }
-  },
-  "routing_mode": "retrieve_tools"
+  }
 }

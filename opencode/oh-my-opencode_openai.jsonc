@@ -7,19 +7,19 @@
       "temperature": 0.1,
     },
     "atlas": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4",
       "temperature": 0.1,
     },
     "oracle": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4",
       "temperature": 0.1,
     },
     "librarian": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.2,
     },
     "explore": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.1,
     },
     "hephaestus": {
@@ -31,27 +31,27 @@
       "temperature": 0.1,
     },
     "multimodal-looker": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.1,
     },
     "plan": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4",
       "temperature": 0.2,
     },
     "OpenCode-Builder": {
-      "model": "openai/gpt-5.2-codex",
+      "model": "openai/gpt-5.3-codex",
       "temperature": 0.05,
     },
     "prometheus": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.2,
     },
     "metis": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4",
       "temperature": 0.3,
     },
     "momus": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.1,
     },
   },
@@ -71,42 +71,41 @@
       "openai": 5,
     },
     "modelConcurrency": {
-      "openai/gpt-5.2": 3,
-      "openai/gpt-5.2-codex": 1,
-      "openai/gpt-5.1-codex-max": 3,
-      "openai/gpt-5.1-codex-mini": 8,
+      "openai/gpt-5.4": 3,
+      "openai/gpt-5.4-mini": 8,
+      "openai/gpt-5.3-codex": 2,
     },
   },
   "categories": {
     "visual-engineering": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.7,
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
     "ultrabrain": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.4",
       "temperature": 0.15,
       "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
     },
     "deep": {
-      "model": "openai/gpt-5.1-codex-max",
+      "model": "openai/gpt-5.4",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.3,
     },
     "unspecified-low": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.3,
     },
     "unspecified-high": {
-      "model": "openai/gpt-5.1-codex-max",
+      "model": "openai/gpt-5.4",
       "temperature": 0.1,
     },
     "writing": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "openai/gpt-5.4-mini",
       "temperature": 0.3,
     },
   },
@@ -130,7 +129,7 @@
     "preemptive_compaction": true,
     "dynamic_context_pruning": {
       "enabled": false,
-      "notification": "minimal",
+      "notification": "off",
       "turn_protection": {
         "enabled": true,
         "turns": 3,

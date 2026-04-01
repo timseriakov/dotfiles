@@ -136,7 +136,7 @@
     "preemptive_compaction": true,
     "dynamic_context_pruning": {
       "enabled": false,
-      "notification": "minimal",
+      "notification": "off",
       "turn_protection": {
         "enabled": true,
         "turns": 3,
