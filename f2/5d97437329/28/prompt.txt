@@ -1,0 +1,28 @@
+Так, посмотри, чего сбился бинд на букву s. Он служил для выделения через появляющиеся буквенные лейблы.
+
+---
+
+возможно это flash но это не точно
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_f6aa52ba`
+**Description:** Check flash defaults
+**Duration:** 15s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_f6aa52ba")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+???
+
+---
+
+Не, так он срабатывает иногда, просто почему-то не всегда. И нужно посмотреть в гид истории последние изменения, историю изменений, которая могла заэффектить это.
