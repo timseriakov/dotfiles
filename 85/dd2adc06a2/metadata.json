@@ -109,6 +109,12 @@
       "transcript": "/85/dd2adc06a2/16/full.jsonl",
       "content_hash": "/85/dd2adc06a2/16/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/85/dd2adc06a2/17/metadata.json",
+      "transcript": "/85/dd2adc06a2/17/full.jsonl",
+      "content_hash": "/85/dd2adc06a2/17/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
