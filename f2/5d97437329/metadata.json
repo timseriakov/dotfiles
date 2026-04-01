@@ -148,6 +148,19 @@
       "transcript": "/f2/5d97437329/22/full.jsonl",
       "content_hash": "/f2/5d97437329/22/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f2/5d97437329/23/metadata.json",
+      "transcript": "/f2/5d97437329/23/full.jsonl",
+      "content_hash": "/f2/5d97437329/23/content_hash.txt",
+      "prompt": ""
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
