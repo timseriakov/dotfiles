@@ -3,17 +3,18 @@
   "checkpoint_id": "864a9ecaa856",
   "session_id": "ses_2b1cd18f9ffewgC0et7LvV4r5w",
   "strategy": "manual-commit",
-  "created_at": "2026-04-02T22:41:39.235983Z",
+  "created_at": "2026-04-02T22:41:49.576849Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
     "fish/conf.d/30-abbr.fish",
-    "fish/config.fish"
+    "fish/config.fish",
+    ".tmux.conf"
   ],
   "agent": "Claude Code",
   "turn_id": "18d78f35004f",
   "initial_attribution": {
-    "calculated_at": "2026-04-02T22:41:39.235112Z",
+    "calculated_at": "2026-04-02T22:41:49.575627Z",
     "agent_lines": 4,
     "human_added": 0,
     "human_modified": 0,
