@@ -1,5 +1,4 @@
 {
-  "plugin": ["opencode-froggy", "@pantheon-ai/opencode-warcraft-notifications"],
   "mcp": {
     "mcpproxy": {
       "url": "http://localhost:8080/mcp/",

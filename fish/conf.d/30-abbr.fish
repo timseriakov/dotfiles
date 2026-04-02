@@ -151,6 +151,10 @@ abbr -a omniroute-models 'curl -sS \
 
 abbr -a add-mcp 'npx -y add-mcp'
 
+# pi
+abbr -a pid '~/.volta/bin/pi'
+abbr -a pi-up 'npm install -g @mariozechner/pi-coding-agent'
+
 # mcpproxy
 abbr -a mp mcpproxy
 abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
