@@ -3,7 +3,7 @@
   "checkpoint_id": "864a9ecaa856",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 5,
+  "checkpoints_count": 4,
   "files_touched": [
     ".tmux.conf",
     "fish/conf.d/30-abbr.fish",
