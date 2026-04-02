@@ -3,23 +3,16 @@
   "checkpoint_id": "864a9ecaa856",
   "session_id": "ses_2afbf43e2ffee7cVv82dq5rGWo",
   "strategy": "manual-commit",
-  "created_at": "2026-04-02T22:33:26.780385Z",
+  "created_at": "2026-04-02T22:41:39.168612Z",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
-    "fish/config.fish"
+    "fish/conf.d/30-abbr.fish"
   ],
   "agent": "Claude Code",
   "turn_id": "a44975c4349b",
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  },
   "initial_attribution": {
-    "calculated_at": "2026-04-02T22:33:26.759896Z",
+    "calculated_at": "2026-04-02T22:41:39.166135Z",
     "agent_lines": 4,
     "human_added": 0,
     "human_modified": 0,
