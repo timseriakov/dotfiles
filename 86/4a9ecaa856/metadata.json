@@ -5,6 +5,7 @@
   "branch": "master",
   "checkpoints_count": 5,
   "files_touched": [
+    ".tmux.conf",
     "fish/conf.d/30-abbr.fish",
     "fish/config.fish"
   ],
