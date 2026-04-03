@@ -3,7 +3,7 @@
   "checkpoint_id": "8ebeec055a38",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "fish/functions/fish_user_key_bindings.fish",
     "kitty/kitty.conf"
@@ -37,6 +37,12 @@
       "metadata": "/8e/beec055a38/4/metadata.json",
       "transcript": "/8e/beec055a38/4/full.jsonl",
       "content_hash": "/8e/beec055a38/4/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/8e/beec055a38/5/metadata.json",
+      "transcript": "/8e/beec055a38/5/full.jsonl",
+      "content_hash": "/8e/beec055a38/5/content_hash.txt",
       "prompt": ""
     }
   ],
