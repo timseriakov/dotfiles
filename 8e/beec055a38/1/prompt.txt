@@ -1,0 +1,365 @@
+Я хочу приспособить Glide на macOS под очень узкий сценарий для qutebrowser.
+
+Мне не нужен полноценный tiling window manager и не нужен общий window management для всей системы.
+
+Нужен только такой минимальный workflow:
+	•	в qutebrowser я нажимаю Cmd-Enter
+	•	текущее окно qutebrowser автоматически делится на два окна рядом (side-by-side)
+	•	во втором окне я могу открыть другую страницу и что-то быстро сделать
+	•	потом я закрываю второе окно
+	•	первое окно qutebrowser должно автоматически снова занять всю доступную ширину/область, как было до split
+
+Также нужен минимум навигации:
+	•	hotkey для перехода между левым и правым окном
+	•	желательно только для этих двух qutebrowser окон в рамках этого сценария
+
+Очень важно:
+	•	Glide не должен заметно вмешиваться в остальную систему
+	•	он не должен управлять всеми окнами подряд
+	•	он должен работать только в этом сценарии, только для qutebrowser, только для временного split
+	•	всё остальное лишнее
+
+Что нужно от решения:
+	1.	Понять, можно ли вообще так ограничить Glide под этот узкий сценарий.
+	2.	Если да:
+	•	дать минимальную рабочую конфигурацию
+	•	дать готовые файлы целиком
+	•	указать пути файлов перед кодом
+	3.	Если Glide для этого неудобен или не подходит, предложить более простой вариант, но всё ещё под qutebrowser на macOS.
+	4.	Нужен именно автоматизированный сценарий, а не ручной split через hotkeys/window manager команды.
+	5.	Я использую fish shell и macOS.
+	6.	Не использовать Python, если можно обойтись без него.
+	7.	Комментарии в коде — только на английском.
+
+Итоговая цель:
+получить максимально простой “temporary browser split” для qutebrowser:
+	•	вызвать split
+	•	поработать во втором окне
+	•	закрыть второе окно
+	•	вернуться к одному окну на всю ширину
+
+это mvp
+Давай сделаем ресерч, возможно ли такое.
+
+---
+
+Я хочу приспособить Glide на macOS под очень узкий сценарий для qutebrowser.
+
+Мне не нужен полноценный tiling window manager и не нужен общий window management для всей системы.
+
+Нужен только такой минимальный workflow:
+	•	в qutebrowser я нажимаю Cmd-Enter
+	•	текущее окно qutebrowser автоматически делится на два окна рядом (side-by-side)
+	•	во втором окне я могу открыть другую страницу и что-то быстро сделать
+	•	потом я закрываю второе окно
+	•	первое окно qutebrowser должно автоматически снова занять всю доступную ширину/область, как было до split
+
+Также нужен минимум навигации:
+	•	hotkey для перехода между левым и правым окном
+	•	желательно только для этих двух qutebrowser окон в рамках этого сценария
+
+Очень важно:
+	•	Glide не должен заметно вмешиваться в остальную систему
+	•	он не должен управлять всеми окнами подряд
+	•	он должен работать только в этом сценарии, только для qutebrowser, только для временного split
+	•	всё остальное лишнее
+
+Что нужно от решения:
+	1.	Понять, можно ли вообще так ограничить Glide под этот узкий сценарий.
+	2.	Если да:
+	•	дать минимальную рабочую конфигурацию
+	•	дать готовые файлы целиком
+	•	указать пути файлов перед кодом
+	3.	Если Glide для этого неудобен или не подходит, предложить более простой вариант, но всё ещё под qutebrowser на macOS.
+	4.	Нужен именно автоматизированный сценарий, а не ручной split через hotkeys/window manager команды.
+	5.	Я использую fish shell и macOS.
+	6.	Не использовать Python, если можно обойтись без него.
+	7.	Комментарии в коде — только на английском.
+
+Итоговая цель:
+получить максимально простой “temporary browser split” для qutebrowser:
+	•	вызвать split
+	•	поработать во втором окне
+	•	закрыть второе окно
+	•	вернуться к одному окну на всю ширину
+
+это mvp
+Давай сделаем ресерч, возможно ли такое.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_ede04970`
+**Description:** Research simpler alternatives
+**Duration:** 16s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_ede04970")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_ede04970`
+**Description:** Research simpler alternatives
+**Duration:** 16s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_ede04970")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_82a81ec0`
+**Description:** Research Glide limits
+**Duration:** 19s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_82a81ec0")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_82a81ec0`
+**Description:** Research Glide limits
+**Duration:** 19s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_82a81ec0")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_ede04970`: Research simpler alternatives
+- `bg_82a81ec0`: Research Glide limits
+- `bg_38f53196`: Research qutebrowser hooks
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_ede04970`: Research simpler alternatives
+- `bg_82a81ec0`: Research Glide limits
+- `bg_38f53196`: Research qutebrowser hooks
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_82a81ec0`
+**Description:** Research Glide limits
+**Duration:** 3s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_82a81ec0")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_82a81ec0`
+**Description:** Research Glide limits
+**Duration:** 3s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_82a81ec0")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_82a81ec0`: Research Glide limits
+- `bg_ede04970`: Research simpler alternatives
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_82a81ec0`: Research Glide limits
+- `bg_ede04970`: Research simpler alternatives
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+Нет, давай сначала пропишем план для варианта А. В данном кейсе, кстати, комментарии в коде можешь оставлять на русском.
+
+---
+
+Нет, давай сначала пропишем план для варианта А. В данном кейсе, кстати, комментарии в коде можешь оставлять на русском.
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+▣ DCP | -21.2K removed, +2K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿██████████████████████████│
+▣ Compression #1 -20K removed, +2K summary
+→ Topic: Qutebrowser split research
+→ Items: 18 messages and 16 tools compressed
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+▣ DCP | -21.2K removed, +2K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿██████████████████████████│
+▣ Compression #1 -20K removed, +2K summary
+→ Topic: Qutebrowser split research
+→ Items: 18 messages and 16 tools compressed
+
+---
+
+▣ DCP | -102K removed, +11.8K summary
+
+│░░░░░░░░░░░░░░░░░░░░⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿████│
+▣ Compression #2 -80.8K removed, +9.8K summary
+→ Topic: Temporary split planning
+→ Items: 24 messages and 37 tools compressed
+
+---
+
+▣ DCP | -102K removed, +11.8K summary
+
+│░░░░░░░░░░░░░░░░░░░░⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿████│
+▣ Compression #2 -80.8K removed, +9.8K summary
+→ Topic: Temporary split planning
+→ Items: 24 messages and 37 tools compressed
+
+---
+
+Только на ревью ты меня не дашь? То, что ты план подготовил, дебил, на русском языке дай мне план
+
+---
+
+Только на ревью ты меня не дашь? То, что ты план подготовил, дебил, на русском языке дай мне план
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+The Plannotator Code Review has been triggered. Opening the review UI...
+Acknowledge "Opening code review..." and wait for the user's feedback.
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+The Plannotator Code Review has been triggered. Opening the review UI...
+Acknowledge "Opening code review..." and wait for the user's feedback.
+
+---
+
+.sisyphus/plans/qutebrowser-temporary-browser-split.md Дебил, блять, открой меня в браузере на ревью.
+
+---
+
+.sisyphus/plans/qutebrowser-temporary-browser-split.md Дебил, блять, открой меня в браузере на ревью.
