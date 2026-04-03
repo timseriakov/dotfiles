@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euo pipefail
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
+active_file="/tmp/qutebrowser-temporary-split-active"
+state_file="/tmp/qutebrowser-temporary-split-state.json"
+split_delay="${QUTE_TEMPORARY_SPLIT_DELAY:-0.20}"
+
+clear_state() {
+  rm -f "$active_file" "$state_file"
+}
+
+if [[ -z "${QUTE_FIFO:-}" || ! -p "$QUTE_FIFO" ]]; then
+  echo "Error: Must be run as qutebrowser userscript (QUTE_FIFO not set)" >&2
+  exit 1
+fi
+
+if [[ -f "$active_file" ]]; then
+  printf "%s\n" "message-info 'Temporary split already active'" >>"$QUTE_FIFO"
+  exit 0
+fi
+
+if ! /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" >/dev/null 2>&1; then
+  clear_state
+  printf "%s\n" "message-error 'Failed to contact Hammerspoon for temporary split'" >>"$QUTE_FIFO"
+  exit 1
+fi
+
+sleep "$split_delay"
+printf '%s\n' 'open -w about:blank' >>"$QUTE_FIFO"
