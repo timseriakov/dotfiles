@@ -3,7 +3,7 @@
   "checkpoint_id": "108e5237de61",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "fish/completions/zeroclaw.fish",
     "fish/conf.d/30-abbr.fish",
@@ -51,6 +51,12 @@
       "metadata": "/10/8e5237de61/6/metadata.json",
       "transcript": "/10/8e5237de61/6/full.jsonl",
       "content_hash": "/10/8e5237de61/6/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/10/8e5237de61/7/metadata.json",
+      "transcript": "/10/8e5237de61/7/full.jsonl",
+      "content_hash": "/10/8e5237de61/7/content_hash.txt",
       "prompt": ""
     }
   ],
