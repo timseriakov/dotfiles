@@ -245,6 +245,7 @@ BINDING_SPECS: list[BindingSpec] = [
         en(f"open -w {homepage}"),
         wrap_ru_with_en=False,
     ),
+    BindingSpec("<Cmd-Return>", "spawn --userscript qute-temporary-split"),
     BindingSpec(
         leader + "tg",
         "spawn --detach /usr/bin/open -a 'Helium' {url}",

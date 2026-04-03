@@ -40,3 +40,6 @@ local wf = hs.window.filter.new(true)
 wf:subscribe({ "windowMoved" }, resizeIfOnExternal)
 
 hs.alert.show("Hammerspoon: auto-resize on LG enabled")
+
+local qutebrowserTemporarySplit = require("qutebrowser_temporary_split")
+qutebrowserTemporarySplit.init()

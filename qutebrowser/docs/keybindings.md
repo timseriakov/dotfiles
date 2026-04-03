@@ -190,6 +190,18 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 | <kbd>Leader</kbd> <kbd>sc</kbd> | session-clean                                      |
 | <kbd>Leader</kbd> <kbd>sz</kbd> | config-cycle -p session.lazy_restore true false    |
 
+## Temporary Split
+
+> macOS-only workflow for one tracked qutebrowser window pair.
+
+| Shortcut | Action |
+| -------- | ------ |
+| <kbd>Cmd</kbd> <kbd>Enter</kbd> | Start temporary split for the current qutebrowser window |
+| <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>H</kbd> | Focus the tracked left window |
+| <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>L</kbd> | Focus the tracked right window |
+
+`Cmd+Enter` starts one strict temporary split session: the current qutebrowser window becomes the left half, a new qutebrowser window becomes the right half, and the right window is focused with the normal `o` open prompt ready. Closing either tracked window restores the survivor to full width and clears the session state. Unrelated qutebrowser windows are not touched.
+
 ## Translation
 
 | Shortcut                        | Action                                |
