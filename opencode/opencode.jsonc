@@ -169,7 +169,7 @@
     },
     "omniroute": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "OmniRoute",
+      "name": "OMNi",
       "options": {
         "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
         "apiKey": "{env:OMNIROUTE_TOKEN}",

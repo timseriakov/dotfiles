@@ -291,3 +291,4 @@ abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
 abbr -a yts yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
 abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
+abbr -a pdf-print plutoprint
