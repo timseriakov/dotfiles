@@ -6,14 +6,15 @@
   "checkpoints_count": 2,
   "files_touched": [
     "fish/functions/fish_user_key_bindings.fish",
-    "kitty/kitty.conf"
+    "kitty/kitty.conf",
+    "opencode/command/plannotator-last.md"
   ],
   "sessions": [
     {
       "metadata": "/8e/beec055a38/0/metadata.json",
       "transcript": "/8e/beec055a38/0/full.jsonl",
       "content_hash": "/8e/beec055a38/0/content_hash.txt",
-      "prompt": "/8e/beec055a38/0/prompt.txt"
+      "prompt": ""
     },
     {
       "metadata": "/8e/beec055a38/1/metadata.json",
