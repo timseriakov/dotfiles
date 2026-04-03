@@ -1,0 +1,911 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+1. TASK
+   Implement the qutebrowser temporary split feature in an isolated git worktree, following the plan in `.sisyphus/plans/qutebrowser-temporary-browser-split.md`.
+
+2. EXPECTED OUTCOME
+
+- Working implementation of the macOS-only qutebrowser temporary split workflow.
+- Files updated/created:
+  - `qutebrowser/modules/bindings.py`
+  - `qutebrowser/userscripts/qute-temporary-split`
+  - `hammerspoon/qutebrowser_temporary_split.lua`
+  - `hammerspoon/init.lua`
+  - `qutebrowser/docs/keybindings.md`
+- Runtime behavior:
+  - `Cmd-Enter` in qutebrowser starts one strict temporary split session.
+  - Current qutebrowser window becomes left window.
+  - New qutebrowser window becomes right window.
+  - Right window receives focus and enters URL prompt state equivalent to `o`.
+  - `ctrl+alt+h` focuses left tracked window only.
+  - `ctrl+alt+l` focuses right tracked window only.
+  - Closing either tracked window restores the survivor to full width and clears session state.
+  - Unrelated qutebrowser windows remain untouched.
+- Verification evidence captured under `.sisyphus/evidence/` as described in the plan.
+- No commit, no merge.
+
+3. REQUIRED TOOLS
+
+- Read/Edit/Write for repo files
+- Bash for verification commands and worktree-local commands
+- Grep/LSP diagnostics as needed
+  Do not use git commit/push/merge commands.
+
+4. MUST DO
+
+- Re-read `.sisyphus/plans/qutebrowser-temporary-browser-split.md` first and implement against it, not against memory.
+- Preserve existing behavior in `hammerspoon/init.lua`, especially the existing resize watcher and LG auto-resize flow.
+- Keep implementation scoped strictly to qutebrowser and the tracked split pair.
+- Use shell, not Python, for `qutebrowser/userscripts/qute-temporary-split`.
+- Use explicit runtime state in:
+  - `/tmp/qutebrowser-temporary-split-active`
+  - `/tmp/qutebrowser-temporary-split-state.json`
+- Use the handshake/event path specified by the plan:
+  - `hammerspoon://qutebrowser-temporary-split-start`
+- Use exact hotkeys from the plan:
+  - `ctrl+alt+h`
+  - `ctrl+alt+l`
+- Keep comments in code in Russian if comments are added.
+- Run the required verification commands from the plan, including at minimum:
+  - `python -m py_compile qutebrowser/modules/*.py`
+  - `bash -n qutebrowser/userscripts/qute-temporary-split`
+- Capture concrete evidence files under `.sisyphus/evidence/` where feasible.
+- If something in the plan is ambiguous during implementation, choose the narrowest scope-preserving option and document it in the final summary.
+
+5. MUST NOT DO
+
+- Do not introduce Glide, yabai, skhd, Rectangle, or any general window-manager behavior.
+- Do not manage all qutebrowser windows.
+- Do not use heuristic pairing like “any two qutebrowser windows”.
+- Do not move unrelated qutebrowser windows.
+- Do not rewrite unrelated bindings or unrelated Hammerspoon automations.
+- Do not add a new test harness/framework.
+- Do not commit, merge, or push.
+- Do not ask the user for input unless absolutely blocked.
+
+6. CONTEXT
+   Primary specification: `.sisyphus/plans/qutebrowser-temporary-browser-split.md`
+
+Relevant existing files/patterns:
+
+- `qutebrowser/config.py` sources modular config files.
+- `qutebrowser/modules/bindings.py` uses `BindingSpec` patterns and already contains Cmd-based bindings.
+- `qutebrowser/modules/keymap.py` defines the generator contract for bindings.
+- `qutebrowser/userscripts/auto-layout-handler` and `qutebrowser/userscripts/toggle-darkmode` show existing shell userscript conventions, PATH setup, and `QUTE_FIFO` writes.
+- `hammerspoon/init.lua` already contains focused existing automation that must remain intact.
+- `qutebrowser/docs/keybindings.md` is the existing user-facing docs location.
+
+Definition of done is the one from the plan. Execute implementation now in this worktree and provide a concise end summary with:
+
+- files changed
+- verification run
+- evidence captured
+- any unresolved issues
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+1. TASK
+   Implement the qutebrowser temporary split feature in an isolated git worktree, following the plan in `.sisyphus/plans/qutebrowser-temporary-browser-split.md`.
+
+2. EXPECTED OUTCOME
+
+- Working implementation of the macOS-only qutebrowser temporary split workflow.
+- Files updated/created:
+  - `qutebrowser/modules/bindings.py`
+  - `qutebrowser/userscripts/qute-temporary-split`
+  - `hammerspoon/qutebrowser_temporary_split.lua`
+  - `hammerspoon/init.lua`
+  - `qutebrowser/docs/keybindings.md`
+- Runtime behavior:
+  - `Cmd-Enter` in qutebrowser starts one strict temporary split session.
+  - Current qutebrowser window becomes left window.
+  - New qutebrowser window becomes right window.
+  - Right window receives focus and enters URL prompt state equivalent to `o`.
+  - `ctrl+alt+h` focuses left tracked window only.
+  - `ctrl+alt+l` focuses right tracked window only.
+  - Closing either tracked window restores the survivor to full width and clears session state.
+  - Unrelated qutebrowser windows remain untouched.
+- Verification evidence captured under `.sisyphus/evidence/` as described in the plan.
+- No commit, no merge.
+
+3. REQUIRED TOOLS
+
+- Read/Edit/Write for repo files
+- Bash for verification commands and worktree-local commands
+- Grep/LSP diagnostics as needed
+  Do not use git commit/push/merge commands.
+
+4. MUST DO
+
+- Re-read `.sisyphus/plans/qutebrowser-temporary-browser-split.md` first and implement against it, not against memory.
+- Preserve existing behavior in `hammerspoon/init.lua`, especially the existing resize watcher and LG auto-resize flow.
+- Keep implementation scoped strictly to qutebrowser and the tracked split pair.
+- Use shell, not Python, for `qutebrowser/userscripts/qute-temporary-split`.
+- Use explicit runtime state in:
+  - `/tmp/qutebrowser-temporary-split-active`
+  - `/tmp/qutebrowser-temporary-split-state.json`
+- Use the handshake/event path specified by the plan:
+  - `hammerspoon://qutebrowser-temporary-split-start`
+- Use exact hotkeys from the plan:
+  - `ctrl+alt+h`
+  - `ctrl+alt+l`
+- Keep comments in code in Russian if comments are added.
+- Run the required verification commands from the plan, including at minimum:
+  - `python -m py_compile qutebrowser/modules/*.py`
+  - `bash -n qutebrowser/userscripts/qute-temporary-split`
+- Capture concrete evidence files under `.sisyphus/evidence/` where feasible.
+- If something in the plan is ambiguous during implementation, choose the narrowest scope-preserving option and document it in the final summary.
+
+5. MUST NOT DO
+
+- Do not introduce Glide, yabai, skhd, Rectangle, or any general window-manager behavior.
+- Do not manage all qutebrowser windows.
+- Do not use heuristic pairing like “any two qutebrowser windows”.
+- Do not move unrelated qutebrowser windows.
+- Do not rewrite unrelated bindings or unrelated Hammerspoon automations.
+- Do not add a new test harness/framework.
+- Do not commit, merge, or push.
+- Do not ask the user for input unless absolutely blocked.
+
+6. CONTEXT
+   Primary specification: `.sisyphus/plans/qutebrowser-temporary-browser-split.md`
+
+Relevant existing files/patterns:
+
+- `qutebrowser/config.py` sources modular config files.
+- `qutebrowser/modules/bindings.py` uses `BindingSpec` patterns and already contains Cmd-based bindings.
+- `qutebrowser/modules/keymap.py` defines the generator contract for bindings.
+- `qutebrowser/userscripts/auto-layout-handler` and `qutebrowser/userscripts/toggle-darkmode` show existing shell userscript conventions, PATH setup, and `QUTE_FIFO` writes.
+- `hammerspoon/init.lua` already contains focused existing automation that must remain intact.
+- `qutebrowser/docs/keybindings.md` is the existing user-facing docs location.
+
+Definition of done is the one from the plan. Execute implementation now in this worktree and provide a concise end summary with:
+
+- files changed
+- verification run
+- evidence captured
+- any unresolved issues
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+Implementation note from research: keep hs.urlevent.bind("qutebrowser-temporary-split-start", ...) active on module load; use qutebrowser-scoped hs.window.filter subscriptions for windowCreated/windowDestroyed only; when focusing the right window, prefer a short delayed keystroke for 'o' after focus lands; preserve existing init.lua watcher unchanged except requiring the new module; capture verification evidence under .sisyphus/evidence as specified in the plan.
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+
+---
+
+Implementation note from research: keep hs.urlevent.bind("qutebrowser-temporary-split-start", ...) active on module load; use qutebrowser-scoped hs.window.filter subscriptions for windowCreated/windowDestroyed only; when focusing the right window, prefer a short delayed keystroke for 'o' after focus lands; preserve existing init.lua watcher unchanged except requiring the new module; capture verification evidence under .sisyphus/evidence as specified in the plan.
+
+---
+
+Verification failed: required file qutebrowser/userscripts/qute-temporary-split is missing, so the implementation is incomplete. Fix specifically: create qutebrowser/userscripts/qute-temporary-split as the shell userscript from the plan; ensure qutebrowser/modules/bindings.py references it via Cmd-Enter; ensure hammerspoon/qutebrowser_temporary_split.lua and hammerspoon/init.lua exist and are wired; update qutebrowser/docs/keybindings.md; then run python -m py_compile qutebrowser/modules/*.py and bash -n qutebrowser/userscripts/qute-temporary-split in the worktree before finishing. Do not commit.
+
+---
+
+Verification failed: required file qutebrowser/userscripts/qute-temporary-split is missing, so the implementation is incomplete. Fix specifically: create qutebrowser/userscripts/qute-temporary-split as the shell userscript from the plan; ensure qutebrowser/modules/bindings.py references it via Cmd-Enter; ensure hammerspoon/qutebrowser_temporary_split.lua and hammerspoon/init.lua exist and are wired; update qutebrowser/docs/keybindings.md; then run python -m py_compile qutebrowser/modules/*.py and bash -n qutebrowser/userscripts/qute-temporary-split in the worktree before finishing. Do not commit.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_b2aea464`
+**Description:** Find Hammerspoon window patterns
+**Duration:** 1m 15s
+
+**4 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_b2aea464")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_b2aea464`
+**Description:** Find Hammerspoon window patterns
+**Duration:** 1m 15s
+
+**4 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_b2aea464")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_1ac390ba`
+**Description:** Find qute split patterns
+**Duration:** 2m 53s
+
+**4 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_1ac390ba")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_1ac390ba`
+**Description:** Find qute split patterns
+**Duration:** 2m 53s
+
+**4 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_1ac390ba")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_8468679d`
+**Description:** Research Hammerspoon URL events
+**Duration:** 2m 54s
+
+**3 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_8468679d")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_8468679d`
+**Description:** Research Hammerspoon URL events
+**Duration:** 2m 54s
+
+**3 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_8468679d")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_e274bcc8`
+**Description:** Research qutebrowser open prompt
+**Duration:** 2m 44s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_e274bcc8")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_e274bcc8`
+**Description:** Research qutebrowser open prompt
+**Duration:** 2m 44s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_e274bcc8")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_30955ff3`
+**Description:** Review split architecture
+**Duration:** 2m 13s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_30955ff3")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_30955ff3`
+**Description:** Review split architecture
+**Duration:** 2m 13s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_30955ff3")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -83.9K removed, +6.1K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿████████│
+▣ Compression #1 -83.9K removed, +6.1K summary
+→ Topic: Qutebrowser split implementation context
+→ Items: 16 messages and 42 tools compressed
+
+---
+
+▣ DCP | -83.9K removed, +6.1K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿████████│
+▣ Compression #1 -83.9K removed, +6.1K summary
+→ Topic: Qutebrowser split implementation context
+→ Items: 16 messages and 42 tools compressed
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_b2aea464`: Find Hammerspoon window patterns
+- `bg_1ac390ba`: Find qute split patterns
+- `bg_8468679d`: Research Hammerspoon URL events
+- `bg_e274bcc8`: Research qutebrowser open prompt
+- `bg_30955ff3`: Review split architecture
+- `bg_50298708`: Review saved split plan
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_b2aea464`: Find Hammerspoon window patterns
+- `bg_1ac390ba`: Find qute split patterns
+- `bg_8468679d`: Research Hammerspoon URL events
+- `bg_e274bcc8`: Research qutebrowser open prompt
+- `bg_30955ff3`: Review split architecture
+- `bg_50298708`: Review saved split plan
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Plan-compliance fix required. Current implementation diverges from the agreed contract. Fix these exact issues and do not stop until they are addressed:\n\n1) Userscript contract must match the plan exactly:\n- qutebrowser/userscripts/qute-temporary-split must call /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" without query params.\n- After that it must sleep briefly (default 0.20s) and then write  to QUTE_FIFO so qutebrowser itself creates the second window.\n- Do NOT create the second window from Hammerspoon via Cmd+n. Remove that approach.\n- If active sentinel exists, emit exactly  via QUTE_FIFO and exit 0.\n\n2) Runtime state contract must match the plan names and shape:\n- Use /tmp/qutebrowser-temporary-split-active\n- Use /tmp/qutebrowser-temporary-split-state.json\n- Use session states: idle, awaiting_window, active\n- Persist keys: sourceWindowId, leftWindowId, rightWindowId, screenName, startedAt, lastAction\n- Update lastAction at minimum through: session_started, right_window_detected, pair_activated, right_prompt_requested, restored_left/restored_right where applicable.\n\n3) Hammerspoon flow must match the plan:\n- On URL event, capture currently focused qutebrowser window as sourceWindowId and set awaiting_window state.\n- qutebrowser-only windowCreated subscription must pair the first newly created standard qutebrowser window after start as rightWindowId.\n- Treat original source window as leftWindowId.\n- Place left/right windows on the same source screen using the agreed 50/50 unit rects.\n- Focus right window then send delayed .\n- If second window never appears, clean state and surface alert/log. Default timeout should be 1.5s.\n- Duplicate starts must no-op while a session is active or awaiting_window.\n\n4) Teardown/switching must remain strict-pair-only and use the agreed state keys.\n\n5) Docs/evidence:\n- Keep docs in qutebrowser/docs/keybindings.md.\n- Capture stronger evidence under .sisyphus/evidence beyond syntax only where feasible.\n\n6) Verification before fin
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Plan-compliance fix required. Current implementation diverges from the agreed contract. Fix these exact issues and do not stop until they are addressed:\n\n1) Userscript contract must match the plan exactly:\n- qutebrowser/userscripts/qute-temporary-split must call /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" without query params.\n- After that it must sleep briefly (default 0.20s) and then write  to QUTE_FIFO so qutebrowser itself creates the second window.\n- Do NOT create the second window from Hammerspoon via Cmd+n. Remove that approach.\n- If active sentinel exists, emit exactly  via QUTE_FIFO and exit 0.\n\n2) Runtime state contract must match the plan names and shape:\n- Use /tmp/qutebrowser-temporary-split-active\n- Use /tmp/qutebrowser-temporary-split-state.json\n- Use session states: idle, awaiting_window, active\n- Persist keys: sourceWindowId, leftWindowId, rightWindowId, screenName, startedAt, lastAction\n- Update lastAction at minimum through: session_started, right_window_detected, pair_activated, right_prompt_requested, restored_left/restored_right where applicable.\n\n3) Hammerspoon flow must match the plan:\n- On URL event, capture currently focused qutebrowser window as sourceWindowId and set awaiting_window state.\n- qutebrowser-only windowCreated subscription must pair the first newly created standard qutebrowser window after start as rightWindowId.\n- Treat original source window as leftWindowId.\n- Place left/right windows on the same source screen using the agreed 50/50 unit rects.\n- Focus right window then send delayed .\n- If second window never appears, clean state and surface alert/log. Default timeout should be 1.5s.\n- Duplicate starts must no-op while a session is active or awaiting_window.\n\n4) Teardown/switching must remain strict-pair-only and use the agreed state keys.\n\n5) Docs/evidence:\n- Keep docs in qutebrowser/docs/keybindings.md.\n- Capture stronger evidence under .sisyphus/evidence beyond syntax only where feasible.\n\n6) Verification before fin
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Plan-compliance fix required. Current implementation diverges from the agreed contract. Fix these exact issues and do not stop until they are addressed.
+
+1. Userscript contract must match the plan exactly:
+
+- qutebrowser/userscripts/qute-temporary-split must call /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" without query params.
+- After that it must sleep briefly (default 0.20s) and then write `open -w about:blank` to QUTE_FIFO so qutebrowser itself creates the second window.
+- Do NOT create the second window from Hammerspoon via Cmd+n. Remove that approach.
+- If active sentinel exists, emit exactly `message-info 'Temporary split already active'` via QUTE_FIFO and exit 0.
+
+2. Runtime state contract must match the plan names and shape:
+
+- Use /tmp/qutebrowser-temporary-split-active
+- Use /tmp/qutebrowser-temporary-split-state.json
+- Use session states: idle, awaiting_window, active
+- Persist keys: sourceWindowId, leftWindowId, rightWindowId, screenName, startedAt, lastAction
+- Update lastAction at minimum through: session_started, right_window_detected, pair_activated, right_prompt_requested, restored_left/restored_right where applicable.
+
+3. Hammerspoon flow must match the plan:
+
+- On URL event, capture currently focused qutebrowser window as sourceWindowId and set awaiting_window state.
+- qutebrowser-only windowCreated subscription must pair the first newly created standard qutebrowser window after start as rightWindowId.
+- Treat original source window as leftWindowId.
+- Place left/right windows on the same source screen using the agreed 50/50 unit rects.
+- Focus right window then send delayed `o`.
+- If second window never appears, clean state and surface alert/log. Default timeout should be 1.5s.
+- Duplicate starts must no-op while a session is active or awaiting_window.
+
+4. Teardown/switching must remain strict-pair-only and use the agreed state keys.
+
+5. Docs/evidence:
+
+- Keep docs in qutebrowser/docs/keybindings.md.
+- Capture stronger evidence under .sisyphus/evidence beyond syntax only where feasible.
+
+6. Verification before finishing:
+
+- python -m py_compile qutebrowser/modules/\*.py
+- bash -n qutebrowser/userscripts/qute-temporary-split
+- luac -p hammerspoon/qutebrowser_temporary_split.lua
+- Provide concise final note of exact files changed and what was corrected for plan compliance.
+
+Do not commit.
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Plan-compliance fix required. Current implementation diverges from the agreed contract. Fix these exact issues and do not stop until they are addressed.
+
+1. Userscript contract must match the plan exactly:
+
+- qutebrowser/userscripts/qute-temporary-split must call /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" without query params.
+- After that it must sleep briefly (default 0.20s) and then write `open -w about:blank` to QUTE_FIFO so qutebrowser itself creates the second window.
+- Do NOT create the second window from Hammerspoon via Cmd+n. Remove that approach.
+- If active sentinel exists, emit exactly `message-info 'Temporary split already active'` via QUTE_FIFO and exit 0.
+
+2. Runtime state contract must match the plan names and shape:
+
+- Use /tmp/qutebrowser-temporary-split-active
+- Use /tmp/qutebrowser-temporary-split-state.json
+- Use session states: idle, awaiting_window, active
+- Persist keys: sourceWindowId, leftWindowId, rightWindowId, screenName, startedAt, lastAction
+- Update lastAction at minimum through: session_started, right_window_detected, pair_activated, right_prompt_requested, restored_left/restored_right where applicable.
+
+3. Hammerspoon flow must match the plan:
+
+- On URL event, capture currently focused qutebrowser window as sourceWindowId and set awaiting_window state.
+- qutebrowser-only windowCreated subscription must pair the first newly created standard qutebrowser window after start as rightWindowId.
+- Treat original source window as leftWindowId.
+- Place left/right windows on the same source screen using the agreed 50/50 unit rects.
+- Focus right window then send delayed `o`.
+- If second window never appears, clean state and surface alert/log. Default timeout should be 1.5s.
+- Duplicate starts must no-op while a session is active or awaiting_window.
+
+4. Teardown/switching must remain strict-pair-only and use the agreed state keys.
+
+5. Docs/evidence:
+
+- Keep docs in qutebrowser/docs/keybindings.md.
+- Capture stronger evidence under .sisyphus/evidence beyond syntax only where feasible.
+
+6. Verification before finishing:
+
+- python -m py_compile qutebrowser/modules/\*.py
+- bash -n qutebrowser/userscripts/qute-temporary-split
+- luac -p hammerspoon/qutebrowser_temporary_split.lua
+- Provide concise final note of exact files changed and what was corrected for plan compliance.
+
+Do not commit.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_cd1dd1c3`
+**Description:** Find local window patterns
+**Duration:** 1m 33s
+
+**3 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_cd1dd1c3")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_cd1dd1c3`
+**Description:** Find local window patterns
+**Duration:** 1m 33s
+
+**3 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_cd1dd1c3")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_d44681fa`
+**Description:** Inspect local split contract
+**Duration:** 2m 4s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_d44681fa")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_d44681fa`
+**Description:** Inspect local split contract
+**Duration:** 2m 4s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_d44681fa")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_7432820e`
+**Description:** Research qutebrowser contract
+**Duration:** 2m 57s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_7432820e")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_7432820e`
+**Description:** Research qutebrowser contract
+**Duration:** 2m 57s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_7432820e")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Compliance fix #2 — current implementation is still not acceptable. It still diverges from the agreed plan in concrete, verifiable ways. Fix the implementation against these exact observed mismatches.
+
+Observed mismatches that MUST be corrected:
+
+A) userscript is still wrong
+Current wrong behavior in qutebrowser/userscripts/qute-temporary-split:
+
+- It still writes JSON itself before Hammerspoon owns the session.
+- It still calls `open "hammerspoon://qutebrowser-temporary-split-start?left_window_id=..."` with query params.
+- It still does NOT sleep then write `open -w about:blank` to QUTE_FIFO.
+- It still emits a warning message instead of the exact required qutebrowser command string for duplicate guard.
+
+Required userscript behavior:
+
+1. Verify QUTE_FIFO as now.
+2. If `/tmp/qutebrowser-temporary-split-active` exists, append EXACTLY this command to QUTE_FIFO and exit 0:
+   message-info 'Temporary split already active'
+3. Call EXACTLY:
+   /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start"
+4. Sleep 0.20 seconds.
+5. Append EXACTLY this command to QUTE_FIFO:
+   open -w about:blank
+6. Do not pre-write state JSON in the userscript.
+7. Do not pass any query params to the URL event.
+
+B) Hammerspoon still uses the wrong state schema
+Current wrong behavior in hammerspoon/qutebrowser_temporary_split.lua:
+
+- Uses keys like left_qute_window_id, left_hs_window_id, right_hs_window_id.
+- Uses statuses like awaiting_right_window / paired.
+- Still initiates new window creation itself via Cmd+n.
+- Does not clearly implement the agreed state keys and lastAction flow.
+
+Required Hammerspoon state contract:
+
+- File paths remain:
+  - /tmp/qutebrowser-temporary-split-active
+  - /tmp/qutebrowser-temporary-split-state.json
+- Persist keys EXACTLY:
+  - sourceWindowId
+  - leftWindowId
+  - rightWindowId
+  - screenName
+  - startedAt
+  - lastAction
+  - state
+- Allowed state values EXACTLY:
+  - idle
+  - awaiting_window
+  - active
+- lastAction must flow through at least:
+  - session_started
+  - right_window_detected
+  - pair_activated
+  - right_prompt_requested
+  - restored_left / restored_right when teardown occurs
+
+C) Hammerspoon ownership flow is still wrong
+Required flow:
+
+1. On hs.urlevent.bind("qutebrowser-temporary-split-start", ...), capture the currently focused qutebrowser window as sourceWindowId.
+2. If no focused qutebrowser window exists, abort and clear temp state.
+3. If an existing session is already awaiting_window or active, do nothing.
+4. Write state file with sourceWindowId, leftWindowId = sourceWindowId, rightWindowId = null, screenName, startedAt, lastAction = session_started, state = awaiting_window.
+5. Start timeout at 1.5s.
+6. Wait for qutebrowser-only windowCreated subscription.
+7. First newly created standard qutebrowser window after start becomes rightWindowId.
+8. Move left/right windows to agreed 50/50 layouts on the source screen.
+9. Set lastAction = right_window_detected, then pair_activated, then right_prompt_requested as milestones are reached.
+10. Focus right window and send delayed single `o`.
+11. If timeout expires before pairing, clear temp state and show an alert/log.
+12. Do NOT synthesize Cmd+n in Hammerspoon. qutebrowser userscript owns second-window creation.
+
+D) Teardown/hotkeys must use the exact contract keys
+
+- ctrl+alt+h focuses leftWindowId only when state == active.
+- ctrl+alt+l focuses rightWindowId only when state == active.
+- Closing rightWindowId restores leftWindowId to full size, focuses it, sets lastAction = restored_left, then clears temp files.
+- Closing leftWindowId restores rightWindowId to full size, focuses it, sets lastAction = restored_right, then clears temp files.
+- Ignore all non-paired qutebrowser windows.
+
+E) Verification requirements before you finish
+Run and ensure success:
+
+- python -m py_compile qutebrowser/modules/\*.py
+- bash -n qutebrowser/userscripts/qute-temporary-split
+- luac -p hammerspoon/qutebrowser_temporary_split.lua
+- grep -n "qutebrowser-temporary-split-start\|qutebrowser-temporary-split-state.json\|qutebrowser-temporary-split-active\|sourceWindowId\|leftWindowId\|rightWindowId\|screenName\|startedAt\|lastAction\|awaiting_window\|active" hammerspoon/qutebrowser_temporary_split.lua qutebrowser/userscripts/qute-temporary-split qutebrowser/docs/keybindings.md
+
+Only finish after the grep output reflects the exact agreed contract.
+No commit.
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+Compliance fix #2 — current implementation is still not acceptable. It still diverges from the agreed plan in concrete, verifiable ways. Fix the implementation against these exact observed mismatches.
+
+Observed mismatches that MUST be corrected:
+
+A) userscript is still wrong
+Current wrong behavior in qutebrowser/userscripts/qute-temporary-split:
+
+- It still writes JSON itself before Hammerspoon owns the session.
+- It still calls `open "hammerspoon://qutebrowser-temporary-split-start?left_window_id=..."` with query params.
+- It still does NOT sleep then write `open -w about:blank` to QUTE_FIFO.
+- It still emits a warning message instead of the exact required qutebrowser command string for duplicate guard.
+
+Required userscript behavior:
+
+1. Verify QUTE_FIFO as now.
+2. If `/tmp/qutebrowser-temporary-split-active` exists, append EXACTLY this command to QUTE_FIFO and exit 0:
+   message-info 'Temporary split already active'
+3. Call EXACTLY:
+   /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start"
+4. Sleep 0.20 seconds.
+5. Append EXACTLY this command to QUTE_FIFO:
+   open -w about:blank
+6. Do not pre-write state JSON in the userscript.
+7. Do not pass any query params to the URL event.
+
+B) Hammerspoon still uses the wrong state schema
+Current wrong behavior in hammerspoon/qutebrowser_temporary_split.lua:
+
+- Uses keys like left_qute_window_id, left_hs_window_id, right_hs_window_id.
+- Uses statuses like awaiting_right_window / paired.
+- Still initiates new window creation itself via Cmd+n.
+- Does not clearly implement the agreed state keys and lastAction flow.
+
+Required Hammerspoon state contract:
+
+- File paths remain:
+  - /tmp/qutebrowser-temporary-split-active
+  - /tmp/qutebrowser-temporary-split-state.json
+- Persist keys EXACTLY:
+  - sourceWindowId
+  - leftWindowId
+  - rightWindowId
+  - screenName
+  - startedAt
+  - lastAction
+  - state
+- Allowed state values EXACTLY:
+  - idle
+  - awaiting_window
+  - active
+- lastAction must flow through at least:
+  - session_started
+  - right_window_detected
+  - pair_activated
+  - right_prompt_requested
+  - restored_left / restored_right when teardown occurs
+
+C) Hammerspoon ownership flow is still wrong
+Required flow:
+
+1. On hs.urlevent.bind("qutebrowser-temporary-split-start", ...), capture the currently focused qutebrowser window as sourceWindowId.
+2. If no focused qutebrowser window exists, abort and clear temp state.
+3. If an existing session is already awaiting_window or active, do nothing.
+4. Write state file with sourceWindowId, leftWindowId = sourceWindowId, rightWindowId = null, screenName, startedAt, lastAction = session_started, state = awaiting_window.
+5. Start timeout at 1.5s.
+6. Wait for qutebrowser-only windowCreated subscription.
+7. First newly created standard qutebrowser window after start becomes rightWindowId.
+8. Move left/right windows to agreed 50/50 layouts on the source screen.
+9. Set lastAction = right_window_detected, then pair_activated, then right_prompt_requested as milestones are reached.
+10. Focus right window and send delayed single `o`.
+11. If timeout expires before pairing, clear temp state and show an alert/log.
+12. Do NOT synthesize Cmd+n in Hammerspoon. qutebrowser userscript owns second-window creation.
+
+D) Teardown/hotkeys must use the exact contract keys
+
+- ctrl+alt+h focuses leftWindowId only when state == active.
+- ctrl+alt+l focuses rightWindowId only when state == active.
+- Closing rightWindowId restores leftWindowId to full size, focuses it, sets lastAction = restored_left, then clears temp files.
+- Closing leftWindowId restores rightWindowId to full size, focuses it, sets lastAction = restored_right, then clears temp files.
+- Ignore all non-paired qutebrowser windows.
+
+E) Verification requirements before you finish
+Run and ensure success:
+
+- python -m py_compile qutebrowser/modules/\*.py
+- bash -n qutebrowser/userscripts/qute-temporary-split
+- luac -p hammerspoon/qutebrowser_temporary_split.lua
+- grep -n "qutebrowser-temporary-split-start\|qutebrowser-temporary-split-state.json\|qutebrowser-temporary-split-active\|sourceWindowId\|leftWindowId\|rightWindowId\|screenName\|startedAt\|lastAction\|awaiting_window\|active" hammerspoon/qutebrowser_temporary_split.lua qutebrowser/userscripts/qute-temporary-split qutebrowser/docs/keybindings.md
+
+Only finish after the grep output reflects the exact agreed contract.
+No commit.
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_cd1dd1c3`: Find local window patterns
+- `bg_d44681fa`: Inspect local split contract
+- `bg_7432820e`: Research qutebrowser contract
+- `bg_166c33d3`: Research Hammerspoon pairing docs
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_cd1dd1c3`: Find local window patterns
+- `bg_d44681fa`: Inspect local split contract
+- `bg_7432820e`: Research qutebrowser contract
+- `bg_166c33d3`: Research Hammerspoon pairing docs
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -139.8K removed, +14.3K summary
+
+│░░░░░░░░░░░░░░███████████████████⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿█│
+▣ Compression #2 -45.7K removed, +8.3K summary
+→ Topic: Temporary split compliance fixes
+→ Items: 17 messages and 24 tools compressed
+
+---
+
+▣ DCP | -139.8K removed, +14.3K summary
+
+│░░░░░░░░░░░░░░███████████████████⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿█│
+▣ Compression #2 -45.7K removed, +8.3K summary
+→ Topic: Temporary split compliance fixes
+→ Items: 17 messages and 24 tools compressed
