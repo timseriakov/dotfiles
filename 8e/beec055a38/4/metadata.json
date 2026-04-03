@@ -3,17 +3,18 @@
   "checkpoint_id": "8ebeec055a38",
   "session_id": "ses_2b0bea706ffebhrNPXtSF0nEBW",
   "strategy": "manual-commit",
-  "created_at": "2026-04-03T14:28:00.796288Z",
+  "created_at": "2026-04-03T15:01:26.188585Z",
   "branch": "master",
   "checkpoints_count": 0,
   "files_touched": [
     "fish/functions/fish_user_key_bindings.fish",
-    "kitty/kitty.conf"
+    "kitty/kitty.conf",
+    "opencode/command/plannotator-last.md"
   ],
   "agent": "Claude Code",
   "turn_id": "b33884cfe3b1",
   "initial_attribution": {
-    "calculated_at": "2026-04-03T14:28:00.795391Z",
+    "calculated_at": "2026-04-03T15:01:26.187826Z",
     "agent_lines": 3,
     "human_added": 0,
     "human_modified": 0,
