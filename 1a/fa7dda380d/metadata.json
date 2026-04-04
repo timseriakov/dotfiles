@@ -93,6 +93,19 @@
       "transcript": "/1a/fa7dda380d/13/full.jsonl",
       "content_hash": "/1a/fa7dda380d/13/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/1a/fa7dda380d/14/metadata.json",
+      "transcript": "/1a/fa7dda380d/14/full.jsonl",
+      "content_hash": "/1a/fa7dda380d/14/content_hash.txt",
+      "prompt": "/1a/fa7dda380d/14/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
