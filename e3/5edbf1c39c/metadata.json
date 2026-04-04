@@ -3,7 +3,7 @@
   "checkpoint_id": "e35edbf1c39c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "hammerspoon/qutebrowser_temporary_split.lua",
     "opencode/oh-my-openagent.jsonc",
@@ -95,6 +95,19 @@
       "transcript": "/e3/5edbf1c39c/13/full.jsonl",
       "content_hash": "/e3/5edbf1c39c/13/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/e3/5edbf1c39c/14/metadata.json",
+      "transcript": "/e3/5edbf1c39c/14/full.jsonl",
+      "content_hash": "/e3/5edbf1c39c/14/content_hash.txt",
+      "prompt": "/e3/5edbf1c39c/14/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
