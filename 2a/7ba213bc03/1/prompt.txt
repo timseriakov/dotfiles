@@ -933,3 +933,184 @@ UNMOJI | removed 3 emojis
 ---
 
 запиши в md file на русском
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+@oh-my-opencode_gemini-only.jsonc - проанализируй, наилучшим ли способом раскинуты модели.
+
+сверяйся https://github.com/code-yeongyu/oh-my-openagent !!!!!!!!!!!!!!!! там смысл
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/oh-my-opencode_gemini-only.jsonc"}
+<path>/Users/tim/dev/dotfiles/opencode/oh-my-opencode_gemini-only.jsonc</path>
+<type>file</type>
+<content>1: {
+2:   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+3:   "hashline_edit": true,
+4:   "agents": {
+5:     "sisyphus": {
+6:       "model": "google/gemini-3.1-pro-preview",
+7:       "fallback_models": ["google/gemini-2.5-pro"],
+8:     },
+9:     "atlas": {
+10:       "model": "google/gemini-3.1-pro-preview",
+11:       "fallback_models": ["google/gemini-2.5-pro"],
+12:     },
+13:     "oracle": {
+14:       "model": "google/gemini-3.1-pro-preview",
+15:       "fallback_models": ["google/gemini-2.5-pro"],
+16:     },
+17:     "librarian": {
+18:       "model": "google/gemini-3-flash-preview",
+19:       "fallback_models": ["google/gemini-2.5-flash"],
+20:     },
+21:     "explore": {
+22:       "model": "google/gemini-3-flash-preview",
+23:       "fallback_models": ["google/gemini-2.5-flash"],
+24:     },
+25:     "hephaestus": {
+26:       "model": "google/gemini-3.1-pro-preview",
+27:       "fallback_models": ["google/gemini-2.5-pro"],
+28:     },
+29:     "sisyphus-junior": {
+30:       "model": "google/gemini-3-flash-preview",
+31:       "fallback_models": ["google/gemini-2.5-flash"],
+32:     },
+33:     "multimodal-looker": {
+34:       "model": "google/gemini-3.1-pro-preview",
+35:       "fallback_models": ["google/gemini-2.5-pro"],
+36:     },
+37:     "plan": {
+38:       "model": "google/gemini-3.1-pro-preview",
+39:       "fallback_models": ["google/gemini-2.5-pro"],
+40:     },
+41:     "OpenCode-Builder": {
+42:       "model": "google/gemini-3.1-pro-preview",
+43:       "fallback_models": ["google/gemini-2.5-pro"],
+44:     },
+45:     "prometheus": {
+46:       "model": "google/gemini-3.1-pro-preview",
+47:       "fallback_models": ["google/gemini-2.5-pro"],
+48:     },
+49:     "metis": {
+50:       "model": "google/gemini-3.1-pro-preview",
+51:       "fallback_models": ["google/gemini-2.5-pro"],
+52:     },
+53:     "momus": {
+54:       "model": "google/gemini-3.1-pro-preview",
+55:       "fallback_models": ["google/gemini-2.5-pro"],
+56:     },
+57:   },
+58:   "sisyphus_agent": {
+59:     "disabled": false,
+60:     "default_builder_enabled": false,
+61:     "planner_enabled": true,
+62:     "replace_plan": true,
+63:   },
+64:   "ralph_loop": {
+65:     "enabled": true,
+66:     "default_max_iterations": 100,
+67:   },
+68:   "background_task": {
+69:     "defaultConcurrency": 8,
+70:     "providerConcurrency": {
+71:       "google": 8,
+72:     },
+73:     "modelConcurrency": {
+74:       "google/gemini-3.1-pro-preview": 4,
+75:       "google/gemini-3-flash-preview": 8,
+76:       "google/gemini-2.5-pro": 4,
+77:       "google/gemini-2.5-flash": 8,
+78:     },
+79:   },
+80:   "categories": {
+81:     "visual-engineering": {
+82:       "model": "google/gemini-3.1-pro-preview",
+83:       "fallback_models": ["google/gemini-2.5-pro"],
+84:       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+85:     },
+86:     "ultrabrain": {
+87:       "model": "google/gemini-3.1-pro-preview",
+88:       "fallback_models": ["google/gemini-2.5-pro"],
+89:       "prompt_append": "Focus on robustness, error handling, and type safety.",
+90:     },
+91:     "deep": {
+92:       "model": "google/gemini-3.1-pro-preview",
+93:       "fallback_models": ["google/gemini-2.5-pro"],
+94:       "prompt_append": "Focus on robustness, error handling, and type safety.",
+95:     },
+96:     "quick": {
+97:       "model": "google/gemini-3-flash-preview",
+98:       "fallback_models": ["google/gemini-2.5-flash"],
+99:     },
+100:     "unspecified-low": {
+101:       "model": "google/gemini-3-flash-preview",
+102:       "fallback_models": ["google/gemini-2.5-flash"],
+103:     },
+104:     "unspecified-high": {
+105:       "model": "google/gemini-3.1-pro-preview",
+106:       "fallback_models": ["google/gemini-2.5-pro"],
+107:     },
+108:     "writing": {
+109:       "model": "google/gemini-3-flash-preview",
+110:       "fallback_models": ["google/gemini-2.5-flash"],
+111:     },
+112:   },
+113:   "claude_code": {
+114:     "mcp": false,
+115:     "commands": false,
+116:     "skills": true,
+117:     "agents": true,
+118:     "hooks": true,
+119:     "plugins": true,
+120:     "plugins_override": {},
+121:   },
+122:   "git_master": {
+123:     "commit_footer": false,
+124:     "include_co_authored_by": false,
+125:   },
+126:   "experimental": {
+127:     "auto_resume": true,
+128:     "aggressive_truncation": true,
+129:     "truncate_all_tool_outputs": true,
+130:     "preemptive_compaction": true,
+131:     "dynamic_context_pruning": {
+132:       "enabled": false,
+133:       "notification": "off",
+134:       "turn_protection": {
+135:         "enabled": true,
+136:         "turns": 3,
+137:       },
+138:     },
+139:   },
+140:   "disabled_mcps": [],
+141:   "disabled_skills": ["playwright"],
+142:   "disabled_agents": [],
+143:   "disabled_hooks": [],
+144:   "google_auth": false,
+145: }
+
+(End of file - total 145 lines)
+</content>
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_37604324`
+**Description:** Fetch oh-my-openagent README to understand model mapping philosophy
+**Duration:** 58s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_37604324")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->

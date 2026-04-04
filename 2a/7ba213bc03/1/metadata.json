@@ -3,14 +3,14 @@
   "checkpoint_id": "2a7ba213bc03",
   "session_id": "ses_2ab95022cffejF1xeSe6lraXnH",
   "strategy": "manual-commit",
-  "created_at": "2026-04-04T19:17:28.568134Z",
+  "created_at": "2026-04-04T19:21:46.525405Z",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
-    "fish/config.fish"
+    "tmux/title-mappings.conf"
   ],
   "agent": "Claude Code",
-  "turn_id": "fdb55fa8b881",
+  "turn_id": "a05aaed242ed",
   "token_usage": {
     "input_tokens": 0,
     "cache_creation_tokens": 0,
@@ -19,12 +19,12 @@
     "api_call_count": 0
   },
   "initial_attribution": {
-    "calculated_at": "2026-04-04T19:17:28.501788Z",
-    "agent_lines": 0,
-    "human_added": 5,
-    "human_modified": 6,
+    "calculated_at": "2026-04-04T19:21:46.453161Z",
+    "agent_lines": 1,
+    "human_added": 0,
+    "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 8,
-    "agent_percentage": 0
+    "total_committed": 1,
+    "agent_percentage": 100
   }
 }
