@@ -8,7 +8,7 @@ temporarySplit.qutebrowserAppName = "qutebrowser"
 temporarySplit.hotkeyModifiers = { "ctrl", "alt" }
 temporarySplit.leftHotkey = "h"
 temporarySplit.rightHotkey = "l"
-temporarySplit.startTimeoutSeconds = 1.5
+temporarySplit.startTimeoutSeconds = 3.0
 temporarySplit.promptDelaySeconds = 0.15
 temporarySplit.layouts = {
 	left = { x = 0, y = 0, w = 0.5, h = 1 },
@@ -365,46 +365,63 @@ local function pairRightWindow(rightWindow)
 		return
 	end
 
-	if not isQutebrowserWindow(rightWindow) or not isStandardWindow(rightWindow) then
-		return
-	end
+	logInfo(string.format("pairRightWindow started for window (id: %s). Waiting 0.2s...", rightWindow:id() or "unknown"))
 
-	local rightWindowId = rightWindow:id()
-	if not rightWindowId or rightWindowId == session.leftWindowId then
-		return
-	end
+	hs.timer.doAfter(0.2, function()
+		-- Re-fetch session to ensure it hasn't timed out or changed
+		session = temporarySplit.session or loadState()
+		if not session or session.state ~= "awaiting_window" then
+			logInfo("pairRightWindow aborted: session no longer awaiting_window")
+			return
+		end
 
-	local leftWindow = getWindowById(session.leftWindowId or session.sourceWindowId)
-	if not leftWindow then
-		alertAndLog("Temporary split cancelled: source window missing")
-		clearSessionFiles("source_window_missing", session)
-		return
-	end
+		if not isQutebrowserWindow(rightWindow) then
+			logInfo("pairRightWindow rejected: not a qutebrowser window")
+			return
+		end
 
-	clearPendingStartTimeout()
-	session.rightWindowId = rightWindowId
-	session.lastAction = "right_window_detected"
-	if not persistSession(session) then
-		alertAndLog("Temporary split failed: unable to persist detected right window")
-		clearSessionFiles("state_write_failed", session)
-		return
-	end
+		if not isStandardWindow(rightWindow) then
+			logInfo("pairRightWindow warning: not a standard window. Subrole: " .. tostring(rightWindow:subrole()) .. ". Accepting it anyway.")
+		end
 
-	local targetScreen = getScreenByName(session.screenName) or leftWindow:screen() or rightWindow:screen()
-	session.screenName = getScreenName(targetScreen)
-	setWindowLayout(leftWindow, temporarySplit.layouts.left, targetScreen)
-	setWindowLayout(rightWindow, temporarySplit.layouts.right, targetScreen)
+		local rightWindowId = rightWindow:id()
+		if not rightWindowId or rightWindowId == session.leftWindowId then
+			logInfo("pairRightWindow rejected: invalid id or same as left window")
+			return
+		end
 
-	session.state = "active"
-	session.leftWindowId = leftWindow:id()
-	session.lastAction = "pair_activated"
-	if not persistSession(session) then
-		alertAndLog("Temporary split failed: unable to persist active pair state")
-		clearSessionFiles("state_write_failed", session)
-		return
-	end
+		local leftWindow = getWindowById(session.leftWindowId or session.sourceWindowId)
+		if not leftWindow then
+			alertAndLog("Temporary split cancelled: source window missing")
+			clearSessionFiles("source_window_missing", session)
+			return
+		end
 
-	focusRightWindowForOpen(rightWindowId)
+		clearPendingStartTimeout()
+		session.rightWindowId = rightWindowId
+		session.lastAction = "right_window_detected"
+		if not persistSession(session) then
+			alertAndLog("Temporary split failed: unable to persist detected right window")
+			clearSessionFiles("state_write_failed", session)
+			return
+		end
+
+		local targetScreen = getScreenByName(session.screenName) or leftWindow:screen() or rightWindow:screen()
+		session.screenName = getScreenName(targetScreen)
+		setWindowLayout(leftWindow, temporarySplit.layouts.left, targetScreen)
+		setWindowLayout(rightWindow, temporarySplit.layouts.right, targetScreen)
+
+		session.state = "active"
+		session.leftWindowId = leftWindow:id()
+		session.lastAction = "pair_activated"
+		if not persistSession(session) then
+			alertAndLog("Temporary split failed: unable to persist active pair state")
+			clearSessionFiles("state_write_failed", session)
+			return
+		end
+
+		focusRightWindowForOpen(rightWindowId)
+	end)
 end
 
 local function bindHotkeys()
@@ -433,6 +450,7 @@ local function startWatcher()
 	end
 
 	temporarySplit.windowFilter:subscribe("windowCreated", function(win)
+		logInfo("Window created detected: " .. (win:title() or "no title") .. " | App: " .. (win:application():name() or "no app"))
 		if win then
 			pairRightWindow(win)
 		end
@@ -448,6 +466,9 @@ local function startWatcher()
 end
 
 function temporarySplit.handleStart()
+	logInfo("Starting temporary split handler...")
+	local front = hs.window.frontmostWindow()
+	if front then logInfo("Frontmost window: " .. (front:title() or "no title") .. " | App: " .. (front:application():name() or "no app")) end
 	local session = temporarySplit.session or loadState()
 	if session and (session.state == "awaiting_window" or session.state == "active") then
 		logInfo("Temporary split start ignored: session already in progress")
