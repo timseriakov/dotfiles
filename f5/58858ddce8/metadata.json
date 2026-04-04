@@ -1,0 +1,22 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "f558858ddce8",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/GEMINI_MODELS.md",
+    "opencode/oh-my-opencode.jsonc",
+    "opencode/oh-my-opencode_gemini-flash-only.jsonc",
+    "opencode/oh-my-opencode_gemini-only.jsonc",
+    "opencode/oh-my-opencode_omniroute-raw.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f5/58858ddce8/0/metadata.json",
+      "transcript": "/f5/58858ddce8/0/full.jsonl",
+      "content_hash": "/f5/58858ddce8/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
