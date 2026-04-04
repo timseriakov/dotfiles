@@ -3,7 +3,7 @@
   "checkpoint_id": "cd01dd500f6d",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "hammerspoon/init.lua",
     "hammerspoon/qutebrowser_temporary_split.lua"
@@ -19,6 +19,12 @@
       "metadata": "/cd/01dd500f6d/1/metadata.json",
       "transcript": "/cd/01dd500f6d/1/full.jsonl",
       "content_hash": "/cd/01dd500f6d/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/cd/01dd500f6d/2/metadata.json",
+      "transcript": "/cd/01dd500f6d/2/full.jsonl",
+      "content_hash": "/cd/01dd500f6d/2/content_hash.txt",
       "prompt": ""
     }
   ]
