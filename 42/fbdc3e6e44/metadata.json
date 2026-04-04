@@ -165,6 +165,12 @@
       "transcript": "/42/fbdc3e6e44/20/full.jsonl",
       "content_hash": "/42/fbdc3e6e44/20/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/42/fbdc3e6e44/21/metadata.json",
+      "transcript": "/42/fbdc3e6e44/21/full.jsonl",
+      "content_hash": "/42/fbdc3e6e44/21/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
