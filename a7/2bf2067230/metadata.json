@@ -3,7 +3,7 @@
   "checkpoint_id": "a72bf2067230",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "opencode/AGENTS.md",
     "opencode/oh-my-opencode_gemini-only.jsonc",
@@ -21,6 +21,12 @@
       "metadata": "/a7/2bf2067230/1/metadata.json",
       "transcript": "/a7/2bf2067230/1/full.jsonl",
       "content_hash": "/a7/2bf2067230/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/a7/2bf2067230/2/metadata.json",
+      "transcript": "/a7/2bf2067230/2/full.jsonl",
+      "content_hash": "/a7/2bf2067230/2/content_hash.txt",
       "prompt": ""
     }
   ]
