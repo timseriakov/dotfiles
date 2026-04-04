@@ -7,11 +7,11 @@
       "temperature": 0.1,
     },
     "atlas": {
-      "model": "omniroute/cx/gpt-5.2",
+      "model": "omniroute/cx/gpt-5.2-codex",
       "temperature": 0.1,
     },
     "oracle": {
-      "model": "omniroute/cx/gpt-5.2",
+      "model": "omniroute/cx/gpt-5.4",
       "temperature": 0.1,
     },
     "librarian": {
@@ -53,7 +53,7 @@
     },
     "momus": {
       "model": "omniroute/cx/gpt-5.2",
-      "temperature": 0.1,
+      "temperature": 0.5,
     },
   },
   "sisyphus_agent": {
@@ -72,12 +72,13 @@
       "omniroute": 5,
     },
     "modelConcurrency": {
+      "omniroute/cx/gpt-5.4": 3,
       "omniroute/cx/gpt-5.2": 3,
       "omniroute/cx/gpt-5.2-codex": 1,
       "omniroute/cx/gpt-5.1-codex-max": 3,
       "omniroute/cx/gpt-5.1-codex-mini": 8,
       "omniroute/glm/glm-4.6v": 3,
-    },
+    }
   },
   "categories": {
     "visual-engineering": {
@@ -91,7 +92,7 @@
       "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
     },
     "deep": {
-      "model": "omniroute/cx/gpt-5.1-codex-max",
+      "model": "omniroute/cx/gpt-5.4",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },

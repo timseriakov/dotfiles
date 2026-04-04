@@ -3,16 +3,16 @@
   "hashline_edit": true,
   "agents": {
     "sisyphus": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "atlas": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "oracle": {
-      "model": "google/gemini-3-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "librarian": {
       "model": "google/gemini-2.5-flash-lite",
@@ -23,36 +23,36 @@
       "fallback_models": ["google/gemini-2.5-flash"],
     },
     "hephaestus": {
-      "model": "google/gemini-2.5-pro",
-      "fallback_models": ["google/gemini-3.1-pro-preview"],
+      "model": "google/gemini-2.5-flash",
+      "fallback_models": ["google/gemini-3-flash-preview"],
     },
     "sisyphus-junior": {
       "model": "google/gemini-2.5-flash-lite",
       "fallback_models": ["google/gemini-2.5-flash"],
     },
     "multimodal-looker": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "plan": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "OpenCode-Builder": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "prometheus": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "metis": {
-      "model": "google/gemini-3-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "momus": {
-      "model": "google/gemini-3-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
   },
   "sisyphus_agent": {
@@ -71,28 +71,25 @@
       "google": 8,
     },
     "modelConcurrency": {
-      "google/gemini-3.1-pro-preview": 4,
-      "google/gemini-3-pro-preview": 4,
       "google/gemini-3-flash-preview": 8,
-      "google/gemini-2.5-pro": 4,
       "google/gemini-2.5-flash": 8,
-      "google/gemini-2.5-flash-lite": 10
-    }
+      "google/gemini-2.5-flash-lite": 10,
+    },
   },
   "categories": {
     "visual-engineering": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
     "ultrabrain": {
-      "model": "google/gemini-3-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "deep": {
-      "model": "google/gemini-2.5-pro",
-      "fallback_models": ["google/gemini-3.1-pro-preview"],
+      "model": "google/gemini-2.5-flash",
+      "fallback_models": ["google/gemini-3-flash-preview"],
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
@@ -104,8 +101,8 @@
       "fallback_models": ["google/gemini-2.5-flash"],
     },
     "unspecified-high": {
-      "model": "google/gemini-3.1-pro-preview",
-      "fallback_models": ["google/gemini-2.5-pro"],
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": ["google/gemini-2.5-flash"],
     },
     "writing": {
       "model": "google/gemini-2.5-flash-lite",
