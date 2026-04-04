@@ -3,7 +3,7 @@
   "checkpoint_id": "e35edbf1c39c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "hammerspoon/qutebrowser_temporary_split.lua",
     "opencode/oh-my-openagent.jsonc",
@@ -112,6 +112,12 @@
       "metadata": "/e3/5edbf1c39c/16/metadata.json",
       "transcript": "/e3/5edbf1c39c/16/full.jsonl",
       "content_hash": "/e3/5edbf1c39c/16/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/e3/5edbf1c39c/17/metadata.json",
+      "transcript": "/e3/5edbf1c39c/17/full.jsonl",
+      "content_hash": "/e3/5edbf1c39c/17/content_hash.txt",
       "prompt": ""
     }
   ],
