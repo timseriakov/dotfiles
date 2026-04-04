@@ -3,7 +3,7 @@
   "checkpoint_id": "d598ee2f9be6",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/opencode.jsonc"
   ],
@@ -90,6 +90,12 @@
       "metadata": "/d5/98ee2f9be6/13/metadata.json",
       "transcript": "/d5/98ee2f9be6/13/full.jsonl",
       "content_hash": "/d5/98ee2f9be6/13/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/d5/98ee2f9be6/14/metadata.json",
+      "transcript": "/d5/98ee2f9be6/14/full.jsonl",
+      "content_hash": "/d5/98ee2f9be6/14/content_hash.txt",
       "prompt": ""
     }
   ]
