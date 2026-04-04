@@ -3,7 +3,7 @@
   "checkpoint_id": "f558858ddce8",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/GEMINI_MODELS.md",
     "opencode/oh-my-opencode.jsonc",
@@ -17,6 +17,19 @@
       "transcript": "/f5/58858ddce8/0/full.jsonl",
       "content_hash": "/f5/58858ddce8/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f5/58858ddce8/1/metadata.json",
+      "transcript": "/f5/58858ddce8/1/full.jsonl",
+      "content_hash": "/f5/58858ddce8/1/content_hash.txt",
+      "prompt": "/f5/58858ddce8/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
 }
