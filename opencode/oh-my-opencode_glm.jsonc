@@ -5,6 +5,7 @@
     "sisyphus": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1,
+      "fallback_models": ["zai-coding-plan/glm-5-turbo"],
     },
     "atlas": {
       "model": "zai-coding-plan/glm-4.7",
@@ -13,10 +14,12 @@
     "oracle": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.1,
+      "fallback_models": ["zai-coding-plan/glm-5-turbo"],
     },
     "librarian": {
       "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.2,
+      "fallback_models": ["zai-coding-plan/glm-5-turbo"],
     },
     "explore": {
       "model": "zai-coding-plan/glm-4.7",
@@ -94,11 +97,11 @@
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.3,
     },
     "unspecified-low": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.3,
     },
     "unspecified-high": {
@@ -106,7 +109,7 @@
       "temperature": 0.1,
     },
     "writing": {
-      "model": "openai/gpt-5.1-codex-mini",
+      "model": "zai-coding-plan/glm-4.7",
       "temperature": 0.3,
     },
   },
