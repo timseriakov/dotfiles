@@ -159,6 +159,12 @@
       "transcript": "/42/fbdc3e6e44/19/full.jsonl",
       "content_hash": "/42/fbdc3e6e44/19/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/42/fbdc3e6e44/20/metadata.json",
+      "transcript": "/42/fbdc3e6e44/20/full.jsonl",
+      "content_hash": "/42/fbdc3e6e44/20/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
