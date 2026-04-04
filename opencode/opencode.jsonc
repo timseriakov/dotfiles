@@ -169,26 +169,26 @@
       "models": {
         "glm-4.7": {
           "name": "GLM 4.7",
-          "limit": { "context": 128000, "output": 4096 },
+          "limit": { "context": 200000, "output": 128000 }
         },
         "glm-4.7-flash": {
           "name": "GLM 4.7 Flash",
-          "limit": { "context": 128000, "output": 4096 },
+          "limit": { "context": 200000, "output": 128000 }
         },
         "glm-4.6v": {
           "name": "GLM 4.6 Vision",
-          "limit": { "context": 8000, "output": 4096 },
-          "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "limit": { "context": 128000, "output": 128000 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] }
         },
         "glm-5": {
           "name": "GLM 5",
-          "limit": { "context": 200000, "output": 128000 },
+          "limit": { "context": 200000, "output": 128000 }
         },
         "glm-5-turbo": {
           "name": "GLM 5 Turbo",
-          "limit": { "context": 200000, "output": 128000 },
-        },
-      },
+          "limit": { "context": 200000, "output": 128000 }
+        }
+      }
     },
     "omniroute": {
       "npm": "@ai-sdk/openai-compatible",

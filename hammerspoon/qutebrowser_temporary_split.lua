@@ -290,6 +290,31 @@ local function getScreenByName(name)
 	return hs.screen.find(name)
 end
 
+local function frameMatchesLayout(win, layout, targetScreen)
+	if not win or not layout then
+		return false
+	end
+	
+	local screen = targetScreen or win:screen()
+	if not screen then
+		return false
+	end
+	
+	local frame = win:frame()
+	local screenFrame = screen:frame()
+	
+	local expectedX = screenFrame.x + (screenFrame.w * layout.x)
+	local expectedY = screenFrame.y + (screenFrame.h * layout.y)
+	local expectedW = screenFrame.w * layout.w
+	local expectedH = screenFrame.h * layout.h
+	
+	local tolerance = 5
+	return math.abs(frame.x - expectedX) <= tolerance and
+	       math.abs(frame.y - expectedY) <= tolerance and
+	       math.abs(frame.w - expectedW) <= tolerance and
+	       math.abs(frame.h - expectedH) <= tolerance
+end
+
 local function setWindowLayout(win, layout, targetScreen)
 	if not win then
 		return false
@@ -482,6 +507,15 @@ local function startWatcher()
 		if otherWindowId then
 			local otherWindow = getWindowById(otherWindowId)
 			if otherWindow then
+				local targetScreen = getScreenByName(session.screenName)
+				local winInSplit = frameMatchesLayout(win, winId == session.leftWindowId and temporarySplit.layouts.left or temporarySplit.layouts.right, targetScreen)
+				local otherInSplit = frameMatchesLayout(otherWindow, otherWindowId == session.leftWindowId and temporarySplit.layouts.left or temporarySplit.layouts.right, targetScreen)
+				
+				if not winInSplit or not otherInSplit then
+					logInfo("Skipping pair raise: window geometry doesn't match split layout (winInSplit=" .. tostring(winInSplit) .. ", otherInSplit=" .. tostring(otherInSplit) .. ")")
+					return
+				end
+				
 				temporarySplit.isRaisingPair = true
 				logInfo("Raising pair window: " .. tostring(otherWindowId))
 				-- Delay to avoid race condition where macOS drops the raise when focus is still settling
