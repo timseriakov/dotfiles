@@ -21,6 +21,7 @@ temporarySplit.windowFilter = hs.window.filter.new("qutebrowser")
 temporarySplit.watchersStarted = false
 temporarySplit.urlHandlerBound = false
 temporarySplit.startTimeout = nil
+temporarySplit.isRaisingPair = false
 
 local function readFile(path)
 	local file = io.open(path, "r")
@@ -459,6 +460,41 @@ local function startWatcher()
 	temporarySplit.windowFilter:subscribe("windowDestroyed", function(win)
 		if win then
 			handleTrackedWindowClosed(win:id())
+		end
+	end)
+
+	temporarySplit.windowFilter:subscribe("windowFocused", function(win)
+		if temporarySplit.isRaisingPair then return end
+		
+		local session = temporarySplit.session or loadState()
+		if not session or session.state ~= "active" then return end
+		
+		local winId = win and win:id()
+		if not winId then return end
+		
+		local otherWindowId = nil
+		if winId == session.leftWindowId then
+			otherWindowId = session.rightWindowId
+		elseif winId == session.rightWindowId then
+			otherWindowId = session.leftWindowId
+		end
+		
+		if otherWindowId then
+			local otherWindow = getWindowById(otherWindowId)
+			if otherWindow then
+				temporarySplit.isRaisingPair = true
+				logInfo("Raising pair window: " .. tostring(otherWindowId))
+				-- Delay to avoid race condition where macOS drops the raise when focus is still settling
+				hs.timer.doAfter(0.05, function()
+					otherWindow:raise()
+					win:raise()
+					hs.timer.doAfter(0.1, function()
+						temporarySplit.isRaisingPair = false
+					end)
+				end)
+			else
+				logInfo("Companion window not found for ID " .. tostring(otherWindowId))
+			end
 		end
 	end)
 
