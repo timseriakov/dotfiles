@@ -70,4 +70,11 @@ set -gx ZEROBREW_ROOT $HOME/.zerobrew
 set -gx ZEROBREW_PREFIX $HOME/.zerobrew
 fish_add_path -ga $HOME/.zerobrew/bin
 
+# Added by Antigravity
+fish_add_path /Users/tim/.antigravity/antigravity/bin
+# Hammerspoon
+fish_add_path /Applications/Hammerspoon.app/Contents/MacOS
+fish_add_path /Applications/Hammerspoon.app/Contents/Frameworks/hs
+
+# Ensure success status for IDEs
 true

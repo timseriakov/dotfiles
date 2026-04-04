@@ -266,6 +266,7 @@ abbr -a mu 'mole uninstall'
 abbr -a un 'mole uninstall'
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
+abbr -a tmap 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
 abbr -a tk tmux-take-alacritty
 abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'

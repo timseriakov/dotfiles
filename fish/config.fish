@@ -73,6 +73,3 @@ end
 
 # x-cmd
 test ! -e "$HOME/.x-cmd.root/local/data/fish/rc.fish" || source "$HOME/.x-cmd.root/local/data/fish/rc.fish" # boot up x-cmd.
-
-# Added by Antigravity
-fish_add_path /Users/tim/.antigravity/antigravity/bin
