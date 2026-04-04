@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "2884aa694389",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/opencode.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/28/84aa694389/0/metadata.json",
+      "transcript": "/28/84aa694389/0/full.jsonl",
+      "content_hash": "/28/84aa694389/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
