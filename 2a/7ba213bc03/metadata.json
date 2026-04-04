@@ -5,6 +5,7 @@
   "branch": "master",
   "checkpoints_count": 2,
   "files_touched": [
+    "AGENTS.md",
     "fish/conf.d/10-path.fish",
     "fish/conf.d/11-which-chafa.fish",
     "fish/conf.d/30-abbr.fish",
