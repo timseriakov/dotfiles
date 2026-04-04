@@ -93,6 +93,12 @@
       "transcript": "/42/fbdc3e6e44/8/full.jsonl",
       "content_hash": "/42/fbdc3e6e44/8/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/42/fbdc3e6e44/9/metadata.json",
+      "transcript": "/42/fbdc3e6e44/9/full.jsonl",
+      "content_hash": "/42/fbdc3e6e44/9/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
