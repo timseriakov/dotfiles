@@ -7,14 +7,14 @@ if ! command -v fzf >/dev/null 2>&1; then
 fi
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LINK="$DIR/oh-my-opencode.jsonc"
+LINK="$DIR/oh-my-openagent.jsonc"
 
 shopt -s nullglob
-configs=("$DIR"/oh-my-opencode_*.jsonc)
+configs=("$DIR"/oh-my-openagent_*.jsonc)
 shopt -u nullglob
 
 if [ ${#configs[@]} -eq 0 ]; then
-  echo "No configs found matching oh-my-opencode_*.jsonc in $DIR" >&2
+  echo "No configs found matching oh-my-openagent_*.jsonc in $DIR" >&2
   exit 1
 fi
 
