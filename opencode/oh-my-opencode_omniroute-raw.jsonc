@@ -78,7 +78,7 @@
       "omniroute/cx/gpt-5.1-codex-max": 3,
       "omniroute/cx/gpt-5.1-codex-mini": 8,
       "omniroute/glm/glm-4.6v": 3,
-    }
+    },
   },
   "categories": {
     "visual-engineering": {
