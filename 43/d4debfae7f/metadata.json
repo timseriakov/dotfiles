@@ -3,7 +3,7 @@
   "checkpoint_id": "43d4debfae7f",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     "qutebrowser/docs/keybindings.md",
     "qutebrowser/quickmarks"
@@ -25,6 +25,12 @@
       "metadata": "/43/d4debfae7f/2/metadata.json",
       "transcript": "/43/d4debfae7f/2/full.jsonl",
       "content_hash": "/43/d4debfae7f/2/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/43/d4debfae7f/3/metadata.json",
+      "transcript": "/43/d4debfae7f/3/full.jsonl",
+      "content_hash": "/43/d4debfae7f/3/content_hash.txt",
       "prompt": ""
     }
   ]
