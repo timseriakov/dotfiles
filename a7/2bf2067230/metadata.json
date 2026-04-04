@@ -40,6 +40,12 @@
       "transcript": "/a7/2bf2067230/4/full.jsonl",
       "content_hash": "/a7/2bf2067230/4/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/a7/2bf2067230/5/metadata.json",
+      "transcript": "/a7/2bf2067230/5/full.jsonl",
+      "content_hash": "/a7/2bf2067230/5/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
