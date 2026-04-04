@@ -12,6 +12,7 @@
     "fish/conf.d/70-rustup.fish",
     "fish/conf.d/90-turso-cli-env.fish",
     "fish/config.fish",
+    "opencode/tui.json",
     "tmux/title-mappings.conf"
   ],
   "sessions": [
