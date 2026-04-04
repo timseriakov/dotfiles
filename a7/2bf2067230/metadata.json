@@ -28,6 +28,12 @@
       "transcript": "/a7/2bf2067230/2/full.jsonl",
       "content_hash": "/a7/2bf2067230/2/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/a7/2bf2067230/3/metadata.json",
+      "transcript": "/a7/2bf2067230/3/full.jsonl",
+      "content_hash": "/a7/2bf2067230/3/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
