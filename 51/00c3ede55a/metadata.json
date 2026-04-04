@@ -3,7 +3,7 @@
   "checkpoint_id": "5100c3ede55a",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "hammerspoon/init.lua",
     "hammerspoon/qutebrowser_temporary_split.lua"
@@ -20,6 +20,12 @@
       "transcript": "/51/00c3ede55a/1/full.jsonl",
       "content_hash": "/51/00c3ede55a/1/content_hash.txt",
       "prompt": "/51/00c3ede55a/1/prompt.txt"
+    },
+    {
+      "metadata": "/51/00c3ede55a/2/metadata.json",
+      "transcript": "/51/00c3ede55a/2/full.jsonl",
+      "content_hash": "/51/00c3ede55a/2/content_hash.txt",
+      "prompt": "/51/00c3ede55a/2/prompt.txt"
     }
   ],
   "token_usage": {
