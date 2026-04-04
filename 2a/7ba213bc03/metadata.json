@@ -10,7 +10,8 @@
     "fish/conf.d/30-abbr.fish",
     "fish/conf.d/70-rustup.fish",
     "fish/conf.d/90-turso-cli-env.fish",
-    "fish/config.fish"
+    "fish/config.fish",
+    "tmux/title-mappings.conf"
   ],
   "sessions": [
     {
