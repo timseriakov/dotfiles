@@ -3,7 +3,7 @@
   "checkpoint_id": "2a7ba213bc03",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/10-path.fish",
     "fish/conf.d/11-which-chafa.fish",
@@ -24,6 +24,12 @@
       "transcript": "/2a/7ba213bc03/1/full.jsonl",
       "content_hash": "/2a/7ba213bc03/1/content_hash.txt",
       "prompt": "/2a/7ba213bc03/1/prompt.txt"
+    },
+    {
+      "metadata": "/2a/7ba213bc03/2/metadata.json",
+      "transcript": "/2a/7ba213bc03/2/full.jsonl",
+      "content_hash": "/2a/7ba213bc03/2/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
