@@ -6,3 +6,5 @@
 \____ |\____/|__|  |__|  |__|____/\___  >____  >
      \/                               \/     \/
 ```
+
+[![Hackatime Stats](https://hackatime.hackclub.com/api/v1/badge/timofei_seriakov/timseriakov/dotfiles)](https://hackatime.hackclub.com/user/31869)
