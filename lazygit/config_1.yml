@@ -1,29 +1,10 @@
 customCommands:
   - key: "L"
+    command: "lazycommit commit"
     context: "files"
     description: "Generate commit message with LazyCommit"
     loadingText: "AI is generating a commit message..."
     output: terminal
-    command: "lazycommit commit"
-
-  - key: "C"
-    context: "files"
-    description: "Choose commit message from LazyCommit suggestions"
-    loadingText: "AI is generating commit suggestions..."
-    prompts:
-      - type: "menuFromCommand"
-        key: "CommitMessage"
-        title: "Select commit message"
-        command: "fish -lc '~/dev/dotfiles/lazygit/scripts/lazycommit-suggestions.fish'"
-        filter: "^(?P<msg>(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\(.+\\))?!?: .+)$"
-        valueFormat: "{{ .msg }}"
-        labelFormat: "{{ .msg | yellow }}"
-      - type: "confirm"
-        key: "ConfirmCommit"
-        title: "Commit"
-        body: "Commit with selected message?"
-    command: "git commit -m '{{ .Form.CommitMessage }}'"
-
   - key: "S"
     context: "files"
     description: "Split diff (current file)"
@@ -31,7 +12,6 @@ customCommands:
     output: terminal
     command: |
       env TERM=xterm-256color bash -lc 'git diff --no-ext-diff --color=always -- "{{.SelectedFile.Name}}" | git-split-diffs --color=16m | less -R'
-
   - key: "S"
     context: "commits"
     description: "Split diff (selected commit)"
@@ -39,7 +19,6 @@ customCommands:
     output: terminal
     command: |
       env TERM=xterm-256color bash -lc 'git show --no-ext-diff --color=always {{.SelectedCommit.Sha}} | git-split-diffs --color=16m | less -R'
-
   - key: "G"
     context: "files"
     description: "Split diff (staged vs HEAD)"
@@ -47,13 +26,11 @@ customCommands:
     output: terminal
     command: |
       env TERM=xterm-256color bash -lc 'git diff --cached --no-ext-diff --color=always -- "{{.SelectedFile.Name}}" | git-split-diffs --color=16m | less -R'
-
 git:
   pagers:
     - colorArg: always
       pager: git-split-diffs --color=16m
       useConfigOnly: true
-
 gui:
   theme:
     activeBorderColor:
