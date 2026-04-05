@@ -1,20 +1,13 @@
 customCommands:
   - key: "L"
     context: "files"
-    description: "Generate commit message with LazyCommit"
-    loadingText: "AI is generating a commit message..."
-    output: terminal
-    command: "lazycommit commit"
-
-  - key: "C"
-    context: "files"
     description: "Choose commit message from LazyCommit suggestions"
     loadingText: "AI is generating commit suggestions..."
     prompts:
       - type: "menuFromCommand"
         key: "CommitMessage"
         title: "Select commit message"
-        command: "fish -lc '~/dev/dotfiles/lazygit/scripts/lazycommit-suggestions.fish'"
+        command: "fish /Users/tim/dev/dotfiles/lazygit/scripts/lazycommit-suggestions.fish"
         filter: "^(?P<msg>(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\(.+\\))?!?: .+)$"
         valueFormat: "{{ .msg }}"
         labelFormat: "{{ .msg | yellow }}"
