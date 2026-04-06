@@ -3,7 +3,7 @@
   "checkpoint_id": "49430cd6c7ed",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "raycast/Raycast 2026-03-30 12.05.29.rayconfig",
     "raycast/Raycast 2026-04-06 09.40.15.rayconfig"
@@ -31,6 +31,12 @@
       "metadata": "/49/430cd6c7ed/3/metadata.json",
       "transcript": "/49/430cd6c7ed/3/full.jsonl",
       "content_hash": "/49/430cd6c7ed/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/49/430cd6c7ed/4/metadata.json",
+      "transcript": "/49/430cd6c7ed/4/full.jsonl",
+      "content_hash": "/49/430cd6c7ed/4/content_hash.txt",
       "prompt": ""
     }
   ]
