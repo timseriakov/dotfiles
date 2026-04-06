@@ -3,15 +3,18 @@
   "hashline_edit": true,
   "agents": {
     "sisyphus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "max",
       "temperature": 0.3,
     },
     "atlas": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "max",
       "temperature": 0.1,
     },
     "oracle": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
     },
     "librarian": {
@@ -23,8 +26,8 @@
       "temperature": 0.1,
     },
     "hephaestus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
-      "variant": "medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
     },
     "sisyphus-junior": {
@@ -32,27 +35,33 @@
       "temperature": 0.1,
     },
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3.1-pro-low",
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "low",
       "temperature": 0.1,
     },
     "plan": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "max",
       "temperature": 0.3,
     },
     "OpenCode-Builder": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.05,
     },
     "prometheus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-high",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "max",
       "temperature": 0.3,
     },
     "metis": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.3,
     },
     "momus": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
     },
   },
@@ -74,28 +83,27 @@
     },
     "modelConcurrency": {
       "openai/gpt-5.1-codex-mini": 8,
-      "google/antigravity-claude-opus-4-6-thinking-high": 2,
-      "google/antigravity-claude-opus-4-6-thinking-medium": 3,
-      "google/antigravity-claude-sonnet-4-6-thinking-high": 3,
-      "google/antigravity-claude-sonnet-4-6-thinking-medium": 5,
-      "google/antigravity-gemini-3.1-pro-high": 3,
+      "google/antigravity-claude-opus-4-6-thinking": 3,
+      "google/antigravity-claude-sonnet-4-6": 5,
+      "google/antigravity-gemini-3.1-pro": 5,
       "google/antigravity-gemini-3-flash": 8,
-      "google/antigravity-gemini-3.1-pro-low": 5,
     },
   },
   "categories": {
     "visual-engineering": {
-      "model": "google/antigravity-claude-sonnet-4-6-thinking-high",
+      "model": "google/antigravity-claude-sonnet-4-6",
       "temperature": 0.7,
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
     "ultrabrain": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "deep": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
@@ -108,7 +116,8 @@
       "temperature": 0.3,
     },
     "unspecified-high": {
-      "model": "google/antigravity-claude-opus-4-6-thinking-medium",
+      "model": "google/antigravity-claude-opus-4-6-thinking",
+      "variant": "low",
       "temperature": 0.1,
     },
     "writing": {
