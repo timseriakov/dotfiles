@@ -300,6 +300,12 @@
       "transcript": "/f5/00985cf6f5/6/full.jsonl",
       "content_hash": "/f5/00985cf6f5/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f5/00985cf6f5/7/metadata.json",
+      "transcript": "/f5/00985cf6f5/7/full.jsonl",
+      "content_hash": "/f5/00985cf6f5/7/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
