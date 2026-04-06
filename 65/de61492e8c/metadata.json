@@ -169,6 +169,12 @@
       "transcript": "/65/de61492e8c/6/full.jsonl",
       "content_hash": "/65/de61492e8c/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/65/de61492e8c/7/metadata.json",
+      "transcript": "/65/de61492e8c/7/full.jsonl",
+      "content_hash": "/65/de61492e8c/7/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
