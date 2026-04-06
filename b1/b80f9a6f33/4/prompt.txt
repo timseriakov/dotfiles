@@ -1,0 +1,2455 @@
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Ultrathink before acting.
+
+## **ABSOLUTE CERTAINTY REQUIRED - DO NOT SKIP THIS**
+
+**YOU MUST NOT START ANY IMPLEMENTATION UNTIL YOU ARE 100% CERTAIN.**
+
+| **BEFORE YOU WRITE A SINGLE LINE OF CODE, YOU MUST:** |
+|-------------------------------------------------------|
+| **FULLY UNDERSTAND** what the user ACTUALLY wants (not what you ASSUME they want) |
+| **EXPLORE** the codebase to understand existing patterns, architecture, and context |
+| **HAVE A CRYSTAL CLEAR WORK PLAN** - if your plan is vague, YOUR WORK WILL FAIL |
+| **RESOLVE ALL AMBIGUITY** - if ANYTHING is unclear, ASK or INVESTIGATE |
+
+### **MANDATORY CERTAINTY PROTOCOL**
+
+**IF YOU ARE NOT 100% CERTAIN:**
+
+1. **THINK DEEPLY** - What is the user's TRUE intent? What problem are they REALLY trying to solve?
+2. **EXPLORE THOROUGHLY** - Fire explore/librarian agents to gather ALL relevant context
+3. **CONSULT SPECIALISTS** - For hard/complex tasks, DO NOT struggle alone. Delegate:
+   - **Oracle**: Conventional problems - architecture, debugging, complex logic
+   - **Artistry**: Non-conventional problems - different approach needed, unusual constraints
+4. **ASK THE USER** - If ambiguity remains after exploration, ASK. Don't guess.
+
+**SIGNS YOU ARE NOT READY TO IMPLEMENT:**
+- You're making assumptions about requirements
+- You're unsure which files to modify
+- You don't understand how existing code works
+- Your plan has "probably" or "maybe" in it
+- You can't explain the exact steps you'll take
+
+**WHEN IN DOUBT:**
+```
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK DESCRIPTION] and need to understand [SPECIFIC KNOWLEDGE GAP]. Find [X] patterns in the codebase - show file paths, implementation approach, and conventions used. I'll use this to [HOW RESULTS WILL BE USED]. Focus on src/ directories, skip test files unless test patterns are specifically needed. Return concrete file paths with brief descriptions of what each file does.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [LIBRARY/TECHNOLOGY] and need [SPECIFIC INFORMATION]. Find official documentation and production-quality examples for [Y] - specifically: API reference, configuration options, recommended patterns, and common pitfalls. Skip beginner tutorials. I'll use this to [DECISION THIS WILL INFORM].", run_in_background=true)
+task(subagent_type="oracle", load_skills=[], prompt="I need architectural review of my approach to [TASK]. Here's my plan: [DESCRIBE PLAN WITH SPECIFIC FILES AND CHANGES]. My concerns are: [LIST SPECIFIC UNCERTAINTIES]. Please evaluate: correctness of approach, potential issues I'm missing, and whether a better alternative exists.", run_in_background=false)
+```
+
+**ONLY AFTER YOU HAVE:**
+- Gathered sufficient context via agents
+- Resolved all ambiguities
+- Created a precise, step-by-step work plan
+- Achieved 100% confidence in your understanding
+
+**...THEN AND ONLY THEN MAY YOU BEGIN IMPLEMENTATION.**
+
+---
+
+## **NO EXCUSES. NO COMPROMISES. DELIVER WHAT WAS ASKED.**
+
+**THE USER'S ORIGINAL REQUEST IS SACRED. YOU MUST FULFILL IT EXACTLY.**
+
+| VIOLATION | CONSEQUENCE |
+|-----------|-------------|
+| "I couldn't because..." | **UNACCEPTABLE.** Find a way or ask for help. |
+| "This is a simplified version..." | **UNACCEPTABLE.** Deliver the FULL implementation. |
+| "You can extend this later..." | **UNACCEPTABLE.** Finish it NOW. |
+| "Due to limitations..." | **UNACCEPTABLE.** Use agents, tools, whatever it takes. |
+| "I made some assumptions..." | **UNACCEPTABLE.** You should have asked FIRST. |
+
+**THERE ARE NO VALID EXCUSES FOR:**
+- Delivering partial work
+- Changing scope without explicit user approval
+- Making unauthorized simplifications
+- Stopping before the task is 100% complete
+- Compromising on any stated requirement
+
+**IF YOU ENCOUNTER A BLOCKER:**
+1. **DO NOT** give up
+2. **DO NOT** deliver a compromised version
+3. **DO** consult specialists (oracle for conventional, artistry for non-conventional)
+4. **DO** ask the user for guidance
+5. **DO** explore alternative approaches
+
+**THE USER ASKED FOR X. DELIVER EXACTLY X. PERIOD.**
+
+---
+
+YOU MUST LEVERAGE ALL AVAILABLE AGENTS / **CATEGORY + SKILLS** TO THEIR FULLEST POTENTIAL.
+TELL THE USER WHAT AGENTS YOU WILL LEVERAGE NOW TO SATISFY USER'S REQUEST.
+
+## MANDATORY: PLAN AGENT INVOCATION (NON-NEGOTIABLE)
+
+**YOU MUST ALWAYS INVOKE THE PLAN AGENT FOR ANY NON-TRIVIAL TASK.**
+
+| Condition | Action |
+|-----------|--------|
+| Task has 2+ steps | MUST call plan agent |
+| Task scope unclear | MUST call plan agent |
+| Implementation required | MUST call plan agent |
+| Architecture decision needed | MUST call plan agent |
+
+```
+task(subagent_type="plan", load_skills=[], prompt="<gathered context + user request>")
+```
+
+**WHY PLAN AGENT IS MANDATORY:**
+- Plan agent analyzes dependencies and parallel execution opportunities
+- Plan agent outputs a **parallel task graph** with waves and dependencies
+- Plan agent provides structured TODO list with category + skills per task
+- YOU are an orchestrator, NOT an implementer
+
+### SESSION CONTINUITY WITH PLAN AGENT (CRITICAL)
+
+**Plan agent returns a session_id. USE IT for follow-up interactions.**
+
+| Scenario | Action |
+|----------|--------|
+| Plan agent asks clarifying questions | `task(session_id="{returned_session_id}", load_skills=[], prompt="<your answer>")` |
+| Need to refine the plan | `task(session_id="{returned_session_id}", load_skills=[], prompt="Please adjust: <feedback>")` |
+| Plan needs more detail | `task(session_id="{returned_session_id}", load_skills=[], prompt="Add more detail to Task N")` |
+
+**WHY SESSION_ID IS CRITICAL:**
+- Plan agent retains FULL conversation context
+- No repeated exploration or context gathering
+- Saves 70%+ tokens on follow-ups
+- Maintains interview continuity until plan is finalized
+
+```
+// WRONG: Starting fresh loses all context
+task(subagent_type="plan", load_skills=[], prompt="Here's more info...")
+
+// CORRECT: Resume preserves everything
+task(session_id="ses_abc123", load_skills=[], prompt="Here's my answer to your question: ...")
+```
+
+**FAILURE TO CALL PLAN AGENT = INCOMPLETE WORK.**
+
+---
+
+## AGENTS / **CATEGORY + SKILLS** UTILIZATION PRINCIPLES
+
+**DEFAULT BEHAVIOR: DELEGATE. DO NOT WORK YOURSELF.**
+
+| Task Type | Action | Why |
+|-----------|--------|-----|
+| Codebase exploration | task(subagent_type="explore", load_skills=[], run_in_background=true) | Parallel, context-efficient |
+| Documentation lookup | task(subagent_type="librarian", load_skills=[], run_in_background=true) | Specialized knowledge |
+| Planning | task(subagent_type="plan", load_skills=[]) | Parallel task graph + structured TODO list |
+| Hard problem (conventional) | task(subagent_type="oracle", load_skills=[]) | Architecture, debugging, complex logic |
+| Hard problem (non-conventional) | task(category="artistry", load_skills=[...]) | Different approach needed |
+| Implementation | task(category="...", load_skills=[...]) | Domain-optimized models |
+
+**CATEGORY + SKILL DELEGATION:**
+```
+// Frontend work
+task(category="visual-engineering", load_skills=["frontend-ui-ux"])
+
+// Complex logic
+task(category="ultrabrain", load_skills=["typescript-programmer"])
+
+// Quick fixes
+task(category="quick", load_skills=["git-master"])
+```
+
+**YOU SHOULD ONLY DO IT YOURSELF WHEN:**
+- Task is trivially simple (1-2 lines, obvious change)
+- You have ALL context already loaded
+- Delegation overhead exceeds task complexity
+
+**OTHERWISE: DELEGATE. ALWAYS.**
+
+---
+
+## EXECUTION RULES
+- **TODO**: Track EVERY step. Mark complete IMMEDIATELY after each.
+- **PARALLEL**: Fire independent agent calls simultaneously via task(run_in_background=true) - NEVER wait sequentially.
+- **BACKGROUND FIRST**: Use task for exploration/research agents (10+ concurrent if needed).
+- **VERIFY**: Re-read request after completion. Check ALL requirements met before reporting done.
+- **DELEGATE**: Don't do everything yourself - orchestrate specialized agents for their strengths.
+
+## WORKFLOW
+1. Analyze the request and identify required capabilities
+2. Spawn exploration/librarian agents via task(run_in_background=true) in PARALLEL (10+ if needed)
+3. Use Plan agent with gathered context to create detailed work breakdown
+4. Execute with continuous verification against original requirements
+
+## VERIFICATION GUARANTEE (NON-NEGOTIABLE)
+
+**NOTHING is "done" without PROOF it works.**
+
+### Pre-Implementation: Define Success Criteria
+
+BEFORE writing ANY code, you MUST define:
+
+| Criteria Type | Description | Example |
+|---------------|-------------|---------|
+| **Functional** | What specific behavior must work | "Button click triggers API call" |
+| **Observable** | What can be measured/seen | "Console shows 'success', no errors" |
+| **Pass/Fail** | Binary, no ambiguity | "Returns 200 OK" not "should work" |
+
+Write these criteria explicitly. **Record them in your TODO/Task items.** Each task MUST include a "QA: [how to verify]" field. These criteria are your CONTRACT - work toward them, verify against them.
+
+### Test Plan Template (MANDATORY for non-trivial tasks)
+
+```
+## Test Plan
+### Objective: [What we're verifying]
+### Prerequisites: [Setup needed]
+### Test Cases:
+1. [Test Name]: [Input] → [Expected Output] → [How to verify]
+2. ...
+### Success Criteria: ALL test cases pass
+### How to Execute: [Exact commands/steps]
+```
+
+### Execution & Evidence Requirements
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| **Build** | Run build command | Exit code 0, no errors |
+| **Test** | Execute test suite | All tests pass (screenshot/output) |
+| **Manual Verify** | Test the actual feature | Demonstrate it works (describe what you observed) |
+| **Regression** | Ensure nothing broke | Existing tests still pass |
+
+**WITHOUT evidence = NOT verified = NOT done.**
+
+<MANUAL_QA_MANDATE>
+### YOU MUST EXECUTE MANUAL QA YOURSELF. THIS IS NOT OPTIONAL.
+
+**YOUR FAILURE MODE**: You finish coding, run lsp_diagnostics, and declare "done" without actually TESTING the feature. lsp_diagnostics catches type errors, NOT functional bugs. Your work is NOT verified until you MANUALLY test it.
+
+**WHAT MANUAL QA MEANS - execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify the output files exist and are correct. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Changes UI rendering | Describe what renders. Use a browser tool if available. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**UNACCEPTABLE QA CLAIMS:**
+- "This should work" - RUN IT.
+- "The types check out" - Types don't catch logic bugs. RUN IT.
+- "lsp_diagnostics is clean" - That's a TYPE check, not a FUNCTIONAL check. RUN IT.
+- "Tests pass" - Tests cover known cases. Does the ACTUAL FEATURE work as the user expects? RUN IT.
+
+**You have Bash, you have tools. There is ZERO excuse for not running manual QA.**
+**Manual QA is the FINAL gate before reporting completion. Skip it and your work is INCOMPLETE.**
+</MANUAL_QA_MANDATE>
+
+### TDD Workflow (when test infrastructure exists)
+
+1. **SPEC**: Define what "working" means (success criteria above)
+2. **RED**: Write failing test → Run it → Confirm it FAILS
+3. **GREEN**: Write minimal code → Run test → Confirm it PASSES
+4. **REFACTOR**: Clean up → Tests MUST stay green
+5. **VERIFY**: Run full test suite, confirm no regressions
+6. **EVIDENCE**: Report what you ran and what output you saw
+
+### Verification Anti-Patterns (BLOCKING)
+
+| Violation | Why It Fails |
+|-----------|--------------|
+| "It should work now" | No evidence. Run it. |
+| "I added the tests" | Did they pass? Show output. |
+| "Fixed the bug" | How do you know? What did you test? |
+| "Implementation complete" | Did you verify against success criteria? |
+| Skipping test execution | Tests exist to be RUN, not just written |
+
+**CLAIM NOTHING WITHOUT PROOF. EXECUTE. VERIFY. SHOW EVIDENCE.**
+
+## ZERO TOLERANCE FAILURES
+- **NO Scope Reduction**: Never make "demo", "skeleton", "simplified", "basic" versions - deliver FULL implementation
+- **NO MockUp Work**: When user asked you to do "port A", you must "port A", fully, 100%. No Extra feature, No reduced feature, no mock data, fully working 100% port.
+- **NO Partial Completion**: Never stop at 60-80% saying "you can extend this..." - finish 100%
+- **NO Assumed Shortcuts**: Never skip requirements you deem "optional" or "can be added later"
+- **NO Premature Stopping**: Never declare done until ALL TODOs are completed and verified
+- **NO TEST DELETION**: Never delete or skip failing tests to make the build pass. Fix the code, not the tests.
+
+THE USER ASKED FOR X. DELIVER EXACTLY X. NOT A SUBSET. NOT A DEMO. NOT A STARTING POINT.
+
+1. EXPLORES + LIBRARIANS
+2. GATHER -> PLAN AGENT SPAWN
+3. WORK BY DELEGATING TO ANOTHER AGENTS
+
+NOW.
+
+</ultrawork-mode>
+
+
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+Итак, теперь тебе нужно проверить доступность модели gpt-5.4-mini
+
+Затем, если доступно, нужно подправить в конфиге @opencode.jsonc А также соответственным образом подправить @oh-my-openagent_openai.jsonc @oh-my-openagent_openai-google-hybrid.jsonc ulw
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/opencode.jsonc"}
+<path>/Users/tim/dev/dotfiles/opencode/opencode.jsonc</path>
+<type>file</type>
+<content>
+1: {
+2:   "$schema": "https://opencode.ai/config.json",
+3: 
+4:   "plugin": [
+5:     "oh-my-openagent@3.15.0",
+6:     "opencode-openai-codex-auth@4.4.0",
+7:     "opencode-gemini-auth@latest",
+8:     // "opencode-antigravity-auth@1.6.0",
+9: 
+10:     "@plannotator/opencode@latest",
+11: 
+12:     // "@plannotator/opencode@0.15.5",
+13:     "@franlol/opencode-md-table-formatter@0.0.3",
+14:     "@nick-vi/opencode-type-inject@1.3.1",
+15:     "@bastiangx/opencode-unmoji@0.3.11",
+16:     "@tarquinen/opencode-dcp@latest",
+17:     "opencode-wakatime@latest",
+18:     // "octto",
+19:   ],
+20: 
+21:   "model": "openai/gpt-5.2",
+22:   "autoupdate": true,
+23:   "share": "disabled",
+24: 
+25:   "mcp": {
+26:     "mcpproxy": {
+27:       "url": "http://localhost:8080/mcp/",
+28:       "type": "remote",
+29:       "enabled": true,
+30:     },
+31:   },
+32: 
+33:   "enabled_providers": [
+34:     "openai",
+35:     "zai-coding-plan",
+36:     "opencode-go",
+37:     "omniroute",
+38:     "google",
+39:     // "github-copilot",
+40:   ],
+41: 
+42:   "lsp": {
+43:     "markdown": {
+44:       "command": ["npx", "-y", "remark-language-server", "--stdio"],
+45:       "extensions": [".md"],
+46:     },
+47:   },
+48: 
+49:   "provider": {
+50:     "openai": {
+51:       "name": "OpenAI",
+52:       "whitelist": [
+53:         "gpt-5.4",
+54:         "gpt-5.3-codex",
+55:         "gpt-5.2",
+56:         "gpt-5.2-codex",
+57:         "gpt-5.1-codex-max",
+58:         "gpt-5.1-codex-mini",
+59:       ],
+60:       "options": {
+61:         "reasoningEffort": "medium",
+62:         "reasoningSummary": "auto",
+63:         "textVerbosity": "medium",
+64:         "include": ["reasoning.encrypted_content"],
+65:         "store": false,
+66:       },
+67:       "models": {
+68:         "gpt-5.2": {
+69:           "name": "GPT 5.2 (OAuth)",
+70:           "limit": { "context": 272000, "output": 128000 },
+71:           "modalities": { "input": ["text", "image"], "output": ["text"] },
+72:           "variants": {
+73:             "none": {
+74:               "reasoningEffort": "none",
+75:               "reasoningSummary": "auto",
+76:               "textVerbosity": "medium",
+77:             },
+78:             "low": {
+79:               "reasoningEffort": "low",
+80:               "reasoningSummary": "auto",
+81:               "textVerbosity": "medium",
+82:             },
+83:             "medium": {
+84:               "reasoningEffort": "medium",
+85:               "reasoningSummary": "auto",
+86:               "textVerbosity": "medium",
+87:             },
+88:             "high": {
+89:               "reasoningEffort": "high",
+90:               "reasoningSummary": "detailed",
+91:               "textVerbosity": "medium",
+92:             },
+93:             "xhigh": {
+94:               "reasoningEffort": "xhigh",
+95:               "reasoningSummary": "detailed",
+96:               "textVerbosity": "medium",
+97:             },
+98:           },
+99:         },
+100:         "gpt-5.2-codex": {
+101:           "name": "GPT 5.2 Codex (OAuth)",
+102:           "limit": { "context": 272000, "output": 128000 },
+103:           "modalities": { "input": ["text", "image"], "output": ["text"] },
+104:           "variants": {
+105:             "low": {
+106:               "reasoningEffort": "low",
+107:               "reasoningSummary": "auto",
+108:               "textVerbosity": "medium",
+109:             },
+110:             "medium": {
+111:               "reasoningEffort": "medium",
+112:               "reasoningSummary": "auto",
+113:               "textVerbosity": "medium",
+114:             },
+115:             "high": {
+116:               "reasoningEffort": "high",
+117:               "reasoningSummary": "detailed",
+118:               "textVerbosity": "medium",
+119:             },
+120:             "xhigh": {
+121:               "reasoningEffort": "xhigh",
+122:               "reasoningSummary": "detailed",
+123:               "textVerbosity": "medium",
+124:             },
+125:           },
+126:         },
+127:         "gpt-5.1-codex-max": {
+128:           "name": "GPT 5.1 Codex Max (OAuth)",
+129:           "limit": { "context": 272000, "output": 128000 },
+130:           "modalities": { "input": ["text", "image"], "output": ["text"] },
+131:           "variants": {
+132:             "low": {
+133:               "reasoningEffort": "low",
+134:               "reasoningSummary": "detailed",
+135:               "textVerbosity": "medium",
+136:             },
+137:             "medium": {
+138:               "reasoningEffort": "medium",
+139:               "reasoningSummary": "detailed",
+140:               "textVerbosity": "medium",
+141:             },
+142:             "high": {
+143:               "reasoningEffort": "high",
+144:               "reasoningSummary": "detailed",
+145:               "textVerbosity": "medium",
+146:             },
+147:             "xhigh": {
+148:               "reasoningEffort": "xhigh",
+149:               "reasoningSummary": "detailed",
+150:               "textVerbosity": "medium",
+151:             },
+152:           },
+153:         },
+154:         "gpt-5.1-codex-mini": {
+155:           "name": "GPT 5.1 Codex Mini (OAuth)",
+156:           "limit": { "context": 128000, "output": 64000 },
+157:           "modalities": { "input": ["text"], "output": ["text"] },
+158:         },
+159:       },
+160:     },
+161:     "zai-coding-plan": {
+162:       "name": "Zhipu AI",
+163:       "whitelist": [
+164:         "glm-4.7",
+165:         "glm-4.7-flash",
+166:         "glm-4.6v",
+167:         "glm-5",
+168:         "glm-5-turbo",
+169:       ],
+170:       "models": {
+171:         "glm-4.7": {
+172:           "name": "GLM 4.7",
+173:           "limit": { "context": 200000, "output": 128000 },
+174:         },
+175:         "glm-4.7-flash": {
+176:           "name": "GLM 4.7 Flash",
+177:           "limit": { "context": 200000, "output": 128000 },
+178:         },
+179:         "glm-4.6v": {
+180:           "name": "GLM 4.6 Vision",
+181:           "limit": { "context": 128000, "output": 128000 },
+182:           "modalities": { "input": ["text", "image"], "output": ["text"] },
+183:         },
+184:         "glm-5": {
+185:           "name": "GLM 5",
+186:           "limit": { "context": 200000, "output": 128000 },
+187:         },
+188:         "glm-5-turbo": {
+189:           "name": "GLM 5 Turbo",
+190:           "limit": { "context": 200000, "output": 128000 },
+191:         },
+192:       },
+193:     },
+194:     "omniroute": {
+195:       "npm": "@ai-sdk/openai-compatible",
+196:       "name": "OMNi",
+197:       "options": {
+198:         "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
+199:         "apiKey": "{env:OMNIROUTE_TOKEN}",
+200:       },
+201:       "models": {
+202:         "reasoning-main": {
+203:           "name": "Reasoning Main",
+204:           "tools": true,
+205:         },
+206:         "reasoning-cheap": {
+207:           "name": "Reasoning Cheap",
+208:           "tools": true,
+209:         },
+210:         "coding-main": {
+211:           "name": "Coding Main",
+212:           "tools": true,
+213:         },
+214:         "coding-cheap": {
+215:           "name": "Coding Cheap",
+216:           "tools": true,
+217:         },
+218:         "deep-premium": {
+219:           "name": "Deep Premium",
+220:           "tools": true,
+221:         },
+222:         "research-fast": {
+223:           "name": "Research Fast",
+224:           "tools": true,
+225:         },
+226:         "quick-free": {
+227:           "name": "Quick Free",
+228:           "tools": true,
+229:         },
+230:         "vision-main": {
+231:           "name": "Vision Main",
+232:           "tools": true,
+233:         },
+234:         "writing-cheap": {
+235:           "name": "Writing Cheap",
+236:           "tools": true,
+237:         },
+238:       },
+239:     },
+240:     "omniroute-raw": {
+241:       "npm": "@ai-sdk/openai-compatible",
+242:       "name": "OmniRouteRaw",
+243:       "options": {
+244:         "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
+245:         "apiKey": "{env:OMNIROUTE_TOKEN}",
+246:       },
+247:       "models": {
+248:         "cx/gpt-5.4": { "name": "GPT 5.4" },
+249:         "cx/gpt-5.3-codex": { "name": "GPT 5.3 Codex" },
+250:         "cx/gpt-5.3-codex-xhigh": { "name": "GPT 5.3 Codex XHigh" },
+251:         "cx/gpt-5.3-codex-high": { "name": "GPT 5.3 Codex High" },
+252:         "cx/gpt-5.3-codex-low": { "name": "GPT 5.3 Codex Low" },
+253:         "cx/gpt-5.3-codex-none": { "name": "GPT 5.3 Codex None" },
+254:         "cx/gpt-5.1-codex-mini": { "name": "GPT 5.1 Codex Mini" },
+255:         "cx/gpt-5.1-codex-mini-high": { "name": "GPT 5.1 Codex Mini High" },
+256:         "cx/gpt-5.2-codex": { "name": "GPT 5.2 Codex" },
+257:         "cx/gpt-5.2": { "name": "GPT 5.2" },
+258:         "cx/gpt-5.1-codex-max": { "name": "GPT 5.1 Codex Max" },
+259:         "cx/gpt-5.1-codex": { "name": "GPT 5.1 Codex" },
+260:         "cx/gpt-5.1": { "name": "GPT 5.1" },
+261:         "cx/gpt-5-codex": { "name": "GPT 5 Codex" },
+262:         "cx/gpt-5-codex-mini": { "name": "GPT 5 Codex Mini" },
+263:         "kr/claude-sonnet-4.5": { "name": "Claude Sonnet 4.5" },
+264:         "kr/claude-haiku-4.5": { "name": "Claude Haiku 4.5" },
+265:         "glm/glm-5.1": { "name": "GLM 5.1" },
+266:         "glm/glm-5": { "name": "GLM 5" },
+267:         "glm/glm-5-turbo": { "name": "GLM 5 Turbo" },
+268:         "glm/glm-4.7-flash": { "name": "GLM 4.7 Flash" },
+269:         "glm/glm-4.7": { "name": "GLM 4.7" },
+270:         "glm/glm-4.6v": { "name": "GLM 4.6V" },
+271:         "glm/glm-4.6": { "name": "GLM 4.6" },
+272:         "glm/glm-4.5v": { "name": "GLM 4.5V" },
+273:         "glm/glm-4.5": { "name": "GLM 4.5" },
+274:         "glm/glm-4.5-air": { "name": "GLM 4.5 Air" },
+275:         "opencode-go/glm-5": { "name": "OpenCode Go GLM 5" },
+276:         "opencode-go/kimi-k2.5": { "name": "OpenCode Go Kimi K2.5" },
+277:         "opencode-go/minimax-m2.7": { "name": "OpenCode Go MiniMax M2.7" },
+278:         "opencode-go/minimax-m2.5": { "name": "OpenCode Go MiniMax M2.5" },
+279:       },
+280:     },
+281:     "google": {
+282:       "name": "Google",
+283:       "whitelist": [
+284:         "gemini-3.1-pro-preview",
+285:         "gemini-3-pro-preview",
+286:         "gemini-3-flash-preview",
+287:         "gemini-2.5-pro",
+288:         "gemini-2.5-flash",
+289:         "gemini-2.5-flash-lite",
+290:       ],
+291:       "options": {
+292:         "only_defined_models": true,
+293:         "discover": false,
+294:       },
+295:       "models": {
+296:         "gemini-3.1-pro-preview": {
+297:           "name": "Gemini 3.1 Pro Preview",
+298:           "limit": { "context": 2000000, "output": 65536 },
+299:           "modalities": {
+300:             "input": ["text", "image", "pdf"],
+301:             "output": ["text"],
+302:           },
+303:         },
+304:         "gemini-3-pro-preview": {
+305:           "name": "Gemini 3 Pro Preview",
+306:           "limit": { "context": 2000000, "output": 65536 },
+307:           "modalities": {
+308:             "input": ["text", "image", "pdf"],
+309:             "output": ["text"],
+310:           },
+311:         },
+312:         "gemini-3-flash-preview": {
+313:           "name": "Gemini 3 Flash Preview",
+314:           "limit": { "context": 1000000, "output": 65536 },
+315:           "modalities": {
+316:             "input": ["text", "image", "pdf"],
+317:             "output": ["text"],
+318:           },
+319:         },
+320:         "gemini-2.5-pro": {
+321:           "name": "Gemini 2.5 Pro",
+322:           "limit": { "context": 2000000, "output": 65536 },
+323:           "modalities": {
+324:             "input": ["text", "image", "pdf"],
+325:             "output": ["text"],
+326:           },
+327:         },
+328:         "gemini-2.5-flash": {
+329:           "name": "Gemini 2.5 Flash",
+330:           "limit": { "context": 1000000, "output": 65536 },
+331:           "modalities": {
+332:             "input": ["text", "image", "pdf"],
+333:             "output": ["text"],
+334:           },
+335:         },
+336:         "gemini-2.5-flash-lite": {
+337:           "name": "Gemini 2.5 Flash Lite",
+338:           "limit": { "context": 1000000, "output": 65536 },
+339:           "modalities": {
+340:             "input": ["text", "image", "pdf"],
+341:             "output": ["text"],
+342:           },
+343:         },
+344:       },
+345:     },
+346:   },
+347: }
+
+(End of file - total 347 lines)
+</content>
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/oh-my-openagent_openai.jsonc"}
+<path>/Users/tim/dev/dotfiles/opencode/oh-my-openagent_openai.jsonc</path>
+<type>file</type>
+<content>
+1: {
+2:   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+3:   "hashline_edit": true,
+4:   "agents": {
+5:     "sisyphus": {
+6:       "model": "openai/gpt-5.4",
+7:       "temperature": 0.1,
+8:     },
+9:     "atlas": {
+10:       "model": "openai/gpt-5.4",
+11:       "temperature": 0.1,
+12:     },
+13:     "oracle": {
+14:       "model": "openai/gpt-5.4",
+15:       "temperature": 0.1,
+16:     },
+17:     "librarian": {
+18:       "model": "openai/gpt-5.4-mini",
+19:       "temperature": 0.2,
+20:     },
+21:     "explore": {
+22:       "model": "openai/gpt-5.4-mini",
+23:       "temperature": 0.1,
+24:     },
+25:     "hephaestus": {
+26:       "model": "openai/gpt-5.3-codex",
+27:       "variant": "medium",
+28:     },
+29:     "sisyphus-junior": {
+30:       "model": "openai/gpt-5.3-codex",
+31:       "temperature": 0.1,
+32:     },
+33:     "multimodal-looker": {
+34:       "model": "openai/gpt-5.4-mini",
+35:       "temperature": 0.1,
+36:     },
+37:     "plan": {
+38:       "model": "openai/gpt-5.4",
+39:       "temperature": 0.2,
+40:     },
+41:     "OpenCode-Builder": {
+42:       "model": "openai/gpt-5.3-codex",
+43:       "temperature": 0.05,
+44:     },
+45:     "prometheus": {
+46:       "model": "openai/gpt-5.4-mini",
+47:       "temperature": 0.2,
+48:     },
+49:     "metis": {
+50:       "model": "openai/gpt-5.4",
+51:       "temperature": 0.3,
+52:     },
+53:     "momus": {
+54:       "model": "openai/gpt-5.4-mini",
+55:       "temperature": 0.1,
+56:     },
+57:   },
+58:   "sisyphus_agent": {
+59:     "disabled": false,
+60:     "default_builder_enabled": false,
+61:     "planner_enabled": true,
+62:     "replace_plan": true,
+63:   },
+64:   "ralph_loop": {
+65:     "enabled": true,
+66:     "default_max_iterations": 100,
+67:   },
+68:   "background_task": {
+69:     "defaultConcurrency": 5,
+70:     "providerConcurrency": {
+71:       "openai": 5,
+72:     },
+73:     "modelConcurrency": {
+74:       "openai/gpt-5.4": 3,
+75:       "openai/gpt-5.4-mini": 8,
+76:       "openai/gpt-5.3-codex": 2,
+77:     },
+78:   },
+79:   "categories": {
+80:     "visual-engineering": {
+81:       "model": "openai/gpt-5.4-mini",
+82:       "temperature": 0.7,
+83:       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+84:     },
+85:     "ultrabrain": {
+86:       "model": "openai/gpt-5.4",
+87:       "temperature": 0.15,
+88:       "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+89:     },
+90:     "deep": {
+91:       "model": "openai/gpt-5.4",
+92:       "temperature": 0.1,
+93:       "prompt_append": "Focus on robustness, error handling, and type safety.",
+94:     },
+95:     "quick": {
+96:       "model": "openai/gpt-5.4-mini",
+97:       "temperature": 0.3,
+98:     },
+99:     "unspecified-low": {
+100:       "model": "openai/gpt-5.4-mini",
+101:       "temperature": 0.3,
+102:     },
+103:     "unspecified-high": {
+104:       "model": "openai/gpt-5.4",
+105:       "temperature": 0.1,
+106:     },
+107:     "writing": {
+108:       "model": "openai/gpt-5.4-mini",
+109:       "temperature": 0.3,
+110:     },
+111:   },
+112:   "claude_code": {
+113:     "mcp": false,
+114:     "commands": false,
+115:     "skills": true,
+116:     "agents": true,
+117:     "hooks": true,
+118:     "plugins": true,
+119:     "plugins_override": {},
+120:   },
+121:   "git_master": {
+122:     "commit_footer": false,
+123:     "include_co_authored_by": false,
+124:   },
+125:   "experimental": {
+126:     "auto_resume": true,
+127:     "aggressive_truncation": true,
+128:     "truncate_all_tool_outputs": true,
+129:     "preemptive_compaction": true,
+130:     "dynamic_context_pruning": {
+131:       "enabled": false,
+132:       "notification": "off",
+133:       "turn_protection": {
+134:         "enabled": true,
+135:         "turns": 3,
+136:       },
+137:     },
+138:   },
+139:   "disabled_mcps": [],
+140:   "disabled_skills": ["playwright"],
+141:   "disabled_agents": [],
+142:   "disabled_hooks": [],
+143:   "google_auth": false,
+144:   "lsp": {},
+145: }
+
+(End of file - total 145 lines)
+</content>
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/oh-my-openagent_openai-google-hybrid.jsonc"}
+<path>/Users/tim/dev/dotfiles/opencode/oh-my-openagent_openai-google-hybrid.jsonc</path>
+<type>file</type>
+<content>
+1: {
+2:   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+3:   "hashline_edit": true,
+4:   "agents": {
+5:     "sisyphus": {
+6:       "model": "openai/gpt-5.4",
+7:       "reasoningEffort": "medium",
+8:     },
+9:     "atlas": {
+10:       "model": "openai/gpt-5.4",
+11:       "reasoningEffort": "medium",
+12:     },
+13:     "oracle": {
+14:       "model": "openai/gpt-5.4",
+15:       "reasoningEffort": "high",
+16:     },
+17:     "librarian": {
+18:       "model": "google/gemini-3-flash-preview",
+19:       "fallback_models": ["google/gemini-2.5-flash"],
+20:     },
+21:     "explore": {
+22:       "model": "google/gemini-3-flash-preview",
+23:       "fallback_models": ["google/gemini-2.5-flash"],
+24:     },
+25:     "hephaestus": {
+26:       "model": "openai/gpt-5.3-codex",
+27:       "reasoningEffort": "medium",
+28:     },
+29:     "sisyphus-junior": {
+30:       "model": "google/gemini-3-flash-preview",
+31:       "fallback_models": ["google/gemini-2.5-flash"],
+32:     },
+33:     "multimodal-looker": {
+34:       "model": "google/gemini-3.1-pro-preview",
+35:       "fallback_models": ["google/gemini-2.5-pro"],
+36:     },
+37:     "plan": {
+38:       "model": "openai/gpt-5.4",
+39:       "reasoningEffort": "high",
+40:     },
+41:     "OpenCode-Builder": {
+42:       "model": "openai/gpt-5.3-codex",
+43:       "reasoningEffort": "medium",
+44:     },
+45:     "prometheus": {
+46:       "model": "openai/gpt-5.4",
+47:       "reasoningEffort": "high",
+48:     },
+49:     "metis": {
+50:       "model": "openai/gpt-5.4",
+51:       "reasoningEffort": "high",
+52:     },
+53:     "momus": {
+54:       "model": "openai/gpt-5.4",
+55:       "reasoningEffort": "xhigh",
+56:     },
+57:   },
+58:   "sisyphus_agent": {
+59:     "disabled": false,
+60:     "default_builder_enabled": false,
+61:     "planner_enabled": true,
+62:     "replace_plan": true,
+63:   },
+64:   "ralph_loop": {
+65:     "enabled": true,
+66:     "default_max_iterations": 100,
+67:   },
+68:   "background_task": {
+69:     "defaultConcurrency": 6,
+70:     "providerConcurrency": {
+71:       "openai": 4,
+72:       "google": 6,
+73:     },
+74:     "modelConcurrency": {
+75:       "openai/gpt-5.4": 3,
+76:       "openai/gpt-5.4-mini": 6,
+77:       "openai/gpt-5.3-codex": 2,
+78:       "google/gemini-3.1-pro-preview": 3,
+79:       "google/gemini-3-flash-preview": 6,
+80:       "google/gemini-2.5-pro": 3,
+81:       "google/gemini-2.5-flash": 6,
+82:     },
+83:   },
+84:   "categories": {
+85:     "visual-engineering": {
+86:       "model": "google/gemini-3.1-pro-preview",
+87:       "fallback_models": ["google/gemini-2.5-pro"],
+88:       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+89:     },
+90:     "ultrabrain": {
+91:       "model": "openai/gpt-5.4",
+92:       "reasoningEffort": "xhigh",
+93:       "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+94:     },
+95:     "deep": {
+96:       "model": "openai/gpt-5.4",
+97:       "reasoningEffort": "medium",
+98:       "prompt_append": "Focus on robustness, error handling, and type safety.",
+99:     },
+100:     "quick": {
+101:       "model": "openai/gpt-5.4-mini",
+102:     },
+103:     "unspecified-low": {
+104:       "model": "google/gemini-3-flash-preview",
+105:       "fallback_models": ["google/gemini-2.5-flash"],
+106:     },
+107:     "unspecified-high": {
+108:       "model": "openai/gpt-5.4",
+109:       "reasoningEffort": "high",
+110:     },
+111:     "writing": {
+112:       "model": "google/gemini-3-flash-preview",
+113:       "fallback_models": ["google/gemini-2.5-flash"],
+114:     },
+115:   },
+116:   "claude_code": {
+117:     "mcp": false,
+118:     "commands": false,
+119:     "skills": true,
+120:     "agents": true,
+121:     "hooks": true,
+122:     "plugins": true,
+123:     "plugins_override": {},
+124:   },
+125:   "git_master": {
+126:     "commit_footer": false,
+127:     "include_co_authored_by": false,
+128:   },
+129:   "experimental": {
+130:     "auto_resume": true,
+131:     "aggressive_truncation": true,
+132:     "truncate_all_tool_outputs": true,
+133:     "preemptive_compaction": true,
+134:     "dynamic_context_pruning": {
+135:       "enabled": false,
+136:       "notification": "off",
+137:       "turn_protection": {
+138:         "enabled": true,
+139:         "turns": 3,
+140:       },
+141:     },
+142:   },
+143:   "disabled_mcps": [],
+144:   "disabled_skills": ["playwright"],
+145:   "disabled_agents": [],
+146:   "disabled_hooks": [],
+147:   "google_auth": false,
+148:   "lsp": {},
+149: }
+
+(End of file - total 149 lines)
+</content>
+
+---
+
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Ultrathink before acting.
+
+## **ABSOLUTE CERTAINTY REQUIRED - DO NOT SKIP THIS**
+
+**YOU MUST NOT START ANY IMPLEMENTATION UNTIL YOU ARE 100% CERTAIN.**
+
+| **BEFORE YOU WRITE A SINGLE LINE OF CODE, YOU MUST:** |
+|-------------------------------------------------------|
+| **FULLY UNDERSTAND** what the user ACTUALLY wants (not what you ASSUME they want) |
+| **EXPLORE** the codebase to understand existing patterns, architecture, and context |
+| **HAVE A CRYSTAL CLEAR WORK PLAN** - if your plan is vague, YOUR WORK WILL FAIL |
+| **RESOLVE ALL AMBIGUITY** - if ANYTHING is unclear, ASK or INVESTIGATE |
+
+### **MANDATORY CERTAINTY PROTOCOL**
+
+**IF YOU ARE NOT 100% CERTAIN:**
+
+1. **THINK DEEPLY** - What is the user's TRUE intent? What problem are they REALLY trying to solve?
+2. **EXPLORE THOROUGHLY** - Fire explore/librarian agents to gather ALL relevant context
+3. **CONSULT SPECIALISTS** - For hard/complex tasks, DO NOT struggle alone. Delegate:
+   - **Oracle**: Conventional problems - architecture, debugging, complex logic
+   - **Artistry**: Non-conventional problems - different approach needed, unusual constraints
+4. **ASK THE USER** - If ambiguity remains after exploration, ASK. Don't guess.
+
+**SIGNS YOU ARE NOT READY TO IMPLEMENT:**
+- You're making assumptions about requirements
+- You're unsure which files to modify
+- You don't understand how existing code works
+- Your plan has "probably" or "maybe" in it
+- You can't explain the exact steps you'll take
+
+**WHEN IN DOUBT:**
+```
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK DESCRIPTION] and need to understand [SPECIFIC KNOWLEDGE GAP]. Find [X] patterns in the codebase - show file paths, implementation approach, and conventions used. I'll use this to [HOW RESULTS WILL BE USED]. Focus on src/ directories, skip test files unless test patterns are specifically needed. Return concrete file paths with brief descriptions of what each file does.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [LIBRARY/TECHNOLOGY] and need [SPECIFIC INFORMATION]. Find official documentation and production-quality examples for [Y] - specifically: API reference, configuration options, recommended patterns, and common pitfalls. Skip beginner tutorials. I'll use this to [DECISION THIS WILL INFORM].", run_in_background=true)
+task(subagent_type="oracle", load_skills=[], prompt="I need architectural review of my approach to [TASK]. Here's my plan: [DESCRIBE PLAN WITH SPECIFIC FILES AND CHANGES]. My concerns are: [LIST SPECIFIC UNCERTAINTIES]. Please evaluate: correctness of approach, potential issues I'm missing, and whether a better alternative exists.", run_in_background=false)
+```
+
+**ONLY AFTER YOU HAVE:**
+- Gathered sufficient context via agents
+- Resolved all ambiguities
+- Created a precise, step-by-step work plan
+- Achieved 100% confidence in your understanding
+
+**...THEN AND ONLY THEN MAY YOU BEGIN IMPLEMENTATION.**
+
+---
+
+## **NO EXCUSES. NO COMPROMISES. DELIVER WHAT WAS ASKED.**
+
+**THE USER'S ORIGINAL REQUEST IS SACRED. YOU MUST FULFILL IT EXACTLY.**
+
+| VIOLATION | CONSEQUENCE |
+|-----------|-------------|
+| "I couldn't because..." | **UNACCEPTABLE.** Find a way or ask for help. |
+| "This is a simplified version..." | **UNACCEPTABLE.** Deliver the FULL implementation. |
+| "You can extend this later..." | **UNACCEPTABLE.** Finish it NOW. |
+| "Due to limitations..." | **UNACCEPTABLE.** Use agents, tools, whatever it takes. |
+| "I made some assumptions..." | **UNACCEPTABLE.** You should have asked FIRST. |
+
+**THERE ARE NO VALID EXCUSES FOR:**
+- Delivering partial work
+- Changing scope without explicit user approval
+- Making unauthorized simplifications
+- Stopping before the task is 100% complete
+- Compromising on any stated requirement
+
+**IF YOU ENCOUNTER A BLOCKER:**
+1. **DO NOT** give up
+2. **DO NOT** deliver a compromised version
+3. **DO** consult specialists (oracle for conventional, artistry for non-conventional)
+4. **DO** ask the user for guidance
+5. **DO** explore alternative approaches
+
+**THE USER ASKED FOR X. DELIVER EXACTLY X. PERIOD.**
+
+---
+
+YOU MUST LEVERAGE ALL AVAILABLE AGENTS / **CATEGORY + SKILLS** TO THEIR FULLEST POTENTIAL.
+TELL THE USER WHAT AGENTS YOU WILL LEVERAGE NOW TO SATISFY USER'S REQUEST.
+
+## MANDATORY: PLAN AGENT INVOCATION (NON-NEGOTIABLE)
+
+**YOU MUST ALWAYS INVOKE THE PLAN AGENT FOR ANY NON-TRIVIAL TASK.**
+
+| Condition | Action |
+|-----------|--------|
+| Task has 2+ steps | MUST call plan agent |
+| Task scope unclear | MUST call plan agent |
+| Implementation required | MUST call plan agent |
+| Architecture decision needed | MUST call plan agent |
+
+```
+task(subagent_type="plan", load_skills=[], prompt="<gathered context + user request>")
+```
+
+**WHY PLAN AGENT IS MANDATORY:**
+- Plan agent analyzes dependencies and parallel execution opportunities
+- Plan agent outputs a **parallel task graph** with waves and dependencies
+- Plan agent provides structured TODO list with category + skills per task
+- YOU are an orchestrator, NOT an implementer
+
+### SESSION CONTINUITY WITH PLAN AGENT (CRITICAL)
+
+**Plan agent returns a session_id. USE IT for follow-up interactions.**
+
+| Scenario | Action |
+|----------|--------|
+| Plan agent asks clarifying questions | `task(session_id="{returned_session_id}", load_skills=[], prompt="<your answer>")` |
+| Need to refine the plan | `task(session_id="{returned_session_id}", load_skills=[], prompt="Please adjust: <feedback>")` |
+| Plan needs more detail | `task(session_id="{returned_session_id}", load_skills=[], prompt="Add more detail to Task N")` |
+
+**WHY SESSION_ID IS CRITICAL:**
+- Plan agent retains FULL conversation context
+- No repeated exploration or context gathering
+- Saves 70%+ tokens on follow-ups
+- Maintains interview continuity until plan is finalized
+
+```
+// WRONG: Starting fresh loses all context
+task(subagent_type="plan", load_skills=[], prompt="Here's more info...")
+
+// CORRECT: Resume preserves everything
+task(session_id="ses_abc123", load_skills=[], prompt="Here's my answer to your question: ...")
+```
+
+**FAILURE TO CALL PLAN AGENT = INCOMPLETE WORK.**
+
+---
+
+## AGENTS / **CATEGORY + SKILLS** UTILIZATION PRINCIPLES
+
+**DEFAULT BEHAVIOR: DELEGATE. DO NOT WORK YOURSELF.**
+
+| Task Type | Action | Why |
+|-----------|--------|-----|
+| Codebase exploration | task(subagent_type="explore", load_skills=[], run_in_background=true) | Parallel, context-efficient |
+| Documentation lookup | task(subagent_type="librarian", load_skills=[], run_in_background=true) | Specialized knowledge |
+| Planning | task(subagent_type="plan", load_skills=[]) | Parallel task graph + structured TODO list |
+| Hard problem (conventional) | task(subagent_type="oracle", load_skills=[]) | Architecture, debugging, complex logic |
+| Hard problem (non-conventional) | task(category="artistry", load_skills=[...]) | Different approach needed |
+| Implementation | task(category="...", load_skills=[...]) | Domain-optimized models |
+
+**CATEGORY + SKILL DELEGATION:**
+```
+// Frontend work
+task(category="visual-engineering", load_skills=["frontend-ui-ux"])
+
+// Complex logic
+task(category="ultrabrain", load_skills=["typescript-programmer"])
+
+// Quick fixes
+task(category="quick", load_skills=["git-master"])
+```
+
+**YOU SHOULD ONLY DO IT YOURSELF WHEN:**
+- Task is trivially simple (1-2 lines, obvious change)
+- You have ALL context already loaded
+- Delegation overhead exceeds task complexity
+
+**OTHERWISE: DELEGATE. ALWAYS.**
+
+---
+
+## EXECUTION RULES
+- **TODO**: Track EVERY step. Mark complete IMMEDIATELY after each.
+- **PARALLEL**: Fire independent agent calls simultaneously via task(run_in_background=true) - NEVER wait sequentially.
+- **BACKGROUND FIRST**: Use task for exploration/research agents (10+ concurrent if needed).
+- **VERIFY**: Re-read request after completion. Check ALL requirements met before reporting done.
+- **DELEGATE**: Don't do everything yourself - orchestrate specialized agents for their strengths.
+
+## WORKFLOW
+1. Analyze the request and identify required capabilities
+2. Spawn exploration/librarian agents via task(run_in_background=true) in PARALLEL (10+ if needed)
+3. Use Plan agent with gathered context to create detailed work breakdown
+4. Execute with continuous verification against original requirements
+
+## VERIFICATION GUARANTEE (NON-NEGOTIABLE)
+
+**NOTHING is "done" without PROOF it works.**
+
+### Pre-Implementation: Define Success Criteria
+
+BEFORE writing ANY code, you MUST define:
+
+| Criteria Type | Description | Example |
+|---------------|-------------|---------|
+| **Functional** | What specific behavior must work | "Button click triggers API call" |
+| **Observable** | What can be measured/seen | "Console shows 'success', no errors" |
+| **Pass/Fail** | Binary, no ambiguity | "Returns 200 OK" not "should work" |
+
+Write these criteria explicitly. **Record them in your TODO/Task items.** Each task MUST include a "QA: [how to verify]" field. These criteria are your CONTRACT - work toward them, verify against them.
+
+### Test Plan Template (MANDATORY for non-trivial tasks)
+
+```
+## Test Plan
+### Objective: [What we're verifying]
+### Prerequisites: [Setup needed]
+### Test Cases:
+1. [Test Name]: [Input] → [Expected Output] → [How to verify]
+2. ...
+### Success Criteria: ALL test cases pass
+### How to Execute: [Exact commands/steps]
+```
+
+### Execution & Evidence Requirements
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| **Build** | Run build command | Exit code 0, no errors |
+| **Test** | Execute test suite | All tests pass (screenshot/output) |
+| **Manual Verify** | Test the actual feature | Demonstrate it works (describe what you observed) |
+| **Regression** | Ensure nothing broke | Existing tests still pass |
+
+**WITHOUT evidence = NOT verified = NOT done.**
+
+<MANUAL_QA_MANDATE>
+### YOU MUST EXECUTE MANUAL QA YOURSELF. THIS IS NOT OPTIONAL.
+
+**YOUR FAILURE MODE**: You finish coding, run lsp_diagnostics, and declare "done" without actually TESTING the feature. lsp_diagnostics catches type errors, NOT functional bugs. Your work is NOT verified until you MANUALLY test it.
+
+**WHAT MANUAL QA MEANS - execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify the output files exist and are correct. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Changes UI rendering | Describe what renders. Use a browser tool if available. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**UNACCEPTABLE QA CLAIMS:**
+- "This should work" - RUN IT.
+- "The types check out" - Types don't catch logic bugs. RUN IT.
+- "lsp_diagnostics is clean" - That's a TYPE check, not a FUNCTIONAL check. RUN IT.
+- "Tests pass" - Tests cover known cases. Does the ACTUAL FEATURE work as the user expects? RUN IT.
+
+**You have Bash, you have tools. There is ZERO excuse for not running manual QA.**
+**Manual QA is the FINAL gate before reporting completion. Skip it and your work is INCOMPLETE.**
+</MANUAL_QA_MANDATE>
+
+### TDD Workflow (when test infrastructure exists)
+
+1. **SPEC**: Define what "working" means (success criteria above)
+2. **RED**: Write failing test → Run it → Confirm it FAILS
+3. **GREEN**: Write minimal code → Run test → Confirm it PASSES
+4. **REFACTOR**: Clean up → Tests MUST stay green
+5. **VERIFY**: Run full test suite, confirm no regressions
+6. **EVIDENCE**: Report what you ran and what output you saw
+
+### Verification Anti-Patterns (BLOCKING)
+
+| Violation | Why It Fails |
+|-----------|--------------|
+| "It should work now" | No evidence. Run it. |
+| "I added the tests" | Did they pass? Show output. |
+| "Fixed the bug" | How do you know? What did you test? |
+| "Implementation complete" | Did you verify against success criteria? |
+| Skipping test execution | Tests exist to be RUN, not just written |
+
+**CLAIM NOTHING WITHOUT PROOF. EXECUTE. VERIFY. SHOW EVIDENCE.**
+
+## ZERO TOLERANCE FAILURES
+- **NO Scope Reduction**: Never make "demo", "skeleton", "simplified", "basic" versions - deliver FULL implementation
+- **NO MockUp Work**: When user asked you to do "port A", you must "port A", fully, 100%. No Extra feature, No reduced feature, no mock data, fully working 100% port.
+- **NO Partial Completion**: Never stop at 60-80% saying "you can extend this..." - finish 100%
+- **NO Assumed Shortcuts**: Never skip requirements you deem "optional" or "can be added later"
+- **NO Premature Stopping**: Never declare done until ALL TODOs are completed and verified
+- **NO TEST DELETION**: Never delete or skip failing tests to make the build pass. Fix the code, not the tests.
+
+THE USER ASKED FOR X. DELIVER EXACTLY X. NOT A SUBSET. NOT A DEMO. NOT A STARTING POINT.
+
+1. EXPLORES + LIBRARIANS
+2. GATHER -> PLAN AGENT SPAWN
+3. WORK BY DELEGATING TO ANOTHER AGENTS
+
+NOW.
+
+</ultrawork-mode>
+
+
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+1 Да, смотри, у меня есть подписка OpenAI кодекс. Я авторизирован, но, во-первых, там могут быть лимиты, во-вторых, я уперся в лимиты, то есть модель доступна, но может быть пока лимитами ограничена. Во-вторых, я вручную в конфигах ограничиваю список доступных моделей, чтобы не было мусорных недоступных. И твоя задача проверить именно доступность модели в OpenCode под данные авторизации OpenAI. Добавить gpt-5.4-mini в whitelist провайдера openai в opencode.jsonc
+   - Добавить определение модели gpt-5.4-mini с лимитами в секцию models - да
+
+ Конфиги oh-my-openagent уже содержат gpt-5.4-mini — что именно там нужно "подправить"? Этого я не знал, но если они там уместно используются, то это отлично. 
+
+3 Да, посмотри, где уместно. Я тебе сейчас в качестве контекста скину рекомендации от создателей ОМАЙ ОПЕН Эджент. 
+
+# Agent-Model Matching Guide
+
+> **For agents and users**: Why each agent needs a specific model — and how to customize without breaking things.
+
+## The Core Insight: Models Are Developers
+
+Think of AI models as developers on a team. Each has a different brain, different personality, different strengths. **A model isn't just "smarter" or "dumber." It thinks differently.** Give the same instruction to Claude and GPT, and they'll interpret it in fundamentally different ways.
+
+This isn't a bug. It's the foundation of the entire system.
+
+Oh My OpenAgent assigns each agent a model that matches its _working style_ — like building a team where each person is in the role that fits their personality.
+
+### Sisyphus: The Sociable Lead
+
+Sisyphus is the developer who knows everyone, goes everywhere, and gets things done through communication and coordination. Talks to other agents, understands context across the whole codebase, delegates work intelligently, and codes well too. But deep, purely technical problems? He'll struggle a bit.
+
+**This is why Sisyphus uses Claude / Kimi / GLM.** These models excel at:
+
+- Following complex, multi-step instructions (Sisyphus's prompt is ~1,100 lines)
+- Maintaining conversation flow across many tool calls
+- Understanding nuanced delegation and orchestration patterns
+- Producing well-structured, communicative output
+
+Using Sisyphus with older GPT models would be like taking your best project manager — the one who coordinates everyone, runs standups, and keeps the whole team aligned — and sticking them in a room alone to debug a race condition. Wrong fit. GPT-5.4 now has a dedicated Sisyphus prompt path, but GPT is still not the default recommendation for the orchestrator.
+
+### Hephaestus: The Deep Specialist
+
+Hephaestus is the developer who stays in their room coding all day. Doesn't talk much. Might seem socially awkward. But give them a hard technical problem and they'll emerge three hours later with a solution nobody else could have found.
+
+**This is why Hephaestus uses GPT-5.4.** GPT-5.4 is built for exactly this:
+
+- Deep, autonomous exploration without hand-holding
+- Multi-file reasoning across complex codebases
+- Principle-driven execution (give a goal, not a recipe)
+- Working independently for extended periods
+
+Using Hephaestus with GLM or Kimi would be like assigning your most communicative, sociable developer to sit alone and do nothing but deep technical work. They'd get it done eventually, but they wouldn't shine — you'd be wasting exactly the skills that make them valuable.
+
+### The Takeaway
+
+Every agent's prompt is tuned to match its model's personality. **When you change the model, you change the brain — and the same instructions get understood completely differently.** Model matching isn't about "better" or "worse." It's about fit.
+
+---
+
+## How Claude and GPT Think Differently
+
+This matters for understanding why some agents support both model families while others don't.
+
+**Claude** responds to **mechanics-driven** prompts — detailed checklists, templates, step-by-step procedures. More rules = more compliance. You can write a 1,100-line prompt with nested workflows and Claude will follow every step.
+
+**GPT** (especially 5.2+) responds to **principle-driven** prompts — concise principles, XML structure, explicit decision criteria. More rules = more contradiction surface = more drift. GPT works best when you state the goal and let it figure out the mechanics.
+
+Real example: Prometheus's Claude prompt is ~1,100 lines across 7 files. The GPT prompt achieves the same behavior with 3 principles in ~121 lines. Same outcome, completely different approach.
+
+Agents that support both families (Prometheus, Atlas) auto-detect your model at runtime and switch prompts via `isGptModel()`. You don't have to think about it.
+
+---
+
+## Agent Profiles
+
+### Communicators → Claude / Kimi / GLM
+
+These agents have Claude-optimized prompts — long, detailed, mechanics-driven. They need models that reliably follow complex, multi-layered instructions.
+
+| Agent        | Role              | Fallback Chain                         | Notes                                                                                             |
+| ------------ | ----------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Sisyphus** | Main orchestrator | anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → opencode-go/kimi-k2.5 → kimi-for-coding/k2p5 → opencode\|moonshotai\|moonshotai-cn\|firmware\|ollama-cloud\|aihubmix/kimi-k2.5 → openai\|github-copilot\|opencode/gpt-5.4 (medium) → zai-coding-plan\|opencode/glm-5 → opencode/big-pickle | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Metis**    | Plan gap analyzer | anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → openai\|github-copilot\|opencode/gpt-5.4 (high) → opencode-go/glm-5 → kimi-for-coding/k2p5 | Exact runtime chain from `src/shared/model-requirements.ts`. |
+
+### Dual-Prompt Agents → Claude preferred, GPT supported
+
+These agents ship separate prompts for Claude and GPT families. They auto-detect your model and switch at runtime.
+
+| Agent          | Role              | Fallback Chain                         | Notes                                                                |
+| -------------- | ----------------- | -------------------------------------- | -------------------------------------------------------------------- |
+| **Prometheus** | Strategic planner | anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → openai\|github-copilot\|opencode/gpt-5.4 (high) → opencode-go/glm-5 → google\|github-copilot\|opencode/gemini-3.1-pro | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Atlas**      | Todo orchestrator | anthropic\|github-copilot\|opencode/claude-sonnet-4-6 → opencode-go/kimi-k2.5 → openai\|github-copilot\|opencode/gpt-5.4 (medium) → opencode-go/minimax-m2.7 | Exact runtime chain from `src/shared/model-requirements.ts`. |
+
+### Deep Specialists → GPT
+
+These agents are built for GPT's principle-driven style. Their prompts assume autonomous, goal-oriented execution. Don't override to Claude.
+
+| Agent          | Role                    | Fallback Chain                         | Notes                                            |
+| -------------- | ----------------------- | -------------------------------------- | ------------------------------------------------ |
+| **Hephaestus** | Autonomous deep worker  | GPT-5.4 (medium) | Requires a GPT-capable provider. The craftsman. |
+| **Oracle**     | Architecture consultant | openai\|github-copilot\|opencode/gpt-5.4 (high) → google\|github-copilot\|opencode/gemini-3.1-pro (high) → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → opencode-go/glm-5 | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Momus**      | Ruthless reviewer       | openai\|github-copilot\|opencode/gpt-5.4 (xhigh) → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → google\|github-copilot\|opencode/gemini-3.1-pro (high) → opencode-go/glm-5 | Exact runtime chain from `src/shared/model-requirements.ts`. |
+
+### Utility Runners → Speed over Intelligence
+
+These agents do grep, search, and retrieval. They intentionally use the fastest, cheapest models available. **Don't "upgrade" them to Opus** — that's hiring a senior engineer to file paperwork.
+
+| Agent                 | Role               | Fallback Chain                                 | Notes                                                 |
+| --------------------- | ------------------ | ---------------------------------------------- | ----------------------------------------------------- |
+| **Explore**           | Fast codebase grep | github-copilot\|xai/grok-code-fast-1 → opencode-go/minimax-m2.7-highspeed → opencode/minimax-m2.7 → anthropic\|opencode/claude-haiku-4-5 → opencode/gpt-5-nano | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Librarian**         | Docs/code search   | opencode-go/minimax-m2.7 → opencode/minimax-m2.7-highspeed → anthropic\|opencode/claude-haiku-4-5 → opencode/gpt-5-nano | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Multimodal Looker** | Vision/screenshots | openai\|opencode/gpt-5.4 (medium) → opencode-go/kimi-k2.5 → zai-coding-plan/glm-4.6v → openai\|github-copilot\|opencode/gpt-5-nano | Exact runtime chain from `src/shared/model-requirements.ts`. |
+| **Sisyphus-Junior**   | Category executor  | anthropic\|github-copilot\|opencode/claude-sonnet-4-6 → opencode-go/kimi-k2.5 → openai\|github-copilot\|opencode/gpt-5.4 (medium) → opencode-go/minimax-m2.7 → opencode/big-pickle | Exact runtime chain from `src/shared/model-requirements.ts`. |
+
+---
+
+## Model Families
+
+### Claude Family
+
+Communicative, instruction-following, structured output. Best for agents that need to follow complex multi-step prompts.
+
+| Model                 | Strengths                                                                    |
+| --------------------- | ---------------------------------------------------------------------------- |
+| **Claude Opus 4.6**   | Best overall. Highest compliance with complex prompts. Default for Sisyphus. |
+| **Claude Sonnet 4.6** | Faster, cheaper. Good balance for everyday tasks.                            |
+| **Claude Haiku 4.5**  | Fast and cheap. Good for quick tasks and utility work.                       |
+| **Kimi K2.5**         | Behaves very similarly to Claude. Great all-rounder at lower cost.           |
+| **GLM 5**             | Claude-like behavior. Solid for orchestration tasks.                         |
+
+### GPT Family
+
+Principle-driven, explicit reasoning, deep technical capability. Best for agents that work autonomously on complex problems.
+
+| Model             | Strengths                                                                                       |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| **GPT-5.3 Codex** | Deep coding powerhouse. Autonomous exploration. Still available for deep category and explicit overrides. |
+| **GPT-5.4**       | High intelligence, strategic reasoning. Default for Oracle, Momus, and a key fallback for Prometheus / Atlas. Uses xhigh variant for Momus. |
+| **GPT-5.4 Mini**  | Fast + strong reasoning. Good for lightweight autonomous tasks. Default for quick category. |
+| **GPT-5-Nano**    | Ultra-cheap, fast. Good for simple utility tasks.                                               |
+
+### Other Models
+
+| Model                | Strengths                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Gemini 3.1 Pro**   | Excels at visual/frontend tasks. Different reasoning style. Default for `visual-engineering` and `artistry`. |
+| **Gemini 3 Flash**   | Fast. Good for doc search and light tasks.                                                                   |
+| **Grok Code Fast 1** | Blazing fast code grep. Default for Explore agent.                                                           |
+| **MiniMax M2.7**     | Fast and smart. Used in OpenCode Go and OpenCode Zen utility fallback chains. |
+| **MiniMax M2.7 Highspeed** | High-speed OpenCode catalog entry used in utility fallback chains that prefer the fastest available MiniMax path. |
+
+### OpenCode Go
+
+A premium subscription tier ($10/month) that provides reliable access to Chinese frontier models through OpenCode's infrastructure.
+
+**Available Models:**
+
+| Model                    | Use Case                                                              |
+| ------------------------ | --------------------------------------------------------------------- |
+| **opencode-go/kimi-k2.5** | Vision-capable, Claude-like reasoning. Used by Sisyphus, Atlas, Sisyphus-Junior, Multimodal Looker. |
+| **opencode-go/glm-5**     | Text-only orchestration model. Used by Oracle, Prometheus, Metis, Momus.                           |
+| **opencode-go/minimax-m2.7** | Ultra-cheap, fast responses. Used by Librarian, Atlas, and Sisyphus-Junior for utility work. |
+| **opencode-go/minimax-m2.7-highspeed** | Even faster OpenCode Go MiniMax entry used by Explore when the high-speed catalog entry is available. |
+
+**When It Gets Used:**
+
+OpenCode Go models appear throughout the fallback chains as intermediate options. Depending on the agent, they can sit before GPT, after GPT, or act as the last structured-model fallback before cheaper utility paths.
+
+**Go-Only Scenarios:**
+
+Some model identifiers like `k2p5` (paid Kimi K2.5) and `glm-5` may only be available through OpenCode Go subscription in certain regions. When configured with these short identifiers, the system resolves them through the opencode-go provider first.
+
+### About Free-Tier Fallbacks
+
+You may see model names like `kimi-k2.5-free`, `minimax-m2.7`, `minimax-m2.7-highspeed`, or `big-pickle` (GLM 4.6) in the source code or logs. These are provider-specific or speed-optimized entries in fallback chains.
+
+You don't need to configure them. The system includes them so it degrades gracefully when you don't have every paid subscription. If you have the paid version, the paid version is always preferred.
+
+---
+
+## Task Categories
+
+When agents delegate work, they don't pick a model name — they pick a **category**. The category maps to the right model automatically.
+
+| Category             | When Used                  | Fallback Chain                               |
+| -------------------- | -------------------------- | -------------------------------------------- |
+| `visual-engineering` | Frontend, UI, CSS, design  | google\|github-copilot\|opencode/gemini-3.1-pro (high) → zai-coding-plan\|opencode/glm-5 → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → opencode-go/glm-5 → kimi-for-coding/k2p5 |
+| `ultrabrain`         | Maximum reasoning needed   | openai\|opencode/gpt-5.4 (xhigh) → google\|github-copilot\|opencode/gemini-3.1-pro (high) → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → opencode-go/glm-5 |
+| `deep`               | Deep coding, complex logic | openai\|github-copilot\|venice\|opencode/gpt-5.4 (medium) → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → google\|github-copilot\|opencode/gemini-3.1-pro (high) |
+| `artistry`           | Creative, novel approaches | google\|github-copilot\|opencode/gemini-3.1-pro (high) → anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → openai\|github-copilot\|opencode/gpt-5.4 |
+| `quick`              | Simple, fast tasks         | openai\|github-copilot\|opencode/gpt-5.4-mini → anthropic\|github-copilot\|opencode/claude-haiku-4-5 → google\|github-copilot\|opencode/gemini-3-flash → opencode-go/minimax-m2.7 → opencode/gpt-5-nano |
+| `unspecified-high`   | General complex work       | anthropic\|github-copilot\|opencode/claude-opus-4-6 (max) → openai\|github-copilot\|opencode/gpt-5.4 (high) → zai-coding-plan\|opencode/glm-5 → kimi-for-coding/k2p5 → opencode-go/glm-5 → opencode/kimi-k2.5 → opencode\|moonshotai\|moonshotai-cn\|firmware\|ollama-cloud\|aihubmix/kimi-k2.5 |
+| `unspecified-low`    | General standard work      | anthropic\|github-copilot\|opencode/claude-sonnet-4-6 → openai\|opencode/gpt-5.3-codex (medium) → opencode-go/kimi-k2.5 → google\|github-copilot\|opencode/gemini-3-flash → opencode-go/minimax-m2.7 |
+| `writing`            | Text, docs, prose          | google\|github-copilot\|opencode/gemini-3-flash → opencode-go/kimi-k2.5 → anthropic\|github-copilot\|opencode/claude-sonnet-4-6 → opencode-go/minimax-m2.7 |
+
+See the [Orchestration System Guide](./orchestration.md) for how agents dispatch tasks to categories.
+
+---
+
+## Customization
+
+### Example Configuration
+
+```jsonc
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+
+  "agents": {
+    // Main orchestrator: Claude Opus or Kimi K2.5 work best
+    "sisyphus": {
+      "model": "kimi-for-coding/k2p5",
+      "ultrawork": { "model": "anthropic/claude-opus-4-6", "variant": "max" },
+    },
+
+    // Research agents: cheaper models are fine
+    "librarian": { "model": "google/gemini-3-flash" },
+    "explore": { "model": "github-copilot/grok-code-fast-1" },
+
+    // Architecture consultation: GPT or Claude Opus
+    "oracle": { "model": "openai/gpt-5.4", "variant": "high" },
+
+    // Prometheus inherits sisyphus model; just add prompt guidance
+    "prometheus": {
+      "prompt_append": "Leverage deep & quick agents heavily, always in parallel.",
+    },
+  },
+
+  "categories": {
+    "quick": { "model": "opencode/gpt-5-nano" },
+    "unspecified-low": { "model": "anthropic/claude-sonnet-4-6" },
+    "unspecified-high": { "model": "anthropic/claude-opus-4-6", "variant": "max" },
+    "visual-engineering": {
+      "model": "google/gemini-3.1-pro",
+      "variant": "high",
+    },
+    "writing": { "model": "google/gemini-3-flash" },
+  },
+
+  // Limit expensive providers; let cheap ones run freely
+  "background_task": {
+    "providerConcurrency": {
+      "anthropic": 3,
+      "openai": 3,
+      "opencode": 10,
+      "zai-coding-plan": 10,
+    },
+    "modelConcurrency": {
+      "anthropic/claude-opus-4-6": 2,
+      "opencode/gpt-5-nano": 20,
+    },
+  },
+}
+```
+
+Run `opencode models` to see available models, `opencode auth login` to authenticate providers.
+
+### Safe vs Dangerous Overrides
+
+**Safe** — same personality type:
+
+- Sisyphus: Opus → Sonnet, Kimi K2.5, GLM 5 (all communicative models)
+- Prometheus: Opus → GPT-5.4 (auto-switches to the GPT prompt)
+- Atlas: Claude Sonnet 4.6 → GPT-5.4 (auto-switches to the GPT prompt)
+
+**Dangerous** — personality mismatch:
+
+- Sisyphus → older GPT models: **Still a bad fit. GPT-5.4 is the only dedicated GPT prompt path.**
+- Hephaestus → Claude: **Built for Codex's autonomous style. Claude can't replicate this.**
+- Explore → Opus: **Massive cost waste. Explore needs speed, not intelligence.**
+- Librarian → Opus: **Same. Doc search doesn't need Opus-level reasoning.**
+
+### How Model Resolution Works
+
+Each agent has a fallback chain. The system tries models in priority order until it finds one available through your connected providers. You don't need to configure providers per model. Just authenticate (`opencode auth login`) and the system figures out which models are available and where.
+
+Core-agent tab cycling is deterministic via injected runtime order field. The fixed priority order is Sisyphus (order: 1), Hephaestus (order: 2), Prometheus (order: 3), and Atlas (order: 4), then the remaining agents follow.
+
+Your explicit configuration always wins. If you set a specific model for an agent, that choice takes precedence even when resolution data is cold.
+
+Variant and `reasoningEffort` overrides are normalized to model-supported values, so cross-provider overrides degrade gracefully instead of failing hard.
+
+Model capabilities are models.dev-backed, with a refreshable cache and capability diagnostics. Use `bunx oh-my-opencode refresh-model-capabilities` to update the cache, or configure `model_capabilities.auto_refresh_on_start` to refresh at startup.
+
+To see which models your agents will actually use, run `bunx oh-my-opencode doctor`. This shows effective model resolution based on your current authentication and config.
+
+```
+Agent Request → User Override (if configured) → Fallback Chain → System Default
+```
+
+### File-Based Prompts
+
+You can load agent system prompts from external files using `file://` URLs in the `prompt` field, or append additional content with `prompt_append`. The `prompt_append` field also works on categories.
+
+```jsonc
+{
+  "agents": {
+    "sisyphus": {
+      "prompt": "file:///path/to/custom-prompt.md"
+    },
+    "oracle": {
+      "prompt_append": "file:///path/to/additional-context.md"
+    }
+  },
+  "categories": {
+    "deep": {
+      "prompt_append": "file:///path/to/deep-category-append.md"
+    }
+  }
+}
+```
+
+The file content is loaded at runtime and injected into the agent's system prompt. Supports `~` expansion for home directory and relative `file://` paths.
+
+---
+
+## See Also
+
+- [Installation Guide](./installation.md) — Setup and authentication
+- [Orchestration System Guide](./orchestration.md) — How agents dispatch tasks to categories
+- [Configuration Reference](../reference/configuration.md) — Full config options
+- [`src/shared/model-requirements.ts`](../../src/shared/model-requirements.ts) — Source of truth for fallback chains # What Is Oh My OpenAgent?
+
+Oh My OpenAgent is a multi-model agent orchestration harness for OpenCode. It transforms a single AI agent into a coordinated development team that actually ships code.
+
+Not locked to Claude. Not locked to OpenAI. Not locked to anyone.
+
+Just better results, cheaper models, real orchestration.
+
+---
+
+## Quick Start
+
+### Installation
+
+Paste this into your LLM agent session:
+
+```
+Install and configure oh-my-openagent by following the instructions here:
+https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/refs/heads/dev/docs/guide/installation.md
+```
+
+Or read the full [Installation Guide](./installation.md) for manual setup, provider authentication, and troubleshooting.
+
+### Your First Task
+
+Once installed, just type:
+
+```
+ultrawork
+```
+
+That's it. The agent figures everything out — explores your codebase, researches patterns, implements the feature, verifies with diagnostics. Keeps working until done.
+
+Want more control? Press **Tab** to enter [Prometheus mode](./orchestration.md) for interview-based planning, then run `/start-work` for full orchestration.
+
+---
+
+## The Philosophy: Breaking Free
+
+We used to call this "Claude Code on steroids." That was wrong.
+
+This isn't about making Claude Code better. It's about breaking free from the idea that one model, one provider, one way of working is enough. Anthropic wants you locked in. OpenAI wants you locked in. Everyone wants you locked in.
+
+Oh My OpenAgent doesn't play that game. It orchestrates across models, picking the right brain for the right job. Claude for orchestration. GPT for deep reasoning. Gemini for frontend. GPT-5.4 Mini for quick tasks. All working together, automatically.
+
+---
+
+## How It Works: Agent Orchestration
+
+Instead of one agent doing everything, Oh My OpenAgent uses **specialized agents that delegate to each other** based on task type.
+
+**The Architecture:**
+
+```
+User Request
+    ↓
+[Intent Gate] — Classifies what you actually want
+    ↓
+[Sisyphus] — Main orchestrator, plans and delegates
+    ↓
+    ├─→ [Prometheus] — Strategic planning (interview mode)
+    ├─→ [Atlas] — Todo orchestration and execution
+    ├─→ [Oracle] — Architecture consultation
+    ├─→ [Librarian] — Documentation/code search
+    ├─→ [Explore] — Fast codebase grep
+    └─→ [Category-based agents] — Specialized by task type
+```
+
+When Sisyphus delegates to a subagent, it doesn't pick a model name. It picks a **category** — `visual-engineering`, `ultrabrain`, `quick`, `deep`. The category automatically maps to the right model. You touch nothing.
+
+For a deep dive into how agents collaborate, see the [Orchestration System Guide](./orchestration.md).
+
+---
+
+## Meet the Agents
+
+### Sisyphus: The Discipline Agent
+
+Named after the Greek myth. He rolls the boulder every day. Never stops. Never gives up.
+
+Sisyphus is your main orchestrator. He plans, delegates to specialists, and drives tasks to completion with aggressive parallel execution. He doesn't stop halfway. He doesn't get distracted. He finishes.
+
+**Recommended models:**
+
+- **Claude Opus 4.6** — Best overall experience. Sisyphus was built with Claude-optimized prompts.
+- **Claude Sonnet 4.6** — Good balance of capability and cost.
+- **Kimi K2.5** — Great Claude-like alternative. Many users run this combo exclusively.
+- **GLM 5** — Solid option, especially via Z.ai.
+
+Sisyphus still works best on Claude-family models, Kimi, and GLM. GPT-5.4 now has a dedicated prompt path, but older GPT models are still a poor fit and should route to Hephaestus instead.
+
+### Hephaestus: The Legitimate Craftsman
+
+Named with intentional irony. Anthropic blocked OpenCode from using their API because of this project. So the team built an autonomous GPT-native agent instead.
+
+Hephaestus runs on GPT-5.4. Give him a goal, not a recipe. He explores the codebase, researches patterns, and executes end-to-end without hand-holding. He is the legitimate craftsman because he was born from necessity, not privilege.
+
+Use Hephaestus when you need deep architectural reasoning, complex debugging across many files, or cross-domain knowledge synthesis. Switch to him explicitly when the work demands GPT-5.4's particular strengths.
+
+**Why this beats vanilla Codex CLI:**
+
+- **Multi-model orchestration.** Pure Codex is single-model. OmO routes different tasks to different models automatically. GPT for deep reasoning. Gemini for frontend. GPT-5.4 Mini for speed. The right brain for the right job.
+- **Background agents.** Fire 5+ agents in parallel. Something Codex simply cannot do. While one agent writes code, another researches patterns, another checks documentation. Like a real dev team.
+- **Category system.** Tasks are routed by intent, not model name. `visual-engineering` gets Gemini. `ultrabrain` gets GPT-5.4. `quick` gets GPT-5.4 Mini. No manual juggling.
+- **Accumulated wisdom.** Subagents learn from previous results. Conventions discovered in task 1 are passed to task 5. Mistakes made early aren't repeated. The system gets smarter as it works.
+
+### Prometheus: The Strategic Planner
+
+Prometheus interviews you like a real engineer. Asks clarifying questions. Identifies scope and ambiguities. Builds a detailed plan before a single line of code is touched.
+
+Press **Tab** to enter Prometheus mode, or type `@plan "your task"` from Sisyphus.
+
+### Atlas: The Conductor
+
+Atlas executes Prometheus plans. Distributes tasks to specialized subagents. Accumulates learnings across tasks. Verifies completion independently.
+
+Run `/start-work` to activate Atlas on your latest plan.
+
+### Oracle: The Consultant
+
+Read-only high-IQ consultant for architecture decisions and complex debugging. Consult Oracle when facing unfamiliar patterns, security concerns, or multi-system tradeoffs.
+
+### Supporting Cast
+
+- **Metis** — Gap analyzer. Catches what Prometheus missed before plans are finalized.
+- **Momus** — Ruthless reviewer. Validates plans against clarity, verification, and context criteria.
+- **Explore** — Fast codebase grep. Uses speed-focused models for pattern discovery.
+- **Librarian** — Documentation and OSS code search. Stays current on library APIs and best practices.
+- **Multimodal Looker** — Vision and screenshot analysis.
+
+---
+
+## Working Modes
+
+### Ultrawork Mode: For the Lazy
+
+Type `ultrawork` or just `ulw`. That's it.
+
+The agent figures everything out. Explores your codebase. Researches patterns. Implements the feature. Verifies with diagnostics. Keeps working until done.
+
+This is the "just do it" mode. Full automatic. You don't have to think deep because the agent thinks deep for you.
+
+### Prometheus Mode: For the Precise
+
+Press **Tab** to enter Prometheus mode.
+
+Prometheus interviews you like a real engineer. Asks clarifying questions. Identifies scope and ambiguities. Builds a detailed plan before a single line of code is touched.
+
+Then run `/start-work` and Atlas takes over. Tasks are distributed to specialized subagents. Each completion is verified independently. Learnings accumulate across tasks. Progress tracks across sessions.
+
+Use Prometheus for multi-day projects, critical production changes, complex refactoring, or when you want a documented decision trail.
+
+---
+
+## Agent Model Matching
+
+Different agents work best with different models. Oh My OpenAgent automatically assigns optimal models, but you can customize everything.
+
+### Default Configuration
+
+Models are auto-configured at install time. The interactive installer asks which providers you have, then generates optimal model assignments for each agent and category.
+
+At runtime, fallback chains ensure work continues even if your preferred provider is down. Each agent has a provider priority chain. The system tries providers in order until it finds an available model.
+
+### Custom Model Configuration
+
+You can override specific agents or categories in your config:
+
+```jsonc
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-openagent.schema.json",
+
+  "agents": {
+    // Main orchestrator: Claude Opus or Kimi K2.5 work best
+    "sisyphus": {
+      "model": "kimi-for-coding/k2p5",
+      "ultrawork": { "model": "anthropic/claude-opus-4-6", "variant": "max" },
+    },
+
+    // Research agents: cheaper models are fine
+    "librarian": { "model": "google/gemini-3-flash" },
+    "explore": { "model": "github-copilot/grok-code-fast-1" },
+
+    // Architecture consultation: GPT or Claude Opus
+    "oracle": { "model": "openai/gpt-5.4", "variant": "high" },
+  },
+
+  "categories": {
+    // Frontend work: Gemini dominates visual tasks
+    "visual-engineering": {
+      "model": "google/gemini-3.1-pro",
+      "variant": "high",
+    },
+
+    // General high-effort work
+    "unspecified-high": { "model": "anthropic/claude-opus-4-6", "variant": "max" },
+
+    // Quick tasks: use GPT-5.4-mini (fast and cheap)
+    "quick": { "model": "openai/gpt-5.4-mini" },
+
+    // Deep reasoning: GPT-5.4
+    "ultrabrain": { "model": "openai/gpt-5.4", "variant": "xhigh" },
+  },
+}
+```
+
+### Model Families
+
+**Claude-like models** (instruction-following, structured output):
+
+- Claude Opus 4.6, Claude Sonnet 4.6, Claude Haiku 4.5
+- Kimi K2.5 — behaves very similarly to Claude
+- GLM 5 — Claude-like behavior, good for broad tasks
+
+**GPT models** (explicit reasoning, principle-driven):
+
+- GPT-5.4 — deep coding powerhouse, required for Hephaestus and default for Oracle
+- GPT-5-Nano — ultra-cheap, fast utility tasks
+
+**Different-behavior models**:
+
+- Gemini 3.1 Pro — excels at visual/frontend tasks
+- MiniMax M2.7 / M2.7-highspeed — fast and smart for utility tasks
+- Grok Code Fast 1 — optimized for code grep/search
+
+See the [Agent-Model Matching Guide](./agent-model-matching.md) for complete details on which models work best for each agent, safe vs dangerous overrides, and provider priority chains.
+
+---
+
+## Why It's Better Than Pure Claude Code
+
+Claude Code is good. But it's a single agent running a single model doing everything alone.
+
+Oh My OpenAgent turns that into a coordinated team:
+
+**Parallel execution.** Claude Code processes one thing at a time. OmO fires background agents in parallel — research, implementation, and verification happening simultaneously. Like having 5 engineers instead of 1.
+
+**Hash-anchored edits.** Claude Code's edit tool fails when the model can't reproduce lines exactly. OmO's `LINE#ID` content hashing validates every edit before applying. Grok Code Fast 1 went from 6.7% to 68.3% success rate just from this change.
+
+**Intent Gate.** Claude Code takes your prompt and runs. OmO classifies your true intent first — research, implementation, investigation, fix — then routes accordingly. Fewer misinterpretations, better results.
+
+**LSP + AST tools.** Workspace-level rename, go-to-definition, find-references, pre-build diagnostics, AST-aware code rewrites. IDE precision that vanilla Claude Code doesn't have.
+
+**Skills with embedded MCPs.** Each skill brings its own MCP servers, scoped to the task. Context window stays clean instead of bloating with every tool.
+
+**Discipline enforcement.** Todo enforcer yanks idle agents back to work. Comment checker strips AI slop. Ralph Loop keeps going until 100% done. The system doesn't let the agent slack off.
+
+**The fundamental advantage.** Models have different temperaments. Claude thinks deeply. GPT reasons architecturally. Gemini visualizes. Haiku moves fast. Single-model tools force you to pick one personality for all tasks. Oh My OpenAgent leverages them all, routing by task type. This isn't a temporary hack — it's the only architecture that makes sense as models specialize further. The gap between multi-model orchestration and single-model limitation widens every month. We're betting on that future.
+
+---
+
+## The Intent Gate
+
+Before acting on any request, Sisyphus classifies your true intent.
+
+Are you asking for research? Implementation? Investigation? A fix? The Intent Gate figures out what you actually want, not just the literal words you typed. This means the agent understands context, nuance, and the real goal behind your request.
+
+Claude Code doesn't have this. It takes your prompt and runs. Oh My OpenAgent thinks first, then acts.
+
+---
+
+## What's Next
+
+- **[Installation Guide](./installation.md)** — Complete setup instructions, provider authentication, and troubleshooting
+- **[Orchestration Guide](./orchestration.md)** — Deep dive into agent collaboration, planning with Prometheus, and execution with Atlas
+- **[Agent-Model Matching Guide](./agent-model-matching.md)** — Which models work best for each agent and how to customize
+- **[Configuration Reference](../reference/configuration.md)** — Full config options with examples
+- **[Features Reference](../reference/features.md)** — Complete feature documentation
+- **[Manifesto](../manifesto.md)** — Philosophy behind the project
+
+---
+
+**Ready to start?** Type `ultrawork` and see what a coordinated AI team can do. # Orchestration System Guide
+
+Oh My OpenAgent's orchestration system transforms a simple AI agent into a coordinated development team through **separation of planning and execution**.
+
+---
+
+## TL;DR - When to Use What
+
+| Complexity            | Approach                  | When to Use                                                                              |
+| --------------------- | ------------------------- | ---------------------------------------------------------------------------------------- |
+| **Simple**            | Just prompt               | Simple tasks, quick fixes, single-file changes                                           |
+| **Complex + Lazy**    | Type `ulw` or `ultrawork` | Complex tasks where explaining context is tedious. Agent figures it out.                 |
+| **Complex + Precise** | `@plan` → `/start-work`   | Precise, multi-step work requiring true orchestration. Prometheus plans, Atlas executes. |
+
+**Decision Flow:**
+
+```
+Is it a quick fix or simple task?
+  └─ YES → Just prompt normally
+  └─ NO  → Is explaining the full context tedious?
+              └─ YES → Type "ulw" and let the agent figure it out
+              └─ NO  → Do you need precise, verifiable execution?
+                         └─ YES → Use @plan for Prometheus planning, then /start-work
+                         └─ NO  → Just use "ulw"
+```
+
+---
+
+## The Architecture
+
+The orchestration system uses a three-layer architecture that solves context overload, cognitive drift, and verification gaps through specialization and delegation.
+
+```mermaid
+flowchart TB
+    subgraph Planning["Planning Layer (Human + Prometheus)"]
+        User[(" User")]
+        Prometheus[" Prometheus<br/>(Planner)<br/>Claude Opus 4.6"]
+        Metis[" Metis<br/>(Consultant)<br/>Claude Opus 4.6"]
+        Momus[" Momus<br/>(Reviewer)<br/>GPT-5.4"]
+    end
+
+    subgraph Execution["Execution Layer (Orchestrator)"]
+        Orchestrator[" Atlas<br/>(Conductor)<br/>Claude Sonnet 4.6"]
+    end
+
+    subgraph Workers["Worker Layer (Specialized Agents)"]
+        Junior[" Sisyphus-Junior<br/>(Task Executor)<br/>Claude Sonnet 4.6"]
+        Oracle[" Oracle<br/>(Architecture)<br/>GPT-5.4"]
+        Explore[" Explore<br/>(Codebase Grep)<br/>Grok Code"]
+        Librarian[" Librarian<br/>(Docs/OSS)<br/>Gemini 3 Flash"]
+        Frontend[" Frontend<br/>(UI/UX)<br/>Gemini 3.1 Pro"]
+    end
+
+    User -->|"Describe work"| Prometheus
+    Prometheus -->|"Consult"| Metis
+    Prometheus -->|"Interview"| User
+    Prometheus -->|"Generate plan"| Plan[".sisyphus/plans/*.md"]
+    Plan -->|"High accuracy?"| Momus
+    Momus -->|"OKAY / REJECT"| Prometheus
+
+    User -->|"/start-work"| Orchestrator
+    Plan -->|"Read"| Orchestrator
+
+    Orchestrator -->|"task(category)"| Junior
+    Orchestrator -->|"task(agent)"| Oracle
+    Orchestrator -->|"task(agent)"| Explore
+    Orchestrator -->|"task(agent)"| Librarian
+    Orchestrator -->|"task(agent)"| Frontend
+
+    Junior -->|"Results + Learnings"| Orchestrator
+    Oracle -->|"Advice"| Orchestrator
+    Explore -->|"Code patterns"| Orchestrator
+    Librarian -->|"Documentation"| Orchestrator
+    Frontend -->|"UI code"| Orchestrator
+```
+
+---
+
+## Planning: Prometheus + Metis + Momus
+
+### Prometheus: Your Strategic Consultant
+
+Prometheus is not just a planner, it's an intelligent interviewer that helps you think through what you actually need. It is **READ-ONLY** - can only create or modify markdown files within `.sisyphus/` directory.
+
+**The Interview Process:**
+
+```mermaid
+stateDiagram-v2
+    [*] --> Interview: User describes work
+    Interview --> Research: Launch explore/librarian agents
+    Research --> Interview: Gather codebase context
+    Interview --> ClearanceCheck: After each response
+
+    ClearanceCheck --> Interview: Requirements unclear
+    ClearanceCheck --> PlanGeneration: All requirements clear
+
+    state ClearanceCheck {
+        [*] --> Check
+        Check: Core objective defined?
+        Check: Scope boundaries established?
+        Check: No critical ambiguities?
+        Check: Technical approach decided?
+        Check: Test strategy confirmed?
+    }
+
+    PlanGeneration --> MetisConsult: Mandatory gap analysis
+    MetisConsult --> WritePlan: Incorporate findings
+    WritePlan --> HighAccuracyChoice: Present to user
+
+    HighAccuracyChoice --> MomusLoop: User wants high accuracy
+    HighAccuracyChoice --> Done: User accepts plan
+
+    MomusLoop --> WritePlan: REJECTED - fix issues
+    MomusLoop --> Done: OKAY - plan approved
+
+    Done --> [*]: Guide to /start-work
+```
+
+**Intent-Specific Strategies:**
+
+Prometheus adapts its interview style based on what you're doing:
+
+| Intent                 | Prometheus Focus               | Example Questions                                          |
+| ---------------------- | ------------------------------ | ---------------------------------------------------------- |
+| **Refactoring**        | Safety - behavior preservation | "What tests verify current behavior?" "Rollback strategy?" |
+| **Build from Scratch** | Discovery - patterns first     | "Found pattern X in codebase. Follow it or deviate?"       |
+| **Mid-sized Task**     | Guardrails - exact boundaries  | "What must NOT be included? Hard constraints?"             |
+| **Architecture**       | Strategic - long-term impact   | "Expected lifespan? Scale requirements?"                   |
+
+### Metis: The Gap Analyzer
+
+Before Prometheus writes the plan, Metis catches what Prometheus missed:
+
+- Hidden intentions in user's request
+- Ambiguities that could derail implementation
+- AI-slop patterns (over-engineering, scope creep)
+- Missing acceptance criteria
+- Edge cases not addressed
+
+**Why Metis Exists:**
+
+The plan author (Prometheus) has "ADHD working memory" - it makes connections that never make it onto the page. Metis forces externalization of implicit knowledge.
+
+### Momus: The Ruthless Reviewer
+
+For high-accuracy mode, Momus validates plans against four core criteria:
+
+1. **Clarity**: Does each task specify WHERE to find implementation details?
+2. **Verification**: Are acceptance criteria concrete and measurable?
+3. **Context**: Is there sufficient context to proceed without >10% guesswork?
+4. **Big Picture**: Is the purpose, background, and workflow clear?
+
+**The Momus Loop:**
+
+Momus only says "OKAY" when:
+
+- 100% of file references verified
+- ≥80% of tasks have clear reference sources
+- ≥90% of tasks have concrete acceptance criteria
+- Zero tasks require assumptions about business logic
+- Zero critical red flags
+
+If REJECTED, Prometheus fixes issues and resubmits. No maximum retry limit.
+
+---
+
+## Execution: Atlas
+
+### The Conductor Mindset
+
+Atlas is like an orchestra conductor: it doesn't play instruments, it ensures perfect harmony.
+
+```mermaid
+flowchart LR
+    subgraph Orchestrator["Atlas"]
+        Read["1. Read Plan"]
+        Analyze["2. Analyze Tasks"]
+        Wisdom["3. Accumulate Wisdom"]
+        Delegate["4. Delegate Tasks"]
+        Verify["5. Verify Results"]
+        Report["6. Final Report"]
+    end
+
+    Read --> Analyze
+    Analyze --> Wisdom
+    Wisdom --> Delegate
+    Delegate --> Verify
+    Verify -->|"More tasks"| Delegate
+    Verify -->|"All done"| Report
+
+    Delegate -->|"background=false"| Workers["Workers"]
+    Workers -->|"Results + Learnings"| Verify
+```
+
+**What Atlas CAN do:**
+
+- Read files to understand context
+- Run commands to verify results
+- Use lsp_diagnostics to check for errors
+- Search patterns with grep/glob/ast-grep
+
+**What Atlas MUST delegate:**
+
+- Writing or editing code files
+- Fixing bugs
+- Creating tests
+- Git commits
+
+### Wisdom Accumulation
+
+The power of orchestration is cumulative learning. After each task:
+
+1. Extract learnings from subagent's response
+2. Categorize into: Conventions, Successes, Failures, Gotchas, Commands
+3. Pass forward to ALL subsequent subagents
+
+This prevents repeating mistakes and ensures consistent patterns.
+
+**Notepad System:**
+
+```
+.sisyphus/notepads/{plan-name}/
+├── learnings.md      # Patterns, conventions, successful approaches
+├── decisions.md      # Architectural choices and rationales
+├── issues.md         # Problems, blockers, gotchas encountered
+├── verification.md   # Test results, validation outcomes
+└── problems.md       # Unresolved issues, technical debt
+```
+
+---
+
+## Workers: Sisyphus-Junior and Specialists
+
+### Sisyphus-Junior: The Task Executor
+
+Junior is the workhorse that actually writes code. Key characteristics:
+
+- **Focused**: Cannot delegate (blocked from task tool)
+- **Disciplined**: Obsessive todo tracking
+- **Verified**: Must pass lsp_diagnostics before completion
+- **Constrained**: Cannot modify plan files (READ-ONLY)
+
+**Why Sonnet is Sufficient:**
+
+Junior doesn't need to be the smartest - it needs to be reliable. With:
+
+1. Detailed prompts from Atlas (50-200 lines)
+2. Accumulated wisdom passed forward
+3. Clear MUST DO / MUST NOT DO constraints
+4. Verification requirements
+
+Even a mid-tier model executes precisely. The intelligence is in the **system**, not individual agents.
+
+### System Reminder Mechanism
+
+The hook system ensures Junior never stops halfway:
+
+```
+[SYSTEM REMINDER - TODO CONTINUATION]
+
+You have incomplete todos! Complete ALL before responding:
+- [ ] Implement user service ← IN PROGRESS
+- [ ] Add validation
+- [ ] Write tests
+
+DO NOT respond until all todos are marked completed.
+```
+
+This "boulder pushing" mechanism is why the system is named after Sisyphus.
+
+---
+
+## Category + Skill System
+
+### Why Categories are Revolutionary
+
+**The Problem with Model Names:**
+
+```typescript
+// OLD: Model name creates distributional bias
+task({ agent: "gpt-5.4", prompt: "..." }); // Model knows its limitations
+task({ agent: "claude-opus-4.6", prompt: "..." }); // Different self-perception
+```
+
+**The Solution: Semantic Categories:**
+
+```typescript
+// NEW: Category describes INTENT, not implementation
+task({ category: "ultrabrain", prompt: "..." }); // "Think strategically"
+task({ category: "visual-engineering", prompt: "..." }); // "Design beautifully"
+task({ category: "quick", prompt: "..." }); // "Just get it done fast"
+```
+
+### Built-in Categories
+
+| Category             | Model                  | When to Use                                                 |
+| -------------------- | ---------------------- | ----------------------------------------------------------- |
+| `visual-engineering` | Gemini 3.1 Pro         | Frontend, UI/UX, design, styling, animation                 |
+| `ultrabrain`         | GPT-5.4 (xhigh)        | Deep logical reasoning, complex architecture decisions      |
+| `artistry`           | Gemini 3.1 Pro (high)  | Highly creative or artistic tasks, novel ideas              |
+| `quick`              | GPT-5.4 Mini           | Trivial tasks - single file changes, typo fixes             |
+| `deep`               | GPT-5.4 (medium)       | Goal-oriented autonomous problem-solving, thorough research |
+| `unspecified-low`    | Claude Sonnet 4.6      | Tasks that don't fit other categories, low effort           |
+| `unspecified-high`   | Claude Opus 4.6 (max)  | Tasks that don't fit other categories, high effort          |
+| `writing`            | Gemini 3 Flash         | Documentation, prose, technical writing                     |
+
+### Skills: Domain-Specific Instructions
+
+Skills prepend specialized instructions to subagent prompts:
+
+```typescript
+// Category + Skill combination
+task(
+  (category = "visual-engineering"),
+  (load_skills = ["frontend-ui-ux"]), // Adds UI/UX expertise
+  (prompt = "..."),
+);
+
+task(
+  (category = "general"),
+  (load_skills = ["playwright"]), // Adds browser automation expertise
+  (prompt = "..."),
+);
+```
+
+---
+
+## Usage Patterns
+
+### How to Invoke Prometheus
+
+**Method 1: Switch to Prometheus Agent (Tab → Select Prometheus)**
+
+```
+1. Press Tab at the prompt
+2. Select "Prometheus" from the agent list
+3. Describe your work: "I want to refactor the auth system"
+4. Answer interview questions
+5. Prometheus creates plan in .sisyphus/plans/{name}.md
+```
+
+**Method 2: Use @plan Command (in Sisyphus)**
+
+```
+1. Stay in Sisyphus (default agent)
+2. Type: @plan "I want to refactor the auth system"
+3. The @plan command automatically switches to Prometheus
+4. Answer interview questions
+5. Prometheus creates plan in .sisyphus/plans/{name}.md
+```
+
+**Which Should You Use?**
+
+| Scenario                          | Recommended Method         | Why                                                  |
+| --------------------------------- | -------------------------- | ---------------------------------------------------- |
+| **New session, starting fresh**   | Switch to Prometheus agent | Clean mental model - you're entering "planning mode" |
+| **Already in Sisyphus, mid-work** | Use @plan                  | Convenient, no agent switch needed                   |
+| **Want explicit control**         | Switch to Prometheus agent | Clear separation of planning vs execution contexts   |
+| **Quick planning interrupt**      | Use @plan                  | Fastest path from current context                    |
+
+Both methods trigger the same Prometheus planning flow. The @plan command is simply a convenience shortcut.
+
+### /start-work Behavior and Session Continuity
+
+**What Happens When You Run /start-work:**
+
+```
+User: /start-work
+    ↓
+[start-work hook activates]
+    ↓
+Check: Does .sisyphus/boulder.json exist?
+    ↓
+    ├─ YES (existing work) → RESUME MODE
+    │   - Read the existing boulder state
+    │   - Calculate progress (checked vs unchecked boxes)
+    │   - Inject continuation prompt with remaining tasks
+    │   - Atlas continues where you left off
+    │
+    └─ NO (fresh start) → INIT MODE
+        - Find the most recent plan in .sisyphus/plans/
+        - Create new boulder.json tracking this plan
+        - Switch session agent to Atlas
+        - Begin execution from task 1
+```
+
+**Session Continuity Explained:**
+
+The `boulder.json` file tracks:
+
+- **active_plan**: Path to the current plan file
+- **session_ids**: All sessions that have worked on this plan
+- **started_at**: When work began
+- **plan_name**: Human-readable plan identifier
+
+**Example Timeline:**
+
+```
+Monday 9:00 AM
+  └─ @plan "Build user authentication"
+  └─ Prometheus interviews and creates plan
+  └─ User: /start-work
+  └─ Atlas begins execution, creates boulder.json
+  └─ Task 1 complete, Task 2 in progress...
+  └─ [Session ends - computer crash, user logout, etc.]
+
+Monday 2:00 PM (NEW SESSION)
+  └─ User opens new session (agent = Sisyphus by default)
+  └─ User: /start-work
+  └─ [start-work hook reads boulder.json]
+  └─ "Resuming 'Build user authentication' - 3 of 8 tasks complete"
+  └─ Atlas continues from Task 3 (no context lost)
+```
+
+Atlas is automatically activated when you run `/start-work`. You don't need to manually switch to Atlas.
+
+### Hephaestus vs Sisyphus + ultrawork
+
+**Quick Comparison:**
+
+| Aspect          | Hephaestus                                 | Sisyphus + `ulw` / `ultrawork`                       |
+| --------------- | ------------------------------------------ | ---------------------------------------------------- |
+| **Model**       | GPT-5.4 (medium reasoning)                 | Claude Opus 4.6 / GPT-5.4 / GLM 5 depending on setup |
+| **Approach**    | Autonomous deep worker                     | Keyword-activated ultrawork mode                     |
+| **Best For**    | Complex architectural work, deep reasoning | General complex tasks, "just do it" scenarios        |
+| **Planning**    | Self-plans during execution                | Uses Prometheus plans if available                   |
+| **Delegation**  | Heavy use of explore/librarian agents      | Uses category-based delegation                       |
+| **Temperature** | 0.1                                        | 0.1                                                  |
+
+**When to Use Hephaestus:**
+
+Switch to Hephaestus (Tab → Select Hephaestus) when:
+
+1. **Deep architectural reasoning needed**
+   - "Design a new plugin system"
+   - "Refactor this monolith into microservices"
+
+2. **Complex debugging requiring inference chains**
+   - "Why does this race condition only happen on Tuesdays?"
+   - "Trace this memory leak through 15 files"
+
+3. **Cross-domain knowledge synthesis**
+   - "Integrate our Rust core with the TypeScript frontend"
+   - "Migrate from MongoDB to PostgreSQL with zero downtime"
+
+4. **You specifically want GPT-5.4 reasoning**
+   - Some problems benefit from GPT-5.4's training characteristics
+
+**When to Use Sisyphus + `ulw`:**
+
+Use the `ulw` keyword in Sisyphus when:
+
+1. **You want the agent to figure it out**
+   - "ulw fix the failing tests"
+   - "ulw add input validation to the API"
+
+2. **Complex but well-scoped tasks**
+   - "ulw implement JWT authentication following our patterns"
+   - "ulw create a new CLI command for deployments"
+
+3. **You're feeling lazy** (officially supported use case)
+   - Don't want to write detailed requirements
+   - Trust the agent to explore and decide
+
+4. **You want to leverage existing plans**
+   - If a Prometheus plan exists, `ulw` mode can use it
+   - Falls back to autonomous exploration if no plan
+
+**Recommendation:**
+
+- **For most users**: Use `ulw` keyword in Sisyphus. It's the default path and works excellently for 90% of complex tasks.
+- **For power users**: Switch to Hephaestus when you specifically need GPT-5.4's reasoning style or want the "AmpCode deep mode" experience of fully autonomous exploration and execution.
+
+---
+
+## Configuration
+
+You can control related features in `oh-my-openagent.json`:
+
+```jsonc
+{
+  "sisyphus_agent": {
+    "disabled": false, // Enable Atlas orchestration (default: false)
+    "planner_enabled": true, // Enable Prometheus (default: true)
+    "replace_plan": true, // Replace default plan agent with Prometheus (default: true)
+  },
+
+  // Hook settings (add to disable)
+  "disabled_hooks": [
+    // "start-work",             // Disable execution trigger
+    // "prometheus-md-only"      // Remove Prometheus write restrictions (not recommended)
+  ],
+}
+```
+
+---
+
+## Troubleshooting
+
+### "I switched to Prometheus but nothing happened"
+
+Prometheus enters interview mode by default. It will ask you questions about your requirements. Answer them, then say "make it a plan" when ready.
+
+### "/start-work says 'no active plan found'"
+
+Either:
+
+- No plans exist in `.sisyphus/plans/` → Create one with Prometheus first
+- Plans exist but boulder.json points elsewhere → Delete `.sisyphus/boulder.json` and retry
+
+### "I'm in Atlas but I want to switch back to normal mode"
+
+Type `exit` or start a new session. Atlas is primarily entered via `/start-work` - you don't typically "switch to Atlas" manually.
+
+### "What's the difference between @plan and just switching to Prometheus?"
+
+**Nothing functional.** Both invoke Prometheus. @plan is a convenience command while switching agents is explicit control. Use whichever feels natural.
+
+### "Should I use Hephaestus or type ulw?"
+
+**For most tasks**: Type `ulw` in Sisyphus.
+
+**Use Hephaestus when**: You specifically need GPT-5.4's reasoning style for deep architectural work or complex debugging.
+
+---
+
+## Further Reading
+
+- [Overview](./overview.md)
+- [Features Reference](../reference/features.md)
+- [Configuration Reference](../reference/configuration.md)
+- [Manifesto](../manifesto.md) ulw
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_e3fab31b`
+**Description:** Check mini model guidance
+**Duration:** 15s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_e3fab31b")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_e3fab31b`: Check mini model guidance
+- `bg_8027e272`: Find mini config usage
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -87.2K removed, +4.3K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿████│
+▣ Compression #1 -86.8K removed, +4.3K summary
+→ Topic: gpt-5.4-mini config verification
+→ Items: 25 messages and 37 tools compressed
+
+---
+
+дай cli проверку для этой модели, это же легко
+
+---
+
+дай cli проверку для этой модели, это же легко
