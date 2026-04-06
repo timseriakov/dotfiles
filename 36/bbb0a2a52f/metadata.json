@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "36bbb0a2a52f",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "try-rs/config.toml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/36/bbb0a2a52f/0/metadata.json",
+      "transcript": "/36/bbb0a2a52f/0/full.jsonl",
+      "content_hash": "/36/bbb0a2a52f/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
