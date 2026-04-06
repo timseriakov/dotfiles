@@ -3,7 +3,7 @@
   "checkpoint_id": "36bbb0a2a52f",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "try-rs/config.toml"
   ],
@@ -30,6 +30,12 @@
       "metadata": "/36/bbb0a2a52f/3/metadata.json",
       "transcript": "/36/bbb0a2a52f/3/full.jsonl",
       "content_hash": "/36/bbb0a2a52f/3/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/36/bbb0a2a52f/4/metadata.json",
+      "transcript": "/36/bbb0a2a52f/4/full.jsonl",
+      "content_hash": "/36/bbb0a2a52f/4/content_hash.txt",
       "prompt": ""
     }
   ]
