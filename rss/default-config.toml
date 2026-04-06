@@ -1,0 +1,271 @@
+#########################################################################################
+### READ THIS BEFORE USING THIS FILE!
+### This file contains the DEFAULT SETTINGS of eilmeldung and is FOR REFERENCE only!
+### You don't need to copy this file into ~/.config/eilmeldung/ (or similar) as these
+### settings are applied AUTOMATICALLY (that's what DEFAULT means).
+### Start with your own BLANK config.toml and insert ONLY the settings you want to have
+### DIFFERENT from this file!
+#########################################################################################
+
+# Basic Configuration
+startup_commands = []
+refresh_fps = 10
+network_timeout_seconds = 60
+mouse_support = false
+article_scope = "unread"
+feed_list_scope = "all"
+default_sort_order = "<date"
+keep_articles_days = 30
+# sync_every_minutes = 10  # disabled by default
+after_sync_commands = []
+
+# Icons
+offline_icon = ""
+read_icon = ""
+all_icon = ""
+unread_icon = ""
+marked_icon = ""
+unmarked_icon = " "
+flagged_icon = ""
+tag_icon = "󰓹"
+command_line_prompt_icon = ""
+info_icon = ""
+warning_icon = ""
+error_icon = ""
+enclosure_video_icon = ""
+enclosure_audio_icon = ""
+enclosure_image_icon = ""
+image_icon = ""
+url_icon = ""
+
+# Scrollbar symbols
+scrollbar_begin_symbol = "│"
+scrollbar_end_symbol = "│"
+scrollbar_track_symbol = " "
+scrollbar_thumb_symbol = "│"
+
+# Labels
+all_label = "󱀂 All {unread_count}"
+last_synced_label = " Last Synced"
+feed_label = " {label} {unread_count}"
+category_label = "󰉋 {label} {unread_count}"
+categories_label = "󰉓 Categories {unread_count}"
+tags_label = "󰓻 Tags {unread_count}"
+tag_label = "󰓹 {label} {unread_count}"
+query_label = " {label}"
+
+# Article Display
+article_table = "{flagged},{read},{marked},{tag_icons},{age},{title}"
+date_format = "%m/%d %H:%M"
+articles_after_selection = 3
+hide_default_sort_order = true
+zen_mode_show_header = false
+hint_type = "letters"
+content_show_urls = false
+
+# Content
+auto_scrape = true
+thumbnail_show = true
+thumbnail_width = "14 length"
+thumbnail_height = "5 length"
+thumbnail_resize = true
+thumbnail_fetch_debounce_millis = 500
+text_max_width = 66
+content_preferred_type = "markdown"
+
+# Layout
+show_top_bar = true
+feed_list_focused_width = "25%"
+article_list_focused_width = "75%"
+article_list_focused_height = "20%"
+article_content_focused_height = "80%"
+
+# Feed List
+feed_list = [
+  'query: "Today Unread" today unread',
+  'query: "Today Marked" today marked',
+  "feeds",
+  "* categories",
+  "tags",
+]
+
+# Enclosures
+enclosure_command = "xdg-open {url}"
+# enclosure_command = "open {url}" # for macos
+# video_enclosure_command is not set by default (enclosure command is used)
+# audio_enclosure_command is not set by default (enclosure command is used)
+# image_enclosure_command is not set by default (enclosure command is used)
+
+
+# Share Targets
+share_targets = ["clipboard", "reddit", "mastodon", "instapaper", "telegram"]
+
+# notify after sync
+notify_after_sync = true
+# notify_after_sync_cmd is not set (dbus is used instead)
+
+[notify_after_sync_stats_format]
+sync_output_format = "{label}: {count}"
+all_label_format = "New Unread Items"
+feed_label_format = "{label}"
+
+[cli_sync_stats_format]
+sync_output_format = "{label}:{count}"
+all_label_format = "all:All"
+feed_label_format = "feed:{category}/{label}"
+
+# Input Configuration
+[input_config]
+scroll_amount = 10
+timeout_millis = 5000
+
+[input_config.mappings]
+"up" = ["up"]
+"down" = ["down"]
+"C-h" = ["left"]
+"C-l" = ["right"]
+"left" = ["left"]
+"right" = ["right"]
+"j" = ["down"]
+"k" = ["up"]
+"C-j" = ["in feeds down"]
+"C-k" = ["in feeds up"]
+"J" = ["in content down"]
+"K" = ["in content up"]
+"M-j" = ["in articles down"]
+"M-k" = ["in articles up"]
+"enter" = ["_submit"]
+"esc" = ["_abort"]
+"C-g" = ["_abort"]
+"C-u" = ["_clear"]
+"space" = ["toggle"]
+"C-f" = ["pagedown"]
+"C-b" = ["pageup"]
+"g g" = ["gotofirst"]
+"G" = ["gotolast"]
+"q" = ["confirm quit"]
+"C-c" = ["quit"]
+"x" = ["scrape"]
+"g f" = ["focus feeds"]
+"g a" = ["focus articles"]
+"g c" = ["focus content"]
+":" = ["cmd"]
+"l" = ["next"]
+"h" = ["prev"]
+"tab" = ["nextc"]
+"backtab" = ["prevc"]
+"y" = ["share clipboard"]
+"o" = ["open", "in articles read", "in articles nextunread"]
+"O" = ["open unread", "confirm in articles read articles %"]
+"s" = ["sync"]
+"r" = ["read", "nextunread"]
+"t" = ["cmd tag"]
+"R" = ["confirm in articles read %"]
+"0 r" = ["confirm in articles read above"]
+"$ r" = ["confirm in articles read below"]
+"M-r" = ["cmd read"]
+"u" = ["unread"]
+"U" = ["confirm in articles unread %"]
+"0 u" = ["confirm in articles unread above"]
+"$ u" = ["confirm in articles unread below"]
+"M-u" = ["cmd unread"]
+"m" = ["mark"]
+"M" = ["confirm in articles mark %"]
+"0 m" = ["confirm in articles mark above"]
+"$ m" = ["confirm in articles mark below"]
+"M-m" = ["cmd mark"]
+"v" = ["unmark"]
+"V" = ["confirm in articles unmark %"]
+"0 v" = ["confirm in articles unmark above"]
+"$ v" = ["confirm in articles unmark below"]
+"M-v" = ["cmd unmark"]
+"f" = ["flag", "in articles down"]
+"0 f" = ["flag above"]
+"$ f" = ["flag below"]
+"F" = ["flag all"]
+"M-f" = ["cmd flag"]
+"d" = ["unflag", "in articles down"]
+"0 d" = ["unflag above"]
+"$ d" = ["unflag below"]
+"D" = ["unflag all"]
+"M-d" = ["cmd unflag"]
+"i" = ["flaginvert", "in articles down"]
+"0 i" = ["flaginvert above"]
+"$ i" = ["flaginvert below"]
+"I" = ["flaginvert all"]
+"M-i" = ["cmd flaginvert"]
+"; ;" = ["cmd hintfollow"]
+"; y" = ["cmd hintshare clipboard"]
+"; s" = ["cmd hintshare"]
+"1" = ["show all"]
+"2" = ["show unread"]
+"3" = ["show marked"]
+"z" = ["zen"]
+"/" = ["_search"]
+"n" = ["searchnext"]
+"N" = ["searchprev"]
+"=" = ["cmd filter "]
+"+ r" = ["filterclear"]
+"+ +" = ["filterapply"]
+"\\" = ["cmd sort"]
+"| |" = ["sortreverse"]
+"| r" = ["sortclear"]
+"c w" = ["cmd rename"]
+"c d" = ["confirm remove"]
+"c x" = ["confirm removeall"]
+"c f" = ["cmd feedadd"]
+"c e" = [
+  "confirm feedadd https://github.com/christo-auer/eilmeldung/releases.atom eilmeldung releases",
+]
+"c a" = ["cmd categoryadd"]
+"c u" = ["cmd feedchangeurl"]
+"c s" = ["confirm sortfeeds"]
+"c y" = ["yank"]
+"c p" = ["paste after"]
+"c P" = ["paste before"]
+"c c" = ["cmd tagchangecolor"]
+"e" = ["openenclosure"]
+"E" = ["cmd openenclosure"]
+"S" = ["cmd share"]
+"?" = ["helpinput"]
+
+
+# Theme Configuration
+[theme.color_palette]
+background = "black"
+foreground = "white"
+muted = "dark_gray"
+highlight = "yellow"
+flagged = "red"
+accent_primary = "magenta"
+accent_secondary = "blue"
+accent_tertiary = "cyan"
+accent_quaternary = "yellow"
+info = "magenta"
+warning = "yellow"
+error = "red"
+
+[theme.style_set]
+header = { fg = "accent_primary" }
+paragraph = { fg = "foreground" }
+article = { fg = "foreground" }
+feed = { fg = "accent_primary" }
+category = { fg = "accent_secondary" }
+tag = { fg = "accent_tertiary" }
+query = { fg = "accent_quaternary" }
+yanked = { fg = "highlight", mods = ["reversed"] }
+border = { fg = "muted" }
+border_focused = { fg = "accent_primary" }
+statusbar = { fg = "accent_primary", mods = ["reversed"] }
+command_input = { fg = "foreground", bg = "muted" }
+inactive = { fg = "muted" }
+tooltip_info = { fg = "info", mods = ["reversed"] }
+tooltip_warning = { fg = "warning", mods = ["reversed"] }
+tooltip_error = { fg = "error", mods = ["reversed"] }
+unread = { mods = ["bold"] }
+read = { mods = ["dim"] }
+selected = { mods = ["reversed"] }
+highlighted = { fg = "highlight", mods = ["italic"] }
+flagged = { fg = "flagged" }
+unread_count = { mods = ["italic"] }
+marked_count = { mods = ["italic"] }

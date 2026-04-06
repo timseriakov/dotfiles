@@ -1,0 +1,75 @@
+show_top_bar = false
+zen_mode_show_header = false
+
+article_scope = "unread"
+feed_list_scope = "all"
+default_sort_order = "date"
+hide_default_sort_order = true
+
+thumbnail_show = true
+thumbnail_width = "14 length"
+thumbnail_height = "6 length"
+thumbnail_resize = true
+thumbnail_fetch_debounce_millis = 150
+
+text_max_width = 110
+content_preferred_type = "markdown"
+content_show_urls = false
+hint_type = "letters"
+
+feed_list_focused_width = "25%"
+article_list_focused_width = "75%"
+article_list_focused_height = "20%"
+article_content_focused_height = "80%"
+
+feed_list = [
+  'query: "Today Unread" today unread',
+  'query: "Today Marked" today marked',
+  "feeds",
+  "* categories",
+  "tags",
+]
+
+[theme.color_palette]
+background = "#2B303B"
+foreground = "#C0C5CE"
+muted = "#65737E"
+highlight = "#EBCB8B"
+accent_primary = "#81A1C1"
+accent_secondary = "#5E81AC"
+accent_tertiary = "#8FA1B3"
+accent_quaternary = "#88C0D0"
+info = "#81A1C1"
+warning = "#EBCB8B"
+error = "#BF616A"
+
+[theme.style_set]
+header = { fg = "accent_primary" }
+paragraph = { fg = "foreground" }
+article = { fg = "foreground" }
+feed = { fg = "foreground" }
+category = { fg = "accent_secondary" }
+tag = { fg = "accent_tertiary" }
+query = { fg = "accent_quaternary" }
+
+border = { fg = "#4F5B66" }
+border_focused = { fg = "accent_primary" }
+
+statusbar = { fg = "#434C5E", mods = ["reversed"] }
+command_input = { fg = "foreground", bg = "#3B4252" }
+inactive = { fg = "muted" }
+
+tooltip_info = { fg = "info", mods = ["reversed"] }
+tooltip_warning = { fg = "warning", mods = ["reversed"] }
+tooltip_error = { fg = "error", mods = ["reversed"] }
+
+unread = { mods = ["bold"] }
+read = { mods = ["dim"] }
+selected = { bg = "#434C5E" }
+highlighted = { fg = "highlight" }
+unread_count = { fg = "accent_quaternary", mods = ["italic"] }
+marked_count = { fg = "highlight", mods = ["italic"] }
+
+[input_config]
+scroll_amount = 10
+timeout_millis = 5000
