@@ -1,0 +1,1157 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+# Configuration 
+
+ **Important**: You don't need a `config.toml` file. If you don't provide your own `config.toml` *eilmeldung* uses sensible defaults. If you are interested in what these defaults are, you can consult `examples/default-config.toml`.
+
+ **Note**: You should not use `examples/default-config.toml` as your configuration as this will cause breaking changes with future releases. Start with an empty `config.toml` and add all the settings you want to have *different* from the default configuration.
+
+**Note:** Icons and special characters require a terminal and font that support [Nerd Fonts](https://www.nerdfonts.com/).
+
+**eilmeldung** uses a TOML configuration file to customize behavior, appearance, and key bindings. The configuration file is optional, eilmeldung works out-of-the-box with sensible defaults.
+## Table of Contents
+
+
+- [Location of Configuration Files](#location-of-configuration-files)
+  - [eilmeldung Configuration File](#eilmeldung-configuration-file)
+  - [news-flash State Files](#news-flash-state-files)
+- [List of Configuration Options](#list-of-configuration-options)
+- [Default Sort Order](#default-sort-order)
+- [Input Configuration](#input-configuration)
+  - [Keybinding Customization](#keybinding-customization)
+- [Theme Configuration](#theme-configuration)
+  - [Color Palette](#color-palette)
+  - [Component Styles](#component-styles)
+  - [Component Style Modifiers](#component-style-modifiers)
+- [Feed List Configuration](#feed-list-configuration)
+- [After-Sync Commands](#after-sync-commands)
+- [Notify After Sync](#notification-after-sync)
+- [Share Target Configuration](#share-target-configuration)
+- [Opening Enclosures](#opening-enclosures)
+- [Layout Configuration](#layout-configuration)
+  - [Example: Static Layout (default)](#example-static-layout-default)
+  - [Example: Dynamic Layout](#example-dynamic-layout)
+  - [Example: Fully Dynamic Layout](#example-fully-dynamic-layout)
+- [Automatic Login](#automatic-login)
+  - [Secrets](#secrets)
+  - [Finding the Right Settings](#finding-the-right-settings)
+
+---
+
+## Location of Configuration Files
+
+### eilmeldung Configuration File
+**eilmeldung** tries the following locations for `config.toml` in order:
+
+- `$XDG_CONFIG_HOME/eilmeldung/config.toml` on Linux **and** macos
+- if this doesn't exist: `$HOME/.config/eilmeldung/config.toml` 
+- if this doesn't exist
+  - Linux: default config is used
+  - macos: `~/Library/Application Support/org.christo-auer.eilmeldung/config.toml`
+- if none of the above exists, the default configuration is used
+
+You can overwrite this behavior by using the `--config-dir <PATH>` [Command Line Option](cli_args.md) which takes precedence over all.
+
+### news-flash State Files
+
+news-flash configuration files (`newsflash.json` and authentication files) are stored in:
+
+- Linux: `$XDG_CONFIG_HOME/eilmeldung` (which is usually `~/.config/eilmeldung`)
+- macos: `~/Library/Application Support/org.christo-auer.eilmeldung`
+
+news-flash local database and caches are stored in:
+
+- Linux: `$XDG_DATA_HOME/eilmeldung` which is usually (`~/.local/state/eilmeldung`)
+- macos: `~/Library/Application Support/org.christo-auer.eilmeldung`
+
+You can change this behaviour by using the [Command Line Options](cli_args.md) `--news-flash-config-dir` and `--news-flash-state-dir`
+
+---
+
+## List of Configuration Options
+
+
+| Option                            | Type                  | Description                                                                                                                                             |
+| --------                          | ------                | -------------                                                                                                                                           |
+| `startup_commands`                | list                  | list of commands to execute on startup, e.g., `startup_commands = ["sync", "focus articles"]`                                                           |
+| `refresh_fps`                     | integer               | UI refresh rate in frames per second                                                                                                                    |
+| `network_timeout_seconds`         | integer               | timeout for network operations                                                                                                                          |
+| `mouse_support`                   | bool                  | Enable mouse support, default is `false`                                                                                                                |
+| `article_scope`                   | string                | Default article scope: `"all"`, `"unread"`, or `"marked"`                                                                                               |
+| `feed_list_scope`                 | string                | Default feed list scope: `"all"`, `"unread"`, or `"marked"`                                                                                             |
+| `default_sort_order`              | string (sort order)   | Default sort order for articles: e.g., `"date"`, `">date"`, `"feed date"` (see Article Queries for syntax)                                              |
+| `hide_default_sort_order`         | boolean               | If true, hides the sort order if the default sort order is applied; otherwise always show sort order                                                    |
+| `zen_mode_show_header`            | boolean               | Show header in distraction-free (zen) mode                                                                                                              |
+| `keep_articles_days`              | integer               | amount of days before articles are removed                                                                                                              |
+| `sync_every_minutes`              | integer               | Amount of time between automatic sync of all feeds, must be greater than 0 (no automatic sync occurs if this option is omitted)                         |
+| `after_sync_commands`             | list                  | List of commands to execute after a sync has finished, e.g., `after_sync_commands = ["query lastsync", "tag rust title:rust", "refresh"]`               |
+| `notify_after_sync`               | boolean               | If true, notifies the user about newly synced articles (see [Notify After Sync](#notify-after-sync))                                                    |
+| `notify_after_sync_cmd`           | string or none        | If defined, (shell) command which is executed after a sync, e.g., `"notify-send \"{summary}\" \"{body}\"` (see [Notify After Sync](#notify-after-sync)) |
+| `notify_after_sync_stats_format`  | sync stats definition | Format of sync stats (see [Notify After Sync](#notify-after-sync))                                                                                      |
+| `show_top_bar`                    | boolean               | Show top bar, if set to `false` the status icon is displayed at the bottom right                                                                        |
+| `offline_icon`                    | char                  | Icon displayed when offline                                                                                                                             |
+| `read_icon`                       | char                  | Icon for read articles                                                                                                                                  |
+| `unread_icon`                     | char                  | Icon for unread articles                                                                                                                                |
+| `marked_icon`                     | char                  | Icon for marked articles                                                                                                                                |
+| `unmarked_icon`                   | char                  | Icon for unmarked articles                                                                                                                              |
+| `tag_icon`                        | char                  | Icon for tags                                                                                                                                           |
+| `info_icon`                       | char                  | Icon for information messages                                                                                                                           |
+| `warning_icon`                    | char                  | Icon for warning messages                                                                                                                               |
+| `error_icon`                      | char                  | Icon for error messages                                                                                                                                 |
+| `command_line_prompt_icon`        | char                  | Icon for command line prompt                                                                                                                            |
+| `scrollbar_begin_symbol`          | char                  | Symbol at top of scrollbars                                                                                                                             |
+| `scrollbar_end_symbol`            | char                  | Symbol at bottom of scrollbars                                                                                                                          |
+| `scrollbar_thumb_symbol`          | char                  | Symbol placed at current position of scrollbars                                                                                                         |
+| `scrollbar_track_symbol`          | char                  | Symbol placed between top and bottom of scrollbars                                                                                                      |
+| `all_label`                       | string                | Label format for "All" in feed list                                                                                                                     |
+| `feed_label`                      | string                | Label format for feeds                                                                                                                                  |
+| `category_label`                  | string                | Label format for categories                                                                                                                             |
+| `categories_label`                | string                | Label format for categories section                                                                                                                     |
+| `tags_label`                      | string                | Label format for tags section                                                                                                                           |
+| `tag_label`                       | string                | Label format for individual tags                                                                                                                        |
+| `query_label`                     | string                | Label format for query items                                                                                                                            |
+| `article_table`                   | string                | Article list column format                                                                                                                              |
+| `date_format`                     | string                | Date format (strftime syntax)                                                                                                                           |
+| `articles_after_selection`        | integer               | Number of articles to show after selection                                                                                                              |
+| `auto_scrape`                     | boolean               | Automatically scrape full article content **when in content panel** (this does not auto-scrape when any of the other panels are active)                 |
+| `thumbnail_show`                  | boolean               | Show article thumbnails                                                                                                                                 |
+| `thumbnail_width`                 | dimension             | Width of region reserved for thumbnail                                                                                                                  |
+| `thumbnail_height`                | dimension             | Height of region reserved for thumbnail                                                                                                                 |
+| `thumbnail_resize`                | boolean               | Resize thumbnails to fit (**this may cause slowdowns**)                                                                                                 |
+| `thumbnail_fetch_debounce_millis` | integer               | Delay before fetching thumbnail (ms)                                                                                                                    |
+| `text_max_width`                  | integer               | Maximum text width for article content                                                                                                                  |
+| `content_preferred_type`          | string                | Preferred content type: `"plain_text"` or `"markdown"`                                                                                                  |
+| `feed_list_focused_width`         | dimension             | Width of feed list when focused                                                                                                                         |
+| `article_list_focused_width`      | dimension             | Width of article list when focused                                                                                                                      |
+| `article_list_focused_height`     | dimension             | Height of article list when focused                                                                                                                     |
+| `article_content_focused_height`  | dimension             | Height of article content when focused                                                                                                                  |
+| `enclosure_command`               | string                | Command with which enclosure URLs are opened (see [Opening Enclosures](opening-enclosures))                                                             |
+| `video_enclosure_command`         | string (optional)     | Command with which video enclosure URLs are opened (see [Opening Enclosures](opening-enclosures))                                                       |
+| `audio_enclosure_command`         | string (optional)     | Command with which audio enclosure URLs are opened (see [Opening Enclosures](opening-enclosures))                                                       |
+| `image_enclosure_command`         | string (optional)     | Command with which image enclosure URLs are opened (see [Opening Enclosures](opening-enclosures))                                                       |
+| `content_show_urls`               | boolean               | If `true`, URLs are shown for links/images when displaying the content of an article                                                                    |
+| `hint_type`                       | string                | If `letters`, letters are used for link hints in the article content display. If `numbers`, numbers are used.                                           |
+
+
+
+**Label Placeholders:**
+- `{label}`: Item name
+- `{unread_count}`: Number of unread articles
+
+**Article Table Columns:**
+- `{read}`: Read/unread icon
+- `{marked}`: Marked/unmarked icon
+- `{tag_icons}`: Tag icons
+- `{age}`: Article age/date
+- `{title}`: Article title
+
+**Dimension:** Is a string:
+- **Percentage**: `"n%"` where `n` is a number from 1 to 100, e.g., `"33%"`, meaning 33% of the available width/height
+- **Length**: `"n length"` where `n` is a positive integer, e.g., `"10 length"`, meaning 10 rows (height)  or 10 columns (width)
+
+---
+
+## Startup Commands
+
+`startup_commands` is a list of [Commands](commands.md) which are executed when `eilmeldung` starts. For instance, on startup the feeds should be synced automatically, the article list should be selected showing all articles, set `startup_commands` to:
+
+```toml
+startup_commands = ["sync", "focus articles", "show articles all"]
+```
+
+You can use any command in `startup_commands`, even asynchronous ones. A popup will appear to show you the progress of operations.
+
+## Default Sort Order
+
+You can configure the default sort order for articles using the `default_sort_order` option. This sort order is applied whenever articles are displayed, unless overridden by a query-specific sort order or an adhoc sort command.
+
+**Syntax:**
+```toml
+default_sort_order = "<sort order>"
+```
+
+**Examples:**
+```toml
+# Sort by date, newest first (common for RSS readers, this is the default)
+default_sort_order = "date"
+
+# Sort by feed name, then by date (newest first within each feed)
+default_sort_order = "feed date"
+
+# Sort by title alphabetically (case is ignored)
+default_sort_order = "title"
+
+# Sort by date oldest first
+default_sort_order = ">date"
+```
+
+For complete sort order syntax and available sort keys, see [Commands](commands.md#sorting-articles).
+
+**Default Value:** `"date"` (newest first)
+
+---
+
+## Input Configuration
+
+Input configuration is defined in the `[input_config]` section.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `scroll_amount` | integer | `10` | Number of lines to scroll with page up/down |
+| `timeout_millis` | integer | `5000` | Timeout for multi-key sequences (milliseconds) |
+| `mappings` | table | See below | Key binding mappings |
+
+### Keybinding Customization
+
+Key bindings are defined in the `[input_config.mappings]` section as key-value pairs. A (sequence of) key(s) is mapped onto an array of commands.
+
+**Key Syntax:**
+- Single keys: `"a"`, `"j"`, `"k"`
+- Control keys: `"C-c"` (Ctrl+C), `"C-r"` (Ctrl+R)
+- Special keys: `"space"`, `"tab"`, `"backtab"`, `"up"`, `"down"`, `"left"`, `"right"`, `"esc"`, `"enter"`
+- Multi-key sequences: `"g g"` (press g twice), `"c w"` (c then w)
+- To unbind a key, map it to `[]`: `"x" = []` unbinds `x`
+
+**Examples:**
+```toml
+[input_config.mappings]
+# Single command
+"q" = ["quit"]
+
+# Multiple commands executed in sequence
+"o" = ["open", "read", "nextunread"]
+
+# Multi-key sequences
+"g g" = ["gotofirst"]
+"g t" = ["focus feeds"]
+
+# Unbind a key
+"x" = []
+```
+
+#### Modifier Keys
+
+- `C-` Ctrl
+- `M-` Meta (Alt)
+- `S-` Shift (don't use for characters, use this for special keys, see below)
+
+**Note**: For uppercase characters, you don't need `S-`. Just use the uppercase character itself: `J` instead of `S-j`.
+
+#### Special Keys
+- `enter`, `space`, `tab`, `backtab`, `backspace`
+- `esc`
+- navigation: `left`, `right`, `up`, `down`, `page_up`, `page_down`, `home`, `end`
+- modification: `insert`, `delete`
+- function keys: `f1`, `f2`, `f3`, `f4`, `f5`, `f6`, `f7`, `f8`, `f9`, `f10`, `f11`, `f12`
+
+
+For a complete list of available commands, see the Commands section. For default keybindings, see the main page or execute the command `helpinput`.
+
+---
+
+## Theme Configuration
+
+Theme configuration is defined in the `[theme]` section with two subsections: `color_palette` and `style_set`.
+
+### Color Palette
+
+The color palette defines the base colors used throughout the application. Colors can be specified as color names or hex codes (see [ratatui Color documentation](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) for all options).
+
+| Option | Default (ANSI) | Description |
+|--------|----------------|-------------|
+| `background` | `"black"` | Background color |
+| `foreground` | `"white"` | Foreground/text color |
+| `muted` | `"dark_gray"` | Muted/inactive elements |
+| `highlight` | `"yellow"` | Highlighted elements |
+| `accent_primary` | `"magenta"` | Primary accent (feeds, borders) |
+| `accent_secondary` | `"blue"` | Secondary accent (categories) |
+| `accent_tertiary` | `"cyan"` | Tertiary accent (tags) |
+| `accent_quaternary` | `"yellow"` | Quaternary accent (queries) |
+| `info` | `"magenta"` | Info messages |
+| `warning` | `"yellow"` | Warning messages |
+| `error` | `"red"` | Error messages |
+
+**Example:**
+```toml
+[theme.color_palette]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+accent_primary = "#f5c2e7"
+accent_secondary = "#89b4fa"
+```
+
+### Component Styles
+
+Component styles define how UI elements appear. Each component can have:
+- `fg`: Foreground color (from palette or custom)
+- `bg`: Background color (from palette or custom)
+- `mods`: Array of modifiers
+
+**Color References:**
+- Palette colors: `"background"`, `"foreground"`, `"muted"`, `"highlight"`, `"accent_primary"`, `"accent_secondary"`, `"accent_tertiary"`, `"accent_quaternary"`, `"info"`, `"warning"`, `"error"`
+- Custom colors via hex: ` "#ff0000" `
+
+**Available Modifiers:**
+`"bold"`, `"dim"`, `"italic"`, `"underlined"`, `"slow_blink"`, `"rapid_blink"`, `"reversed"`, `"hidden"`, `"crossed_out"`
+
+| Component | Default FG | Default BG | Default Mods | Description |
+|-----------|-----------|------------|--------------|-------------|
+| `header` | `accent_primary` | `none` |: | Section headers |
+| `paragraph` | `foreground` | `none` |: | Regular text |
+| `article` | `foreground` | `none` |: | Article items |
+| `feed` | `accent_primary` | `none` |: | Feed items |
+| `category` | `accent_secondary` | `none` |: | Category items |
+| `tag` | `accent_tertiary` | `none` |: | Tag items |
+| `query` | `accent_quaternary` | `none` |: | Query items |
+| `yanked` | `highlight` | `none` | `["reversed"]` | Yanked items (for moving) |
+| `border` | `muted` | `none` |: | Panel borders |
+| `border_focused` | `accent_primary` | `none` |: | Focused panel border |
+| `statusbar` | `background` | `accent_primary` |: | Status bar |
+| `command_input` | `foreground` | `muted` |: | Command line input |
+| `inactive` | `muted` | `none` |: | Inactive elements |
+| `tooltip_info` | `background` | `info` |: | Info tooltips |
+| `tooltip_warning` | `background` | `warning` |: | Warning tooltips |
+| `tooltip_error` | `background` | `error` |: | Error tooltips |
+
+**Example:**
+```toml
+[theme.style_set]
+border_focused = { fg = "accent_primary", mods = ["bold"] }
+feed = { fg = "#f5c2e7" }
+```
+### Component Style Modifiers
+
+The following component styles are *modifiers* which are applied depending on the state of the item (e.g., article, feed, category, etc.)
+
+| Component | Default FG | Default BG | Default Mods | Description |
+|-----------|-----------|------------|--------------|-------------|
+| `unread`       | `none`      | `none` | `bold`     | Unread articles or items with unread articles                |
+| `read`         | `none`      | `none` | `dim`      | Read articles or items with only read articles               |
+| `selected`     | `none`      | `none` | `reversed` | Selected items (e.g., in feed or article list)               |
+| `highlighted`  | `highlight` | `none` | `none`     | Highlighted items (e.g., articles matching the search query) |
+| `unread_count` | `none`      | `none` | `italic`   | Unread count label (shown right of item)                     |
+| `marked_count` | `none`      | `none` | `italic`   | Marked count label (shown right of item)                     |
+
+**Note**: These modifiers are applied *additively* to the other component styles, e.g., for an *unread article* the component style `article` is overwritten with all defined attributes of the `unread` component style.
+
+```toml
+[theme.style_set]
+unread = { fg = "highlight", mods = ["italic"] }
+highlighted = { bg = "#FF0000" }
+unread_count = { fg = "highlight" }
+```
+
+---
+
+## Feed List Configuration
+
+The `feed_list` array defines what appears in the feed list panel and in what order. Each entry is a string that specifies the type and display format.
+
+**Syntax:**
+- `"feeds"`: Show feeds as a tree (hierarchical)
+- `"categories"`: Show categories as a tree
+- `"tags"`: Show tags as a tree
+- `"* feeds"`: Show feeds as a flat list (prefix with `*`)
+- `"* categories"`: Show categories as a flat list
+- `"* tags"`: Show tags as a flat list
+- `'query: "<label>" <query>'`: Custom query with label (label must be in double quotes)
+
+**Default:**
+```toml
+feed_list = [
+  'query: "Today Unread" today unread',
+  'query: "Today Marked" today marked',
+  "feeds",
+  "* categories",
+  "tags",
+]
+```
+
+**Custom Example:**
+```toml
+feed_list = [
+  'query: "Urgent" marked #urgent',
+  'query: "This Week" newer:"1 week"',
+  'query: "Tech News" feed:/tech/ unread',
+  "feeds",                    # Hierarchical feed tree
+  "* tags",                   # Flat tag list
+]
+```
+---
+
+## After-Sync Commands
+
+You can automate operations after synchronization has finished via the option `after_sync_commands`, which is a list of commands which are executed after the synchronization has finished. Usually, you want to carry out *bulk-operations* on the newly synced articles. For this, the *first* commands should always be `query lastsync` which brings all articles which where just synchronized into the article list. Afterwards, you can execute any operation on them (see below for some examples). To return to your original selection, the command `refresh` is used.
+
+**Note**: Don't call `sync` in `after_sync_commands` to avoid an infinite loop.
+
+### Example: Marking Paywall/Ad Articles as Read
+
+If you can identify paywall articles by their title (e.g., they contain a certain string), you can mark them as read. For instance, on [heise](https://www.heise.de) articles which start with the word `Anzeige:` contain advertisements. To immediately mark them as read, use:
+
+```toml
+after_sync_commands = [ "query lastsync", "in articles read title:/^Anzeige:/", "refresh" ]
+```
+
+### Example: Automatic Tagging
+
+If you automatically want to tag certain articles, you can use the (bulk) operation `tag`. 
+
+```toml
+after_sync_commands = [ "query lastsync", "tag science feed:quanta", "refresh" ]
+```
+
+### Example: Expand Categories with Unread Articles
+
+If you want to automatically expand only the categories which have unread elements, use the following:
+
+```toml
+after_sync_commands = [ "collapse all", "expandcategories unread" ]
+```
+
+### Example: Chain of Operations
+
+This is my personal chain of operations after a sync:
+
+```toml
+after_sync_commands = [ "query lastsync",                                                  # operate on articles that were synced
+                        "in articles read title:/Anzeige:|g\\+|heise\\+|heise-Angebot/",   # mark paywall articles and ads as read
+                        "tag reviews title:review",                                        # tag articles with the word review in the title
+                        "collapse all",                                                    # collapse all categories and...
+                        "expandcategories unread",                                         # ...expand all with unread elements
+                        "refresh" ]                                                        # refresh the content
+
+```
+
+---
+
+## Notify After Sync
+
+By default `notify_after_sync=true` which uses [notify-rust](https://docs.rs/notify-rust/latest/notify_rust/) to display a *sync statistics notification*.
+In the following, you see how you can customize the notification.
+
+### Notification Format
+
+The notification format (what is displayed) is defined in the section `[notify_after_sync_stats_format]` with:
+
+| Option               | Description                                        | Default             |
+| ---                  | ---                                                | ---                 |
+| `sync_output_format` | Format of a line in the output                     | `{label}: {count}` |
+| `all_label_format`   | Label of summary                                   | `New Unread Items`  |
+| `feed_label_format`  | Label of a feed (leave empty to not display feeds) | `{label}`           |
+
+
+- In `sync_output_format`:
+    - `{label}` is replaced with either the content from `all_label_format` or `feed_label_format`
+    - `{count}` is replaced with the amount of newly synced articles
+- In `feed_label_format`
+  - `{category}` is replaced by the name of the parent category (or the empty string if there is no parent category)
+  - `{label}` is replaced by the name of the feed
+
+With the default settings, you get:
+
+```
+New Unread Items: 71                  # this is the summary (usually bold)
+Polygon.com: 6
+Golem.de: 6
+heise online News: 7
+Phoronix: 2
+Pitchfork: 3
+The Quietus: 2
+SPIEGEL: 16
+zeit.de: 30
+```
+
+### Notify Command
+
+If you want to use a custom (shell) command, you can define the configuration option `notify_after_sync_cmd`, for instance:
+
+```toml
+notify_after_sync_cmd = "notify-send \"{summary}\" \"{body}\""    # note the escaped double quotes!
+```
+
+`{summary}` is replaced with the information from `sync_output_format`, i.e., *all* new articles, and `{body}` is replaced with new article count for each feed (see `feed_label_format` above) separated by new-line characters.
+The final command call may look like this:
+
+```bash
+notify-send "71 New Unread Items" "6 Games: Polygon.com\n6 IT-News: Golem.de\n7 IT-News: heise online News\n2 IT-News: Phoronix\n3 Music: Pitchfork\n2 Music: The Quietus\n16 News: SPIEGEL\n30 News: zeit.de"
+```
+
+Instead of `notify-send` you can use any command you like.
+
+
+## Share Target Configuration
+
+The `share_targets` array defines available sharing targets. Each entry can be a built-in target name or a custom target definition.
+
+**Built-in Targets:**
+- `"clipboard"`: Copy URL to clipboard
+- `"reddit"`: Share on Reddit
+- `"mastodon"`: Share on Mastodon
+- `"telegram"`: Share on Telegram
+- `"instapaper"`: Save to Instapaper
+
+**Custom Target Syntax:**
+`'<name> <template>'` where:
+- `<name>`: Target name used in commands (not quoted, a single word)
+- `<template>`: any occurrence of `{url}` is replaced by the URL of the article and any `{title}` is replaced by its title
+  - **Sharing via Webbrowser**: if the template starts with `http://...` or `https://...` the template is interpreted as a web URL and upon sharing the webbrowser is opened with the given URL
+  - **Sharing to a Shell Command**: otherwise the template is interpreted as a shell command with arguments. **Note**: 
+    - A new process is spawned in the background with `stdin`, `stdout`, and `stderr` redirected to `null`. In particular, you won't see any terminal output.
+    - This does not support any shell features like input output redirection (`>`, etc.), pipes (`|`) or other advanced shell features. Also no shell variables are replaced (`~`, `$HOME`). If you want more sophisticated behaviour, create a shell script and call the shell script.
+
+**Default:**
+```toml
+share_targets = [
+  "clipboard",
+  "reddit",
+  "mastodon",
+  "instapaper",
+  "telegram",
+]
+```
+
+**Custom Example:**
+```toml
+share_targets = [
+  "clipboard",
+  "reddit",
+  'hackernews https://news.ycombinator.com/submitlink?u={url}&t={title}',
+  'pocket https://getpocket.com/save?url={url}&title={title}',
+  'sendmail ./sendmail.sh me@eilmeldung.org \"{title}\" \"{url}\"', # note the double quotes around the two variables
+  'chromium chromium \"{url}\"',
+  'org-mode xdg-open \"org-protocol://capture?template=L&url=\"{url}\"&title=\"{title}\"\"' # share on emacs/org-mode (by @luogni)
+]
+```
+
+## Opening Enclosures
+
+With the command `openenclosure`, an enclosure of an article can be opened by passing it to an external command. This external command is defined by the option `enclosure_command`. There are three placeholders that are replaced in `enclosure_command`:
+
+- `{url}`: URL to enclosure
+- `{mime}`: MIME type of enclosure
+- `{type}`: type of enclosure, either `video`, `audio`, `image`
+
+For instance, `enclosure_command = "xdg-open {url}"` calls `xdg-open` with the URL of the enclosure. If you want different commands depending on the type you can either write a small script which evaluated `{type}` or use the following options:
+
+- `video_enclosure_command`: command for opening video enclosures
+- `audio_enclosure_command`: command for opening audio enclosures
+- `image_enclosure_command`: command for opening image enclosures
+
+These commands can use the same placeholders. An example configuration could be:
+
+```toml
+audio_enclosure_command = "vlc {url}"
+video_enclosure_command = "mpv {url}"
+```
+
+
+
+## Layout Configuration
+
+You can adjust the layout, that is, the size of the different panels when they are focused and unfocused by the following variables:
+
+- `feed_list_focused_width`: width of feed list when focused
+- `article_list_focused_width`: width of article list when focused
+- `article_list_focused_height`: height of article list when focused
+- `article_content_focused_height`: height of article content when focused
+
+Each has a *dimension* value which is a string, e.g., `"10 length"` for ten rows/columns or `"33%"` for 33% of the available width/height. For instance, if the feed list should occupy 25% of the total width when focused, set its value to `"25%"` and if you want have 10 articles visible in the article list, set its height value to `"11 length"` (+1 for the header).
+
+
+### Example: Static Layout (default)
+
+With the default values, the width/height of each panel is fixed. For example, the feed list is always 25% of the whole width regardless of whether it is focused or not.
+
+```toml
+feed_list_focused_width = "25%"
+article_list_focused_width = "75%"
+article_list_focused_height = "20%"
+article_content_focused_height = "80%"
+```
+
+https://github.com/user-attachments/assets/c4e6e89d-e95e-4a80-b660-5e1b982f6108
+
+### Example: Dynamic Layout
+
+Here is an example of values, where unfocused panels are smaller to give more space to the focused panel:
+
+```toml
+feed_list_focused_width = "33%"
+article_list_focused_width = "85%"
+article_list_focused_height = "66%"
+article_content_focused_height = "80%"
+```
+
+https://github.com/user-attachments/assets/ffc51e67-1842-4b49-a798-6a5d65b04265
+
+### Example: Fully Dynamic Layout
+
+Here is an example where the feed list completely vanishes when the article list is focused, and the article list completely vanishes when the content is focused:
+
+```toml
+feed_list_focused_width = "33%"
+article_list_focused_width = "100%"
+article_list_focused_height = "66%"
+article_content_focused_height = "100%"
+```
+
+https://github.com/user-attachments/assets/e9277d94-a6da-49de-8dd0-8c6a75e09430
+
+## Automatic Login
+
+Upon first starting `eilmeldung`, the user is asked to enter login information after which `eilmeldung` logs into the provider and syncs the content. This interactive login setup can be *automated* by filling the section `[login_setup]`. The settings are:
+
+
+| Option                | Type   | `login_type`                               | Description                                                                   |
+| ---                   | ---    | ---                                        | ---                                                                           |
+| `login_type`          | string |                                            | Type of login: `"no_login"`, `"direct_password"`, `"direct_token"`, `"oauth"` |
+| `provider`            | string | all                                        | Provider: `"local_rss"`, `"freshrss"`, etc.                                   |
+| `url`                 | string | `oauth` (required); `direct_password`, `direct_token` (optional) | URL for connection |
+| `user`                | string | `direct_password`                          | Username for direct login                                                     |
+| `password`            | secret | `direct_password`                          | Password or command which produces password  (see below!)                     |
+| `token`               | secret | `direct_token`                             | Token for login by token                                                      |
+| `oauth_client_id`     | string | `oauth`                                    | *Optional*: client ID for oauth login (see note below)                        |
+| `oauth_client_secret` | secret | `oauth`                                    | *Optional*: client secret for oauth login (see note below)                    |
+| `basic_auth_user`     | string | `direct_password`, `direct_token`          | *Optional*: user name for http basic authentication |
+| `basic_auth_password` | secret | `direct_password`, `direct_token`          | *Optional*: password for http basic authentication |
+
+**Note:** For OAuth login, if you provide custom OAuth credentials, both `oauth_client_id` and `oauth_client_secret` must be provided together. You cannot provide only one of them. If you want to use the provider's default OAuth credentials, omit both fields.
+
+**Overwhelmed?** Check *Finding the Right Settings* below! But first read about:
+
+### Secrets
+
+Configuration options with type *secret* are strings which
+
+- either contain the secret itself (e.g, `password = "abcd1234" `); storing password in *clear text* is **NOT RECOMMENDED**
+- or contain a command with prefix `cmd:` which outputs the secret to stdout (e.g., `password = "cmd:pass my-passwords/eilmeldung"`); **THIS IS THE WAY**
+
+### Finding the Right Settings
+
+`eilmeldung` outputs all needed values via the command line switch `--print-login-data`. If you are already logged in, it simply outputs the login data. If you are not logged in, you will be led through the interactive login process and the login data is output afterwards:
+
+```bash
+eilmeldung --print-login-data
+
+Welcome to +++ eilmeldung +++
+...
+...
+> Are you satisfied with these settings? Select `n` to change them. Yes
+Attempting to login and synchronize...
+login and initial sync successful
+
+login_type = "direct_password"
+provider = "freshrss"
+user = "chris"
+url = "http://x.y.z.w/api/greader.php/"
+password = "*******"
+```
+
+Note that the password is *redacted*! You have to replace the contents of `password`  with your actual password command. If you, for some reason, want to output the password values verbatim, add the command line switch `--show-secrets`.
+Simply copy and paste this into your `config.toml`.
+
+```toml
+[login_setup]
+login_type = "direct_password"
+provider = "freshrss"
+user = "username"
+url = "http://x.y.z.w/api/greader.php/"
+password = "cmd:pass my-passwords/eilmeldung"
+```
+
+### CLI Options
+
+For options to customize the output of the `--sync` option see [here](cli_args.md).  Я настраиваю цветовую схему Nord, но у меня есть еще недоработки. Как то, к примеру внизу сейчас хреново отображается нижняя строка. Там есть лишние символы. Давай подправим. @config.toml @default-config.toml вот в дефолтной схеме ок - [Image 1]  а у меня не ок [Image 2] 
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/rss/config.toml"}
+<path>/Users/tim/dev/dotfiles/rss/config.toml</path>
+<type>file</type>
+<content>1: show_top_bar = false
+2: zen_mode_show_header = false
+3: 
+4: article_scope = "unread"
+5: feed_list_scope = "all"
+6: default_sort_order = "date"
+7: hide_default_sort_order = true
+8: 
+9: thumbnail_show = true
+10: thumbnail_width = "14 length"
+11: thumbnail_height = "6 length"
+12: thumbnail_resize = true
+13: thumbnail_fetch_debounce_millis = 150
+14: 
+15: text_max_width = 110
+16: content_preferred_type = "markdown"
+17: content_show_urls = false
+18: hint_type = "letters"
+19: 
+20: feed_list_focused_width = "25%"
+21: article_list_focused_width = "75%"
+22: article_list_focused_height = "20%"
+23: article_content_focused_height = "80%"
+24: 
+25: feed_list = [
+26:   'query: "Today Unread" today unread',
+27:   'query: "Today Marked" today marked',
+28:   "feeds",
+29:   "* categories",
+30:   "tags",
+31: ]
+32: 
+33: [theme.color_palette]
+34: background = "#2B303B"
+35: foreground = "#C0C5CE"
+36: muted = "#65737E"
+37: highlight = "#EBCB8B"
+38: accent_primary = "#81A1C1"
+39: accent_secondary = "#5E81AC"
+40: accent_tertiary = "#8FA1B3"
+41: accent_quaternary = "#88C0D0"
+42: info = "#81A1C1"
+43: warning = "#EBCB8B"
+44: error = "#BF616A"
+45: 
+46: [theme.style_set]
+47: header = { fg = "accent_primary" }
+48: paragraph = { fg = "foreground" }
+49: article = { fg = "foreground" }
+50: feed = { fg = "foreground" }
+51: category = { fg = "accent_secondary" }
+52: tag = { fg = "accent_tertiary" }
+53: query = { fg = "accent_quaternary" }
+54: 
+55: border = { fg = "#4F5B66" }
+56: border_focused = { fg = "accent_primary" }
+57: 
+58: statusbar = { fg = "foreground", bg = "#434C5E" }
+59: command_input = { fg = "foreground", bg = "#3B4252" }
+60: 
+61: inactive = { fg = "muted" }
+62: 
+63: tooltip_info = { fg = "background", bg = "info" }
+64: tooltip_warning = { fg = "background", bg = "warning" }
+65: tooltip_error = { fg = "background", bg = "error" }
+66: 
+67: unread = { mods = ["bold"] }
+68: read = { mods = ["dim"] }
+69: selected = { bg = "#434C5E" }
+70: highlighted = { fg = "highlight" }
+71: unread_count = { fg = "accent_quaternary", mods = ["italic"] }
+72: marked_count = { fg = "highlight", mods = ["italic"] }
+73: 
+74: [input_config]
+75: scroll_amount = 10
+76: timeout_millis = 5000
+
+(End of file - total 76 lines)
+</content>
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/rss/default-config.toml"}
+<path>/Users/tim/dev/dotfiles/rss/default-config.toml</path>
+<type>file</type>
+<content>1: #########################################################################################
+2: ### READ THIS BEFORE USING THIS FILE!
+3: ### This file contains the DEFAULT SETTINGS of eilmeldung and is FOR REFERENCE only!
+4: ### You don't need to copy this file into ~/.config/eilmeldung/ (or similar) as these
+5: ### settings are applied AUTOMATICALLY (that's what DEFAULT means).
+6: ### Start with your own BLANK config.toml and insert ONLY the settings you want to have
+7: ### DIFFERENT from this file!
+8: #########################################################################################
+9: 
+10: # Basic Configuration
+11: startup_commands = []
+12: refresh_fps = 10
+13: network_timeout_seconds = 60
+14: mouse_support = false
+15: article_scope = "unread"
+16: feed_list_scope = "all"
+17: default_sort_order = "<date"
+18: keep_articles_days = 30
+19: # sync_every_minutes = 10  # disabled by default
+20: after_sync_commands = []
+21: 
+22: # Icons
+23: offline_icon = ""
+24: read_icon = ""
+25: all_icon = ""
+26: unread_icon = ""
+27: marked_icon = ""
+28: unmarked_icon = " "
+29: flagged_icon = ""
+30: tag_icon = "󰓹"
+31: command_line_prompt_icon = ""
+32: info_icon = ""
+33: warning_icon = ""
+34: error_icon = ""
+35: enclosure_video_icon = ""
+36: enclosure_audio_icon = ""
+37: enclosure_image_icon = ""
+38: image_icon = ""
+39: url_icon = ""
+40: 
+41: # Scrollbar symbols
+42: scrollbar_begin_symbol = "│"
+43: scrollbar_end_symbol = "│"
+44: scrollbar_track_symbol = " "
+45: scrollbar_thumb_symbol = "│"
+46: 
+47: # Labels
+48: all_label = "󱀂 All {unread_count}"
+49: last_synced_label = " Last Synced"
+50: feed_label = " {label} {unread_count}"
+51: category_label = "󰉋 {label} {unread_count}"
+52: categories_label = "󰉓 Categories {unread_count}"
+53: tags_label = "󰓻 Tags {unread_count}"
+54: tag_label = "󰓹 {label} {unread_count}"
+55: query_label = " {label}"
+56: 
+57: # Article Display
+58: article_table = "{flagged},{read},{marked},{tag_icons},{age},{title}"
+59: date_format = "%m/%d %H:%M"
+60: articles_after_selection = 3
+61: hide_default_sort_order = true
+62: zen_mode_show_header = false
+63: hint_type = "letters"
+64: content_show_urls = false
+65: 
+66: # Content
+67: auto_scrape = true
+68: thumbnail_show = true
+69: thumbnail_width = "14 length"
+70: thumbnail_height = "5 length"
+71: thumbnail_resize = true
+72: thumbnail_fetch_debounce_millis = 500
+73: text_max_width = 66
+74: content_preferred_type = "markdown"
+75: 
+76: # Layout
+77: show_top_bar = true
+78: feed_list_focused_width = "25%"
+79: article_list_focused_width = "75%"
+80: article_list_focused_height = "20%"
+81: article_content_focused_height = "80%"
+82: 
+83: # Feed List
+84: feed_list = [
+85:   'query: "Today Unread" today unread',
+86:   'query: "Today Marked" today marked',
+87:   "feeds",
+88:   "* categories",
+89:   "tags",
+90: ]
+91: 
+92: # Enclosures
+93: enclosure_command = "xdg-open {url}"
+94: # enclosure_command = "open {url}" # for macos
+95: # video_enclosure_command is not set by default (enclosure command is used)
+96: # audio_enclosure_command is not set by default (enclosure command is used)
+97: # image_enclosure_command is not set by default (enclosure command is used)
+98: 
+99: 
+100: # Share Targets
+101: share_targets = ["clipboard", "reddit", "mastodon", "instapaper", "telegram"]
+102: 
+103: # notify after sync
+104: notify_after_sync = true
+105: # notify_after_sync_cmd is not set (dbus is used instead)
+106: 
+107: [notify_after_sync_stats_format]
+108: sync_output_format = "{label}: {count}"
+109: all_label_format = "New Unread Items"
+110: feed_label_format = "{label}"
+111: 
+112: [cli_sync_stats_format]
+113: sync_output_format = "{label}:{count}"
+114: all_label_format = "all:All"
+115: feed_label_format = "feed:{category}/{label}"
+116: 
+117: # Input Configuration
+118: [input_config]
+119: scroll_amount = 10
+120: timeout_millis = 5000
+121: 
+122: [input_config.mappings]
+123: "up" = ["up"]
+124: "down" = ["down"]
+125: "C-h" = ["left"]
+126: "C-l" = ["right"]
+127: "left" = ["left"]
+128: "right" = ["right"]
+129: "j" = ["down"]
+130: "k" = ["up"]
+131: "C-j" = ["in feeds down"]
+132: "C-k" = ["in feeds up"]
+133: "J" = ["in content down"]
+134: "K" = ["in content up"]
+135: "M-j" = ["in articles down"]
+136: "M-k" = ["in articles up"]
+137: "enter" = ["_submit"]
+138: "esc" = ["_abort"]
+139: "C-g" = ["_abort"]
+140: "C-u" = ["_clear"]
+141: "space" = ["toggle"]
+142: "C-f" = ["pagedown"]
+143: "C-b" = ["pageup"]
+144: "g g" = ["gotofirst"]
+145: "G" = ["gotolast"]
+146: "q" = ["confirm quit"]
+147: "C-c" = ["quit"]
+148: "x" = ["scrape"]
+149: "g f" = ["focus feeds"]
+150: "g a" = ["focus articles"]
+151: "g c" = ["focus content"]
+152: ":" = ["cmd"]
+153: "l" = ["next"]
+154: "h" = ["prev"]
+155: "tab" = ["nextc"]
+156: "backtab" = ["prevc"]
+157: "y" = ["share clipboard"]
+158: "o" = ["open", "in articles read", "in articles nextunread"]
+159: "O" = ["open unread", "confirm in articles read articles %"]
+160: "s" = ["sync"]
+161: "r" = ["read", "nextunread"]
+162: "t" = ["cmd tag"]
+163: "R" = ["confirm in articles read %"]
+164: "0 r" = ["confirm in articles read above"]
+165: "$ r" = ["confirm in articles read below"]
+166: "M-r" = ["cmd read"]
+167: "u" = ["unread"]
+168: "U" = ["confirm in articles unread %"]
+169: "0 u" = ["confirm in articles unread above"]
+170: "$ u" = ["confirm in articles unread below"]
+171: "M-u" = ["cmd unread"]
+172: "m" = ["mark"]
+173: "M" = ["confirm in articles mark %"]
+174: "0 m" = ["confirm in articles mark above"]
+175: "$ m" = ["confirm in articles mark below"]
+176: "M-m" = ["cmd mark"]
+177: "v" = ["unmark"]
+178: "V" = ["confirm in articles unmark %"]
+179: "0 v" = ["confirm in articles unmark above"]
+180: "$ v" = ["confirm in articles unmark below"]
+181: "M-v" = ["cmd unmark"]
+182: "f" = ["flag", "in articles down"]
+183: "0 f" = ["flag above"]
+184: "$ f" = ["flag below"]
+185: "F" = ["flag all"]
+186: "M-f" = ["cmd flag"]
+187: "d" = ["unflag", "in articles down"]
+188: "0 d" = ["unflag above"]
+189: "$ d" = ["unflag below"]
+190: "D" = ["unflag all"]
+191: "M-d" = ["cmd unflag"]
+192: "i" = ["flaginvert", "in articles down"]
+193: "0 i" = ["flaginvert above"]
+194: "$ i" = ["flaginvert below"]
+195: "I" = ["flaginvert all"]
+196: "M-i" = ["cmd flaginvert"]
+197: "; ;" = ["cmd hintfollow"]
+198: "; y" = ["cmd hintshare clipboard"]
+199: "; s" = ["cmd hintshare"]
+200: "1" = ["show all"]
+201: "2" = ["show unread"]
+202: "3" = ["show marked"]
+203: "z" = ["zen"]
+204: "/" = ["_search"]
+205: "n" = ["searchnext"]
+206: "N" = ["searchprev"]
+207: "=" = ["cmd filter "]
+208: "+ r" = ["filterclear"]
+209: "+ +" = ["filterapply"]
+210: "\\" = ["cmd sort"]
+211: "| |" = ["sortreverse"]
+212: "| r" = ["sortclear"]
+213: "c w" = ["cmd rename"]
+214: "c d" = ["confirm remove"]
+215: "c x" = ["confirm removeall"]
+216: "c f" = ["cmd feedadd"]
+217: "c e" = [
+218:   "confirm feedadd https://github.com/christo-auer/eilmeldung/releases.atom eilmeldung releases",
+219: ]
+220: "c a" = ["cmd categoryadd"]
+221: "c u" = ["cmd feedchangeurl"]
+222: "c s" = ["confirm sortfeeds"]
+223: "c y" = ["yank"]
+224: "c p" = ["paste after"]
+225: "c P" = ["paste before"]
+226: "c c" = ["cmd tagchangecolor"]
+227: "e" = ["openenclosure"]
+228: "E" = ["cmd openenclosure"]
+229: "S" = ["cmd share"]
+230: "?" = ["helpinput"]
+231: 
+232: 
+233: # Theme Configuration
+234: [theme.color_palette]
+235: background = "black"
+236: foreground = "white"
+237: muted = "dark_gray"
+238: highlight = "yellow"
+239: flagged = "red"
+240: accent_primary = "magenta"
+241: accent_secondary = "blue"
+242: accent_tertiary = "cyan"
+243: accent_quaternary = "yellow"
+244: info = "magenta"
+245: warning = "yellow"
+246: error = "red"
+247: 
+248: [theme.style_set]
+249: header = { fg = "accent_primary" }
+250: paragraph = { fg = "foreground" }
+251: article = { fg = "foreground" }
+252: feed = { fg = "accent_primary" }
+253: category = { fg = "accent_secondary" }
+254: tag = { fg = "accent_tertiary" }
+255: query = { fg = "accent_quaternary" }
+256: yanked = { fg = "highlight", mods = ["reversed"] }
+257: border = { fg = "muted" }
+258: border_focused = { fg = "accent_primary" }
+259: statusbar = { fg = "accent_primary", mods = ["reversed"] }
+260: command_input = { fg = "foreground", bg = "muted" }
+261: inactive = { fg = "muted" }
+262: tooltip_info = { fg = "info", mods = ["reversed"] }
+263: tooltip_warning = { fg = "warning", mods = ["reversed"] }
+264: tooltip_error = { fg = "error", mods = ["reversed"] }
+265: unread = { mods = ["bold"] }
+266: read = { mods = ["dim"] }
+267: selected = { mods = ["reversed"] }
+268: highlighted = { fg = "highlight", mods = ["italic"] }
+269: flagged = { fg = "flagged" }
+270: unread_count = { mods = ["italic"] }
+271: marked_count = { mods = ["italic"] }
+
+(End of file - total 271 lines)
+</content>
+
+---
+
+[Image 1] Ну почти, видишь символы? Все равно артефакты остались лишние. Вот это вот скругленный символ, он в принципе нахуй мне не нужен.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_df16eb65`
+**Description:** Find configurable icons and symbols in the codebase
+**Duration:** 5s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_df16eb65")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_df16eb65`: Find configurable icons and symbols in the codebase
+- `bg_eeda430d`: Find status bar implementation and symbols
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+Смотри, ты что-то мне припездываешь. Я тебе показал, что в дефолтной цветовой настройке они как бы есть, но они нормально рисуются. То есть получается такая сосиска, грубо говоря, бар с закругленными краями. Хуй с ним, то, что они останутся, меня устраивает.
+
+Но в том виде, который сейчас, ты настроил, что у тебя темного цвета бар, а по краям почему-то вдруг синий, блядь. Какие-то, ну, хуй пойми, блядь, откуда. Ну, вообще неправильно. Вот это меня не устраивает. Вот это надо исправить. [Image 1]
+
+---
+
+и?
+
+---
+
+▣ DCP | -24.5K removed, +662 summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿█████│
+▣ Compression #1 -24.5K removed, +662 summary
+→ Topic: Status bar artifacts in Nord theme
+→ Items: 27 messages and 22 tools compressed
+
+---
+
+~/dev took 59m22s
+❯ eilmeldung
+Error:
+   0: TOML parse error at line 66, column 1
+         |
+      66 | command_input = { fg = "foreground", bg = "#3B4252" }
+         | ^^^^^^^^^^^^^
+      duplicate key
+       in ../.config/eilmeldung/config.toml
+
+Location:
+   src/config/mod.rs:446
+
+Backtrace omitted. Run with RUST_BACKTRACE=1 environment variable to display it.
+Run with RUST_BACKTRACE=full to include source snippets.
+
+---
+
+~/dev
+❯ eilmeldung
+Error:
+   0: TOML parse error at line 67, column 1
+         |
+      67 | inactive = { fg = "muted" }
+         | ^^^^^^^^
+      duplicate key
+       in ../.config/eilmeldung/config.toml
+
+Location:
+   src/config/mod.rs:446
+
+Backtrace omitted. Run with RUST_BACKTRACE=1 environment variable to display it.
+Run with RUST_BACKTRACE=full to include source snippets.
+
+~/dev
+❯ Столбоебина, блять.
+
+---
+
+~/dev
+❯ eilmeldung
+Error:
+   0: TOML parse error at line 72, column 1
+         |
+      72 | border_focused = { fg = "accent_primary" }
+         | ^^^^^^^^^^^^^^
+      duplicate key
+       in ../.config/eilmeldung/config.toml
+
+Location:
+   src/config/mod.rs:446
+
+Backtrace omitted. Run with RUST_BACKTRACE=1 environment variable to display it.
+Run with RUST_BACKTRACE=full to include source snippets.
+
+~/dev Гондон, ты что разучился? Кто мол редактировать?
