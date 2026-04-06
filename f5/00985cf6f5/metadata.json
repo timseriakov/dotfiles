@@ -294,6 +294,12 @@
       "transcript": "/f5/00985cf6f5/5/full.jsonl",
       "content_hash": "/f5/00985cf6f5/5/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/f5/00985cf6f5/6/metadata.json",
+      "transcript": "/f5/00985cf6f5/6/full.jsonl",
+      "content_hash": "/f5/00985cf6f5/6/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
