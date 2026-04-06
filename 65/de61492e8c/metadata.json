@@ -133,6 +133,12 @@
       "transcript": "/65/de61492e8c/0/full.jsonl",
       "content_hash": "/65/de61492e8c/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/65/de61492e8c/1/metadata.json",
+      "transcript": "/65/de61492e8c/1/full.jsonl",
+      "content_hash": "/65/de61492e8c/1/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
