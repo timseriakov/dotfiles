@@ -199,6 +199,12 @@
       "transcript": "/65/de61492e8c/11/full.jsonl",
       "content_hash": "/65/de61492e8c/11/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/65/de61492e8c/12/metadata.json",
+      "transcript": "/65/de61492e8c/12/full.jsonl",
+      "content_hash": "/65/de61492e8c/12/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
