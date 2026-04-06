@@ -3,7 +3,7 @@
   "checkpoint_id": "65de61492e8c",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/local-plugins/README.md",
     "opencode/local-plugins/dist/index.d.ts",
@@ -234,6 +234,12 @@
       "metadata": "/65/de61492e8c/17/metadata.json",
       "transcript": "/65/de61492e8c/17/full.jsonl",
       "content_hash": "/65/de61492e8c/17/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/65/de61492e8c/18/metadata.json",
+      "transcript": "/65/de61492e8c/18/full.jsonl",
+      "content_hash": "/65/de61492e8c/18/content_hash.txt",
       "prompt": ""
     }
   ]
