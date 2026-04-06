@@ -125,7 +125,9 @@
     "opencode/local-plugins/dist/src/plugin/version.d.ts",
     "opencode/local-plugins/dist/src/plugin/version.js",
     "opencode/local-plugins/package-lock.json",
-    "opencode/opencode.jsonc"
+    "opencode/oh-my-openagent.jsonc",
+    "opencode/opencode.jsonc",
+    "qutebrowser/quickmarks"
   ],
   "sessions": [
     {
