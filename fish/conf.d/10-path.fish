@@ -76,5 +76,8 @@ fish_add_path /Users/tim/.antigravity/antigravity/bin
 fish_add_path /Applications/Hammerspoon.app/Contents/MacOS
 fish_add_path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
+set -Ux TRY_CONFIG_DIR "$HOME/dev/dotfiles/try-rs"
+set -Ux TRY_CONFIG "config.toml"
+
 # Ensure success status for IDEs
 true

@@ -43,7 +43,6 @@ function try-rs-picker
     end
 end
 
-
 # try-rs tab completion for directory names
 function __try_rs_get_tries_path
     # Check TRY_PATH environment variable first
@@ -51,7 +50,7 @@ function __try_rs_get_tries_path
         echo $TRY_PATH
         return
     end
-    
+
     # Try to read from config file
     set -l config_paths "$HOME/.config/try-rs/config.toml" "$HOME/.try-rs/config.toml"
     for config_path in $config_paths
@@ -63,14 +62,14 @@ function __try_rs_get_tries_path
             end
         end
     end
-    
+
     # Default path
     echo "$HOME/work/tries"
 end
 
 function __try_rs_complete_directories
     set -l tries_path (__try_rs_get_tries_path)
-    
+
     if test -d $tries_path
         # List directories in tries_path, filtering by current token
         command ls -1 $tries_path 2>/dev/null | while read -l dir
@@ -81,4 +80,4 @@ function __try_rs_complete_directories
     end
 end
 
-complete -f -c try-rs -n '__fish_use_subcommand' -a '(__try_rs_complete_directories)' -d 'Try directory'
+complete -f -c try-rs -n __fish_use_subcommand -a '(__try_rs_complete_directories)' -d 'Try directory'
