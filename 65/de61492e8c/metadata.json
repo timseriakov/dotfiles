@@ -145,6 +145,12 @@
       "transcript": "/65/de61492e8c/2/full.jsonl",
       "content_hash": "/65/de61492e8c/2/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/65/de61492e8c/3/metadata.json",
+      "transcript": "/65/de61492e8c/3/full.jsonl",
+      "content_hash": "/65/de61492e8c/3/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
