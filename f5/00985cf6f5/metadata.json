@@ -372,6 +372,12 @@
       "transcript": "/f5/00985cf6f5/18/full.jsonl",
       "content_hash": "/f5/00985cf6f5/18/content_hash.txt",
       "prompt": "/f5/00985cf6f5/18/prompt.txt"
+    },
+    {
+      "metadata": "/f5/00985cf6f5/19/metadata.json",
+      "transcript": "/f5/00985cf6f5/19/full.jsonl",
+      "content_hash": "/f5/00985cf6f5/19/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
