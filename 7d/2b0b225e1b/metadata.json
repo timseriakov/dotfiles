@@ -4,7 +4,9 @@
   "strategy": "manual-commit",
   "branch": "master",
   "checkpoints_count": 1,
-  "files_touched": null,
+  "files_touched": [
+    "opencode/local-plugins/README.md"
+  ],
   "sessions": [
     {
       "metadata": "/7d/2b0b225e1b/0/metadata.json",
@@ -16,6 +18,12 @@
       "metadata": "/7d/2b0b225e1b/1/metadata.json",
       "transcript": "/7d/2b0b225e1b/1/full.jsonl",
       "content_hash": "/7d/2b0b225e1b/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/7d/2b0b225e1b/2/metadata.json",
+      "transcript": "/7d/2b0b225e1b/2/full.jsonl",
+      "content_hash": "/7d/2b0b225e1b/2/content_hash.txt",
       "prompt": ""
     }
   ],
