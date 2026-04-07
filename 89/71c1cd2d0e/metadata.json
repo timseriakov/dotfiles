@@ -3,7 +3,7 @@
   "checkpoint_id": "8971c1cd2d0e",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/oh-my-openagent_gemini-only.jsonc",
     "opencode/opencode.jsonc"
@@ -133,6 +133,12 @@
       "metadata": "/89/71c1cd2d0e/20/metadata.json",
       "transcript": "/89/71c1cd2d0e/20/full.jsonl",
       "content_hash": "/89/71c1cd2d0e/20/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/89/71c1cd2d0e/21/metadata.json",
+      "transcript": "/89/71c1cd2d0e/21/full.jsonl",
+      "content_hash": "/89/71c1cd2d0e/21/content_hash.txt",
       "prompt": ""
     }
   ],
