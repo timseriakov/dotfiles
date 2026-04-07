@@ -110,6 +110,12 @@
       "transcript": "/89/71c1cd2d0e/16/full.jsonl",
       "content_hash": "/89/71c1cd2d0e/16/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/89/71c1cd2d0e/17/metadata.json",
+      "transcript": "/89/71c1cd2d0e/17/full.jsonl",
+      "content_hash": "/89/71c1cd2d0e/17/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
