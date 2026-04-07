@@ -3,7 +3,7 @@
   "checkpoint_id": "7d2b0b225e1b",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "opencode/local-plugins/README.md"
   ],
@@ -132,6 +132,12 @@
       "metadata": "/7d/2b0b225e1b/20/metadata.json",
       "transcript": "/7d/2b0b225e1b/20/full.jsonl",
       "content_hash": "/7d/2b0b225e1b/20/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/7d/2b0b225e1b/21/metadata.json",
+      "transcript": "/7d/2b0b225e1b/21/full.jsonl",
+      "content_hash": "/7d/2b0b225e1b/21/content_hash.txt",
       "prompt": ""
     }
   ],
