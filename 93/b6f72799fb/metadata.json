@@ -1,0 +1,34 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "93b6f72799fb",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "opencode/oh-my-openagent_antigravity-flash_only.jsonc",
+    "opencode/oh-my-openagent_antigravity-opus_4_6.jsonc",
+    "opencode/oh-my-openagent_gemini-flash-only.jsonc",
+    "opencode/oh-my-openagent_gemini-only.jsonc",
+    "opencode/oh-my-openagent_glm.jsonc",
+    "opencode/oh-my-openagent_omniroute-raw.jsonc",
+    "opencode/oh-my-openagent_omniroute.jsonc",
+    "opencode/oh-my-openagent_openai-google-hybrid.jsonc",
+    "opencode/oh-my-openagent_openai.jsonc",
+    "opencode/oh-my-openagent_opencode-go.jsonc"
+  ],
+  "sessions": [
+    {
+      "metadata": "/93/b6f72799fb/0/metadata.json",
+      "transcript": "/93/b6f72799fb/0/full.jsonl",
+      "content_hash": "/93/b6f72799fb/0/content_hash.txt",
+      "prompt": "/93/b6f72799fb/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

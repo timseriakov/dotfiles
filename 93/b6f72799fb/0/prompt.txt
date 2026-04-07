@@ -1,0 +1,17 @@
+Я ищу способ для того, чтобы установленный плагин plannotator Всегда предлагал план на русском языке для аннотаций. Ну то есть где-то нужно заинжектировать инструкцию, возможно в агент, который подготавливает план, план билдер. (Prometheus)
+
+---
+
+commit
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_649765e2`: Commit the config changes
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
