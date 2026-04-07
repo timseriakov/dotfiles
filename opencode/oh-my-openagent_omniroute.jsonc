@@ -9,8 +9,14 @@
     "librarian": { "model": "omniroute/research-fast" },
     "explore": { "model": "omniroute/quick-free" },
     "multimodal-looker": { "model": "omniroute/reasoning-cheap" },
-    "plan": { "model": "omniroute/reasoning-main" },
-    "prometheus": { "model": "omniroute/reasoning-main" },
+    "plan": {
+      "model": "omniroute/reasoning-main",
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+    },
+    "prometheus": {
+      "model": "omniroute/reasoning-main",
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+    },
     "metis": { "model": "omniroute/reasoning-cheap" },
     "momus": { "model": "omniroute/writing-cheap" },
     "sisyphus-junior": { "model": "omniroute/coding-cheap" },

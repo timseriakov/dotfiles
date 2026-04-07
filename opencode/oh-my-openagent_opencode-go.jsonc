@@ -38,6 +38,7 @@
     "plan": {
       "model": "opencode-go/glm-5",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "opencode-go/glm-5",
@@ -46,6 +47,7 @@
     "prometheus": {
       "model": "opencode-go/kimi-k2.5",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "opencode-go/glm-5",

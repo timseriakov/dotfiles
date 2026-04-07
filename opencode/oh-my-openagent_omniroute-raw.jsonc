@@ -38,6 +38,7 @@
     "plan": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "omniroute/cx/gpt-5.2-codex",
@@ -46,6 +47,7 @@
     "prometheus": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "omniroute/cx/gpt-5.2",

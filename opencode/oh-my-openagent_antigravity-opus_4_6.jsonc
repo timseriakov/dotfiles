@@ -43,6 +43,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "temperature": 0.3,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
@@ -53,6 +54,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "temperature": 0.3,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking",

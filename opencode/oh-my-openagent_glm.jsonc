@@ -41,6 +41,7 @@
     "plan": {
       "model": "zai-coding-plan/glm-5-turbo",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "zai-coding-plan/glm-4.7",
@@ -49,6 +50,7 @@
     "prometheus": {
       "model": "zai-coding-plan/glm-5-turbo",
       "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "zai-coding-plan/glm-5-turbo",
