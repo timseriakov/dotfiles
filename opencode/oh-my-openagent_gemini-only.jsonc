@@ -10,10 +10,8 @@
       "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
     },
-    "oracle": {
-      "model": "google/gemini-3-pro-preview",
+      "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
-    },
     "librarian": {
       "model": "google/gemini-2.5-flash-lite",
       "fallback_models": ["google/gemini-2.5-flash"],
@@ -46,14 +44,10 @@
       "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
     },
-    "metis": {
-      "model": "google/gemini-3-pro-preview",
+      "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
-    },
-    "momus": {
-      "model": "google/gemini-3-pro-preview",
+      "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
-    },
   },
   "sisyphus_agent": {
     "disabled": false,
@@ -72,7 +66,6 @@
     },
     "modelConcurrency": {
       "google/gemini-3.1-pro-preview": 4,
-      "google/gemini-3-pro-preview": 4,
       "google/gemini-3-flash-preview": 8,
       "google/gemini-2.5-pro": 4,
       "google/gemini-2.5-flash": 8,
@@ -85,11 +78,9 @@
       "fallback_models": ["google/gemini-2.5-pro"],
       "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
-    "ultrabrain": {
-      "model": "google/gemini-3-pro-preview",
+      "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
       "prompt_append": "Focus on robustness, error handling, and type safety.",
-    },
     "deep": {
       "model": "google/gemini-2.5-pro",
       "fallback_models": ["google/gemini-3.1-pro-preview"],

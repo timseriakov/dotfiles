@@ -5,7 +5,7 @@
     "oh-my-openagent@3.15.0",
     "opencode-openai-codex-auth@4.4.0",
     "opencode-gemini-auth@latest",
-    "file:///Users/tim/dev/dotfiles/opencode/local-plugins",
+    // "file:///Users/tim/dev/dotfiles/opencode/local-plugins",
 
     "@plannotator/opencode@latest",
 
@@ -15,6 +15,7 @@
     "@bastiangx/opencode-unmoji@0.3.11",
     "@tarquinen/opencode-dcp@latest",
     "opencode-wakatime@latest",
+    "@whisperopencode/push@latest"
     // "octto",
   ],
 
@@ -315,12 +316,10 @@
       "name": "Google",
       "whitelist": [
         "gemini-3.1-pro-preview",
-        "gemini-3-pro-preview",
         "gemini-3-flash-preview",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
-        "antigravity-gemini-3-pro",
         "antigravity-gemini-3.1-pro",
         "antigravity-gemini-3-flash",
         "antigravity-claude-sonnet-4-6",
@@ -333,14 +332,6 @@
       "models": {
         "gemini-3.1-pro-preview": {
           "name": "Gemini 3.1 Pro Preview",
-          "limit": { "context": 2000000, "output": 65536 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-        },
-        "gemini-3-pro-preview": {
-          "name": "Gemini 3 Pro Preview",
           "limit": { "context": 2000000, "output": 65536 },
           "modalities": {
             "input": ["text", "image", "pdf"],
@@ -377,18 +368,6 @@
           "modalities": {
             "input": ["text", "image", "pdf"],
             "output": ["text"],
-          },
-        },
-        "antigravity-gemini-3-pro": {
-          "name": "Gemini 3 Pro (Antigravity)",
-          "limit": { "context": 1048576, "output": 65535 },
-          "modalities": {
-            "input": ["text", "image", "pdf"],
-            "output": ["text"],
-          },
-          "variants": {
-            "low": { "thinkingLevel": "low" },
-            "high": { "thinkingLevel": "high" },
           },
         },
         "antigravity-gemini-3.1-pro": {
