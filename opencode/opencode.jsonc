@@ -15,7 +15,7 @@
     "@bastiangx/opencode-unmoji@0.3.11",
     "@tarquinen/opencode-dcp@latest",
     "opencode-wakatime@latest",
-    "@whisperopencode/push@latest"
+    "@whisperopencode/push@latest",
     // "octto",
   ],
 

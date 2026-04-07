@@ -10,7 +10,7 @@ Enable Opencode to authenticate against **Antigravity** (Google's IDE) via OAuth
 
 ## What You Get
 
- - **Claude Opus 4.6, Sonnet 4.6** and **Gemini 3.1 Pro / 3 Flash** via Google OAuth
+- **Claude Opus 4.6, Sonnet 4.6** and **Gemini 3.1 Pro / 3 Flash** via Google OAuth
 - **Multi-account support** — add multiple Google accounts, auto-rotates when rate-limited
 - **Dual quota system** — access both Antigravity and Gemini CLI quotas from one plugin
 - **Thinking models** — extended thinking for Claude and Gemini 3 with configurable budgets
