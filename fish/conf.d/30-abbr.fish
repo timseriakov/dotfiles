@@ -283,13 +283,21 @@ abbr -a wm-up 'brew install raine/workmux/workmux'
 abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
 abbr -a wmrc 'nvim ./.workmux.yaml'
 
-abbr -a webm2telegram-gif 'ffmpeg -i input.webm \
+abbr -a webm2telegram-gif 'ffmpeg -i w.webm \
   -movflags +faststart \
   -pix_fmt yuv420p \
   -vf "fps=30,scale=512:-2:flags=lanczos" \
   -c:v libx264 -profile:v baseline -level 3.0 \
   -an -loop 0 output.mp4'
-abbr -a yts yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
+
+abbr -a web2telegram-gif-with-audio 'ffmpeg -i w.webm \
+  -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+  -c:v libx264 \
+  -c:a aac \
+  -movflags +faststart \
+  output1.mp4'
+
+abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
 abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
 abbr -a pdf-print plutoprint
