@@ -134,7 +134,8 @@ abbr -a on opencode
 
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a orcc 'cd ~/dev/dotfiles/opencode && nvim opencode.jsonc'
-abbr -a ocd 'cd ~/dev/dotfiles/opencode && yazi'
+abbr -a ocd 'cd ~/dev/dotfiles/opencode'
+abbr -a ocdj 'cd ~/dev/dotfiles/opencode && yazi'
 
 abbr -a o-up 'brew install anomalyco/tap/opencode'
 abbr -a os '~/.config/opencode/omo-switch'
