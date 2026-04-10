@@ -6,9 +6,7 @@
   "checkpoints_count": 2,
   "files_touched": [
     "opencode/oh-my-openagent.jsonc",
-    "opencode/oh-my-openagent_openai-economy.jsonc",
-    "opencode/oh-my-openagent_openai-high.jsonc",
-    "opencode/oh-my-openagent_openai.jsonc"
+    "opencode/oh-my-openagent_openai-economy.jsonc"
   ],
   "sessions": [
     {

@@ -815,3 +815,1043 @@ opencode/portable-profile-source/ocx.jsonc
 [error]   40 | }
 [error] > 41 |
 [error]      | ^
+
+---
+
+▣ DCP | -258.5K removed, +8.8K summary
+
+│████████████████████████████████████⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿███│
+▣ Compression #1 -63.9K removed, +8.8K summary
+→ Topic: Wave 1 Tasks Complete
+→ Items: 29 messages and 40 tools compressed
+
+---
+
+▣ DCP | -271K removed, +13.3K summary
+
+│█████████████████████████████████░░░░░░░░░░░██⣿⣿⣿█│
+▣ Compression #2 -12.5K removed, +4.5K summary
+→ Topic: Wave 2 Tasks 6-7 Complete
+→ Items: 9 messages and 12 tools compressed
+
+---
+
+ты там завис
+
+---
+
+Proceed with implementation
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_d8cdb145`
+**Description:** undefined
+**Duration:** 2m 3s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_d8cdb145")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_b6f8bced`
+**Description:** undefined
+**Duration:** 2m 34s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_b6f8bced")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_d8cdb145`: undefined
+- `bg_b6f8bced`: undefined
+- `bg_a5c8fea7`: undefined
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+продолжай
+
+---
+
+▣ DCP | -304K removed, +15.6K summary
+
+│██████████████████████████░░░░░░░░██░░████████⣿⣿⣿█│
+▣ Compression #3 -21.9K removed, +2.2K summary
+→ Topic: Final Verification Wave launched
+→ Items: 9 messages and 11 tools compressed
+
+---
+
+А теперь на русском отчет, где ты сейчас находишься. В плане прогресса.
+
+---
+
+Ну всё, научи меня теперь этим пользоваться. Вот тебе кейс.
+
+Я хочу попробовать создать профиль с вот этими настройками.
+https://github.com/KiraKas-Tr/Opencode-Plugin
+
+Не потеряв возможности работать с моим профилем, который сейчас активен, который был настроен до ocx.
+
+Как мне работать в данном сетапе? То есть я хочу иметь возможность переключаться между этими сетапами, моим и тем, которые я указал.
+
+---
+
+▣ DCP | -328.7K removed, +19.7K summary
+
+│████████████████████████░░░░░░░░⣿░░░⣿⣿⣿⣿⣿⣿⣿░░░████│
+▣ Compression #4 -24.7K removed, +19.7K summary
+→ Topic: Session compressed - plan complete
+→ Items: 33 messages and 33 tools compressed
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_f61592c7`: Research Opencode-Plugin repo
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -334.4K removed, +20.2K summary
+
+│███████████████████████░░░░░░░░░░░░░░░░░░░░███⣿⣿⣿█│
+▣ Compression #5 -5.5K removed, +513 summary
+→ Topic: CliKit profile planning
+→ Items: 13 messages and 11 tools compressed
+
+---
+
+▣ DCP | -335.9K removed, +20.4K summary
+
+│██████████████████████░░░░░░░░░░░░░░░░░░░░███░░░░█│
+▣ Compression #6 -1.5K removed, +656 summary
+→ Topic: CliKit profile plan request
+→ Items: 2 messages and 2 tools compressed
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_faad011b`
+**Description:** Research CliKit install flow
+**Duration:** 1m 14s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_faad011b")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_faad011b`: Research CliKit install flow
+- `bg_d52de445`: Check OCX profile switching UX
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -342K removed, +21.1K summary
+
+│██████████████████████░░░░░░░░░░░░░░░░░░░███░░░⣿⣿█│
+▣ Compression #7 -5.8K removed, +1.4K summary
+→ Topic: CliKit plan preparation
+→ Items: 7 messages and 7 tools compressed
+
+---
+
+▣ DCP | -352.2K removed, +25.8K summary
+
+│█████████████████████░░░░░░░░░░░░░░░░░░███░░░░░⣿⣿█│
+▣ Compression #8 -10.2K removed, +4.7K summary
+→ Topic: Metis complete - generating clikit plan
+→ Items: 7 messages and 7 tools compressed
+
+---
+
+Proceed with implementation
+
+---
+
+[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]
+
+Incomplete tasks remain in your todo list. Continue working on the next pending task.
+
+- Proceed without asking for permission
+- Mark each task complete when finished
+- Do not stop until all tasks are done
+- If you believe all work is already complete, the system is questioning your completion claim. Critically re-examine each todo item from a skeptical perspective, verify the work was actually done correctly, and update the todo list accordingly.
+
+[Status: 5/8 completed, 3 remaining]
+
+Remaining tasks:
+- [in_progress] Ask user about high accuracy mode (Momus review)
+- [pending] If high accuracy: Submit to Momus and iterate until OKAY
+- [pending] Delete draft file and guide user to /start-work
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]
+
+Incomplete tasks remain in your todo list. Continue working on the next pending task.
+
+- Proceed without asking for permission
+- Mark each task complete when finished
+- Do not stop until all tasks are done
+- If you believe all work is already complete, the system is questioning your completion claim. Critically re-examine each todo item from a skeptical perspective, verify the work was actually done correctly, and update the todo list accordingly.
+
+[Status: 5/8 completed, 3 remaining]
+
+Remaining tasks:
+- [in_progress] Ask user about high accuracy mode (Momus review)
+- [pending] If high accuracy: Submit to Momus and iterate until OKAY
+- [pending] Delete draft file and guide user to /start-work
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+продолжай
+
+---
+
+▣ DCP | -362.6K removed, +26.8K summary
+
+│████████████████████░░░░░░░░░░░░░░░░░███░░░░█░⣿⣿██│
+▣ Compression #9 -9.6K removed, +1K summary
+→ Topic: CliKit planning state
+→ Items: 8 messages and 5 tools compressed
+
+---
+
+да
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+<auto-slash-command>
+# /start-work Command
+
+**Description**: (builtin) Start Sisyphus work session from Prometheus plan
+
+**Agent**: atlas
+
+**Scope**: builtin
+
+---
+
+## Command Instructions
+
+<command-instruction>
+You are starting a Sisyphus work session.
+
+## ARGUMENTS
+
+- `/start-work [plan-name] [--worktree <path>]`
+  - `plan-name` (optional): name or partial match of the plan to start
+  - `--worktree <path>` (optional): absolute path to an existing git worktree to work in
+    - If specified and valid: hook pre-sets worktree_path in boulder.json
+    - If specified but invalid: you must run `git worktree add <path> <branch>` first
+    - If omitted: work directly in the current project directory (no worktree)
+
+## WHAT TO DO
+
+1. **Find available plans**: Search for Prometheus-generated plan files at `.sisyphus/plans/`
+
+2. **Check for active boulder state**: Read `.sisyphus/boulder.json` if it exists
+
+3. **Decision logic**:
+   - If `.sisyphus/boulder.json` exists AND plan is NOT complete (has unchecked boxes):
+     - **APPEND** current session to session_ids
+     - Continue work on existing plan
+   - If no active plan OR plan is complete:
+     - List available plan files
+     - If ONE plan: auto-select it
+     - If MULTIPLE plans: show list with timestamps, ask user to select
+
+4. **Worktree Setup** (ONLY when `--worktree` was explicitly specified and `worktree_path` not already set in boulder.json):
+   1. `git worktree list --porcelain` - see available worktrees
+   2. Create: `git worktree add <absolute-path> <branch-or-HEAD>`
+   3. Update boulder.json to add `"worktree_path": "<absolute-path>"`
+   4. All work happens inside that worktree directory
+
+5. **Create/Update boulder.json**:
+   ```json
+   {
+     "active_plan": "/absolute/path/to/plan.md",
+     "started_at": "ISO_TIMESTAMP",
+     "session_ids": ["session_id_1", "session_id_2"],
+     "plan_name": "plan-name",
+     "worktree_path": "/absolute/path/to/git/worktree"
+   }
+   ```
+
+6. **Read the plan file** and start executing tasks according to atlas workflow
+
+## OUTPUT FORMAT
+
+When listing plans for selection:
+```
+Available Work Plans
+
+Current Time: {ISO timestamp}
+Session ID: {current session id}
+
+1. [plan-name-1.md] - Modified: {date} - Progress: 3/10 tasks
+2. [plan-name-2.md] - Modified: {date} - Progress: 0/5 tasks
+
+Which plan would you like to work on? (Enter number or plan name)
+```
+
+When resuming existing work:
+```
+Resuming Work Session
+
+Active Plan: {plan-name}
+Progress: {completed}/{total} tasks
+Sessions: {count} (appending current session)
+Worktree: {worktree_path}
+
+Reading plan and continuing from last incomplete task...
+```
+
+When auto-selecting single plan:
+```
+Starting Work Session
+
+Plan: {plan-name}
+Session ID: {session_id}
+Started: {timestamp}
+Worktree: {worktree_path}
+
+Reading plan and beginning execution...
+```
+
+## CRITICAL
+
+- The session_id is injected by the hook - use it directly
+- Always update boulder.json BEFORE starting work
+- If worktree_path is set in boulder.json, all work happens inside that worktree directory
+- Read the FULL plan file before delegating any tasks
+- Follow atlas delegation protocols (7-section format)
+
+## TASK BREAKDOWN (MANDATORY)
+
+After reading the plan file, you MUST decompose every plan task into granular, implementation-level sub-steps and register ALL of them as task/todo items BEFORE starting any work.
+
+**How to break down**:
+- Each plan checkbox item (e.g., `- [ ] Add user authentication`) must be split into concrete, actionable sub-tasks
+- Sub-tasks should be specific enough that each one touches a clear set of files/functions
+- Include: file to modify, what to change, expected behavior, and how to verify
+- Do NOT leave any task vague - "implement feature X" is NOT acceptable; "add validateToken() to src/auth/middleware.ts that checks JWT expiry and returns 401" IS acceptable
+
+**Example breakdown**:
+Plan task: `- [ ] Add rate limiting to API`
+→ Todo items:
+  1. Create `src/middleware/rate-limiter.ts` with sliding window algorithm (max 100 req/min per IP)
+  2. Add RateLimiter middleware to `src/app.ts` router chain, before auth middleware
+  3. Add rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining) to response in `rate-limiter.ts`
+  4. Add test: verify 429 response after exceeding limit in `src/middleware/rate-limiter.test.ts`
+  5. Add test: verify headers are present on normal responses
+
+Register these as task/todo items so progress is tracked and visible throughout the session.
+
+## WORKTREE COMPLETION
+
+When working in a worktree (`worktree_path` is set in boulder.json) and ALL plan tasks are complete:
+1. Commit all remaining changes in the worktree
+2. **Sync .sisyphus state back**: Copy `.sisyphus/` from the worktree to the main repo before removal.
+   This is CRITICAL when `.sisyphus/` is gitignored - state written during worktree execution would otherwise be lost.
+   ```bash
+   cp -r <worktree-path>/.sisyphus/* <main-repo>/.sisyphus/ 2>/dev/null || true
+   ```
+3. Switch to the main working directory (the original repo, NOT the worktree)
+4. Merge the worktree branch into the current branch: `git merge <worktree-branch>`
+5. If merge succeeds, clean up: `git worktree remove <worktree-path>`
+6. Remove the boulder.json state
+
+This is the DEFAULT behavior when `--worktree` was used. Skip merge only if the user explicitly instructs otherwise (e.g., asks to create a PR instead).
+</command-instruction>
+
+<session-context>
+Session ID: ses_288cdd513ffe93NDnxwy0eilRm
+Timestamp: 2026-04-10T16:13:03.768Z
+</session-context>
+
+<user-request>
+
+</user-request>
+</auto-slash-command>
+
+---
+
+<system-reminder>
+## Multiple Plans Found
+
+Current Time: 2026-04-10T16:13:03.768Z
+Session ID: ses_288cdd513ffe93NDnxwy0eilRm
+
+1. [clikit-profile] - Modified: 2026-04-10T16:09:45.752Z - Progress: 2/29
+2. [ocx-portable-profile] - Modified: 2026-04-10T14:21:54.485Z - Progress: 8/67
+
+Ask the user which plan to work on. Present the options above and wait for their response.
+
+</system-reminder>
+<command-instruction>
+You are starting a Sisyphus work session.
+
+## ARGUMENTS
+
+- `/start-work [plan-name] [--worktree <path>]`
+  - `plan-name` (optional): name or partial match of the plan to start
+  - `--worktree <path>` (optional): absolute path to an existing git worktree to work in
+    - If specified and valid: hook pre-sets worktree_path in boulder.json
+    - If specified but invalid: you must run `git worktree add <path> <branch>` first
+    - If omitted: work directly in the current project directory (no worktree)
+
+## WHAT TO DO
+
+1. **Find available plans**: Search for Prometheus-generated plan files at `.sisyphus/plans/`
+
+2. **Check for active boulder state**: Read `.sisyphus/boulder.json` if it exists
+
+3. **Decision logic**:
+   - If `.sisyphus/boulder.json` exists AND plan is NOT complete (has unchecked boxes):
+     - **APPEND** current session to session_ids
+     - Continue work on existing plan
+   - If no active plan OR plan is complete:
+     - List available plan files
+     - If ONE plan: auto-select it
+     - If MULTIPLE plans: show list with timestamps, ask user to select
+
+4. **Worktree Setup** (ONLY when `--worktree` was explicitly specified and `worktree_path` not already set in boulder.json):
+   1. `git worktree list --porcelain` - see available worktrees
+   2. Create: `git worktree add <absolute-path> <branch-or-HEAD>`
+   3. Update boulder.json to add `"worktree_path": "<absolute-path>"`
+   4. All work happens inside that worktree directory
+
+5. **Create/Update boulder.json**:
+   ```json
+   {
+     "active_plan": "/absolute/path/to/plan.md",
+     "started_at": "ISO_TIMESTAMP",
+     "session_ids": ["session_id_1", "session_id_2"],
+     "plan_name": "plan-name",
+     "worktree_path": "/absolute/path/to/git/worktree"
+   }
+   ```
+
+6. **Read the plan file** and start executing tasks according to atlas workflow
+
+## OUTPUT FORMAT
+
+When listing plans for selection:
+```
+Available Work Plans
+
+Current Time: {ISO timestamp}
+Session ID: {current session id}
+
+1. [plan-name-1.md] - Modified: {date} - Progress: 3/10 tasks
+2. [plan-name-2.md] - Modified: {date} - Progress: 0/5 tasks
+
+Which plan would you like to work on? (Enter number or plan name)
+```
+
+When resuming existing work:
+```
+Resuming Work Session
+
+Active Plan: {plan-name}
+Progress: {completed}/{total} tasks
+Sessions: {count} (appending current session)
+Worktree: {worktree_path}
+
+Reading plan and continuing from last incomplete task...
+```
+
+When auto-selecting single plan:
+```
+Starting Work Session
+
+Plan: {plan-name}
+Session ID: {session_id}
+Started: {timestamp}
+Worktree: {worktree_path}
+
+Reading plan and beginning execution...
+```
+
+## CRITICAL
+
+- The session_id is injected by the hook - use it directly
+- Always update boulder.json BEFORE starting work
+- If worktree_path is set in boulder.json, all work happens inside that worktree directory
+- Read the FULL plan file before delegating any tasks
+- Follow atlas delegation protocols (7-section format)
+
+## TASK BREAKDOWN (MANDATORY)
+
+After reading the plan file, you MUST decompose every plan task into granular, implementation-level sub-steps and register ALL of them as task/todo items BEFORE starting any work.
+
+**How to break down**:
+- Each plan checkbox item (e.g., `- [ ] Add user authentication`) must be split into concrete, actionable sub-tasks
+- Sub-tasks should be specific enough that each one touches a clear set of files/functions
+- Include: file to modify, what to change, expected behavior, and how to verify
+- Do NOT leave any task vague - "implement feature X" is NOT acceptable; "add validateToken() to src/auth/middleware.ts that checks JWT expiry and returns 401" IS acceptable
+
+**Example breakdown**:
+Plan task: `- [ ] Add rate limiting to API`
+→ Todo items:
+  1. Create `src/middleware/rate-limiter.ts` with sliding window algorithm (max 100 req/min per IP)
+  2. Add RateLimiter middleware to `src/app.ts` router chain, before auth middleware
+  3. Add rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining) to response in `rate-limiter.ts`
+  4. Add test: verify 429 response after exceeding limit in `src/middleware/rate-limiter.test.ts`
+  5. Add test: verify headers are present on normal responses
+
+Register these as task/todo items so progress is tracked and visible throughout the session.
+
+## WORKTREE COMPLETION
+
+When working in a worktree (`worktree_path` is set in boulder.json) and ALL plan tasks are complete:
+1. Commit all remaining changes in the worktree
+2. **Sync .sisyphus state back**: Copy `.sisyphus/` from the worktree to the main repo before removal.
+   This is CRITICAL when `.sisyphus/` is gitignored - state written during worktree execution would otherwise be lost.
+   ```bash
+   cp -r <worktree-path>/.sisyphus/* <main-repo>/.sisyphus/ 2>/dev/null || true
+   ```
+3. Switch to the main working directory (the original repo, NOT the worktree)
+4. Merge the worktree branch into the current branch: `git merge <worktree-branch>`
+5. If merge succeeds, clean up: `git worktree remove <worktree-path>`
+6. Remove the boulder.json state
+
+This is the DEFAULT behavior when `--worktree` was used. Skip merge only if the user explicitly instructs otherwise (e.g., asks to create a PR instead).
+</command-instruction>
+
+<session-context>
+Session ID: $SESSION_ID
+Timestamp: $TIMESTAMP
+</session-context>
+
+<user-request>
+
+</user-request>
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+<auto-slash-command>
+# /start-work Command
+
+**Description**: (builtin) Start Sisyphus work session from Prometheus plan
+
+**User Arguments**: clikit-profile (и закрой блять таски в ocx-portable-profile хуле ты не закрыл дебил)
+
+**Agent**: atlas
+
+**Scope**: builtin
+
+---
+
+## Command Instructions
+
+<command-instruction>
+You are starting a Sisyphus work session.
+
+## ARGUMENTS
+
+- `/start-work [plan-name] [--worktree <path>]`
+  - `plan-name` (optional): name or partial match of the plan to start
+  - `--worktree <path>` (optional): absolute path to an existing git worktree to work in
+    - If specified and valid: hook pre-sets worktree_path in boulder.json
+    - If specified but invalid: you must run `git worktree add <path> <branch>` first
+    - If omitted: work directly in the current project directory (no worktree)
+
+## WHAT TO DO
+
+1. **Find available plans**: Search for Prometheus-generated plan files at `.sisyphus/plans/`
+
+2. **Check for active boulder state**: Read `.sisyphus/boulder.json` if it exists
+
+3. **Decision logic**:
+   - If `.sisyphus/boulder.json` exists AND plan is NOT complete (has unchecked boxes):
+     - **APPEND** current session to session_ids
+     - Continue work on existing plan
+   - If no active plan OR plan is complete:
+     - List available plan files
+     - If ONE plan: auto-select it
+     - If MULTIPLE plans: show list with timestamps, ask user to select
+
+4. **Worktree Setup** (ONLY when `--worktree` was explicitly specified and `worktree_path` not already set in boulder.json):
+   1. `git worktree list --porcelain` - see available worktrees
+   2. Create: `git worktree add <absolute-path> <branch-or-HEAD>`
+   3. Update boulder.json to add `"worktree_path": "<absolute-path>"`
+   4. All work happens inside that worktree directory
+
+5. **Create/Update boulder.json**:
+   ```json
+   {
+     "active_plan": "/absolute/path/to/plan.md",
+     "started_at": "ISO_TIMESTAMP",
+     "session_ids": ["session_id_1", "session_id_2"],
+     "plan_name": "plan-name",
+     "worktree_path": "/absolute/path/to/git/worktree"
+   }
+   ```
+
+6. **Read the plan file** and start executing tasks according to atlas workflow
+
+## OUTPUT FORMAT
+
+When listing plans for selection:
+```
+Available Work Plans
+
+Current Time: {ISO timestamp}
+Session ID: {current session id}
+
+1. [plan-name-1.md] - Modified: {date} - Progress: 3/10 tasks
+2. [plan-name-2.md] - Modified: {date} - Progress: 0/5 tasks
+
+Which plan would you like to work on? (Enter number or plan name)
+```
+
+When resuming existing work:
+```
+Resuming Work Session
+
+Active Plan: {plan-name}
+Progress: {completed}/{total} tasks
+Sessions: {count} (appending current session)
+Worktree: {worktree_path}
+
+Reading plan and continuing from last incomplete task...
+```
+
+When auto-selecting single plan:
+```
+Starting Work Session
+
+Plan: {plan-name}
+Session ID: {session_id}
+Started: {timestamp}
+Worktree: {worktree_path}
+
+Reading plan and beginning execution...
+```
+
+## CRITICAL
+
+- The session_id is injected by the hook - use it directly
+- Always update boulder.json BEFORE starting work
+- If worktree_path is set in boulder.json, all work happens inside that worktree directory
+- Read the FULL plan file before delegating any tasks
+- Follow atlas delegation protocols (7-section format)
+
+## TASK BREAKDOWN (MANDATORY)
+
+After reading the plan file, you MUST decompose every plan task into granular, implementation-level sub-steps and register ALL of them as task/todo items BEFORE starting any work.
+
+**How to break down**:
+- Each plan checkbox item (e.g., `- [ ] Add user authentication`) must be split into concrete, actionable sub-tasks
+- Sub-tasks should be specific enough that each one touches a clear set of files/functions
+- Include: file to modify, what to change, expected behavior, and how to verify
+- Do NOT leave any task vague - "implement feature X" is NOT acceptable; "add validateToken() to src/auth/middleware.ts that checks JWT expiry and returns 401" IS acceptable
+
+**Example breakdown**:
+Plan task: `- [ ] Add rate limiting to API`
+→ Todo items:
+  1. Create `src/middleware/rate-limiter.ts` with sliding window algorithm (max 100 req/min per IP)
+  2. Add RateLimiter middleware to `src/app.ts` router chain, before auth middleware
+  3. Add rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining) to response in `rate-limiter.ts`
+  4. Add test: verify 429 response after exceeding limit in `src/middleware/rate-limiter.test.ts`
+  5. Add test: verify headers are present on normal responses
+
+Register these as task/todo items so progress is tracked and visible throughout the session.
+
+## WORKTREE COMPLETION
+
+When working in a worktree (`worktree_path` is set in boulder.json) and ALL plan tasks are complete:
+1. Commit all remaining changes in the worktree
+2. **Sync .sisyphus state back**: Copy `.sisyphus/` from the worktree to the main repo before removal.
+   This is CRITICAL when `.sisyphus/` is gitignored - state written during worktree execution would otherwise be lost.
+   ```bash
+   cp -r <worktree-path>/.sisyphus/* <main-repo>/.sisyphus/ 2>/dev/null || true
+   ```
+3. Switch to the main working directory (the original repo, NOT the worktree)
+4. Merge the worktree branch into the current branch: `git merge <worktree-branch>`
+5. If merge succeeds, clean up: `git worktree remove <worktree-path>`
+6. Remove the boulder.json state
+
+This is the DEFAULT behavior when `--worktree` was used. Skip merge only if the user explicitly instructs otherwise (e.g., asks to create a PR instead).
+</command-instruction>
+
+<session-context>
+Session ID: ses_288cdd513ffe93NDnxwy0eilRm
+Timestamp: 2026-04-10T16:13:48.505Z
+</session-context>
+
+<user-request>
+clikit-profile (и закрой блять таски в ocx-portable-profile хуле ты не закрыл дебил)
+</user-request>
+
+---
+
+## User Request
+
+clikit-profile (и закрой блять таски в ocx-portable-profile хуле ты не закрыл дебил)
+</auto-slash-command>
+
+---
+
+## Plan Not Found
+
+Could not find a plan matching "clikit-profile (и закрой блять таски в ocx-portable-profile хуле ты не закрыл дебил)".
+
+Available incomplete plans:
+1. [clikit-profile] - Progress: 2/29
+2. [ocx-portable-profile] - Progress: 8/67
+
+Ask the user which plan to work on.
+<command-instruction>
+You are starting a Sisyphus work session.
+
+## ARGUMENTS
+
+- `/start-work [plan-name] [--worktree <path>]`
+  - `plan-name` (optional): name or partial match of the plan to start
+  - `--worktree <path>` (optional): absolute path to an existing git worktree to work in
+    - If specified and valid: hook pre-sets worktree_path in boulder.json
+    - If specified but invalid: you must run `git worktree add <path> <branch>` first
+    - If omitted: work directly in the current project directory (no worktree)
+
+## WHAT TO DO
+
+1. **Find available plans**: Search for Prometheus-generated plan files at `.sisyphus/plans/`
+
+2. **Check for active boulder state**: Read `.sisyphus/boulder.json` if it exists
+
+3. **Decision logic**:
+   - If `.sisyphus/boulder.json` exists AND plan is NOT complete (has unchecked boxes):
+     - **APPEND** current session to session_ids
+     - Continue work on existing plan
+   - If no active plan OR plan is complete:
+     - List available plan files
+     - If ONE plan: auto-select it
+     - If MULTIPLE plans: show list with timestamps, ask user to select
+
+4. **Worktree Setup** (ONLY when `--worktree` was explicitly specified and `worktree_path` not already set in boulder.json):
+   1. `git worktree list --porcelain` - see available worktrees
+   2. Create: `git worktree add <absolute-path> <branch-or-HEAD>`
+   3. Update boulder.json to add `"worktree_path": "<absolute-path>"`
+   4. All work happens inside that worktree directory
+
+5. **Create/Update boulder.json**:
+   ```json
+   {
+     "active_plan": "/absolute/path/to/plan.md",
+     "started_at": "ISO_TIMESTAMP",
+     "session_ids": ["session_id_1", "session_id_2"],
+     "plan_name": "plan-name",
+     "worktree_path": "/absolute/path/to/git/worktree"
+   }
+   ```
+
+6. **Read the plan file** and start executing tasks according to atlas workflow
+
+## OUTPUT FORMAT
+
+When listing plans for selection:
+```
+Available Work Plans
+
+Current Time: {ISO timestamp}
+Session ID: {current session id}
+
+1. [plan-name-1.md] - Modified: {date} - Progress: 3/10 tasks
+2. [plan-name-2.md] - Modified: {date} - Progress: 0/5 tasks
+
+Which plan would you like to work on? (Enter number or plan name)
+```
+
+When resuming existing work:
+```
+Resuming Work Session
+
+Active Plan: {plan-name}
+Progress: {completed}/{total} tasks
+Sessions: {count} (appending current session)
+Worktree: {worktree_path}
+
+Reading plan and continuing from last incomplete task...
+```
+
+When auto-selecting single plan:
+```
+Starting Work Session
+
+Plan: {plan-name}
+Session ID: {session_id}
+Started: {timestamp}
+Worktree: {worktree_path}
+
+Reading plan and beginning execution...
+```
+
+## CRITICAL
+
+- The session_id is injected by the hook - use it directly
+- Always update boulder.json BEFORE starting work
+- If worktree_path is set in boulder.json, all work happens inside that worktree directory
+- Read the FULL plan file before delegating any tasks
+- Follow atlas delegation protocols (7-section format)
+
+## TASK BREAKDOWN (MANDATORY)
+
+After reading the plan file, you MUST decompose every plan task into granular, implementation-level sub-steps and register ALL of them as task/todo items BEFORE starting any work.
+
+**How to break down**:
+- Each plan checkbox item (e.g., `- [ ] Add user authentication`) must be split into concrete, actionable sub-tasks
+- Sub-tasks should be specific enough that each one touches a clear set of files/functions
+- Include: file to modify, what to change, expected behavior, and how to verify
+- Do NOT leave any task vague - "implement feature X" is NOT acceptable; "add validateToken() to src/auth/middleware.ts that checks JWT expiry and returns 401" IS acceptable
+
+**Example breakdown**:
+Plan task: `- [ ] Add rate limiting to API`
+→ Todo items:
+  1. Create `src/middleware/rate-limiter.ts` with sliding window algorithm (max 100 req/min per IP)
+  2. Add RateLimiter middleware to `src/app.ts` router chain, before auth middleware
+  3. Add rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining) to response in `rate-limiter.ts`
+  4. Add test: verify 429 response after exceeding limit in `src/middleware/rate-limiter.test.ts`
+  5. Add test: verify headers are present on normal responses
+
+Register these as task/todo items so progress is tracked and visible throughout the session.
+
+## WORKTREE COMPLETION
+
+When working in a worktree (`worktree_path` is set in boulder.json) and ALL plan tasks are complete:
+1. Commit all remaining changes in the worktree
+2. **Sync .sisyphus state back**: Copy `.sisyphus/` from the worktree to the main repo before removal.
+   This is CRITICAL when `.sisyphus/` is gitignored - state written during worktree execution would otherwise be lost.
+   ```bash
+   cp -r <worktree-path>/.sisyphus/* <main-repo>/.sisyphus/ 2>/dev/null || true
+   ```
+3. Switch to the main working directory (the original repo, NOT the worktree)
+4. Merge the worktree branch into the current branch: `git merge <worktree-branch>`
+5. If merge succeeds, clean up: `git worktree remove <worktree-path>`
+6. Remove the boulder.json state
+
+This is the DEFAULT behavior when `--worktree` was used. Skip merge only if the user explicitly instructs otherwise (e.g., asks to create a PR instead).
+</command-instruction>
+
+<session-context>
+Session ID: $SESSION_ID
+Timestamp: $TIMESTAMP
+</session-context>
+
+<user-request>
+clikit-profile (и закрой блять таски в ocx-portable-profile хуле ты не закрыл дебил)
+</user-request>
+
+---
+
+ты блять завис
+
+---
+
+всмысле блять ocx-portable-profile, разве это не прежняя выполненая задача?
+
+---
+
+как пользоваться
+
+---
+
+dotfiles/opencode on  master [!?⇡] via  v1.3.9
+❯ ocx profile list --global
+Global profiles:
+  clikit
+  default
+  oh-my-openagent
+  omo
+
+хуле стрлько профилей, если дожно быть 2
+
+omo (который репрезентация на основе моего профиля без ocx)
+и clikit
+
+если обязательно должен быть default то рассмотри возможность создайния симлинки, если не обязатеньный то нахуй он нужен
+
+---
+
+да, удали. и какого блять хуя у меня в clikit Sisyphus (Ultraworker) и остальные omo специфичный агенты когда я запускаю ocx oc -p clikit????????????? сука ебаная блять заебал тупить
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_c5151bcc`: Investigate agent leakage
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]
+
+Incomplete tasks remain in your todo list. Continue working on the next pending task.
+
+- Proceed without asking for permission
+- Mark each task complete when finished
+- Do not stop until all tasks are done
+- If you believe all work is already complete, the system is questioning your completion claim. Critically re-examine each todo item from a skeptical perspective, verify the work was actually done correctly, and update the todo list accordingly.
+
+[Status: 2/5 completed, 3 remaining]
+
+Remaining tasks:
+- [in_progress] Identify why OMO-specific agents appear in clikit
+- [pending] Apply minimal fix to isolate clikit agents
+- [pending] Verify clikit and omo profile behavior after cleanup
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -395.6K removed, +28.2K summary
+
+│██████████████░░░░░░░░░░░░██░░░░░░░████████████⣿⣿█│
+▣ Compression #10 -27.8K removed, +1.4K summary
+→ Topic: Profile cleanup and leakage diagnosis
+→ Items: 12 messages and 16 tools compressed
+
+---
+
+что ты сука блять там режешь, все дожно быть через конфиг
+
+---
+
+▣ DCP | -413.2K removed, +28.6K summary
+
+│██████████████░░░░░░░░░░░░██░░░░█░████████████░░⣿█│
+▣ Compression #11 -17.3K removed, +407 summary
+→ Topic: Clikit isolation fix attempt and rollback
+→ Items: 6 messages and 8 tools compressed
+
+---
+
+▣ DCP | -413.4K removed, +28.7K summary
+
+│█████████████░░░░░░░░░░░░██░░░░░░█████████████░⣿░█│
+▣ Compression #12 -188 removed, +168 summary
+→ Topic: Clikit cleanup continuation
+→ Items: 1 messages compressed
+
+---
+
+[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]
+
+Incomplete tasks remain in your todo list. Continue working on the next pending task.
+
+- Proceed without asking for permission
+- Mark each task complete when finished
+- Do not stop until all tasks are done
+- If you believe all work is already complete, the system is questioning your completion claim. Critically re-examine each todo item from a skeptical perspective, verify the work was actually done correctly, and update the todo list accordingly.
+
+[Status: 2/5 completed, 3 remaining]
+
+Remaining tasks:
+- [in_progress] Identify why OMO-specific agents appear in clikit
+- [pending] Apply minimal fix to isolate clikit agents
+- [pending] Verify clikit and omo profile behavior after cleanup
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+▣ DCP | -421.7K removed, +29.6K summary
+
+│█████████████░░░░░░░░░░░░██░░░█░░████████████░░░⣿█│
+▣ Compression #13 -8.3K removed, +1.5K summary
+→ Topic: Clikit leakage cleanup
+→ Items: 8 messages and 12 tools compressed
