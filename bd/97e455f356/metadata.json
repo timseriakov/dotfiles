@@ -3,7 +3,7 @@
   "checkpoint_id": "bd97e455f356",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 2,
+  "checkpoints_count": 1,
   "files_touched": [
     "opencode/ocx.jsonc"
   ],
