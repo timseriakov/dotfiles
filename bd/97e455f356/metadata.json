@@ -4,7 +4,9 @@
   "strategy": "manual-commit",
   "branch": "master",
   "checkpoints_count": 2,
-  "files_touched": null,
+  "files_touched": [
+    "opencode/ocx.jsonc"
+  ],
   "sessions": [
     {
       "metadata": "/bd/97e455f356/0/metadata.json",
