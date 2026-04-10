@@ -3,7 +3,7 @@
   "checkpoint_id": "7f12ba4351f6",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     ".gitconfig",
     "fish/conf.d/10-path.fish",
@@ -18,6 +18,12 @@
       "transcript": "/7f/12ba4351f6/0/full.jsonl",
       "content_hash": "/7f/12ba4351f6/0/content_hash.txt",
       "prompt": "/7f/12ba4351f6/0/prompt.txt"
+    },
+    {
+      "metadata": "/7f/12ba4351f6/1/metadata.json",
+      "transcript": "/7f/12ba4351f6/1/full.jsonl",
+      "content_hash": "/7f/12ba4351f6/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
