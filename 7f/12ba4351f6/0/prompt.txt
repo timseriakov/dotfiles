@@ -1,0 +1,755 @@
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Think deeply before acting.
+
+<output_verbosity_spec>
+- Default: 1-2 short paragraphs. Do not default to bullets.
+- Simple yes/no questions: ≤2 sentences.
+- Complex multi-file tasks: 1 overview paragraph + up to 4 high-level sections grouped by outcome, not by file.
+- Use lists only when content is inherently list-shaped (distinct items, steps, options).
+- Do not rephrase the user's request unless it changes semantics.
+</output_verbosity_spec>
+
+<scope_constraints>
+- Implement EXACTLY and ONLY what the user requests
+- No extra features, no added components, no embellishments
+- If any instruction is ambiguous, choose the simplest valid interpretation
+- Do NOT expand the task beyond what was asked
+</scope_constraints>
+
+## CERTAINTY PROTOCOL
+
+**Before implementation, ensure you have:**
+- Full understanding of the user's actual intent
+- Explored the codebase to understand existing patterns
+- A clear work plan (mental or written)
+- Resolved any ambiguities through exploration (not questions)
+
+<uncertainty_handling>
+- If the question is ambiguous or underspecified:
+  - EXPLORE FIRST using tools (grep, file reads, explore agents)
+  - If still unclear, state your interpretation and proceed
+  - Ask clarifying questions ONLY as last resort
+- Never fabricate exact figures, line numbers, or references when uncertain
+- Prefer "Based on the provided context..." over absolute claims when unsure
+</uncertainty_handling>
+
+## DECISION FRAMEWORK: Self vs Delegate
+
+**Evaluate each task against these criteria to decide:**
+
+| Complexity | Criteria | Decision |
+|------------|----------|----------|
+| **Trivial** | <10 lines, single file, obvious pattern | **DO IT YOURSELF** |
+| **Moderate** | Single domain, clear pattern, <100 lines | **DO IT YOURSELF** (faster than delegation overhead) |
+| **Complex** | Multi-file, unfamiliar domain, >100 lines, needs specialized expertise | **DELEGATE** to appropriate category+skills |
+| **Research** | Need broad codebase context or external docs | **DELEGATE** to explore/librarian (background, parallel) |
+
+**Decision Factors:**
+- Delegation overhead ≈ 10-15 seconds. If task takes less, do it yourself.
+- If you already have full context loaded, do it yourself.
+- If task requires specialized expertise (frontend-ui-ux, git operations), delegate.
+- If you need information from multiple sources, fire parallel background agents.
+
+## AVAILABLE RESOURCES
+
+Use these when they provide clear value based on the decision framework above:
+
+| Resource | When to Use | How to Use |
+|----------|-------------|------------|
+| explore agent | Need codebase patterns you don't have | `task(subagent_type="explore", load_skills=[], run_in_background=true, ...)` |
+| librarian agent | External library docs, OSS examples | `task(subagent_type="librarian", load_skills=[], run_in_background=true, ...)` |
+| oracle agent | Stuck on architecture/debugging after 2+ attempts | `task(subagent_type="oracle", load_skills=[], ...)` |
+| plan agent | Complex multi-step with dependencies (5+ steps) | `task(subagent_type="plan", load_skills=[], ...)` |
+| task category | Specialized work matching a category | `task(category="...", load_skills=[...])` |
+
+<tool_usage_rules>
+- Prefer tools over internal knowledge for fresh or user-specific data
+- Parallelize independent reads (read_file, grep, explore, librarian) to reduce latency
+- After any write/update, briefly restate: What changed, Where (path), Follow-up needed
+</tool_usage_rules>
+
+## EXECUTION PATTERN
+
+**Context gathering uses TWO parallel tracks:**
+
+| Track | Tools | Speed | Purpose |
+|-------|-------|-------|---------|
+| **Direct** | Grep, Read, LSP, AST-grep | Instant | Quick wins, known locations |
+| **Background** | explore, librarian agents | Async | Deep search, external docs |
+
+**ALWAYS run both tracks in parallel:**
+```
+// Fire background agents for deep exploration
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK] and need to understand [KNOWLEDGE GAP]. Find [X] patterns in the codebase - file paths, implementation approach, conventions used, and how modules connect. I'll use this to [DOWNSTREAM DECISION]. Focus on production code in src/. Return file paths with brief descriptions.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [TECHNOLOGY] and need [SPECIFIC INFO]. Find official docs and production examples for [Y] - API reference, configuration, recommended patterns, and pitfalls. Skip tutorials. I'll use this to [DECISION THIS INFORMS].", run_in_background=true)
+
+// WHILE THEY RUN - use direct tools for immediate context
+grep(pattern="relevant_pattern", path="src/")
+read_file(filePath="known/important/file.ts")
+
+// Collect background results when ready
+deep_context = background_output(task_id=...)
+
+// Merge ALL findings for comprehensive understanding
+```
+
+**Plan agent (complex tasks only):**
+- Only if 5+ interdependent steps
+- Invoke AFTER gathering context from both tracks
+
+**Execute:**
+- Surgical, minimal changes matching existing patterns
+- If delegating: provide exhaustive context and success criteria
+
+**Verify:**
+- `lsp_diagnostics` on modified files
+- Run tests if available
+
+## ACCEPTANCE CRITERIA WORKFLOW
+
+**BEFORE implementation**, define what "done" means in concrete, binary terms:
+
+1. Write acceptance criteria as pass/fail conditions (not "should work" - specific observable outcomes)
+2. Record them in your TODO/Task items with a "QA: [how to verify]" field
+3. Work toward those criteria, not just "finishing code"
+
+## QUALITY STANDARDS
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| Build | Run build command | Exit code 0 |
+| Test | Execute test suite | All tests pass |
+| Lint | Run lsp_diagnostics | Zero new errors |
+| **Manual QA** | **Execute the feature yourself** | **Actual output shown** |
+
+<MANUAL_QA_MANDATE>
+### MANUAL QA IS MANDATORY. lsp_diagnostics IS NOT ENOUGH.
+
+lsp_diagnostics catches type errors. It does NOT catch logic bugs, missing behavior, or broken features. After EVERY implementation, you MUST manually test the actual feature.
+
+**Execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify output files. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**"This should work" is NOT evidence. RUN IT. Show what happened. That is evidence.**
+</MANUAL_QA_MANDATE>
+
+## COMPLETION CRITERIA
+
+A task is complete when:
+1. Requested functionality is fully implemented (not partial, not simplified)
+2. lsp_diagnostics shows zero errors on modified files
+3. Tests pass (or pre-existing failures documented)
+4. Code matches existing codebase patterns
+5. **Manual QA executed - actual feature tested, output observed and reported**
+
+**Deliver exactly what was asked. No more, no less.**
+
+</ultrawork-mode>
+
+---
+
+изучи https://ocx.kdco.dev/docs/ создай контекст, мне нужна помощь ulw
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+# OCX
+
+[![CI](https://github.com/kdcokenny/ocx/actions/workflows/ci.yml/badge.svg)](https://github.com/kdcokenny/ocx/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/ocx.svg)](https://www.npmjs.com/package/ocx)
+[![License](https://img.shields.io/github/license/kdcokenny/ocx.svg)](https://github.com/kdcokenny/ocx/blob/main/LICENSE)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kdcokenny/ocx)
+
+Your OpenCode config, anywhere.
+
+## Why OCX?
+
+- 📁 **Profiles** — Work in any repo with YOUR config. Control exactly what OpenCode sees.
+- 📦 **Registries** — Install profiles and components from curated registries.
+- 🔒 **Auditable** — SHA-verified, code you own.
+
+![OCX Profiles Demo](./assets/profiles-demo.gif)
+
+*Demo uses [oh-my-opencode](https://ocx.kdco.dev/docs/guides/oh-my-opencode). See [more guides](https://ocx.kdco.dev/docs/guides/index).*
+
+## Installation
+
+OCX supports macOS (x64, Apple Silicon), Linux (x64, arm64), and Windows (x64).
+
+```bash
+# Recommended (macOS/Linux)
+curl -fsSL https://ocx.kdco.dev/install.sh | sh
+
+# Or via npm (any platform)
+npm install -g ocx
+```
+
+The install script handles PATH configuration automatically or prints instructions if manual setup is needed.
+
+## Quick Start
+
+Work in any repo without modifying it. Your config, their code.
+
+```bash
+# One-time setup
+ocx init --global
+
+# Install the KDCO workspace profile (OpenCode Free Models Only)
+ocx profile add ws --source tweak/p-1vp4xoqv --from https://tweakoc.com/r --global
+
+# Launch OpenCode with the profile
+ocx oc -p ws
+```
+
+Need a custom profile? Open the KDCO Workspace harness in TweakOC: https://tweakoc.com/h/kdco-workspace
+
+Profiles control what OpenCode sees through `exclude`/`include` patterns. Each profile has isolated registries for security. OpenCode config merges safely between profile and local settings.
+
+> **Security Note:** An empty exclude list includes all project instruction files; the default profile template ships a secure exclude list. For trusted repos, edit your profile to loosen the template's exclude list. See [Lock Down Recipe](https://ocx.kdco.dev/docs/profiles/security#lock-down-recipe).
+
+**[Profile Deep Dive →](https://ocx.kdco.dev/docs/profiles/overview)**
+
+## Common Commands
+
+| Command | Description |
+|---------|-------------|
+| `ocx profile add <name> --source <registry/profile> --from <url> --global` | Install a profile from a registry |
+| `ocx profile add <name> --clone <existing> --global` | Clone an existing profile |
+| `ocx oc -p <name>` | Launch OpenCode with a profile |
+| `ocx profile list --global` | List your profiles |
+| `ocx config edit --global` | Edit your global config |
+| `ocx migrate` | Dry-run preview of v1.4.6 → v2 migration (shows what would change, no writes) |
+| `ocx migrate --apply` | Apply migration to receipt format |
+| `ocx migrate --global` | Dry-run preview of global root + all profiles migration |
+| `ocx migrate --global --apply` | Apply migration across global root and profiles |
+
+**[Full CLI Reference →](https://ocx.kdco.dev/docs/cli/commands)**
+
+## Advanced Usage
+
+### Components
+
+Add individual components to projects (copied to `.opencode/`, not `node_modules`):
+
+```bash
+# One-time local setup
+ocx init
+
+# Add a registry with a name
+ocx registry add https://registry.kdco.dev --name kdco
+
+# Install components using name/component syntax
+ocx add kdco/workspace
+```
+
+See [Components & Registries](https://ocx.kdco.dev/docs/registries/create) for more.
+
+### Upgrading from v1.4.6
+
+If you have an existing v1.4.6 project, migrate to the receipt format (`.ocx/receipt.jsonc`):
+
+```bash
+ocx migrate          # Dry-run: shows what would be migrated (no files written)
+ocx migrate --apply  # Apply migration
+ocx verify           # Confirm integrity post-migration
+```
+
+For global config migration (migrates global root and all profiles):
+
+```bash
+ocx migrate --global          # Preview migration across global root + all profiles
+ocx migrate --global --apply  # Apply migration to global root and every profile
+```
+
+### Creating Registries
+
+Scaffold and deploy your own registry:
+
+```bash
+npx ocx init --registry my-registry
+```
+
+See [Creating Registries](https://ocx.kdco.dev/docs/registries/create) for details.
+
+## Philosophy
+
+OCX follows the **ShadCN model**: components are copied into your project (`.opencode/`), not hidden in `node_modules`. You own the code—customize freely.
+
+Like **Cargo**, OCX resolves dependencies and verifies integrity. Every component is SHA-256 verified.
+
+*Your AI agent never runs code you haven't reviewed.*
+
+## Documentation
+
+- **[Profiles](https://ocx.kdco.dev/docs/profiles/overview)** — Deep dive into profile configuration and isolation
+- **[CLI Reference](https://ocx.kdco.dev/docs/cli/commands)** — Complete command documentation
+- **[Creating Registries](https://ocx.kdco.dev/docs/registries/create)** — Build and distribute your own components
+- **[Guides](https://ocx.kdco.dev/docs/guides/index)** — Step-by-step tutorials
+
+## Disclaimer
+
+This project is not built by the OpenCode team and is not affiliated with [OpenCode](https://github.com/sst/opencode) in any way.
+
+## License
+
+MIT
+
+---
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+доп контекст ---
+title: "Oh-My-OpenCode Setup"
+description: "Set up oh-my-opencode with OCX profiles for a portable AI coding environment"
+---
+
+## Overview
+
+Set up [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) with OCX profiles for a fully portable AI coding environment using free OpenCode Zen models.
+
+**Prerequisites**: [OCX installed](/getting-started/installation) and [global profiles initialized](/profiles/overview)
+
+## Step 1: Install the omo Profile
+
+```bash
+# One-command install with ephemeral registry (not saved)
+ocx profile add omo --source kit/omo --from https://ocx-kit.kdco.dev --global
+
+# Or add registry first, then install
+ocx registry add https://ocx-kit.kdco.dev --name kit --global
+ocx profile add omo --source kit/omo --global
+```
+
+## Step 2: Launch
+
+```bash
+ocx oc -p omo
+```
+
+The profile comes pre-configured with free [OpenCode Zen](https://opencode.ai/docs/zen/) models.
+
+## What's Included
+
+The `omo` profile includes:
+
+| File | Purpose |
+|------|---------|
+| `opencode.jsonc` | Default models + oh-my-opencode plugin |
+| `oh-my-opencode.json` | Agent configurations with free models |
+| `ocx.jsonc` | Profile isolation settings |
+| `AGENTS.md` | Quick reference |
+
+**Pre-configured models:**
+- **Big Pickle** — Orchestrator (Sisyphus), Executor (Atlas)
+- **GPT-5 Nano** — Research, exploration, documentation, planning
+
+## Customize Models
+
+Edit your profile's oh-my-opencode config:
+
+```bash
+# View available models
+opencode models
+
+# Edit the config
+$EDITOR ~/.config/opencode/profiles/omo/oh-my-opencode.json
+```
+
+See the [oh-my-opencode configuration docs](https://github.com/code-yeongyu/oh-my-opencode/blob/dev/docs/configurations.md) for all options.
+
+## Tips
+
+**Set as default profile:**
+
+```bash
+export OCX_PROFILE=omo  # Add to ~/.zshrc or ~/.bashrc
+```
+
+**Clone for variations:**
+
+```bash
+ocx profile add work --clone omo --global
+```
+
+**For untrusted repos**, see [Profile Security](/profiles/security).
+
+## Next Steps
+
+- [KDCO Workspace Guide](/guides/kdco-workspace) — Full multi-agent workspace setup.
+- [Profiles Overview](/profiles/overview) — Understanding profile concepts.
+- [ocx profile](/cli/profile) — Manage profiles from the CLI.
+
+## See Also
+
+- [oh-my-opencode documentation](https://github.com/code-yeongyu/oh-my-opencode/blob/dev/docs/configurations.md) — Manual setup and advanced configuration.
+
+---
+
+docs/cli там поищи в репо почитай
+
+---
+
+да, https://github.com/kdcokenny/ocx/tree/main/docs/cli
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_00effa87`
+**Description:** Study OCX docs
+**Duration:** 2m 58s
+
+**4 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_00effa87")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_e445576f`
+**Description:** Find ULW context
+**Duration:** 1m 47s
+
+**3 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_e445576f")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_1ec1c2d5`
+**Description:** OCX targeted docs
+**Duration:** 2m 28s
+
+**2 tasks still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_1ec1c2d5")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_73cfbaa0`
+**Description:** Inspect OCX repo CLI
+**Duration:** 4m 1s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_73cfbaa0")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_00effa87`: Study OCX docs
+- `bg_e445576f`: Find ULW context
+- `bg_1ec1c2d5`: OCX targeted docs
+- `bg_73cfbaa0`: Inspect OCX repo CLI
+- `bg_49e234ea`: OMO profile context
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Think deeply before acting.
+
+<output_verbosity_spec>
+- Default: 1-2 short paragraphs. Do not default to bullets.
+- Simple yes/no questions: ≤2 sentences.
+- Complex multi-file tasks: 1 overview paragraph + up to 4 high-level sections grouped by outcome, not by file.
+- Use lists only when content is inherently list-shaped (distinct items, steps, options).
+- Do not rephrase the user's request unless it changes semantics.
+</output_verbosity_spec>
+
+<scope_constraints>
+- Implement EXACTLY and ONLY what the user requests
+- No extra features, no added components, no embellishments
+- If any instruction is ambiguous, choose the simplest valid interpretation
+- Do NOT expand the task beyond what was asked
+</scope_constraints>
+
+## CERTAINTY PROTOCOL
+
+**Before implementation, ensure you have:**
+- Full understanding of the user's actual intent
+- Explored the codebase to understand existing patterns
+- A clear work plan (mental or written)
+- Resolved any ambiguities through exploration (not questions)
+
+<uncertainty_handling>
+- If the question is ambiguous or underspecified:
+  - EXPLORE FIRST using tools (grep, file reads, explore agents)
+  - If still unclear, state your interpretation and proceed
+  - Ask clarifying questions ONLY as last resort
+- Never fabricate exact figures, line numbers, or references when uncertain
+- Prefer "Based on the provided context..." over absolute claims when unsure
+</uncertainty_handling>
+
+## DECISION FRAMEWORK: Self vs Delegate
+
+**Evaluate each task against these criteria to decide:**
+
+| Complexity | Criteria | Decision |
+|------------|----------|----------|
+| **Trivial** | <10 lines, single file, obvious pattern | **DO IT YOURSELF** |
+| **Moderate** | Single domain, clear pattern, <100 lines | **DO IT YOURSELF** (faster than delegation overhead) |
+| **Complex** | Multi-file, unfamiliar domain, >100 lines, needs specialized expertise | **DELEGATE** to appropriate category+skills |
+| **Research** | Need broad codebase context or external docs | **DELEGATE** to explore/librarian (background, parallel) |
+
+**Decision Factors:**
+- Delegation overhead ≈ 10-15 seconds. If task takes less, do it yourself.
+- If you already have full context loaded, do it yourself.
+- If task requires specialized expertise (frontend-ui-ux, git operations), delegate.
+- If you need information from multiple sources, fire parallel background agents.
+
+## AVAILABLE RESOURCES
+
+Use these when they provide clear value based on the decision framework above:
+
+| Resource | When to Use | How to Use |
+|----------|-------------|------------|
+| explore agent | Need codebase patterns you don't have | `task(subagent_type="explore", load_skills=[], run_in_background=true, ...)` |
+| librarian agent | External library docs, OSS examples | `task(subagent_type="librarian", load_skills=[], run_in_background=true, ...)` |
+| oracle agent | Stuck on architecture/debugging after 2+ attempts | `task(subagent_type="oracle", load_skills=[], ...)` |
+| plan agent | Complex multi-step with dependencies (5+ steps) | `task(subagent_type="plan", load_skills=[], ...)` |
+| task category | Specialized work matching a category | `task(category="...", load_skills=[...])` |
+
+<tool_usage_rules>
+- Prefer tools over internal knowledge for fresh or user-specific data
+- Parallelize independent reads (read_file, grep, explore, librarian) to reduce latency
+- After any write/update, briefly restate: What changed, Where (path), Follow-up needed
+</tool_usage_rules>
+
+## EXECUTION PATTERN
+
+**Context gathering uses TWO parallel tracks:**
+
+| Track | Tools | Speed | Purpose |
+|-------|-------|-------|---------|
+| **Direct** | Grep, Read, LSP, AST-grep | Instant | Quick wins, known locations |
+| **Background** | explore, librarian agents | Async | Deep search, external docs |
+
+**ALWAYS run both tracks in parallel:**
+```
+// Fire background agents for deep exploration
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK] and need to understand [KNOWLEDGE GAP]. Find [X] patterns in the codebase - file paths, implementation approach, conventions used, and how modules connect. I'll use this to [DOWNSTREAM DECISION]. Focus on production code in src/. Return file paths with brief descriptions.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [TECHNOLOGY] and need [SPECIFIC INFO]. Find official docs and production examples for [Y] - API reference, configuration, recommended patterns, and pitfalls. Skip tutorials. I'll use this to [DECISION THIS INFORMS].", run_in_background=true)
+
+// WHILE THEY RUN - use direct tools for immediate context
+grep(pattern="relevant_pattern", path="src/")
+read_file(filePath="known/important/file.ts")
+
+// Collect background results when ready
+deep_context = background_output(task_id=...)
+
+// Merge ALL findings for comprehensive understanding
+```
+
+**Plan agent (complex tasks only):**
+- Only if 5+ interdependent steps
+- Invoke AFTER gathering context from both tracks
+
+**Execute:**
+- Surgical, minimal changes matching existing patterns
+- If delegating: provide exhaustive context and success criteria
+
+**Verify:**
+- `lsp_diagnostics` on modified files
+- Run tests if available
+
+## ACCEPTANCE CRITERIA WORKFLOW
+
+**BEFORE implementation**, define what "done" means in concrete, binary terms:
+
+1. Write acceptance criteria as pass/fail conditions (not "should work" - specific observable outcomes)
+2. Record them in your TODO/Task items with a "QA: [how to verify]" field
+3. Work toward those criteria, not just "finishing code"
+
+## QUALITY STANDARDS
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| Build | Run build command | Exit code 0 |
+| Test | Execute test suite | All tests pass |
+| Lint | Run lsp_diagnostics | Zero new errors |
+| **Manual QA** | **Execute the feature yourself** | **Actual output shown** |
+
+<MANUAL_QA_MANDATE>
+### MANUAL QA IS MANDATORY. lsp_diagnostics IS NOT ENOUGH.
+
+lsp_diagnostics catches type errors. It does NOT catch logic bugs, missing behavior, or broken features. After EVERY implementation, you MUST manually test the actual feature.
+
+**Execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify output files. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**"This should work" is NOT evidence. RUN IT. Show what happened. That is evidence.**
+</MANUAL_QA_MANDATE>
+
+## COMPLETION CRITERIA
+
+A task is complete when:
+1. Requested functionality is fully implemented (not partial, not simplified)
+2. lsp_diagnostics shows zero errors on modified files
+3. Tests pass (or pre-existing failures documented)
+4. Code matches existing codebase patterns
+5. **Manual QA executed - actual feature tested, output observed and reported**
+
+**Deliver exactly what was asked. No more, no less.**
+
+</ultrawork-mode>
+
+---
+
+Отлично, теперь когда у тебя есть весь контекст, я тебе расскажу свой запрос. У меня есть в данный момент, до того как я узнал о существовании OCX этой утилиты, у меня есть сконфигурированный и настроенный детальный профиль, с помощью которого я работаю. Это OmyOpenAgent, плюс некоторые плагины, плюс некоторые скиллы, при том плагины есть как и заданные через конфиг, так и локальные.
+
+В общем, твоя задача сейчас изучить мою настройку, мой сетап, для того чтобы, насколько я понимаю, мы можем сделать из него профиль через OCX. Производимый профиль, который условно можно на другой машине взять и раскатить. Правильно ли я понимаю? В общем, изучи мой текущий сетап. ulw
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_82411c88`
+**Description:** Map current setup
+**Duration:** 3m 41s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_82411c88")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+local-plugins не обязательно, но сменные конфиги для oh-my-openagent_*.jsonc и скрипт переключения должны попасть в included
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_82411c88`: Map current setup
+- `bg_7b1c2eaa`: Assess profile portability
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+дай с помощью bullets
+
+---
+
+profiles/default/ocx.jsonc Вот это не должно попадать в этот профиль. Это я с помощью OCX init-global создал дефолтную конфигурацию. Это как бы основа для конфигураций. То есть, если ты сейчас инициализируешь новую, она появится в этой же папке. Ну и в целом, держи в памяти все команды CLI OCX, потому что я так понимаю, с помощью них будет проведена большая часть работы.  profiles/default/* - не нужна
+
+antigravity-accounts.json
+  - local-plugins — по твоему уточнению не обязателен - эти действительно не нужны
+
+Переносимо, но с адаптацией:
+  - opencode/opencode.jsonc
+  - omo-switch → требует fzf
+  - skills вроде workmux, plannotator-compound, rtk-compress → требуют внешние утилиты и/или home-dir state - переносим, эти cli заведомо будут на машине (опишем в ридми так же)
+
+---
+
+Ну тогда составляй план и давай мне на ревью. Ты же сейчас в режиме планирования.
+
+---
+
+▣ DCP | -80.7K removed, +5.6K summary
+
+│⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿█████│
+▣ Compression #1 -80.6K removed, +5.6K summary
+→ Topic: OCX ULW Context Research
+→ Items: 37 messages and 41 tools compressed
+
+---
+
+Proceed with implementation
+
+---
+
+сорян, не туда кликнул, дай мне его снова на ревью
+
+---
+
+▣ DCP | -113.6K removed, +9K summary
+
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿███│
+▣ Compression #2 -32.9K removed, +3.3K summary
+→ Topic: OCX Profile Planning
+→ Items: 11 messages and 11 tools compressed
