@@ -1,7 +1,9 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "bd97e455f356",
+  "session_id": "ses_288cdd513ffe93NDnxwy0eilRm",
   "strategy": "manual-commit",
+  "created_at": "2026-04-10T13:43:58.168471Z",
   "branch": "master",
   "checkpoints_count": 1,
   "files_touched": [
@@ -10,25 +12,22 @@
     "opencode/oh-my-openagent_openai-high.jsonc",
     "opencode/oh-my-openagent_openai.jsonc"
   ],
-  "sessions": [
-    {
-      "metadata": "/bd/97e455f356/0/metadata.json",
-      "transcript": "/bd/97e455f356/0/full.jsonl",
-      "content_hash": "/bd/97e455f356/0/content_hash.txt",
-      "prompt": "/bd/97e455f356/0/prompt.txt"
-    },
-    {
-      "metadata": "/bd/97e455f356/1/metadata.json",
-      "transcript": "/bd/97e455f356/1/full.jsonl",
-      "content_hash": "/bd/97e455f356/1/content_hash.txt",
-      "prompt": "/bd/97e455f356/1/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "turn_id": "a69452d2303c",
   "token_usage": {
     "input_tokens": 0,
     "cache_creation_tokens": 0,
     "cache_read_tokens": 0,
     "output_tokens": 0,
     "api_call_count": 0
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-10T13:43:58.082467Z",
+    "agent_lines": 168,
+    "human_added": 0,
+    "human_modified": 6,
+    "human_removed": 148,
+    "total_committed": 174,
+    "agent_percentage": 96.55172413793103
   }
 }
