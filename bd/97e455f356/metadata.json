@@ -3,7 +3,7 @@
   "checkpoint_id": "bd97e455f356",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "opencode/oh-my-openagent.jsonc",
     "opencode/oh-my-openagent_openai-economy.jsonc",
@@ -15,7 +15,7 @@
       "metadata": "/bd/97e455f356/0/metadata.json",
       "transcript": "/bd/97e455f356/0/full.jsonl",
       "content_hash": "/bd/97e455f356/0/content_hash.txt",
-      "prompt": "/bd/97e455f356/0/prompt.txt"
+      "prompt": ""
     },
     {
       "metadata": "/bd/97e455f356/1/metadata.json",
