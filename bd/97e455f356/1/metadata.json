@@ -3,29 +3,10 @@
   "checkpoint_id": "bd97e455f356",
   "session_id": "ses_288cdd513ffe93NDnxwy0eilRm",
   "strategy": "manual-commit",
-  "created_at": "2026-04-10T17:27:17.526514Z",
+  "created_at": "2026-04-10T17:27:55.360128Z",
   "branch": "master",
   "checkpoints_count": 1,
-  "files_touched": [
-    "opencode/oh-my-openagent.jsonc",
-    "opencode/oh-my-openagent_openai-economy.jsonc"
-  ],
+  "files_touched": [],
   "agent": "Claude Code",
-  "turn_id": "9cbe273709fd",
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  },
-  "initial_attribution": {
-    "calculated_at": "2026-04-10T17:27:17.352253Z",
-    "agent_lines": 156,
-    "human_added": 16,
-    "human_modified": 3,
-    "human_removed": 0,
-    "total_committed": 175,
-    "agent_percentage": 89.14285714285714
-  }
+  "turn_id": "9cbe273709fd"
 }

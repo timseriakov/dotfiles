@@ -4,10 +4,7 @@
   "strategy": "manual-commit",
   "branch": "master",
   "checkpoints_count": 2,
-  "files_touched": [
-    "opencode/oh-my-openagent.jsonc",
-    "opencode/oh-my-openagent_openai-economy.jsonc"
-  ],
+  "files_touched": null,
   "sessions": [
     {
       "metadata": "/bd/97e455f356/0/metadata.json",
@@ -19,14 +16,7 @@
       "metadata": "/bd/97e455f356/1/metadata.json",
       "transcript": "/bd/97e455f356/1/full.jsonl",
       "content_hash": "/bd/97e455f356/1/content_hash.txt",
-      "prompt": "/bd/97e455f356/1/prompt.txt"
+      "prompt": ""
     }
-  ],
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  }
+  ]
 }
