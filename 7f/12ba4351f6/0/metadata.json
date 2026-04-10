@@ -3,33 +3,10 @@
   "checkpoint_id": "7f12ba4351f6",
   "session_id": "ses_288cdd513ffe93NDnxwy0eilRm",
   "strategy": "manual-commit",
-  "created_at": "2026-04-10T12:44:57.921989Z",
+  "created_at": "2026-04-10T12:45:22.030759Z",
   "branch": "master",
-  "checkpoints_count": 0,
-  "files_touched": [
-    ".gitconfig",
-    "fish/conf.d/10-path.fish",
-    "opencode/oh-my-openagent.jsonc",
-    "opencode/omo-switch",
-    "qutebrowser/quickmarks",
-    "tmux/title-mappings.conf"
-  ],
+  "checkpoints_count": 1,
+  "files_touched": [],
   "agent": "Claude Code",
-  "turn_id": "6453366c23ca",
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  },
-  "initial_attribution": {
-    "calculated_at": "2026-04-10T12:44:57.867178Z",
-    "agent_lines": 46,
-    "human_added": 293,
-    "human_modified": 0,
-    "human_removed": 0,
-    "total_committed": 339,
-    "agent_percentage": 13.569321533923304
-  }
+  "turn_id": "6453366c23ca"
 }

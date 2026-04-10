@@ -3,21 +3,16 @@
   "checkpoint_id": "7f12ba4351f6",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
-    ".gitconfig",
-    "fish/conf.d/10-path.fish",
-    "opencode/oh-my-openagent.jsonc",
-    "opencode/omo-switch",
-    "qutebrowser/quickmarks",
-    "tmux/title-mappings.conf"
+    "opencode/oh-my-openagent.jsonc"
   ],
   "sessions": [
     {
       "metadata": "/7f/12ba4351f6/0/metadata.json",
       "transcript": "/7f/12ba4351f6/0/full.jsonl",
       "content_hash": "/7f/12ba4351f6/0/content_hash.txt",
-      "prompt": "/7f/12ba4351f6/0/prompt.txt"
+      "prompt": ""
     },
     {
       "metadata": "/7f/12ba4351f6/1/metadata.json",
@@ -37,12 +32,5 @@
       "content_hash": "/7f/12ba4351f6/3/content_hash.txt",
       "prompt": ""
     }
-  ],
-  "token_usage": {
-    "input_tokens": 0,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 0,
-    "output_tokens": 0,
-    "api_call_count": 0
-  }
+  ]
 }
