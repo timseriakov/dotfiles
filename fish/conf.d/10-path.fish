@@ -71,13 +71,15 @@ set -gx ZEROBREW_PREFIX $HOME/.zerobrew
 fish_add_path -ga $HOME/.zerobrew/bin
 
 # Added by Antigravity
-fish_add_path /Users/tim/.antigravity/antigravity/bin
+fish_add_path $HOME/.antigravity/antigravity/bin
 # Hammerspoon
 fish_add_path /Applications/Hammerspoon.app/Contents/MacOS
 fish_add_path /Applications/Hammerspoon.app/Contents/Frameworks/hs
 
 set -Ux TRY_CONFIG_DIR "$HOME/dev/dotfiles/try-rs"
 set -Ux TRY_CONFIG "config.toml"
+
+fish_add_path $HOME/.lmstudio/bin
 
 # Ensure success status for IDEs
 true
