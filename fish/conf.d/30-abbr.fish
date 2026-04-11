@@ -256,7 +256,7 @@ abbr -a trrnts /opt/homebrew/bin/bv
 
 abbr -a va ekphos
 
-abbr -a kkll rip
+abbr -a k rip
 abbr -a ports 'snitch -t -l -e'
 abbr -a battery-monitor jolt
 abbr -a json-view otree

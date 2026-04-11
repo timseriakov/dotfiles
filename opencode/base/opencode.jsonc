@@ -7,7 +7,7 @@
     // "file:///Users/tim/dev/dotfiles/opencode/base/local-plugins",
     // "opencode-antigravity-auth",
 
-    "@plannotator/opencode",
+    "@plannotator/opencode@0.17.8",
 
     "@franlol/opencode-md-table-formatter",
     "@nick-vi/opencode-type-inject",

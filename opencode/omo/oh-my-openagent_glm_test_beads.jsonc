@@ -1,0 +1,153 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "hashline_edit": true,
+  "agents": {
+    "sisyphus": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+      "prompt_append": "## BEADS-FIRST EXECUTION\nBeads Rust (`br`) is the authoritative runtime state for non-trivial work in repositories that use this profile. Markdown plan checkboxes are a compatibility mirror only. Never treat checked markdown boxes as proof of completion or as the source of truth for what to do next.\n\nWhen execution is plan-driven or multi-step, prefer Beads state for runtime decisions:\n- read current work from `br ready --json`, `br list --json`, or `br show <id> --json` as appropriate\n- use Beads status transitions as the real ledger of `open`, `in_progress`, blocked, and complete\n- if markdown and Beads disagree, Beads wins\n- update markdown only as a mirror/compatibility surface after the Beads state is correct\n\nAssume `br` is installed and intended to be authoritative in the working repo. Do not silently fall back to markdown-only state management.",
+      "fallback_models": ["zai-coding-plan/glm-4.7"],
+    },
+    "atlas": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.1,
+      "prompt_append": "## BEADS-FIRST ORCHESTRATION\nIn repositories using this profile, Beads Rust (`br`) is the authoritative execution ledger. The plan markdown remains the spec and compatibility surface, but markdown checkboxes are NOT the source of truth for progress.\n\nExecution rules:\n1. Before selecting or resuming work, consult Beads state first (`br ready --json`, `br list --json`, `br show <id> --json`).\n2. Treat Beads as authoritative for what is pending, claimed, in progress, blocked, or complete.\n3. Do NOT infer completion purely from a checked markdown box.\n4. If you update a markdown checkbox, do it only as a mirror after the corresponding Beads state is already correct.\n5. If markdown and Beads disagree, trust Beads and call out the drift explicitly.\n6. When a task is verified complete, ensure the Beads state transition is the real closeout event; markdown closeout is secondary.\n\nYou may still edit markdown checkboxes when necessary for compatibility with the existing flow, but never use checkbox count alone as proof of execution state.",
+    },
+    "oracle": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+      "fallback_models": ["zai-coding-plan/glm-4.7"],
+    },
+    "librarian": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.2,
+      "fallback_models": ["zai-coding-plan/glm-4.7"],
+    },
+    "explore": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+    },
+    "hephaestus": {
+      "model": "zai-coding-plan/glm-4.7",
+      "variant": "medium",
+      "temperature": 0.1,
+    },
+    "sisyphus-junior": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.1,
+      "prompt_append": "## BEADS-FIRST TASK EXECUTION\nBeads Rust (`br`) is the authoritative runtime ledger. Markdown plan checkboxes are only a compatibility mirror.\n\nWhen you execute a non-trivial assigned task:\n- use the Beads issue/context as the real task state when available\n- do not claim a task is complete just because markdown is checked\n- if you touch markdown, treat it as a mirror after the real execution state is correct in Beads\n- if Beads and markdown disagree, report the drift and follow Beads\n\nAssume `br` is available in repositories using this profile.",
+    },
+    "multimodal-looker": {
+      "model": "zai-coding-plan/glm-4.6v",
+      "temperature": 0.1,
+    },
+    "plan": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+    },
+    "OpenCode-Builder": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.05,
+    },
+    "prometheus": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.2,
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)\n\n## BEADS-FIRST PLANNING CONTRACT\nFor repositories using this profile, the plan markdown is the specification and review surface, while Beads Rust (`br`) is the authoritative runtime execution ledger after work begins.\n\nPlanning rules:\n- structure the plan so tasks can be materialized cleanly into Beads work items\n- keep task boundaries, verification criteria, and execution order explicit\n- do not imply that markdown checkbox state alone is trustworthy execution state\n- treat markdown checkboxes as a human-facing compatibility surface, not the source of truth for runtime progress\n\nYour plan should make downstream Beads-first execution easier, not depend on markdown checkbox bookkeeping being perfect.",
+    },
+    "metis": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.3,
+    },
+    "momus": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+    },
+  },
+  "sisyphus_agent": {
+    "disabled": false,
+    "default_builder_enabled": false,
+    "planner_enabled": true,
+    "replace_plan": true,
+  },
+  "ralph_loop": {
+    "enabled": true,
+    "default_max_iterations": 100,
+  },
+  "background_task": {
+    "defaultConcurrency": 5,
+    "providerConcurrency": {
+      "openai": 5,
+      "zai-coding-plan": 5,
+    },
+    "modelConcurrency": {
+      "zai-coding-plan/glm-5-turbo": 3,
+      "zai-coding-plan/glm-4.7": 3,
+      "zai-coding-plan/glm-4.6v": 3,
+    },
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.7,
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+    },
+    "ultrabrain": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.15,
+      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
+    },
+    "deep": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+      "prompt_append": "Focus on robustness, error handling, and type safety.",
+    },
+    "quick": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.3,
+    },
+    "unspecified-low": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.3,
+    },
+    "unspecified-high": {
+      "model": "zai-coding-plan/glm-5-turbo",
+      "temperature": 0.1,
+    },
+    "writing": {
+      "model": "zai-coding-plan/glm-4.7",
+      "temperature": 0.3,
+    },
+  },
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": true,
+    "agents": true,
+    "hooks": true,
+    "plugins": true,
+    "plugins_override": {},
+  },
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false,
+  },
+  "experimental": {
+    "auto_resume": true,
+    "aggressive_truncation": true,
+    "truncate_all_tool_outputs": true,
+    "dynamic_context_pruning": {
+      "enabled": false,
+      "notification": "off",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3,
+      },
+    },
+  },
+  "disabled_mcps": [],
+  "disabled_skills": ["playwright"],
+  "disabled_agents": [],
+  "disabled_hooks": [],
+  "lsp": {},
+}

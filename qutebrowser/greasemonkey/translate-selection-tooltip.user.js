@@ -67,10 +67,10 @@
     escCooldownMs: 800,
     errorAutoHideMs: 6000,
 
-    maxChars: 1200,
+    maxChars: 2400,
     contextEnabledDefault: false,
-    contextMaxChars: 2000,
-    contextMaxTextCharsToInclude: 220,
+    contextMaxChars: 3000,
+    contextMaxTextCharsToInclude: 440,
     contextAllowlistDefault: [],
 
     cacheMaxEntries: 80,
