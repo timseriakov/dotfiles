@@ -3,7 +3,7 @@
   "checkpoint_id": "2c4f4fe327b9",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "fish/conf.d/00-env.fish",
     "fish/conf.d/30-abbr.fish",
