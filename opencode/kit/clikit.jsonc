@@ -1,8 +1,12 @@
 {
   "$schema": "https://unpkg.com/clikit-plugin@latest/schema.json",
+
+  // Список отключенных агентов, команд и навыков (оставьте пустыми для использования всех возможностей)
   "disabled_agents": [],
   "disabled_commands": [],
   "disabled_skills": [],
+
+  // Настройка агентов: переопределение моделей и прав доступа
   "agents": {
     "build": {
       "model": "google/gemini-3-flash-preview",
@@ -13,34 +17,38 @@
       "permission": {
         "edit": "allow",
         "bash": "allow",
-        "webfetch": "allow"
-      }
+        "webfetch": "allow",
+      },
     },
+    // Агент для планирования и обсуждения задач
     "plan": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "primary"
+      "mode": "primary",
     },
+    // Узкоспециализированные эксперты (on-demand)
     "oracle": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "subagent"
+      "mode": "subagent",
     },
     "research": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "subagent"
+      "mode": "subagent",
     },
     "explore": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "subagent"
+      "mode": "subagent",
     },
     "review": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "subagent"
+      "mode": "subagent",
     },
     "vision": {
       "model": "google/gemini-3-flash-preview",
-      "mode": "subagent"
-    }
+      "mode": "subagent",
+    },
   },
+
+  // Переопределение поведения конкретных команд (Standalone)
   "commands": {
     "discuss": {},
     "create": {},
@@ -55,8 +63,10 @@
     "handoff": {},
     "resume": {},
     "commit": {},
-    "pr": {}
+    "pr": {},
   },
+
+  // Навыки (Skills): расширения для решения специфических задач
   "skills": {
     "sources": [],
     "enable": [
@@ -79,43 +89,54 @@
       "chrome-devtools",
       "requesting-code-review",
       "receiving-code-review",
-      "writing-skills"
+      "writing-skills",
     ],
-    "disable": []
+    "disable": [],
   },
   "lsp": {},
+
+  // Основной ворклоу CliKit
   "workflow": {
+    // 'compressed' — эффективный ворклоу с пакетизацией задач (рекомендуется)
     "mode": "compressed",
     "active_roles": ["build", "plan", "review", "coordinator"],
     "use_packets": true,
     "embed_verify_in_start": true,
     "verify_is_audit": true,
-    "subagent_call_budget": 2
+    "subagent_call_budget": 2,
   },
+
+  // Райнтайм-хуки для контроля качества и безопасности
   "hooks": {
     "session_logging": false,
     "tool_logging": false,
+    // Контроль выполнения Todo-списков
     "todo_enforcer": {
       "enabled": true,
       "warn_on_incomplete": false,
-      "beads_authoritative": true
+      "beads_authoritative": true,
     },
+    // Обработка пустых выводов инструментов
     "empty_message_sanitizer": {
       "enabled": true,
       "log_empty": false,
-      "placeholder": "[empty output]"
+      "placeholder": "[empty output]",
     },
+    // Защита от опасных git-команд (force push, hard reset и т.д.)
     "git_guard": {
       "enabled": true,
-      "allow_force_with_lease": false
+      "allow_force_with_lease": false,
     },
+    // Проверка коммитов на наличие секретов и учетных данных
     "security_check": {
       "enabled": true,
-      "block_commits": true
+      "block_commits": true,
     },
+    // Запрещает субагентам задавать уточняющие вопросы (экономия токенов)
     "subagent_question_blocker": {
-      "enabled": true
+      "enabled": true,
     },
+    // Обрезка слишком больших выводов для предотвращения переполнения контекста
     "truncator": {
       "enabled": true,
       "max_output_chars": 20000,
@@ -123,8 +144,9 @@
       "preserve_head_lines": 100,
       "preserve_tail_lines": 100,
       "packet_friendly": true,
-      "log": false
+      "log": false,
     },
+    // Автогенерация индекса памяти (memory/_digest.md) на основе SQLite
     "memory_digest": {
       "enabled": true,
       "max_per_type": 50,
@@ -135,19 +157,21 @@
         "pattern",
         "bugfix",
         "config",
-        "preference"
+        "preference",
       ],
       "index_highlights_per_type": 3,
       "write_topic_files": true,
       "compact_mode": true,
-      "log": false
+      "log": false,
     },
+    // Синхронизация Todo с Beads (legacy)
     "todo_beads_sync": {
       "enabled": false,
       "close_missing": false,
       "mode": "disabled",
-      "log": false
+      "log": false,
     },
+    // Встроенная система памяти (SQLite-база)
     "cass_memory": {
       "enabled": true,
       "context_on_session_created": true,
@@ -155,15 +179,16 @@
       "context_limit": 10,
       "reflect_days": 7,
       "cm_path": "memory/cass_memory.sqlite",
-      "log": false
+      "log": false,
     },
+    // Инъекция контекста задач .beads/ в промпты
     "beads_context": {
       "enabled": true,
       "max_issues": 10,
       "include_closed": false,
       "active_only": true,
       "ready_limit": 3,
-      "log": false
-    }
-  }
+      "log": false,
+    },
+  },
 }
