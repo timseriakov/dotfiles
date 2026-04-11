@@ -85,3 +85,6 @@ set -gx MCPPROXY_DISABLE_OAUTH true
 set -gx MCPPROXY_UPDATE_APP_BUNDLE true
 
 set -gx YT_DLP_PATH /opt/homebrew/bin/yt-dlp
+
+# Added by clikit-plugin
+export OPENCODE_ENABLE_EXA=1

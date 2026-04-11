@@ -1,0 +1,49 @@
+───────────────────────────────────────
+timestamp: 2026-04-11T08:11:31.651Z
+source:    agents [warn]
+error:     [build] Missing 'model' — will use default model
+context: {
+  "file": "/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/src/agents/build.md"
+}
+───────────────────────────────────────
+timestamp: 2026-04-11T08:11:31.673Z
+hook:      cass-memory
+error:     no such column: 2026
+context: {
+  "event": "session.created",
+  "phase": "session.created"
+}
+stack:
+SQLiteError: no such column: 2026
+    at all (unknown)
+    at memorySearch (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18041:37)
+    at embeddedContext (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18164:28)
+    at processTicksAndRejections (native:7:39)
+───────────────────────────────────────
+timestamp: 2026-04-11T08:11:42.610Z
+hook:      cass-memory
+error:     fts5: syntax error near "/"
+context: {
+  "event": "session.created",
+  "phase": "session.created"
+}
+stack:
+SQLiteError: fts5: syntax error near "/"
+    at all (unknown)
+    at memorySearch (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18041:37)
+    at embeddedContext (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18164:28)
+    at processTicksAndRejections (native:7:39)
+───────────────────────────────────────
+timestamp: 2026-04-11T08:28:16.485Z
+hook:      cass-memory
+error:     fts5: syntax error near "@"
+context: {
+  "event": "session.created",
+  "phase": "session.created"
+}
+stack:
+SQLiteError: fts5: syntax error near "@"
+    at all (unknown)
+    at memorySearch (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18041:37)
+    at embeddedContext (/Users/tim/.cache/opencode/packages/clikit-plugin@latest/node_modules/clikit-plugin/dist/index.js:18164:28)
+    at processTicksAndRejections (native:7:39)

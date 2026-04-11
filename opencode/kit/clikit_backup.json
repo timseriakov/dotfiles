@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/clikit-plugin@latest/schema.json",
+  "disabled_agents": [],
+  "disabled_commands": [],
+  "disabled_skills": [],
+  "agents": {},
+  "commands": {},
+  "skills": {
+    "enable": [],
+    "disable": []
+  },
+  "hooks": {}
+}

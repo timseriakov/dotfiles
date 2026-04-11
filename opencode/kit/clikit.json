@@ -1,0 +1,169 @@
+{
+  "$schema": "https://unpkg.com/clikit-plugin@latest/schema.json",
+  "disabled_agents": [],
+  "disabled_commands": [],
+  "disabled_skills": [],
+  "agents": {
+    "build": {
+      "model": "google/gemini-3-flash-preview",
+      "temperature": 0.2,
+      "mode": "primary",
+      "disabled": false,
+      "tools": {},
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "webfetch": "allow"
+      }
+    },
+    "plan": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "primary"
+    },
+    "oracle": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "subagent"
+    },
+    "research": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "subagent"
+    },
+    "explore": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "subagent"
+    },
+    "review": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "subagent"
+    },
+    "vision": {
+      "model": "google/gemini-3-flash-preview",
+      "mode": "subagent"
+    }
+  },
+  "commands": {
+    "discuss": {},
+    "create": {},
+    "research": {},
+    "design": {},
+    "start": {},
+    "ship": {},
+    "verify": {},
+    "debug": {},
+    "status": {},
+    "init": {},
+    "handoff": {},
+    "resume": {},
+    "commit": {},
+    "pr": {}
+  },
+  "skills": {
+    "sources": [],
+    "enable": [
+      "writing-plans",
+      "executing-plans",
+      "ritual-workflow",
+      "session-management",
+      "deep-research",
+      "source-code-research",
+      "test-driven-development",
+      "condition-based-waiting",
+      "testing-anti-patterns",
+      "verification-before-completion",
+      "vercel-react-best-practices",
+      "systematic-debugging",
+      "root-cause-tracing",
+      "defense-in-depth",
+      "beads",
+      "playwright",
+      "chrome-devtools",
+      "requesting-code-review",
+      "receiving-code-review",
+      "writing-skills"
+    ],
+    "disable": []
+  },
+  "lsp": {},
+  "workflow": {
+    "mode": "compressed",
+    "active_roles": ["build", "plan", "review", "coordinator"],
+    "use_packets": true,
+    "embed_verify_in_start": true,
+    "verify_is_audit": true,
+    "subagent_call_budget": 2
+  },
+  "hooks": {
+    "session_logging": false,
+    "tool_logging": false,
+    "todo_enforcer": {
+      "enabled": true,
+      "warn_on_incomplete": false,
+      "beads_authoritative": true
+    },
+    "empty_message_sanitizer": {
+      "enabled": true,
+      "log_empty": false,
+      "placeholder": "[empty output]"
+    },
+    "git_guard": {
+      "enabled": true,
+      "allow_force_with_lease": false
+    },
+    "security_check": {
+      "enabled": true,
+      "block_commits": true
+    },
+    "subagent_question_blocker": {
+      "enabled": true
+    },
+    "truncator": {
+      "enabled": true,
+      "max_output_chars": 20000,
+      "max_output_lines": 500,
+      "preserve_head_lines": 100,
+      "preserve_tail_lines": 100,
+      "packet_friendly": true,
+      "log": false
+    },
+    "memory_digest": {
+      "enabled": true,
+      "max_per_type": 50,
+      "include_types": [
+        "decision",
+        "learning",
+        "discovery",
+        "pattern",
+        "bugfix",
+        "config",
+        "preference"
+      ],
+      "index_highlights_per_type": 3,
+      "write_topic_files": true,
+      "compact_mode": true,
+      "log": false
+    },
+    "todo_beads_sync": {
+      "enabled": false,
+      "close_missing": false,
+      "mode": "disabled",
+      "log": false
+    },
+    "cass_memory": {
+      "enabled": true,
+      "context_on_session_created": true,
+      "reflect_on_session_idle": true,
+      "context_limit": 10,
+      "reflect_days": 7,
+      "cm_path": "memory/cass_memory.sqlite",
+      "log": false
+    },
+    "beads_context": {
+      "enabled": true,
+      "max_issues": 10,
+      "include_closed": false,
+      "active_only": true,
+      "ready_limit": 3,
+      "log": false
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "hashline_edit": true,
+  "agents": {
+    "sisyphus": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+    },
+    "atlas": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+    },
+    "model": "google/gemini-3.1-pro-preview",
+    "fallback_models": ["google/gemini-2.5-pro"],
+    "librarian": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+    "explore": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+    "hephaestus": {
+      "model": "google/gemini-2.5-pro",
+      "fallback_models": ["google/gemini-3.1-pro-preview"],
+    },
+    "sisyphus-junior": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+    },
+    "plan": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+    },
+    "OpenCode-Builder": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+    },
+    "prometheus": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+    },
+    "model": "google/gemini-3.1-pro-preview",
+    "fallback_models": ["google/gemini-2.5-pro"],
+    "model": "google/gemini-3.1-pro-preview",
+    "fallback_models": ["google/gemini-2.5-pro"],
+  },
+  "sisyphus_agent": {
+    "disabled": false,
+    "default_builder_enabled": false,
+    "planner_enabled": true,
+    "replace_plan": true,
+  },
+  "ralph_loop": {
+    "enabled": true,
+    "default_max_iterations": 100,
+  },
+  "background_task": {
+    "defaultConcurrency": 8,
+    "providerConcurrency": {
+      "google": 8,
+    },
+    "modelConcurrency": {
+      "google/gemini-3.1-pro-preview": 4,
+      "google/gemini-3-flash-preview": 8,
+      "google/gemini-2.5-pro": 4,
+      "google/gemini-2.5-flash": 8,
+      "google/gemini-2.5-flash-lite": 10,
+    },
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
+    },
+    "model": "google/gemini-3.1-pro-preview",
+    "fallback_models": ["google/gemini-2.5-pro"],
+    "prompt_append": "Focus on robustness, error handling, and type safety.",
+    "deep": {
+      "model": "google/gemini-2.5-pro",
+      "fallback_models": ["google/gemini-3.1-pro-preview"],
+      "prompt_append": "Focus on robustness, error handling, and type safety.",
+    },
+    "quick": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+    "unspecified-low": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+    "unspecified-high": {
+      "model": "google/gemini-3.1-pro-preview",
+      "fallback_models": ["google/gemini-2.5-pro"],
+    },
+    "writing": {
+      "model": "google/gemini-2.5-flash-lite",
+      "fallback_models": ["google/gemini-2.5-flash"],
+    },
+  },
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": true,
+    "agents": true,
+    "hooks": true,
+    "plugins": true,
+    "plugins_override": {},
+  },
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false,
+  },
+  "experimental": {
+    "auto_resume": true,
+    "aggressive_truncation": true,
+    "truncate_all_tool_outputs": true,
+    "preemptive_compaction": true,
+    "dynamic_context_pruning": {
+      "enabled": false,
+      "notification": "off",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3,
+      },
+    },
+  },
+  "disabled_mcps": [],
+  "disabled_skills": ["playwright"],
+  "disabled_agents": [],
+  "disabled_hooks": [],
+  "google_auth": false,
+  "lsp": {},
+}
