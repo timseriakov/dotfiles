@@ -1,0 +1,66 @@
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+что за ебаная хуйня bose diagnostics
+      --very-verbose  Enables trace-level diagnostics
+      --quiet         Prevents unnecessary output
+  -v, --version       Prints the current version of Volta
+  -h, --help          Print help (see more with '--help')
+
+dotfiles/opencode on  master [✘!?] on 
+❯ volta uninstall codesash
+warning:  No package 'codesash' found to uninstall
+
+dotfiles/opencode on  master [✘!?] on 
+❯ volta uninstall codedash
+warning:  No package 'codedash' found to uninstall
+
+dotfiles/opencode on  master [✘!?] on 
+❯ npm i -g codedash-app && codedash run
+
+added 1 package in 165ms
+Volta error: Could not execute command.
+
+See `volta help install` and `volta help pin` for info about making tools available.
+Error details written to /Users/tim/.volta/log/volta-error-2026-04-18_18_20_41.566.log
+
+dotfiles/opencode on  master [✘!?] on 
+❯
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_696e0502`
+**Description:** codedash package binary
+**Duration:** 48s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_696e0502")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+v7.0.2 available — run: npm i -g codedash-app@latest
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_696e0502`: codedash package binary
+- `bg_3c501523`: Volta tool resolution
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
