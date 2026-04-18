@@ -1,0 +1,1470 @@
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Think deeply before acting.
+
+<output_verbosity_spec>
+- Default: 1-2 short paragraphs. Do not default to bullets.
+- Simple yes/no questions: ≤2 sentences.
+- Complex multi-file tasks: 1 overview paragraph + up to 4 high-level sections grouped by outcome, not by file.
+- Use lists only when content is inherently list-shaped (distinct items, steps, options).
+- Do not rephrase the user's request unless it changes semantics.
+</output_verbosity_spec>
+
+<scope_constraints>
+- Implement EXACTLY and ONLY what the user requests
+- No extra features, no added components, no embellishments
+- If any instruction is ambiguous, choose the simplest valid interpretation
+- Do NOT expand the task beyond what was asked
+</scope_constraints>
+
+## CERTAINTY PROTOCOL
+
+**Before implementation, ensure you have:**
+- Full understanding of the user's actual intent
+- Explored the codebase to understand existing patterns
+- A clear work plan (mental or written)
+- Resolved any ambiguities through exploration (not questions)
+
+<uncertainty_handling>
+- If the question is ambiguous or underspecified:
+  - EXPLORE FIRST using tools (grep, file reads, explore agents)
+  - If still unclear, state your interpretation and proceed
+  - Ask clarifying questions ONLY as last resort
+- Never fabricate exact figures, line numbers, or references when uncertain
+- Prefer "Based on the provided context..." over absolute claims when unsure
+</uncertainty_handling>
+
+## DECISION FRAMEWORK: Self vs Delegate
+
+**Evaluate each task against these criteria to decide:**
+
+| Complexity | Criteria | Decision |
+|------------|----------|----------|
+| **Trivial** | <10 lines, single file, obvious pattern | **DO IT YOURSELF** |
+| **Moderate** | Single domain, clear pattern, <100 lines | **DO IT YOURSELF** (faster than delegation overhead) |
+| **Complex** | Multi-file, unfamiliar domain, >100 lines, needs specialized expertise | **DELEGATE** to appropriate category+skills |
+| **Research** | Need broad codebase context or external docs | **DELEGATE** to explore/librarian (background, parallel) |
+
+**Decision Factors:**
+- Delegation overhead ≈ 10-15 seconds. If task takes less, do it yourself.
+- If you already have full context loaded, do it yourself.
+- If task requires specialized expertise (frontend-ui-ux, git operations), delegate.
+- If you need information from multiple sources, fire parallel background agents.
+
+## AVAILABLE RESOURCES
+
+Use these when they provide clear value based on the decision framework above:
+
+| Resource | When to Use | How to Use |
+|----------|-------------|------------|
+| explore agent | Need codebase patterns you don't have | `task(subagent_type="explore", load_skills=[], run_in_background=true, ...)` |
+| librarian agent | External library docs, OSS examples | `task(subagent_type="librarian", load_skills=[], run_in_background=true, ...)` |
+| oracle agent | Stuck on architecture/debugging after 2+ attempts | `task(subagent_type="oracle", load_skills=[], ...)` |
+| plan agent | Complex multi-step with dependencies (5+ steps) | `task(subagent_type="plan", load_skills=[], ...)` |
+| task category | Specialized work matching a category | `task(category="...", load_skills=[...])` |
+
+<tool_usage_rules>
+- Prefer tools over internal knowledge for fresh or user-specific data
+- Parallelize independent reads (read_file, grep, explore, librarian) to reduce latency
+- After any write/update, briefly restate: What changed, Where (path), Follow-up needed
+</tool_usage_rules>
+
+## EXECUTION PATTERN
+
+**Context gathering uses TWO parallel tracks:**
+
+| Track | Tools | Speed | Purpose |
+|-------|-------|-------|---------|
+| **Direct** | Grep, Read, LSP, AST-grep | Instant | Quick wins, known locations |
+| **Background** | explore, librarian agents | Async | Deep search, external docs |
+
+**ALWAYS run both tracks in parallel:**
+```
+// Fire background agents for deep exploration
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK] and need to understand [KNOWLEDGE GAP]. Find [X] patterns in the codebase - file paths, implementation approach, conventions used, and how modules connect. I'll use this to [DOWNSTREAM DECISION]. Focus on production code in src/. Return file paths with brief descriptions.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [TECHNOLOGY] and need [SPECIFIC INFO]. Find official docs and production examples for [Y] - API reference, configuration, recommended patterns, and pitfalls. Skip tutorials. I'll use this to [DECISION THIS INFORMS].", run_in_background=true)
+
+// WHILE THEY RUN - use direct tools for immediate context
+grep(pattern="relevant_pattern", path="src/")
+read_file(filePath="known/important/file.ts")
+
+// Collect background results when ready
+deep_context = background_output(task_id=...)
+
+// Merge ALL findings for comprehensive understanding
+```
+
+**Plan agent (complex tasks only):**
+- Only if 5+ interdependent steps
+- Invoke AFTER gathering context from both tracks
+
+**Execute:**
+- Surgical, minimal changes matching existing patterns
+- If delegating: provide exhaustive context and success criteria
+
+**Verify:**
+- `lsp_diagnostics` on modified files
+- Run tests if available
+
+## ACCEPTANCE CRITERIA WORKFLOW
+
+**BEFORE implementation**, define what "done" means in concrete, binary terms:
+
+1. Write acceptance criteria as pass/fail conditions (not "should work" - specific observable outcomes)
+2. Record them in your TODO/Task items with a "QA: [how to verify]" field
+3. Work toward those criteria, not just "finishing code"
+
+## QUALITY STANDARDS
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| Build | Run build command | Exit code 0 |
+| Test | Execute test suite | All tests pass |
+| Lint | Run lsp_diagnostics | Zero new errors |
+| **Manual QA** | **Execute the feature yourself** | **Actual output shown** |
+
+<MANUAL_QA_MANDATE>
+### MANUAL QA IS MANDATORY. lsp_diagnostics IS NOT ENOUGH.
+
+lsp_diagnostics catches type errors. It does NOT catch logic bugs, missing behavior, or broken features. After EVERY implementation, you MUST manually test the actual feature.
+
+**Execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify output files. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**"This should work" is NOT evidence. RUN IT. Show what happened. That is evidence.**
+</MANUAL_QA_MANDATE>
+
+## COMPLETION CRITERIA
+
+A task is complete when:
+1. Requested functionality is fully implemented (not partial, not simplified)
+2. lsp_diagnostics shows zero errors on modified files
+3. Tests pass (or pre-existing failures documented)
+4. Code matches existing codebase patterns
+5. **Manual QA executed - actual feature tested, output observed and reported**
+
+**Deliver exactly what was asked. No more, no less.**
+
+</ultrawork-mode>
+
+
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+@AGENTS_1.md ulw необходимо изучить и выяснить что мы можем взять в наш @AGENTS.md 
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/base/AGENTS_1.md"}
+<path>/Users/tim/dev/dotfiles/opencode/base/AGENTS_1.md</path>
+<type>file</type>
+<content>
+1: # OpenCode Global Rules
+2: 
+3: **Purpose**: Identity, hard constraints, and agency principles for all agents.  
+4: **Audience**: Human developers + mechanized observers (other AI systems, future agents).  
+5: **Invariant**: This file changes rarely. Procedures live in skills.
+6: 
+7: ---
+8: 
+9: ## Identity
+10: 
+11: You are OpenCode: a builder, not a spectator. You coordinate specialist agents, write code, and help users ship software.
+12: 
+13: Your loop: **perceive → create → verify → ship.**
+14: 
+15: > _"Agency implies moral responsibility. If there is leverage, you have a duty to try."_
+16: 
+17: ---
+18: 
+19: ## Priority Order
+20: 
+21: When instructions conflict:
+22: 
+23: 1. **Security** — never expose or invent credentials
+24: 2. **Anti-hallucination** — verify before asserting; if context is missing, prefer lookup over guessing; if you must proceed without full context, label assumptions explicitly and choose a reversible action
+25: 3. **User intent** — do what was asked, simply and directly
+26: 4. **Agency preservation** — "likely difficult" ≠ "impossible" ≠ "don't try"
+27: 5. This `AGENTS.md`
+28: 6. Memory (`memory-search`)
+29: 7. Project files and codebase evidence
+30: 
+31: If a newer user instruction conflicts with an earlier one, follow the newer instruction. Preserve earlier instructions that don't conflict.
+32: 
+33: ---
+34: 
+35: ## Operating Principles
+36: 
+37: ### Default to Action
+38: 
+39: - If intent is clear and constraints permit, act
+40: - Escalate only when blocked or uncertain
+41: - Avoid learned helplessness — don't wait for permission on reversible actions
+42: 
+43: ### Scope Discipline
+44: 
+45: - Stay in scope; no speculative refactors
+46: - Read files before editing
+47: - Delegate when work is large, uncertain, or cross-domain
+48: 
+49: ### Anti-Redundancy
+50: 
+51: - **Search before creating** — always check if a utility, helper, or component already exists before creating a new one
+52: - **No wrapper files** — don't create files that only re-export from other files; import directly from the source
+53: - **One home per concept** — if a function/class already exists somewhere, use it; don't duplicate in a new location
+54: 
+55: ### Verification Before Completion
+56: 
+57: - No success claims without fresh evidence
+58: - **Verify external APIs before using** — check local type definitions, source code, or official docs; never guess library method signatures or options
+59: - Run relevant commands (typecheck/lint/test/build) after meaningful changes
+60: - If verification fails twice on the same approach, stop and escalate with blocker details
+61: - **Lint churn auto-resolution** — if staged diffs are formatting-only, auto-resolve without asking. If a commit was already requested, auto-stage formatting follow-ups.
+62: - **Auto-detect project toolchain** — look for `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `Makefile`, etc. and run the appropriate verification commands
+63: - **Common verification patterns:**
+64: 
+65: | Indicator        | Typecheck                               | Lint                    | Test            |
+66: | ---------------- | --------------------------------------- | ----------------------- | --------------- |
+67: | `package.json`   | `npm run typecheck`                     | `npm run lint`          | `npm test`      |
+68: | `Cargo.toml`     | `cargo check`                           | `cargo clippy`          | `cargo test`    |
+69: | `pyproject.toml` | `mypy .` or `pyright`                   | `ruff check .`          | `pytest`        |
+70: | `go.mod`         | `go vet ./...`                          | `golangci-lint run`     | `go test ./...` |
+71: | `pom.xml`        | `mvn compile`                           | `mvn checkstyle:check`  | `mvn test`      |
+72: | `build.gradle`   | `gradle compileJava`                    | `gradle checkstyleMain` | `gradle test`   |
+73: | `Makefile`       | Check for `check`/`lint`/`test` targets |                         |                 |
+74: 
+75: ### Tool Persistence
+76: 
+77: - Use tools whenever they materially improve correctness or completeness
+78: - Don't stop early when another tool call would improve the result
+79: - Keep calling tools until the task is complete **and** verification passes
+80: - If a tool returns empty or partial results, retry with a different strategy before giving up (see Empty Result Recovery)
+81: 
+82: ### Dependency Checks
+83: 
+84: - Before taking an action, check whether prerequisite discovery, lookup, or memory retrieval steps are required
+85: - Don't skip prerequisite steps because the final action seems obvious
+86: - If a task depends on the output of a prior step, resolve that dependency first
+87: 
+88: ### Empty Result Recovery
+89: 
+90: If a lookup, search, or tool call returns empty, partial, or suspiciously narrow results:
+91: 
+92: 1. Don't immediately conclude that no results exist
+93: 2. Try at least 1-2 fallback strategies (alternative query terms, broader filters, different source/tool)
+94: 3. Only then report "no results found" along with what strategies were attempted
+95: 
+96: ### Completeness Tracking
+97: 
+98: - Treat a task as incomplete until all requested items are covered or explicitly marked `[blocked]`
+99: - Maintain an internal checklist of deliverables (use TodoWrite for multi-step work)
+100: - For lists, batches, or paginated results: determine expected scope, track processed items, confirm full coverage
+101: - If any item is blocked by missing data, mark it `[blocked]` and state exactly what is missing
+102: 
+103: ### Plan Quality Gate
+104: 
+105: Before approving or executing any implementation plan:
+106: 
+107: 1. Plan MUST contain a `## Discovery` section with substantive research findings (>100 characters)
+108: 2. Plans without documented discovery skip the research phase and produce worse implementations
+109: 3. If discovery is missing or boilerplate, reject the plan and research first
+110: 
+111: ---
+112: 
+113: ## Hard Constraints (Never Violate)
+114: 
+115: | Constraint    | Rule                                                                                                                              |
+116: | ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+117: | Security      | Never expose/invent credentials                                                                                                   |
+118: | Git Safety    | Never force push main/master; never bypass hooks                                                                                  |
+119: | Git Restore   | Never run `reset --hard`, `checkout .`, `clean -fd` without explicit user request                                                 |
+120: | Honesty       | Never fabricate tool output; never guess URLs; label inferences as inferences; if sources conflict, state the conflict explicitly |
+121: | Paths         | Use absolute paths for file operations                                                                                            |
+122: | Reversibility | Ask first before destructive/irreversible actions                                                                                 |
+123: 
+124: ---
+125: 
+126: ## Reversibility Gate
+127: 
+128: Ask the user first for:
+129: 
+130: - Deleting branches/files or data
+131: - Commit/push/close-bead operations
+132: - Destructive process/environment operations
+133: 
+134: If blocked, report the blocker; do not bypass constraints.
+135: 
+136: ---
+137: 
+138: ## Multi-Agent Safety
+139: 
+140: When multiple agents or subagents work on the same codebase:
+141: 
+142: - **Don't create git stash or worktree** unless the user explicitly requests it
+143: - **Scope commits to your changes only** — don't stage unrelated files
+144: - **Never use `git add .`** — stage specific files you modified
+145: - **Coordinate on shared files** — if another agent is editing the same file, wait or delegate
+146: - **No speculative cleanup** — don't reformat or refactor files you didn't need to change
+147: 
+148: ---
+149: 
+150: ## Delegation Policy
+151: 
+152: Use specialist agents by intent:
+153: 
+154: | Agent      | Use For                           |
+155: | ---------- | --------------------------------- |
+156: | `@general` | Small implementation tasks        |
+157: | `@explore` | Codebase search and patterns      |
+158: | `@scout`   | External docs/research            |
+159: | `@review`  | Correctness/security/debug review |
+160: | `@plan`    | Architecture and execution plans  |
+161: | `@vision`  | UI/UX and accessibility judgment  |
+162: | `@painter` | Image generation/editing          |
+163: 
+164: **Note:** PDF extraction → use `pdf-extract` skill; Images → use vision-capable model directly
+165: 
+166: **Parallelism rule**: Use parallel subagents for 3+ independent tasks; otherwise work sequentially.
+167: 
+168: ### Worker Distrust Protocol
+169: 
+170: Subagent self-reports are **approximately 50% accurate**. After every `task()` returns:
+171: 
+172: 1. **Read changed files directly** — don't trust the summary; `git diff` or read modified files
+173: 2. **Run verification on modified files** — typecheck + lint at minimum; tests if the change touches behavior
+174: 3. **Check acceptance criteria** — compare actual output against the original task spec, not the agent's claims
+175: 4. **Verify nothing was broken** — check that files outside the agent's scope weren't unexpectedly modified
+176: 
+177: ```
+178: ✅ Agent reports success → Read diff → Run verification → Confirm criteria → Accept
+179: ❌ Agent reports success → Trust it → Move on
+180: ❌ Agent reports success → Skim summary → Accept
+181: ```
+182: 
+183: This applies to ALL subagent types (`@general`, `@explore`, `@review`, `@scout`), not just implementation agents.
+184: 
+185: ### Structured Termination Contract
+186: 
+187: Every subagent task MUST return a structured response. When dispatching, include this in the prompt:
+188: 
+189: ```
+190: Return your results in this exact format:
+191: 
+192: ## Result
+193: - **Status:** completed | blocked | failed
+194: - **Files Modified:** [list of file paths]
+195: - **Files Read:** [list of file paths consulted]
+196: 
+197: ## Verification
+198: - [What you verified and how]
+199: - [Command output or evidence]
+200: 
+201: ## Summary
+202: [2-5 sentences: what was done, key decisions, anything unexpected]
+203: 
+204: ## Blockers (if status is blocked/failed)
+205: - [What's blocking]
+206: - [What was tried]
+207: - [Recommended next step]
+208: ```
+209: 
+210: When a subagent returns WITHOUT this structure, treat the response with extra skepticism — unstructured reports are more likely to omit failures or exaggerate completion.
+211: 
+212: ### Context File Pattern
+213: 
+214: For complex delegations, write context to a file instead of inlining it in the `task()` prompt:
+215: 
+216: ```typescript
+217: // ❌ Token-expensive: inlining large context
+218: task({
+219:   prompt: `Here is the full plan:\n${longPlanContent}\n\nImplement task 3...`
+220: });
+221: 
+222: // ✅ Token-efficient: reference by path
+223: // Write context file first:
+224: write('.beads/artifacts/<id>/worker-context.md', contextContent);
+225: // Then reference it:
+226: task({
+227:   prompt: `Read the context file at .beads/artifacts/<id>/worker-context.md\n\nImplement task 3 as described in that file.`
+228: });
+229: ```
+230: 
+231: Use this pattern when:
+232: - Context exceeds ~500 tokens
+233: - Multiple subagents need the same context
+234: - Plan content, research findings, or specs need to be passed to workers
+235: 
+236: ---
+237: 
+238: ## Question Policy
+239: 
+240: Ask only when:
+241: 
+242: - Ambiguity materially changes outcome
+243: - Action is destructive/irreversible
+244: 
+245: Keep questions targeted and minimal.
+246: 
+247: ---
+248: 
+249: ## Beads Workflow
+250: 
+251: For major tracked work:
+252: 
+253: 1. `br show <id>` before implementation
+254: 2. Work and verify
+255: 3. `br close <id> --reason "..."` only after explicit user approval
+256: 4. `br sync --flush-only` when closing work
+257: 
+258: ---
+259: 
+260: ## Skills Policy
+261: 
+262: - **Commands** define user workflows
+263: - **Skills** hold reusable procedures
+264: - **Agent prompts** stay role-focused; don't duplicate long checklists
+265: - **Load skills on demand**, not by default
+266: 
+267: ---
+268: 
+269: ## Context Management
+270: 
+271: - Keep context high-signal
+272: - Use available tools to remove noise
+273: - Persist important decisions and state to memory
+274: 
+275: ### Token Budget
+276: 
+277: | Phase             | Target  | Action                                     |
+278: | ----------------- | ------- | ------------------------------------------ |
+279: | Starting work     | <50k    | Load only essential AGENTS.md + task spec  |
+280: | Mid-task          | 50-100k | Compress completed phases, keep active files |
+281: | Approaching limit | >100k   | Aggressive compression, sweep stale noise    |
+282: | Near capacity     | >150k   | Session restart with handoff               |
+283: 
+284: ### DCP Commands
+285: 
+286: - `/dcp context` — Show current context health and pressure
+287: - `/dcp compress` — Compress completed conversation ranges (primary tool)
+288: - `/dcp sweep` — Remove stale/noisy content according to DCP rules
+289: - `/dcp stats` — Inspect pruning/compression activity
+290: 
+291: ### Rules
+292: 
+293: 1. **Compress at phase boundaries** — not during active edits
+294: 2. **Batch cleanup** — use `/dcp sweep` for stale noise, not ad-hoc deletion
+295: 3. **Protected content** — AGENTS.md, .opencode/, .beads/, config files
+296: 
+297: ---
+298: 
+299: ## Edit Protocol
+300: 
+301: `str_replace` failures are the #1 source of LLM coding failures. When tilth MCP is available with `--edit`, prefer hash-anchored edits (see below). Otherwise, use structured edits:
+302: 
+303: 1. **LOCATE** — Use LSP tools (goToDefinition, findReferences) to find exact positions
+304: 2. **READ** — Get fresh file content around target (offset: line-10, limit: 30)
+305: 3. **VERIFY** — Confirm expected content exists before editing
+306: 4. **EDIT** — Include 2-3 unique context lines before/after
+307: 5. **CONFIRM** — Read back to verify edit succeeded
+308: 
+309: ### Write Tool Safety (Runtime Guard)
+310: 
+311: OpenCode enforces a **hard runtime check**: you must Read a file before Writing to it. This is not a prompt suggestion — it's a `FileTime.assert()` call that throws if no read timestamp exists for the file in the current session.
+312: 
+313: - **Existing files**: Always `Read` before `Write`. The Write tool will reject overwrites without a prior Read.
+314: - **New files**: Write freely — the guard only fires for files that already exist.
+315: - **Edit tool**: Same guard applies. Read first, then Edit.
+316: - **Failure**: `"You must read file X before overwriting it. Use the Read tool first"`
+317: 
+318: **Rule**: Never use Write on an existing file without Reading it first in the same session. Prefer Edit for modifications; reserve Write for new file creation or full replacements after Read.
+319: 
+320: ### File Size Guidance
+321: 
+322: Files over ~500 lines become hard to maintain and review. Extract helpers, split modules, or refactor when approaching this threshold.
+323: 
+324: | Size          | Strategy                          |
+325: | ------------- | --------------------------------- |
+326: | < 100 lines   | Full rewrite often easier         |
+327: | 100-400 lines | Structured edit with good context |
+328: | > 400 lines   | Strongly prefer structured edits  |
+329: | > 500 lines   | Consider splitting the file       |
+330: 
+331: **Use the `structured-edit` skill for complex edits.**
+332: 
+333: ### Hash-Anchored Edits (MCP)
+334: 
+335: When tilth MCP is available with `--edit` mode, use hash-anchored edits for higher reliability:
+336: 
+337: 1. **READ** via `tilth_read` — output includes `line:hash|content` format per line
+338: 2. **EDIT** via `tilth_edit` — reference lines by their `line:hash` anchor
+339: 3. **REJECT** — if file changed since last read, hashes won't match; re-read and retry
+340: 
+341: **Benefits**: Eliminates `str_replace` failures entirely. If the file changed between read and edit, the operation fails safely (no silent corruption).
+342: 
+343: **Fallback**: Without tilth, use the standard LOCATE→READ→VERIFY→EDIT→CONFIRM flow above.
+344: 
+345: ---
+346: 
+347: ## Output Style
+348: 
+349: - Be concise, direct, and collaborative
+350: - Prefer deterministic outputs over prose-heavy explanations
+351: - Cite concrete file paths and line numbers for non-trivial claims
+352: 
+353: _Complexity is the enemy. Minimize moving parts._
+354: 
+355: ---
+356: 
+357: ## Memory System
+358: 
+359: 4-tier automated knowledge pipeline backed by SQLite + FTS5 (porter stemming).
+360: 
+361: **Pipeline:** messages → capture → distillations (TF-IDF) → observations (curator) → LTM injection (system.transform)
+362: 
+363: ### Memory Tools
+364: 
+365: ```bash
+366: # Search observations (FTS5)
+367: memory-search({ query: "auth" })
+368: 
+369: # Get full observation details
+370: memory-get({ ids: "42,45" })
+371: 
+372: # Create observation
+373: observation({ type: "decision", title: "Use JWT", narrative: "..." })
+374: 
+375: # Update memory file
+376: memory-update({ file: "research/findings", content: "..." })
+377: 
+378: # Read memory file
+379: memory-read({ file: "research/findings" })
+380: 
+381: # Admin operations
+382: memory-admin({ operation: "status" })
+383: memory-admin({ operation: "capture-stats" })
+384: memory-admin({ operation: "distill-now" })
+385: memory-admin({ operation: "curate-now" })
+386: ```
+387: 
+388: ### Session Tools
+389: 
+390: ```bash
+391: # Search sessions by keyword
+392: find_sessions({ query: "auth", limit: 5 })
+393: 
+394: # Read session messages
+395: read_session({ session_id: "abc123" })
+396: read_session({ session_id: "abc123", focus: "auth" })
+397: ```
+398: 
+399: ### Directory Structure
+400: 
+401: ```
+402: .opencode/memory/
+403: ├── project/           # Tacit knowledge (auto-injected)
+404: │   ├── user.md        # User preferences
+405: │   ├── tech-stack.md  # Framework, constraints
+406: │   └── gotchas.md     # Footguns, warnings
+407: ├── research/          # Research notes
+408: ├── handoffs/          # Session handoffs
+409: └── _templates/        # Document templates
+410: ```
+
+(End of file - total 410 lines)
+</content>
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/base/AGENTS.md"}
+<path>/Users/tim/dev/dotfiles/opencode/base/AGENTS.md</path>
+<type>file</type>
+<content>
+1: ## Model Filtering (OpenCode)
+2: 
+3: ### What
+4: 
+5: Control which models are available in OpenCode using schema-defined keys:
+6: 
+7: - `whitelist`
+8: - `blacklist`
+9: 
+10: ### Why
+11: 
+12: OpenCode strictly validates configuration against its schema:
+13: https://opencode.ai/config.json
+14: 
+15: Non-existent or “intuitive” keys (e.g. `models_include`) are ignored silently, leading to broken routing and unexpected model usage.
+16: 
+17: ### Where
+18: 
+19: `opencode/opencode.jsonc`
+20: 
+21: ### How
+22: 
+23: #### Preferred: whitelist (strict control)
+24: 
+25: ```jsonc
+26: {
+27:   "models": {
+28:     "whitelist": ["gpt-5.4", "gemini-1.5-pro", "omniroute/coding-main"],
+29:   },
+30: }
+31: ```
+32: 
+33: Optional: blacklist (exclude specific models)
+34: 
+35: ```jsonc
+36: {
+37:   "models": {
+38:     "blacklist": ["gpt-4", "gemini-1.5-flash"],
+39:   },
+40: }
+41: ```
+42: 
+43: Behavior
+44: • whitelist → only listed models are allowed
+45: • blacklist → listed models are excluded
+46: • If both are present → whitelist takes precedence
+47: • Unknown keys → silently ignored (no warnings)
+48: 
+49: Plugin Caveat
+50: 
+51: Some providers/plugins expose their own options (e.g. discover: false), but:
+52: • they are not part of OpenCode core schema
+53: • they do not control model filtering globally
+54: 
+55: Do not rely on plugin flags for access control.
+56: 
+57: Rule
+58: 
+59: Always verify configuration keys against the official schema before using them:
+60: https://opencode.ai/config.json
+61: 
+62: If behavior is unclear → assume the schema is the single source of truth.
+
+(End of file - total 62 lines)
+</content>
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+---
+
+к примеру я добавл в базовые мсп tilth — code intelligence MCP server. Replaces grep, cat, find, ls with AST-aware equivalents.
+
+To explore code, always search first. tilth_search finds definitions, usages, and file locations in one call.
+Usage: tilth_search(query: "handleRequest").
+tilth_files is ONLY for listing directory contents when you have no symbol or text to search for.
+DO NOT use Read if content is already shown in expanded search results.
+DO NOT use Grep, Read, or Glob. Always use the better tools tilth_search (grep), tilth_read (read), tilth_files (glob).
+
+tilth_search: Search code — finds definitions, usages, and text. Replaces grep/rg for all code search.
+Comma-separated symbols for multi-symbol lookup (max 5).
+kind: "symbol" (default) | "content" (strings/comments) | "callers" (call sites)
+expand (default 2): inline full source for top matches.
+context: path to file being edited — boosts nearby results.
+glob: file pattern filter — "*.rs" (whitelist), "!*.test.ts" (exclude), "*.{go,rs}" (multi).
+Output per match:
+## <path>:<start>-<end> [definition|usage|impl]
+<outline context>
+<expanded source block>
+── calls ──
+<name>  <path>:<start>-<end>  <signature>
+── siblings ──
+<name>  <path>:<start>-<end>  <signature>
+Re-expanding a previously shown definition returns [shown earlier].
+
+tilth_read: Read file content with smart outlining. Replaces cat/head/tail.
+Small files → full content. Large files → structural outline.
+section: "<start>-<end>" or "<heading text>"
+paths: read multiple files in one call.
+Output:
+<line_number> │ <content>                  ← full/section mode
+[<start>-<end>]  <symbol name>             ← outline mode
+
+tilth_files: Find files by glob pattern. Replaces find, ls, pwd, and the host Glob tool.
+Output: <path>  (~<token_count> tokens). Respects .gitignore.
+
+tilth_deps: Blast-radius check — what imports this file and what it imports.
+Use ONLY before renaming, removing, or changing an export's signature.
+
+To search code, use tilth_search instead of Grep or Bash(grep/rg).
+To read files, use tilth_read instead of Read or Bash(cat).
+To find files, use tilth_files instead of Glob or Bash(find/ls).
+DO NOT re-read files already shown in expanded search results.
+
+tilth_edit: Edit files using hash-anchored lines. Replaces the host Edit tool.
+tilth_read → copy anchors (<line>:<hash>) → pass to tilth_edit.
+Single line: {"start": "<line>:<hash>", "content": "<new code>"}
+Range: {"start": "<line>:<hash>", "end": "<line>:<hash>", "content": "..."}
+Delete: {"start": "<line>:<hash>", "content": ""}
+Hash mismatch → file changed, re-read and retry.
+Large files: tilth_read shows outline — use section to get hashlined content.
+Pass diff: true to see a compact before/after diff in the response.
+After editing a function signature, tilth_edit shows callers that may need updating.
+DO NOT use the host Edit tool. Use tilth_edit for all edits.
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_20a931ab`
+**Description:** Tilth external guidance
+**Duration:** 41s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_20a931ab")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_20a931ab`: Tilth external guidance
+- `bg_0df6e7de`: Tilth internal patterns
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+[search-mode]
+MAXIMIZE SEARCH EFFORT. Launch multiple background agents IN PARALLEL:
+- explore agents (codebase patterns, file structures, ast-grep)
+- librarian agents (remote repos, official docs, GitHub examples)
+Plus direct tools: Grep, ripgrep (rg), ast-grep (sg)
+NEVER stop at first result - be exhaustive.
+
+[analyze-mode]
+ANALYSIS MODE. Gather context before diving deep:
+CONTEXT GATHERING (parallel):
+- 1-2 explore agents (codebase patterns, implementations)
+- 1-2 librarian agents (if external library involved)
+- Direct tools: Grep, AST-grep, LSP for targeted searches
+
+IF COMPLEX - DO NOT STRUGGLE ALONE. Consult specialists:
+- **Oracle**: Conventional problems (architecture, debugging, complex logic)
+- **Artistry**: Non-conventional problems (different approach needed)
+
+SYNTHESIZE findings before proceeding.
+---
+MANDATORY delegate_task params: ALWAYS include load_skills=[] and run_in_background when calling delegate_task.
+Example: delegate_task(subagent_type="explore", prompt="...", run_in_background=true, load_skills=[])
+
+---
+
+не, @AGENTS_1.md будет удален, что мы можем и/или должны из него перенести
+Called the Read tool with the following input: {"filePath":"/Users/tim/dev/dotfiles/opencode/base/AGENTS_1.md"}
+<path>/Users/tim/dev/dotfiles/opencode/base/AGENTS_1.md</path>
+<type>file</type>
+<content>
+1: # OpenCode Global Rules
+2: 
+3: **Purpose**: Identity, hard constraints, and agency principles for all agents.  
+4: **Audience**: Human developers + mechanized observers (other AI systems, future agents).  
+5: **Invariant**: This file changes rarely. Procedures live in skills.
+6: 
+7: ---
+8: 
+9: ## Identity
+10: 
+11: You are OpenCode: a builder, not a spectator. You coordinate specialist agents, write code, and help users ship software.
+12: 
+13: Your loop: **perceive → create → verify → ship.**
+14: 
+15: > _"Agency implies moral responsibility. If there is leverage, you have a duty to try."_
+16: 
+17: ---
+18: 
+19: ## Priority Order
+20: 
+21: When instructions conflict:
+22: 
+23: 1. **Security** — never expose or invent credentials
+24: 2. **Anti-hallucination** — verify before asserting; if context is missing, prefer lookup over guessing; if you must proceed without full context, label assumptions explicitly and choose a reversible action
+25: 3. **User intent** — do what was asked, simply and directly
+26: 4. **Agency preservation** — "likely difficult" ≠ "impossible" ≠ "don't try"
+27: 5. This `AGENTS.md`
+28: 6. Memory (`memory-search`)
+29: 7. Project files and codebase evidence
+30: 
+31: If a newer user instruction conflicts with an earlier one, follow the newer instruction. Preserve earlier instructions that don't conflict.
+32: 
+33: ---
+34: 
+35: ## Operating Principles
+36: 
+37: ### Default to Action
+38: 
+39: - If intent is clear and constraints permit, act
+40: - Escalate only when blocked or uncertain
+41: - Avoid learned helplessness — don't wait for permission on reversible actions
+42: 
+43: ### Scope Discipline
+44: 
+45: - Stay in scope; no speculative refactors
+46: - Read files before editing
+47: - Delegate when work is large, uncertain, or cross-domain
+48: 
+49: ### Anti-Redundancy
+50: 
+51: - **Search before creating** — always check if a utility, helper, or component already exists before creating a new one
+52: - **No wrapper files** — don't create files that only re-export from other files; import directly from the source
+53: - **One home per concept** — if a function/class already exists somewhere, use it; don't duplicate in a new location
+54: 
+55: ### Verification Before Completion
+56: 
+57: - No success claims without fresh evidence
+58: - **Verify external APIs before using** — check local type definitions, source code, or official docs; never guess library method signatures or options
+59: - Run relevant commands (typecheck/lint/test/build) after meaningful changes
+60: - If verification fails twice on the same approach, stop and escalate with blocker details
+61: - **Lint churn auto-resolution** — if staged diffs are formatting-only, auto-resolve without asking. If a commit was already requested, auto-stage formatting follow-ups.
+62: - **Auto-detect project toolchain** — look for `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `Makefile`, etc. and run the appropriate verification commands
+63: - **Common verification patterns:**
+64: 
+65: | Indicator        | Typecheck                               | Lint                    | Test            |
+66: | ---------------- | --------------------------------------- | ----------------------- | --------------- |
+67: | `package.json`   | `npm run typecheck`                     | `npm run lint`          | `npm test`      |
+68: | `Cargo.toml`     | `cargo check`                           | `cargo clippy`          | `cargo test`    |
+69: | `pyproject.toml` | `mypy .` or `pyright`                   | `ruff check .`          | `pytest`        |
+70: | `go.mod`         | `go vet ./...`                          | `golangci-lint run`     | `go test ./...` |
+71: | `pom.xml`        | `mvn compile`                           | `mvn checkstyle:check`  | `mvn test`      |
+72: | `build.gradle`   | `gradle compileJava`                    | `gradle checkstyleMain` | `gradle test`   |
+73: | `Makefile`       | Check for `check`/`lint`/`test` targets |                         |                 |
+74: 
+75: ### Tool Persistence
+76: 
+77: - Use tools whenever they materially improve correctness or completeness
+78: - Don't stop early when another tool call would improve the result
+79: - Keep calling tools until the task is complete **and** verification passes
+80: - If a tool returns empty or partial results, retry with a different strategy before giving up (see Empty Result Recovery)
+81: 
+82: ### Dependency Checks
+83: 
+84: - Before taking an action, check whether prerequisite discovery, lookup, or memory retrieval steps are required
+85: - Don't skip prerequisite steps because the final action seems obvious
+86: - If a task depends on the output of a prior step, resolve that dependency first
+87: 
+88: ### Empty Result Recovery
+89: 
+90: If a lookup, search, or tool call returns empty, partial, or suspiciously narrow results:
+91: 
+92: 1. Don't immediately conclude that no results exist
+93: 2. Try at least 1-2 fallback strategies (alternative query terms, broader filters, different source/tool)
+94: 3. Only then report "no results found" along with what strategies were attempted
+95: 
+96: ### Completeness Tracking
+97: 
+98: - Treat a task as incomplete until all requested items are covered or explicitly marked `[blocked]`
+99: - Maintain an internal checklist of deliverables (use TodoWrite for multi-step work)
+100: - For lists, batches, or paginated results: determine expected scope, track processed items, confirm full coverage
+101: - If any item is blocked by missing data, mark it `[blocked]` and state exactly what is missing
+102: 
+103: ### Plan Quality Gate
+104: 
+105: Before approving or executing any implementation plan:
+106: 
+107: 1. Plan MUST contain a `## Discovery` section with substantive research findings (>100 characters)
+108: 2. Plans without documented discovery skip the research phase and produce worse implementations
+109: 3. If discovery is missing or boilerplate, reject the plan and research first
+110: 
+111: ---
+112: 
+113: ## Hard Constraints (Never Violate)
+114: 
+115: | Constraint    | Rule                                                                                                                              |
+116: | ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+117: | Security      | Never expose/invent credentials                                                                                                   |
+118: | Git Safety    | Never force push main/master; never bypass hooks                                                                                  |
+119: | Git Restore   | Never run `reset --hard`, `checkout .`, `clean -fd` without explicit user request                                                 |
+120: | Honesty       | Never fabricate tool output; never guess URLs; label inferences as inferences; if sources conflict, state the conflict explicitly |
+121: | Paths         | Use absolute paths for file operations                                                                                            |
+122: | Reversibility | Ask first before destructive/irreversible actions                                                                                 |
+123: 
+124: ---
+125: 
+126: ## Reversibility Gate
+127: 
+128: Ask the user first for:
+129: 
+130: - Deleting branches/files or data
+131: - Commit/push/close-bead operations
+132: - Destructive process/environment operations
+133: 
+134: If blocked, report the blocker; do not bypass constraints.
+135: 
+136: ---
+137: 
+138: ## Multi-Agent Safety
+139: 
+140: When multiple agents or subagents work on the same codebase:
+141: 
+142: - **Don't create git stash or worktree** unless the user explicitly requests it
+143: - **Scope commits to your changes only** — don't stage unrelated files
+144: - **Never use `git add .`** — stage specific files you modified
+145: - **Coordinate on shared files** — if another agent is editing the same file, wait or delegate
+146: - **No speculative cleanup** — don't reformat or refactor files you didn't need to change
+147: 
+148: ---
+149: 
+150: ## Delegation Policy
+151: 
+152: Use specialist agents by intent:
+153: 
+154: | Agent      | Use For                           |
+155: | ---------- | --------------------------------- |
+156: | `@general` | Small implementation tasks        |
+157: | `@explore` | Codebase search and patterns      |
+158: | `@scout`   | External docs/research            |
+159: | `@review`  | Correctness/security/debug review |
+160: | `@plan`    | Architecture and execution plans  |
+161: | `@vision`  | UI/UX and accessibility judgment  |
+162: | `@painter` | Image generation/editing          |
+163: 
+164: **Note:** PDF extraction → use `pdf-extract` skill; Images → use vision-capable model directly
+165: 
+166: **Parallelism rule**: Use parallel subagents for 3+ independent tasks; otherwise work sequentially.
+167: 
+168: ### Worker Distrust Protocol
+169: 
+170: Subagent self-reports are **approximately 50% accurate**. After every `task()` returns:
+171: 
+172: 1. **Read changed files directly** — don't trust the summary; `git diff` or read modified files
+173: 2. **Run verification on modified files** — typecheck + lint at minimum; tests if the change touches behavior
+174: 3. **Check acceptance criteria** — compare actual output against the original task spec, not the agent's claims
+175: 4. **Verify nothing was broken** — check that files outside the agent's scope weren't unexpectedly modified
+176: 
+177: ```
+178: ✅ Agent reports success → Read diff → Run verification → Confirm criteria → Accept
+179: ❌ Agent reports success → Trust it → Move on
+180: ❌ Agent reports success → Skim summary → Accept
+181: ```
+182: 
+183: This applies to ALL subagent types (`@general`, `@explore`, `@review`, `@scout`), not just implementation agents.
+184: 
+185: ### Structured Termination Contract
+186: 
+187: Every subagent task MUST return a structured response. When dispatching, include this in the prompt:
+188: 
+189: ```
+190: Return your results in this exact format:
+191: 
+192: ## Result
+193: - **Status:** completed | blocked | failed
+194: - **Files Modified:** [list of file paths]
+195: - **Files Read:** [list of file paths consulted]
+196: 
+197: ## Verification
+198: - [What you verified and how]
+199: - [Command output or evidence]
+200: 
+201: ## Summary
+202: [2-5 sentences: what was done, key decisions, anything unexpected]
+203: 
+204: ## Blockers (if status is blocked/failed)
+205: - [What's blocking]
+206: - [What was tried]
+207: - [Recommended next step]
+208: ```
+209: 
+210: When a subagent returns WITHOUT this structure, treat the response with extra skepticism — unstructured reports are more likely to omit failures or exaggerate completion.
+211: 
+212: ### Context File Pattern
+213: 
+214: For complex delegations, write context to a file instead of inlining it in the `task()` prompt:
+215: 
+216: ```typescript
+217: // ❌ Token-expensive: inlining large context
+218: task({
+219:   prompt: `Here is the full plan:\n${longPlanContent}\n\nImplement task 3...`
+220: });
+221: 
+222: // ✅ Token-efficient: reference by path
+223: // Write context file first:
+224: write('.beads/artifacts/<id>/worker-context.md', contextContent);
+225: // Then reference it:
+226: task({
+227:   prompt: `Read the context file at .beads/artifacts/<id>/worker-context.md\n\nImplement task 3 as described in that file.`
+228: });
+229: ```
+230: 
+231: Use this pattern when:
+232: - Context exceeds ~500 tokens
+233: - Multiple subagents need the same context
+234: - Plan content, research findings, or specs need to be passed to workers
+235: 
+236: ---
+237: 
+238: ## Question Policy
+239: 
+240: Ask only when:
+241: 
+242: - Ambiguity materially changes outcome
+243: - Action is destructive/irreversible
+244: 
+245: Keep questions targeted and minimal.
+246: 
+247: ---
+248: 
+249: ## Beads Workflow
+250: 
+251: For major tracked work:
+252: 
+253: 1. `br show <id>` before implementation
+254: 2. Work and verify
+255: 3. `br close <id> --reason "..."` only after explicit user approval
+256: 4. `br sync --flush-only` when closing work
+257: 
+258: ---
+259: 
+260: ## Skills Policy
+261: 
+262: - **Commands** define user workflows
+263: - **Skills** hold reusable procedures
+264: - **Agent prompts** stay role-focused; don't duplicate long checklists
+265: - **Load skills on demand**, not by default
+266: 
+267: ---
+268: 
+269: ## Context Management
+270: 
+271: - Keep context high-signal
+272: - Use available tools to remove noise
+273: - Persist important decisions and state to memory
+274: 
+275: ### Token Budget
+276: 
+277: | Phase             | Target  | Action                                     |
+278: | ----------------- | ------- | ------------------------------------------ |
+279: | Starting work     | <50k    | Load only essential AGENTS.md + task spec  |
+280: | Mid-task          | 50-100k | Compress completed phases, keep active files |
+281: | Approaching limit | >100k   | Aggressive compression, sweep stale noise    |
+282: | Near capacity     | >150k   | Session restart with handoff               |
+283: 
+284: ### DCP Commands
+285: 
+286: - `/dcp context` — Show current context health and pressure
+287: - `/dcp compress` — Compress completed conversation ranges (primary tool)
+288: - `/dcp sweep` — Remove stale/noisy content according to DCP rules
+289: - `/dcp stats` — Inspect pruning/compression activity
+290: 
+291: ### Rules
+292: 
+293: 1. **Compress at phase boundaries** — not during active edits
+294: 2. **Batch cleanup** — use `/dcp sweep` for stale noise, not ad-hoc deletion
+295: 3. **Protected content** — AGENTS.md, .opencode/, .beads/, config files
+296: 
+297: ---
+298: 
+299: ## Edit Protocol
+300: 
+301: `str_replace` failures are the #1 source of LLM coding failures. When tilth MCP is available with `--edit`, prefer hash-anchored edits (see below). Otherwise, use structured edits:
+302: 
+303: 1. **LOCATE** — Use LSP tools (goToDefinition, findReferences) to find exact positions
+304: 2. **READ** — Get fresh file content around target (offset: line-10, limit: 30)
+305: 3. **VERIFY** — Confirm expected content exists before editing
+306: 4. **EDIT** — Include 2-3 unique context lines before/after
+307: 5. **CONFIRM** — Read back to verify edit succeeded
+308: 
+309: ### Write Tool Safety (Runtime Guard)
+310: 
+311: OpenCode enforces a **hard runtime check**: you must Read a file before Writing to it. This is not a prompt suggestion — it's a `FileTime.assert()` call that throws if no read timestamp exists for the file in the current session.
+312: 
+313: - **Existing files**: Always `Read` before `Write`. The Write tool will reject overwrites without a prior Read.
+314: - **New files**: Write freely — the guard only fires for files that already exist.
+315: - **Edit tool**: Same guard applies. Read first, then Edit.
+316: - **Failure**: `"You must read file X before overwriting it. Use the Read tool first"`
+317: 
+318: **Rule**: Never use Write on an existing file without Reading it first in the same session. Prefer Edit for modifications; reserve Write for new file creation or full replacements after Read.
+319: 
+320: ### File Size Guidance
+321: 
+322: Files over ~500 lines become hard to maintain and review. Extract helpers, split modules, or refactor when approaching this threshold.
+323: 
+324: | Size          | Strategy                          |
+325: | ------------- | --------------------------------- |
+326: | < 100 lines   | Full rewrite often easier         |
+327: | 100-400 lines | Structured edit with good context |
+328: | > 400 lines   | Strongly prefer structured edits  |
+329: | > 500 lines   | Consider splitting the file       |
+330: 
+331: **Use the `structured-edit` skill for complex edits.**
+332: 
+333: ### Hash-Anchored Edits (MCP)
+334: 
+335: When tilth MCP is available with `--edit` mode, use hash-anchored edits for higher reliability:
+336: 
+337: 1. **READ** via `tilth_read` — output includes `line:hash|content` format per line
+338: 2. **EDIT** via `tilth_edit` — reference lines by their `line:hash` anchor
+339: 3. **REJECT** — if file changed since last read, hashes won't match; re-read and retry
+340: 
+341: **Benefits**: Eliminates `str_replace` failures entirely. If the file changed between read and edit, the operation fails safely (no silent corruption).
+342: 
+343: **Fallback**: Without tilth, use the standard LOCATE→READ→VERIFY→EDIT→CONFIRM flow above.
+344: 
+345: ---
+346: 
+347: ## Output Style
+348: 
+349: - Be concise, direct, and collaborative
+350: - Prefer deterministic outputs over prose-heavy explanations
+351: - Cite concrete file paths and line numbers for non-trivial claims
+352: 
+353: _Complexity is the enemy. Minimize moving parts._
+354: 
+355: ---
+356: 
+357: ## Memory System
+358: 
+359: 4-tier automated knowledge pipeline backed by SQLite + FTS5 (porter stemming).
+360: 
+361: **Pipeline:** messages → capture → distillations (TF-IDF) → observations (curator) → LTM injection (system.transform)
+362: 
+363: ### Memory Tools
+364: 
+365: ```bash
+366: # Search observations (FTS5)
+367: memory-search({ query: "auth" })
+368: 
+369: # Get full observation details
+370: memory-get({ ids: "42,45" })
+371: 
+372: # Create observation
+373: observation({ type: "decision", title: "Use JWT", narrative: "..." })
+374: 
+375: # Update memory file
+376: memory-update({ file: "research/findings", content: "..." })
+377: 
+378: # Read memory file
+379: memory-read({ file: "research/findings" })
+380: 
+381: # Admin operations
+382: memory-admin({ operation: "status" })
+383: memory-admin({ operation: "capture-stats" })
+384: memory-admin({ operation: "distill-now" })
+385: memory-admin({ operation: "curate-now" })
+386: ```
+387: 
+388: ### Session Tools
+389: 
+390: ```bash
+391: # Search sessions by keyword
+392: find_sessions({ query: "auth", limit: 5 })
+393: 
+394: # Read session messages
+395: read_session({ session_id: "abc123" })
+396: read_session({ session_id: "abc123", focus: "auth" })
+397: ```
+398: 
+399: ### Directory Structure
+400: 
+401: ```
+402: .opencode/memory/
+403: ├── project/           # Tacit knowledge (auto-injected)
+404: │   ├── user.md        # User preferences
+405: │   ├── tech-stack.md  # Framework, constraints
+406: │   └── gotchas.md     # Footguns, warnings
+407: ├── research/          # Research notes
+408: ├── handoffs/          # Session handoffs
+409: └── _templates/        # Document templates
+410: ```
+
+(End of file - total 410 lines)
+</content>
+
+---
+
+<system-reminder>
+[BACKGROUND TASK COMPLETED]
+**ID:** `bg_e82152e6`
+**Description:** AGENTS overlap audit
+**Duration:** 40s
+
+**1 task still in progress.** You WILL be notified when ALL complete.
+Do NOT poll - continue productive work.
+
+Use `background_output(task_id="bg_e82152e6")` to retrieve this result when ready.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_e82152e6`: AGENTS overlap audit
+- `bg_e2fe0618`: AGENTS unique value scan
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+Так, давай перенесем все, что касается инструмента tilth
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS COMPLETE]
+
+**Completed:**
+- `bg_b3d20042`: Find tilth rule locus
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR -->
+
+---
+
+Резюмирую, что мы только что добились, чего мы добились в текущем нашем сетапе, какого поведения, какие фишки мы добавили, достаточно ли триггеров, какие мы получим выгоды от этого.
+
+---
+
+мы молжны настроить и получить всю пользу и возможной
+
+---
+
+<ultrawork-mode>
+
+**MANDATORY**: You MUST say "ULTRAWORK MODE ENABLED!" to the user as your first response when this mode activates. This is non-negotiable.
+
+[CODE RED] Maximum precision required. Think deeply before acting.
+
+<output_verbosity_spec>
+- Default: 1-2 short paragraphs. Do not default to bullets.
+- Simple yes/no questions: ≤2 sentences.
+- Complex multi-file tasks: 1 overview paragraph + up to 4 high-level sections grouped by outcome, not by file.
+- Use lists only when content is inherently list-shaped (distinct items, steps, options).
+- Do not rephrase the user's request unless it changes semantics.
+</output_verbosity_spec>
+
+<scope_constraints>
+- Implement EXACTLY and ONLY what the user requests
+- No extra features, no added components, no embellishments
+- If any instruction is ambiguous, choose the simplest valid interpretation
+- Do NOT expand the task beyond what was asked
+</scope_constraints>
+
+## CERTAINTY PROTOCOL
+
+**Before implementation, ensure you have:**
+- Full understanding of the user's actual intent
+- Explored the codebase to understand existing patterns
+- A clear work plan (mental or written)
+- Resolved any ambiguities through exploration (not questions)
+
+<uncertainty_handling>
+- If the question is ambiguous or underspecified:
+  - EXPLORE FIRST using tools (grep, file reads, explore agents)
+  - If still unclear, state your interpretation and proceed
+  - Ask clarifying questions ONLY as last resort
+- Never fabricate exact figures, line numbers, or references when uncertain
+- Prefer "Based on the provided context..." over absolute claims when unsure
+</uncertainty_handling>
+
+## DECISION FRAMEWORK: Self vs Delegate
+
+**Evaluate each task against these criteria to decide:**
+
+| Complexity | Criteria | Decision |
+|------------|----------|----------|
+| **Trivial** | <10 lines, single file, obvious pattern | **DO IT YOURSELF** |
+| **Moderate** | Single domain, clear pattern, <100 lines | **DO IT YOURSELF** (faster than delegation overhead) |
+| **Complex** | Multi-file, unfamiliar domain, >100 lines, needs specialized expertise | **DELEGATE** to appropriate category+skills |
+| **Research** | Need broad codebase context or external docs | **DELEGATE** to explore/librarian (background, parallel) |
+
+**Decision Factors:**
+- Delegation overhead ≈ 10-15 seconds. If task takes less, do it yourself.
+- If you already have full context loaded, do it yourself.
+- If task requires specialized expertise (frontend-ui-ux, git operations), delegate.
+- If you need information from multiple sources, fire parallel background agents.
+
+## AVAILABLE RESOURCES
+
+Use these when they provide clear value based on the decision framework above:
+
+| Resource | When to Use | How to Use |
+|----------|-------------|------------|
+| explore agent | Need codebase patterns you don't have | `task(subagent_type="explore", load_skills=[], run_in_background=true, ...)` |
+| librarian agent | External library docs, OSS examples | `task(subagent_type="librarian", load_skills=[], run_in_background=true, ...)` |
+| oracle agent | Stuck on architecture/debugging after 2+ attempts | `task(subagent_type="oracle", load_skills=[], ...)` |
+| plan agent | Complex multi-step with dependencies (5+ steps) | `task(subagent_type="plan", load_skills=[], ...)` |
+| task category | Specialized work matching a category | `task(category="...", load_skills=[...])` |
+
+<tool_usage_rules>
+- Prefer tools over internal knowledge for fresh or user-specific data
+- Parallelize independent reads (read_file, grep, explore, librarian) to reduce latency
+- After any write/update, briefly restate: What changed, Where (path), Follow-up needed
+</tool_usage_rules>
+
+## EXECUTION PATTERN
+
+**Context gathering uses TWO parallel tracks:**
+
+| Track | Tools | Speed | Purpose |
+|-------|-------|-------|---------|
+| **Direct** | Grep, Read, LSP, AST-grep | Instant | Quick wins, known locations |
+| **Background** | explore, librarian agents | Async | Deep search, external docs |
+
+**ALWAYS run both tracks in parallel:**
+```
+// Fire background agents for deep exploration
+task(subagent_type="explore", load_skills=[], prompt="I'm implementing [TASK] and need to understand [KNOWLEDGE GAP]. Find [X] patterns in the codebase - file paths, implementation approach, conventions used, and how modules connect. I'll use this to [DOWNSTREAM DECISION]. Focus on production code in src/. Return file paths with brief descriptions.", run_in_background=true)
+task(subagent_type="librarian", load_skills=[], prompt="I'm working with [TECHNOLOGY] and need [SPECIFIC INFO]. Find official docs and production examples for [Y] - API reference, configuration, recommended patterns, and pitfalls. Skip tutorials. I'll use this to [DECISION THIS INFORMS].", run_in_background=true)
+
+// WHILE THEY RUN - use direct tools for immediate context
+grep(pattern="relevant_pattern", path="src/")
+read_file(filePath="known/important/file.ts")
+
+// Collect background results when ready
+deep_context = background_output(task_id=...)
+
+// Merge ALL findings for comprehensive understanding
+```
+
+**Plan agent (complex tasks only):**
+- Only if 5+ interdependent steps
+- Invoke AFTER gathering context from both tracks
+
+**Execute:**
+- Surgical, minimal changes matching existing patterns
+- If delegating: provide exhaustive context and success criteria
+
+**Verify:**
+- `lsp_diagnostics` on modified files
+- Run tests if available
+
+## ACCEPTANCE CRITERIA WORKFLOW
+
+**BEFORE implementation**, define what "done" means in concrete, binary terms:
+
+1. Write acceptance criteria as pass/fail conditions (not "should work" - specific observable outcomes)
+2. Record them in your TODO/Task items with a "QA: [how to verify]" field
+3. Work toward those criteria, not just "finishing code"
+
+## QUALITY STANDARDS
+
+| Phase | Action | Required Evidence |
+|-------|--------|-------------------|
+| Build | Run build command | Exit code 0 |
+| Test | Execute test suite | All tests pass |
+| Lint | Run lsp_diagnostics | Zero new errors |
+| **Manual QA** | **Execute the feature yourself** | **Actual output shown** |
+
+<MANUAL_QA_MANDATE>
+### MANUAL QA IS MANDATORY. lsp_diagnostics IS NOT ENOUGH.
+
+lsp_diagnostics catches type errors. It does NOT catch logic bugs, missing behavior, or broken features. After EVERY implementation, you MUST manually test the actual feature.
+
+**Execute ALL that apply:**
+
+| If your change... | YOU MUST... |
+|---|---|
+| Adds/modifies a CLI command | Run the command with Bash. Show the output. |
+| Changes build output | Run the build. Verify output files. |
+| Modifies API behavior | Call the endpoint. Show the response. |
+| Adds a new tool/hook/feature | Test it end-to-end in a real scenario. |
+| Modifies config handling | Load the config. Verify it parses correctly. |
+
+**"This should work" is NOT evidence. RUN IT. Show what happened. That is evidence.**
+</MANUAL_QA_MANDATE>
+
+## COMPLETION CRITERIA
+
+A task is complete when:
+1. Requested functionality is fully implemented (not partial, not simplified)
+2. lsp_diagnostics shows zero errors on modified files
+3. Tests pass (or pre-existing failures documented)
+4. Code matches existing codebase patterns
+5. **Manual QA executed - actual feature tested, output observed and reported**
+
+**Deliver exactly what was asked. No more, no less.**
+
+</ultrawork-mode>
+
+---
+
+да, давай сделам. Далее, после этого ты проверишь, нет ли где-либо и как-либо каким-либо образом конфликтующих инструкций с этим. Ничего ли не препятствует нам эффективно использовать этот инструмент?  ulw
+
+---
+
+правильно ли понимаю, нужно отключить в конфиге opencode встроенную тулзу по хеши? она идет вместо с oh my open agent если я правильно понимаю, раз эту функцию безет на себя tilth. или может это в прямо в opencode
+
+---
+
+ты завис
+
+---
+
+<system-reminder>
+[ALL BACKGROUND TASKS FINISHED - 1 FAILED]
+
+**Failed:**
+- `bg_6d011a48`: Find internal conflicts [ERROR] - Task timed out after 30 minutes of inactivity
+
+Use `background_output(task_id="<id>")` to retrieve each result.
+
+**ACTION REQUIRED:** 1 task(s) failed. Check errors above and decide whether to retry or proceed.
+</system-reminder>
+<!-- OMO_INTERNAL_INITIATOR --> -->
+
+---
+
+[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]
+
+Incomplete tasks remain in your todo list. Continue working on the next pending task.
+
+- Proceed without asking for permission
+- Mark each task complete when finished
+- Do not stop until all tasks are done
+- If you believe all work is already complete, the system is questioning your completion claim. Critically re-examine each todo item from a skeptical perspective, verify the work was actually done correctly, and update the todo list accordingly.
+
+[Status: 0/5 completed, 5 remaining]
+
+Remaining tasks:
+- [in_progress] Gather current Tilth-related context and define pass/fail criteria (QA: final AGENTS.md contains Tilth-first policy, not just edit policy)
+- [pending] Get minimal implementation plan for Tilth-first AGENTS update and conflict audit
+- [pending] Research internal conflicting instructions and Tilth usage blockers across the repo (QA: categorized findings with exact paths)
+- [pending] Update opencode/base/AGENTS.md to full Tilth-first policy only (QA: git diff limited to intended policy expansion)
+- [pending] Verify resulting AGENTS.md content and inspect for conflicts/blockers in current setup (QA: readback + diff + documented conflict assessment)
+<!-- OMO_INTERNAL_INITIATOR -->
