@@ -12,28 +12,33 @@ function tmux-monitor --description "Create/refresh monitor tmux session and opt
     set -l asitop_cmd "if command -q asitop; and command -q sudo; sudo asitop --color 4; else; echo 'asitop or sudo not found'; while true; sleep 300; end; end"
 
     if not command tmux has-session -t $session 2>/dev/null
-        command tmux new-session -d -s $session -n btop "btop"
-        command tmux new-window -t $session:2 -n battery "jolt"
-        command tmux new-window -t $session:3 -n network "snitch -t -l -e"
-        command tmux new-window -t $session:4 -n disk "duf"
-        command tmux new-window -t $session:5 -n asitop "$asitop_cmd"
+        command tmux new-session -d -s $session -n btop btop
+        command tmux new-window -t $session:2 -n battery jolt
+        command tmux new-window -t $session:3 -n ports "snitch -t -l -e"
+        command tmux new-window -t $session:4 -n network netwatch
+        command tmux new-window -t $session:5 -n disk duf
+        command tmux new-window -t $session:6 -n asitop "$asitop_cmd"
     else
         set -l existing (command tmux list-windows -t $session -F '#{window_name}')
 
         if not contains -- btop $existing
-            command tmux new-window -t $session -n btop "btop"
+            command tmux new-window -t $session -n btop btop
+        end
+
+        if not contains -- ports $existing
+            command tmux new-window -t $session -n ports "snitch -t -l -e"
         end
 
         if not contains -- network $existing
-            command tmux new-window -t $session -n network "snitch -t -l -e"
+            command tmux new-window -t $session -n network netwatch
         end
 
         if not contains -- battery $existing
-            command tmux new-window -t $session -n battery "jolt"
+            command tmux new-window -t $session -n battery jolt
         end
 
         if not contains -- disk $existing
-            command tmux new-window -t $session -n disk "duf"
+            command tmux new-window -t $session -n disk duf
         end
 
         if not contains -- asitop $existing

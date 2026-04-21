@@ -22,6 +22,8 @@ zed/prompts
 repomix-output.xml
 
 codex/auth.json
+codex/.tmp
+codex/plugins
 codex/log
 codex/sessions
 codex/history.jsonl

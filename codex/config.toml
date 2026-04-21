@@ -1,85 +1,13 @@
-model = "gpt-5.3-codex"
-model_reasoning_effort = "medium"
-personality = "pragmatic"
-suppress_unstable_features_warning = true
-
-[projects."/Users/tim/dev/dotfiles"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/work/react"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/work/mobile"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/tmp/raycast-extensions"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/CV"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/TimSeriakov"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/work/spec-kit"]
-trust_level = "trusted"
-
-[projects."/Users/tim/.config/opencode"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/hz-claude-code-web"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/work/slidev"]
-trust_level = "untrusted"
-
-[projects."/Users/tim/dev/pet-new/qpw"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/mcp-feedback-loop"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/rari-shadcnui"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-old/rnc-app"]
-trust_level = "trusted"
-
-[projects."/Users/tim"]
-trust_level = "untrusted"
-
-[projects."/Users/tim/dev/pet-new/rackage"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/test-task"]
-trust_level = "trusted"
-
-[projects."/Users/tim/dev/pet-new/rentgen-crm"]
-trust_level = "trusted"
-
 [mcp_servers.mcpproxy]
 type = "http"
-url = "http://localhost:8080/mcp/"
+url = "http://localhost:8080/mcp"
 
-[mcp_servers.linear]
-url = "https://mcp.linear.app/mcp"
+[mcp_servers.pencil]
+command = "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64"
+args = [ "--app", "desktop" ]
 
-[notice]
-hide_gpt5_1_migration_prompt = true
-"hide_gpt-5.1-codex-max_migration_prompt" = true
+[plugins."github@openai-curated"]
+enabled = true
 
-[notice.model_migrations]
-"gpt-5.1-codex-max" = "gpt-5.2-codex"
-"gpt-5.3-codex" = "gpt-5.4"
-
-[features]
-codex_hooks = true
-unified_exec = true
-shell_snapshot = true
-default_mode_request_user_input = true
-multi_agent = true
-apps = true
-rmcp_client = true
+[plugins."google-drive@openai-curated"]
+enabled = true

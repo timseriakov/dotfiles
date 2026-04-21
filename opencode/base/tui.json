@@ -5,7 +5,8 @@
     "app_exit": "ctrl+x",
     "editor_open": "ctrl+g",
     "session_rename": "ctrl+r",
-    "model_list": "<leader>v"
+    "model_list": "<leader>v",
+    "session_compact": "ctrl+k"
   },
   "scroll_speed": 1,
   "scroll_acceleration": {

@@ -15,11 +15,6 @@
       "type": "local",
       "enabled": true
     },
-    "engram": {
-      "command": ["engram", "mcp"],
-      "type": "local",
-      "enabled": true
-    },
     "frame0": {
       "command": ["npx", "-y", "frame0-mcp-server"],
       "type": "local",
@@ -34,10 +29,15 @@
       "type": "local",
       "enabled": true
     },
-    "grepai": {
-      "command": ["grepai", "mcp-serve"],
+    "engram": {
+      "command": ["npx", "-y", "engram", "mcp"],
       "type": "local",
       "enabled": true
+    },
+    "grepai": {
+      "command": ["npx", "-y", "grepai", "mcp-serve"],
+      "type": "local",
+      "enabled": false
     }
   }
 }
