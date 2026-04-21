@@ -10,6 +10,7 @@
     "opencode/base/AGENTS.md",
     "opencode/base/opencode.jsonc",
     "opencode/base/package-lock.json",
+    "opencode/base/tui.json",
     "opencode/omo/oh-my-openagent.jsonc",
     "opencode/omo/oh-my-openagent_glm_test_beads.jsonc",
     "opencode/omo/oh-my-openagent_omniroute.jsonc",
@@ -25,6 +26,12 @@
       "transcript": "/8a/c635702287/0/full.jsonl",
       "content_hash": "/8a/c635702287/0/content_hash.txt",
       "prompt": "/8a/c635702287/0/prompt.txt"
+    },
+    {
+      "metadata": "/8a/c635702287/1/metadata.json",
+      "transcript": "/8a/c635702287/1/full.jsonl",
+      "content_hash": "/8a/c635702287/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
