@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "8ac635702287",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "codex/config.toml",
+    "fish/functions/tmux-monitor.fish",
+    "opencode/base/AGENTS.md",
+    "opencode/base/opencode.jsonc",
+    "opencode/base/package-lock.json",
+    "opencode/omo/oh-my-openagent.jsonc",
+    "opencode/omo/oh-my-openagent_glm_test_beads.jsonc",
+    "opencode/omo/oh-my-openagent_omniroute.jsonc",
+    "opencode/omo/oh-my-openagent_openai_test_beads.jsonc",
+    "opencode/omo/oh-my-openagent_opencode-go.jsonc",
+    "opencode/omo/opencode.jsonc",
+    "opencode/opencode_mcps.json",
+    "raycast/Raycast 2026-04-13 09.30.09.rayconfig"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8a/c635702287/0/metadata.json",
+      "transcript": "/8a/c635702287/0/full.jsonl",
+      "content_hash": "/8a/c635702287/0/content_hash.txt",
+      "prompt": "/8a/c635702287/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
