@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "8ac635702287",
+  "session_id": "ses_25ed1cb8bffeVZ6YLp9zB8jbVI",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-21T15:05:27.814395Z",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "codex/config.toml",
+    "fish/functions/tmux-monitor.fish",
+    "opencode/base/AGENTS.md",
+    "opencode/base/opencode.jsonc",
+    "opencode/base/tui.json",
+    "opencode/omo/oh-my-openagent.jsonc",
+    "opencode/omo/opencode.jsonc"
+  ],
+  "agent": "Claude Code",
+  "turn_id": "31ffa1616da1",
+  "initial_attribution": {
+    "calculated_at": "2026-04-21T15:05:27.813505Z",
+    "agent_lines": 8,
+    "human_added": 238,
+    "human_modified": 54,
+    "human_removed": 0,
+    "total_committed": 300,
+    "agent_percentage": 2.666666666666667
+  }
+}

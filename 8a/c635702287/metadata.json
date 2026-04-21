@@ -3,7 +3,7 @@
   "checkpoint_id": "8ac635702287",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "codex/config.toml",
     "fish/functions/tmux-monitor.fish",
@@ -44,6 +44,12 @@
       "transcript": "/8a/c635702287/3/full.jsonl",
       "content_hash": "/8a/c635702287/3/content_hash.txt",
       "prompt": "/8a/c635702287/3/prompt.txt"
+    },
+    {
+      "metadata": "/8a/c635702287/4/metadata.json",
+      "transcript": "/8a/c635702287/4/full.jsonl",
+      "content_hash": "/8a/c635702287/4/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
