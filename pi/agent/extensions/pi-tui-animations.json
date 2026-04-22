@@ -1,0 +1,8 @@
+{
+  "workingAnim": "pipeline",
+  "thinkingAnim": "dev-constellation",
+  "toolAnim": "pipeline",
+  "width": "full",
+  "randomMode": false,
+  "enabled": true
+}
