@@ -139,6 +139,7 @@ abbr -a ocd 'cd ~/dev/dotfiles/opencode'
 abbr -a ocdj 'cd ~/dev/dotfiles/opencode && yazi'
 
 abbr -a o-up 'brew install anomalyco/tap/opencode'
+abbr -a o-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
 abbr -a os '~/dev/dotfiles/opencode/omo/omo-switch'
 
 abbr -a o-web 'openchamber --daemon --port 1911'
@@ -146,6 +147,12 @@ abbr -a o-skills 'npx -y openskills'
 abbr -a o-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
 # abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
 # abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+
+# Pi
+abbr -a pi-up 'npm install -g @mariozechner/pi-coding-agent'
+abbr -a prc 'cd ~/dev/dotfiles/pi && nvim settings.json'
+abbr -a pcd 'cd ~/dev/dotfiles/pi'
+abbr -a pcdj 'cd ~/dev/dotfiles/pi && yazi'
 
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
