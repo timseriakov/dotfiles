@@ -15,7 +15,7 @@
     "npm:@tmustier/pi-usage-extension",
     "git:github.com/hk-vk/pi-connect",
     "npm:pi-animations",
-    "../../dev/tries/pi-annotate"
+    "npm:pi-annotate"
   ],
   "theme": "nord"
 }
