@@ -49,6 +49,12 @@
       "transcript": "/6e/21b614a104/6/full.jsonl",
       "content_hash": "/6e/21b614a104/6/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/6e/21b614a104/7/metadata.json",
+      "transcript": "/6e/21b614a104/7/full.jsonl",
+      "content_hash": "/6e/21b614a104/7/content_hash.txt",
+      "prompt": ""
     }
   ]
 }
