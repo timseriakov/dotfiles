@@ -15,7 +15,10 @@
     "npm:@tmustier/pi-usage-extension",
     "git:github.com/hk-vk/pi-connect",
     "npm:pi-animations",
-    "npm:pi-annotate"
+    "npm:pi-annotate",
+    "npm:@llblab/pi-telegram",
+    "npm:pi-copy-output",
+    "npm:pi-zentui"
   ],
   "theme": "nord"
 }
