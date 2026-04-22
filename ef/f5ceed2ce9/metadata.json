@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "eff5ceed2ce9",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "pi/agent/settings.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ef/f5ceed2ce9/0/metadata.json",
+      "transcript": "/ef/f5ceed2ce9/0/full.jsonl",
+      "content_hash": "/ef/f5ceed2ce9/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
