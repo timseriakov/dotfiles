@@ -31,6 +31,8 @@ codex/version.json
 codex/shell_snapshots
 codex/skills/.system
 
+auth.json
+
 mpv/watch_later
 
 fish/fishd.tmp*
@@ -86,3 +88,6 @@ codex/cache/codex_apps_tools/
 *.sqlite-wal
 codex/session_index.jsonl
 opencode/skills/rtk-compress/_meta.json
+pi/agent/.extmgr-cache/
+pi/agent/git/
+pi/agent/sessions/
