@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euo pipefail
+
+# Qutebrowser userscript to move current URL into Helium
+# Opens current URL in Helium and closes current qutebrowser tab
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# Check if running as qutebrowser userscript
+if [[ -z "${QUTE_URL:-}" ]]; then
+  echo "Error: Must be run as qutebrowser userscript with QUTE_URL" >&2
+  exit 1
+fi
+
+# Get the URL to check
+TARGET_URL="$QUTE_URL"
+
+
+# Open Helium with URL
+open_helium_url() {
+  local url="$1"
+  /usr/bin/open -a 'Helium' "$url" 2>/dev/null || return 1
+}
+
+# Main transfer logic
+if open_helium_url "$TARGET_URL"; then
+  echo "tab-close" >> "$QUTE_FIFO"
+  echo "message-info 'Moved to Helium'" >> "$QUTE_FIFO"
+else
+  echo "message-error 'Failed to open Helium'" >> "$QUTE_FIFO"
+fi

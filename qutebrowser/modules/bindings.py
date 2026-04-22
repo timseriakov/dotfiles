@@ -248,6 +248,11 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec("<Cmd-Return>", "spawn --userscript qute-temporary-split"),
     BindingSpec(
         leader + "tg",
+        "spawn -u helium-toggle",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "tG",
         "spawn --detach /usr/bin/open -a 'Helium' {url}",
         hide_ru_in_keyhint=True,
     ),

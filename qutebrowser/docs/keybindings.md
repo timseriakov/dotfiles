@@ -122,20 +122,21 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 
 ## Tabs Bindings
 
-| Shortcut                        | Action                                         |
-| ------------------------------- | ---------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>ts</kbd> | bookmark-add                                   |
-| <kbd>Leader</kbd> <kbd>tq</kbd> | bookmark-list                                  |
-| <kbd>Leader</kbd> <kbd>tc</kbd> | tab-clone                                      |
-| <kbd>Leader</kbd> <kbd>td</kbd> | tab-clone -w                                   |
-| <kbd>Leader</kbd> <kbd>tn</kbd> | tab-give (move tab to new window)              |
-| <kbd>Leader</kbd> <kbd>tw</kbd> | cmd-set-text -s :tab-take (window picker)      |
-| <kbd>Leader</kbd> <kbd>th</kbd> | history                                        |
-| <kbd>Leader</kbd> <kbd>tm</kbd> | cmd-set-text -s :tab-move                      |
-| <kbd>Leader</kbd> <kbd>tp</kbd> | tab-pin                                        |
-| <kbd>Leader</kbd> <kbd>tt</kbd> | tab-pin                                        |
-| <kbd>Leader</kbd> <kbd>tx</kbd> | spawn --detach /usr/bin/open -a 'Helium' {url} |
-| <kbd>Leader</kbd> <kbd>ti</kbd> | open -p (new private window)                   |
+| Shortcut                        | Action                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>ts</kbd> | bookmark-add                                                                          |
+| <kbd>Leader</kbd> <kbd>tq</kbd> | bookmark-list                                                                         |
+| <kbd>Leader</kbd> <kbd>tc</kbd> | tab-clone                                                                             |
+| <kbd>Leader</kbd> <kbd>td</kbd> | tab-clone -w                                                                          |
+| <kbd>Leader</kbd> <kbd>tn</kbd> | tab-give (move tab to new window)                                                     |
+| <kbd>Leader</kbd> <kbd>tw</kbd> | cmd-set-text -s :tab-take (window picker)                                             |
+| <kbd>Leader</kbd> <kbd>th</kbd> | history                                                                               |
+| <kbd>Leader</kbd> <kbd>tm</kbd> | cmd-set-text -s :tab-move                                                             |
+| <kbd>Leader</kbd> <kbd>tp</kbd> | tab-pin                                                                               |
+| <kbd>Leader</kbd> <kbd>tt</kbd> | tab-pin                                                                               |
+| <kbd>Leader</kbd> <kbd>tg</kbd> | spawn -u helium-toggle (move current URL to Helium)                                   |
+| <kbd>Leader</kbd> <kbd>tG</kbd> | spawn --detach /usr/bin/open -a 'Helium' {url} (open in Helium, keep qutebrowser tab) |
+| <kbd>Leader</kbd> <kbd>ti</kbd> | open -p (new private window)                                                          |
 
 ## UI Bindings
 
