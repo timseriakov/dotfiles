@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "eff5ceed2ce9",
+  "session_id": "ses_24b4b7952ffeMoy1yHsmuAlZs4",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-22T11:34:57.00297Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "pi/agent/settings.json"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "aa51af71fe68",
+  "initial_attribution": {
+    "calculated_at": "2026-04-22T11:34:57.002421Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 1,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
