@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "41ba2fcca547",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "qutebrowser/docs/keybindings.md",
+    "qutebrowser/modules/bindings.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/41/ba2fcca547/0/metadata.json",
+      "transcript": "/41/ba2fcca547/0/full.jsonl",
+      "content_hash": "/41/ba2fcca547/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
