@@ -87,4 +87,6 @@ set -gx MCPPROXY_UPDATE_APP_BUNDLE true
 set -gx YT_DLP_PATH /opt/homebrew/bin/yt-dlp
 
 # Added by clikit-plugin
-export OPENCODE_ENABLE_EXA=1
+set -gx OPENCODE_ENABLE_EXA 1
+
+set -gx CAVEMAN_RUNNER codex

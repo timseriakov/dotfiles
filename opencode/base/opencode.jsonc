@@ -3,11 +3,11 @@
 
   "plugin": [
     "opencode-openai-codex-auth",
-    "opencode-gemini-auth",
+    // "opencode-gemini-auth",
     // "file:///Users/tim/dev/dotfiles/opencode/base/local-plugins",
     // "opencode-antigravity-auth",
 
-    "@plannotator/opencode@0.18.0",
+    "@plannotator/opencode@0.19.0",
 
     "@franlol/opencode-md-table-formatter",
     "@nick-vi/opencode-type-inject",

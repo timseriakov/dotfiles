@@ -29,7 +29,7 @@ abbr -a n-explore forage
 
 # pnpm
 abbr -a p pnpm
-abbr -a pi 'pnpm install'
+abbr -a pii 'pnpm install'
 abbr -a pd 'pnpm dev'
 abbr -a px pnpx
 
@@ -131,6 +131,7 @@ abbr -a o oc-omo
 abbr -a oa 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
 abbr -a oc 'opencode --continue'
 abbr -a on opencode
+abbr -a om ocsight # Usage Monitor
 
 abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
 abbr -a orcc 'cd ~/dev/dotfiles/opencode/base && nvim opencode.jsonc'
