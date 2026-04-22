@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "251a5b8d5525",
+  "session_id": "ses_24b4b7952ffeMoy1yHsmuAlZs4",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-22T11:23:05.27411Z",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "aa51af71fe68",
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 827,
+      "user_lines_removed": 3,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".gitignore": 5,
+        "fish/conf.d/30-abbr.fish": 7,
+        "nvim/.beads/issues.jsonl": 10,
+        "nvim/.beads/metadata.json": 4,
+        "nvim/.claude/settings.local.json": 15,
+        "opencode/base/command/plannotator-annotate.md": 6,
+        "opencode/base/command/plannotator-last.md": 3,
+        "opencode/base/command/plannotator-review.md": 6,
+        "opencode/base/opencode.jsonc": 1,
+        "pi/agent/extensions/pi-tui-animations.json": 8,
+        "pi/agent/settings.json": 22,
+        "qutebrowser/docs/keybindings.md": 2,
+        "qutebrowser/modules/bindings.py": 5,
+        "qutebrowser/quickmarks": 1,
+        "qutebrowser/userscripts/helium-toggle": 31,
+        "tmux/title-mappings.conf": 1,
+        "yazi/plugins/searchjump.yazi/LICENSE": 21,
+        "yazi/plugins/searchjump.yazi/README.md": 74,
+        "yazi/plugins/searchjump.yazi/main.lua": 605
+      },
+      "user_removed_per_file": {
+        "opencode/base/opencode.jsonc": 1,
+        "qutebrowser/docs/keybindings.md": 1,
+        "qutebrowser/quickmarks": 1
+      }
+    }
+  ]
+}
