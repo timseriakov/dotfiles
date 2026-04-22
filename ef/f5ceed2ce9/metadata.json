@@ -3,7 +3,7 @@
   "checkpoint_id": "eff5ceed2ce9",
   "strategy": "manual-commit",
   "branch": "master",
-  "checkpoints_count": 0,
+  "checkpoints_count": 1,
   "files_touched": [
     "pi/agent/settings.json"
   ],
@@ -18,6 +18,12 @@
       "metadata": "/ef/f5ceed2ce9/1/metadata.json",
       "transcript": "/ef/f5ceed2ce9/1/full.jsonl",
       "content_hash": "/ef/f5ceed2ce9/1/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/ef/f5ceed2ce9/2/metadata.json",
+      "transcript": "/ef/f5ceed2ce9/2/full.jsonl",
+      "content_hash": "/ef/f5ceed2ce9/2/content_hash.txt",
       "prompt": ""
     }
   ]
