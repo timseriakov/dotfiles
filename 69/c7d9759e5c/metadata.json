@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "69c7d9759e5c",
+  "strategy": "manual-commit",
+  "branch": "master",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "fish/conf.d/30-abbr.fish",
+    "pi/agent/settings.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/69/c7d9759e5c/0/metadata.json",
+      "transcript": "/69/c7d9759e5c/0/full.jsonl",
+      "content_hash": "/69/c7d9759e5c/0/content_hash.txt",
+      "prompt": "/69/c7d9759e5c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}
