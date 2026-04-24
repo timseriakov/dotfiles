@@ -34,6 +34,11 @@ end
 -- Jump back
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Jump back" })
 
+for _, lhs in ipairs({ "<M-BS>", "<M-Backspace>" }) do
+  vim.keymap.set("n", lhs, '"_db', { desc = "Delete previous word" })
+  vim.keymap.set("i", lhs, '<C-o>"_db', { desc = "Delete previous word" })
+end
+
 -- Copy entire buffer to system clipboard
 vim.keymap.set("n", "<leader>yy", ":%y+<CR>", { desc = "Copy buffer to clipboard" })
 vim.keymap.set("n", "<leader>bg", ":%y+<CR>", { desc = "Copy buffer to clipboard" })
