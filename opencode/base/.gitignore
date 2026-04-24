@@ -1,0 +1,21 @@
+node_modules
+package.json
+bun.lock
+.gitignore
+
+# OAuth refresh tokens (treat like passwords)
+antigravity-accounts.json
+antigravity-accounts.json*
+.config/opencode/antigravity-accounts.json
+.config/opencode/antigravity-accounts.json*
+
+# Beads cache/state
+.beads
+antigravity-signature-cache.json
+antigravity-logs/
+antigravity-accounts.json.*.tmp
+
+# OCX registry build output
+registry/dist/
+registry/files/
+package-lock.json
