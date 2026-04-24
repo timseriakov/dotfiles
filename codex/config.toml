@@ -11,3 +11,12 @@ enabled = true
 
 [plugins."google-drive@openai-curated"]
 enabled = true
+
+[plugins."caveman@caveman-repo"]
+enabled = true
+
+[marketplaces.caveman-repo]
+last_updated = "2026-04-24T21:28:26Z"
+last_revision = "84cc3c14fa1e10182adaced856e003406ccd250d"
+source_type = "git"
+source = "https://github.com/JuliusBrussee/caveman.git"
