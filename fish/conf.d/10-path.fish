@@ -80,7 +80,7 @@ set -Ux TRY_CONFIG_DIR "$HOME/dev/dotfiles/try-rs"
 set -Ux TRY_CONFIG "config.toml"
 
 fish_add_path $HOME/.lmstudio/bin
-fish_add_path /opt/homebrew/share/google-cloud-sdk/bin
+# fish_add_path /opt/homebrew/share/google-cloud-sdk/bin
 
 # Ensure success status for IDEs
 true
