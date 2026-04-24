@@ -143,5 +143,10 @@
   "disabled_agents": [],
   "disabled_hooks": [],
   "google_auth": false,
-  "lsp": {},
+  "lsp": {
+    "markdown": {
+      "command": ["npx", "-y", "remark-language-server", "--stdio"],
+      "extensions": [".md"],
+    },
+  },
 }
