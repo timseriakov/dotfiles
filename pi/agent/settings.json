@@ -1,5 +1,8 @@
 {
   "lastChangelogVersion": "0.68.1",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
+  "tui.input.newLine": ["shift+enter", "ctrl+j"],
   "packages": [
     {
       "source": "git:github.com/v2nic/pi-caveman",
@@ -18,7 +21,10 @@
     "npm:pi-annotate",
     "npm:@llblab/pi-telegram",
     "npm:pi-copy-output",
-    "npm:pi-zentui"
+    "npm:pi-updater",
+    "npm:pi-codex-rotate",
+    "/Users/tim/dev/dotfiles/pi/pi-zentui",
+    "npm:pi-promptsmith"
   ],
-  "theme": "nord"
+  "theme": "noctalia-nord"
 }
