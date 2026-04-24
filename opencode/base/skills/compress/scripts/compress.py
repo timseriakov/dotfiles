@@ -9,9 +9,9 @@ Usage:
 import os
 import re
 import subprocess
+from importlib import import_module
 from pathlib import Path
 from typing import List
-
 OUTER_FENCE_REGEX = re.compile(
     r"\A\s*(`{3,}|~{3,})[^\n]*\n(.*)\n\1\s*\Z", re.DOTALL
 )
@@ -76,7 +76,7 @@ def call_claude(prompt: str) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if api_key:
         try:
-            import anthropic
+            anthropic = import_module("anthropic")
 
             client = anthropic.Anthropic(api_key=api_key)
             msg = client.messages.create(
