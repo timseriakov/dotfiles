@@ -146,5 +146,10 @@
   "disabled_skills": ["playwright"],
   "disabled_agents": [],
   "disabled_hooks": [],
-  "lsp": {},
+  "lsp": {
+    "markdown": {
+      "command": ["npx", "-y", "remark-language-server", "--stdio"],
+      "extensions": [".md"],
+    },
+  },
 }
