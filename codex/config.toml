@@ -1,10 +1,8 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp"
-
-[mcp_servers.pencil]
-command = "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64"
-args = [ "--app", "desktop" ]
 
 [plugins."github@openai-curated"]
 enabled = true
@@ -14,6 +12,18 @@ enabled = true
 
 [plugins."caveman@caveman-repo"]
 enabled = true
+
+[projects."/Users/tim/dev/tries/rooki.by"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/dotfiles"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 2
+
+[features]
+codex_hooks = true
 
 [marketplaces.caveman-repo]
 last_updated = "2026-04-24T21:28:26Z"

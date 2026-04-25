@@ -30,7 +30,7 @@
       "enabled": true
     },
     "engram": {
-      "command": ["npx", "-y", "engram", "mcp"],
+      "command": ["engram", "mcp"],
       "type": "local",
       "enabled": true
     },

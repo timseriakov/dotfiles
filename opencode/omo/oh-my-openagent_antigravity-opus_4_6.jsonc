@@ -84,7 +84,7 @@
       "google": 5,
     },
     "modelConcurrency": {
-      "openai/gpt-5.1-codex-mini": 8,
+      "openai/gpt-5.4-mini": 8,
       "google/antigravity-claude-opus-4-6-thinking": 3,
       "google/antigravity-claude-sonnet-4-6": 5,
       "google/antigravity-gemini-3.1-pro": 5,

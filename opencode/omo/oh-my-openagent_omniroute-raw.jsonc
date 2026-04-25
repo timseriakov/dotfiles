@@ -7,7 +7,7 @@
       "temperature": 0.1,
     },
     "atlas": {
-      "model": "omniroute/cx/gpt-5.2-codex",
+      "model": "omniroute/cx/gpt-5.3-codex",
       "temperature": 0.1,
     },
     "oracle": {
@@ -15,11 +15,11 @@
       "temperature": 0.1,
     },
     "librarian": {
-      "model": "omniroute/cx/gpt-5.1-codex-mini",
+      "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
     },
     "explore": {
-      "model": "omniroute/cx/gpt-5.1-codex-mini",
+      "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.1,
     },
     "hephaestus": {
@@ -41,7 +41,7 @@
       "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
-      "model": "omniroute/cx/gpt-5.2-codex",
+      "model": "omniroute/cx/gpt-5.3-codex",
       "temperature": 0.05,
     },
     "prometheus": {
@@ -75,10 +75,8 @@
     },
     "modelConcurrency": {
       "omniroute/cx/gpt-5.4": 3,
-      "omniroute/cx/gpt-5.2": 3,
-      "omniroute/cx/gpt-5.2-codex": 1,
-      "omniroute/cx/gpt-5.1-codex-max": 3,
-      "omniroute/cx/gpt-5.1-codex-mini": 8,
+      "omniroute/cx/gpt-5.2": 11,
+      "omniroute/cx/gpt-5.3-codex": 4,
       "omniroute/glm/glm-4.6v": 3,
     },
   },
@@ -99,19 +97,19 @@
       "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
-      "model": "omniroute/cx/gpt-5.1-codex-mini",
+      "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.3,
     },
     "unspecified-low": {
-      "model": "omniroute/cx/gpt-5.1-codex-mini",
+      "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.3,
     },
     "unspecified-high": {
-      "model": "omniroute/cx/gpt-5.1-codex-max",
+      "model": "omniroute/cx/gpt-5.3-codex",
       "temperature": 0.1,
     },
     "writing": {
-      "model": "omniroute/cx/gpt-5.1-codex-mini",
+      "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.3,
     },
   },

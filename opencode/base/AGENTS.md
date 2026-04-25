@@ -6,6 +6,8 @@ ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift.
 Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
 Общение со мной в чате - на русском.
 
+"playwriter" mcp — это НЕ опечатка, НЕ путай с playwright, это разные проекты.
+
 ## Model Filtering (OpenCode)
 
 ### What
