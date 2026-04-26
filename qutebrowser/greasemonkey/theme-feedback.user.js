@@ -14,11 +14,30 @@
 
   let ui = null;
   let hideTimeout = null;
+  const HOST_SELECTOR = '[data-qute-theme-feedback="1"]';
+  const HANDLER_KEY = "__quteThemeFeedbackHandler";
 
   function ensureUi() {
-    if (ui) return;
+    if (ui && ui.host?.isConnected && ui.bubble?.isConnected) return ui;
 
-    const host = document.createElement("div");
+    const hosts = Array.from(document.querySelectorAll(HOST_SELECTOR));
+    let host = hosts[0] || null;
+
+    for (const extraHost of hosts.slice(1)) {
+      extraHost.remove();
+    }
+
+    if (host?.shadowRoot) {
+      const bubble = host.shadowRoot.querySelector(".Bubble");
+      if (bubble) {
+        ui = { host, bubble };
+        return ui;
+      }
+      host.remove();
+      host = null;
+    }
+
+    host = document.createElement("div");
     host.setAttribute("data-qute-theme-feedback", "1");
     host.style.position = "fixed";
     host.style.left = "0";
@@ -27,7 +46,7 @@
     host.style.height = "0";
     host.style.zIndex = "2147483646";
 
-    const shadow = host.attachShadow({ mode: "closed" });
+    const shadow = host.attachShadow({ mode: "open" });
     const style = document.createElement("style");
     style.textContent = `
       :host { all: initial; }
@@ -74,7 +93,8 @@
     shadow.appendChild(bubble);
     document.documentElement.appendChild(host);
 
-    ui = { bubble };
+    ui = { host, bubble };
+    return ui;
   }
 
   function resolveTooltipTheme() {
@@ -100,20 +120,28 @@
   }
 
   function showNotification(mode) {
-    ensureUi();
-    // Изменили текст: только Dark или Light
-    ui.bubble.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
-    ui.bubble.dataset.theme = resolveTooltipTheme();
-    ui.bubble.classList.add("show");
+    const currentUi = ensureUi();
+    currentUi.bubble.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    currentUi.bubble.dataset.theme = resolveTooltipTheme();
+    currentUi.bubble.classList.add("show");
 
     if (hideTimeout) clearTimeout(hideTimeout);
-    // Увеличили задержку до 3 секунд (2000 + 1000)
     hideTimeout = setTimeout(() => {
-      ui.bubble.classList.remove("show");
+      if (!currentUi.host.isConnected || !currentUi.bubble.isConnected) return;
+      currentUi.bubble.classList.remove("show");
+      hideTimeout = null;
     }, 3000);
   }
 
-  document.addEventListener("qute-theme-changed", (e) => {
+  const previousHandler = document[HANDLER_KEY];
+  if (previousHandler) {
+    document.removeEventListener("qute-theme-changed", previousHandler);
+  }
+
+  const handler = (e) => {
     showNotification(e.detail.mode);
-  });
+  };
+
+  document.addEventListener("qute-theme-changed", handler);
+  document[HANDLER_KEY] = handler;
 })();
