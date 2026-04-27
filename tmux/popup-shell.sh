@@ -62,6 +62,9 @@ fi
 
 SESSION_START_DIRECTORY="$(resolve_start_directory)"
 
+if command -v im-select >/dev/null 2>&1; then
+    im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
+fi
 if [[ "$MODE" == "ephemeral" ]]; then
     POPUP_SESSION="_popup_eph_${WINDOW_KEY}"
 

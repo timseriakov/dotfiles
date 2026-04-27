@@ -12,3 +12,5 @@ prefix_rule(pattern=["bash", "mcpproxy/launchd-control.sh", "restart"], decision
 prefix_rule(pattern=["bash", "mcpproxy/launchd-control.sh", "stop"], decision="allow")
 prefix_rule(pattern=["/bin/zsh", "-lc", "killall mcpproxy mcpproxy-tray 2>/dev/null || true; sleep 1; pgrep -af \"mcpproxy|mcpproxy-tray\" || true"], decision="allow")
 prefix_rule(pattern=["bash", "mcpproxy/launchd-control.sh", "start"], decision="allow")
+prefix_rule(pattern=["git", "add", ".opencode/README.md", ".opencode/plugins/memory-bank-lifecycle.js"], decision="allow")
+prefix_rule(pattern=["git", "add"], decision="allow")
