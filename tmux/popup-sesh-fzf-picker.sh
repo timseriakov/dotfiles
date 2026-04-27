@@ -5,6 +5,19 @@ SESSION_FORMAT=$'#{session_name}\t#{@is_popup_session}\t#{@popup_parent_window_i
 PANE_FORMAT=$'#{pane_id}\t#{pane_active}'
 SCRIPT_PATH="/Users/tim/dev/dotfiles/tmux/popup-sesh-fzf-picker.sh"
 PREVIEW_CMD="$SCRIPT_PATH --preview {}"
+PREVIEW_BORDER_RGB=$'\033[38;2;129;161;193m'
+PREVIEW_COLOR_RESET=$'\033[0m'
+
+print_preview_divider() {
+  local width="${FZF_PREVIEW_COLUMNS:-${COLUMNS:-62}}"
+  local line=""
+
+  (( width > 0 )) || width=62
+  printf -v line '%*s' "$width" ''
+  line="${line// /─}"
+
+  printf '\n%s%s%s\n\n' "$PREVIEW_BORDER_RGB" "$line" "$PREVIEW_COLOR_RESET"
+}
 
 popup_kind_icon() {
   case "${1:-}" in
@@ -75,16 +88,17 @@ popup_session_preview_line() {
 
   IFS=$'\t' read -r session_name _list_label display_label popup_kind pane_command kind_icon popup_start_directory parent_window_id <<< "$line"
 
+  printf '\n'
   printf '%s\n' "${display_label:-$session_name}"
   printf 'kind: %s %s' "${kind_icon:-󱂬}" "${popup_kind:-popup}"
   printf ' · command: %s' "${pane_command:-shell}"
   printf ' · parent: %s\n' "$parent_window_id"
   printf 'dir: %s\n' "$popup_start_directory"
   printf 'session: %s\n' "$session_name"
-  printf '\n────────────────────────────────────────────────────────────\n\n'
+  print_preview_divider
 
   if pane_id="$(resolve_popup_preview_pane "$session_name")"; then
-    if pane_output="$(tmux capture-pane -p -t "$pane_id" -S -200 2>/dev/null || true)"; then
+    if pane_output="$(tmux capture-pane -e -p -t "$pane_id" -S -200 2>/dev/null || true)"; then
       if [[ -n "$pane_output" ]]; then
         printf '%s\n' "$pane_output"
       else
