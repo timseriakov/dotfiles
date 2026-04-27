@@ -19,6 +19,9 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/tries/memory-bank-flow"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 2
 
