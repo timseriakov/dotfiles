@@ -6,6 +6,11 @@ PANE_FORMAT=$'#{pane_id}\t#{pane_active}'
 SCRIPT_PATH="/Users/tim/dev/dotfiles/tmux/popup-sesh-fzf-picker.sh"
 PREVIEW_CMD="$SCRIPT_PATH --preview {}"
 PREVIEW_BORDER_RGB=$'\033[38;2;129;161;193m'
+PREVIEW_KEY_RGB=$'\033[38;2;136;192;208m'
+PREVIEW_MUTED_RGB=$'\033[38;2;76;86;106m'
+PREVIEW_KIND_PERSISTENT_RGB=$'\033[38;2;235;203;139m'
+PREVIEW_KIND_EPHEMERAL_RGB=$'\033[38;2;208;135;112m'
+PREVIEW_SESSION_RGB=$'\033[38;2;180;142;173m'
 PREVIEW_COLOR_RESET=$'\033[0m'
 
 print_preview_divider() {
@@ -24,6 +29,14 @@ popup_kind_icon() {
     persistent) printf '' ;;
     ephemeral) printf '' ;;
     *) printf '󱂬' ;;
+  esac
+}
+
+popup_kind_color() {
+  case "${1:-}" in
+    persistent) printf '%s' "$PREVIEW_KIND_PERSISTENT_RGB" ;;
+    ephemeral) printf '%s' "$PREVIEW_KIND_EPHEMERAL_RGB" ;;
+    *) printf '%s' "$PREVIEW_KEY_RGB" ;;
   esac
 }
 
@@ -85,16 +98,18 @@ popup_session_preview_line() {
   local pane_id=""
   local pane_output=""
   local kind_icon=""
+  local kind_color=""
 
   IFS=$'\t' read -r session_name _list_label display_label popup_kind pane_command kind_icon popup_start_directory parent_window_id <<< "$line"
+  kind_color="$(popup_kind_color "$popup_kind")"
 
   printf '\n'
   printf '%s\n' "${display_label:-$session_name}"
-  printf 'kind: %s %s' "${kind_icon:-󱂬}" "${popup_kind:-popup}"
-  printf ' · command: %s' "${pane_command:-shell}"
-  printf ' · parent: %s\n' "$parent_window_id"
-  printf 'dir: %s\n' "$popup_start_directory"
-  printf 'session: %s\n' "$session_name"
+  printf '%skind%s: %s%s %s%s' "$PREVIEW_KEY_RGB" "$PREVIEW_COLOR_RESET" "$kind_color" "${kind_icon:-󱂬}" "${popup_kind:-popup}" "$PREVIEW_COLOR_RESET"
+  printf ' %s·%s %scommand%s: %s' "$PREVIEW_MUTED_RGB" "$PREVIEW_COLOR_RESET" "$PREVIEW_KEY_RGB" "$PREVIEW_COLOR_RESET" "${pane_command:-shell}"
+  printf ' %s·%s %sparent%s: %s\n' "$PREVIEW_MUTED_RGB" "$PREVIEW_COLOR_RESET" "$PREVIEW_KEY_RGB" "$PREVIEW_COLOR_RESET" "$parent_window_id"
+  printf '%sdir%s: %s\n' "$PREVIEW_KEY_RGB" "$PREVIEW_COLOR_RESET" "$popup_start_directory"
+  printf '%ssession%s: %s%s%s\n' "$PREVIEW_KEY_RGB" "$PREVIEW_COLOR_RESET" "$PREVIEW_SESSION_RGB" "$session_name" "$PREVIEW_COLOR_RESET"
   print_preview_divider
 
   if pane_id="$(resolve_popup_preview_pane "$session_name")"; then
