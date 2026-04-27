@@ -134,5 +134,5 @@ final_path="$path_base"
 if [[ "$final_app" == "$final_path" ]]; then
     printf '%s\n' "$final_app"
 else
-    printf '%s /%s\n' "$final_app" "$final_path"
+    printf '%s %s\n' "$final_app" "$final_path"
 fi
