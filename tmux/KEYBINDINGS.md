@@ -10,18 +10,18 @@
 
 ## Windows and panes
 
-| Key                | Action                              |
-| ------------------ | ----------------------------------- |
-| `Ctrl-a c`         | новое окно в текущей директории     |
-| `Ctrl-a Enter`     | split horizontal                    |
-| `Ctrl-a =`         | split vertical                      |
-| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`       |
-| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`       |
-| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`       |
-| `alacritty: cmd+a` | убить окно через alacritty → `F3`   |
-| `cmd+enter`        | horizontal split через kitty → `F4` |
-| `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5` |
-| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`    |
+| Key                | Action                                  |
+| ------------------ | --------------------------------------- |
+| `Ctrl-a c`         | новое окно в текущей директории         |
+| `Ctrl-a Enter`     | split horizontal                        |
+| `Ctrl-a =`         | split vertical                          |
+| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`           |
+| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`           |
+| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`           |
+| `alacritty: cmd+a` | убить окно через alacritty → `F3`       |
+| `cmd+enter`        | horizontal split через kitty → `F4`     |
+| `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5`     |
+| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`        |
 | `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s` |
 | `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`      |
 | `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`      |
