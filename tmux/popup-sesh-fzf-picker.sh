@@ -5,6 +5,8 @@ SESSION_FORMAT=$'#{session_name}\t#{@is_popup_session}\t#{@popup_parent_window_i
 PANE_FORMAT=$'#{pane_id}\t#{pane_active}'
 SCRIPT_PATH="/Users/tim/dev/dotfiles/tmux/popup-sesh-fzf-picker.sh"
 PREVIEW_CMD="$SCRIPT_PATH --preview {}"
+POPUP_LIST_CMD="$SCRIPT_PATH --list"
+POPUP_KILL_CMD='tmux kill-session -t {1}'
 PREVIEW_BORDER_RGB=$'\033[38;2;129;161;193m'
 PREVIEW_KEY_RGB=$'\033[38;2;136;192;208m'
 PREVIEW_MUTED_RGB=$'\033[38;2;76;86;106m'
@@ -127,6 +129,11 @@ popup_session_preview_line() {
   printf 'pane closed or capture failed\n'
 }
 
+if [[ "${1:-}" == "--list" ]]; then
+  list_popup_sessions
+  exit 0
+fi
+
 if [[ "${1:-}" == "--preview" ]]; then
   popup_session_preview_line "${2:-}"
   exit 0
@@ -147,6 +154,7 @@ selected="$(printf '%s\n' "$popup_sessions" | fzf-tmux -p 100%,100% \
   --prompt='󱂬 ' \
   --header='popup sessions' \
   --bind='tab:down,btab:up' \
+  --bind="ctrl-x:execute($POPUP_KILL_CMD)+reload($POPUP_LIST_CMD)" \
   --preview-window='right:70%:border-left' \
   --preview="$PREVIEW_CMD" \
   --color='fg:#D8DEE9,bg:#2E3440,hl:#BF616A,fg+:#E5E9F0,bg+:#3B4252,hl+:#BF616A' \
