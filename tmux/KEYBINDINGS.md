@@ -22,8 +22,9 @@
 | `cmd+enter`        | horizontal split через kitty → `F4` |
 | `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5` |
 | `cmd+r` / `cmd+к`  | rename window через kitty → `F6`    |
-| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`  |
-| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`  |
+| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s` |
+| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`      |
+| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`      |
 
 ## Layout and moving things
 
@@ -46,9 +47,10 @@
 | `Ctrl-a f`                | persistent popup shell                    |
 | `Ctrl-a F`                | ephemeral popup shell                     |
 | `Ctrl-a s`                | `sesh` session picker                     |
+| `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty         |
 | `Ctrl-a C`                | создать named session                     |
 | `Ctrl-a X`                | убить текущую session                     |
-| `Ctrl-a S`                | перейти к прошлой session                 |
+| `Ctrl-a S`                | popup session picker                      |
 | `Ctrl-a @`                | вынести pane в отдельную session          |
 
 ## Workmux
@@ -115,6 +117,7 @@
 - `cmd+r` / `cmd+к` → `F6`
 - `cmd+f` / `cmd+а` → `F7`
 - `cmd+alt+f` / `cmd+alt+а` → `F8`
+- `cmd+s` / `cmd+ы` → literal `Ctrl-a s`
 - `cmd+j` / `cmd+о` → `F9`
 - `cmd+k` / `cmd+л` → `F10`
 - `cmd+u` / `cmd+г` → `F12`

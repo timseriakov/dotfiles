@@ -8,7 +8,8 @@
 - `Ctrl-a =` — split vertical
 - `cmd+f` / `cmd+а` — persistent popup shell
 - `cmd+alt+f` / `cmd+alt+а` — ephemeral popup shell
-- `Ctrl-a s` — session picker
+- `Ctrl-a s` or `cmd+s` / `cmd+ы` — session picker
+- `Ctrl-a S` — popup session picker
 - `Ctrl-a w` — workmux dashboard popup
 - `Ctrl-a v` — copy-mode
 - `y` / `Enter` — copy

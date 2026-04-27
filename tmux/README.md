@@ -11,7 +11,8 @@
 - `Ctrl-a Enter` — split horizontal
 - `Ctrl-a =` — split vertical
 - `cmd+f` / `cmd+а`, `cmd+alt+f` / `cmd+alt+а` — persistent / ephemeral popup shell
-- `Ctrl-a s` — session picker
+- `Ctrl-a s` or `cmd+s` / `cmd+ы` — session picker
+- `Ctrl-a S` — popup session picker
 - `Ctrl-a w` — workmux dashboard popup
 - `Ctrl-a v` — copy-mode
 - `y` / `Enter` — копировать в copy-mode
@@ -79,8 +80,9 @@
 | `cmd+enter`        | horizontal split через kitty → `F4` |
 | `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5` |
 | `cmd+r` / `cmd+к`  | rename window через kitty → `F6`    |
-| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`  |
-| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`  |
+| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s` |
+| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`      |
+| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`      |
 
 ### Layout / move
 
@@ -103,9 +105,10 @@
 | `Ctrl-a f`                | persistent popup shell                    |
 | `Ctrl-a F`                | ephemeral popup shell                     |
 | `Ctrl-a s`                | `sesh` session picker                     |
+| `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty         |
 | `Ctrl-a C`                | создать named session                     |
 | `Ctrl-a X`                | убить текущую session                     |
-| `Ctrl-a S`                | перейти к прошлой session                 |
+| `Ctrl-a S`                | popup session picker                      |
 | `Ctrl-a @`                | вынести pane в отдельную session          |
 
 ### Workmux
@@ -156,8 +159,8 @@
 
 Что делает:
 
-- открывает popup через отдельную session `_popup`
-- session сохраняется между открытиями
+- открывает popup через отдельную session, привязанную к текущей tmux-вкладке
+- popup state сохраняется для этой вкладки между открытиями
 - удобно как постоянный scratch terminal
 
 ### Ephemeral
@@ -169,7 +172,7 @@
 
 Что делает:
 
-- открывает popup через session `_popup_eph`
+- открывает ephemeral popup для текущей tmux-вкладки
 - session пересоздаётся каждый раз
 - session удаляется после закрытия
 - удобно для одноразовых задач
@@ -179,6 +182,7 @@
 Открывается через:
 
 - `Ctrl-a s`
+- `cmd+s` / `cmd+ы`
 
 Внутри picker:
 
@@ -188,6 +192,19 @@
 - `Ctrl-s` — поиск директорий через `fd`
 - `Ctrl-x` — kill session
 - `Tab` / `Shift-Tab` — навигация
+
+## Popup session picker
+
+Открывается через:
+
+- `Ctrl-a S`
+
+Что делает:
+
+- показывает только popup sessions
+- отображает label проекта, текущую команду и тип popup
+- справа показывает metadata header и live preview содержимого session
+- выбирает popup session напрямую через tmux
 
 ## Workmux integration
 
