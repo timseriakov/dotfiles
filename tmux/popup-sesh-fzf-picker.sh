@@ -6,6 +6,14 @@ PANE_FORMAT=$'#{pane_id}\t#{pane_active}'
 SCRIPT_PATH="/Users/tim/dev/dotfiles/tmux/popup-sesh-fzf-picker.sh"
 PREVIEW_CMD="$SCRIPT_PATH --preview {}"
 
+popup_kind_icon() {
+  case "${1:-}" in
+    persistent) printf '' ;;
+    ephemeral) printf '' ;;
+    *) printf '󱂬' ;;
+  esac
+}
+
 list_popup_sessions() {
   local session_name=""
   local is_popup_session=""
@@ -15,6 +23,8 @@ list_popup_sessions() {
   local popup_start_directory=""
   local display_label=""
   local pane_command=""
+  local kind_icon=""
+  local list_label=""
 
   while IFS=$'\t' read -r session_name is_popup_session parent_window_id popup_kind popup_label popup_start_directory; do
     [[ "$session_name" == _popup* ]] || continue
@@ -22,13 +32,9 @@ list_popup_sessions() {
 
     display_label="${popup_label:-$session_name}"
     pane_command="$(tmux display-message -p -t "$session_name" '#{pane_current_command}' 2>/dev/null || true)"
-    printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
-      "$session_name" \
-      "$display_label" \
-      "${popup_kind:-popup}" \
-      "${pane_command:-shell}" \
-      "$popup_start_directory" \
-      "$parent_window_id"
+    kind_icon="$(popup_kind_icon "$popup_kind")"
+    list_label="${display_label} (${pane_command:-shell}) ${kind_icon}"
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$session_name" "$list_label" "$display_label" "${popup_kind:-popup}" "${pane_command:-shell}" "$kind_icon" "$popup_start_directory" "$parent_window_id"
   done < <(tmux list-sessions -F "$SESSION_FORMAT" 2>/dev/null)
 }
 
@@ -65,11 +71,12 @@ popup_session_preview_line() {
   local parent_window_id=""
   local pane_id=""
   local pane_output=""
+  local kind_icon=""
 
-  IFS=$'\t' read -r session_name display_label popup_kind pane_command popup_start_directory parent_window_id <<< "$line"
+  IFS=$'\t' read -r session_name _list_label display_label popup_kind pane_command kind_icon popup_start_directory parent_window_id <<< "$line"
 
   printf '%s\n' "${display_label:-$session_name}"
-  printf 'kind: %s' "${popup_kind:-popup}"
+  printf 'kind: %s %s' "${kind_icon:-󱂬}" "${popup_kind:-popup}"
   printf ' · command: %s' "${pane_command:-shell}"
   printf ' · parent: %s\n' "$parent_window_id"
   printf 'dir: %s\n' "$popup_start_directory"
@@ -106,10 +113,10 @@ fi
 selected="$(printf '%s\n' "$popup_sessions" | fzf-tmux -p 100%,100% \
   --no-sort --ansi --cycle --layout=reverse --border=none \
   --delimiter=$'\t' \
-  --with-nth='2,4,3' \
-  --nth='2,3,4,5,6' \
+  --with-nth='2' \
+  --nth='2,3,4,5,6,7' \
   --prompt='󱂬 ' \
-  --header='  popup sessions' \
+  --header='popup sessions' \
   --bind='tab:down,btab:up' \
   --preview-window='right:70%:border-left' \
   --preview="$PREVIEW_CMD" \
