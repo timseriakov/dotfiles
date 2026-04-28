@@ -14,3 +14,5 @@ prefix_rule(pattern=["/bin/zsh", "-lc", "killall mcpproxy mcpproxy-tray 2>/dev/n
 prefix_rule(pattern=["bash", "mcpproxy/launchd-control.sh", "start"], decision="allow")
 prefix_rule(pattern=["git", "add", ".opencode/README.md", ".opencode/plugins/memory-bank-lifecycle.js"], decision="allow")
 prefix_rule(pattern=["git", "add"], decision="allow")
+prefix_rule(pattern=["git", "clone"], decision="allow")
+prefix_rule(pattern=["git", "commit"], decision="allow")

@@ -13,7 +13,7 @@ START_DIRECTORY="${3:-}"
 POPUP_WIDTH="80%"
 POPUP_HEIGHT="80%"
 BORDER_COLOR="#81A1C1"
-
+EPHEMERAL_BORDER_COLOR="#EBCB8B"
 usage() {
     printf 'Usage: %s [persistent|ephemeral] [parent_window_id]\n' "${0##*/}" >&2
     exit 1
@@ -78,7 +78,7 @@ if [[ "$MODE" == "ephemeral" ]]; then
         -w "$POPUP_WIDTH" -h "$POPUP_HEIGHT" \
         -b rounded \
         -T " tmp " \
-        -S "fg=$BORDER_COLOR" \
+        -S "fg=$EPHEMERAL_BORDER_COLOR" \
         "tmux attach-session -t '$POPUP_SESSION'"
 
     tmux kill-session -t "$POPUP_SESSION" 2>/dev/null || true
