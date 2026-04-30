@@ -10,8 +10,8 @@ set -euo pipefail
 MODE="${1:-persistent}"
 PARENT_WINDOW_ID="${2:-}"
 START_DIRECTORY="${3:-}"
-POPUP_WIDTH="80%"
-POPUP_HEIGHT="80%"
+POPUP_WIDTH="95%"
+POPUP_HEIGHT="90%"
 BORDER_COLOR="#81A1C1"
 EPHEMERAL_BORDER_COLOR="#EBCB8B"
 usage() {
@@ -38,10 +38,12 @@ set_popup_metadata() {
     local session_name="$1"
     local popup_kind="$2"
     local parent_window_id="$3"
+    local popup_start_directory="$4"
 
     tmux set-option -t "$session_name" -q @is_popup_session 1
     tmux set-option -t "$session_name" -q @popup_parent_window_id "$parent_window_id"
     tmux set-option -t "$session_name" -q @popup_kind "$popup_kind"
+    tmux set-option -t "$session_name" -q @popup_start_directory "$popup_start_directory"
 }
 
 case "$MODE" in
@@ -71,7 +73,7 @@ if [[ "$MODE" == "ephemeral" ]]; then
     tmux kill-session -t "$POPUP_SESSION" 2>/dev/null || true
     TMUX='' tmux new-session -d -c "$SESSION_START_DIRECTORY" -s "$POPUP_SESSION"
     tmux set-option -t "$POPUP_SESSION" status off
-    set_popup_metadata "$POPUP_SESSION" "$MODE" "$PARENT_WINDOW_ID"
+    set_popup_metadata "$POPUP_SESSION" "$MODE" "$PARENT_WINDOW_ID" "$SESSION_START_DIRECTORY"
 
     tmux display-popup \
         -E \
@@ -89,7 +91,7 @@ else
         TMUX='' tmux new-session -d -c "$SESSION_START_DIRECTORY" -s "$POPUP_SESSION"
         tmux set-option -t "$POPUP_SESSION" status off
     fi
-    set_popup_metadata "$POPUP_SESSION" "$MODE" "$PARENT_WINDOW_ID"
+    set_popup_metadata "$POPUP_SESSION" "$MODE" "$PARENT_WINDOW_ID" "$SESSION_START_DIRECTORY"
 
     tmux display-popup \
         -E \

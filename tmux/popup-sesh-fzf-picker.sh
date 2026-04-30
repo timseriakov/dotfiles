@@ -42,6 +42,13 @@ popup_kind_color() {
   esac
 }
 
+popup_parent_window_id_from_session_name() {
+  case "${1:-}" in
+    _popup_eph_*) printf '@%s\n' "${1#_popup_eph_}" ;;
+    _popup_*) printf '@%s\n' "${1#_popup_}" ;;
+  esac
+}
+
 list_popup_sessions() {
   local session_name=""
   local is_popup_session=""
@@ -58,6 +65,18 @@ list_popup_sessions() {
     [[ "$session_name" == _popup* ]] || continue
     [[ "$is_popup_session" == "1" ]] || continue
 
+    if [[ -z "$parent_window_id" ]]; then
+      parent_window_id="$(popup_parent_window_id_from_session_name "$session_name" || true)"
+    fi
+    if [[ -z "$popup_kind" ]]; then
+      case "$session_name" in
+        _popup_eph_*) popup_kind="ephemeral" ;;
+        _popup_*) popup_kind="persistent" ;;
+      esac
+    fi
+    if [[ -z "$popup_start_directory" ]]; then
+      popup_start_directory="$(tmux display-message -p -t "$session_name" '#{pane_current_path}' 2>/dev/null || true)"
+    fi
     display_label="${popup_label:-$session_name}"
     pane_command="$(tmux display-message -p -t "$session_name" '#{pane_current_command}' 2>/dev/null || true)"
     kind_icon="$(popup_kind_icon "$popup_kind")"
@@ -103,6 +122,14 @@ popup_session_preview_line() {
   local kind_color=""
 
   IFS=$'\t' read -r session_name _list_label display_label popup_kind pane_command kind_icon popup_start_directory parent_window_id <<< "$line"
+
+  if [[ "$popup_start_directory" == @* && -z "$parent_window_id" ]]; then
+    parent_window_id="$popup_start_directory"
+    popup_start_directory="$(tmux display-message -p -t "$session_name" '#{pane_current_path}' 2>/dev/null || true)"
+  fi
+  if [[ -z "$parent_window_id" ]]; then
+    parent_window_id="$(popup_parent_window_id_from_session_name "$session_name" || true)"
+  fi
   kind_color="$(popup_kind_color "$popup_kind")"
 
   printf '\n'
