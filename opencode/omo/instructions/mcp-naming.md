@@ -1,14 +1,14 @@
-# MCP naming rules
+# Правила именования MCP
 
-## Critical MCP disambiguation
+## Критически важное различение MCP
 
-There are two different names that must never be confused:
+Есть два разных имени, которые ни в коем случае нельзя путать:
 
-- `playwriter` is the MCP server available in this OpenCode setup.
-- `playwright` is a browser testing framework and must not be used as an MCP server name unless it is explicitly configured.
+- `playwriter` — это MCP-сервер, доступный в этой конфигурации OpenCode.
+- `playwright` — это браузерный фреймворк для тестирования, и его нельзя использовать как имя MCP-сервера, если только он не настроен явно.
 
-When the user says "playwriter mcp", "Playwriter MCP", or asks to use the MCP for browser/page automation in this setup, always use the MCP server named exactly:
+Когда пользователь говорит "playwriter mcp", "Playwriter MCP" или просит использовать MCP для автоматизации браузера/страниц в этой конфигурации, всегда используй MCP-сервер с точным именем:
 
 `playwriter`
 
-Never silently rewrite `playwriter` to `playwright`.
+Никогда не переписывай `playwriter` в `playwright` молча.
