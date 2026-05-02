@@ -6,6 +6,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "temperature": 0.3,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "atlas": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
@@ -16,6 +17,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "low",
       "temperature": 0.1,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "librarian": {
       "model": "google/antigravity-gemini-3-flash",
@@ -43,7 +45,7 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "temperature": 0.3,
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
@@ -54,12 +56,13 @@
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "max",
       "temperature": 0.3,
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
       "variant": "low",
       "temperature": 0.3,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "momus": {
       "model": "google/antigravity-claude-opus-4-6-thinking",
