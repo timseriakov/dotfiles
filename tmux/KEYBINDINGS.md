@@ -44,7 +44,7 @@
 | ------------------------- | ----------------------------------------- |
 | `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7` |
 | `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8`  |
-| `Ctrl-a f`                | persistent popup shell                    |
+| `Ctrl-a f`                | promote popup в окно (только внутри popup) |
 | `Ctrl-a F`                | ephemeral popup shell                     |
 | `Ctrl-a s`                | `sesh` session picker                     |
 | `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty         |

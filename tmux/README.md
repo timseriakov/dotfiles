@@ -102,7 +102,7 @@
 | ------------------------- | ----------------------------------------- |
 | `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7` |
 | `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8`  |
-| `Ctrl-a f`                | persistent popup shell                    |
+| `Ctrl-a f`                | promote popup в окно (только внутри popup) |
 | `Ctrl-a F`                | ephemeral popup shell                     |
 | `Ctrl-a s`                | `sesh` session picker                     |
 | `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty         |
@@ -155,13 +155,13 @@
 Открывается через:
 
 - `cmd+f` / `cmd+а`
-- `Ctrl-a f`
 
 Что делает:
 
 - открывает popup через отдельную session, привязанную к текущей tmux-вкладке
 - popup state сохраняется для этой вкладки между открытиями
-- удобно как постоянный scratch terminal
+- `Ctrl-a f` внутри самого popup переносит текущее popup-окно в обычное окно родительской tmux-session
+- вне popup `Ctrl-a f` ничего не делает
 
 ### Ephemeral
 
