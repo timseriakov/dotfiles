@@ -6,6 +6,7 @@
     "sisyphus": {
       "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "atlas": {
       "model": "google/gemini-3.1-pro-preview",
@@ -34,7 +35,7 @@
     "plan": {
       "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "google/gemini-3.1-pro-preview",
@@ -43,7 +44,7 @@
     "prometheus": {
       "model": "google/gemini-3.1-pro-preview",
       "fallback_models": ["google/gemini-2.5-pro"],
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
   },
 
