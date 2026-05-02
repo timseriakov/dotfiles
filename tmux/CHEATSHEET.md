@@ -8,6 +8,8 @@
 - `Ctrl-a =` — split vertical
 - `cmd+f` / `cmd+а` — persistent popup shell
 - `Ctrl-a f` — внутри popup переносит его в обычное окно; вне popup ничего не делает
+- `Ctrl-a g` — внутри popup переносит его в vertical split родительского окна; вне popup ничего не делает
+- `Ctrl-a G` — внутри popup переносит его в horizontal split родительского окна; вне popup ничего не делает
 - `cmd+alt+f` / `cmd+alt+а` — ephemeral popup shell
 - `Ctrl-a s` or `cmd+s` / `cmd+ы` — session picker
 - `Ctrl-a S` — popup session picker

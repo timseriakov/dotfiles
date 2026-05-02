@@ -98,18 +98,19 @@
 
 ### Popup / sessions
 
-| Клавиша                   | Действие                                  |
-| ------------------------- | ----------------------------------------- |
-| `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7` |
-| `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8`  |
-| `Ctrl-a f`                | promote popup в окно (только внутри popup) |
-| `Ctrl-a F`                | ephemeral popup shell                     |
-| `Ctrl-a s`                | `sesh` session picker                     |
-| `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty         |
-| `Ctrl-a C`                | создать named session                     |
-| `Ctrl-a X`                | убить текущую session                     |
-| `Ctrl-a S`                | popup session picker                      |
-| `Ctrl-a @`                | вынести pane в отдельную session          |
+| Клавиша                   | Действие                                               |
+| ------------------------- | ------------------------------------------------------ |
+| `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7`              |
+| `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8`               |
+| `Ctrl-a f`                | promote popup в окно (только внутри popup)             |
+| `Ctrl-a g`                | promote popup в vertical split (только внутри popup)   |
+| `Ctrl-a G`                | promote popup в horizontal split (только внутри popup) |
+| `Ctrl-a s`                | `sesh` session picker                                  |
+| `cmd+s` / `cmd+ы`         | `sesh` session picker через kitty                      |
+| `Ctrl-a C`                | создать named session                                  |
+| `Ctrl-a X`                | убить текущую session                                  |
+| `Ctrl-a S`                | popup session picker                                   |
+| `Ctrl-a @`                | вынести pane в отдельную session                       |
 
 ### Workmux
 
@@ -161,7 +162,9 @@
 - открывает popup через отдельную session, привязанную к текущей tmux-вкладке
 - popup state сохраняется для этой вкладки между открытиями
 - `Ctrl-a f` внутри самого popup переносит текущее popup-окно в обычное окно родительской tmux-session
-- вне popup `Ctrl-a f` ничего не делает
+- `Ctrl-a g` внутри самого popup переносит его в vertical split родительского окна
+- `Ctrl-a G` внутри самого popup переносит его в horizontal split родительского окна
+- вне popup `Ctrl-a f`, `Ctrl-a g` и `Ctrl-a G` ничего не делают
 
 ### Ephemeral
 
