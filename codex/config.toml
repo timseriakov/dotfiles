@@ -1,5 +1,5 @@
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 [mcp_servers.mcpproxy]
 type = "http"
 url = "http://localhost:8080/mcp"
@@ -22,8 +22,17 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/tries/memory-bank-flow"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/tries/content-compiler"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-old/rnc-app"]
+trust_level = "trusted"
+
+[projects."/Users/tim/dev/pet-old/CV"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
-"gpt-5.5" = 3
+"gpt-5.5" = 4
 
 [features]
 codex_hooks = true

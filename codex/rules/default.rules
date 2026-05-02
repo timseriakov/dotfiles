@@ -16,3 +16,5 @@ prefix_rule(pattern=["git", "add", ".opencode/README.md", ".opencode/plugins/mem
 prefix_rule(pattern=["git", "add"], decision="allow")
 prefix_rule(pattern=["git", "clone"], decision="allow")
 prefix_rule(pattern=["git", "commit"], decision="allow")
+prefix_rule(pattern=["git", "switch"], decision="allow")
+prefix_rule(pattern=["cp", ".opencode/README-commands.md", "/Users/tim/dev/tries/rooki.by/.opencode/README-commands.md"], decision="allow")

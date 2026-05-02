@@ -30,6 +30,7 @@ codex/history.jsonl
 codex/version.json
 codex/shell_snapshots
 codex/skills/.system
+codex/rules/default.rules
 
 auth.json
 
