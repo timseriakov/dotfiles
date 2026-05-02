@@ -5,6 +5,7 @@
     "sisyphus": {
       "model": "omniroute/cx/gpt-5.4",
       "temperature": 0.1,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "atlas": {
       "model": "omniroute/cx/gpt-5.3-codex",
@@ -13,6 +14,7 @@
     "oracle": {
       "model": "omniroute/cx/gpt-5.4",
       "temperature": 0.1,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "librarian": {
       "model": "omniroute/cx/gpt-5.2",
@@ -38,7 +40,7 @@
     "plan": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "omniroute/cx/gpt-5.3-codex",
@@ -47,11 +49,12 @@
     "prometheus": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.3,
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "momus": {
       "model": "omniroute/cx/gpt-5.2",

@@ -2,8 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "hashline_edit": true,
   "agents": {
-    "sisyphus": { "model": "omniroute/reasoning-main" },
-    "oracle": { "model": "omniroute/reasoning-main" },
+    "sisyphus": {
+      "model": "omniroute/reasoning-main",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
+    },
+    "oracle": {
+      "model": "omniroute/reasoning-main",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
+    },
     "hephaestus": { "model": "omniroute/deep-premium", "variant": "medium" },
     "atlas": { "model": "omniroute/coding-main" },
     "librarian": { "model": "omniroute/research-fast" },
@@ -11,13 +17,16 @@
     "multimodal-looker": { "model": "omniroute/reasoning-cheap" },
     "plan": {
       "model": "omniroute/reasoning-main",
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "prometheus": {
       "model": "omniroute/reasoning-main",
-      "prompt_append": "Всегда пиши план на русском языке. (Always write the plan in Russian.)",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
-    "metis": { "model": "omniroute/deep-premium" },
+    "metis": {
+      "model": "omniroute/deep-premium",
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
+    },
     "momus": { "model": "omniroute/deep-premium" },
     "sisyphus-junior": { "model": "omniroute/coding-cheap" },
     "OpenCode-Builder": { "model": "omniroute/coding-main" },
