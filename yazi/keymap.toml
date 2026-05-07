@@ -60,7 +60,8 @@ keymap = [
 	# Toggle
 	{ on = "<Space>", run = [ "toggle", "arrow 1" ], desc = "Toggle the current selection state" },
 	{ on = "<S-a>",   run = "toggle_all --state=on", desc = "Select all files" },
-	{ on = "<C-r>",   run = "toggle_all",            desc = "Invert selection of all files" },
+	{ on = "<C-a>",   run = "toggle_all",            desc = "Invert selection of all files" },
+	{ on = "<C-r>",   run = "redo",                  desc = "Redo the last operation" },
 
 	# Visual mode
 	{ on = "v", run = "visual_mode",         desc = "Enter visual mode (selection mode)" },
@@ -73,7 +74,8 @@ keymap = [
 	{ on = "О", run = "seek 5",  desc = "Seek down 5 units in the preview" },
 
 	# Spotting
-	{ on = "<Tab>", run = "spot", desc = "Spot hovered file" },
+	{ on = "<Tab>", run = "pane_switch", desc = "Switch pane" },
+	{ on = "i",     run = "spot",        desc = "Spot hovered file" },
 
 	# Operation
 	{ on = "o",         run = "open",                        desc = "Open selected files" },
@@ -177,7 +179,12 @@ keymap = [
 	{ on = "<C-t>", run = "plugin close-and-restore-tab restore", desc = "Restore last closed tab" },
 
 	# Tasks
-	{ on = "w", run = "tasks:show", desc = "Show task manager" },
+	{ on = [ "w", "w" ], run = "pane_switch",       desc = "Switch to the other pane" },
+	{ on = [ "w", "h" ], run = "pane_focus --left", desc = "Focus the left pane" },
+	{ on = [ "w", "l" ], run = "pane_focus",        desc = "Focus the right pane" },
+	{ on = [ "w", "o" ], run = "pane_only",         desc = "Toggle single/dual pane" },
+	{ on = [ "w", "p" ], run = "pane_preview",      desc = "Toggle preview in dual pane" },
+	{ on = "W", run = "tasks:show", desc = "Show task manager" },
 
 	# Help
 	{ on = "~",    run = "help", desc = "Open help" },

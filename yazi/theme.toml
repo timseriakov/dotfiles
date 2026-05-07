@@ -49,7 +49,7 @@ count_selected = { fg = "black", bg = "yellow" }
 
 # Border
 border_symbol = " "
-border_style = { fg = "gray" }
+border_style = { fg = "#4c566a" }
 
 # Highlighting
 syntect_theme = ""
