@@ -73,3 +73,6 @@ end
 
 # x-cmd
 test ! -e "$HOME/.x-cmd.root/local/data/fish/rc.fish" || source "$HOME/.x-cmd.root/local/data/fish/rc.fish" # boot up x-cmd.
+
+# Keep Starship on the repo-managed config even if x-cmd exports its own.
+set -gx STARSHIP_CONFIG "$HOME/.config/starship.toml"

@@ -56,6 +56,15 @@
       "omniroute/writing-cheap": 3,
     },
   },
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": false,
+    "agents": true,
+    "hooks": true,
+    "plugins": false,
+    "plugins_override": {},
+  },
   "lsp": {
     "markdown": {
       "command": ["npx", "-y", "remark-language-server", "--stdio"],

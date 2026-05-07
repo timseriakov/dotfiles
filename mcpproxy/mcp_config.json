@@ -1,51 +1,53 @@
 {
-  "listen": "127.0.0.1:8080",
-  "enable_socket": true,
-  "data_dir": "/Users/tim/.mcpproxy",
-  "enable_tray": true,
-  "debug_search": false,
-  "mcpServers": [
-    {
-      "name": "lightpanda",
-      "protocol": "stdio",
-      "command": "fish",
-      "args": ["-lc", "gomcp stdio"],
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-04-01T14:54:24.475502+03:00"
-    },
-    {
-      "name": "morphllm-fast-apply",
-      "protocol": "stdio",
-      "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
-      "env": {
-        "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
-        "MORPH_API_KEY": "${keyring:morph_api_key}"
-      },
-      "oauth": null,
-      "enabled": false,
-      "quarantined": false,
-      "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-04-01T14:54:24.484153+03:00"
-    },
-    {
-      "name": "shoogle",
-      "url": "https://mcp.shoogle.dev/mcp",
-      "protocol": "http",
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2026-03-16T13:45:57.221182+03:00",
-      "updated": "2026-04-01T14:54:24.499111+03:00"
-    }
-  ],
-  "top_k": 5,
-  "tools_limit": 15,
-  "tool_response_limit": 20000,
+  "activity_cleanup_interval_min": 60,
+  "activity_max_records": 100000,
+  "activity_max_response_size": 65536,
+  "activity_retention_days": 90,
+  "allow_server_add": true,
+  "allow_server_remove": true,
+  "api_key": "1b1f9176cb2c4cce9610251ee944639e1fd19efc905d4f9572c3a6220e0a3d69",
   "call_tool_timeout": "2m0s",
+  "check_server_repo": true,
+  "code_execution_pool_size": 10,
+  "code_execution_timeout_ms": 120000,
+  "data_dir": "/Users/tim/.mcpproxy",
+  "debug_search": false,
+  "disable_management": false,
+  "docker_isolation": {
+    "enabled": false,
+    "enable_cache_volume": true,
+    "default_images": {
+      "bash": "alpine:3.18",
+      "binary": "alpine:3.18",
+      "cargo": "rust:1.75-slim",
+      "composer": "php:8.2-cli-alpine",
+      "gem": "ruby:3.2-alpine",
+      "go": "golang:1.21-alpine",
+      "node": "node:20",
+      "npm": "node:20",
+      "npx": "node:20",
+      "php": "php:8.2-cli-alpine",
+      "pip": "python:3.11",
+      "pipx": "python:3.11",
+      "python": "python:3.11",
+      "python3": "python:3.11",
+      "ruby": "ruby:3.2-alpine",
+      "rustc": "rust:1.75-slim",
+      "sh": "alpine:3.18",
+      "uvx": "python:3.11",
+      "yarn": "node:20"
+    },
+    "registry": "docker.io",
+    "network_mode": "bridge",
+    "memory_limit": "512m",
+    "cpu_limit": "1.0",
+    "timeout": "30s",
+    "log_max_size": "100m",
+    "log_max_files": "3"
+  },
+  "enable_code_execution": false,
+  "enable_prompts": true,
+  "enable_socket": true,
   "environment": {
     "inherit_system_safe": true,
     "allowed_system_vars": [
@@ -89,6 +91,10 @@
     "custom_vars": {},
     "enhance_path": false
   },
+  "intent_declaration": {
+    "strict_server_validation": true
+  },
+  "listen": "127.0.0.1:8080",
   "logging": {
     "level": "info",
     "enable_file": true,
@@ -100,45 +106,46 @@
     "compress": true,
     "json_format": false
   },
-  "api_key": "1b1f9176cb2c4cce9610251ee944639e1fd19efc905d4f9572c3a6220e0a3d69",
-  "require_mcp_auth": false,
-  "read_only_mode": false,
-  "disable_management": false,
-  "allow_server_add": true,
-  "allow_server_remove": true,
-  "enable_prompts": true,
-  "check_server_repo": true,
-  "docker_isolation": {
-    "enabled": false,
-    "default_images": {
-      "bash": "alpine:3.18",
-      "binary": "alpine:3.18",
-      "cargo": "rust:1.75-slim",
-      "composer": "php:8.2-cli-alpine",
-      "gem": "ruby:3.2-alpine",
-      "go": "golang:1.21-alpine",
-      "node": "node:20",
-      "npm": "node:20",
-      "npx": "node:20",
-      "php": "php:8.2-cli-alpine",
-      "pip": "python:3.11",
-      "pipx": "python:3.11",
-      "python": "python:3.11",
-      "python3": "python:3.11",
-      "ruby": "ruby:3.2-alpine",
-      "rustc": "rust:1.75-slim",
-      "sh": "alpine:3.18",
-      "uvx": "python:3.11",
-      "yarn": "node:20"
+  "max_result_size_chars": 500000,
+  "mcpServers": [
+    {
+      "name": "lightpanda",
+      "protocol": "stdio",
+      "command": "fish",
+      "args": ["-lc", "gomcp stdio"],
+      "oauth": null,
+      "enabled": true,
+      "quarantined": false,
+      "created": "2025-12-21T22:46:44.826522+03:00",
+      "updated": "2026-04-01T14:54:24.475502+03:00"
     },
-    "registry": "docker.io",
-    "network_mode": "bridge",
-    "memory_limit": "512m",
-    "cpu_limit": "1.0",
-    "timeout": "30s",
-    "log_max_size": "100m",
-    "log_max_files": "3"
-  },
+    {
+      "name": "morphllm-fast-apply",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "env": {
+        "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
+        "MORPH_API_KEY": "${keyring:morph_api_key}"
+      },
+      "oauth": null,
+      "enabled": false,
+      "quarantined": false,
+      "created": "2025-10-19T12:18:48.499107+03:00",
+      "updated": "2026-04-01T14:54:24.484153+03:00"
+    },
+    {
+      "name": "shoogle",
+      "url": "https://mcp.shoogle.dev/mcp",
+      "protocol": "http",
+      "oauth": null,
+      "enabled": true,
+      "quarantined": false,
+      "created": "2026-03-16T13:45:57.221182+03:00",
+      "updated": "2026-04-01T14:54:24.499111+03:00"
+    }
+  ],
+  "read_only_mode": false,
   "registries": [
     {
       "id": "pulse",
@@ -186,45 +193,8 @@
       "protocol": "custom/remote"
     }
   ],
-  "features": {
-    "enable_runtime": true,
-    "enable_event_bus": true,
-    "enable_sse": true,
-    "enable_observability": true,
-    "enable_health_checks": true,
-    "enable_metrics": true,
-    "enable_tracing": false,
-    "enable_oauth": true,
-    "enable_quarantine": true,
-    "enable_docker_isolation": false,
-    "enable_search": true,
-    "enable_caching": true,
-    "enable_async_storage": true,
-    "enable_web_ui": true,
-    "enable_tray": true,
-    "enable_debug_logging": false,
-    "enable_contract_tests": false
-  },
-  "tls": {
-    "enabled": false,
-    "require_client_cert": false,
-    "hsts": true
-  },
-  "tokenizer": {
-    "enabled": true,
-    "default_model": "gpt-4",
-    "encoding": "cl100k_base"
-  },
-  "enable_code_execution": false,
-  "code_execution_timeout_ms": 120000,
-  "code_execution_pool_size": 10,
-  "activity_retention_days": 90,
-  "activity_max_records": 100000,
-  "activity_max_response_size": 65536,
-  "activity_cleanup_interval_min": 60,
-  "intent_declaration": {
-    "strict_server_validation": true
-  },
+  "require_mcp_auth": false,
+  "routing_mode": "retrieve_tools",
   "sensitive_data_detection": {
     "enabled": true,
     "scan_requests": true,
@@ -243,7 +213,21 @@
     }
   },
   "telemetry": {
-    "anonymous_id": "e63d2692-4922-4c7c-b3f5-17ce4c009f8d"
+    "anonymous_id": "e63d2692-4922-4c7c-b3f5-17ce4c009f8d",
+    "anonymous_id_created_at": "2026-05-07T07:14:02Z",
+    "last_startup_outcome": "success",
+    "notice_shown": true
   },
-  "routing_mode": "retrieve_tools"
+  "tls": {
+    "enabled": false,
+    "require_client_cert": false,
+    "hsts": true
+  },
+  "tokenizer": {
+    "enabled": true,
+    "default_model": "gpt-4",
+    "encoding": "cl100k_base"
+  },
+  "tool_response_limit": 20000,
+  "tools_limit": 15
 }

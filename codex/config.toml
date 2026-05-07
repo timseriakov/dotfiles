@@ -38,7 +38,7 @@ trust_level = "trusted"
 codex_hooks = true
 
 [marketplaces.caveman-repo]
-last_updated = "2026-04-24T21:28:26Z"
-last_revision = "84cc3c14fa1e10182adaced856e003406ccd250d"
+last_updated = "2026-05-03T07:25:39Z"
+last_revision = "ef6050c5e1848b6880ff47c32ade1a608a64f85e"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"

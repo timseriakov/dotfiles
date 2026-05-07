@@ -7,7 +7,7 @@
     // "file:///Users/tim/dev/dotfiles/opencode/base/local-plugins",
     // "opencode-antigravity-auth",
 
-    "@plannotator/opencode@latest",
+    "@plannotator/opencode@0.19.8",
 
     "@franlol/opencode-md-table-formatter",
     "@nick-vi/opencode-type-inject",
@@ -288,7 +288,7 @@
       "name": "OMNi",
       "options": {
         "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
-        "apiKey": "{env:OMNIROUTE_TOKEN}",
+        "apiKey": "{env:OMNIROUTE_OPENCODE_API_KEY}",
       },
       "models": {
         "reasoning-main": {
@@ -334,7 +334,7 @@
       "name": "OmniRouteRaw",
       "options": {
         "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
-        "apiKey": "{env:OMNIROUTE_TOKEN}",
+        "apiKey": "{env:OMNIROUTE_OPENCODE_API_KEY}",
       },
       "models": {
         "cx/gpt-5.4": { "name": "GPT 5.4" },

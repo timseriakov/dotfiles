@@ -261,6 +261,8 @@ abbr -a tmap 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
 abbr -a tk tmux-take-alacritty
 abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
+abbr -a entire-up 'brew install entireio/tap'
+abbr -a engram-up 'brew install gentleman-programming/tap'
 
 # workmux
 abbr -a wm workmux
@@ -271,6 +273,7 @@ abbr -a wmm 'workmux merge'
 abbr -a wmd 'workmux dashboard'
 abbr -a wms 'workmux sidebar'
 abbr -a wm-up 'brew install raine/workmux/workmux'
+abbr -a workmux-up 'brew install raine/workmux/workmux'
 abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
 abbr -a wmrc 'nvim ./.workmux.yaml'
 
