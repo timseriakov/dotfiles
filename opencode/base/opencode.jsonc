@@ -296,7 +296,7 @@
           "name": "Reasoning Main",
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "reasoning-cheap": {
           "name": "Reasoning Cheap",
