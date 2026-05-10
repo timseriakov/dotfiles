@@ -2,82 +2,82 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "hashline_edit": true,
   "team_mode": {
-    "enabled": true
+    "enabled": true,
   },
   "agents": {
     "sisyphus": {
       "model": "omniroute/cx/gpt-5.5",
       "temperature": 0.1,
-      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md"
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "atlas": {
       "model": "omniroute/cx/gpt-5.3-codex",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "oracle": {
       "model": "omniroute/cx/gpt-5.5-high",
       "temperature": 0.1,
-      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md"
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "librarian": {
       "model": "omniroute/cx/gpt-5.5-medium",
-      "temperature": 0.2
+      "temperature": 0.2,
     },
     "explore": {
       "model": "omniroute/cx/gpt-5.5-medium",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "hephaestus": {
       "model": "omniroute/cx/gpt-5.3-codex",
       "variant": "medium",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "sisyphus-junior": {
       "model": "omniroute/cx/gpt-5.3-codex",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "multimodal-looker": {
       "model": "omniroute/cx/gpt-5.5",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "plan": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.2,
-      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)"
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "OpenCode-Builder": {
       "model": "omniroute/cx/gpt-5.3-codex",
-      "temperature": 0.05
+      "temperature": 0.05,
     },
     "prometheus": {
       "model": "omniroute/cx/gpt-5.5-high",
       "temperature": 0.2,
-      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)"
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "omniroute/cx/gpt-5.4",
       "temperature": 0.3,
-      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md"
+      "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "momus": {
       "model": "omniroute/cx/gpt-5.5-xhigh",
-      "temperature": 0.5
-    }
+      "temperature": 0.5,
+    },
   },
   "sisyphus_agent": {
     "disabled": false,
     "default_builder_enabled": false,
     "planner_enabled": true,
-    "replace_plan": true
+    "replace_plan": true,
   },
   "ralph_loop": {
     "enabled": true,
-    "default_max_iterations": 100
+    "default_max_iterations": 100,
   },
   "background_task": {
     "defaultConcurrency": 5,
     "providerConcurrency": {
-      "omniroute": 5
+      "omniroute": 5,
     },
     "modelConcurrency": {
       "omniroute/cx/gpt-5.5": 3,
@@ -86,41 +86,41 @@
       "omniroute/cx/gpt-5.5-xhigh": 1,
       "omniroute/cx/gpt-5.4": 2,
       "omniroute/cx/gpt-5.2": 6,
-      "omniroute/cx/gpt-5.3-codex": 4
-    }
+      "omniroute/cx/gpt-5.3-codex": 4,
+    },
   },
   "categories": {
     "visual-engineering": {
       "model": "omniroute/cx/gpt-5.2",
       "temperature": 0.7,
-      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind."
+      "prompt_append": "Focus on modern aesthetics, responsiveness, and clean CSS/Tailwind.",
     },
     "ultrabrain": {
       "model": "omniroute/cx/gpt-5.5-xhigh",
       "temperature": 0.15,
-      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands."
+      "prompt_append": "For architecture tasks, use $likec4-architecture. Prefer LikeC4 DSL changes, validate with `npx likec4 validate`, and return preview/build/export commands.",
     },
     "deep": {
       "model": "omniroute/cx/gpt-5.5",
       "temperature": 0.1,
-      "prompt_append": "Focus on robustness, error handling, and type safety."
+      "prompt_append": "Focus on robustness, error handling, and type safety.",
     },
     "quick": {
       "model": "omniroute/cx/gpt-5.2",
-      "temperature": 0.3
+      "temperature": 0.3,
     },
     "unspecified-low": {
       "model": "omniroute/cx/gpt-5.2",
-      "temperature": 0.3
+      "temperature": 0.3,
     },
     "unspecified-high": {
       "model": "omniroute/cx/gpt-5.3-codex",
-      "temperature": 0.1
+      "temperature": 0.1,
     },
     "writing": {
       "model": "omniroute/cx/gpt-5.2",
-      "temperature": 0.3
-    }
+      "temperature": 0.3,
+    },
   },
   "claude_code": {
     "mcp": false,
@@ -129,11 +129,11 @@
     "agents": true,
     "hooks": true,
     "plugins": true,
-    "plugins_override": {}
+    "plugins_override": {},
   },
   "git_master": {
     "commit_footer": false,
-    "include_co_authored_by": false
+    "include_co_authored_by": false,
   },
   "experimental": {
     "auto_resume": true,
@@ -144,9 +144,9 @@
       "notification": "off",
       "turn_protection": {
         "enabled": true,
-        "turns": 3
-      }
-    }
+        "turns": 3,
+      },
+    },
   },
   "disabled_mcps": [],
   "disabled_skills": ["playwright"],
@@ -155,7 +155,7 @@
   "lsp": {
     "markdown": {
       "command": ["npx", "-y", "remark-language-server", "--stdio"],
-      "extensions": [".md"]
-    }
-  }
+      "extensions": [".md"],
+    },
+  },
 }
