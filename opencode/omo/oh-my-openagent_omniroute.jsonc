@@ -1,44 +1,146 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "hashline_edit": true,
+  "team_mode": {
+    "enabled": true,
+    "tmux_visualization": true,
+    "max_parallel_members": 3,
+    "max_members": 5,
+    "max_wall_clock_minutes": 120,
+    "max_member_turns": 300,
+    "mailbox_poll_interval_ms": 3000,
+  },
   "agents": {
     "sisyphus": {
       "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
     "oracle": {
       "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
-    "hephaestus": { "model": "omniroute/deep-premium", "variant": "medium" },
-    "atlas": { "model": "omniroute/coding-main" },
-    "librarian": { "model": "omniroute/research-fast" },
-    "explore": { "model": "omniroute/quick-free" },
-    "multimodal-looker": { "model": "omniroute/reasoning-cheap" },
+    "hephaestus": {
+      "model": "omniroute/deep-premium",
+      "variant": "medium",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+    },
+    "atlas": {
+      "model": "omniroute/coding-main",
+      "fallback_models": ["omniroute/coding-cheap", "omniroute/reasoning-main"],
+    },
+    "librarian": {
+      "model": "omniroute/research-fast",
+      "fallback_models": ["omniroute/reasoning-cheap", "omniroute/quick-free"],
+    },
+    "explore": {
+      "model": "omniroute/quick-free",
+      "fallback_models": ["omniroute/research-fast", "omniroute/coding-cheap"],
+    },
+    "multimodal-looker": {
+      "model": "omniroute/reasoning-cheap",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+    },
     "plan": {
       "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "prometheus": {
       "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md\n\nВсегда пиши план на русском языке. (Always write the plan in Russian.)",
     },
     "metis": {
       "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
-    "momus": { "model": "omniroute/deep-premium" },
-    "sisyphus-junior": { "model": "omniroute/coding-cheap" },
-    "OpenCode-Builder": { "model": "omniroute/coding-main" },
+    "momus": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+    },
+    "sisyphus-junior": {
+      "model": "omniroute/coding-cheap",
+      "fallback_models": ["omniroute/quick-free", "omniroute/reasoning-cheap"],
+    },
+    "OpenCode-Builder": {
+      "model": "omniroute/coding-main",
+      "fallback_models": ["omniroute/coding-cheap", "omniroute/reasoning-main"],
+    },
   },
   "categories": {
-    "deep": { "model": "omniroute/deep-premium" },
-    "quick": { "model": "omniroute/quick-free" },
-    "writing": { "model": "omniroute/writing-cheap" },
-    "visual-engineering": { "model": "omniroute/coding-main" },
-    "ultrabrain": { "model": "omniroute/reasoning-main" },
-    "unspecified-low": { "model": "omniroute/coding-cheap" },
-    "unspecified-high": { "model": "omniroute/reasoning-main" },
+    "deep": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+    },
+    "quick": {
+      "model": "omniroute/quick-free",
+      "fallback_models": [
+        "omniroute/coding-cheap",
+        "omniroute/reasoning-cheap",
+      ],
+    },
+    "writing": {
+      "model": "omniroute/writing-cheap",
+      "fallback_models": ["omniroute/reasoning-cheap", "omniroute/quick-free"],
+    },
+    "visual-engineering": {
+      "model": "omniroute/coding-main",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+    },
+    "artistry": {
+      "model": "omniroute/reasoning-cheap",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+    },
+    "ultrabrain": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
+    },
+    "unspecified-low": {
+      "model": "omniroute/coding-cheap",
+      "fallback_models": ["omniroute/quick-free", "omniroute/reasoning-cheap"],
+    },
+    "unspecified-high": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": ["omniroute/deep-premium", "omniroute/coding-main"],
+    },
+  },
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [400, 401, 403, 404, 429, 500, 502, 503, 504],
+    "max_fallback_attempts": 2,
+    "cooldown_seconds": 15,
+    "timeout_seconds": 10,
+    "notify_on_fallback": true,
   },
   "background_task": {
     "defaultConcurrency": 5,

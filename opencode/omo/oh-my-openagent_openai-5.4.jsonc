@@ -1,6 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "hashline_edit": true,
+  "team_mode": {
+    "enabled": true,
+  },
   "agents": {
     "sisyphus": {
       "model": "openai/gpt-5.4",

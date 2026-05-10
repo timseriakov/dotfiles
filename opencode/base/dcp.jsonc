@@ -1,3 +1,103 @@
 {
   "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+
+  "enabled": true,
+  "debug": false,
+  "pruneNotification": "minimal",
+  "pruneNotificationType": "chat",
+
+  "manualMode": {
+    "enabled": false,
+    "automaticStrategies": true,
+  },
+
+  "turnProtection": {
+    "enabled": true,
+    "turns": 4,
+  },
+
+  "experimental": {
+    "allowSubAgents": false,
+    "customPrompts": false,
+  },
+
+  "protectedFilePatterns": [
+    "**/bootstrap.md",
+    "**/index.md",
+    "**/structure.md",
+    "**/version.md",
+
+    "**/adr/index.md",
+    "**/adr/templates/**/*.md",
+
+    "**/spec/glossary.md",
+    "**/spec/index.md",
+
+    "**/spec/engineering/**/*.md",
+    "**/spec/project/architecture-blueprint.md",
+    "**/spec/project/system-overview.md",
+    "**/spec/project/repo-structure.md",
+    "**/spec/project/stack-and-tooling.md",
+    "**/spec/project/interface-contracts.md",
+    "**/spec/project/layers-and-vertical-slices.md",
+    "**/spec/project/cli-first-agent-development.md",
+
+    "**/spec/memory/**/*.md",
+
+    "**/plans/index.md",
+    "**/plans/how-we-plan.md",
+    "**/plans/implementation-playbook.md",
+    "**/plans/implementation-roadmap.md",
+    "**/plans/roadmap.md",
+    "**/plans/verification-matrix.md",
+
+    "**/mbb/index.md",
+    "**/mbb/principles.md",
+    "**/mbb/indexing.md",
+    "**/mbb/cross-references.md",
+    "**/mbb/frontmatter.md",
+    "**/mbb/templates/**/*.md",
+
+    "**/integrations/index.md",
+    "**/integrations/oh-my-openagent/index.md",
+  ],
+
+  "compress": {
+    "mode": "range",
+    "permission": "ask",
+    "showCompression": false,
+    "summaryBuffer": true,
+
+    "maxContextLimit": "70%",
+    "minContextLimit": "40%",
+
+    "nudgeFrequency": 5,
+    "iterationNudgeThreshold": 15,
+    "nudgeForce": "soft",
+
+    "protectUserMessages": true,
+
+    "protectedTools": [
+      "task",
+      "skill",
+      "todowrite",
+      "todoread",
+      "read",
+      "grep",
+      "glob",
+    ],
+  },
+
+  "strategies": {
+    "deduplication": {
+      "enabled": true,
+      "protectedTools": ["read", "grep", "glob"],
+    },
+
+    "purgeErrors": {
+      "enabled": true,
+      "turns": 4,
+      "protectedTools": ["read", "grep", "glob"],
+    },
+  },
 }
