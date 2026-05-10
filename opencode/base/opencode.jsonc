@@ -302,7 +302,7 @@
           "name": "Reasoning Cheap",
           "tools": true,
           "limit": { "context": 200000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "coding-main": {
           "name": "Coding Main",
