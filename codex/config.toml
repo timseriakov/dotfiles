@@ -31,11 +31,14 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/pet-old/CV"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/dotfiles/opencode"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
 [features]
-codex_hooks = true
+hooks = true
 
 [marketplaces.caveman-repo]
 last_updated = "2026-05-03T07:25:39Z"
