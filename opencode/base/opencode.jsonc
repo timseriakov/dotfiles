@@ -297,12 +297,14 @@
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "capabilities": { "vision": true },
         },
         "reasoning-cheap": {
           "name": "Reasoning Cheap",
           "tools": true,
           "limit": { "context": 200000, "output": 8192 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "capabilities": { "vision": true },
         },
         "coding-main": {
           "name": "Coding Main",
