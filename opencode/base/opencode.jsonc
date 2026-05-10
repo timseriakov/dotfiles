@@ -348,7 +348,7 @@
           "name": "CX GPT 5.5",
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "cx/gpt-5.3-codex": {
           "name": "CX GPT 5.3 Codex",
@@ -366,19 +366,19 @@
           "name": "CX GPT 5.5 High",
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "cx/gpt-5.5-xhigh": {
           "name": "CX GPT 5.5 XHigh",
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "cx/gpt-5.5-medium": {
           "name": "CX GPT 5.5 Medium",
           "tools": true,
           "limit": { "context": 400000, "output": 8192 },
-          "modalities": { "input": ["text"], "output": ["text"] },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
         },
         "cx/gpt-5.4": {
           "name": "CX GPT 5.4",
