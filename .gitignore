@@ -77,6 +77,11 @@ codex/vendor_imports/
 # AI agent artifacts
 .sisyphus/
 
+# Memory local state
+.entire/tmp
+.entire/metadata/
+.entire/settings.local.json
+
 # Local yazi plugin clones (prefer `ya pkg add`)
 yazi/plugins/duckdb.yazi/
 yazi/plugins/yazi-plugins/

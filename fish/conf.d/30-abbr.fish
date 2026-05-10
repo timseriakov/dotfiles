@@ -254,6 +254,8 @@ abbr -a beads /Users/tim/.local/bin/bd
 abbr -a trrnts /opt/homebrew/bin/bv
 
 abbr -a va ekphos
+# abbr -a mbb ekphos ./.memory-bank
+abbr -a mbb 'set repo (git rev-parse --show-toplevel 2>/dev/null); or echo "Not inside a Git repository"; and test -n "$repo"; and builtin cd $repo; and ekphos ./.memory-bank'
 
 abbr -a hn clx
 abbr -a take tmux-take-alacritty
@@ -264,7 +266,8 @@ abbr -a surge-up 'brew install surge-downloader/tap/surge'
 abbr -a entire-up 'brew install entireio/tap'
 abbr -a engram-up 'brew install gentleman-programming/tap'
 
-# workmux
+# workmuxabbr -a mbb ekphos ./.memory-bank
+
 abbr -a wm workmux
 abbr -a wma 'workmux add'
 abbr -a wml 'workmux list'
