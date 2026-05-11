@@ -1,0 +1,105 @@
+{
+  "providers": {
+    "omni": {
+      "name": "OmniRoute",
+      "api": "openai-completions",
+      "baseUrl": "https://omniroute.e6ejok.easypanel.host/v1",
+      "apiKey": "OMNIROUTE_PI_API_KEY",
+      "authHeader": true,
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "cx/codex-auto-review",
+          "name": "Codex Auto Review",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "cx/gpt-5.5-xhigh",
+          "name": "GPT-5.5 XHigh",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 32000
+        },
+        {
+          "id": "cx/gpt-5.5-high",
+          "name": "GPT-5.5 High",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 24000
+        },
+        {
+          "id": "cx/gpt-5.5-medium",
+          "name": "GPT-5.5 Medium",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 20000
+        },
+        {
+          "id": "cx/gpt-5.5",
+          "name": "GPT-5.5",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 20000
+        },
+        {
+          "id": "cx/gpt-5.5-low",
+          "name": "GPT-5.5 Low",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 16000
+        },
+        {
+          "id": "cx/gpt-5.4",
+          "name": "GPT-5.4",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 20000
+        },
+        {
+          "id": "cx/gpt-5.4-mini",
+          "name": "GPT-5.4 Mini",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 12000
+        },
+        {
+          "id": "cx/gpt-5.3-codex",
+          "name": "GPT-5.3 Codex",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 20000
+        },
+        {
+          "id": "cx/gpt-5.3-codex-spark",
+          "name": "GPT-5.3 Codex Spark",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 12000
+        },
+        {
+          "id": "cx/gpt-5.2",
+          "name": "GPT-5.2",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 12000
+        }
+      ]
+    }
+  }
+}

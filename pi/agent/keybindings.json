@@ -1,0 +1,4 @@
+{
+  "tui.editor.deleteToLineEnd": [],
+  "app.exit": ["ctrl+x"]
+}

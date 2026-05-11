@@ -1,30 +1,62 @@
 {
-  "lastChangelogVersion": "0.68.1",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.4",
-  "tui.input.newLine": ["shift+enter", "ctrl+j"],
+  "subagents": {
+    "agentOverrides": {
+      "context-builder": {
+        "model": ""
+      },
+      "planner": {
+        "model": ""
+      },
+      "researcher": {
+        "model": ""
+      },
+      "reviewer": {
+        "model": ""
+      },
+      "scout": {
+        "model": ""
+      },
+      "worker": {
+        "model": ""
+      }
+    }
+  },
   "packages": [
-    {
-      "source": "git:github.com/v2nic/pi-caveman",
-      "extensions": ["-extensions/caveman/index.ts"]
-    },
+    "npm:pi-subagents",
+    "npm:pi-ask-user",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-access",
+    "git:github.com/VandeeFeng/pi-memory-md",
+    "npm:@devkade/pi-plan",
+    "npm:pi-simplify",
+    "npm:pi-add-dir",
+    "npm:pi-prompt-template-model",
     "npm:@plannotator/pi-extension",
-    "npm:@ifi/oh-pi-themes",
-    "npm:pi-btw",
-    "npm:pi-caveman",
-    "npm:pi-smart-fetch",
-    "npm:pi-extension-manager",
-    "npm:pi-context",
+    "npm:pi-slopchop",
+    "npm:@juanibiapina/pi-powerbar",
+    "npm:@juanibiapina/pi-extension-settings",
     "npm:@tmustier/pi-usage-extension",
-    "git:github.com/hk-vk/pi-connect",
-    "npm:pi-animations",
-    "npm:pi-annotate",
-    "npm:@llblab/pi-telegram",
-    "npm:pi-copy-output",
-    "npm:pi-updater",
-    "npm:pi-codex-rotate",
-    "/Users/tim/dev/dotfiles/pi/pi-zentui",
-    "npm:pi-promptsmith"
+    "npm:@tmustier/pi-raw-paste",
+    "git:github.com/tintinweb/pi-manage-todo-list@b75c449aa85ce328e9a8b632f62bf642aed40359",
+    "npm:pi-btw",
+    "npm:pi-interactive-shell",
+    {
+      "source": "npm:pi-themes",
+      "themes": [
+        "themes/*.json",
+        "!themes/catppuccin-mocha.json",
+        "!themes/gruvbox-dark.json"
+      ]
+    },
+    "git:github.com/v2nic/pi-caveman",
+    "npm:context-mode"
   ],
-  "theme": "noctalia-nord"
+  "lastChangelogVersion": "0.74.0",
+  "theme": "nord",
+  "enableInstallTelemetry": false,
+  "autocompleteMaxVisible": 15,
+  "defaultProvider": "omni",
+  "defaultModel": "cx/gpt-5.4",
+  "editorPaddingX": 1,
+  "showHardwareCursor": false
 }

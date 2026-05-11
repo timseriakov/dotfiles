@@ -1,0 +1,27 @@
+{
+  "codex": {
+    "fetchedAt": 1778534602318,
+    "statusFetchedAt": 1778534651422,
+    "usage": {
+      "provider": "codex",
+      "displayName": "Codex Plan",
+      "windows": [
+        {
+          "label": "5h",
+          "usedPercent": 1,
+          "resetDescription": "4h41m",
+          "resetAt": "2026-05-12T02:04:49.000Z"
+        },
+        {
+          "label": "Week",
+          "usedPercent": 100,
+          "resetDescription": "12h38m",
+          "resetAt": "2026-05-12T10:02:20.000Z"
+        }
+      ]
+    },
+    "status": {
+      "indicator": "none"
+    }
+  }
+}
