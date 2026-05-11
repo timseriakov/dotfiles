@@ -49,7 +49,8 @@
       ]
     },
     "git:github.com/v2nic/pi-caveman",
-    "npm:context-mode"
+    "npm:context-mode",
+    "npm:pi-context-prune"
   ],
   "lastChangelogVersion": "0.74.0",
   "theme": "nord",
