@@ -75,6 +75,7 @@ codex/tmp/
 codex/vendor_imports/
 
 cache.json
+pi/agent/sessions
 
 # AI agent artifacts
 .sisyphus/
