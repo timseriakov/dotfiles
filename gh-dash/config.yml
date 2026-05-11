@@ -1,0 +1,121 @@
+prSections:
+  - title: " My Pull Requests"
+    filters: is:open
+  - title: " Needs My Review"
+    filters: is:open review-requested:@me
+  - title: "󰚗 Involved"
+    filters: is:open involves:@me -author:@me
+issuesSections:
+  - title: " My Issues"
+    filters: is:open author:@me
+  - title: " Assigned"
+    filters: is:open assignee:@me
+  - title: "󰚗 Involved"
+    filters: is:open involves:@me -author:@me
+notificationsSections:
+  - title: "󰂚 All"
+    filters: ""
+  - title: " Created"
+    filters: reason:author
+  - title: " Participating"
+    filters: reason:participating
+  - title: "󰂚 Mentioned"
+    filters: reason:mention
+  - title: " Review Requested"
+    filters: reason:review-requested
+  - title: " Assigned"
+    filters: reason:assign
+  - title: " Subscribed"
+    filters: reason:subscribed
+  - title: " Team Mentioned"
+    filters: reason:team-mention
+defaults:
+  preview:
+    open: false
+    width: 70
+  prsLimit: 20
+  prApproveComment: LGTM
+  issuesLimit: 20
+  notificationsLimit: 20
+  view: prs
+  layout:
+    prs:
+      updatedAt:
+        width: 10
+      repo:
+        width: 15
+      author:
+        width: 12
+      authorIcon:
+        hidden: false
+      assignees:
+        width: 15
+        hidden: true
+      base:
+        width: 10
+        hidden: true
+      lines:
+        width: 10
+    issues:
+      updatedAt:
+        width: 10
+      repo:
+        width: 15
+      creator:
+        width: 12
+      creatorIcon:
+        hidden: false
+      assignees:
+        width: 15
+        hidden: true
+  refetchIntervalMinutes: 30
+
+keybindings:
+  universal:
+    - key: g
+      name: lazygit
+      command: lazygit
+  prs:
+    - key: C
+      name: code review
+      command: >
+        tmux new-window -n "PR-{{.PrNumber}}"
+        "opencode pr {{.PrNumber}}"
+    - key: E
+      name: enhance
+      command: >
+        tmux new-window -n "Enhance-{{.PrNumber}}"
+        "gh enhance -R {{.RepoName}} {{.PrNumber}}"
+  notifications:
+    - key: d
+      builtin: markAsDone
+    - key: D
+      builtin: markAllAsDone
+
+theme:
+  colors:
+    text:
+      primary: "#ECEFF4"
+      secondary: "#81A1C1"
+      inverted: "#2E3440"
+      faint: "#81A1C1"
+      warning: "#EBCB8B"
+      success: "#A3BE8C"
+    background:
+      selected: "#434C5E"
+    border:
+      primary: "#81A1C1"
+      secondary: "#A3BE8C"
+      faint: "#4C566A"
+  ui:
+    table:
+      sectionsShowCount: true
+      showSeparators: true
+      compact: true
+
+pager:
+  diff: diffnav
+confirmQuit: false
+showAuthorIcons: true
+smartFilteringAtLaunch: true
+includeReadNotifications: false
