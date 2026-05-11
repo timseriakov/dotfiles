@@ -1,3 +1,3 @@
 function curl --wraps=curlie --description 'alias curl curlie'
-  curlie $argv; 
+    curlie $argv
 end
