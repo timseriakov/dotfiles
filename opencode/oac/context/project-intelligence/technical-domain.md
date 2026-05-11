@@ -12,13 +12,13 @@
 
 ## Primary Stack
 
-| Layer | Technology | Version | Rationale |
-|-------|-----------|---------|-----------|
-| Language | [e.g., TypeScript] | [Version] | [Why this language] |
-| Framework | [e.g., Node.js] | [Version] | [Why this framework] |
-| Database | [e.g., PostgreSQL] | [Version] | [Why this database] |
-| Infrastructure | [e.g., AWS, Vercel] | [N/A] | [Why this infra] |
-| Key Libraries | [List important ones] | [Versions] | [Why each matters] |
+| Layer          | Technology            | Version    | Rationale            |
+| -------------- | --------------------- | ---------- | -------------------- |
+| Language       | [e.g., TypeScript]    | [Version]  | [Why this language]  |
+| Framework      | [e.g., Node.js]       | [Version]  | [Why this framework] |
+| Database       | [e.g., PostgreSQL]    | [Version]  | [Why this database]  |
+| Infrastructure | [e.g., AWS, Vercel]   | [N/A]      | [Why this infra]     |
+| Key Libraries  | [List important ones] | [Versions] | [Why each matters]   |
 
 ## Architecture Pattern
 
@@ -44,14 +44,15 @@ Diagram: [Link to architecture diagram if exists]
 ```
 
 **Key Directories**:
+
 - `src/` - Contains all application logic organized by [module/feature/domain]
 - `tests/` - [How tests are organized]
 - `docs/` - [What documentation lives here]
 
 ## Key Technical Decisions
 
-| Decision | Rationale | Impact |
-|----------|-----------|--------|
+| Decision     | Rationale         | Impact            |
+| ------------ | ----------------- | ----------------- |
 | [Decision 1] | [Why this choice] | [What it enables] |
 | [Decision 2] | [Why this choice] | [What it enables] |
 
@@ -59,19 +60,19 @@ See `decisions-log.md` for full decision history with alternatives.
 
 ## Integration Points
 
-| System | Purpose | Protocol | Direction |
-|--------|---------|----------|-----------|
-| [API 1] | [What it does] | [REST/GraphQL/gRPC] | [Inbound/Outbound] |
-| [Database] | [What it stores] | [PostgreSQL/Mongo/etc] | [Internal] |
-| [Service] | [What it provides] | [HTTP/gRPC] | [Outbound] |
+| System     | Purpose            | Protocol               | Direction          |
+| ---------- | ------------------ | ---------------------- | ------------------ |
+| [API 1]    | [What it does]     | [REST/GraphQL/gRPC]    | [Inbound/Outbound] |
+| [Database] | [What it stores]   | [PostgreSQL/Mongo/etc] | [Internal]         |
+| [Service]  | [What it provides] | [HTTP/gRPC]            | [Outbound]         |
 
 ## Technical Constraints
 
-| Constraint | Origin | Impact |
-|------------|--------|--------|
+| Constraint       | Origin          | Impact                       |
+| ---------------- | --------------- | ---------------------------- |
 | [Legacy systems] | [Business/Tech] | [What limitation it creates] |
-| [Compliance] | [Regulation] | [What must be followed] |
-| [Performance] | [SLAs] | [What must be met] |
+| [Compliance]     | [Regulation]    | [What must be followed]      |
+| [Performance]    | [SLAs]          | [What must be met]           |
 
 ## Development Environment
 

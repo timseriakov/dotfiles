@@ -12,39 +12,42 @@
 When adding a new subagent, update these THREE locations:
 
 ### 1. Parent Map (run-sdk-tests.ts ~line 336)
+
 **Purpose**: Maps subagent → parent agent for delegation testing
 
 ```typescript
 const subagentParentMap: Record<string, string> = {
-  'contextscout': 'openagent',     // Core subagents → openagent
-  'task-manager': 'openagent',
-  'documentation': 'openagent',
-  
-  'coder-agent': 'opencoder',      // Code subagents → opencoder
-  'tester': 'opencoder',
-  'reviewer': 'opencoder',
+  contextscout: "openagent", // Core subagents → openagent
+  "task-manager": "openagent",
+  documentation: "openagent",
+
+  "coder-agent": "opencoder", // Code subagents → opencoder
+  tester: "opencoder",
+  reviewer: "opencoder",
 };
 ```
 
 ### 2. Path Map (run-sdk-tests.ts ~line 414)
+
 **Purpose**: Maps subagent name → file path for test discovery
 
 ```typescript
 const subagentPathMap: Record<string, string> = {
-  'contextscout': 'ContextScout',
-  'task-manager': 'TaskManager',
-  'coder-agent': 'CoderAgent',
+  contextscout: "ContextScout",
+  "task-manager": "TaskManager",
+  "coder-agent": "CoderAgent",
 };
 ```
 
 ### 3. Agent Map (test-runner.ts ~line 238)
+
 **Purpose**: Maps subagent name → agent file for eval-runner
 
 ```typescript
 const agentMap: Record<string, string> = {
-  'contextscout': 'ContextScout.md',
-  'task-manager': 'TaskManager.md',
-  'coder-agent': 'CoderAgent.md',
+  contextscout: "ContextScout.md",
+  "task-manager": "TaskManager.md",
+  "coder-agent": "CoderAgent.md",
 };
 ```
 
@@ -52,11 +55,11 @@ const agentMap: Record<string, string> = {
 
 ## Error Messages
 
-| Error | Missing From | Fix |
-|-------|--------------|-----|
-| "No test files found" | Path Map (#2) | Add to `subagentPathMap` |
-| "Unknown subagent" | Parent Map (#1) | Add to `subagentParentMap` |
-| "Agent file not found" | Agent Map (#3) | Add to `agentMap` |
+| Error                  | Missing From    | Fix                        |
+| ---------------------- | --------------- | -------------------------- |
+| "No test files found"  | Path Map (#2)   | Add to `subagentPathMap`   |
+| "Unknown subagent"     | Parent Map (#1) | Add to `subagentParentMap` |
+| "Agent file not found" | Agent Map (#3)  | Add to `agentMap`          |
 
 ---
 

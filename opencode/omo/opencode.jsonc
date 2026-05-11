@@ -7,13 +7,13 @@
       "models": {
         "reasoning-main": {
           "modalities": { "input": ["text", "image"], "output": ["text"] },
-          "capabilities": { "vision": true, "attachment": true }
+          "capabilities": { "vision": true, "attachment": true },
         },
         "reasoning-cheap": {
           "modalities": { "input": ["text", "image"], "output": ["text"] },
-          "capabilities": { "vision": true, "attachment": true }
-        }
-      }
-    }
-  }
+          "capabilities": { "vision": true, "attachment": true },
+        },
+      },
+    },
+  },
 }

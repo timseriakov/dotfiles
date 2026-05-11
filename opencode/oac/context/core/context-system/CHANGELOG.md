@@ -39,11 +39,13 @@
 ### New Documentation
 
 **Created**:
+
 - `guides/navigation-design.md` - How to create navigation files
 - `guides/organizing-context.md` - How to choose organizational pattern
 - `examples/navigation-examples.md` - Real-world examples
 
 **Updated**:
+
 - `context-system.md` - Added concern-based pattern, navigation principles
 - `standards/templates.md` - Added navigation templates
 

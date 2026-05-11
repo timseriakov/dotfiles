@@ -9,9 +9,11 @@
 ---
 
 ## Core Idea
+
 Mastra uses a dual-storage approach: a local SQLite database (via Drizzle ORM) for business entities and a built-in `LibSQLStore` for Mastra-specific execution data (traces, spans).
 
 ## Key Points
+
 - **Business Entities**: Managed in `src/db/schema.ts`. Includes `cases`, `documents`, `assessments`, and `outputs`.
 - **Mastra Store**: `LibSQLStore` handles `mastra_traces`, `mastra_ai_spans`, and `mastra_scorers`.
 - **V3 Extensions**: Specific tables for `timeline_events`, `evidence_gaps`, `sub_claims`, and `vulnerability_flags`.
@@ -19,6 +21,7 @@ Mastra uses a dual-storage approach: a local SQLite database (via Drizzle ORM) f
 - **File Storage**: Large blobs (PDFs, JSON outputs) are stored in `./tmp/` with paths referenced in the DB.
 
 ## Quick Example
+
 ```typescript
 // Business Schema (Drizzle)
 export const cases = sqliteTable('cases', {
@@ -34,5 +37,6 @@ storage: new LibSQLStore({
 
 **Reference**: `src/db/schema.ts`, `src/mastra/index.ts`
 **Related**:
+
 - concepts/core.md
 - lookup/mastra-config.md

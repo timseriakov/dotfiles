@@ -86,8 +86,11 @@ task(subagent_type="ContextScout", description="Find frontend design standards",
 3. If ContextScout flags a UI library (Tailwind, Shadcn, etc.) → call **ExternalScout** (see below)
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
 ---
@@ -129,7 +132,7 @@ task(subagent_type="ContextScout", description="Find frontend design standards",
 1. Read design assets standards (from ContextScout)
 2. Build HTML w/ Tailwind, Flowbite, Lucide icons
 3. Mobile-first responsive design
-4. Save to design_iterations/{name}_1.html
+4. Save to design_iterations/{name}\_1.html
 5. Present: "Design complete. Review for changes."
 
 ### Stage 5: Iterate
@@ -138,12 +141,15 @@ task(subagent_type="ContextScout", description="Find frontend design standards",
 
 1. Read current design file
 2. Apply requested changes
-3. Save as iteration: {name}_1_1.html (or _1_2.html, etc.)
+3. Save as iteration: {name}\_1_1.html (or \_1_2.html, etc.)
 4. Present: "Updated design saved. Previous version preserved."
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
 ---
@@ -156,7 +162,7 @@ task(subagent_type="ContextScout", description="Find frontend design standards",
 </heuristics>
 
 <file_naming>
-Initial: {name}_1.html | Iteration 1: {name}_1_1.html | Iteration 2: {name}_1_2.html | New design: {name}_2.html
+Initial: {name}\_1.html | Iteration 1: {name}\_1_1.html | Iteration 2: {name}\_1_2.html | New design: {name}\_2.html
 Theme files: theme_1.css, theme_2.css | Location: design_iterations/
 </file_naming>
 

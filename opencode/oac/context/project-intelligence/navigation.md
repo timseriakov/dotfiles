@@ -18,23 +18,25 @@
 
 ## Quick Routes
 
-| What You Need | File | Description |
-|---------------|------|-------------|
-| Understand the "why" | `business-domain.md` | Problem, users, value proposition |
-| Understand the "how" | `technical-domain.md` | Stack, architecture, integrations |
-| See the connection | `business-tech-bridge.md` | Business → technical mapping |
-| Know the context | `decisions-log.md` | Why decisions were made |
-| Current state | `living-notes.md` | Active issues and open questions |
-| All of the above | Read all files in order | Full project intelligence |
+| What You Need        | File                      | Description                       |
+| -------------------- | ------------------------- | --------------------------------- |
+| Understand the "why" | `business-domain.md`      | Problem, users, value proposition |
+| Understand the "how" | `technical-domain.md`     | Stack, architecture, integrations |
+| See the connection   | `business-tech-bridge.md` | Business → technical mapping      |
+| Know the context     | `decisions-log.md`        | Why decisions were made           |
+| Current state        | `living-notes.md`         | Active issues and open questions  |
+| All of the above     | Read all files in order   | Full project intelligence         |
 
 ## Usage
 
 **New Team Member / Agent**:
+
 1. Start with `navigation.md` (this file)
 2. Read all files in order for complete understanding
 3. Follow onboarding checklist in each file
 
 **Quick Reference**:
+
 - Business focus → `business-domain.md`
 - Technical focus → `technical-domain.md`
 - Decision context → `decisions-log.md`
@@ -42,6 +44,7 @@
 ## Integration
 
 This folder is referenced from:
+
 - `/Users/tim/.config/opencode/context/core/standards/project-intelligence.md` (standards and patterns)
 - `/Users/tim/.config/opencode/context/core/system/context-guide.md` (context loading)
 
@@ -50,12 +53,14 @@ See `/Users/tim/.config/opencode/context/core/context-system.md` for the broader
 ## Maintenance
 
 Keep this folder current:
+
 - Update when business direction changes
 - Document decisions as they're made
 - Review `living-notes.md` regularly
 - Archive resolved items from decisions-log.md
 
 **Management Guide**: See `/Users/tim/.config/opencode/context/core/standards/project-intelligence-management.md` for complete lifecycle management including:
+
 - How to update, add, and remove files
 - How to create new subfolders
 - Version tracking and frontmatter standards

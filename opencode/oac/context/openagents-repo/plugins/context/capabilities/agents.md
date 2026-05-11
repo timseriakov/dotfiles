@@ -16,11 +16,12 @@ export const registerCustomAgents = (config) => {
       {
         name: "my-helper",
         description: "A friendly assistant for this project",
-        instructions: "You are a helpful assistant. Use your tools to help the user.",
+        instructions:
+          "You are a helpful assistant. Use your tools to help the user.",
         model: "claude-3-5-sonnet-latest", // Specify the model
-        tools: ["say_hello", "read", "write"] // Reference built-in or custom tools
-      }
-    ]
+        tools: ["say_hello", "read", "write"], // Reference built-in or custom tools
+      },
+    ],
   };
 };
 ```
@@ -41,6 +42,7 @@ export const MyPlugin: Plugin = async (context) => {
 ```
 
 ## Agent Capabilities
+
 - **Model Choice**: You can select specific models for different agents.
 - **Scoped Tools**: Limit what tools an agent can use to ensure safety or focus.
 - **System Instructions**: Define the "personality" and rules for the agent.

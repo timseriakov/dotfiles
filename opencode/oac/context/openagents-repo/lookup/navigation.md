@@ -18,10 +18,10 @@ openagents-repo/lookup/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View lookups** | `./` |
-| **Guides** | `../guides/navigation.md` |
+| Task              | Path                             |
+| ----------------- | -------------------------------- |
+| **View lookups**  | `./`                             |
+| **Guides**        | `../guides/navigation.md`        |
 | **Core Concepts** | `../core-concepts/navigation.md` |
 
 ---

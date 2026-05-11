@@ -1,4 +1,5 @@
 <!-- Context: visual-development | Priority: high | Version: 1.0 | Updated: 2025-01-27 -->
+
 # Visual Development Context
 
 **Purpose**: Visual content creation, UI design, image generation, and diagram creation
@@ -7,15 +8,15 @@
 
 ## Quick Routes
 
-| Task Type | Context File | Subagent | Tools |
-|-----------|-------------|----------|-------|
-| **Generate image/diagram** | This file | Image Specialist | tool:gemini |
-| **Edit existing image** | This file | Image Specialist | tool:gemini |
-| **UI mockup (static)** | This file | Image Specialist | tool:gemini |
-| **Interactive UI design** | `workflows/design-iteration-overview.md` | - | - |
-| **Design system** | `ui/web/design-systems.md` | - | - |
-| **UI standards** | `ui/web/ui-styling-standards.md` | - | - |
-| **Animation patterns** | `ui/web/animation-patterns.md` | - | - |
+| Task Type                  | Context File                             | Subagent         | Tools       |
+| -------------------------- | ---------------------------------------- | ---------------- | ----------- |
+| **Generate image/diagram** | This file                                | Image Specialist | tool:gemini |
+| **Edit existing image**    | This file                                | Image Specialist | tool:gemini |
+| **UI mockup (static)**     | This file                                | Image Specialist | tool:gemini |
+| **Interactive UI design**  | `workflows/design-iteration-overview.md` | -                | -           |
+| **Design system**          | `ui/web/design-systems.md`               | -                | -           |
+| **UI standards**           | `ui/web/ui-styling-standards.md`         | -                | -           |
+| **Animation patterns**     | `ui/web/animation-patterns.md`           | -                | -           |
 
 ---
 
@@ -37,6 +38,7 @@ The **Image Specialist** subagent uses Gemini Nano Banana AI to:
 Delegate to Image Specialist when users request:
 
 **Keywords to Watch For**:
+
 - "create image", "generate image", "make image"
 - "diagram", "flowchart", "visualization"
 - "mockup", "wireframe", "design concept"
@@ -45,6 +47,7 @@ Delegate to Image Specialist when users request:
 - "screenshot", "visual", "picture"
 
 **Common Use Cases**:
+
 1. **Architecture Diagrams** - Microservices, system design, infrastructure
 2. **UI Mockups** - Dashboard designs, app interfaces, web layouts
 3. **Social Media Graphics** - Announcements, promotions, branded content
@@ -60,16 +63,16 @@ task(
   description="[Brief 3-5 word description]",
   prompt="Context to load:
           - /Users/tim/.config/opencode/context/core/visual-development.md
-          
+
           Task: [Detailed visual requirement]
-          
+
           Requirements:
           - Style: [Visual aesthetic - modern, minimalist, professional, etc.]
           - Dimensions: [Width x Height or aspect ratio]
           - Key Elements: [What must be included]
           - Colors: [Color scheme, brand colors, palette]
           - Format: [PNG, JPG, SVG preference]
-          
+
           Output: [Expected deliverable and location]"
 )
 ```
@@ -83,12 +86,13 @@ task(
 **User Request**: "Create a diagram showing our microservices architecture"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Generate microservices architecture diagram",
   prompt="Create a technical architecture diagram showing:
-          
+
           **Services**:
           - API Gateway (entry point)
           - Auth Service (authentication)
@@ -96,23 +100,23 @@ task(
           - Order Service (order processing)
           - Payment Service (payment processing)
           - Notification Service (emails/SMS)
-          
+
           **Infrastructure**:
           - PostgreSQL databases (one per service)
           - Redis cache (shared)
           - RabbitMQ message queue
           - AWS S3 (file storage)
-          
+
           **External Services**:
           - Stripe (payments)
           - SendGrid (emails)
           - Twilio (SMS)
-          
+
           **Style**: Clean, professional, modern tech diagram
           **Colors**: Blue for services, green for databases, orange for external
           **Format**: PNG, 1920x1080
           **Layout**: Left-to-right flow, clear connections
-          
+
           Output: Save to docs/architecture-diagram.png"
 )
 ```
@@ -124,12 +128,13 @@ task(
 **User Request**: "Show me what the dashboard could look like"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Generate analytics dashboard mockup",
   prompt="Create a UI mockup for an analytics dashboard:
-          
+
           **Layout**:
           - Top: Header with logo, navigation, user menu
           - Below header: 4 metric cards in a row
@@ -139,17 +144,17 @@ task(
             * Active Sessions (with live indicator)
           - Middle: Large line chart showing 30-day trends
           - Bottom: Data table with recent transactions
-          
+
           **Style**: Modern, professional SaaS aesthetic
           **Theme**: Dark mode with subtle gradients
-          **Colors**: 
+          **Colors**:
             - Background: Dark gray (#1e293b)
             - Cards: Slightly lighter (#334155)
             - Accent: Blue (#3b82f6)
             - Text: White/gray
           **Typography**: Clean sans-serif (Inter-style)
           **Format**: PNG, 1440x900
-          
+
           Output: Save to design_iterations/dashboard_mockup.png"
 )
 ```
@@ -161,31 +166,32 @@ task(
 **User Request**: "Create a graphic announcing our new feature"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Generate feature announcement graphic",
   prompt="Create a social media graphic for feature launch:
-          
+
           **Content**:
           - Main headline: 'Introducing Real-Time Collaboration'
           - Subheadline: 'Work together, ship faster'
           - Small text: 'Available now for all teams'
-          
+
           **Visual Elements**:
           - Abstract illustration of people collaborating
           - Subtle geometric shapes in background
           - Modern, energetic feel
-          
+
           **Brand Colors**:
           - Primary: #6366f1 (indigo)
           - Secondary: #8b5cf6 (purple)
           - Background: White with gradient
           - Text: Dark gray (#1e293b)
-          
+
           **Format**: PNG, 1200x630 (optimized for Twitter/LinkedIn)
           **Style**: Modern, professional, eye-catching
-          
+
           Output: Save to marketing/feature-launch-social.png"
 )
 ```
@@ -197,12 +203,13 @@ task(
 **User Request**: "Diagram the user onboarding flow"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Generate user onboarding flowchart",
   prompt="Create a flowchart showing user onboarding process:
-          
+
           **Steps**:
           1. User signs up (email/password)
           2. Email verification sent
@@ -212,21 +219,21 @@ task(
           6. Payment (if Pro/Enterprise)
           7. Onboarding tutorial (5 steps)
           8. Dashboard access
-          
+
           **Decision Points**:
           - Email verified? (Yes → Continue, No → Resend)
           - Plan selected? (Free → Skip payment, Paid → Payment)
           - Payment successful? (Yes → Continue, No → Retry)
-          
+
           **Style**: Clean flowchart with standard symbols
-          **Colors**: 
+          **Colors**:
             - Start/End: Green
             - Process: Blue
             - Decision: Yellow
             - Error: Red
           **Format**: PNG, 1600x1200
           **Layout**: Top-to-bottom flow
-          
+
           Output: Save to docs/onboarding-flow.png"
 )
 ```
@@ -238,24 +245,25 @@ task(
 **User Request**: "Create an icon for our file upload feature"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Generate file upload icon",
   prompt="Create a modern icon for file upload feature:
-          
+
           **Concept**: Cloud with upward arrow
-          **Style**: 
+          **Style**:
             - Minimalist, clean lines
             - Rounded corners
             - Flat design (no gradients)
-          **Colors**: 
+          **Colors**:
             - Primary: #3b82f6 (blue)
             - Accent: #60a5fa (lighter blue)
           **Size**: 512x512px (will be scaled down)
           **Format**: PNG with transparent background
           **Usage**: App UI, documentation, marketing
-          
+
           Output: Save to assets/icons/upload-icon.png"
 )
 ```
@@ -267,26 +275,27 @@ task(
 **User Request**: "Make this screenshot look more professional"
 
 **Invocation**:
+
 ```javascript
 task(
   subagent_type="Image Specialist",
   description="Enhance screenshot for documentation",
   prompt="Edit the existing screenshot at docs/raw-screenshot.png:
-          
+
           **Enhancements Needed**:
           - Add subtle drop shadow for depth
           - Round the corners (8px radius)
           - Add a thin border (#e5e7eb)
           - Increase contrast slightly
           - Ensure text is crisp and readable
-          
+
           **Optional**:
           - Add subtle gradient background
           - Highlight key UI elements with arrows/boxes
-          
+
           **Output Format**: PNG, maintain original dimensions
           **Quality**: High (for documentation)
-          
+
           Output: Save to docs/enhanced-screenshot.png"
 )
 ```
@@ -320,16 +329,16 @@ Is it interactive/responsive HTML/CSS?
 
 ### Quick Reference
 
-| Need | Use |
-|------|-----|
-| **Interactive dashboard** | design-iteration-overview.md |
-| **Dashboard mockup (static image)** | Image Specialist |
-| **Responsive landing page** | design-iteration-overview.md |
-| **Landing page hero graphic** | Image Specialist |
-| **Working HTML prototype** | design-iteration-overview.md |
-| **Architecture diagram** | Image Specialist |
-| **UI component library** | design-iteration-overview.md |
-| **Social media graphic** | Image Specialist |
+| Need                                | Use                          |
+| ----------------------------------- | ---------------------------- |
+| **Interactive dashboard**           | design-iteration-overview.md |
+| **Dashboard mockup (static image)** | Image Specialist             |
+| **Responsive landing page**         | design-iteration-overview.md |
+| **Landing page hero graphic**       | Image Specialist             |
+| **Working HTML prototype**          | design-iteration-overview.md |
+| **Architecture diagram**            | Image Specialist             |
+| **UI component library**            | design-iteration-overview.md |
+| **Social media graphic**            | Image Specialist             |
 
 ---
 
@@ -338,6 +347,7 @@ Is it interactive/responsive HTML/CSS?
 ### Required Tool
 
 **tool:gemini** - Gemini Nano Banana AI
+
 - Automatically included in Developer profile
 - Requires GEMINI_API_KEY environment variable
 - Get API key: https://makersuite.google.com/app/apikey
@@ -345,6 +355,7 @@ Is it interactive/responsive HTML/CSS?
 ### Configuration
 
 Add to `.env` file:
+
 ```bash
 GEMINI_API_KEY=your_api_key_here
 ```
@@ -364,6 +375,7 @@ GEMINI_API_KEY=your_api_key_here
 ### Writing Effective Prompts
 
 ✅ **Do**:
+
 - Be specific about dimensions and format
 - Describe visual style clearly (modern, minimalist, professional)
 - Specify colors using hex codes or names
@@ -372,6 +384,7 @@ GEMINI_API_KEY=your_api_key_here
 - Provide context about brand/aesthetic
 
 ❌ **Don't**:
+
 - Use vague descriptions ("make it nice")
 - Forget to specify dimensions
 - Assume default style preferences
@@ -381,11 +394,13 @@ GEMINI_API_KEY=your_api_key_here
 ### Example: Good vs Bad Prompts
 
 **❌ Bad Prompt**:
+
 ```
 "Create a diagram of our system"
 ```
 
 **✅ Good Prompt**:
+
 ```
 "Create a technical architecture diagram showing:
 - 3 microservices (API, Auth, Database)

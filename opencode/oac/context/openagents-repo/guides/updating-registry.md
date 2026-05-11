@@ -25,6 +25,7 @@
 ## When to Update Registry
 
 Update the registry when you:
+
 - ✅ Add a new agent
 - ✅ Add a new command
 - ✅ Add a new tool
@@ -44,6 +45,7 @@ Update the registry when you:
 ```
 
 **Output**:
+
 ```
 Scanning .opencode/ for components...
 
@@ -78,6 +80,7 @@ The auto-detect script automatically extracts `tags` and `dependencies` from com
 ### Supported Formats
 
 **Multi-line arrays** (recommended for readability):
+
 ```yaml
 ---
 description: Your component description
@@ -93,6 +96,7 @@ dependencies:
 ```
 
 **Inline arrays** (compact format):
+
 ```yaml
 ---
 description: Your component description
@@ -104,6 +108,7 @@ dependencies: [subagent:coder-agent, context:core/standards/code]
 ### Component-Specific Examples
 
 **Command** (`.opencode/command/your-command.md`):
+
 ```yaml
 ---
 description: Brief description of what this command does
@@ -118,6 +123,7 @@ dependencies:
 ```
 
 **Subagent** (`.opencode/agent/subagents/category/your-agent.md`):
+
 ```yaml
 ---
 id: your-agent
@@ -135,6 +141,7 @@ dependencies:
 ```
 
 **Context** (`/Users/tim/.config/opencode/context/category/your-context.md`):
+
 ```yaml
 ---
 description: What knowledge this context provides
@@ -151,17 +158,19 @@ dependencies:
 Dependencies use the format: `type:id`
 
 **Valid types**:
+
 - `subagent:` - References a subagent (e.g., `subagent:coder-agent`)
 - `command:` - References a command (e.g., `command:context`)
 - `context:` - References a context file (e.g., `context:core/standards/code`)
 - `agent:` - References a main agent (e.g., `agent:openagent`)
 
 **Examples**:
+
 ```yaml
 dependencies:
-  - subagent:coder-agent          # Depends on coder-agent subagent
-  - context:core/standards/code   # Requires code standards context
-  - command:context               # Uses context command
+  - subagent:coder-agent # Depends on coder-agent subagent
+  - context:core/standards/code # Requires code standards context
+  - command:context # Uses context command
 ```
 
 ### How It Works
@@ -173,6 +182,7 @@ dependencies:
 5. **Validate**: `./scripts/registry/validate-registry.sh`
 
 The script automatically:
+
 - ✅ Extracts `description`, `tags`, `dependencies` from frontmatter
 - ✅ Handles both inline and multi-line array formats
 - ✅ Converts to proper JSON arrays in registry
@@ -218,7 +228,7 @@ Only edit `registry.json` manually if auto-detect doesn't work.
 ✅ **Paths** - All paths exist  
 ✅ **IDs** - Unique IDs  
 ✅ **Categories** - Valid categories  
-✅ **Dependencies** - Dependencies exist  
+✅ **Dependencies** - Dependencies exist
 
 ### Validation Errors
 
@@ -345,6 +355,7 @@ EOF
 ### Automatic Validation
 
 Registry is validated on:
+
 - Pull requests (`.github/workflows/validate-registry.yml`)
 - Merges to main
 - Release tags
@@ -352,6 +363,7 @@ Registry is validated on:
 ### Auto-Update on Merge
 
 Registry can be auto-updated after merge:
+
 ```yaml
 # .github/workflows/update-registry.yml
 - name: Update Registry
@@ -370,7 +382,7 @@ Registry can be auto-updated after merge:
 ✅ **Version consistency** - Keep versions in sync  
 ✅ **Multi-line arrays** - More readable than inline format  
 ✅ **Meaningful tags** - Use descriptive, searchable tags  
-✅ **Declare dependencies** - Helps with component discovery and validation  
+✅ **Declare dependencies** - Helps with component discovery and validation
 
 ---
 
@@ -389,28 +401,31 @@ Registry can be auto-updated after merge:
 **Problem**: Auto-detect doesn't extract tags or dependencies from frontmatter.
 
 **Solutions**:
+
 1. **Check frontmatter format**:
    - Must be at top of file
    - Must start/end with `---`
    - Must use valid YAML syntax
 
 2. **Verify array format**:
+
    ```yaml
    # ✅ Valid formats
    tags: [tag1, tag2]
    tags:
      - tag1
      - tag2
-   
+
    # ❌ Invalid
    tags: tag1, tag2  # Missing brackets
    ```
 
 3. **Check dependency format**:
+
    ```yaml
    # ✅ Valid
    dependencies: [subagent:coder-agent, context:core/standards/code]
-   
+
    # ❌ Invalid
    dependencies: [coder-agent]  # Missing type prefix
    ```
@@ -426,6 +441,7 @@ Registry can be auto-updated after merge:
 **Problem**: Validation fails with "Missing dependency" error.
 
 **Solution**: Ensure referenced component exists in registry:
+
 ```bash
 # Check if dependency exists
 jq '.components.subagents[] | select(.id == "coder-agent")' registry.json
@@ -450,6 +466,7 @@ jq '.components.subagents[] | select(.id == "coder-agent")' registry.json
 ## Managing Aliases
 
 Aliases allow components to be referenced by multiple names. This is useful for:
+
 - Backward compatibility (renamed files)
 - Shorthand references
 - Alternative naming conventions
@@ -473,6 +490,7 @@ Currently, aliases must be added **manually** to `registry.json` (auto-detect do
 ```
 
 **Note**: Always validate the registry after manual edits:
+
 ```bash
 ./scripts/registry/validate-registry.sh
 ```

@@ -9,6 +9,7 @@ dependencies: []
 ---
 
 <!-- Context: quality/registry-dependencies | Priority: high | Version: 1.0 | Updated: 2026-01-06 -->
+
 # Registry Dependency Validation
 
 **Purpose**: Maintain registry quality through dependency validation and consistency checks  
@@ -21,6 +22,7 @@ dependencies: []
 **Golden Rule**: All component dependencies must be declared in frontmatter and validated before commits.
 
 **Critical Commands**:
+
 ```bash
 # Check context file dependencies
 /check-context-deps
@@ -43,19 +45,20 @@ dependencies: []
 
 Components can depend on other components using the `type:id` format:
 
-| Type | Format | Example | Description |
-|------|--------|---------|-------------|
-| **agent** | `agent:id` | `agent:opencoder` | Core agent profile |
-| **subagent** | `subagent:id` | `subagent:coder-agent` | Delegatable subagent |
-| **command** | `command:id` | `command:context` | Slash command |
-| **tool** | `tool:id` | `tool:gemini` | External tool integration |
-| **plugin** | `plugin:id` | `plugin:context` | Plugin component |
-| **context** | `context:path` | `context:core/standards/code` | Context file |
-| **config** | `config:id` | `config:defaults` | Configuration file |
+| Type         | Format         | Example                       | Description               |
+| ------------ | -------------- | ----------------------------- | ------------------------- |
+| **agent**    | `agent:id`     | `agent:opencoder`             | Core agent profile        |
+| **subagent** | `subagent:id`  | `subagent:coder-agent`        | Delegatable subagent      |
+| **command**  | `command:id`   | `command:context`             | Slash command             |
+| **tool**     | `tool:id`      | `tool:gemini`                 | External tool integration |
+| **plugin**   | `plugin:id`    | `plugin:context`              | Plugin component          |
+| **context**  | `context:path` | `context:core/standards/code` | Context file              |
+| **config**   | `config:id`    | `config:defaults`             | Configuration file        |
 
 ### Declaring Dependencies
 
 **In component frontmatter** (example):
+
 ```
 id: opencoder
 name: OpenCoder
@@ -68,6 +71,7 @@ dependencies:
 ```
 
 **Why declare dependencies?**
+
 - ✅ **Validation**: Catch missing components before runtime
 - ✅ **Documentation**: Clear visibility of what each component needs
 - ✅ **Installation**: Installers can fetch all required dependencies
@@ -84,11 +88,14 @@ Agents reference context files in their prompts but often don't declare them as 
 
 ```markdown
 <!-- In agent prompt -->
+
 BEFORE any code implementation, ALWAYS load:
+
 - Code tasks → /Users/tim/.config/opencode/context/core/standards/code-quality.md (MANDATORY)
 ```
 
 **Without dependency declaration**:
+
 - ❌ No validation that context file exists
 - ❌ Can't track which agents use which context files
 - ❌ Breaking changes when context files are moved/deleted
@@ -97,6 +104,7 @@ BEFORE any code implementation, ALWAYS load:
 ### The Solution
 
 **Declare context dependencies in frontmatter** (example):
+
 ```
 id: opencoder
 dependencies:
@@ -104,6 +112,7 @@ dependencies:
 ```
 
 **Use `/check-context-deps` to find missing declarations**:
+
 ```bash
 # Analyze all agents
 /check-context-deps
@@ -115,6 +124,7 @@ dependencies:
 ### Context Dependency Format
 
 **Path normalization**:
+
 ```
 File path:     /Users/tim/.config/opencode/context/core/standards/code-quality.md
 Dependency:    context:core/standards/code
@@ -123,6 +133,7 @@ Dependency:    context:core/standards/code
 ```
 
 **Examples**:
+
 ```
 dependencies:
   - context:core/standards/code           # /Users/tim/.config/opencode/context/core/standards/code-quality.md
@@ -140,31 +151,39 @@ dependencies:
 Before committing changes to agents, commands, or context files:
 
 1. **Check context dependencies**:
+
    ```bash
    /check-context-deps
    ```
+
    - Identifies agents using context files without declaring them
    - Reports unused context files
    - Validates context file paths
 
 2. **Fix missing dependencies** (if needed):
+
    ```bash
    /check-context-deps --fix
    ```
+
    - Automatically adds missing `context:` dependencies to frontmatter
    - Preserves existing dependencies
 
 3. **Update registry**:
+
    ```bash
    ./scripts/registry/auto-detect-components.sh --auto-add
    ```
+
    - Extracts dependencies from frontmatter
    - Updates registry.json
 
 4. **Validate registry**:
+
    ```bash
    ./scripts/registry/validate-registry.sh
    ```
+
    - Checks all dependencies exist
    - Validates component paths
    - Reports missing dependencies
@@ -176,6 +195,7 @@ Before committing changes to agents, commands, or context files:
 **Purpose**: Analyze context file usage and validate dependencies
 
 **What it checks**:
+
 - ✅ Agents referencing context files in prompts
 - ✅ Context dependencies declared in frontmatter
 - ✅ Context files exist on disk
@@ -183,6 +203,7 @@ Before committing changes to agents, commands, or context files:
 - ✅ Unused context files
 
 **Usage**:
+
 ```bash
 # Full analysis
 /check-context-deps
@@ -198,6 +219,7 @@ Before committing changes to agents, commands, or context files:
 ```
 
 **Example output**:
+
 ```
 # Context Dependency Analysis Report
 
@@ -213,7 +235,7 @@ Before committing changes to agents, commands, or context files:
 Uses but not declared:
 - context:core/standards/code (referenced 3 times)
   - Line 64: "Code tasks → /Users/tim/.config/opencode/context/core/standards/code-quality.md"
-  
+
 Recommended fix:
 dependencies:
   - context:core/standards/code
@@ -224,11 +246,13 @@ dependencies:
 **Purpose**: Scan for new components and update registry
 
 **Dependency validation**:
+
 - Checks dependencies during component scanning
 - Logs warnings for missing dependencies
 - Non-blocking (warnings only)
 
 **Usage**:
+
 ```bash
 # See what would be added
 ./scripts/registry/auto-detect-components.sh --dry-run
@@ -238,6 +262,7 @@ dependencies:
 ```
 
 **Example warning**:
+
 ```
 ⚠ New command: Demo (demo)
   Dependencies: subagent:coder-agent,subagent:missing-agent
@@ -249,6 +274,7 @@ dependencies:
 **Purpose**: Comprehensive registry validation
 
 **Checks**:
+
 - ✅ All component paths exist
 - ✅ All dependencies exist in registry
 - ✅ No duplicate IDs
@@ -256,11 +282,13 @@ dependencies:
 - ✅ Required fields present
 
 **Usage**:
+
 ```bash
 ./scripts/registry/validate-registry.sh
 ```
 
 **Example output**:
+
 ```
 Validating registry.json...
 
@@ -290,6 +318,7 @@ A high-quality registry has:
 ### Dependency Declaration Standards
 
 **DO**:
+
 - ✅ Declare all subagents you delegate to
 - ✅ Declare all context files you reference
 - ✅ Declare all commands you invoke
@@ -297,6 +326,7 @@ A high-quality registry has:
 - ✅ Keep dependencies in frontmatter (not hardcoded in prompts)
 
 **DON'T**:
+
 - ❌ Reference context files without declaring dependency
 - ❌ Use invalid dependency formats
 - ❌ Declare dependencies you don't actually use
@@ -309,6 +339,7 @@ A high-quality registry has:
 ### When Adding/Modifying Components
 
 **1. Add component with proper frontmatter** (example):
+
 ```
 id: my-agent
 name: My Agent
@@ -322,21 +353,25 @@ dependencies:
 ```
 
 **2. Validate dependencies**:
+
 ```bash
 /check-context-deps my-agent
 ```
 
 **3. Update registry**:
+
 ```bash
 ./scripts/registry/auto-detect-components.sh --auto-add
 ```
 
 **4. Validate registry**:
+
 ```bash
 ./scripts/registry/validate-registry.sh
 ```
 
 **5. Commit with descriptive message**:
+
 ```bash
 git add .opencode/agent/my-agent.md registry.json
 git commit -m "Add my-agent with coder-agent and code standards dependencies"
@@ -345,27 +380,32 @@ git commit -m "Add my-agent with coder-agent and code standards dependencies"
 ### When Modifying Context Files
 
 **1. Check which agents depend on it**:
+
 ```bash
 jq '.components[] | .[] | select(.dependencies[]? | contains("context:core/standards/code")) | {id, name}' registry.json
 ```
 
 **2. Update context file**:
+
 ```bash
 # Make your changes
 vim /Users/tim/.config/opencode/context/core/standards/code-quality.md
 ```
 
 **3. Validate no broken references**:
+
 ```bash
 /check-context-deps --verbose
 ```
 
 **4. Update registry if needed**:
+
 ```bash
 ./scripts/registry/auto-detect-components.sh --auto-add
 ```
 
 **5. Commit with impact note**:
+
 ```bash
 git commit -m "Update code standards - affects opencoder, openagent, reviewer"
 ```
@@ -373,28 +413,33 @@ git commit -m "Update code standards - affects opencoder, openagent, reviewer"
 ### When Deleting Components
 
 **1. Check dependencies first**:
+
 ```bash
 # Find what depends on this component
 jq '.components[] | .[] | select(.dependencies[]? == "subagent:old-agent") | {id, name}' registry.json
 ```
 
 **2. Remove from dependents**:
+
 ```bash
 # Update agents that depend on it
 # Remove the dependency from their frontmatter
 ```
 
 **3. Delete component**:
+
 ```bash
 rm .opencode/agent/subagents/old-agent.md
 ```
 
 **4. Update registry**:
+
 ```bash
 ./scripts/registry/auto-detect-components.sh --auto-add
 ```
 
 **5. Validate**:
+
 ```bash
 ./scripts/registry/validate-registry.sh
 ```
@@ -406,12 +451,14 @@ rm .opencode/agent/subagents/old-agent.md
 ### Missing Context Dependencies
 
 **Symptom**:
+
 ```
 /check-context-deps reports:
   opencoder: missing context:core/standards/code
 ```
 
 **Fix**:
+
 ```bash
 # Option 1: Auto-fix
 /check-context-deps --fix
@@ -429,16 +476,19 @@ dependencies:
 ### Dependency Not Found in Registry
 
 **Symptom**:
+
 ```
 ⚠ Dependency not found in registry: context:core/standards/code
 ```
 
 **Causes**:
+
 1. Context file doesn't exist
 2. Context file exists but not in registry
 3. Wrong dependency format
 
 **Fix**:
+
 ```bash
 # Check if file exists
 ls -la /Users/tim/.config/opencode/context/core/standards/code-quality.md
@@ -452,12 +502,14 @@ ls -la /Users/tim/.config/opencode/context/core/standards/code-quality.md
 ### Unused Context Files
 
 **Symptom**:
+
 ```
 /check-context-deps reports:
   Unused: context:core/standards/analysis (0 references)
 ```
 
 **Fix**:
+
 ```bash
 # Option 1: Add to an agent that should use it
 # Edit agent frontmatter to add dependency
@@ -470,12 +522,14 @@ rm /Users/tim/.config/opencode/context/core/standards/code-analysis.md
 ### Circular Dependencies
 
 **Symptom**:
+
 ```
 Agent A depends on Agent B
 Agent B depends on Agent A
 ```
 
 **Fix**:
+
 - Refactor to remove circular dependency
 - Extract shared logic to a third component
 - Use dependency injection instead
@@ -520,10 +574,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Validate registry
         run: ./scripts/registry/validate-registry.sh
-      
+
       - name: Check context dependencies
         run: /check-context-deps
 ```
@@ -570,6 +624,7 @@ jobs:
 ## Summary
 
 **Key Takeaways**:
+
 1. Declare all dependencies in frontmatter (subagents, context files, etc.)
 2. Use `/check-context-deps` to find missing context dependencies
 3. Validate registry before commits
@@ -577,6 +632,7 @@ jobs:
 5. Follow dependency format: `type:id`
 
 **Quality Checklist**:
+
 - [ ] All context files referenced have dependencies declared
 - [ ] All dependencies exist in registry
 - [ ] No unused context files (or documented why)

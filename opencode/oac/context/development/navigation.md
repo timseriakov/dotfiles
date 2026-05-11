@@ -64,14 +64,14 @@ development/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **UI/Frontend** | `ui-navigation.md` |
+| Task                          | Path                           |
+| ----------------------------- | ------------------------------ |
+| **UI/Frontend**               | `ui-navigation.md`             |
 | **When to delegate frontend** | `frontend/when-to-delegate.md` |
-| **Backend/API** | `backend-navigation.md` |
-| **Full-stack** | `fullstack-navigation.md` |
-| **Clean code** | `principles/clean-code.md` |
-| **API design** | `principles/api-design.md` |
+| **Backend/API**               | `backend-navigation.md`        |
+| **Full-stack**                | `fullstack-navigation.md`      |
+| **Clean code**                | `principles/clean-code.md`     |
+| **API design**                | `principles/api-design.md`     |
 
 ---
 

@@ -11,6 +11,7 @@
 ## Extract Workflow (Interactive)
 
 ### Stage 1: Read Source
+
 ```
 /context extract from https://react.dev/hooks
   ↓
@@ -19,6 +20,7 @@ Analyzing content for extractable items..."
 ```
 
 ### Stage 2: Analyze & Categorize
+
 ```
 Agent: "Analysis complete.
 
@@ -41,6 +43,7 @@ Found 3 workflows:
 ```
 
 ### Stage 3: Select Category (APPROVAL REQUIRED)
+
 ```
 Agent: "Which category should this go in?
   [1] development/
@@ -53,12 +56,12 @@ Select items to extract:
     ✓ [B] useEffect
     ✓ [C] useContext
     ... [D-L] (9 more)
-  
+
   Errors:
     ✓ [M] Hooks called conditionally
     ✓ [N] Hooks in loops
     ... [O-T] (6 more)
-  
+
   Guides:
     ✓ [U] Setting up custom hooks
     ✓ [V] Debugging hook issues
@@ -70,6 +73,7 @@ User: "all 1"
 ```
 
 ### Stage 4: Preview (APPROVAL REQUIRED)
+
 ```
 Agent: "Would create in development/:
 
@@ -77,10 +81,10 @@ Agent: "Would create in development/:
   concepts/use-effect.md (52 lines)
   concepts/use-context.md (38 lines)
   ... (9 more concept files)
-  
+
   errors/react-hooks-errors.md (124 lines)
     - 8 errors grouped in one file
-  
+
   guides/custom-hooks.md (87 lines)
   guides/debugging-hooks.md (65 lines)
   guides/testing-hooks.md (72 lines)
@@ -98,6 +102,7 @@ User: "yes"
 ```
 
 ### Stage 5-7: Create, Update, Report
+
 ```
 Agent: "Creating files...
 ✅ Extracted 20 items into development/
@@ -115,6 +120,7 @@ Files created:
 ## Organize Workflow (Interactive)
 
 ### Stage 1-2: Scan & Categorize
+
 ```
 /context organize development/
   ↓
@@ -124,6 +130,7 @@ Categorizing by function..."
 ```
 
 ### Stage 3: Resolve Conflicts (APPROVAL REQUIRED)
+
 ```
 Agent: "Categorization plan:
 
@@ -133,18 +140,18 @@ Clear categorization (18 files):
     ✓ state-management.md → concepts/state-management.md
     ✓ caching.md → concepts/caching.md
     ... (5 more)
-  
+
   examples/ (5 files):
     ✓ jwt-example.md → examples/jwt-example.md
     ✓ hooks-example.md → examples/hooks-example.md
     ... (3 more)
-  
+
   guides/ (5 files):
     ✓ setting-up-auth.md → guides/setting-up-auth.md
     ... (4 more)
 
 Ambiguous files (5 - need your input):
-  
+
   [?] api-design.md (contains concepts AND step-by-step guide)
       Content: Explains REST principles (concept) + how to design endpoints (guide)
       → [A] Split into:
@@ -152,7 +159,7 @@ Ambiguous files (5 - need your input):
             guides/api-design-guide.md (how to design)
       → [B] Keep as concepts/api-design.md (primary: concepts)
       → [C] Keep as guides/api-design.md (primary: guide)
-  
+
   [?] error-handling.md (contains guide AND error examples)
       Content: How to handle errors (guide) + common error patterns (errors)
       → [D] Split into:
@@ -160,20 +167,20 @@ Ambiguous files (5 - need your input):
             errors/common-errors.md (error patterns)
       → [E] Keep as guides/error-handling.md
       → [F] Keep as errors/error-handling.md
-  
+
   [?] testing-patterns.md (contains concepts AND examples)
       → [G] Split into concepts/ + examples/
       → [H] Keep as concepts/testing-patterns.md
       → [I] Keep as examples/testing-patterns.md
 
 Conflicts (2):
-  
+
   [!] authentication.md → concepts/auth.md
       Target concepts/auth.md already exists (120 lines)
       → [J] Merge authentication.md into existing auth.md
       → [K] Rename to concepts/authentication-v2.md
       → [L] Skip (keep flat)
-  
+
   [!] jwt-example.md → examples/jwt.md
       Target examples/jwt.md already exists (65 lines)
       → [M] Merge jwt-example.md into existing jwt.md
@@ -186,6 +193,7 @@ User: "A D G J M"
 ```
 
 ### Stage 4: Preview (APPROVAL REQUIRED)
+
 ```
 Agent: "Preview of changes:
 
@@ -205,11 +213,11 @@ SPLIT files (3):
   api-design.md →
     concepts/api-design.md (concepts section)
     guides/api-design-guide.md (guide section)
-  
+
   error-handling.md →
     guides/error-handling.md (guide section)
     errors/common-errors.md (error examples)
-  
+
   testing-patterns.md →
     concepts/testing-patterns.md (concepts)
     examples/testing-examples.md (examples)
@@ -232,6 +240,7 @@ User: "yes"
 ```
 
 ### Stage 5-8: Backup, Execute, Update, Report
+
 ```
 Agent: "Creating backup...
 💾 Backup: .tmp/backup/organize-development-2026-01-06-143022/
@@ -251,6 +260,7 @@ Rollback available at: .tmp/backup/organize-development-2026-01-06-143022/"
 ## Update Workflow (Interactive)
 
 ### Stage 1: Identify Changes (APPROVAL REQUIRED)
+
 ```
 /context update for Next.js 15
   ↓
@@ -276,6 +286,7 @@ Breaking changes: Pages router requires explicit opt-in"
 ```
 
 ### Stage 2: Find Affected Files
+
 ```
 Agent: "Searching for files referencing Next.js...
 
@@ -290,6 +301,7 @@ Total impact: 17 references across 5 files"
 ```
 
 ### Stage 3: Preview Changes (APPROVAL REQUIRED)
+
 ```
 Agent: "Proposed updates:
 
@@ -301,7 +313,7 @@ Line 15:
 
 Line 42:
   + ## Metadata API (New in v15)
-  + 
+  +
   + Next.js 15 introduces new metadata API for SEO optimization.
   + Replaces Head component with metadata exports.
 
@@ -332,16 +344,16 @@ Line 45:
 
 Line 67:
   + ## Migration: Next.js 14 → 15
-  + 
+  +
   + **Breaking Changes**:
   + - App router is now default
   + - Pages router requires explicit opt-in
-  + 
+  +
   + **Migration Steps**:
   + 1. Update to Next.js 15: `npm install next@15`
   + 2. For pages router: Add `pages: true` to next.config.js
   + 3. Update metadata: Replace Head with metadata exports
-  + 
+  +
   + **Reference**: https://nextjs.org/docs/15/upgrade-guide
 
 ━━━ lookup/nextjs-commands.md ━━━
@@ -370,6 +382,7 @@ User: "yes"
 ```
 
 ### Stage 4-8: Backup, Update, Add Migration, Validate, Report
+
 ```
 Agent: "Creating backup...
 💾 Backup: .tmp/backup/update-nextjs-2026-01-06-143530/
@@ -397,6 +410,7 @@ Rollback available at: .tmp/backup/update-nextjs-2026-01-06-143530/"
 ## Error Workflow (Interactive)
 
 ### Stage 1: Search Existing
+
 ```
 /context error for "Cannot read property 'map' of undefined"
   ↓
@@ -415,14 +429,15 @@ Found 2 related errors:
 ```
 
 ### Stage 2: Check Duplication (APPROVAL REQUIRED)
+
 ```
 Agent: "Options:
   [A] Add as new error to react-errors.md
       (Specific case: 'map' on undefined array)
-  
+
   [B] Update existing 'Cannot read property X' error
       (Add 'map' as common example)
-  
+
   [C] Skip (already covered sufficiently)
 
 Which framework/category?
@@ -437,6 +452,7 @@ User: "B 1"
 ```
 
 ### Stage 3: Preview (APPROVAL REQUIRED)
+
 ```
 Agent: "Would update development/errors/react-errors.md:
 
@@ -446,8 +462,10 @@ Current (Line 45):
 
 **Symptom**:
 ```
+
 TypeError: Cannot read property 'X' of undefined
-```
+
+````
 
 **Cause**: Attempting to access property on undefined/null object.
 
@@ -463,7 +481,7 @@ const value = obj.property
 
 // ✅ After
 const value = obj?.property ?? 'default'
-```
+````
 
 **Prevention**: Always validate data exists before accessing
 **Frequency**: common
@@ -472,9 +490,11 @@ const value = obj?.property ?? 'default'
 
 Proposed update:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 ## Error: Cannot read property 'X' of undefined
 
 **Symptom**:
+
 ```
 TypeError: Cannot read property 'X' of undefined
 TypeError: Cannot read property 'map' of undefined  ← NEW
@@ -482,14 +502,16 @@ TypeError: Cannot read property 'length' of undefined  ← NEW
 ```
 
 **Cause**: Attempting to access property on undefined/null object.
-Common with array methods (map, filter) when data hasn't loaded.  ← NEW
+Common with array methods (map, filter) when data hasn't loaded. ← NEW
 
 **Solution**:
+
 1. Add null check before accessing property
 2. Use optional chaining (?.)
-3. Provide default value (especially for arrays)  ← UPDATED
+3. Provide default value (especially for arrays) ← UPDATED
 
 **Code**:
+
 ```jsx
 // ❌ Before
 const value = obj.property
@@ -503,7 +525,7 @@ const items = data?.map(item => item.name) ?? []  ← NEW
 ```
 
 **Prevention**: Always validate data exists before accessing.
-For arrays, provide empty array default.  ← UPDATED
+For arrays, provide empty array default. ← UPDATED
 
 **Frequency**: common
 **Reference**: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cant_access_property
@@ -514,10 +536,12 @@ File size: 98 lines → 105 lines (under 150 limit ✓)
 Approve? (yes/no/edit):"
 
 User: "yes"
+
 ```
 
 ### Stage 4-6: Add, Update, Report
 ```
+
 Agent: "Updating development/errors/react-errors.md...
 
 ✅ Updated error in development/errors/react-errors.md
@@ -525,10 +549,12 @@ Agent: "Updating development/errors/react-errors.md...
 📊 File size: 105 lines (under 150 limit)
 
 Changes:
-  - Added 'map' and 'length' to symptom examples
-  - Updated cause to mention array methods
-  - Added array-specific code examples
-  - Updated prevention guidance"
+
+- Added 'map' and 'length' to symptom examples
+- Updated cause to mention array methods
+- Added array-specific code examples
+- Updated prevention guidance"
+
 ```
 
 ---
@@ -571,3 +597,4 @@ Operations that modify files MUST:
 - harvest.md - Harvest workflow details
 - mvi-principle.md - What to extract
 - compact.md - How to minimize
+```

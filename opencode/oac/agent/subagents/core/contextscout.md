@@ -17,7 +17,6 @@ permission:
     "*": "deny"
   task:
     "*": "deny"
-
 ---
 
 # ContextScout
@@ -37,6 +36,7 @@ permission:
     4. Set `{core_root}` = whichever path has core. All other context (project-intelligence, ui, etc.) stays `{local}`.
 
     **Limits**: This is ONLY for `core/` files (standards, workflows, guides). Never fall back to global for project-intelligence — that's project-specific. Maximum 2 glob checks. No per-file fallback.
+
   </rule>
   <rule id="read_only">
     Read-only agent. NEVER use write, edit, bash, task, or any tool besides read, grep, glob.

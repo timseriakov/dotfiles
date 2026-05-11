@@ -21,26 +21,28 @@ Solution: [How we're solving it]
 
 ## Target Users
 
-| User Segment | Who They Are | What They Need | Pain Points |
-|--------------|--------------|----------------|-------------|
-| [Primary] | [Description] | [Their needs] | [Their frustrations] |
-| [Secondary] | [Description] | [Their needs] | [Their frustrations] |
+| User Segment | Who They Are  | What They Need | Pain Points          |
+| ------------ | ------------- | -------------- | -------------------- |
+| [Primary]    | [Description] | [Their needs]  | [Their frustrations] |
+| [Secondary]  | [Description] | [Their needs]  | [Their frustrations] |
 
 ## Value Proposition
 
 **For Users**:
+
 - [Key benefit 1]
 - [Key benefit 2]
 - [Key benefit 3]
 
 **For Business**:
+
 - [Key value 1]
 - [Key value 2]
 
 ## Success Metrics
 
-| Metric | Definition | Target | Current |
-|--------|------------|--------|---------|
+| Metric     | Definition         | Target | Current  |
+| ---------- | ------------------ | ------ | -------- |
 | [Metric 1] | [What it measures] | [Goal] | [Actual] |
 | [Metric 2] | [What it measures] | [Goal] | [Actual] |
 
@@ -55,10 +57,10 @@ Market Position: [Where we fit in the market]
 
 ## Key Stakeholders
 
-| Role | Name | Responsibility | Contact |
-|------|------|----------------|---------|
+| Role            | Name   | Responsibility  | Contact   |
+| --------------- | ------ | --------------- | --------- |
 | [Product Owner] | [Name] | [What they own] | [Contact] |
-| [Tech Lead] | [Name] | [What they own] | [Contact] |
+| [Tech Lead]     | [Name] | [What they own] | [Contact] |
 | [Business Lead] | [Name] | [What they own] | [Contact] |
 
 ## Roadmap Context

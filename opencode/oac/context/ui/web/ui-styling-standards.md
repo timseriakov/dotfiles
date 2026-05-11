@@ -1,4 +1,5 @@
 <!-- Context: development/ui-styling-standards | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # UI Styling Standards
 
 ## Overview
@@ -29,7 +30,10 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 
 ```html
 <!-- ❌ Don't use stylesheet link -->
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
 ```
 
 **Why**: Script tag allows for JIT compilation and configuration
@@ -40,7 +44,10 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 
 ```html
 <!-- Flowbite CSS -->
-<link href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css"
+  rel="stylesheet"
+/>
 
 <!-- Flowbite JS -->
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
@@ -49,6 +56,7 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 **Usage**: Flowbite is the default component library unless user specifies otherwise
 
 **Components Available**:
+
 - Buttons, forms, modals
 - Navigation, dropdowns, tabs
 - Cards, alerts, badges
@@ -67,22 +75,28 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 
 ```css
 /* Mobile first - base styles apply to mobile */
-.element { }
+.element {
+}
 
 /* Small devices (640px and up) */
-@media (min-width: 640px) { }  /* sm: */
+@media (min-width: 640px) {
+} /* sm: */
 
 /* Medium devices (768px and up) */
-@media (min-width: 768px) { }  /* md: */
+@media (min-width: 768px) {
+} /* md: */
 
 /* Large devices (1024px and up) */
-@media (min-width: 1024px) { } /* lg: */
+@media (min-width: 1024px) {
+} /* lg: */
 
 /* Extra large devices (1280px and up) */
-@media (min-width: 1280px) { } /* xl: */
+@media (min-width: 1280px) {
+} /* xl: */
 
 /* 2XL devices (1536px and up) */
-@media (min-width: 1536px) { } /* 2xl: */
+@media (min-width: 1536px) {
+} /* 2xl: */
 ```
 
 **Tailwind Syntax**:
@@ -95,9 +109,7 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 </div>
 
 <!-- Mobile: full width, Desktop: constrained -->
-<div class="w-full lg:w-3/4 xl:w-1/2 mx-auto">
-  Content
-</div>
+<div class="w-full lg:w-3/4 xl:w-1/2 mx-auto">Content</div>
 ```
 
 ### Testing Requirements
@@ -125,10 +137,10 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 --bootstrap-blue: #007bff; /* ❌ Avoid */
 
 /* Use contextual colors */
---primary: oklch(0.6489 0.2370 26.9728);    /* Vibrant orange */
---accent: oklch(0.5635 0.2408 260.8178);     /* Rich purple */
---info: oklch(0.6200 0.1900 260);            /* Modern blue */
---success: oklch(0.7323 0.2492 142.4953);    /* Fresh green */
+--primary: oklch(0.6489 0.237 26.9728); /* Vibrant orange */
+--accent: oklch(0.5635 0.2408 260.8178); /* Rich purple */
+--info: oklch(0.62 0.19 260); /* Modern blue */
+--success: oklch(0.7323 0.2492 142.4953); /* Fresh green */
 ```
 
 ### Color Usage Rules
@@ -156,27 +168,25 @@ Standards and conventions for CSS frameworks, responsive design, and styling bes
 ```html
 <!-- Light card on dark background -->
 <div class="bg-gray-900 p-8">
-  <div class="bg-white text-gray-900 p-6 rounded-lg">
-    Light card content
-  </div>
+  <div class="bg-white text-gray-900 p-6 rounded-lg">Light card content</div>
 </div>
 
 <!-- Dark card on light background -->
 <div class="bg-gray-50 p-8">
-  <div class="bg-gray-900 text-white p-6 rounded-lg">
-    Dark card content
-  </div>
+  <div class="bg-gray-900 text-white p-6 rounded-lg">Dark card content</div>
 </div>
 ```
 
 ### Component-Specific Rules
 
 **Posters/Hero Sections**:
+
 - Use high contrast for readability
 - Consider overlay gradients for text on images
 - Test with actual content
 
 **Cards/Panels**:
+
 - Subtle elevation with shadows
 - Clear boundary between card and background
 - Consistent padding
@@ -200,7 +210,7 @@ h1 {
 }
 
 body {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   color: var(--foreground) !important;
 }
 
@@ -278,15 +288,11 @@ body {
 
 ```html
 <!-- Centered container with max width -->
-<div class="container mx-auto px-4 max-w-7xl">
-  Content
-</div>
+<div class="container mx-auto px-4 max-w-7xl">Content</div>
 
 <!-- Full-width section with contained content -->
 <section class="w-full bg-gray-50">
-  <div class="container mx-auto px-4 py-12 max-w-6xl">
-    Content
-  </div>
+  <div class="container mx-auto px-4 py-12 max-w-6xl">Content</div>
 </section>
 ```
 
@@ -314,16 +320,19 @@ body {
 **Always use Google Fonts**:
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 **Apply in CSS**:
 
 ```css
 body {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 ```
 
@@ -342,17 +351,23 @@ body {
 
 ```html
 <!-- Primary button -->
-<button class="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+<button
+  class="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+>
   Primary Action
 </button>
 
 <!-- Secondary button -->
-<button class="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary/80 transition-colors">
+<button
+  class="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary/80 transition-colors"
+>
   Secondary Action
 </button>
 
 <!-- Outline button -->
-<button class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all">
+<button
+  class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all"
+>
   Outline Action
 </button>
 ```
@@ -367,7 +382,9 @@ body {
 </div>
 
 <!-- Interactive card -->
-<div class="bg-card text-card-foreground rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+<div
+  class="bg-card text-card-foreground rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+>
   <h3 class="text-xl font-semibold mb-2">Interactive Card</h3>
   <p class="text-muted-foreground">Hover for effect</p>
 </div>
@@ -379,17 +396,17 @@ body {
 <!-- Input field -->
 <div class="space-y-2">
   <label class="block text-sm font-medium">Email</label>
-  <input 
-    type="email" 
+  <input
+    type="email"
     class="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
     placeholder="you@example.com"
-  >
+  />
 </div>
 
 <!-- Textarea -->
 <div class="space-y-2">
   <label class="block text-sm font-medium">Message</label>
-  <textarea 
+  <textarea
     class="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all resize-none"
     rows="4"
     placeholder="Your message..."
@@ -411,7 +428,9 @@ body {
 
 <!-- Navigation -->
 <nav aria-label="Main navigation">
-  <ul>...</ul>
+  <ul>
+    ...
+  </ul>
 </nav>
 ```
 
@@ -455,24 +474,30 @@ button:focus-visible {
 
 ```html
 <!-- Preconnect to font sources -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 <!-- Preload critical fonts -->
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 ### Image Optimization
 
 ```html
 <!-- Responsive images -->
-<img 
-  src="image-800.jpg" 
+<img
+  src="image-800.jpg"
   srcset="image-400.jpg 400w, image-800.jpg 800w, image-1200.jpg 1200w"
   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
   alt="Description"
   loading="lazy"
->
+/>
 ```
 
 ### Critical CSS
@@ -481,12 +506,22 @@ button:focus-visible {
 <!-- Inline critical CSS -->
 <style>
   /* Above-the-fold styles */
-  body { margin: 0; font-family: system-ui; }
-  .hero { min-height: 100vh; }
+  body {
+    margin: 0;
+    font-family: system-ui;
+  }
+  .hero {
+    min-height: 100vh;
+  }
 </style>
 
 <!-- Load full CSS async -->
-<link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
+<link
+  rel="stylesheet"
+  href="styles.css"
+  media="print"
+  onload="this.media='all'"
+/>
 ```
 
 ---
@@ -526,19 +561,31 @@ button:focus-visible {
 If user requests a different framework:
 
 **Bootstrap**:
+
 ```html
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 ```
 
 **Bulma**:
+
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+/>
 ```
 
 **Foundation**:
+
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/css/foundation.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/css/foundation.min.css"
+/>
 <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/js/foundation.min.js"></script>
 ```
 

@@ -25,6 +25,7 @@ Context files provide guidelines and templates for specific tasks. Use the index
 **Central Index**: `/Users/tim/.config/opencode/context/navigation.md` - Ultra-compact map of all contexts
 
 The index provides:
+
 - Quick map for common tasks (code, docs, tests, review, delegation)
 - Triggers/keywords for each context
 - Dependencies between contexts
@@ -35,6 +36,7 @@ The index provides:
 All files are in `/Users/tim/.config/opencode/context/core/` with organized subfolders:
 
 ### Standards (Quality Guidelines + Analysis)
+
 - `standards/code-quality.md` - Modular, functional code principles [critical]
 - `standards/documentation.md` - Documentation standards [critical]
 - `standards/test-coverage.md` - Testing standards [critical]
@@ -42,6 +44,7 @@ All files are in `/Users/tim/.config/opencode/context/core/` with organized subf
 - `standards/code-analysis.md` - Analysis framework [high]
 
 ### Workflows (Process Templates + Review)
+
 - `workflows/task-delegation-basics.md` - Delegation template [high]
 - `workflows/feature-breakdown.md` - Complex task breakdown [high]
 - `workflows/session-management.md` - Session lifecycle [medium]
@@ -50,20 +53,24 @@ All files are in `/Users/tim/.config/opencode/context/core/` with organized subf
 ## How to Use the Index
 
 **Step 1: Check Quick Map** (for common tasks)
+
 - Code task? → Load `standards/code-quality.md`
 - Docs task? → Load `standards/documentation.md`
 - Review task? → Load `workflows/code-review.md`
 
 **Step 2: Load Index** (for keyword matching)
+
 - Load `/Users/tim/.config/opencode/context/navigation.md`
 - Scan triggers to find relevant contexts
 - Load specific context files as needed
 
 **Step 3: Load Dependencies**
+
 - Check `deps:` in index
 - Load dependent contexts for complete guidelines
 
 **Benefits:**
+
 - No prompt bloat (index is only ~120 tokens)
 - Fetch only what's relevant
 - Faster for simple tasks
@@ -72,47 +79,56 @@ All files are in `/Users/tim/.config/opencode/context/core/` with organized subf
 ## When to Use Each File
 
 ### /Users/tim/.config/opencode/context/core/standards/code-quality.md
+
 - Writing new code
 - Modifying existing code
 - Following modular/functional patterns
 - Making architectural decisions
 
 ### /Users/tim/.config/opencode/context/core/standards/documentation.md
+
 - Writing README files
 - Creating API documentation
 - Adding code comments
 
 ### /Users/tim/.config/opencode/context/core/standards/test-coverage.md
+
 - Writing new tests
 - Running test suites
 - Debugging test failures
 
 ### /Users/tim/.config/opencode/context/core/standards/security-patterns.md
+
 - Error handling
 - Security patterns
 - Common code patterns
 
 ### /Users/tim/.config/opencode/context/core/standards/code-analysis.md
+
 - Analyzing codebase patterns
 - Investigating bugs
 - Evaluating architecture
 
 ### /Users/tim/.config/opencode/context/core/workflows/task-delegation-basics.md
+
 - Delegating to general agent
 - Creating task context
 - Multi-file coordination
 
 ### /Users/tim/.config/opencode/context/core/workflows/feature-breakdown.md
+
 - Tasks with 4+ files
 - Estimated effort >60 minutes
 - Complex dependencies
 
 ### /Users/tim/.config/opencode/context/core/workflows/session-management.md
+
 - Session lifecycle
 - Cleanup procedures
 - Session isolation
 
 ### /Users/tim/.config/opencode/context/core/workflows/code-review.md
+
 - Reviewing code
 - Conducting code audits
 - Providing PR feedback
@@ -124,6 +140,7 @@ When delegating, create focused task context:
 **Location**: `.tmp/sessions/{timestamp}-{task-slug}/context.md`
 
 **Structure**:
+
 ```markdown
 # Task Context: {Task Name}
 
@@ -132,30 +149,38 @@ Created: {timestamp}
 Status: in_progress
 
 ## Current Request
+
 {What user asked for}
 
 ## Requirements
+
 - {requirement 1}
 - {requirement 2}
 
 ## Decisions Made
+
 - {decision 1}
 
 ## Files to Modify/Create
+
 - {file 1} - {purpose}
 
 ## Static Context Available
+
 - /Users/tim/.config/opencode/context/core/standards/code-quality.md
 - /Users/tim/.config/opencode/context/core/standards/test-coverage.md
 
 ## Constraints/Notes
+
 {Important context}
 
 ## Progress
+
 - [ ] {task 1}
 - [ ] {task 2}
 
 ---
+
 **Instructions for Subagent:**
 {Specific instructions}
 ```
@@ -163,6 +188,7 @@ Status: in_progress
 ## Session Management
 
 ### Session Structure
+
 ```
 .tmp/sessions/{session-id}/
 ├── context.md          # Task context
@@ -171,10 +197,12 @@ Status: in_progress
 ```
 
 ### Session ID Format
+
 `{timestamp}-{random-4-chars}`
 Example: `20250119-143022-a4f2`
 
 ### Cleanup
+
 - Ask user before deleting session files
 - Remove after task completion
 - Keep if user wants to review

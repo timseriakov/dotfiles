@@ -21,11 +21,11 @@ frontend/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **When to delegate** | `when-to-delegate.md` |
-| **React patterns** | `react/react-patterns.md` |
-| **React navigation** | `react/navigation.md` |
+| Task                 | Path                      |
+| -------------------- | ------------------------- |
+| **When to delegate** | `when-to-delegate.md`     |
+| **React patterns**   | `react/react-patterns.md` |
+| **React navigation** | `react/navigation.md`     |
 
 ---
 

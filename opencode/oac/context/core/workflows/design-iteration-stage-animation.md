@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-stage-animation | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Stage 3: Animation Design
 
 **Purpose**: Define micro-interactions and transitions
@@ -54,6 +55,7 @@ linkHover: 250ms ease-out [underline 0→100%]
 ## Best Practices
 
 ✅ **Do**:
+
 - Use micro-syntax for documentation
 - Keep animations under 400ms
 - Use transform/opacity for performance
@@ -61,6 +63,7 @@ linkHover: 250ms ease-out [underline 0→100%]
 - Make animations purposeful
 
 ❌ **Don't**:
+
 - Animate width/height (use scale)
 - Create distracting animations
 - Ignore performance implications

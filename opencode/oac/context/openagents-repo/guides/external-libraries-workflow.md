@@ -1,4 +1,5 @@
 <!-- Context: openagents-repo/guides/external-libraries-workflow | Priority: high | Version: 1.0 | Updated: 2026-01-29 -->
+
 # Guide: External Libraries Workflow
 
 **Purpose**: Fetch current documentation for external packages when adding agents or skills
@@ -14,6 +15,7 @@
 **Golden Rule**: NEVER rely on training data for external libraries → ALWAYS fetch current docs
 
 **Process**:
+
 1. Detect external package in your task
 2. Check for install scripts (if first-time setup)
 3. Use **ExternalScout** to fetch current documentation
@@ -24,6 +26,7 @@
 ## When to Use ExternalScout (MANDATORY)
 
 ✅ **Use ExternalScout when**:
+
 - Adding new agents that depend on external packages
 - Adding new skills that integrate with external libraries
 - First-time package setup in your implementation
@@ -32,6 +35,7 @@
 - ANY external library work
 
 ❌ **Don't rely on**:
+
 - Training data (outdated, often wrong)
 - Old documentation (APIs change)
 - Assumptions about package behavior
@@ -41,6 +45,7 @@
 ## Why This Matters
 
 **Example**: Next.js Evolution
+
 ```
 Training data (2023): Next.js 13 uses pages/ directory
 Current (2025): Next.js 15 uses app/ directory (App Router)
@@ -50,6 +55,7 @@ ExternalScout = working code ✅
 ```
 
 **Real Impact**:
+
 - APIs change (new methods, deprecated features)
 - Configuration patterns evolve
 - Breaking changes happen frequently
@@ -62,6 +68,7 @@ ExternalScout = working code ✅
 ### Step 1: Detect External Package
 
 **Triggers**:
+
 - User mentions a library name
 - You see imports in code
 - package.json has new dependencies
@@ -70,6 +77,7 @@ ExternalScout = working code ✅
 **Action**: Identify which external packages are involved
 
 **Example**:
+
 ```
 User: "Add authentication with Better Auth"
 → External package detected: Better Auth
@@ -91,6 +99,7 @@ grep -r "postinstall\|preinstall" package.json
 ```
 
 **If scripts exist**:
+
 - Read them to understand setup order
 - Check for environment variables needed
 - Identify prerequisites (database, services)
@@ -118,6 +127,7 @@ task(
 ```
 
 **What ExternalScout Returns**:
+
 - Live documentation from official sources
 - Version-specific features
 - Integration patterns
@@ -125,6 +135,7 @@ task(
 - Code examples
 
 **Supported Libraries** (18+):
+
 - Drizzle ORM
 - Better Auth
 - Next.js
@@ -148,6 +159,7 @@ task(
 ### Step 4: Implement with Fresh Knowledge
 
 **Now implement** using the documentation from ExternalScout:
+
 - Follow current best practices
 - Use version-specific APIs
 - Apply recommended patterns
@@ -179,16 +191,16 @@ task(
 
 ## Common Packages in OpenAgents
 
-| Package | Use Case | Priority |
-|---------|----------|----------|
-| **Drizzle ORM** | Database schemas & queries | ⭐⭐⭐⭐⭐ |
-| **Better Auth** | Authentication & authorization | ⭐⭐⭐⭐⭐ |
-| **Next.js** | Full-stack web framework | ⭐⭐⭐⭐⭐ |
-| **TanStack Query** | Server state management | ⭐⭐⭐⭐ |
-| **Zod** | Schema validation | ⭐⭐⭐⭐ |
-| **Tailwind CSS** | Styling | ⭐⭐⭐⭐ |
-| **Shadcn/ui** | UI components | ⭐⭐⭐ |
-| **Vitest** | Testing framework | ⭐⭐⭐ |
+| Package            | Use Case                       | Priority   |
+| ------------------ | ------------------------------ | ---------- |
+| **Drizzle ORM**    | Database schemas & queries     | ⭐⭐⭐⭐⭐ |
+| **Better Auth**    | Authentication & authorization | ⭐⭐⭐⭐⭐ |
+| **Next.js**        | Full-stack web framework       | ⭐⭐⭐⭐⭐ |
+| **TanStack Query** | Server state management        | ⭐⭐⭐⭐   |
+| **Zod**            | Schema validation              | ⭐⭐⭐⭐   |
+| **Tailwind CSS**   | Styling                        | ⭐⭐⭐⭐   |
+| **Shadcn/ui**      | UI components                  | ⭐⭐⭐     |
+| **Vitest**         | Testing framework              | ⭐⭐⭐     |
 
 ---
 

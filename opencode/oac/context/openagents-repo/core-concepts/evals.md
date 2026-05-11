@@ -10,6 +10,7 @@
 ## What Is the Eval Framework?
 
 The eval framework is a TypeScript-based testing system that validates agent behavior through:
+
 - **Test definitions** (YAML files)
 - **Session collection** (capturing agent interactions)
 - **Evaluators** (rules that validate behavior)
@@ -67,6 +68,7 @@ suites:
 ```
 
 **Fields**:
+
 - `agent`: Agent path (category/name format)
 - `model`: Model to use for testing
 - `timeout`: Test timeout in milliseconds
@@ -91,6 +93,7 @@ expectations:
 ```
 
 **Fields**:
+
 - `name`: Test name
 - `description`: What this test validates
 - `agent`: Agent to test
@@ -107,14 +110,17 @@ Evaluators are rules that validate agent behavior. Each evaluator checks for spe
 ### Available Evaluators
 
 #### 1. Approval Gate Evaluator
+
 **Purpose**: Ensures agent requests approval before execution
 
 **Validates**:
+
 - Agent proposes plan before executing
 - User approves before write/edit/bash operations
 - No auto-execution without approval
 
 **Violation Example**:
+
 ```
 Agent executed write tool without requesting approval first
 ```
@@ -122,15 +128,18 @@ Agent executed write tool without requesting approval first
 ---
 
 #### 2. Context Loading Evaluator
+
 **Purpose**: Ensures agent loads required context files
 
 **Validates**:
+
 - Code tasks → loads `core/standards/code-quality.md`
 - Doc tasks → loads `core/standards/documentation.md`
 - Test tasks → loads `core/standards/test-coverage.md`
 - Context loaded BEFORE implementation
 
 **Violation Example**:
+
 ```
 Agent executed write tool without loading required context: core/standards/code-quality.md
 ```
@@ -138,15 +147,18 @@ Agent executed write tool without loading required context: core/standards/code-
 ---
 
 #### 3. Tool Usage Evaluator
+
 **Purpose**: Ensures agent uses appropriate tools
 
 **Validates**:
+
 - Uses `read` instead of `bash cat`
 - Uses `list` instead of `bash ls`
 - Uses `grep` instead of `bash grep`
 - Proper tool selection for tasks
 
 **Violation Example**:
+
 ```
 Agent used bash tool for reading file instead of read tool
 ```
@@ -154,14 +166,17 @@ Agent used bash tool for reading file instead of read tool
 ---
 
 #### 4. Stop on Failure Evaluator
+
 **Purpose**: Ensures agent stops on errors instead of auto-fixing
 
 **Validates**:
+
 - Agent reports errors to user
 - Agent proposes fix and requests approval
 - No auto-fixing without approval
 
 **Violation Example**:
+
 ```
 Agent auto-fixed error without reporting and requesting approval
 ```
@@ -169,14 +184,17 @@ Agent auto-fixed error without reporting and requesting approval
 ---
 
 #### 5. Execution Balance Evaluator
+
 **Purpose**: Ensures agent doesn't over-execute
 
 **Validates**:
+
 - Reasonable ratio of read vs execute operations
 - Not executing excessively
 - Balanced tool usage
 
 **Violation Example**:
+
 ```
 Agent execution ratio too high: 80% execute vs 20% read
 ```
@@ -247,6 +265,7 @@ Sessions are recordings of agent interactions stored in `.tmp/sessions/`.
 ### Event Timeline
 
 Events capture agent actions:
+
 - `tool_call` - Agent invoked a tool
 - `context_load` - Agent loaded context file
 - `approval_request` - Agent requested approval
@@ -419,6 +438,7 @@ cat .tmp/sessions/{session-id}/events.json | jq
 ### Step 4: Identify Violation
 
 Look for:
+
 - Missing approval requests
 - Missing context loads
 - Wrong tool usage
@@ -427,6 +447,7 @@ Look for:
 ### Step 5: Fix Agent
 
 Update agent prompt to:
+
 - Add approval gate
 - Add context loading
 - Use correct tools
@@ -442,21 +463,21 @@ Update agent prompt to:
 ✅ **Approval gate test** - Verify approval workflow  
 ✅ **Context loading test** - Verify context usage  
 ✅ **Tool usage test** - Verify correct tools  
-✅ **Error handling test** - Verify stop on failure  
+✅ **Error handling test** - Verify stop on failure
 
 ### Test Design
 
 ✅ **Clear expectations** - Explicit what should happen  
 ✅ **Realistic scenarios** - Test real-world usage  
 ✅ **Isolated tests** - One concern per test  
-✅ **Fast execution** - Keep tests under 10 seconds  
+✅ **Fast execution** - Keep tests under 10 seconds
 
 ### Debugging
 
 ✅ **Use debug mode** - See detailed output  
 ✅ **Check sessions** - Analyze agent behavior  
 ✅ **Review events** - Understand timeline  
-✅ **Iterate quickly** - Fix and re-test  
+✅ **Iterate quickly** - Fix and re-test
 
 ---
 

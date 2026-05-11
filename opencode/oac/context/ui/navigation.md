@@ -18,10 +18,10 @@ This category contains UI/UX patterns, design systems, and interface standards f
 
 ### 📁 Subcategories
 
-| Subcategory | Description | Path |
-|-------------|-------------|------|
-| **web/** | Web UI patterns, animations, styling, React components | [web/navigation.md](web/navigation.md) |
-| **terminal/** | Terminal UI (TUI) patterns for CLI applications | [terminal/navigation.md](terminal/navigation.md) |
+| Subcategory   | Description                                            | Path                                             |
+| ------------- | ------------------------------------------------------ | ------------------------------------------------ |
+| **web/**      | Web UI patterns, animations, styling, React components | [web/navigation.md](web/navigation.md)           |
+| **terminal/** | Terminal UI (TUI) patterns for CLI applications        | [terminal/navigation.md](terminal/navigation.md) |
 
 ### Future Subcategories
 
@@ -33,6 +33,7 @@ This category contains UI/UX patterns, design systems, and interface standards f
 ## Quick Navigation
 
 ### Web UI
+
 - Animation patterns and micro-interactions
 - CSS styling standards and design systems
 - React component patterns
@@ -40,6 +41,7 @@ This category contains UI/UX patterns, design systems, and interface standards f
 - Scroll-linked animations (scrollytelling)
 
 ### Terminal UI
+
 - CLI/TUI patterns (planned)
 - Ink, Blessed component patterns (planned)
 - Terminal animations and progress indicators (planned)
@@ -59,6 +61,7 @@ This category contains UI/UX patterns, design systems, and interface standards f
 ## Scope
 
 This category covers:
+
 - ✅ Visual design patterns
 - ✅ Animation and transitions
 - ✅ Component architecture

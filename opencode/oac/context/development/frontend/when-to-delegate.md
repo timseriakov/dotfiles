@@ -1,4 +1,5 @@
 <!-- Context: development/frontend/when-to-delegate | Priority: high | Version: 1.0 | Updated: 2026-01-30 -->
+
 # When to Delegate to Frontend Specialist
 
 ## Overview
@@ -8,6 +9,7 @@ Clear decision criteria for when to delegate frontend/UI work to the **frontend-
 ## Quick Reference
 
 **Delegate to frontend-specialist when**:
+
 - UI/UX design work (wireframes, themes, animations)
 - Design system implementation
 - Complex responsive layouts
@@ -15,6 +17,7 @@ Clear decision criteria for when to delegate frontend/UI work to the **frontend-
 - Visual design iterations
 
 **Handle directly when**:
+
 - Simple HTML/CSS edits
 - Single component updates
 - Bug fixes in existing UI
@@ -26,27 +29,27 @@ Clear decision criteria for when to delegate frontend/UI work to the **frontend-
 
 ### ✅ DELEGATE to Frontend-Specialist
 
-| Scenario | Why Delegate | Example |
-|----------|--------------|---------|
-| **New UI design from scratch** | Needs staged workflow (layout → theme → animation → implement) | "Create a landing page for our product" |
-| **Design system work** | Requires ContextScout for standards, ExternalScout for UI libs | "Implement our design system with Tailwind + Shadcn" |
-| **Complex responsive layouts** | Needs mobile-first approach across breakpoints | "Build a dashboard with sidebar, cards, and responsive grid" |
-| **Animation implementation** | Requires animation patterns, performance optimization | "Add smooth transitions and micro-interactions to the UI" |
-| **Multi-stage design iterations** | Needs versioning (design_iterations/ folder) | "Design a checkout flow with 3 steps" |
-| **Theme creation** | Requires OKLCH colors, CSS custom properties | "Create a dark mode theme for the app" |
-| **Component library integration** | Needs ExternalScout for current docs (Flowbite, Radix, etc.) | "Integrate Flowbite components into our app" |
-| **Accessibility-focused UI** | Requires WCAG compliance, ARIA attributes | "Build an accessible form with proper labels and validation" |
+| Scenario                          | Why Delegate                                                   | Example                                                      |
+| --------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------ |
+| **New UI design from scratch**    | Needs staged workflow (layout → theme → animation → implement) | "Create a landing page for our product"                      |
+| **Design system work**            | Requires ContextScout for standards, ExternalScout for UI libs | "Implement our design system with Tailwind + Shadcn"         |
+| **Complex responsive layouts**    | Needs mobile-first approach across breakpoints                 | "Build a dashboard with sidebar, cards, and responsive grid" |
+| **Animation implementation**      | Requires animation patterns, performance optimization          | "Add smooth transitions and micro-interactions to the UI"    |
+| **Multi-stage design iterations** | Needs versioning (design_iterations/ folder)                   | "Design a checkout flow with 3 steps"                        |
+| **Theme creation**                | Requires OKLCH colors, CSS custom properties                   | "Create a dark mode theme for the app"                       |
+| **Component library integration** | Needs ExternalScout for current docs (Flowbite, Radix, etc.)   | "Integrate Flowbite components into our app"                 |
+| **Accessibility-focused UI**      | Requires WCAG compliance, ARIA attributes                      | "Build an accessible form with proper labels and validation" |
 
 ### ⚠️ HANDLE DIRECTLY (Don't Delegate)
 
-| Scenario | Why Direct | Example |
-|----------|------------|---------|
-| **Simple HTML edits** | Single file, straightforward change | "Change the button text from 'Submit' to 'Send'" |
-| **Minor CSS tweaks** | Small styling adjustment | "Make the header padding 20px instead of 16px" |
-| **Bug fixes** | Fixing existing code, not creating new design | "Fix the broken link in the footer" |
-| **Content updates** | Changing text, images, or data | "Update the hero section copy" |
-| **Single component updates** | Modifying one existing component | "Add a new prop to the Button component" |
-| **Quick prototypes** | Throwaway code for testing | "Create a quick HTML mockup to test an idea" |
+| Scenario                     | Why Direct                                    | Example                                          |
+| ---------------------------- | --------------------------------------------- | ------------------------------------------------ |
+| **Simple HTML edits**        | Single file, straightforward change           | "Change the button text from 'Submit' to 'Send'" |
+| **Minor CSS tweaks**         | Small styling adjustment                      | "Make the header padding 20px instead of 16px"   |
+| **Bug fixes**                | Fixing existing code, not creating new design | "Fix the broken link in the footer"              |
+| **Content updates**          | Changing text, images, or data                | "Update the hero section copy"                   |
+| **Single component updates** | Modifying one existing component              | "Add a new prop to the Button component"         |
+| **Quick prototypes**         | Throwaway code for testing                    | "Create a quick HTML mockup to test an idea"     |
 
 ---
 
@@ -70,10 +73,11 @@ If you're unsure what context the frontend-specialist will need:
 
 ```javascript
 task(
-  subagent_type="ContextScout",
-  description="Find frontend design context",
-  prompt="Find design system standards, UI component patterns, animation guidelines, and responsive breakpoint conventions for frontend work."
-)
+  (subagent_type = "ContextScout"),
+  (description = "Find frontend design context"),
+  (prompt =
+    "Find design system standards, UI component patterns, animation guidelines, and responsive breakpoint conventions for frontend work."),
+);
 ```
 
 ### Step 2: Propose Approach
@@ -87,13 +91,15 @@ Present a plan to the user:
 
 **Approach**: Delegate to frontend-specialist subagent
 
-**Why**: 
+**Why**:
+
 - Requires design system implementation
 - Needs responsive layout across breakpoints
 - Includes animations and micro-interactions
 - Benefits from staged workflow (layout → theme → animation → implement)
 
 **Context Needed**:
+
 - Design system standards (ui/web/design-systems.md)
 - UI styling standards (ui/web/ui-styling-standards.md)
 - Animation patterns (ui/web/animation-patterns.md)
@@ -117,24 +123,24 @@ task(
   - /Users/tim/.config/opencode/context/ui/web/design-systems.md
   - /Users/tim/.config/opencode/context/ui/web/ui-styling-standards.md
   - /Users/tim/.config/opencode/context/ui/web/animation-basics.md
-  
+
   Task: Create a landing page with:
   - Hero section with headline, subheadline, CTA button
   - Features grid (3 columns on desktop, 1 on mobile)
   - Smooth scroll animations
-  
+
   Requirements:
   - Use Tailwind CSS + Flowbite
   - Mobile-first responsive design
   - Animations <400ms
   - Save to design_iterations/landing_1.html
-  
+
   Follow your staged workflow:
   1. Layout (ASCII wireframe)
   2. Theme (CSS theme file)
   3. Animation (micro-interactions)
   4. Implement (HTML file)
-  
+
   Request approval between each stage."
 )
 ```
@@ -156,6 +162,7 @@ Create session context file first, then delegate with session path.
 **Why**: Requires full design workflow (layout, theme, animations, implementation)
 
 **Example**:
+
 ```
 User: "Create a landing page for our SaaS product"
 You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
@@ -170,6 +177,7 @@ You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
 **Why**: Needs ContextScout for standards, ExternalScout for UI library docs
 
 **Example**:
+
 ```
 User: "Implement our design system using Tailwind and Shadcn"
 You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
@@ -184,6 +192,7 @@ You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
 **Why**: Requires ExternalScout for current docs, proper integration patterns
 
 **Example**:
+
 ```
 User: "Add Flowbite components to our app"
 You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
@@ -198,6 +207,7 @@ You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
 **Why**: Requires animation patterns, performance optimization (<400ms)
 
 **Example**:
+
 ```
 User: "Add smooth animations to the dashboard"
 You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
@@ -212,6 +222,7 @@ You: [Propose approach] → [Get approval] → [Delegate to frontend-specialist]
 **Why**: Simple edit, no design work needed
 
 **Example**:
+
 ```
 User: "Change the button text to 'Get Started'"
 You: [Edit the HTML file directly]
@@ -226,6 +237,7 @@ You: [Edit the HTML file directly]
 **Why**: Bug fix, not new design work
 
 **Example**:
+
 ```
 User: "The header is overlapping the content on mobile"
 You: [Read the CSS, fix the issue directly]
@@ -240,7 +252,7 @@ You: [Read the CSS, fix the issue directly]
 ❌ **Task is a single line change** → Handle directly  
 ❌ **Task is content update** → Handle directly  
 ❌ **Task is testing/validation** → Wrong subagent (use tester)  
-❌ **Task is code review** → Wrong subagent (use reviewer)  
+❌ **Task is code review** → Wrong subagent (use reviewer)
 
 ---
 
@@ -252,13 +264,14 @@ You: [Read the CSS, fix the issue directly]
 ✅ **Task includes animations** → Delegate  
 ✅ **Task needs UI library integration** → Delegate  
 ✅ **Task benefits from staged workflow** → Delegate  
-✅ **Task requires design expertise** → Delegate  
+✅ **Task requires design expertise** → Delegate
 
 ---
 
 ## Frontend-Specialist Capabilities
 
 **What it does well**:
+
 - Create complete UI designs from scratch
 - Implement design systems (Tailwind, Shadcn, Flowbite)
 - Build responsive layouts (mobile-first)
@@ -269,6 +282,7 @@ You: [Read the CSS, fix the issue directly]
 - Version designs (design_iterations/ folder)
 
 **What it doesn't do**:
+
 - Backend logic or API integration
 - Database queries or data processing
 - Testing or validation
@@ -283,15 +297,18 @@ You: [Read the CSS, fix the issue directly]
 The frontend-specialist will automatically load these via ContextScout:
 
 **Design System**:
+
 - `ui/web/design-systems.md` - Theme templates, color systems
 - `ui/web/ui-styling-standards.md` - Tailwind, Flowbite, responsive design
 - `ui/web/design-assets.md` - Images, icons, fonts
 
 **Patterns**:
+
 - `ui/web/animation-patterns.md` - Animation syntax, micro-interactions
 - `development/frontend/react/react-patterns.md` - React patterns (if React project)
 
 **Workflows**:
+
 - `core/workflows/design-iteration-overview.md` - Design iteration workflow
 
 ---
@@ -325,6 +342,7 @@ The frontend-specialist will automatically load these via ContextScout:
 **User Request**: "Create a landing page for our SaaS product with a hero section, features, and pricing"
 
 **Your Response**:
+
 ```markdown
 ## Implementation Plan
 
@@ -333,11 +351,13 @@ The frontend-specialist will automatically load these via ContextScout:
 **Approach**: Delegate to frontend-specialist subagent
 
 **Why**:
+
 - Requires full design workflow (layout, theme, animations)
 - Needs responsive design across breakpoints
 - Benefits from design system standards
 
 **Context Needed**:
+
 - Design system standards
 - UI styling standards
 - Animation patterns
@@ -346,6 +366,7 @@ The frontend-specialist will automatically load these via ContextScout:
 ```
 
 **After Approval**:
+
 ```javascript
 task(
   subagent_type="frontend-specialist",
@@ -354,19 +375,19 @@ task(
   - /Users/tim/.config/opencode/context/ui/web/design-systems.md
   - /Users/tim/.config/opencode/context/ui/web/ui-styling-standards.md
   - /Users/tim/.config/opencode/context/ui/web/animation-basics.md
-  
+
   Task: Create a SaaS landing page with:
   - Hero section (headline, subheadline, CTA)
   - Features section (3-column grid)
   - Pricing section (3 tiers)
   - Footer
-  
+
   Requirements:
   - Tailwind CSS + Flowbite
   - Mobile-first responsive
   - Smooth scroll animations
   - Modern design system
-  
+
   Follow staged workflow and request approval between stages."
 )
 ```
@@ -376,6 +397,7 @@ task(
 **User Request**: "Change the 'Submit' button to say 'Send Message'"
 
 **Your Response**:
+
 ```markdown
 I'll update the button text directly.
 ```
@@ -389,6 +411,7 @@ I'll update the button text directly.
 **User Request**: "Implement our design system using Tailwind and Shadcn components"
 
 **Your Response**:
+
 ```markdown
 ## Implementation Plan
 
@@ -397,11 +420,13 @@ I'll update the button text directly.
 **Approach**: Delegate to frontend-specialist subagent
 
 **Why**:
+
 - Requires UI library integration (Shadcn)
 - Needs ExternalScout for current Shadcn docs
 - Benefits from design system standards
 
 **Context Needed**:
+
 - Design system standards
 - UI styling standards
 - External docs (Shadcn)
@@ -410,6 +435,7 @@ I'll update the button text directly.
 ```
 
 **After Approval**:
+
 ```javascript
 task(
   subagent_type="frontend-specialist",
@@ -417,16 +443,16 @@ task(
   prompt="Context to load:
   - /Users/tim/.config/opencode/context/ui/web/design-systems.md
   - /Users/tim/.config/opencode/context/ui/web/ui-styling-standards.md
-  
+
   Task: Implement design system using Tailwind CSS and Shadcn/ui
-  
+
   Requirements:
   - Call ExternalScout for current Shadcn docs
   - Set up Tailwind config
   - Integrate Shadcn components
   - Create theme file with OKLCH colors
   - Document component usage
-  
+
   Follow staged workflow and request approval between stages."
 )
 ```
@@ -436,6 +462,7 @@ task(
 ## Summary
 
 **Delegate to frontend-specialist when**:
+
 - New UI designs from scratch
 - Design system implementation
 - Complex responsive layouts
@@ -444,6 +471,7 @@ task(
 - Multi-stage design iterations
 
 **Handle directly when**:
+
 - Simple HTML/CSS edits
 - Bug fixes
 - Content updates
@@ -451,6 +479,7 @@ task(
 - Quick prototypes
 
 **Always**:
+
 - Propose approach first
 - Get user approval
 - Provide context files

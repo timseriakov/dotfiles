@@ -54,16 +54,16 @@ bash .opencode/skills/task-management/router.sh validate
 
 ### Command Reference
 
-| Command | Description |
-|---------|-------------|
-| `status [feature]` | Show task status summary for all features or specific one |
-| `next [feature]` | Show next eligible tasks (dependencies satisfied) |
-| `parallel [feature]` | Show parallelizable tasks ready to run |
-| `deps <feature> <seq>` | Show dependency tree for a specific subtask |
-| `blocked [feature]` | Show blocked tasks and why |
-| `complete <feature> <seq> "summary"` | Mark subtask complete with summary |
-| `validate [feature]` | Validate JSON files and dependencies |
-| `help` | Show help message |
+| Command                              | Description                                               |
+| ------------------------------------ | --------------------------------------------------------- |
+| `status [feature]`                   | Show task status summary for all features or specific one |
+| `next [feature]`                     | Show next eligible tasks (dependencies satisfied)         |
+| `parallel [feature]`                 | Show parallelizable tasks ready to run                    |
+| `deps <feature> <seq>`               | Show dependency tree for a specific subtask               |
+| `blocked [feature]`                  | Show blocked tasks and why                                |
+| `complete <feature> <seq> "summary"` | Mark subtask complete with summary                        |
+| `validate [feature]`                 | Validate JSON files and dependencies                      |
+| `help`                               | Show help message                                         |
 
 ---
 
@@ -171,7 +171,7 @@ Tasks are stored in `.tmp/tasks/` at the project root:
 }
 ```
 
-### subtask_##.json Schema
+### subtask\_##.json Schema
 
 ```json
 {
@@ -200,13 +200,14 @@ The TaskManager subagent creates task files using this format. When you delegate
 
 ```javascript
 task(
-  subagent_type="TaskManager",
-  description="Implement feature X",
-  prompt="Break down this feature into atomic subtasks..."
-)
+  (subagent_type = "TaskManager"),
+  (description = "Implement feature X"),
+  (prompt = "Break down this feature into atomic subtasks..."),
+);
 ```
 
 TaskManager creates:
+
 1. `.tmp/tasks/{feature}/task.json` - Feature metadata
 2. `.tmp/tasks/{feature}/subtask_XX.json` - Individual subtasks
 
@@ -217,18 +218,22 @@ You can then use this skill to track and manage progress.
 ## Key Concepts
 
 ### 1. Dependency Resolution
+
 Subtasks can depend on other subtasks. A task is "ready" only when all its dependencies are complete.
 
 ### 2. Parallel Execution
+
 Set `parallel: true` to indicate a subtask can run alongside other parallel tasks with satisfied dependencies.
 
 ### 3. Status Tracking
+
 - **pending** - Not started, waiting for dependencies
 - **in_progress** - Currently being worked on
 - **completed** - Finished with summary
 - **blocked** - Explicitly blocked (not waiting for deps)
 
 ### 4. Exit Criteria
+
 Each feature has exit_criteria that must be met before marking the feature complete.
 
 ### 5. Validation Rules
@@ -236,12 +241,14 @@ Each feature has exit_criteria that must be met before marking the feature compl
 The `validate` command performs comprehensive checks on task files:
 
 **Task-Level Validation:**
+
 - ✅ task.json file exists for the feature
 - ✅ Task ID matches feature slug
 - ✅ Subtask count in task.json matches actual subtask files
 - ✅ All required fields are present
 
 **Subtask-Level Validation:**
+
 - ✅ All subtask IDs start with feature name (e.g., "my-feature-01")
 - ✅ Sequence numbers are unique and properly formatted (01, 02, etc.)
 - ✅ All dependencies reference existing subtasks
@@ -251,17 +258,20 @@ The `validate` command performs comprehensive checks on task files:
 - ✅ Status values are valid (pending, in_progress, completed, blocked)
 
 **Dependency Validation:**
+
 - ✅ All depends_on references point to existing subtasks
 - ✅ No task depends on itself
 - ✅ No circular dependency chains
 - ✅ Dependency graph is acyclic
 
 Run `validate` regularly to catch issues early:
+
 ```bash
 bash .opencode/skills/task-management/router.sh validate my-feature
 ```
 
 ### 6. Context and Reference Files
+
 - **context_files** - Standards, conventions, and guidelines to follow
 - **reference_files** - Existing project files to look at or build upon
 
@@ -279,6 +289,7 @@ bash .opencode/skills/task-management/router.sh validate my-feature
 ### With Other Subagents
 
 Working agents (CoderAgent, TestEngineer, etc.) execute subtasks and report completion. Use this skill to:
+
 - Find next available tasks with `next`
 - Check what's blocking progress with `blocked`
 - Validate task definitions with `validate`
@@ -341,7 +352,9 @@ bash .opencode/skills/task-management/router.sh validate my-feature
 ## Tips & Best Practices
 
 ### 1. Use Meaningful Summaries
+
 When marking tasks complete, provide clear summaries:
+
 ```bash
 # Good
 complete my-feature 05 "Implemented JWT authentication with refresh tokens and error handling"
@@ -351,18 +364,21 @@ complete my-feature 05 "Done"
 ```
 
 ### 2. Check Dependencies Before Starting
+
 ```bash
 # See what a task depends on
 bash .opencode/skills/task-management/router.sh deps my-feature 07
 ```
 
 ### 3. Identify Parallelizable Work
+
 ```bash
 # Find tasks that can run in parallel
 bash .opencode/skills/task-management/router.sh parallel my-feature
 ```
 
 ### 4. Regular Validation
+
 ```bash
 # Validate regularly to catch issues early
 bash .opencode/skills/task-management/router.sh validate
@@ -373,15 +389,19 @@ bash .opencode/skills/task-management/router.sh validate
 ## Troubleshooting
 
 ### "task-cli.ts not found"
+
 Make sure you're running from the project root or the router.sh can find it.
 
 ### "No tasks found"
+
 Run `status` to see if any tasks have been created yet. Use TaskManager to create tasks first.
 
 ### "Dependency not satisfied"
+
 Check the dependency tree with `deps` to see what's blocking the task.
 
 ### "Validation failed"
+
 Run `validate` to see specific issues, then check the JSON files in `.tmp/tasks/`.
 
 ---

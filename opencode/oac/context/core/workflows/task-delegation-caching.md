@@ -1,4 +1,5 @@
 <!-- Context: workflows/delegation-caching | Priority: medium | Version: 1.0 | Updated: 2026-02-05 -->
+
 # Context Caching for Delegation
 
 **Purpose**: Cache discovered context to avoid re-discovery overhead in repeated tasks
@@ -8,6 +9,7 @@
 ## When to Cache
 
 Cache context when:
+
 - Same task type appears multiple times in session
 - Same context files needed repeatedly
 - Multiple subtasks use identical standards
@@ -51,12 +53,14 @@ Cache context when:
 ## Invalidation Rules
 
 **Cache is INVALID when:**
+
 - Source file modified (check timestamp)
 - Session older than 24 hours
 - Context file version changed
 - User explicitly requests refresh
 
 **Cache is VALID when:**
+
 - Source timestamp matches
 - Session less than 24 hours old
 - No version changes
@@ -91,7 +95,7 @@ task(
           Use cached context if available at .cache/"
 )
 
-// Task 2: Write component B (parallel)  
+// Task 2: Write component B (parallel)
 task(
   subagent_type="CoderAgent",
   description="Write component B",
@@ -107,6 +111,7 @@ task(
 ## Cache Effectiveness
 
 Track metrics:
+
 ```json
 {
   "cache_stats": {
@@ -123,6 +128,7 @@ Track metrics:
 ## Best Practices
 
 ✅ **Do:**
+
 - Cache context for repeated task types
 - Validate cache before using
 - Invalidate when source changes
@@ -130,6 +136,7 @@ Track metrics:
 - Clean up cache with session
 
 ❌ **Don't:**
+
 - Cache external context (always fetch fresh)
 - Cache for single-task sessions (overhead not worth it)
 - Ignore invalidation rules

@@ -46,20 +46,24 @@ gh issue close NUMBER --repo darrenhinde/OpenAgentsControl
 ### Issue Types
 
 **Feature Request**
+
 - Labels: `feature`, `enhancement`
 - Include: Goals, key features, success criteria
 - Template: See "Feature Issue Template" below
 
 **Bug Report**
+
 - Labels: `bug`
 - Include: Steps to reproduce, expected vs actual behavior
 - Template: See "Bug Issue Template" below
 
 **Improvement**
+
 - Labels: `enhancement`, `framework`
 - Include: Current state, proposed improvement, impact
 
 **Question**
+
 - Labels: `question`
 - Include: Context, specific question, use case
 
@@ -181,6 +185,7 @@ gh issue edit NUMBER \
 ### Start Work
 
 1. **Assign issue to yourself**
+
    ```bash
    gh issue edit NUMBER --repo darrenhinde/OpenAgentsControl --add-assignee @me
    ```
@@ -188,6 +193,7 @@ gh issue edit NUMBER \
 2. **Move to "In Progress"** (via web UI)
 
 3. **Create branch** (optional)
+
    ```bash
    git checkout -b feature/issue-NUMBER-description
    ```
@@ -209,6 +215,7 @@ gh issue comment NUMBER \
 ### Complete Work
 
 1. **Create PR**
+
    ```bash
    gh pr create \
      --repo darrenhinde/OpenAgentsControl \
@@ -227,6 +234,7 @@ gh issue comment NUMBER \
 ### Request Types
 
 **User Feature Request**
+
 1. Create issue with `feature` label
 2. Add to project board
 3. Prioritize based on impact
@@ -234,6 +242,7 @@ gh issue comment NUMBER \
 5. Assign to appropriate person/team
 
 **Bug Report**
+
 1. Create issue with `bug` label
 2. Add reproduction steps
 3. Prioritize based on severity
@@ -241,6 +250,7 @@ gh issue comment NUMBER \
 5. Link to related issues if applicable
 
 **Improvement Suggestion**
+
 1. Create issue with `enhancement` label
 2. Discuss approach in comments
 3. Get consensus before implementation
@@ -275,22 +285,27 @@ gh issue create \
 
 ```markdown
 ## Overview
+
 Brief description of the feature
 
 ## Goals
+
 - Goal 1
 - Goal 2
 - Goal 3
 
 ## Key Features
+
 - Feature 1
 - Feature 2
 - Feature 3
 
 ## Related Issues
+
 - #123 (related issue)
 
 ## Success Criteria
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 - [ ] Criterion 3
@@ -300,25 +315,31 @@ Brief description of the feature
 
 ```markdown
 ## Description
+
 Brief description of the bug
 
 ## Steps to Reproduce
+
 1. Step 1
 2. Step 2
 3. Step 3
 
 ## Expected Behavior
+
 What should happen
 
 ## Actual Behavior
+
 What actually happens
 
 ## Environment
+
 - OS: macOS/Linux/Windows
 - Version: 0.5.2
 - Node: v20.x
 
 ## Additional Context
+
 Any other relevant information
 ```
 
@@ -326,20 +347,25 @@ Any other relevant information
 
 ```markdown
 ## Current State
+
 Description of current implementation
 
 ## Proposed Improvement
+
 What should be improved and why
 
 ## Impact
+
 - Performance improvement
 - Developer experience
 - User experience
 
 ## Implementation Approach
+
 High-level approach to implementation
 
 ## Success Criteria
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 ```
@@ -351,6 +377,7 @@ High-level approach to implementation
 ### Auto-Close Issues
 
 Use keywords in PR descriptions:
+
 - `Closes #123`
 - `Fixes #123`
 - `Resolves #123`
@@ -384,7 +411,7 @@ git commit -m "fix: resolve permission error (closes #140)"
 ✅ **Detailed descriptions** - Include context and goals  
 ✅ **Proper labels** - Use consistent labeling  
 ✅ **Success criteria** - Define what "done" means  
-✅ **Link related issues** - Show dependencies  
+✅ **Link related issues** - Show dependencies
 
 ### Issue Management
 
@@ -392,14 +419,14 @@ git commit -m "fix: resolve permission error (closes #140)"
 ✅ **Keep updated** - Add comments on progress  
 ✅ **Close stale issues** - Clean up old/irrelevant issues  
 ✅ **Use milestones** - Group related issues  
-✅ **Assign owners** - Clear responsibility  
+✅ **Assign owners** - Clear responsibility
 
 ### Project Board
 
 ✅ **Update status** - Keep board current  
 ✅ **Limit WIP** - Don't overload "In Progress"  
 ✅ **Review regularly** - Weekly board review  
-✅ **Archive completed** - Keep board clean  
+✅ **Archive completed** - Keep board clean
 
 ---
 

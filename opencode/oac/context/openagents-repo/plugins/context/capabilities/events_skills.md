@@ -19,19 +19,20 @@ This document explains how the OpenCode Skills Plugin uses event hooks (`tool.ex
 **Purpose in Skills Plugin:** Inject skill content into the conversation
 
 **Implementation:**
+
 ```typescript
 const beforeHook = async (input: any, output: any) => {
   // Check if this is a skill tool
   if (input.tool.startsWith("skills_")) {
     // Look up skill from map
-    const skill = skillMap.get(input.tool)
+    const skill = skillMap.get(input.tool);
     if (skill) {
       // Inject skill content as silent prompt
       await ctx.client.session.prompt({
         path: { id: input.sessionID },
         body: {
           agent: input.agent,
-          noReply: true,  // Don't trigger AI response
+          noReply: true, // Don't trigger AI response
           parts: [
             {
               type: "text",
@@ -39,25 +40,28 @@ const beforeHook = async (input: any, output: any) => {
             },
           ],
         },
-      })
+      });
     }
   }
-}
+};
 ```
 
 **Why use this hook?**
+
 - Runs before tool execution, perfect for context injection
 - Can access tool name and session ID
 - Can inject content without triggering AI response
 - Skill content persists in conversation history
 
 **Input Parameters:**
+
 - `input.tool` - Tool name (e.g., "skills_brand_guidelines")
 - `input.sessionID` - Current session ID
 - `input.agent` - Agent name that called the tool
 - `output.args` - Tool arguments
 
 **What you can do:**
+
 - ✅ Inject context (skill content)
 - ✅ Validate inputs
 - ✅ Preprocess arguments
@@ -65,6 +69,7 @@ const beforeHook = async (input: any, output: any) => {
 - ✅ Implement security checks
 
 **What you can't do:**
+
 - ❌ Modify tool output (tool hasn't run yet)
 - ❌ Access tool results
 
@@ -79,33 +84,37 @@ const beforeHook = async (input: any, output: any) => {
 **Purpose in Skills Plugin:** Enhance output with visual feedback
 
 **Implementation:**
+
 ```typescript
 const afterHook = async (input: any, output: any) => {
   // Check if this is a skill tool
   if (input.tool.startsWith("skills_")) {
     // Look up skill from map
-    const skill = skillMap.get(input.tool)
+    const skill = skillMap.get(input.tool);
     if (skill && output.output) {
       // Add emoji title for visual feedback
-      output.title = `📚 ${skill.name}`
+      output.title = `📚 ${skill.name}`;
     }
   }
-}
+};
 ```
 
 **Why use this hook?**
+
 - Runs after tool execution, perfect for output enhancement
 - Can modify output properties
 - Can add visual feedback (emoji titles)
 - Can implement logging/analytics
 
 **Input Parameters:**
+
 - `input.tool` - Tool name (e.g., "skills_brand_guidelines")
 - `input.sessionID` - Current session ID
 - `output.output` - Tool result/output
 - `output.title` - Output title (can be modified)
 
 **What you can do:**
+
 - ✅ Modify output
 - ✅ Add titles/formatting
 - ✅ Log completion
@@ -113,6 +122,7 @@ const afterHook = async (input: any, output: any) => {
 - ✅ Transform results
 
 **What you can't do:**
+
 - ❌ Modify tool arguments (already executed)
 - ❌ Prevent tool execution (already happened)
 
@@ -204,6 +214,7 @@ async execute(args, toolCtx) {
 ```
 
 **Issues:**
+
 1. **Tight Coupling**: Tool logic and delivery are inseparable
 2. **Hard to Test**: Can't test tool without testing delivery
 3. **Violates SOLID**: Single Responsibility Principle broken
@@ -234,6 +245,7 @@ const beforeHook = async (input, output) => {
 ```
 
 **Benefits:**
+
 1. ✅ **Loose Coupling**: Tool and delivery are independent
 2. ✅ **Easy to Test**: Each component tested separately
 3. ✅ **SOLID Compliant**: Single Responsibility Principle
@@ -250,28 +262,28 @@ The skill lookup map enables O(1) access instead of O(n) search:
 
 ```typescript
 // ✅ EFFICIENT: O(1) lookup
-const skillMap = new Map<string, Skill>()
+const skillMap = new Map<string, Skill>();
 for (const skill of skills) {
-  skillMap.set(skill.toolName, skill)
+  skillMap.set(skill.toolName, skill);
 }
 
 const beforeHook = async (input, output) => {
   if (input.tool.startsWith("skills_")) {
-    const skill = skillMap.get(input.tool)  // O(1) constant time
+    const skill = skillMap.get(input.tool); // O(1) constant time
     if (skill) {
       // Use skill
     }
   }
-}
+};
 ```
 
 ### Performance Impact
 
 | Number of Skills | Array Search (O(n)) | Map Lookup (O(1)) | Speedup |
-|------------------|-------------------|------------------|---------|
-| 10 | 10 comparisons | 1 lookup | 10x |
-| 100 | 100 comparisons | 1 lookup | 100x |
-| 1000 | 1000 comparisons | 1 lookup | 1000x |
+| ---------------- | ------------------- | ----------------- | ------- |
+| 10               | 10 comparisons      | 1 lookup          | 10x     |
+| 100              | 100 comparisons     | 1 lookup          | 100x    |
+| 1000             | 1000 comparisons    | 1 lookup          | 1000x   |
 
 **Conclusion:** Map lookup is essential for scalability
 
@@ -281,10 +293,10 @@ const beforeHook = async (input, output) => {
 
 ### Event Mapping
 
-| OpenCode Event | Skills Plugin Hook | Purpose |
-|---|---|---|
-| `tool.execute.before` | `beforeHook` | Skill content injection |
-| `tool.execute.after` | `afterHook` | Output enhancement |
+| OpenCode Event        | Skills Plugin Hook | Purpose                 |
+| --------------------- | ------------------ | ----------------------- |
+| `tool.execute.before` | `beforeHook`       | Skill content injection |
+| `tool.execute.after`  | `afterHook`        | Output enhancement      |
 
 ### Plugin Return Object
 
@@ -298,10 +310,11 @@ return {
 
   // Hook: Runs after tool execution
   "tool.execute.after": afterHook,
-}
+};
 ```
 
 **Key Points:**
+
 - Hooks apply to ALL tools (use `if` statements to filter)
 - Multiple plugins can register hooks without conflict
 - Hooks run in registration order
@@ -313,19 +326,19 @@ return {
 
 ### Available Tool Execution Hooks
 
-| Hook | When | Use Case |
-|------|------|----------|
-| `tool.execute.before` | Before tool runs | Input validation, context injection, preprocessing |
-| `tool.execute.after` | After tool completes | Output formatting, logging, analytics |
+| Hook                  | When                 | Use Case                                           |
+| --------------------- | -------------------- | -------------------------------------------------- |
+| `tool.execute.before` | Before tool runs     | Input validation, context injection, preprocessing |
+| `tool.execute.after`  | After tool completes | Output formatting, logging, analytics              |
 
 ### Other Event Hooks (Not Used in Skills Plugin)
 
-| Hook | When | Use Case |
-|------|------|----------|
-| `session.created` | Session starts | Welcome messages, initialization |
-| `message.updated` | Message changes | Monitoring, logging |
-| `session.idle` | Session completes | Cleanup, background tasks |
-| `session.error` | Error occurs | Error handling, logging |
+| Hook              | When              | Use Case                         |
+| ----------------- | ----------------- | -------------------------------- |
+| `session.created` | Session starts    | Welcome messages, initialization |
+| `message.updated` | Message changes   | Monitoring, logging              |
+| `session.idle`    | Session completes | Cleanup, background tasks        |
+| `session.error`   | Error occurs      | Error handling, logging          |
 
 ---
 
@@ -348,7 +361,7 @@ const beforeHook = async (input, output) => {
   // input.agent = "my-helper"
 
   if (input.tool.startsWith("skills_")) {
-    const skill = skillMap.get("skills_brand_guidelines")
+    const skill = skillMap.get("skills_brand_guidelines");
     // skill = {
     //   name: "brand-guidelines",
     //   description: "Brand guidelines for the project",
@@ -364,13 +377,13 @@ const beforeHook = async (input, output) => {
         parts: [
           {
             type: "text",
-            text: "📚 Skill: brand-guidelines\nBase directory: /path/to/skill\n\n# Brand Guidelines\n\n..."
-          }
-        ]
-      }
-    })
+            text: "📚 Skill: brand-guidelines\nBase directory: /path/to/skill\n\n# Brand Guidelines\n\n...",
+          },
+        ],
+      },
+    });
   }
-}
+};
 ```
 
 **Result:** Skill content added to conversation, no AI response
@@ -394,12 +407,12 @@ const afterHook = async (input, output) => {
   // output.output = "Skill activated: brand-guidelines"
 
   if (input.tool.startsWith("skills_")) {
-    const skill = skillMap.get("skills_brand_guidelines")
+    const skill = skillMap.get("skills_brand_guidelines");
     if (skill && output.output) {
-      output.title = `📚 brand-guidelines`
+      output.title = `📚 brand-guidelines`;
     }
   }
-}
+};
 ```
 
 **Result:** Output title enhanced with emoji
@@ -428,14 +441,14 @@ describe("beforeHook", () => {
     const input = {
       tool: "skills_brand_guidelines",
       sessionID: "ses_test",
-      agent: "test-agent"
-    }
-    const output = { args: {} }
+      agent: "test-agent",
+    };
+    const output = { args: {} };
 
-    const mockPrompt = jest.fn()
-    ctx.client.session.prompt = mockPrompt
+    const mockPrompt = jest.fn();
+    ctx.client.session.prompt = mockPrompt;
 
-    await beforeHook(input, output)
+    await beforeHook(input, output);
 
     expect(mockPrompt).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -446,26 +459,26 @@ describe("beforeHook", () => {
           parts: expect.arrayContaining([
             expect.objectContaining({
               type: "text",
-              text: expect.stringContaining("brand-guidelines")
-            })
-          ])
-        })
-      })
-    )
-  })
+              text: expect.stringContaining("brand-guidelines"),
+            }),
+          ]),
+        }),
+      }),
+    );
+  });
 
   it("should skip non-skill tools", async () => {
-    const input = { tool: "read_file", sessionID: "ses_test" }
-    const output = { args: {} }
+    const input = { tool: "read_file", sessionID: "ses_test" };
+    const output = { args: {} };
 
-    const mockPrompt = jest.fn()
-    ctx.client.session.prompt = mockPrompt
+    const mockPrompt = jest.fn();
+    ctx.client.session.prompt = mockPrompt;
 
-    await beforeHook(input, output)
+    await beforeHook(input, output);
 
-    expect(mockPrompt).not.toHaveBeenCalled()
-  })
-})
+    expect(mockPrompt).not.toHaveBeenCalled();
+  });
+});
 ```
 
 ### Testing After Hook
@@ -473,32 +486,32 @@ describe("beforeHook", () => {
 ```typescript
 describe("afterHook", () => {
   it("should add emoji title for skill tools", async () => {
-    const input = { tool: "skills_brand_guidelines" }
-    const output = { output: "Skill activated" }
+    const input = { tool: "skills_brand_guidelines" };
+    const output = { output: "Skill activated" };
 
-    await afterHook(input, output)
+    await afterHook(input, output);
 
-    expect(output.title).toBe("📚 brand-guidelines")
-  })
+    expect(output.title).toBe("📚 brand-guidelines");
+  });
 
   it("should skip non-skill tools", async () => {
-    const input = { tool: "read_file" }
-    const output = { output: "File content" }
+    const input = { tool: "read_file" };
+    const output = { output: "File content" };
 
-    await afterHook(input, output)
+    await afterHook(input, output);
 
-    expect(output.title).toBeUndefined()
-  })
+    expect(output.title).toBeUndefined();
+  });
 
   it("should skip if output is missing", async () => {
-    const input = { tool: "skills_brand_guidelines" }
-    const output = { output: null }
+    const input = { tool: "skills_brand_guidelines" };
+    const output = { output: null };
 
-    await afterHook(input, output)
+    await afterHook(input, output);
 
-    expect(output.title).toBeUndefined()
-  })
-})
+    expect(output.title).toBeUndefined();
+  });
+});
 ```
 
 ---
@@ -512,14 +525,14 @@ const beforeHook = async (input, output) => {
   switch (input.tool) {
     case "skills_brand_guidelines":
       // Handle brand guidelines
-      break
+      break;
     case "skills_api_reference":
       // Handle API reference
-      break
+      break;
     default:
-      // Skip non-skill tools
+    // Skip non-skill tools
   }
-}
+};
 ```
 
 ### Pattern 2: Conditional Processing
@@ -527,12 +540,12 @@ const beforeHook = async (input, output) => {
 ```typescript
 const beforeHook = async (input, output) => {
   if (input.tool.startsWith("skills_")) {
-    const skill = skillMap.get(input.tool)
+    const skill = skillMap.get(input.tool);
     if (skill && skill.allowedTools?.includes(input.agent)) {
       // Process only if allowed
     }
   }
-}
+};
 ```
 
 ### Pattern 3: Logging & Monitoring
@@ -540,17 +553,17 @@ const beforeHook = async (input, output) => {
 ```typescript
 const beforeHook = async (input, output) => {
   if (input.tool.startsWith("skills_")) {
-    console.log(`[BEFORE] Skill tool called: ${input.tool}`)
-    console.log(`[BEFORE] Session: ${input.sessionID}`)
+    console.log(`[BEFORE] Skill tool called: ${input.tool}`);
+    console.log(`[BEFORE] Session: ${input.sessionID}`);
   }
-}
+};
 
 const afterHook = async (input, output) => {
   if (input.tool.startsWith("skills_")) {
-    console.log(`[AFTER] Skill tool completed: ${input.tool}`)
-    console.log(`[AFTER] Output length: ${output.output?.length || 0}`)
+    console.log(`[AFTER] Skill tool completed: ${input.tool}`);
+    console.log(`[AFTER] Output length: ${output.output?.length || 0}`);
   }
-}
+};
 ```
 
 ### Pattern 4: Error Handling
@@ -559,17 +572,17 @@ const afterHook = async (input, output) => {
 const beforeHook = async (input, output) => {
   try {
     if (input.tool.startsWith("skills_")) {
-      const skill = skillMap.get(input.tool)
+      const skill = skillMap.get(input.tool);
       if (!skill) {
-        throw new Error(`Skill not found: ${input.tool}`)
+        throw new Error(`Skill not found: ${input.tool}`);
       }
       // Process skill
     }
   } catch (error) {
-    console.error(`Hook error:`, error)
+    console.error(`Hook error:`, error);
     // Don't rethrow - let tool execute anyway
   }
-}
+};
 ```
 
 ---
@@ -595,4 +608,3 @@ const beforeHook = async (input, output) => {
 - **Skills Plugin Example**: `skills-plugin/example.ts`
 - **Hook Lifecycle**: `skills-plugin/hook-lifecycle-and-patterns.md`
 - **Implementation Pattern**: `skills-plugin/implementation-pattern.md`
-

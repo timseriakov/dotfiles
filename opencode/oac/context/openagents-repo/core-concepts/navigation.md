@@ -18,11 +18,11 @@ openagents-repo/core-concepts/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View core concepts** | `./` |
-| **Concepts** | `../concepts/navigation.md` |
-| **Guides** | `../guides/navigation.md` |
+| Task                   | Path                        |
+| ---------------------- | --------------------------- |
+| **View core concepts** | `./`                        |
+| **Concepts**           | `../concepts/navigation.md` |
+| **Guides**             | `../guides/navigation.md`   |
 
 ---
 

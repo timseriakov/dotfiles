@@ -13,19 +13,25 @@
 **Before testing**, you MUST update THREE locations in framework code:
 
 ### 1. `evals/framework/src/sdk/run-sdk-tests.ts` (~line 336)
+
 Add to `subagentParentMap`:
+
 ```typescript
 'contextscout': 'openagent',  // Maps subagent → parent
 ```
 
 ### 2. `evals/framework/src/sdk/run-sdk-tests.ts` (~line 414)
+
 Add to `subagentPathMap`:
+
 ```typescript
 'contextscout': 'ContextScout',  // Maps name → path
 ```
 
 ### 3. `evals/framework/src/sdk/test-runner.ts` (~line 238)
+
 Add to `agentMap`:
+
 ```typescript
 'contextscout': 'ContextScout.md',  // Maps name → file
 ```
@@ -63,12 +69,13 @@ grep -A 5 "^id:" .opencode/agent/subagents/core/contextscout.md
 ```
 
 **Expected**:
+
 ```yaml
 id: contextscout
 name: ContextScout
 category: subagents/core
 type: subagent
-mode: subagent  # ← Will be forced to 'primary' in standalone tests
+mode: subagent # ← Will be forced to 'primary' in standalone tests
 ```
 
 ---
@@ -82,8 +89,9 @@ cat evals/agents/ContextScout/config/config.yaml
 ```
 
 **Expected**:
+
 ```yaml
-agent: ContextScout  # ← Full path
+agent: ContextScout # ← Full path
 model: anthropic/claude-sonnet-4-5
 timeout: 60000
 ```
@@ -100,11 +108,12 @@ npm run eval:sdk -- --subagent=ContextScout --pattern="standalone/01-simple-disc
 ```
 
 **What to Look For**:
+
 ```
 ⚡ Standalone Test Mode
    Subagent: contextscout
    Mode: Forced to 'primary' for direct testing
-   
+
 Testing agent: contextscout  # ← Should show subagent name
 ```
 
@@ -120,15 +129,17 @@ cat evals/results/latest.json | jq '.meta'
 ```
 
 **Expected**:
+
 ```json
 {
-  "agent": "ContextScout",  // ← Correct agent
+  "agent": "ContextScout", // ← Correct agent
   "model": "opencode/grok-code-fast",
   "timestamp": "2026-01-07T..."
 }
 ```
 
 **Red Flags**:
+
 - `"agent": "core/openagent"` ← Wrong! OpenAgent is running instead
 - `"agent": "contextscout"` ← Missing category prefix
 
@@ -144,6 +155,7 @@ cat evals/results/latest.json | jq '.tests[0]' | grep -A 5 "Tool Calls"
 ```
 
 **Expected** (for ContextScout):
+
 ```
 Tool Calls: 1
 Tools Used: glob
@@ -153,6 +165,7 @@ Tool Call Details:
 ```
 
 **Red Flags**:
+
 - `Tool Calls: 0` ← Agent didn't use any tools
 - `Tools Used: task` ← Parent agent delegating (wrong mode)
 
@@ -169,6 +182,7 @@ cat evals/results/latest.json | jq '.tests[0].violations'
 **Common Issues**:
 
 ### Issue 1: No Tool Calls
+
 ```json
 {
   "type": "missing-required-tool",
@@ -180,6 +194,7 @@ cat evals/results/latest.json | jq '.tests[0].violations'
 **Fix**: Add critical rules section emphasizing tools (see `examples/subagent-prompt-structure.md`)
 
 ### Issue 2: Wrong Agent Running
+
 ```
 Agent: OpenAgent
 ```
@@ -188,6 +203,7 @@ Agent: OpenAgent
 **Fix**: Use `--subagent=ContextScout`
 
 ### Issue 3: Tool Permission Denied
+
 ```json
 {
   "type": "missing-approval",
@@ -210,10 +226,11 @@ cat evals/results/latest.json | jq '.summary'
 ```
 
 **Expected**:
+
 ```json
 {
   "total": 1,
-  "passed": 1,  // ← Should be 1
+  "passed": 1, // ← Should be 1
   "failed": 0,
   "pass_rate": 1.0
 }
@@ -243,6 +260,7 @@ evals/agents/ContextScout/tests/
 **Be explicit about tool usage**:
 
 ❌ **Vague** (may not work):
+
 ```yaml
 prompts:
   - text: |
@@ -250,14 +268,15 @@ prompts:
 ```
 
 ✅ **Explicit** (works):
+
 ```yaml
 prompts:
   - text: |
       Use the glob tool to find all markdown files in /Users/tim/.config/opencode/context/core/
-      
+
       You MUST use the glob tool like this:
       glob(pattern="*.md", path="/Users/tim/.config/opencode/context/core")
-      
+
       Then list the files you found.
 ```
 
@@ -265,12 +284,12 @@ prompts:
 
 ## Quick Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| OpenAgent runs instead | Used `--agent` flag | Use `--subagent` flag |
-| Tool calls: 0 | Prompt doesn't emphasize tools | Add critical rules section |
-| Permission denied | Tool restricted in frontmatter | Check `tools:` and `permissions:` |
-| Test timeout | Agent stuck/looping | Check prompt logic, add timeout |
+| Symptom                | Cause                          | Fix                               |
+| ---------------------- | ------------------------------ | --------------------------------- |
+| OpenAgent runs instead | Used `--agent` flag            | Use `--subagent` flag             |
+| Tool calls: 0          | Prompt doesn't emphasize tools | Add critical rules section        |
+| Permission denied      | Tool restricted in frontmatter | Check `tools:` and `permissions:` |
+| Test timeout           | Agent stuck/looping            | Check prompt logic, add timeout   |
 
 ---
 

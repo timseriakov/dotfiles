@@ -21,18 +21,19 @@
 
 ## 🏗️ Core Architecture
 
-| Component | File | Purpose |
-|-----------|------|---------|
-| **Logic** | `scripts/skill-cli.ts` | Type-safe implementation using `ts-node`. Handles args, logic, and output. |
-| **Router** | `router.sh` | Universal entry point. Routes commands to the TS script. |
-| **Docs** | `SKILL.md` | User guide, examples, and integration details. |
-| **Config** | `registry.json` | Makes the skill discoverable and installable via `install.sh`. |
+| Component  | File                   | Purpose                                                                    |
+| ---------- | ---------------------- | -------------------------------------------------------------------------- |
+| **Logic**  | `scripts/skill-cli.ts` | Type-safe implementation using `ts-node`. Handles args, logic, and output. |
+| **Router** | `router.sh`            | Universal entry point. Routes commands to the TS script.                   |
+| **Docs**   | `SKILL.md`             | User guide, examples, and integration details.                             |
+| **Config** | `registry.json`        | Makes the skill discoverable and installable via `install.sh`.             |
 
 ---
 
 ## ⚡ Implementation Patterns
 
 ### 1. The Router (`router.sh`)
+
 **Why**: Provides a consistent, dependency-free entry point for all environments.
 
 ```bash
@@ -51,6 +52,7 @@ esac
 ```
 
 ### 2. The CLI Logic (`skill-cli.ts`)
+
 **Why**: Type safety, async/await support, and rich ecosystem access.
 
 ```typescript
@@ -58,9 +60,9 @@ esac
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
-  
+
   switch (command) {
-    case 'action':
+    case "action":
       await handleAction(args);
       break;
     default:

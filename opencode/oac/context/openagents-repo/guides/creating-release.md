@@ -82,21 +82,26 @@ cat package.json | jq '.version'
 ## [0.X.Y] - 2025-12-10
 
 ### Added
+
 - New feature 1
 - New feature 2
 
 ### Changed
+
 - Updated feature 1
 - Improved feature 2
 
 ### Fixed
+
 - Bug fix 1
 - Bug fix 2
 
 ### Removed
+
 - Deprecated feature 1
 
 ## [Previous Version] - Date
+
 ...
 ```
 
@@ -105,7 +110,7 @@ cat package.json | jq '.version'
 ✅ **Group by type** - Added, Changed, Fixed, Removed  
 ✅ **User-focused** - Describe impact, not implementation  
 ✅ **Link PRs** - Reference PR numbers  
-✅ **Breaking changes** - Clearly mark breaking changes  
+✅ **Breaking changes** - Clearly mark breaking changes
 
 ---
 
@@ -262,6 +267,7 @@ Before releasing:
 
 **Problem**: Tag already exists  
 **Solution**: Delete tag and recreate
+
 ```bash
 git tag -d v0.X.Y
 git push origin :refs/tags/v0.X.Y
@@ -271,6 +277,7 @@ git push origin :refs/tags/v0.X.Y
 
 **Problem**: Push rejected (not up to date)  
 **Solution**: Pull latest changes first
+
 ```bash
 git pull origin main
 git push origin main

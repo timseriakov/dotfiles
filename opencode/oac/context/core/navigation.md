@@ -62,19 +62,19 @@ core/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **Write code** | `standards/code-quality.md` |
-| **Write tests** | `standards/test-coverage.md` |
-| **Write docs** | `standards/documentation.md` |
-| **Security patterns** | `standards/security-patterns.md` |
-| **Review code** | `workflows/code-review.md` |
-| **Delegate task** | `workflows/task-delegation-basics.md` |
-| **Break down feature** | `workflows/feature-breakdown.md` |
-| **Resume session** | `guides/resuming-sessions.md` |
-| **Manage tasks** | `task-management/navigation.md` |
-| **Task CLI commands** | `task-management/lookup/task-commands.md` |
-| **Context system** | `context-system.md` |
+| Task                   | Path                                      |
+| ---------------------- | ----------------------------------------- |
+| **Write code**         | `standards/code-quality.md`               |
+| **Write tests**        | `standards/test-coverage.md`              |
+| **Write docs**         | `standards/documentation.md`              |
+| **Security patterns**  | `standards/security-patterns.md`          |
+| **Review code**        | `workflows/code-review.md`                |
+| **Delegate task**      | `workflows/task-delegation-basics.md`     |
+| **Break down feature** | `workflows/feature-breakdown.md`          |
+| **Resume session**     | `guides/resuming-sessions.md`             |
+| **Manage tasks**       | `task-management/navigation.md`           |
+| **Task CLI commands**  | `task-management/lookup/task-commands.md` |
+| **Context system**     | `context-system.md`                       |
 
 ---
 

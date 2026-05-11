@@ -11,6 +11,7 @@
 ## Core Concepts
 
 Task management uses two JSON file types:
+
 - `task.json` - Feature-level metadata and tracking
 - `subtask_NN.json` - Individual atomic tasks with dependencies
 
@@ -23,6 +24,7 @@ Location: `.tmp/tasks/{feature-slug}/` (at project root)
 This document describes the **base schema** (v1.0) that all task files must follow.
 
 For **enhanced features** (line-number precision, domain modeling, contracts, ADRs, prioritization):
+
 - See `enhanced-task-schema.md` for extended fields and capabilities
 - All enhanced fields are **optional** and backward compatible
 - Use enhanced schema for multi-stage orchestration workflows
@@ -31,41 +33,41 @@ For **enhanced features** (line-number precision, domain modeling, contracts, AD
 
 ## task.json Schema
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | kebab-case identifier |
-| `name` | string | Yes | Human-readable name (max 100) |
-| `status` | enum | Yes | active / completed / blocked / archived |
-| `objective` | string | Yes | One-line objective (max 200) |
-| `context_files` | array | No | **Standards paths only** — coding conventions, patterns, security rules to follow |
-| `reference_files` | array | No | **Source material only** — project files to look at (existing code, config, schemas) |
-| `exit_criteria` | array | No | Completion conditions |
-| `subtask_count` | int | No | Total subtasks |
-| `completed_count` | int | No | Done subtasks |
-| `created_at` | datetime | Yes | ISO 8601 |
-| `completed_at` | datetime | No | ISO 8601 |
+| Field             | Type     | Required | Description                                                                          |
+| ----------------- | -------- | -------- | ------------------------------------------------------------------------------------ |
+| `id`              | string   | Yes      | kebab-case identifier                                                                |
+| `name`            | string   | Yes      | Human-readable name (max 100)                                                        |
+| `status`          | enum     | Yes      | active / completed / blocked / archived                                              |
+| `objective`       | string   | Yes      | One-line objective (max 200)                                                         |
+| `context_files`   | array    | No       | **Standards paths only** — coding conventions, patterns, security rules to follow    |
+| `reference_files` | array    | No       | **Source material only** — project files to look at (existing code, config, schemas) |
+| `exit_criteria`   | array    | No       | Completion conditions                                                                |
+| `subtask_count`   | int      | No       | Total subtasks                                                                       |
+| `completed_count` | int      | No       | Done subtasks                                                                        |
+| `created_at`      | datetime | Yes      | ISO 8601                                                                             |
+| `completed_at`    | datetime | No       | ISO 8601                                                                             |
 
 ---
 
 ## subtask_NN.json Schema
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | {feature}-{seq} |
-| `seq` | string | Yes | 2-digit (01, 02) |
-| `title` | string | Yes | Task title (max 100) |
-| `status` | enum | Yes | pending / in_progress / completed / blocked |
-| `depends_on` | array | No | Sequence numbers of dependencies |
-| `parallel` | bool | No | True if can run alongside others |
-| `context_files` | array | No | **Standards paths only** — conventions and patterns to follow |
-| `reference_files` | array | No | **Source material only** — existing files to reference |
-| `suggested_agent` | string | No | Recommended agent for this task (e.g., OpenFrontendSpecialist) |
-| `acceptance_criteria` | array | No | Binary pass/fail conditions |
-| `deliverables` | array | No | Files to create/modify |
-| `agent_id` | string | No | Set when in_progress |
-| `started_at` | datetime | No | ISO 8601 |
-| `completed_at` | datetime | No | ISO 8601 |
-| `completion_summary` | string | No | What was done (max 200) |
+| Field                 | Type     | Required | Description                                                    |
+| --------------------- | -------- | -------- | -------------------------------------------------------------- |
+| `id`                  | string   | Yes      | {feature}-{seq}                                                |
+| `seq`                 | string   | Yes      | 2-digit (01, 02)                                               |
+| `title`               | string   | Yes      | Task title (max 100)                                           |
+| `status`              | enum     | Yes      | pending / in_progress / completed / blocked                    |
+| `depends_on`          | array    | No       | Sequence numbers of dependencies                               |
+| `parallel`            | bool     | No       | True if can run alongside others                               |
+| `context_files`       | array    | No       | **Standards paths only** — conventions and patterns to follow  |
+| `reference_files`     | array    | No       | **Source material only** — existing files to reference         |
+| `suggested_agent`     | string   | No       | Recommended agent for this task (e.g., OpenFrontendSpecialist) |
+| `acceptance_criteria` | array    | No       | Binary pass/fail conditions                                    |
+| `deliverables`        | array    | No       | Files to create/modify                                         |
+| `agent_id`            | string   | No       | Set when in_progress                                           |
+| `started_at`          | datetime | No       | ISO 8601                                                       |
+| `completed_at`        | datetime | No       | ISO 8601                                                       |
+| `completion_summary`  | string   | No       | What was done (max 200)                                        |
 
 ---
 
@@ -93,12 +95,13 @@ Use `task-cli.ts parallel` to find all parallelizable tasks ready to run.
 
 These two fields serve fundamentally different purposes. **Never mix them.**
 
-| Field | Answers | Contains | Agent behavior |
-|-------|---------|----------|----------------|
-| `context_files` | "What rules do I follow?" | Standards, conventions, patterns from `/Users/tim/.config/opencode/context/` | Load and apply as coding guidelines |
-| `reference_files` | "What existing code do I look at?" | Project source files, configs, schemas | Read to understand existing patterns |
+| Field             | Answers                            | Contains                                                                     | Agent behavior                       |
+| ----------------- | ---------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------ |
+| `context_files`   | "What rules do I follow?"          | Standards, conventions, patterns from `/Users/tim/.config/opencode/context/` | Load and apply as coding guidelines  |
+| `reference_files` | "What existing code do I look at?" | Project source files, configs, schemas                                       | Read to understand existing patterns |
 
 **Wrong** ❌ — mixing standards and source files:
+
 ```json
 "context_files": [
   "/Users/tim/.config/opencode/context/core/standards/code-quality.md",
@@ -108,6 +111,7 @@ These two fields serve fundamentally different purposes. **Never mix them.**
 ```
 
 **Right** ✅ — clean separation:
+
 ```json
 "context_files": [
   "/Users/tim/.config/opencode/context/core/standards/code-quality.md",
@@ -135,9 +139,7 @@ These two fields serve fundamentally different purposes. **Never mix them.**
     "/Users/tim/.config/opencode/context/core/standards/code-quality.md",
     "/Users/tim/.config/opencode/context/core/standards/security-patterns.md"
   ],
-  "reference_files": [
-    "src/auth/token-utils.ts"
-  ],
+  "reference_files": ["src/auth/token-utils.ts"],
   "acceptance_criteria": ["JWT tokens signed with RS256", "Tests pass"],
   "deliverables": ["src/auth/jwt.service.ts"]
 }
@@ -152,6 +154,7 @@ The enhanced schema adds powerful features while maintaining full backward compa
 ### When to Use Enhanced Schema
 
 Use `enhanced-task-schema.md` when you need:
+
 - **Line-number precision** - Point to specific sections of large files (reduces cognitive load)
 - **Domain modeling** - Track bounded contexts, modules, vertical slices
 - **Contract tracking** - Manage API/interface dependencies
@@ -172,6 +175,7 @@ Use `enhanced-task-schema.md` when you need:
 ### Example: Adding Line-Number Precision
 
 **Old format** (still valid):
+
 ```json
 "context_files": [
   "/Users/tim/.config/opencode/context/core/standards/code-quality.md"
@@ -179,6 +183,7 @@ Use `enhanced-task-schema.md` when you need:
 ```
 
 **New format** (enhanced):
+
 ```json
 "context_files": [
   {

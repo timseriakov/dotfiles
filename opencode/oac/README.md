@@ -14,9 +14,8 @@
 📝 **Editable Agents** - Full control over AI behavior  
 👥 **Team-Ready** - Everyone uses the same patterns
 
-**Multi-language:** TypeScript • Python • Go • Rust  • C# • Any language*  
+**Multi-language:** TypeScript • Python • Go • Rust • C# • Any language\*  
 **Model Agnostic:** Claude • GPT • Gemini • MiniMax • Local models
-
 
 [![GitHub stars](https://img.shields.io/github/stars/darrenhinde/OpenAgentsControl?style=flat-square&logo=github&labelColor=black&color=ffcb47)](https://github.com/darrenhinde/OpenAgentsControl/stargazers)
 [![X Follow](https://img.shields.io/twitter/follow/DarrenBuildsAI?style=flat-square&logo=x&labelColor=black&color=1DA1F2)](https://x.com/DarrenBuildsAI)
@@ -38,6 +37,7 @@
 Most AI agents are like hiring a developer who doesn't know your codebase. They write generic code. You spend hours rewriting, refactoring, and fixing inconsistencies. Tokens burned. Time wasted. No actual work done.
 
 **Example:**
+
 ```typescript
 // What AI gives you (generic)
 export async function POST(request: Request) {
@@ -48,9 +48,9 @@ export async function POST(request: Request) {
 // What you actually need (your patterns)
 export async function POST(request: Request) {
   const body = await request.json();
-  const validated = UserSchema.parse(body);  // Your Zod validation
-  const result = await db.users.create(validated);  // Your Drizzle ORM
-  return Response.json(result, { status: 201 });  // Your response format
+  const validated = UserSchema.parse(body); // Your Zod validation
+  const result = await db.users.create(validated); // Your Drizzle ORM
+  return Response.json(result, { status: 201 }); // Your response format
 }
 ```
 
@@ -86,25 +86,27 @@ Use any AI model (Claude, GPT, Gemini, local). No vendor lock-in.
 
 ## 🆚 Quick Comparison
 
-| Feature | OpenAgentsControl | Cursor/Copilot | Aider | Oh My OpenCode |
-|---------|-------------------|----------------|-------|----------------|
-| **Learn Your Patterns** | ✅ Built-in context system | ❌ No pattern learning | ❌ No pattern learning | ⚠️ Manual setup |
-| **Approval Gates** | ✅ Always required | ⚠️ Optional (default off) | ❌ Auto-executes | ❌ Fully autonomous |
-| **Token Efficiency** | ✅ MVI principle (80% reduction) | ❌ Full context loaded | ❌ Full context loaded | ❌ High token usage |
-| **Team Standards** | ✅ Shared context files | ❌ Per-user settings | ❌ No team support | ⚠️ Manual config per user |
-| **Edit Agent Behavior** | ✅ Markdown files you edit | ❌ Proprietary/baked-in | ⚠️ Limited prompts | ✅ Config files |
-| **Model Choice** | ✅ Any model, any provider | ⚠️ Limited options | ⚠️ OpenAI/Claude only | ✅ Multiple models |
-| **Execution Speed** | ⚠️ Sequential with approval | Fast | Fast | ✅ Parallel agents |
-| **Error Recovery** | ✅ Human-guided validation | ⚠️ Auto-retry (can loop) | ⚠️ Auto-retry | ✅ Self-correcting |
-| **Best For** | Production code, teams | Quick prototypes | Solo developers | Power users, complex projects |
+| Feature                 | OpenAgentsControl                | Cursor/Copilot            | Aider                  | Oh My OpenCode                |
+| ----------------------- | -------------------------------- | ------------------------- | ---------------------- | ----------------------------- |
+| **Learn Your Patterns** | ✅ Built-in context system       | ❌ No pattern learning    | ❌ No pattern learning | ⚠️ Manual setup               |
+| **Approval Gates**      | ✅ Always required               | ⚠️ Optional (default off) | ❌ Auto-executes       | ❌ Fully autonomous           |
+| **Token Efficiency**    | ✅ MVI principle (80% reduction) | ❌ Full context loaded    | ❌ Full context loaded | ❌ High token usage           |
+| **Team Standards**      | ✅ Shared context files          | ❌ Per-user settings      | ❌ No team support     | ⚠️ Manual config per user     |
+| **Edit Agent Behavior** | ✅ Markdown files you edit       | ❌ Proprietary/baked-in   | ⚠️ Limited prompts     | ✅ Config files               |
+| **Model Choice**        | ✅ Any model, any provider       | ⚠️ Limited options        | ⚠️ OpenAI/Claude only  | ✅ Multiple models            |
+| **Execution Speed**     | ⚠️ Sequential with approval      | Fast                      | Fast                   | ✅ Parallel agents            |
+| **Error Recovery**      | ✅ Human-guided validation       | ⚠️ Auto-retry (can loop)  | ⚠️ Auto-retry          | ✅ Self-correcting            |
+| **Best For**            | Production code, teams           | Quick prototypes          | Solo developers        | Power users, complex projects |
 
 **Use OAC when:**
+
 - ✅ You have established coding patterns
 - ✅ You want code that ships without refactoring
 - ✅ You need approval gates for quality control
 - ✅ You care about token efficiency and costs
 
 **Use others when:**
+
 - **Cursor/Copilot:** Quick prototypes, don't care about patterns
 - **Aider:** Simple file edits, no team coordination
 - **Oh My OpenCode:** Need autonomous execution with parallel agents (speed over control)
@@ -128,6 +130,7 @@ curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/
 <sub>The installer will set up OpenCode CLI if you don't have it yet.</sub>
 
 **Or interactive:**
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/darrenhinde/OpenAgentsControl/main/install.sh -o install.sh
 bash install.sh
@@ -151,6 +154,7 @@ opencode --agent OpenAgent
 ### Step 3: Approve & Ship
 
 **What happens:**
+
 1. Agent analyzes your request
 2. Proposes a plan (you approve)
 3. Executes step-by-step with validation
@@ -168,26 +172,31 @@ opencode --agent OpenAgent
 **Installation:**
 
 1. Register the marketplace:
+
 ```bash
 /plugin marketplace add darrenhinde/OpenAgentsControl
 ```
 
 2. Install the plugin:
+
 ```bash
 /plugin install oac
 ```
 
 3. Download context files:
+
 ```bash
 /oac:setup --core
 ```
 
 4. Start building:
+
 ```
 Add a login endpoint
 ```
 
 **Features:**
+
 - ✅ 6-stage workflow with approval gates
 - ✅ Context-aware code generation
 - ✅ 7 specialized subagents (task-manager, context-scout, context-manager, coder-agent, test-engineer, code-reviewer, external-scout)
@@ -197,6 +206,7 @@ Add a login endpoint
 - ✅ Easy feature planning with `/oac:plan`
 
 **Documentation:**
+
 - [Plugin README](./plugins/claude-code/README.md) - Complete plugin documentation
 - [First-Time Setup](./plugins/claude-code/FIRST-TIME-SETUP.md) - Step-by-step guide
 - [Quick Start](./plugins/claude-code/QUICK-START.md) - Quick reference
@@ -232,6 +242,7 @@ Ships without refactoring ✅
 ```
 
 **Answer 6 simple questions:**
+
 1. What's your tech stack? (Next.js + TypeScript + PostgreSQL + Tailwind)
 2. Show an API endpoint example (paste your code)
 3. Show a component example (paste your code)
@@ -246,17 +257,20 @@ Ships without refactoring ✅
 **MVI (Minimal Viable Information)** = Only load what's needed, when it's needed.
 
 **Traditional approach:**
+
 - Loads entire codebase context
 - Large token overhead per request
 - Slow responses, high costs
 
 **OAC approach:**
+
 - Loads only relevant patterns
 - Context files <200 lines (quick to load)
 - Lazy loading (agents load what they need)
 - 80% of tasks use isolation context (minimal overhead)
 
 **Real benefits:**
+
 - **Efficiency:** Lower token usage vs loading entire codebase
 - **Speed:** Faster responses with smaller context
 - **Quality:** Code matches your patterns (no refactoring)
@@ -268,6 +282,7 @@ Ships without refactoring ✅
 **The OAC solution:** Store team patterns in `/Users/tim/.config/opencode/context/project/`. Commit to repo. Everyone uses same standards.
 
 **Example workflow:**
+
 ```bash
 # Team lead adds patterns once
 /add-context
@@ -291,7 +306,7 @@ git push
 ### The Core Idea
 
 **Most AI tools:** Generic code → You refactor  
-**OpenAgentsControl:** Your patterns → AI generates matching code  
+**OpenAgentsControl:** Your patterns → AI generates matching code
 
 ### The Workflow
 
@@ -335,6 +350,7 @@ Before generating code, ContextScout discovers relevant patterns from your conte
 
 **2. Editable Agents - Full Control**  
 Unlike Cursor/Copilot where behavior is baked into plugins, OAC agents are markdown files. Edit them directly:
+
 ```bash
 nano .opencode/agent/core/opencoder.md  # local project install
 # Or: nano ~/.config/opencode/agent/core/opencoder.md  # global install
@@ -343,6 +359,7 @@ nano .opencode/agent/core/opencoder.md  # local project install
 
 **3. ExternalScout - Live Documentation** 🆕  
 Working with external libraries? ExternalScout fetches current documentation:
+
 - Gets live docs from official sources (npm, GitHub, docs sites)
 - No outdated training data - always current
 - Automatically triggered when agents detect external dependencies
@@ -350,6 +367,7 @@ Working with external libraries? ExternalScout fetches current documentation:
 
 **4. Approval Gates - No Surprises**  
 Agents ALWAYS request approval before:
+
 - Writing/editing files
 - Running bash commands
 - Delegating to subagents
@@ -359,6 +377,7 @@ You stay in control. Review plans before execution.
 
 **5. MVI Principle - Token Efficiency**  
 Files designed for quick loading:
+
 - Concepts: <100 lines
 - Guides: <150 lines
 - Examples: <80 lines
@@ -385,6 +404,7 @@ opencode --agent OpenAgent
 ```
 
 **What it does:**
+
 - Loads your patterns via ContextScout
 - Proposes plan (you approve)
 - Executes with validation
@@ -404,6 +424,7 @@ opencode --agent OpenCoder
 ```
 
 **What it does:**
+
 - **Discover:** ContextScout finds relevant patterns
 - **Propose:** Detailed implementation plan
 - **Approve:** You review and approve
@@ -431,11 +452,13 @@ Interactive wizard generates orchestrators, subagents, context files, workflows,
 ## 🛠️ What's Included
 
 ### 🤖 Main Agents
+
 - **OpenAgent** - General tasks, questions, learning (start here)
 - **OpenCoder** - Production development, complex features
 - **SystemBuilder** - Generate custom AI systems
 
 ### 🔧 Specialized Subagents (Auto-delegated)
+
 - **ContextScout** - Smart pattern discovery (your secret weapon)
 - **TaskManager** - Breaks complex features into atomic subtasks
 - **CoderAgent** - Focused code implementations
@@ -447,6 +470,7 @@ Interactive wizard generates orchestrators, subagents, context files, workflows,
 - Plus category specialists: frontend, devops, copywriter, technical-writer, data-analyst
 
 ### ⚡ Productivity Commands
+
 - `/add-context` - Interactive wizard to add your patterns
 - `/commit` - Smart git commits with conventional format
 - `/test` - Testing workflows
@@ -455,7 +479,9 @@ Interactive wizard generates orchestrators, subagents, context files, workflows,
 - And 7+ more productivity commands
 
 ### 📚 Context System (MVI Principle)
+
 Your coding standards automatically loaded by agents:
+
 - **Code quality** - Your patterns, security, standards
 - **UI/design** - Design system, component patterns
 - **Task management** - Workflow definitions
@@ -463,6 +489,7 @@ Your coding standards automatically loaded by agents:
 - **Project-specific** - Your team's patterns
 
 **Key features:**
+
 - 80% token reduction via MVI
 - Smart discovery via ContextScout
 - Lazy loading (only what's needed)
@@ -483,6 +510,7 @@ ContextScout discovers context files using a **local-first** approach:
 ```
 
 **Key rules:**
+
 - **Local always wins** — if you installed locally, global is never checked
 - **Global fallback is only for `core/`** (standards, workflows, guides) — universal files that are the same across projects
 - **Project intelligence is always local** — your tech stack, patterns, and naming conventions live in `/Users/tim/.config/opencode/context/project-intelligence/` and are never loaded from global
@@ -490,15 +518,13 @@ ContextScout discovers context files using a **local-first** approach:
 
 **Common setups:**
 
-| Setup | Core files from | Project intelligence from |
-|-------|----------------|--------------------------|
-| Local install (`bash install.sh developer`) | `/Users/tim/.config/opencode/context/core/` | `/Users/tim/.config/opencode/context/project-intelligence/` |
-| Global install + `/add-context` | `~/.config/opencode/context/core/` | `/Users/tim/.config/opencode/context/project-intelligence/` |
-| Both local and global | `/Users/tim/.config/opencode/context/core/` (local wins) | `/Users/tim/.config/opencode/context/project-intelligence/` |
+| Setup                                       | Core files from                                          | Project intelligence from                                   |
+| ------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------- |
+| Local install (`bash install.sh developer`) | `/Users/tim/.config/opencode/context/core/`              | `/Users/tim/.config/opencode/context/project-intelligence/` |
+| Global install + `/add-context`             | `~/.config/opencode/context/core/`                       | `/Users/tim/.config/opencode/context/project-intelligence/` |
+| Both local and global                       | `/Users/tim/.config/opencode/context/core/` (local wins) | `/Users/tim/.config/opencode/context/project-intelligence/` |
 
 ---
-
-
 
 ## 💻 Example Workflow
 
@@ -510,12 +536,14 @@ opencode --agent OpenCoder
 **What happens:**
 
 **1. Discover (~1-2 min)** - ContextScout finds relevant patterns
+
 - Your tech stack (Next.js + TypeScript + PostgreSQL)
 - Your API pattern (Zod validation, error handling)
 - Your component pattern (functional, TypeScript, Tailwind)
 - Your naming conventions (kebab-case files, PascalCase components)
 
 **2. Propose (~2-3 min)** - Agent creates detailed implementation plan
+
 ```
 ## Proposed Implementation
 
@@ -540,17 +568,20 @@ Approve? [y/n]
 **3. Approve** - You review and approve the plan (human-guided)
 
 **4. Execute (~10-15 min)** - Incremental implementation with validation
+
 - Implements one component at a time
 - Uses YOUR patterns for every file
 - Validates after each step (type check, lint)
-- *This is the longest step - generating quality code takes time*
+- _This is the longest step - generating quality code takes time_
 
 **5. Validate (~2-3 min)** - Tests, type checking, code review
+
 - Delegates to TestEngineer for tests
 - Delegates to CodeReviewer for security check
 - Ensures production quality
 
 **6. Ship** - Production-ready code
+
 - Code matches your project exactly
 - No refactoring needed
 - Ready to commit and deploy
@@ -560,11 +591,13 @@ Approve? [y/n]
 ### 💡 Pro Tips
 
 **After finishing a feature:**
+
 - Run `/add-context --update` to add new patterns you discovered
 - Update your context with new libraries, conventions, or standards
 - Keep your patterns fresh as your project evolves
 
 **Working with external libraries?**
+
 - **ExternalScout** automatically fetches current documentation
 - No more outdated training data - gets live docs from official sources
 - Works with npm packages, APIs, frameworks, and more
@@ -578,6 +611,7 @@ Approve? [y/n]
 **By default, all agents use your OpenCode default model.** Configure models per agent only if you want different agents to use different models.
 
 **When to configure:**
+
 - You want faster agents to use cheaper models (e.g., Haiku/Flash)
 - You want complex agents to use smarter models (e.g., Opus/GPT-5)
 - You want to test different models for different tasks
@@ -585,16 +619,18 @@ Approve? [y/n]
 **How to configure:**
 
 Edit agent files directly:
+
 ```bash
 nano .opencode/agent/core/opencoder.md  # local project install
 # Or: nano ~/.config/opencode/agent/core/opencoder.md  # global install
 ```
 
 Change the model in the frontmatter:
+
 ```yaml
 ---
 description: "Development specialist"
-model: anthropic/claude-sonnet-4-5  # Change this line
+model: anthropic/claude-sonnet-4-5 # Change this line
 ---
 ```
 
@@ -609,11 +645,13 @@ Your project evolves. Your context should too.
 ```
 
 **What gets updated:**
+
 - Tech stack, patterns, standards
 - Version incremented (1.0 → 1.1)
 - Updated date refreshed
 
 **Example updates:**
+
 - Add new library (Stripe, Twilio, etc.)
 - Change patterns (new API format, component structure)
 - Migrate tech stack (Prisma → Drizzle)
@@ -623,11 +661,10 @@ Agents automatically use updated patterns.
 
 ---
 
-
-
 ## 🎯 Is This For You?
 
 ### ✅ Use OAC if you:
+
 - Build production code that ships without heavy rework
 - Work in a team with established coding standards
 - Want control over agent behavior (not black-box plugins)
@@ -637,6 +674,7 @@ Agents automatically use updated patterns.
 - Use multiple AI models (no vendor lock-in)
 
 ### ⚠️ Skip OAC if you:
+
 - Want fully autonomous execution without approval gates
 - Prefer "just do it" mode over human-guided workflows
 - Don't have established coding patterns yet
@@ -646,11 +684,13 @@ Agents automatically use updated patterns.
 ### 🤔 Not Sure?
 
 **Try this test:**
+
 1. Ask your current AI tool to generate an API endpoint
 2. Count how many minutes you spend refactoring it to match your patterns
 3. If you're spending time on refactoring, OAC will save you that time
 
 **Or ask yourself:**
+
 - Do you have coding standards your team follows?
 - Do you spend time refactoring AI-generated code?
 - Do you want AI to follow YOUR patterns, not generic ones?
@@ -662,16 +702,20 @@ If you answered "yes" to any of these, OAC is for you.
 ## 🚀 Advanced Features
 
 ### Frontend Design Workflow
+
 The **OpenFrontendSpecialist** follows a structured 4-stage design workflow:
+
 1. **Layout** - ASCII wireframe, responsive structure planning
 2. **Theme** - Design system selection, OKLCH colors, typography
 3. **Animation** - Micro-interactions, timing, accessibility
 4. **Implementation** - Single HTML file, semantic markup
 
 ### Task Management & Breakdown
+
 The **TaskManager** breaks complex features into atomic, verifiable subtasks with smart agent suggestions and parallel execution support.
 
 ### System Builder
+
 Build complete custom AI systems tailored to your domain in minutes. Interactive wizard generates orchestrators, subagents, context files, workflows, and commands.
 
 ---
@@ -757,6 +801,7 @@ A: Local (`.opencode/` in your project) is recommended — patterns are committe
 ### 🚀 See What's Coming Next
 
 Check out our [**Project Board**](https://github.com/darrenhinde/OpenAgentsControl/projects) to see:
+
 - 🔨 **In Progress** - Features being built right now
 - 📋 **Planned** - What's coming soon
 - 💡 **Ideas** - Future enhancements under consideration
@@ -773,7 +818,8 @@ Check out our [**Project Board**](https://github.com/darrenhinde/OpenAgentsContr
 
 ### 💬 Have Ideas?
 
-We'd love to hear from you! 
+We'd love to hear from you!
+
 - 💡 [**Submit Feature Requests**](https://github.com/darrenhinde/OpenAgentsControl/issues/new?labels=enhancement)
 - 🐛 [**Report Bugs**](https://github.com/darrenhinde/OpenAgentsControl/issues/new?labels=bug)
 - 💬 [**Join Discussions**](https://github.com/darrenhinde/OpenAgentsControl/discussions)
@@ -808,7 +854,7 @@ See: [Contributing Guide](docs/contributing/CONTRIBUTING.md) • [Code of Conduc
 
 **📺 Tutorials & Demos** • **💬 Join Waitlist** • **🐦 Latest Updates** • **☕ Support Development**
 
-*Your support helps keep this project free and open-source!*
+_Your support helps keep this project free and open-source!_
 
 </div>
 

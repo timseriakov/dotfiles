@@ -1,8 +1,8 @@
 <!-- Context: ui/scrollytelling-headphone | Priority: high | Version: 1.0 | Updated: 2026-02-15 -->
 
 ---
-description: "Full Next.js implementation of scroll-linked image sequence animation"
----
+
+## description: "Full Next.js implementation of scroll-linked image sequence animation"
 
 # Example: Scrollytelling Headphone Animation
 
@@ -45,7 +45,11 @@ public/
 @layer base {
   body {
     @apply bg-[#050505] text-white antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
   }
 }
 ```
@@ -55,14 +59,14 @@ public/
 ## 2. app/page.tsx
 
 ```tsx
-import HeadphoneScroll from './components/HeadphoneScroll'
+import HeadphoneScroll from "./components/HeadphoneScroll";
 
 export default function Home() {
   return (
     <main className="bg-[#050505]">
       <HeadphoneScroll />
     </main>
-  )
+  );
 }
 ```
 
@@ -71,96 +75,100 @@ export default function Home() {
 ## 3. components/HeadphoneScroll.tsx
 
 ```tsx
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-const FRAME_COUNT = 120
+const FRAME_COUNT = 120;
 
 export default function HeadphoneScroll() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [images, setImages] = useState<HTMLImageElement[]>([])
-  const [loading, setLoading] = useState(true)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Track scroll progress (0 to 1)
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end']
-  })
+    offset: ["start start", "end end"],
+  });
 
   // Map scroll progress to frame index
-  const frameIndex = useTransform(scrollYProgress, [0, 1], [0, FRAME_COUNT - 1])
-  const [currentFrame, setCurrentFrame] = useState(0)
+  const frameIndex = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, FRAME_COUNT - 1],
+  );
+  const [currentFrame, setCurrentFrame] = useState(0);
 
   // Update current frame
   useEffect(() => {
-    return frameIndex.on('change', (latest) => {
-      setCurrentFrame(Math.round(latest))
-    })
-  }, [frameIndex])
+    return frameIndex.on("change", (latest) => {
+      setCurrentFrame(Math.round(latest));
+    });
+  }, [frameIndex]);
 
   // Preload all images
   useEffect(() => {
     const loadImages = async () => {
       const promises = Array.from({ length: FRAME_COUNT }, (_, i) => {
         return new Promise<HTMLImageElement>((resolve) => {
-          const img = new Image()
-          const frameNum = String(i + 1).padStart(4, '0')
-          img.src = `/frames/frame_${frameNum}.webp`
-          img.onload = () => resolve(img)
-        })
-      })
+          const img = new Image();
+          const frameNum = String(i + 1).padStart(4, "0");
+          img.src = `/frames/frame_${frameNum}.webp`;
+          img.onload = () => resolve(img);
+        });
+      });
 
-      const loaded = await Promise.all(promises)
-      setImages(loaded)
-      setLoading(false)
-    }
+      const loaded = await Promise.all(promises);
+      setImages(loaded);
+      setLoading(false);
+    };
 
-    loadImages()
-  }, [])
+    loadImages();
+  }, []);
 
   // Render current frame to canvas
   useEffect(() => {
-    if (!canvasRef.current || !images.length) return
+    if (!canvasRef.current || !images.length) return;
 
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const img = images[currentFrame]
+    const img = images[currentFrame];
 
     // Set canvas size
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     // Clear and draw centered
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const scale = Math.min(
       canvas.width / img.width,
-      canvas.height / img.height
-    )
-    
-    const x = (canvas.width - img.width * scale) / 2
-    const y = (canvas.height - img.height * scale) / 2
-    
-    ctx.drawImage(img, x, y, img.width * scale, img.height * scale)
-  }, [currentFrame, images])
+      canvas.height / img.height,
+    );
+
+    const x = (canvas.width - img.width * scale) / 2;
+    const y = (canvas.height - img.height * scale) / 2;
+
+    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+  }, [currentFrame, images]);
 
   // Text overlay opacity transforms
-  const title = useTransform(scrollYProgress, [0, 0.1, 0.2], [1, 1, 0])
-  const text1 = useTransform(scrollYProgress, [0.25, 0.3, 0.4], [0, 1, 0])
-  const text2 = useTransform(scrollYProgress, [0.55, 0.6, 0.7], [0, 1, 0])
-  const cta = useTransform(scrollYProgress, [0.85, 0.9, 1], [0, 1, 1])
+  const title = useTransform(scrollYProgress, [0, 0.1, 0.2], [1, 1, 0]);
+  const text1 = useTransform(scrollYProgress, [0.25, 0.3, 0.4], [0, 1, 0]);
+  const text2 = useTransform(scrollYProgress, [0.55, 0.6, 0.7], [0, 1, 0]);
+  const cta = useTransform(scrollYProgress, [0.85, 0.9, 1], [0, 1, 1]);
 
   if (loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-[#050505]">
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-white" />
       </div>
-    )
+    );
   }
 
   return (
@@ -169,7 +177,7 @@ export default function HeadphoneScroll() {
       <canvas
         ref={canvasRef}
         className="sticky top-0 h-screen w-full"
-        style={{ willChange: 'transform' }}
+        style={{ willChange: "transform" }}
       />
 
       {/* Text Overlays */}
@@ -217,7 +225,7 @@ export default function HeadphoneScroll() {
         </div>
       </motion.div>
     </div>
-  )
+  );
 }
 ```
 

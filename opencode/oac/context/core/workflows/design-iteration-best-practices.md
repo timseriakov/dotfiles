@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-best-practices | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Design Iteration Best Practices
 
 ## Iteration Process
@@ -6,12 +7,14 @@
 ### When to Create Iterations
 
 **Create new iteration** (`{name}_1_1.html`) when:
+
 - User requests changes to existing design
 - Refining based on feedback
 - A/B testing variations
 - Progressive enhancement
 
 **Create new design** (`{name}_2.html`) when:
+
 - Complete redesign requested
 - Different approach/style
 - Alternative layout structure
@@ -55,12 +58,14 @@ design_iterations/
 ### Version Control
 
 **Track iterations**:
+
 - Initial: `design_1.html`
 - Iteration 1: `design_1_1.html`
 - Iteration 2: `design_1_2.html`
 - Iteration 3: `design_1_3.html`
 
 **New major version**:
+
 - Complete redesign: `design_2.html`
 - Then iterate: `design_2_1.html`, `design_2_2.html`
 
@@ -71,24 +76,28 @@ design_iterations/
 ### Stage Transitions
 
 **After Layout**:
+
 ```
 "Here's the proposed layout structure. The design uses a [description].
 Would you like to proceed with this layout, or should we make adjustments?"
 ```
 
 **After Theme**:
+
 ```
 "I've created a [style] theme with [key features]. The theme file is saved as theme_N.css.
 Does this match your vision, or would you like to adjust colors/typography?"
 ```
 
 **After Animation**:
+
 ```
 "Here's the animation plan using [timing/style]. All animations are optimized for performance.
 Are these animations appropriate, or should we adjust the timing/effects?"
 ```
 
 **After Implementation**:
+
 ```
 "I've created the complete design as {filename}.html. The design includes [key features].
 Please review and let me know if you'd like any changes or iterations."
@@ -97,6 +106,7 @@ Please review and let me know if you'd like any changes or iterations."
 ### Iteration Requests
 
 **User requests change**:
+
 ```
 "I'll update the design with [changes] and save it as {filename}_N.html.
 This preserves the previous version for reference."
@@ -109,12 +119,14 @@ This preserves the previous version for reference."
 Before presenting each stage:
 
 **Layout Stage**:
+
 - [ ] ASCII wireframe is clear and detailed
 - [ ] Components are well-organized
 - [ ] Responsive behavior is planned
 - [ ] User approval requested
 
 **Theme Stage**:
+
 - [ ] Theme file created and saved
 - [ ] Colors use OKLCH format
 - [ ] Fonts loaded from Google Fonts
@@ -122,6 +134,7 @@ Before presenting each stage:
 - [ ] User approval requested
 
 **Animation Stage**:
+
 - [ ] Animations documented in micro-syntax
 - [ ] Timing is appropriate (< 400ms)
 - [ ] Performance optimized (transform/opacity)
@@ -129,6 +142,7 @@ Before presenting each stage:
 - [ ] User approval requested
 
 **Implementation Stage**:
+
 - [ ] Single HTML file created
 - [ ] Theme CSS referenced
 - [ ] Tailwind loaded via script tag

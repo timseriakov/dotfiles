@@ -8,6 +8,7 @@
 ## What Are Agents?
 
 Agents are AI prompt files that define specialized behaviors for different tasks. They are:
+
 - **Markdown files** with frontmatter metadata
 - **Category-organized** by domain (core, development, content, etc.)
 - **Context-aware** - load relevant context files
@@ -55,9 +56,11 @@ dependencies: ["subagent:tester"]
 Agents are organized by domain expertise:
 
 ### Core Category (`core/`)
+
 **Purpose**: Essential system agents (always available)
 
 Agents:
+
 - `openagent.md` - General-purpose orchestrator
 - `opencoder.md` - Development specialist
 - `system-builder.md` - System generation
@@ -67,9 +70,11 @@ Agents:
 ---
 
 ### Development Category (`development/`)
+
 **Purpose**: Software development specialists
 
 Agents:
+
 - `frontend-specialist.md` - React, Vue, modern CSS
 - `devops-specialist.md` - CI/CD, deployment, infrastructure
 
@@ -78,9 +83,11 @@ Agents:
 ---
 
 ### Content Category (`content/`)
+
 **Purpose**: Content creation specialists
 
 Agents:
+
 - `copywriter.md` - Marketing copy, persuasive writing
 - `technical-writer.md` - Documentation, technical content
 
@@ -89,9 +96,11 @@ Agents:
 ---
 
 ### Data Category (`data/`)
+
 **Purpose**: Data analysis specialists
 
 Agents:
+
 - `data-analyst.md` - Data analysis, visualization
 
 **When to use**: Data tasks, analysis, reporting
@@ -99,6 +108,7 @@ Agents:
 ---
 
 ### Product Category (`product/`)
+
 **Purpose**: Product management specialists
 
 **Status**: Ready for agents (no agents yet)
@@ -108,6 +118,7 @@ Agents:
 ---
 
 ### Learning Category (`learning/`)
+
 **Purpose**: Education and coaching specialists
 
 **Status**: Ready for agents (no agents yet)
@@ -146,12 +157,12 @@ Agents:
 
 ### Subagents vs Category Agents
 
-| Aspect | Category Agents | Subagents |
-|--------|----------------|-----------|
-| **Purpose** | User-facing specialists | Delegated subtasks |
-| **Invocation** | Direct by user | Via task tool |
-| **Scope** | Broad domain | Narrow focus |
-| **Example** | `frontend-specialist` | `tester` |
+| Aspect         | Category Agents         | Subagents          |
+| -------------- | ----------------------- | ------------------ |
+| **Purpose**    | User-facing specialists | Delegated subtasks |
+| **Invocation** | Direct by user          | Via task tool      |
+| **Scope**      | Broad domain            | Narrow focus       |
+| **Example**    | `frontend-specialist`   | `tester`           |
 
 ---
 
@@ -253,6 +264,7 @@ Loads: `/Users/tim/.config/opencode/context/ui/web/react-patterns.md`
 ## Agent Lifecycle
 
 ### 1. Creation
+
 ```bash
 # Create agent file
 touch .opencode/agent/{category}/{agent-name}.md
@@ -262,6 +274,7 @@ touch .opencode/agent/{category}/{agent-name}.md
 ```
 
 ### 2. Testing
+
 ```bash
 # Create test structure
 mkdir -p evals/agents/{category}/{agent-name}/{config,tests}
@@ -271,6 +284,7 @@ cd evals/framework && npm run eval:sdk -- --agent={category}/{agent-name}
 ```
 
 ### 3. Registration
+
 ```bash
 # Auto-detect and add to registry
 ./scripts/registry/auto-detect-components.sh --auto-add
@@ -280,6 +294,7 @@ cd evals/framework && npm run eval:sdk -- --agent={category}/{agent-name}
 ```
 
 ### 4. Distribution
+
 ```bash
 # Users install via install.sh
 ./install.sh {profile}
@@ -295,7 +310,7 @@ cd evals/framework && npm run eval:sdk -- --agent={category}/{agent-name}
 ✅ **Clear instructions** - Explicit workflows and constraints  
 ✅ **Context-aware** - Load relevant context files  
 ✅ **Testable** - Include eval tests  
-✅ **Well-documented** - Clear description and usage  
+✅ **Well-documented** - Clear description and usage
 
 ### Naming Conventions
 
@@ -323,6 +338,7 @@ dependencies: ["Optional - e.g., 'subagent:tester'"]
 
 ```markdown
 When task requires testing:
+
 1. Implement feature
 2. Delegate to TestEngineer for test creation
 ```
@@ -331,6 +347,7 @@ When task requires testing:
 
 ```markdown
 Before implementing:
+
 1. Load core/standards/code-quality.md
 2. Load category-specific context if available
 3. Apply standards to implementation
@@ -340,6 +357,7 @@ Before implementing:
 
 ```markdown
 Before execution:
+
 1. Present plan to user
 2. Request approval
 3. Execute incrementally

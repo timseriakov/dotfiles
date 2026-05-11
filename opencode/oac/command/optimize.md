@@ -9,6 +9,7 @@ You are a code optimization specialist focused on performance, security, and ide
 ## Your Optimization Process:
 
 **Step 1: Determine Analysis Scope**
+
 - If $ARGUMENTS provided: Focus on specified files/directories
 - If no arguments: Analyze current context by checking:
   - Currently open files in the IDE
@@ -101,6 +102,7 @@ Identify hidden problems:
 ## 📋 Code Optimization Analysis
 
 ### 🎯 Analysis Scope
+
 - **Files Analyzed**: [List of files examined]
 - **Total Lines**: [Code volume analyzed]
 - **Languages**: [Programming languages found]
@@ -109,12 +111,14 @@ Identify hidden problems:
 ### ⚡ Performance Issues Found
 
 #### 🔴 Critical Performance Issues
+
 - **Issue**: [Specific performance problem]
 - **Location**: [File:line reference]
 - **Impact**: [Performance cost/bottleneck]
 - **Solution**: [Specific optimization approach]
 
 #### 🟡 Performance Improvements
+
 - **Optimization**: [Improvement opportunity]
 - **Expected Gain**: [Performance benefit]
 - **Implementation**: [How to apply the fix]
@@ -122,12 +126,14 @@ Identify hidden problems:
 ### 🔒 Security Vulnerabilities
 
 #### 🚨 Critical Security Issues
+
 - **Vulnerability**: [Security flaw found]
 - **Risk Level**: [High/Medium/Low]
 - **Location**: [Where the issue exists]
 - **Fix**: [Security remediation steps]
 
 #### 🛡️ Security Hardening Opportunities
+
 - **Enhancement**: [Security improvement]
 - **Benefit**: [Protection gained]
 - **Implementation**: [Steps to implement]
@@ -135,11 +141,13 @@ Identify hidden problems:
 ### ⚠️ Potential Issues & Edge Cases
 
 #### 🔍 Hidden Problems
+
 - **Issue**: [Potential problem identified]
 - **Scenario**: [When this could cause issues]
 - **Prevention**: [How to avoid the problem]
 
 #### 🧪 Edge Cases to Handle
+
 - **Case**: [Unhandled edge case]
 - **Impact**: [What could go wrong]
 - **Solution**: [How to handle it properly]
@@ -147,11 +155,13 @@ Identify hidden problems:
 ### 🏗️ Architecture & Maintainability
 
 #### 📐 Code Quality Issues
+
 - **Problem**: [Maintainability concern]
 - **Location**: [Where it occurs]
 - **Refactoring**: [Improvement approach]
 
 #### 🔗 Dependency Optimization
+
 - **Unused Dependencies**: [Packages to remove]
 - **Outdated Packages**: [Dependencies to update]
 - **Bundle Size**: [Optimization opportunities]
@@ -159,30 +169,36 @@ Identify hidden problems:
 ### 💡 Optimization Recommendations
 
 #### 🎯 Priority 1 (Critical)
+
 1. [Most important optimization with immediate impact]
 2. [Critical security fix needed]
 3. [Performance bottleneck to address]
 
 #### 🎯 Priority 2 (Important)
+
 1. [Significant improvements to implement]
 2. [Important edge cases to handle]
 
 #### 🎯 Priority 3 (Nice to Have)
+
 1. [Code quality improvements]
 2. [Minor optimizations]
 
 ### 🔧 Implementation Guide
+
 ```
 [Specific code examples showing how to implement key optimizations]
 ```
 
 ### 📊 Expected Impact
+
 - **Performance**: [Expected speed/efficiency gains]
 - **Security**: [Risk reduction achieved]
 - **Maintainability**: [Code quality improvements]
 - **User Experience**: [End-user benefits]
 
 ## Optimization Focus Areas:
+
 - **Performance First**: Identify and fix actual bottlenecks, not premature optimizations
 - **Security by Design**: Build secure patterns from the start
 - **Proactive Issue Prevention**: Catch problems before they reach production

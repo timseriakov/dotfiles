@@ -24,7 +24,7 @@ mkdir -p .opencode/skills/task-management/scripts
 
 ## SKILL.md
 
-```markdown
+````markdown
 ---
 name: task-management
 description: Task management CLI for tracking feature subtasks
@@ -54,7 +54,9 @@ npx ts-node .opencode/skills/task-management/scripts/task-cli.ts next
 # Mark complete
 npx ts-node .opencode/skills/task-management/scripts/task-cli.ts complete <feature> <seq> "summary"
 ```
-```
+````
+
+````
 
 ---
 
@@ -81,7 +83,7 @@ case "$1" in
         bash "$0" help
         ;;
 esac
-```
+````
 
 ---
 
@@ -91,43 +93,43 @@ esac
 #!/usr/bin/env ts-node
 
 interface Task {
-  id: string
-  status: 'pending' | 'in_progress' | 'completed'
-  title: string
+  id: string;
+  status: "pending" | "in_progress" | "completed";
+  title: string;
 }
 
 async function main() {
-  const command = process.argv[2] || 'help'
-  
+  const command = process.argv[2] || "help";
+
   switch (command) {
-    case 'status':
-      await showStatus()
-      break
-    case 'next':
-      await showNext()
-      break
-    case 'complete':
-      const [, , , feature, seq, summary] = process.argv
-      await markComplete(feature, seq, summary)
-      break
+    case "status":
+      await showStatus();
+      break;
+    case "next":
+      await showNext();
+      break;
+    case "complete":
+      const [, , , feature, seq, summary] = process.argv;
+      await markComplete(feature, seq, summary);
+      break;
     default:
-      showHelp()
+      showHelp();
   }
 }
 
 async function showStatus() {
   // Implementation
-  console.log('Task status...')
+  console.log("Task status...");
 }
 
 async function showNext() {
   // Implementation
-  console.log('Next tasks...')
+  console.log("Next tasks...");
 }
 
 async function markComplete(feature: string, seq: string, summary: string) {
   // Implementation
-  console.log(`Completing ${feature} ${seq}: ${summary}`)
+  console.log(`Completing ${feature} ${seq}: ${summary}`);
 }
 
 function showHelp() {
@@ -140,10 +142,10 @@ Commands:
   blocked             Show blocked tasks
   complete <f> <s>    Mark task complete
   validate            Validate task integrity
-`)
+`);
 }
 
-main().catch(console.error)
+main().catch(console.error);
 ```
 
 ---
@@ -151,11 +153,13 @@ main().catch(console.error)
 ## Integration with Agents
 
 Skills integrate with agents via:
+
 - Event hooks (`tool.execute.before`, `tool.execute.after`)
 - Skill content injection into conversation
 - Output enhancement
 
 Example agent prompt invoking skill:
+
 ```
 Use the task-management skill to show current task status
 ```

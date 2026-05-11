@@ -1,4 +1,5 @@
 <!-- Context: workflows/external-context-integration | Priority: high | Version: 1.0 | Updated: 2026-01-28 -->
+
 # External Context Integration Guide
 
 ## Overview
@@ -19,6 +20,7 @@ Use ExternalScout to fetch external context when:
 4. **API patterns or best practices** from external libraries are relevant
 
 **Don't use** when:
+
 - Question is about internal project code
 - Answer is in `/Users/tim/.config/opencode/context/` (use ContextScout instead)
 - User is asking for general programming concepts
@@ -145,7 +147,7 @@ task(
           - Drizzle ORM: modular schema organization
           - Better Auth: Next.js integration
           - Next.js: App Router setup
-          
+
           Persist fetched docs to .tmp/external-context/
           Return file paths for each fetched document"
 )
@@ -165,16 +167,19 @@ task(
 **Task**: Set up Drizzle + Better Auth in Next.js
 
 **External Libraries Involved**:
+
 - Drizzle ORM (database)
 - Better Auth (authentication)
 - Next.js (framework)
 
 **External Context Discovered**:
+
 - `.tmp/external-context/drizzle-orm/modular-schemas.md`
 - `.tmp/external-context/better-auth/nextjs-integration.md`
 - `.tmp/external-context/next.js/app-router-setup.md`
 
 **Approach**:
+
 1. Set up Drizzle schema with modular organization
 2. Configure Better Auth with Drizzle adapter
 3. Integrate with Next.js App Router
@@ -194,45 +199,55 @@ Created: 2026-01-28T14:30:22Z
 Status: in_progress
 
 ## Current Request
+
 Set up Drizzle ORM with Better Auth in a Next.js application
 
 ## Context Files (Standards to Follow)
+
 - /Users/tim/.config/opencode/context/core/standards/code-quality.md
 - /Users/tim/.config/opencode/context/core/standards/test-coverage.md
 
 ## Reference Files (Source Material)
+
 - package.json
 - src/db/schema.ts (existing)
 - src/auth/config.ts (existing)
 
 ## External Context Fetched
+
 These are live documentation files fetched from external libraries. Subagents should reference these instead of re-fetching.
 
 ### Drizzle ORM
+
 - `.tmp/external-context/drizzle-orm/modular-schemas.md` — Schema organization patterns for modular architecture
 - `.tmp/external-context/drizzle-orm/postgresql-setup.md` — PostgreSQL configuration and setup
 
 ### Better Auth
+
 - `.tmp/external-context/better-auth/nextjs-integration.md` — Integration guide for Next.js App Router
 - `.tmp/external-context/better-auth/drizzle-adapter.md` — Drizzle adapter setup and configuration
 
 ### Next.js
+
 - `.tmp/external-context/next.js/app-router-setup.md` — App Router basics and configuration
 - `.tmp/external-context/next.js/server-actions.md` — Server Actions patterns for mutations
 
 **Important**: These files are read-only and cached for reference. Do not modify them.
 
 ## Components
+
 - Drizzle schema setup with modular organization
 - Better Auth configuration with Drizzle adapter
 - Next.js App Router integration
 
 ## Constraints
+
 - TypeScript strict mode
 - Must support PostgreSQL
 - Backward compatible with existing auth system
 
 ## Exit Criteria
+
 - [ ] Drizzle schema set up with modular organization
 - [ ] Better Auth configured with Drizzle adapter
 - [ ] Next.js App Router integration complete
@@ -240,6 +255,7 @@ These are live documentation files fetched from external libraries. Subagents sh
 - [ ] Documentation updated
 
 ## Progress
+
 - [ ] Session initialized
 - [ ] Tasks created
 - [ ] Implementation complete
@@ -256,18 +272,18 @@ task(
   prompt="Load context from .tmp/sessions/2026-01-28-drizzle-auth/context.md
 
           Read the context file for full requirements, standards, and external documentation.
-          
+
           Break down this feature into atomic subtasks:
           1. Drizzle schema setup with modular organization
           2. Better Auth configuration with Drizzle adapter
           3. Next.js App Router integration
           4. Test suite
-          
+
           For each subtask, include:
           - context_files: Standards from context.md
           - reference_files: Project files to understand
           - external_context: External docs to reference
-          
+
           Create subtask files in tasks/subtasks/drizzle-auth-integration/"
 )
 ```
@@ -285,10 +301,7 @@ TaskManager creates subtask JSONs like:
     "/Users/tim/.config/opencode/context/core/standards/code-quality.md",
     "/Users/tim/.config/opencode/context/core/standards/test-coverage.md"
   ],
-  "reference_files": [
-    "package.json",
-    "src/db/schema.ts"
-  ],
+  "reference_files": ["package.json", "src/db/schema.ts"],
   "external_context": [
     ".tmp/external-context/drizzle-orm/modular-schemas.md",
     ".tmp/external-context/drizzle-orm/postgresql-setup.md"
@@ -320,6 +333,7 @@ CoderAgent reads subtask JSON and:
 ### For Main Agents
 
 ✅ **DO**:
+
 - Call ExternalScout early in planning phase
 - Capture returned file paths
 - Add to session context under "## External Context Fetched"
@@ -327,6 +341,7 @@ CoderAgent reads subtask JSON and:
 - Include external context in proposal to user
 
 ❌ **DON'T**:
+
 - Forget to call ExternalScout when external libraries involved
 - Skip adding external context to session
 - Re-fetch external docs (trust ExternalScout persistence)
@@ -335,6 +350,7 @@ CoderAgent reads subtask JSON and:
 ### For ExternalScout
 
 ✅ **DO**:
+
 - Always persist fetched docs to `.tmp/external-context/`
 - Update `.manifest.json` after each fetch
 - Include metadata header in every file
@@ -342,6 +358,7 @@ CoderAgent reads subtask JSON and:
 - Cite sources and include official docs links
 
 ❌ **DON'T**:
+
 - Forget to persist files
 - Skip manifest updates
 - Return entire documentation
@@ -351,12 +368,14 @@ CoderAgent reads subtask JSON and:
 ### For TaskManager
 
 ✅ **DO**:
+
 - Extract external_context from session context
 - Include in subtask JSONs
 - Pass to downstream agents
 - Document which external docs informed decisions
 
 ❌ **DON'T**:
+
 - Forget to include external_context in subtasks
 - Mix external_context with context_files
 - Assume subagents will re-fetch
@@ -364,12 +383,14 @@ CoderAgent reads subtask JSON and:
 ### For Subagents (CoderAgent, TestEngineer, etc.)
 
 ✅ **DO**:
+
 - Read external_context files from subtask JSON
 - Use external docs to inform implementation
 - Reference external docs in comments
 - Follow patterns from external docs
 
 ❌ **DON'T**:
+
 - Re-fetch external documentation
 - Ignore external context files
 - Modify external context files
@@ -380,6 +401,7 @@ CoderAgent reads subtask JSON and:
 ## Example: Complete Flow
 
 ### User Request
+
 ```
 "Set up Drizzle ORM with Better Auth in Next.js, using modular schema organization"
 ```
@@ -429,6 +451,7 @@ CoderAgent reads subtask JSON and:
 **Problem**: Subagent can't find `.tmp/external-context/{package}/{topic}.md`
 
 **Solution**:
+
 1. Check ExternalScout ran successfully
 2. Verify file path in session context matches actual location
 3. Check `.manifest.json` to see what's cached
@@ -439,6 +462,7 @@ CoderAgent reads subtask JSON and:
 **Problem**: External docs are outdated
 
 **Solution**:
+
 1. Delete stale files: `scripts/external-context/manage-external-context.sh delete-package {package}`
 2. Re-run ExternalScout to fetch fresh docs
 3. Update session context with new file paths
@@ -448,6 +472,7 @@ CoderAgent reads subtask JSON and:
 **Problem**: `.manifest.json` doesn't match actual files
 
 **Solution**:
+
 1. Regenerate manifest: `scripts/external-context/manage-external-context.sh regenerate-manifest`
 2. Verify all files have metadata headers
 

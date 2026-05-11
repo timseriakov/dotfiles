@@ -12,6 +12,7 @@
 ## Overview
 
 Adding an OpenCode skill involves:
+
 1. Creating skill directory structure
 2. Creating SKILL.md file
 3. Creating router script (optional)
@@ -38,6 +39,7 @@ mkdir -p .opencode/skills/{skill-name}/scripts
 ```
 
 **Standard structure**:
+
 ```
 .opencode/skills/{skill-name}/
 ├── SKILL.md              # Required: Main skill documentation
@@ -52,9 +54,9 @@ mkdir -p .opencode/skills/{skill-name}/scripts
 
 ### Frontmatter
 
-```markdown
+````markdown
 ---
-name: {skill-name}
+name: { skill-name }
 description: Brief description of what the skill provides
 ---
 
@@ -75,14 +77,16 @@ description: Brief description of what the skill provides
 ```bash
 npx ts-node .opencode/skills/{skill-name}/scripts/skill-cli.ts command1
 ```
+````
 
 ### Command Reference
 
-| Command | Description |
-|---------|-------------|
+| Command    | Description        |
+| ---------- | ------------------ |
 | `command1` | What command1 does |
 | `command2` | What command2 does |
-```
+
+````
 
 ### Claude Code Skills (Optional)
 
@@ -125,7 +129,7 @@ case "$COMMAND" in
         exit 1
         ;;
 esac
-```
+````
 
 ```bash
 chmod +x .opencode/skills/{skill-name}/router.sh

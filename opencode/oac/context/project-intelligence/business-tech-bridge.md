@@ -12,22 +12,24 @@
 
 ## Core Mapping
 
-| Business Need | Technical Solution | Why This Mapping | Business Value |
-|---------------|-------------------|------------------|----------------|
-| [Users need X] | [Technical implementation] | [Why this maps] | [Value delivered] |
-| [Business wants Y] | [Technical implementation] | [Why this maps] | [Value delivered] |
-| [Compliance requires Z] | [Technical implementation] | [Why this maps] | [Value delivered] |
+| Business Need           | Technical Solution         | Why This Mapping | Business Value    |
+| ----------------------- | -------------------------- | ---------------- | ----------------- |
+| [Users need X]          | [Technical implementation] | [Why this maps]  | [Value delivered] |
+| [Business wants Y]      | [Technical implementation] | [Why this maps]  | [Value delivered] |
+| [Compliance requires Z] | [Technical implementation] | [Why this maps]  | [Value delivered] |
 
 ## Feature Mapping Examples
 
 ### Feature: [Feature Name]
 
 **Business Context**:
+
 - User need: [What users need]
 - Business goal: [Why this matters to business]
 - Priority: [Why this was prioritized]
 
 **Technical Implementation**:
+
 - Solution: [What was built]
 - Architecture: [How it fits the system]
 - Trade-offs: [What was considered and why it won]
@@ -38,11 +40,13 @@
 ### Feature: [Feature Name]
 
 **Business Context**:
+
 - User need: [What users need]
 - Business goal: [Why this matters to business]
 - Priority: [Why this was prioritized]
 
 **Technical Implementation**:
+
 - Solution: [What was built]
 - Architecture: [How it fits the system]
 - Trade-offs: [What was considered and why it won]
@@ -54,26 +58,28 @@
 
 When business and technical needs conflict, document the trade-off:
 
-| Situation | Business Priority | Technical Priority | Decision Made | Rationale |
-|-----------|-------------------|-------------------|---------------|-----------|
-| [Conflict] | [What business wants] | [What tech wants] | [What was chosen] | [Why this was right] |
+| Situation  | Business Priority     | Technical Priority | Decision Made     | Rationale            |
+| ---------- | --------------------- | ------------------ | ----------------- | -------------------- |
+| [Conflict] | [What business wants] | [What tech wants]  | [What was chosen] | [Why this was right] |
 
 ## Common Misalignments
 
-| Misalignment | Warning Signs | Resolution Approach |
-|--------------|---------------|---------------------|
-| [Type of mismatch] | [Symptoms to watch for] | [How to address] |
+| Misalignment       | Warning Signs           | Resolution Approach |
+| ------------------ | ----------------------- | ------------------- |
+| [Type of mismatch] | [Symptoms to watch for] | [How to address]    |
 
 ## Stakeholder Communication
 
 This file helps translate between worlds:
 
 **For Business Stakeholders**:
+
 - Shows that technical investments serve business goals
 - Provides context for why certain choices were made
 - Demonstrates ROI of technical decisions
 
 **For Technical Stakeholders**:
+
 - Provides business context for architectural decisions
 - Shows the "why" behind constraints and requirements
 - Helps prioritize technical debt with business impact

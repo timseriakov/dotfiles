@@ -143,15 +143,20 @@ Brief description (1-2 sentences).
 ### 1. Critical Rules Early (Lines 50-80)
 
 **Before** (buried at line 596):
+
 ```markdown
 ## Important Guidelines
+
 ...
 (400 lines later)
+
 ### Tool Usage
+
 - Use glob, read, grep, list
 ```
 
 **After** (at line 50):
+
 ```xml
 <critical_rules priority="absolute" enforcement="strict">
   <rule id="tool_usage">
@@ -190,6 +195,7 @@ Brief description (1-2 sentences).
 ### 3. Flattened Nesting (≤4 Levels)
 
 **Before** (6-7 levels):
+
 ```xml
 <instructions>
   <workflow>
@@ -207,6 +213,7 @@ Brief description (1-2 sentences).
 ```
 
 **After** (3-4 levels):
+
 ```xml
 <workflow>
   <stage id="1" name="Discovery">
@@ -236,15 +243,15 @@ Brief description (1-2 sentences).
 
 ## File Size Targets
 
-| Section | Target Lines | Purpose |
-|---------|--------------|---------|
-| Frontmatter | 30-50 | Agent metadata |
-| Critical Rules | 20-30 | Tool usage, core rules |
-| Context/Role/Task | 20-30 | Agent identity |
-| Execution Priority | 20-30 | Priority system |
-| Workflow | 80-120 | Main instructions |
-| Guidelines | 40-60 | Best practices |
-| **Total** | **<400 lines** | MVI compliant |
+| Section            | Target Lines   | Purpose                |
+| ------------------ | -------------- | ---------------------- |
+| Frontmatter        | 30-50          | Agent metadata         |
+| Critical Rules     | 20-30          | Tool usage, core rules |
+| Context/Role/Task  | 20-30          | Agent identity         |
+| Execution Priority | 20-30          | Priority system        |
+| Workflow           | 80-120         | Main instructions      |
+| Guidelines         | 40-60          | Best practices         |
+| **Total**          | **<400 lines** | MVI compliant          |
 
 ---
 
@@ -265,11 +272,13 @@ Before deploying optimized prompt:
 ## Real Example
 
 **ContextScout Optimization**:
+
 - **Before**: 750 lines, critical rules at line 596
 - **After**: 394 lines (47.5% reduction), critical rules at line 50
 - **Result**: Test passed (was failing with 0 tool calls)
 
 **Files**:
+
 - Optimized: `.opencode/agent/subagents/core/contextscout.md`
 - Backup: (example: `.opencode/agent/ContextScout-original-backup.md`)
 

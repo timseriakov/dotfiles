@@ -9,10 +9,12 @@
 **AAA Pattern**: Arrange → Act → Assert
 
 **Test** (✅ DO):
+
 - Happy path, edge cases, error cases
 - Business logic, public APIs
 
 **Don't Test** (❌ DON'T):
+
 - Third-party libraries, framework internals
 - Simple getters/setters, private details
 
@@ -30,13 +32,13 @@
 ## Test Structure (AAA Pattern)
 
 ```javascript
-test('calculateTotal returns sum of item prices', () => {
+test("calculateTotal returns sum of item prices", () => {
   // Arrange - Set up test data
   const items = [{ price: 10 }, { price: 20 }, { price: 30 }];
-  
+
   // Act - Execute code
   const result = calculateTotal(items);
-  
+
   // Assert - Verify result
   expect(result).toBe(60);
 });
@@ -45,6 +47,7 @@ test('calculateTotal returns sum of item prices', () => {
 ## What to Test
 
 ### ✅ DO Test
+
 - Happy path (normal usage)
 - Edge cases (boundaries, empty, null, undefined)
 - Error cases (invalid input, failures)
@@ -52,6 +55,7 @@ test('calculateTotal returns sum of item prices', () => {
 - Public APIs (exported functions)
 
 ### ❌ DON'T Test
+
 - Third-party libraries
 - Framework internals
 - Simple getters/setters
@@ -67,9 +71,11 @@ test('calculateTotal returns sum of item prices', () => {
 ## Testing Pure Functions
 
 ```javascript
-function add(a, b) { return a + b; }
+function add(a, b) {
+  return a + b;
+}
 
-test('add returns sum', () => {
+test("add returns sum", () => {
   expect(add(2, 3)).toBe(5);
   expect(add(-1, 1)).toBe(0);
   expect(add(0, 0)).toBe(0);
@@ -82,21 +88,21 @@ test('add returns sum', () => {
 // Testable with dependency injection
 function createUserService(database) {
   return {
-    getUser: (id) => database.findById('users', id)
+    getUser: (id) => database.findById("users", id),
   };
 }
 
 // Test with mock
-test('getUser retrieves from database', () => {
+test("getUser retrieves from database", () => {
   const mockDb = {
-    findById: jest.fn().mockReturnValue({ id: 1, name: 'John' })
+    findById: jest.fn().mockReturnValue({ id: 1, name: "John" }),
   };
-  
+
   const service = createUserService(mockDb);
   const user = service.getUser(1);
-  
-  expect(mockDb.findById).toHaveBeenCalledWith('users', 1);
-  expect(user).toEqual({ id: 1, name: 'John' });
+
+  expect(mockDb.findById).toHaveBeenCalledWith("users", 1);
+  expect(user).toEqual({ id: 1, name: "John" });
 });
 ```
 
@@ -104,13 +110,13 @@ test('getUser retrieves from database', () => {
 
 ```javascript
 // ✅ Good: Descriptive, clear expectation
-test('calculateDiscount returns 10% off for premium users', () => {});
-test('validateEmail returns false for invalid format', () => {});
-test('createUser throws error when email exists', () => {});
+test("calculateDiscount returns 10% off for premium users", () => {});
+test("validateEmail returns false for invalid format", () => {});
+test("createUser throws error when email exists", () => {});
 
 // ❌ Bad: Vague, unclear
-test('it works', () => {});
-test('test user', () => {});
+test("it works", () => {});
+test("test user", () => {});
 ```
 
 ## Best Practices

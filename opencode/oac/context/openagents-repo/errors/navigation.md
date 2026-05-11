@@ -18,11 +18,11 @@ openagents-repo/errors/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View errors** | `./` |
-| **Guides** | `../guides/navigation.md` |
-| **Quality** | `../quality/navigation.md` |
+| Task            | Path                       |
+| --------------- | -------------------------- |
+| **View errors** | `./`                       |
+| **Guides**      | `../guides/navigation.md`  |
+| **Quality**     | `../quality/navigation.md` |
 
 ---
 

@@ -27,12 +27,12 @@ Visual Design (ui/web/):
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **React patterns** | `frontend/react/react-patterns.md` |
-| **Animations** | `../../ui/web/animation-patterns.md` |
-| **Styling** | `../../ui/web/ui-styling-standards.md` |
-| **Design systems** | `../../ui/web/design-systems.md` |
+| Task               | Path                                   |
+| ------------------ | -------------------------------------- |
+| **React patterns** | `frontend/react/react-patterns.md`     |
+| **Animations**     | `../../ui/web/animation-patterns.md`   |
+| **Styling**        | `../../ui/web/ui-styling-standards.md` |
+| **Design systems** | `../../ui/web/design-systems.md`       |
 
 ---
 

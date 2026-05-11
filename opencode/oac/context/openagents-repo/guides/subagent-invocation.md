@@ -12,6 +12,7 @@
 **Issue**: Agents trying to invoke subagents with incorrect `subagent_type` format
 
 **Error**:
+
 ```
 Unknown agent type: ContextScout is not a valid agent type
 ```
@@ -27,17 +28,20 @@ Unknown agent type: ContextScout is not a valid agent type
 Based on the OpenCode CLI registration, use these exact strings for `subagent_type`:
 
 **Core Subagents**:
+
 - `"Task Manager"` - Task breakdown and planning
 - `"Documentation"` - Documentation generation
 - `"ContextScout"` - Context file discovery
 
 **Code Subagents**:
+
 - `"Coder Agent"` - Code implementation
 - `"TestEngineer"` - Test authoring
 - `"Reviewer"` - Code review
 - `"Build Agent"` - Build validation
 
 **System Builder Subagents**:
+
 - `"Domain Analyzer"` - Domain analysis
 - `"Agent Generator"` - Agent generation
 - `"Context Organizer"` - Context organization
@@ -45,6 +49,7 @@ Based on the OpenCode CLI registration, use these exact strings for `subagent_ty
 - `"Command Creator"` - Command creation
 
 **Utility Subagents**:
+
 - `"Image Specialist"` - Image generation/editing
 
 ---
@@ -55,10 +60,10 @@ Based on the OpenCode CLI registration, use these exact strings for `subagent_ty
 
 ```javascript
 task(
-  subagent_type="Task Manager",
-  description="Break down feature into subtasks",
-  prompt="Detailed instructions..."
-)
+  (subagent_type = "Task Manager"),
+  (description = "Break down feature into subtasks"),
+  (prompt = "Detailed instructions..."),
+);
 ```
 
 ### ❌ Incorrect Formats
@@ -95,6 +100,7 @@ cat registry.json | jq -r '.components.subagents[] | "\(.name)"'
 ```
 
 **Output**:
+
 ```
 Task Manager
 Image Specialist
@@ -125,7 +131,7 @@ Look at the `name` field in the subagent's frontmatter:
 ```yaml
 ---
 id: task-manager
-name: Task Manager  # ← Use this for subagent_type
+name: Task Manager # ← Use this for subagent_type
 type: subagent
 ---
 ```
@@ -141,13 +147,13 @@ task(
   subagent_type="Task Manager",
   description="Break down complex feature",
   prompt="Break down the following feature into atomic subtasks:
-          
+
           Feature: {feature description}
-          
+
           Requirements:
           - {requirement 1}
           - {requirement 2}
-          
+
           Create subtask files in tasks/subtasks/{feature}/"
 )
 ```
@@ -159,11 +165,11 @@ task(
   subagent_type="Documentation",
   description="Update documentation for feature",
   prompt="Update documentation for {feature}:
-          
+
           What changed:
           - {change 1}
           - {change 2}
-          
+
           Files to update:
           - {doc 1}
           - {doc 2}"
@@ -177,11 +183,11 @@ task(
   subagent_type="TestEngineer",
   description="Write tests for feature",
   prompt="Write comprehensive tests for {feature}:
-          
+
           Files to test:
           - {file 1}
           - {file 2}
-          
+
           Test coverage:
           - Positive cases
           - Negative cases
@@ -196,11 +202,11 @@ task(
   subagent_type="Reviewer",
   description="Review implementation",
   prompt="Review the following implementation:
-          
+
           Files:
           - {file 1}
           - {file 2}
-          
+
           Focus areas:
           - Security
           - Performance
@@ -215,12 +221,12 @@ task(
   subagent_type="Coder Agent",
   description="Implement subtask",
   prompt="Implement the following subtask:
-          
+
           Subtask: {subtask description}
-          
+
           Files to create/modify:
           - {file 1}
-          
+
           Requirements:
           - {requirement 1}
           - {requirement 2}"
@@ -242,20 +248,23 @@ Until ContextScout is properly registered, use direct file operations instead:
 ```javascript
 // ❌ This may fail
 task(
-  subagent_type="ContextScout",
-  description="Find context files",
-  prompt="Search for context related to {topic}"
-)
+  (subagent_type = "ContextScout"),
+  (description = "Find context files"),
+  (prompt = "Search for context related to {topic}"),
+);
 
 // ✅ Use direct operations instead
 // 1. Use glob to find context files
-glob(pattern="**/*.md", path="/Users/tim/.config/opencode/context")
+glob((pattern = "**/*.md"), (path = "/Users/tim/.config/opencode/context"));
 
 // 2. Use grep to search content
-grep(pattern="registry", path="/Users/tim/.config/opencode/context")
+grep((pattern = "registry"), (path = "/Users/tim/.config/opencode/context"));
 
 // 3. Read relevant files directly
-read(filePath="/Users/tim/.config/opencode/context/openagents-repo/core-concepts/registry.md")
+read(
+  (filePath =
+    "/Users/tim/.config/opencode/context/openagents-repo/core-concepts/registry.md"),
+);
 ```
 
 ---
@@ -270,11 +279,13 @@ read(filePath="/Users/tim/.config/opencode/context/openagents-repo/core-concepts
 ### Fix Process
 
 1. **Find incorrect invocations**:
+
    ```bash
    grep -r 'subagent_type="subagents/' .opencode/agent --include="*.md"
    ```
 
 2. **Replace with correct format**:
+
    ```bash
    # Example: Fix task-manager invocation
    # Old: subagent_type="TaskManager"
@@ -321,11 +332,11 @@ if subagent_type not in available_types:
 ✅ **Use exact names** - Match registry `name` field exactly  
 ✅ **Check registry first** - Verify subagent exists before using  
 ✅ **Test invocations** - Test delegation before committing  
-✅ **Document dependencies** - List required subagents in agent frontmatter  
+✅ **Document dependencies** - List required subagents in agent frontmatter
 
 ❌ **Don't use paths** - Never use file paths as subagent_type  
 ❌ **Don't use IDs** - Don't use kebab-case IDs  
-❌ **Don't assume** - Always verify subagent is registered  
+❌ **Don't assume** - Always verify subagent is registered
 
 ---
 
@@ -336,6 +347,7 @@ if subagent_type not in available_types:
 **Cause**: Subagent type not registered in CLI or incorrect format
 
 **Solutions**:
+
 1. Check registry for correct name
 2. Verify subagent exists in `.opencode/agent/subagents/`
 3. Use exact name from registry `name` field
@@ -346,6 +358,7 @@ if subagent_type not in available_types:
 **Cause**: Subagent file doesn't exist
 
 **Solutions**:
+
 1. Check file exists at expected path
 2. Verify registry entry is correct
 3. Run `./scripts/registry/validate-registry.sh`
@@ -355,6 +368,7 @@ if subagent_type not in available_types:
 **Cause**: Subagent invoked but doesn't execute
 
 **Solutions**:
+
 1. Check subagent has required tools enabled
 2. Verify subagent permissions allow operation
 3. Check subagent prompt is clear and actionable

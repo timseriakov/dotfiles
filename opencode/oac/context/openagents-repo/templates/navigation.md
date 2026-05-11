@@ -18,11 +18,11 @@ openagents-repo/templates/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View templates** | `./` |
-| **Blueprints** | `../blueprints/navigation.md` |
-| **Guides** | `../guides/navigation.md` |
+| Task               | Path                          |
+| ------------------ | ----------------------------- |
+| **View templates** | `./`                          |
+| **Blueprints**     | `../blueprints/navigation.md` |
+| **Guides**         | `../guides/navigation.md`     |
 
 ---
 

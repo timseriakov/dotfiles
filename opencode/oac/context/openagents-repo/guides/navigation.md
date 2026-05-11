@@ -18,14 +18,14 @@ openagents-repo/guides/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **Adding agents (basics)** | `./adding-agent-basics.md` |
-| **Adding agents (tests)** | `./adding-agent-testing.md` |
-| **Adding OpenCode skills** | `./adding-skill-basics.md` |
-| **Creating Claude Code skills** | `./creating-skills.md` |
-| **Creating Claude Code subagents** | `./creating-subagents.md` |
-| **Testing subagents** | `./testing-subagents.md` |
+| Task                               | Path                        |
+| ---------------------------------- | --------------------------- |
+| **Adding agents (basics)**         | `./adding-agent-basics.md`  |
+| **Adding agents (tests)**          | `./adding-agent-testing.md` |
+| **Adding OpenCode skills**         | `./adding-skill-basics.md`  |
+| **Creating Claude Code skills**    | `./creating-skills.md`      |
+| **Creating Claude Code subagents** | `./creating-subagents.md`   |
+| **Testing subagents**              | `./testing-subagents.md`    |
 
 ---
 

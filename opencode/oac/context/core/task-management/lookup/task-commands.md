@@ -30,6 +30,7 @@ task-cli.ts status my-feature
 ```
 
 **Output**:
+
 ```
 [my-feature] My Feature Name
   Status: active | Progress: 40% (2/5)
@@ -48,6 +49,7 @@ task-cli.ts next my-feature
 ```
 
 **Output**:
+
 ```
 === Ready Tasks (deps satisfied) ===
 
@@ -80,6 +82,7 @@ task-cli.ts deps my-feature 04
 ```
 
 **Output**:
+
 ```
 === Dependency Tree: my-feature/04 ===
 
@@ -101,6 +104,7 @@ task-cli.ts blocked my-feature
 ```
 
 **Output**:
+
 ```
 === Blocked Tasks ===
 
@@ -120,6 +124,7 @@ task-cli.ts complete my-feature 02 "Created JWT service with RS256 signing"
 ```
 
 **Effect**:
+
 - Sets `status: "completed"`
 - Sets `completed_at` timestamp
 - Sets `completion_summary`
@@ -137,6 +142,7 @@ task-cli.ts validate my-feature
 ```
 
 **Checks**:
+
 - task.json exists
 - ID format correct
 - Dependencies exist
@@ -144,6 +150,7 @@ task-cli.ts validate my-feature
 - Counts match
 
 **Output**:
+
 ```
 [my-feature]
   ✓ All checks passed
@@ -157,16 +164,17 @@ task-cli.ts validate my-feature
 
 ## Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | Error (validate found issues, missing args) |
+| Code | Meaning                                     |
+| ---- | ------------------------------------------- |
+| 0    | Success                                     |
+| 1    | Error (validate found issues, missing args) |
 
 ---
 
 ## Enhanced Schema Support
 
 The CLI fully supports the enhanced task schema (v2.0) with:
+
 - **Line-number precision** - Context files with specific line ranges
 - **Domain modeling** - bounded_context, module, vertical_slice fields
 - **Contract tracking** - API/interface dependencies
@@ -182,13 +190,13 @@ All enhanced fields are optional and backward compatible. See `../standards/enha
 
 For multi-stage orchestration workflows, use these planning agents before task creation:
 
-| Agent | Purpose | Output |
-|-------|---------|--------|
+| Agent                    | Purpose                            | Output                            |
+| ------------------------ | ---------------------------------- | --------------------------------- |
 | **ArchitectureAnalyzer** | DDD bounded context identification | `.tmp/architecture/contexts.json` |
-| **StoryMapper** | User journey and story mapping | `.tmp/story-maps/map.json` |
-| **PrioritizationEngine** | RICE/WSJF scoring | `.tmp/backlog/prioritized.json` |
-| **ContractManager** | API contract definition | `.tmp/contracts/{service}.json` |
-| **ADRManager** | Architecture decision records | `docs/adr/` |
+| **StoryMapper**          | User journey and story mapping     | `.tmp/story-maps/map.json`        |
+| **PrioritizationEngine** | RICE/WSJF scoring                  | `.tmp/backlog/prioritized.json`   |
+| **ContractManager**      | API contract definition            | `.tmp/contracts/{service}.json`   |
+| **ADRManager**           | Architecture decision records      | `docs/adr/`                       |
 
 These agents populate enhanced schema fields (bounded_context, contracts, related_adrs, rice_score, etc.) automatically.
 

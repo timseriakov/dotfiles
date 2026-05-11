@@ -116,11 +116,11 @@ cd evals/framework && npm run eval:sdk -- --agent=development/api-specialist --p
 
 ## Common Issues
 
-| Problem | Solution |
-|---------|----------|
-| Auto-detect doesn't find agent | Check frontmatter is valid YAML |
-| Registry validation fails | Verify file path is correct |
-| Test fails unexpectedly | Load `debugging.md` for troubleshooting |
+| Problem                        | Solution                                |
+| ------------------------------ | --------------------------------------- |
+| Auto-detect doesn't find agent | Check frontmatter is valid YAML         |
+| Registry validation fails      | Verify file path is correct             |
+| Test fails unexpectedly        | Load `debugging.md` for troubleshooting |
 
 ---
 

@@ -13,6 +13,7 @@
 OpenAgents Control is published as `@nextsystems/oac` on npm. Users install globally and run `oac [profile]` to set up their projects.
 
 **Key files**:
+
 - `package.json` - Package configuration
 - `bin/oac.js` - CLI entry point
 - `.npmignore` - Exclude dev files
@@ -101,17 +102,20 @@ npx @nextsystems/oac developer
 ## Common Issues
 
 **"You do not have permission to publish"**
+
 ```bash
 npm whoami  # Check you're logged in
 npm publish --access public  # Scoped packages need public access
 ```
 
 **"Version already exists"**
+
 ```bash
 npm version patch  # Bump version first
 ```
 
 **"You must verify your email"**
+
 ```bash
 npm profile get  # Check email verification status
 ```
@@ -121,6 +125,7 @@ npm profile get  # Check email verification status
 ## Package Configuration
 
 **What's included** (see `package.json` → `files`):
+
 - `.opencode/` - Agents, commands, context, profiles, skills, tools
 - `scripts/` - Installation scripts
 - `bin/` - CLI entry point
@@ -129,6 +134,7 @@ npm profile get  # Check email verification status
 - Docs (README, CHANGELOG, LICENSE)
 
 **What's excluded** (see `.npmignore`):
+
 - `node_modules/`
 - `evals/`
 - `.tmp/`

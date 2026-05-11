@@ -10,6 +10,7 @@
 ## Overview
 
 Adding a new agent involves:
+
 1. Creating the agent file
 2. Creating test structure
 3. Updating the registry
@@ -53,14 +54,17 @@ dependencies: []
 **Purpose**: What this agent does
 
 ## Focus
+
 - Key responsibility 1
 - Key responsibility 2
 
 ## Workflow
+
 1. Step 1
 2. Step 2
 
 ## Constraints
+
 - Constraint 1
 - Constraint 2
 ```

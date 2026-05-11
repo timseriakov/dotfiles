@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-stage-theme | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Stage 2: Theme Design
 
 **Purpose**: Define colors, typography, spacing, and visual style
@@ -23,11 +24,11 @@
 
 ## Theme Selection Criteria
 
-| Style | Use When | Avoid When |
-|-------|----------|------------|
-| Neo-Brutalism | Creative/artistic projects, retro aesthetic | Enterprise apps, accessibility-critical |
-| Modern Dark | SaaS, developer tools, professional dashboards | Playful consumer apps |
-| Custom | Specific brand requirements | Time-constrained projects |
+| Style         | Use When                                       | Avoid When                              |
+| ------------- | ---------------------------------------------- | --------------------------------------- |
+| Neo-Brutalism | Creative/artistic projects, retro aesthetic    | Enterprise apps, accessibility-critical |
+| Modern Dark   | SaaS, developer tools, professional dashboards | Playful consumer apps                   |
+| Custom        | Specific brand requirements                    | Time-constrained projects               |
 
 ## Example Output
 
@@ -57,6 +58,7 @@ Key Design Decisions:
 ## Best Practices
 
 ✅ **Do**:
+
 - Reference design system context files
 - Use CSS custom properties
 - Save theme to separate file
@@ -64,6 +66,7 @@ Key Design Decisions:
 - Avoid Bootstrap blue unless requested
 
 ❌ **Don't**:
+
 - Hardcode colors in HTML
 - Use generic/overused color schemes
 - Skip contrast testing

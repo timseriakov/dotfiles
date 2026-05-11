@@ -27,21 +27,25 @@ cd evals/framework && npm run eval:sdk -- --agent=core/openagent --pattern="smok
 ### Registry Validation Fails
 
 **Symptoms**:
+
 ```
 ERROR: Path does not exist: (example: .opencode/agent/core/missing.md)
 ```
 
 **Diagnosis**:
+
 ```bash
 ./scripts/registry/validate-registry.sh -v
 ```
 
 **Solutions**:
+
 1. **Path doesn't exist**: Remove entry or create file
 2. **Duplicate ID**: Rename one component
 3. **Invalid category**: Use valid category
 
 **Fix**:
+
 ```bash
 # Re-run auto-detect
 ./scripts/registry/auto-detect-components.sh --auto-add
@@ -55,10 +59,12 @@ ERROR: Path does not exist: (example: .opencode/agent/core/missing.md)
 ### Component Not in Registry
 
 **Symptoms**:
+
 - Component doesn't appear in `./install.sh --list`
 - Auto-detect doesn't find component
 
 **Diagnosis**:
+
 ```bash
 # Check frontmatter
 head -10 .opencode/agent/{category}/{agent}.md
@@ -68,11 +74,13 @@ head -10 .opencode/agent/{category}/{agent}.md
 ```
 
 **Solutions**:
+
 1. **Missing frontmatter**: Add frontmatter
 2. **Invalid YAML**: Fix YAML syntax
 3. **Wrong location**: Move to correct directory
 
 **Fix**:
+
 ```bash
 # Add frontmatter
 cat > .opencode/agent/{category}/{agent}.md << 'EOF'
@@ -96,12 +104,14 @@ EOF
 ### Approval Gate Violation
 
 **Symptoms**:
+
 ```
 ✗ Approval Gate: FAIL
   Violation: Agent executed write tool without requesting approval
 ```
 
 **Diagnosis**:
+
 ```bash
 # Run with debug
 cd evals/framework
@@ -114,8 +124,10 @@ cat .tmp/sessions/{session-id}/session.json | jq
 
 **Solution**:
 Add approval request in agent prompt:
+
 ```markdown
 Before executing:
+
 1. Present plan to user
 2. Request approval
 3. Execute after approval
@@ -126,12 +138,14 @@ Before executing:
 ### Context Loading Violation
 
 **Symptoms**:
+
 ```
 ✗ Context Loading: FAIL
   Violation: Agent executed write tool without loading required context
 ```
 
 **Diagnosis**:
+
 ```bash
 # Check what context was loaded
 cat .tmp/sessions/{session-id}/events.json | jq '.[] | select(.type == "context_load")'
@@ -139,8 +153,10 @@ cat .tmp/sessions/{session-id}/events.json | jq '.[] | select(.type == "context_
 
 **Solution**:
 Add context loading in agent prompt:
+
 ```markdown
 Before implementing:
+
 1. Load core/standards/code-quality.md
 2. Apply standards to implementation
 ```
@@ -150,12 +166,14 @@ Before implementing:
 ### Tool Usage Violation
 
 **Symptoms**:
+
 ```
 ✗ Tool Usage: FAIL
   Violation: Agent used bash tool for reading file instead of read tool
 ```
 
 **Diagnosis**:
+
 ```bash
 # Check tool usage
 cat .tmp/sessions/{session-id}/events.json | jq '.[] | select(.type == "tool_call")'
@@ -163,6 +181,7 @@ cat .tmp/sessions/{session-id}/events.json | jq '.[] | select(.type == "tool_cal
 
 **Solution**:
 Update agent to use correct tools:
+
 - Use `read` instead of `bash cat`
 - Use `list` instead of `bash ls`
 - Use `grep` instead of `bash grep`
@@ -174,12 +193,14 @@ Update agent to use correct tools:
 ### Install Script Fails
 
 **Symptoms**:
+
 ```
 ERROR: Failed to fetch registry
 ERROR: Component not found
 ```
 
 **Diagnosis**:
+
 ```bash
 # Check dependencies
 which curl jq
@@ -189,11 +210,13 @@ REGISTRY_URL="file://$(pwd)/registry.json" ./install.sh --list
 ```
 
 **Solutions**:
+
 1. **Missing dependencies**: Install curl and jq
 2. **Registry not found**: Check registry.json exists
 3. **Component not found**: Verify component in registry
 
 **Fix**:
+
 ```bash
 # Install dependencies (macOS)
 brew install curl jq
@@ -210,16 +233,19 @@ REGISTRY_URL="file://$(pwd)/registry.json" ./install.sh --list
 ### Collision Handling
 
 **Symptoms**:
+
 ```
 File exists: .opencode/agent/core/openagent.md
 ```
 
 **Solutions**:
+
 1. **Skip**: Keep existing file
 2. **Overwrite**: Replace with new file
 3. **Backup**: Backup existing, install new
 
 **Fix**:
+
 ```bash
 # Skip all collisions
 ./install.sh developer --skip-existing
@@ -238,11 +264,13 @@ File exists: .opencode/agent/core/openagent.md
 ### Agent Not Found
 
 **Symptoms**:
+
 ```
 ERROR: Agent not found: development/frontend-specialist
 ```
 
 **Diagnosis**:
+
 ```bash
 # Check file exists
 ls -la .opencode/agent/subagents/development/frontend-specialist.md
@@ -252,11 +280,13 @@ cat registry.json | jq '.components.agents[] | select(.id == "frontend-specialis
 ```
 
 **Solutions**:
+
 1. **File doesn't exist**: Create file
 2. **Wrong path**: Fix path in registry
 3. **Not in registry**: Run auto-detect
 
 **Fix**:
+
 ```bash
 # Re-run auto-detect
 ./scripts/registry/auto-detect-components.sh --auto-add
@@ -272,6 +302,7 @@ cat registry.json | jq '.components.agents[] | select(.id == "frontend-specialis
 ### Version Mismatch
 
 **Symptoms**:
+
 ```
 VERSION: 0.5.0
 package.json: 0.4.0
@@ -279,6 +310,7 @@ registry.json: 0.5.0
 ```
 
 **Diagnosis**:
+
 ```bash
 cat VERSION
 cat package.json | jq '.version'
@@ -287,6 +319,7 @@ cat registry.json | jq '.version'
 
 **Solution**:
 Update all to same version:
+
 ```bash
 echo "0.5.0" > VERSION
 jq '.version = "0.5.0"' package.json > tmp && mv tmp package.json
@@ -300,10 +333,12 @@ jq '.version = "0.5.0"' registry.json > tmp && mv tmp registry.json
 ### Workflow Fails
 
 **Symptoms**:
+
 - Registry validation fails in CI
 - Tests fail in CI but pass locally
 
 **Diagnosis**:
+
 ```bash
 # Run same commands as CI
 ./scripts/registry/validate-registry.sh
@@ -312,6 +347,7 @@ cd evals/framework && npm run eval:sdk
 ```
 
 **Solutions**:
+
 1. **Registry invalid**: Fix registry
 2. **Tests fail**: Fix tests
 3. **Dependencies missing**: Update CI config
@@ -323,14 +359,16 @@ cd evals/framework && npm run eval:sdk
 ### Tests Timeout
 
 **Symptoms**:
+
 ```
 ERROR: Test timeout after 60000ms
 ```
 
 **Solution**:
 Increase timeout in config.yaml:
+
 ```yaml
-timeout: 120000  # 2 minutes
+timeout: 120000 # 2 minutes
 ```
 
 ---
@@ -342,6 +380,7 @@ Auto-detect takes too long
 
 **Solution**:
 Limit scope:
+
 ```bash
 # Only scan specific directory
 ./scripts/registry/auto-detect-components.sh --path .opencode/agent/development/

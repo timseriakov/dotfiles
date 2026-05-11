@@ -18,10 +18,10 @@ core/system/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **System guides** | `./` |
-| **Core standards** | `../standards/navigation.md` |
+| Task               | Path                              |
+| ------------------ | --------------------------------- |
+| **System guides**  | `./`                              |
+| **Core standards** | `../standards/navigation.md`      |
 | **Context system** | `../context-system/navigation.md` |
 
 ---

@@ -31,14 +31,15 @@ Agent has tool **disabled** or **denied** in frontmatter:
 ```yaml
 # In agent frontmatter
 tools:
-  bash: false    # ← Tool disabled
+  bash: false # ← Tool disabled
 
 permission:
   bash:
-    "*": "deny"  # ← Explicitly denied
+    "*": "deny" # ← Explicitly denied
 ```
 
 **How it works**:
+
 - `bash: false` means agent doesn't have access to bash tool
 - Framework enforces this - agent can't use bash even if prompt says to
 - NOT an approval issue - it's a permission restriction
@@ -71,7 +72,7 @@ Add critical rules section at top of agent prompt:
 
 ```yaml
 tools:
-  bash: true  # ← Enable if agent legitimately needs bash
+  bash: true # ← Enable if agent legitimately needs bash
 ```
 
 **Warning**: Only enable if agent truly needs the tool. Read-only subagents should NOT have bash/write/edit.
@@ -89,10 +90,10 @@ tools:
   grep: true
   glob: true
   list: true
-  bash: false    # ← No execution
-  edit: false    # ← No modifications
-  write: false   # ← No file creation
-  task: false    # ← No delegation (subagents don't delegate)
+  bash: false # ← No execution
+  edit: false # ← No modifications
+  write: false # ← No file creation
+  task: false # ← No delegation (subagents don't delegate)
 
 permissions:
   bash:
@@ -112,10 +113,10 @@ tools:
   grep: true
   glob: true
   list: true
-  bash: true     # ← May need for operations
-  edit: true     # ← May need for modifications
-  write: true    # ← May need for file creation
-  task: true     # ← May delegate to subagents
+  bash: true # ← May need for operations
+  edit: true # ← May need for modifications
+  write: true # ← May need for file creation
+  task: true # ← May delegate to subagents
 ```
 
 ---
@@ -140,6 +141,7 @@ In a **subagent** test.
 **Subagents should NOT have approval gates** - they're delegated to by primary agents who already got approval.
 
 The issue is usually:
+
 1. Subagent trying to use restricted tool (bash/write/edit)
 2. Test expecting approval behavior (wrong for subagents)
 
@@ -157,7 +159,7 @@ Subagent tests should use `auto-approve`:
 
 ```yaml
 approvalStrategy:
-  type: auto-approve  # ← No approval gates for subagents
+  type: auto-approve # ← No approval gates for subagents
 ```
 
 **Fix 3: Check Tool Permissions**
@@ -180,7 +182,7 @@ Tool not enabled in frontmatter:
 
 ```yaml
 tools:
-  glob: false  # ← Tool disabled
+  glob: false # ← Tool disabled
 ```
 
 ---
@@ -191,7 +193,7 @@ Enable the tool:
 
 ```yaml
 tools:
-  glob: true  # ← Enable
+  glob: true # ← Enable
 ```
 
 ---
@@ -210,11 +212,11 @@ After fixing tool permission:
 
 ## Tool Permission Matrix
 
-| Agent Type | bash | write | edit | task | read | grep | glob | list |
-|------------|------|-------|------|------|------|------|------|------|
-| **Read-only subagent** | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| **Primary agent** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Orchestrator** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Agent Type             | bash | write | edit | task | read | grep | glob | list |
+| ---------------------- | ---- | ----- | ---- | ---- | ---- | ---- | ---- | ---- |
+| **Read-only subagent** | ❌   | ❌    | ❌   | ❌   | ✅   | ✅   | ✅   | ✅   |
+| **Primary agent**      | ✅   | ✅    | ✅   | ✅   | ✅   | ✅   | ✅   | ✅   |
+| **Orchestrator**       | ✅   | ✅    | ✅   | ✅   | ✅   | ✅   | ✅   | ✅   |
 
 ---
 

@@ -18,11 +18,11 @@ openagents-repo/blueprints/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View blueprints** | `./` |
-| **Core concepts** | `../core-concepts/navigation.md` |
-| **Examples** | `../examples/navigation.md` |
+| Task                | Path                             |
+| ------------------- | -------------------------------- |
+| **View blueprints** | `./`                             |
+| **Core concepts**   | `../core-concepts/navigation.md` |
+| **Examples**        | `../examples/navigation.md`      |
 
 ---
 

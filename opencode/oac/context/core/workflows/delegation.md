@@ -1,4 +1,5 @@
 <!-- Context: workflows/delegation | Priority: high | Version: 2.0 | Updated: 2025-01-21 -->
+
 # Delegation Context Template
 
 > **Note**: This is a reference file. Start with [`task-delegation-basics.md`](./task-delegation-basics.md).

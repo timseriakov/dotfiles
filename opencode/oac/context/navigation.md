@@ -24,16 +24,16 @@
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **Write code** | `core/standards/code-quality.md` |
-| **Write tests** | `core/standards/test-coverage.md` |
-| **Write docs** | `core/standards/documentation.md` |
-| **Review code** | `core/workflows/code-review.md` |
-| **Delegate task** | `core/workflows/task-delegation-basics.md` |
-| **Add agent** | `openagents-repo/guides/adding-agent.md` |
-| **UI development** | `development/ui-navigation.md` |
-| **API development** | `development/backend-navigation.md` |
+| Task                | Path                                       |
+| ------------------- | ------------------------------------------ |
+| **Write code**      | `core/standards/code-quality.md`           |
+| **Write tests**     | `core/standards/test-coverage.md`          |
+| **Write docs**      | `core/standards/documentation.md`          |
+| **Review code**     | `core/workflows/code-review.md`            |
+| **Delegate task**   | `core/workflows/task-delegation-basics.md` |
+| **Add agent**       | `openagents-repo/guides/adding-agent.md`   |
+| **UI development**  | `development/ui-navigation.md`             |
+| **API development** | `development/backend-navigation.md`        |
 
 ---
 

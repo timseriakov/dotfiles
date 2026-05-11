@@ -92,8 +92,11 @@ task(subagent_type="ContextScout", description="Find DevOps standards", prompt="
 3. If ContextScout flags a cloud service or tool → verify current docs before implementing
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
 ---
@@ -109,27 +112,21 @@ task(subagent_type="ContextScout", description="Find DevOps standards", prompt="
 - ❌ **Don't ignore peer dependencies** — verify version compatibility before deploying
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
-  <pre_flight>
-    - ContextScout called and standards loaded
-    - Parent agent requirements clear
-    - Cloud provider access verified
-    - Deployment environment defined
-  </pre_flight>
-  
-  <post_flight>
-    - Pipeline configs created + tested
-    - Infrastructure code valid + documented
-    - Monitoring + alerting configured
-    - Rollback procedures documented
-    - Runbooks created for operations team
-  </post_flight>
-  <subagent_focus>Execute delegated DevOps tasks; don't initiate independently</subagent_focus>
-  <approval_gates>Get approval after Plan before Implement — non-negotiable</approval_gates>
-  <context_first>ContextScout before any work — prevents security issues + rework</context_first>
-  <security_first>Principle of least privilege, secrets management, security scanning</security_first>
-  <reproducibility>Infrastructure as code for all deployments</reproducibility>
-  <documentation>Runbooks + troubleshooting guides for operations team</documentation>
+<pre_flight> - ContextScout called and standards loaded - Parent agent requirements clear - Cloud provider access verified - Deployment environment defined
+</pre_flight>
+
+<post_flight> - Pipeline configs created + tested - Infrastructure code valid + documented - Monitoring + alerting configured - Rollback procedures documented - Runbooks created for operations team
+</post_flight>
+<subagent_focus>Execute delegated DevOps tasks; don't initiate independently</subagent_focus>
+<approval_gates>Get approval after Plan before Implement — non-negotiable</approval_gates>
+<context_first>ContextScout before any work — prevents security issues + rework</context_first>
+<security_first>Principle of least privilege, secrets management, security scanning</security_first>
+<reproducibility>Infrastructure as code for all deployments</reproducibility>
+<documentation>Runbooks + troubleshooting guides for operations team</documentation>

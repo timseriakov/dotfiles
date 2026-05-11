@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-stage-implementation | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Stage 4: Implementation
 
 **Purpose**: Generate complete HTML file with all components
@@ -36,97 +37,115 @@ design_iterations/
 
 ## Naming Conventions
 
-| Type | Format | Example |
-|------|--------|---------|
-| Initial design | `{name}_1.html` | `table_1.html` |
-| First iteration | `{name}_1_1.html` | `table_1_1.html` |
+| Type             | Format            | Example          |
+| ---------------- | ----------------- | ---------------- |
+| Initial design   | `{name}_1.html`   | `table_1.html`   |
+| First iteration  | `{name}_1_1.html` | `table_1_1.html` |
 | Second iteration | `{name}_1_2.html` | `table_1_2.html` |
-| New design | `{name}_2.html` | `table_2.html` |
+| New design       | `{name}_2.html`   | `table_2.html`   |
 
 ## Implementation Checklist
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design Name</title>
-  
-  <!-- ✅ Preconnect to external resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- ✅ Load fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- ✅ Load Tailwind (script tag, not stylesheet) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- ✅ Load Flowbite if needed -->
-  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css" rel="stylesheet">
-  
-  <!-- ✅ Load icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  
-  <!-- ✅ Link theme CSS -->
-  <link rel="stylesheet" href="theme_1.css">
-  
-  <!-- ✅ Custom styles with !important for overrides -->
-  <style>
-    body {
-      font-family: 'Inter', sans-serif !important;
-      color: var(--foreground) !important;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-      font-weight: 600 !important;
-    }
-    
-    /* Custom animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 300ms ease-out;
-    }
-  </style>
-</head>
-<body>
-  <!-- ✅ Semantic HTML structure -->
-  <header>
-    <!-- Header content -->
-  </header>
-  
-  <main>
-    <!-- Main content -->
-  </main>
-  
-  <footer>
-    <!-- Footer content -->
-  </footer>
-  
-  <!-- ✅ Load Flowbite JS if needed -->
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
-  
-  <!-- ✅ Initialize icons -->
-  <script>
-    lucide.createIcons();
-  </script>
-  
-  <!-- ✅ Custom JavaScript -->
-  <script>
-    // Interactive functionality
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Name</title>
+
+    <!-- ✅ Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- ✅ Load fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ✅ Load Tailwind (script tag, not stylesheet) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ✅ Load Flowbite if needed -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- ✅ Load icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- ✅ Link theme CSS -->
+    <link rel="stylesheet" href="theme_1.css" />
+
+    <!-- ✅ Custom styles with !important for overrides -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif !important;
+        color: var(--foreground) !important;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: 600 !important;
+      }
+
+      /* Custom animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 300ms ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ✅ Semantic HTML structure -->
+    <header>
+      <!-- Header content -->
+    </header>
+
+    <main>
+      <!-- Main content -->
+    </main>
+
+    <footer>
+      <!-- Footer content -->
+    </footer>
+
+    <!-- ✅ Load Flowbite JS if needed -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+
+    <!-- ✅ Initialize icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <!-- ✅ Custom JavaScript -->
+    <script>
+      // Interactive functionality
+    </script>
+  </body>
 </html>
 ```
 
 ## Best Practices
 
 ✅ **Do**:
+
 - Use single HTML file per design
 - Load Tailwind via script tag
 - Reference theme CSS file
@@ -136,6 +155,7 @@ design_iterations/
 - Use semantic HTML
 
 ❌ **Don't**:
+
 - Split into multiple files
 - Load Tailwind as stylesheet
 - Inline all styles

@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-plan-iterations | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Handling Plan File Edits and Iterations
 
 ## User Edits Plan File Directly
@@ -6,6 +7,7 @@
 **Scenario**: User opens `.tmp/design-plans/{name}.md` and makes changes
 
 **Process**:
+
 1. User edits plan file (changes requirements, adds constraints, modifies goals)
 2. User notifies agent: "I've updated the plan file"
 3. Agent reads updated plan file
@@ -14,10 +16,11 @@
 6. Agent updates affected stages
 
 **Example**:
+
 ```
 User: "I've updated the plan file - changed the color scheme to dark mode"
 
-Agent: 
+Agent:
 ✅ Read updated plan: .tmp/design-plans/saas-landing-page.md
 
 Changes detected:
@@ -40,6 +43,7 @@ Would you like me to:
 **Scenario**: User requests changes during a stage
 
 **Process**:
+
 1. Agent presents stage output (e.g., layout wireframe)
 2. User requests changes: "Make the hero section taller"
 3. Agent updates plan file with feedback
@@ -48,6 +52,7 @@ Would you like me to:
 6. Agent presents updated output
 
 **Example**:
+
 ```
 Stage 1 - Layout Design
 
@@ -68,16 +73,19 @@ Agent:
 ## Tracking Iterations in Plan File
 
 **Format**:
+
 ```markdown
 ## Design Evolution
 
 ### Iteration 1 - Initial Layout
+
 - Date: 2026-01-30T10:00:00Z
 - Stage: Layout
 - Changes: Initial wireframe created
 - User feedback: "Hero section too short, CTA below fold"
 
 ### Iteration 2 - Revised Layout
+
 - Date: 2026-01-30T10:15:00Z
 - Stage: Layout
 - Changes: Increased hero height from 400px to 600px, moved CTA above fold
@@ -85,6 +93,7 @@ Agent:
 - Status: ✅ Approved
 
 ### Iteration 3 - Theme Adjustment
+
 - Date: 2026-01-30T10:30:00Z
 - Stage: Theme
 - Changes: Changed from light to dark mode, primary color blue → purple
@@ -101,20 +110,21 @@ Agent:
 **Solution**: Always pass plan file path
 
 **Pattern**:
+
 ```javascript
 // When delegating to subagent
 task(
   subagent_type="OpenFrontendSpecialist",
   description="Implement Stage 4",
   prompt="Load design plan from .tmp/design-plans/saas-landing-page.md
-  
+
   Read the plan file for:
   - All approved decisions from Stages 1-3
   - User requirements and constraints
   - Design evolution and iterations
-  
+
   Implement Stage 4 (Implementation) following all approved decisions.
-  
+
   Update the plan file with:
   - Output file paths
   - Implementation status

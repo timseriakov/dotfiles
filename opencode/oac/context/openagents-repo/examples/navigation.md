@@ -23,13 +23,13 @@ openagents-repo/examples/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **Hook examples** | `hooks/navigation.md` |
-| **Skill examples** | `skills/navigation.md` |
-| **Subagent examples** | `subagents/navigation.md` |
-| **Guides** | `../guides/navigation.md` |
-| **Blueprints** | `../blueprints/navigation.md` |
+| Task                  | Path                          |
+| --------------------- | ----------------------------- |
+| **Hook examples**     | `hooks/navigation.md`         |
+| **Skill examples**    | `skills/navigation.md`        |
+| **Subagent examples** | `subagents/navigation.md`     |
+| **Guides**            | `../guides/navigation.md`     |
+| **Blueprints**        | `../blueprints/navigation.md` |
 
 ---
 

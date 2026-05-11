@@ -9,6 +9,7 @@
 ## What Is This Repo?
 
 OpenAgents Control is an AI agent framework with:
+
 - **Category-based agents** (core, development, content, data, product, learning)
 - **Eval framework** for testing agent behavior
 - **Registry system** for component distribution
@@ -47,15 +48,15 @@ Before working on this repo, understand these 4 systems:
 
 ## I Need To...
 
-| Task | Load These Files |
-|------|------------------|
-| Add a new agent | `core-concepts/agents.md` + `guides/adding-agent.md` |
-| Test an agent | `core-concepts/evals.md` + `guides/testing-agent.md` |
-| Fix registry | `core-concepts/registry.md` + `guides/updating-registry.md` |
-| Debug issue | `guides/debugging.md` |
-| Find files | `lookup/file-locations.md` |
-| Create release | `guides/creating-release.md` |
-| Write content or copy | `core-concepts/categories.md` + `../content-creation/principles/navigation.md` |
+| Task                    | Load These Files                                                                                                |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Add a new agent         | `core-concepts/agents.md` + `guides/adding-agent.md`                                                            |
+| Test an agent           | `core-concepts/evals.md` + `guides/testing-agent.md`                                                            |
+| Fix registry            | `core-concepts/registry.md` + `guides/updating-registry.md`                                                     |
+| Debug issue             | `guides/debugging.md`                                                                                           |
+| Find files              | `lookup/file-locations.md`                                                                                      |
+| Create release          | `guides/creating-release.md`                                                                                    |
+| Write content or copy   | `core-concepts/categories.md` + `../content-creation/principles/navigation.md`                                  |
 | Use Claude Code helpers | `core-concepts/agents.md` + `guides/adding-agent.md` + `../to-be-consumed/claude-code-docs/create-subagents.md` |
 
 ---
@@ -148,13 +149,13 @@ opencode-agents/
 
 ## Quick Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
+| Problem                   | Solution                                                  |
+| ------------------------- | --------------------------------------------------------- |
 | Registry validation fails | `./scripts/registry/auto-detect-components.sh --auto-add` |
-| Test fails | Load `guides/debugging.md` |
-| Can't find file | Load `lookup/file-locations.md` |
-| Install fails | Check: `which curl jq` |
-| Path resolution issues | Check `core-concepts/categories.md` |
+| Test fails                | Load `guides/debugging.md`                                |
+| Can't find file           | Load `lookup/file-locations.md`                           |
+| Install fails             | Check: `which curl jq`                                    |
+| Path resolution issues    | Check `core-concepts/categories.md`                       |
 
 ---
 

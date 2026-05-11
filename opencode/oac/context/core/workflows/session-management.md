@@ -1,4 +1,5 @@
 <!-- Context: workflows/sessions | Priority: medium | Version: 2.0 | Updated: 2025-01-21 -->
+
 # Session Management
 
 ## Quick Reference
@@ -70,10 +71,7 @@
     }
   },
   "context_index": {
-    "user-auth": [
-      "features/user-auth-context.md",
-      "tasks/user-auth-tasks.md"
-    ]
+    "user-auth": ["features/user-auth-context.md", "tasks/user-auth-tasks.md"]
   }
 }
 ```
@@ -89,20 +87,24 @@
 ## Cleanup Policy
 
 ### Manual Cleanup (Preferred)
+
 **Ask user confirmation before cleanup**
 
 After task completion:
+
 1. Ask: "Should I clean up temporary session files at `.tmp/sessions/{session-id}/`?"
 2. Wait for user confirmation
 3. Only delete files tracked in current session's manifest
 4. Remove entire session folder: `.tmp/sessions/{session-id}/`
 
 ### Safety Rules
+
 - **NEVER** delete files outside current session
 - **ONLY** delete files tracked in manifest
 - **ALWAYS** confirm with user before cleanup
 
 ### Stale Session Cleanup
+
 **Auto-remove sessions >24 hours old**
 
 - Check `last_activity` timestamp in manifest
@@ -112,16 +114,19 @@ After task completion:
 ## Error Handling
 
 ### Subagent Failure
+
 - Report error to user
 - Ask if should retry or abort
 - Don't auto-retry without approval
 
 ### Context File Error
+
 - Fall back to inline context in delegation prompt
 - Warn user that context file creation failed
 - Continue with task if possible
 
 ### Session Creation Error
+
 - Continue without session
 - Warn user
 - Use inline context for delegation

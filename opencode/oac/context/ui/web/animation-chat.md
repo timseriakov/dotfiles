@@ -1,4 +1,5 @@
 <!-- Context: ui/web/animation-chat | Priority: medium | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Chat UI Animation Patterns
 
 Animation patterns for message entrances, typing indicators, and chat interactions.
@@ -45,6 +46,7 @@ Animation patterns for message entrances, typing indicators, and chat interactio
 ```
 
 **Micro-syntax**:
+
 ```
 userMsg: 400ms ease-out [Y+20→0, X+10→0, S0.9→1]
 aiMsg: 600ms bounce [Y+15→0, S0.95→1] +200ms
@@ -58,11 +60,17 @@ aiMsg: 600ms bounce [Y+15→0, S0.95→1] +200ms
 .typing-indicator span {
   animation: typingDot 1400ms infinite;
 }
-.typing-indicator span:nth-child(2) { animation-delay: 200ms; }
-.typing-indicator span:nth-child(3) { animation-delay: 400ms; }
+.typing-indicator span:nth-child(2) {
+  animation-delay: 200ms;
+}
+.typing-indicator span:nth-child(3) {
+  animation-delay: 400ms;
+}
 
 @keyframes typingDot {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.4;
   }
@@ -74,6 +82,7 @@ aiMsg: 600ms bounce [Y+15→0, S0.95→1] +200ms
 ```
 
 **Micro-syntax**:
+
 ```
 typing: 1400ms ∞ [Y±8, α0.4→1] stagger+200ms
 ```
@@ -99,6 +108,7 @@ typing: 1400ms ∞ [Y±8, α0.4→1] stagger+200ms
 ```
 
 **Micro-syntax**:
+
 ```
 msgHover: 200ms [Y0→-2, shadow↗]
 msgSelect: 200ms [bg→accent, S1→1.02]

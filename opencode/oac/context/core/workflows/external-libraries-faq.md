@@ -1,4 +1,5 @@
 <!-- Context: workflows/external-libraries-faq | Priority: medium | Version: 1.0 | Updated: 2026-02-05 -->
+
 # External Libraries: FAQ
 
 **Purpose**: Troubleshooting and common questions about ExternalScout
@@ -10,6 +11,7 @@
 **ALWAYS when working with external packages.**
 
 **Triggers:**
+
 - User mentions library
 - `import`/`require` statements
 - package.json deps
@@ -51,7 +53,7 @@ Result: Broken code ❌
 // 1. ContextScout: Project standards
 task(subagent_type="ContextScout", ...)
 
-// 2. ExternalScout: Library docs  
+// 2. ExternalScout: Library docs
 task(subagent_type="ExternalScout", ...)
 
 // 3. Combine: Implement using both
@@ -62,6 +64,7 @@ task(subagent_type="ExternalScout", ...)
 ## What if ExternalScout doesn't have the library?
 
 ExternalScout has two sources:
+
 1. **Context7 API** (primary): 50+ popular libraries
 2. **Official docs** (fallback): Any library with public docs
 
@@ -72,16 +75,17 @@ If library not in Context7: Auto-fallback to official docs via webfetch.
 ## How do I write a good ExternalScout prompt?
 
 **Template:**
+
 ```javascript
 task(
   subagent_type="ExternalScout",
   description="Fetch [Library] docs for [specific topic]",
   prompt="Fetch current documentation for [Library]: [specific question]
-  
+
   Focus on:
   - [What you need - be specific]
   - [Related features/APIs]
-  
+
   Context: [What you're building]"
 )
 ```
@@ -94,8 +98,10 @@ task(
 ## What if I get an error after using ExternalScout?
 
 **Process:**
+
 1. Read error message carefully
 2. ExternalScout again with specific error:
+
 ```javascript
 task(
   subagent_type="ExternalScout",
@@ -105,6 +111,7 @@ task(
   Focus on: Common causes | Solutions"
 )
 ```
+
 3. Check install scripts (maybe setup incomplete)
 4. Verify versions (package.json vs docs)
 
@@ -121,13 +128,13 @@ task(
 
 ## ContextScout vs ExternalScout?
 
-| Aspect | ContextScout | ExternalScout |
-|--------|--------------|---------------|
-| **Searches** | Internal project files | External documentation |
+| Aspect       | ContextScout                           | ExternalScout             |
+| ------------ | -------------------------------------- | ------------------------- |
+| **Searches** | Internal project files                 | External documentation    |
 | **Location** | `/Users/tim/.config/opencode/context/` | Internet (Context7, docs) |
-| **Returns** | Project standards | Library APIs |
-| **Use for** | "How we do things here" | "How this library works" |
-| **Speed** | Fast (local) | Slower (network) |
+| **Returns**  | Project standards                      | Library APIs              |
+| **Use for**  | "How we do things here"                | "How this library works"  |
+| **Speed**    | Fast (local)                           | Slower (network)          |
 
 **Use both together for best results.**
 

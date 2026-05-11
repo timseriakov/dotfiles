@@ -12,10 +12,10 @@ dependencies:
 # Context Manager
 
 <critical_rules priority="absolute" enforcement="strict">
-  <rule id="mvi_strict">
-    Files MUST be <200 lines. Extract core concepts only (1-3 sentences), 3-5 key points, minimal example, reference link.
-  </rule>
-  
+<rule id="mvi_strict">
+Files MUST be <200 lines. Extract core concepts only (1-3 sentences), 3-5 key points, minimal example, reference link.
+</rule>
+
   <rule id="approval_gate">
     ALWAYS present approval UI before deleting/archiving files. Letter-based selection (A B C or 'all'). NEVER auto-delete.
   </rule>
@@ -30,21 +30,15 @@ dependencies:
 </critical_rules>
 
 <execution_priority>
-  <tier level="1" desc="Safety & MVI">
-    - Files <200 lines (@critical_rules.mvi_strict)
-    - Show approval before cleanup (@critical_rules.approval_gate)
-    - Function-based structure (@critical_rules.function_structure)
-    - Load context before operations (@critical_rules.lazy_load)
-  </tier>
-  <tier level="2" desc="Core Operations">
-    - Harvest (default), Extract, Organize, Update workflows
-  </tier>
-  <tier level="3" desc="Enhancements">
-    - Cross-references, validation, navigation
-  </tier>
-  <conflict_resolution>
-    Tier 1 always overrides Tier 2/3.
-  </conflict_resolution>
+<tier level="1" desc="Safety & MVI"> - Files <200 lines (@critical_rules.mvi_strict) - Show approval before cleanup (@critical_rules.approval_gate) - Function-based structure (@critical_rules.function_structure) - Load context before operations (@critical_rules.lazy_load)
+</tier>
+<tier level="2" desc="Core Operations"> - Harvest (default), Extract, Organize, Update workflows
+</tier>
+<tier level="3" desc="Enhancements"> - Cross-references, validation, navigation
+</tier>
+<conflict_resolution>
+Tier 1 always overrides Tier 2/3.
+</conflict_resolution>
 </execution_priority>
 
 **Arguments**: `$ARGUMENTS`
@@ -93,11 +87,13 @@ When invoked without arguments: `/context`
 ### Primary: Harvest & Compact (Default Focus)
 
 **`/context harvest [path]`** ⭐ Most Common
+
 - Extract knowledge from AI summaries → permanent context
 - Clean workspace (archive/delete summaries)
 - **Reads**: `operations/harvest.md` + `standards/mvi.md`
 
 **`/context compact {file}`**
+
 - Minimize verbose file to MVI format
 - **Reads**: `guides/compact.md` + `standards/mvi.md`
 
@@ -106,22 +102,27 @@ When invoked without arguments: `/context`
 ### Secondary: Custom Context Creation
 
 **`/context extract from {source}`**
+
 - Extract context from docs/code/URLs
 - **Reads**: `operations/extract.md` + `standards/mvi.md` + `guides/compact.md`
 
 **`/context organize {category}`**
+
 - Restructure flat files → function-based folders
 - **Reads**: `operations/organize.md` + `standards/structure.md`
 
 **`/context update for {topic}`**
+
 - Update context when APIs/frameworks change
 - **Reads**: `operations/update.md` + `guides/workflows.md`
 
 **`/context error for {error}`**
+
 - Add recurring error to knowledge base
 - **Reads**: `operations/error.md` + `standards/templates.md`
 
 **`/context create {category}`**
+
 - Create new context category with structure
 - **Reads**: `guides/creation.md` + `standards/structure.md` + `standards/templates.md`
 
@@ -130,6 +131,7 @@ When invoked without arguments: `/context`
 ### Migration
 
 **`/context migrate`**
+
 - Copy project-intelligence from global (`~/.config/opencode/context/`) to local (`/Users/tim/.config/opencode/context/`)
 - For users who installed globally but want project-specific, git-committed context
 - Shows diff if local files already exist, asks before overwriting
@@ -141,12 +143,15 @@ When invoked without arguments: `/context`
 ### Utility Operations
 
 **`/context map [category]`**
+
 - View current context structure, file counts
 
 **`/context validate`**
+
 - Check integrity, references, file sizes
 
 **`/context help`**
+
 - Show all operations with examples
 
 ---
@@ -154,10 +159,10 @@ When invoked without arguments: `/context`
 ## Lazy Loading Strategy
 
 <lazy_load_map>
-  <operation name="default">
-    Read: operations/harvest.md, standards/mvi.md
-  </operation>
-  
+<operation name="default">
+Read: operations/harvest.md, standards/mvi.md
+</operation>
+
   <operation name="harvest">
     Read: operations/harvest.md, standards/mvi.md, guides/workflows.md
   </operation>
@@ -198,6 +203,7 @@ When invoked without arguments: `/context`
 ## Subagent Routing
 
 <subagent_routing>
+
   <!-- Delegate operations to specialized subagents -->
   <route operations="harvest|extract|organize|update|error|create|migrate" to="ContextOrganizer">
     Pass: operation name, arguments, lazy load map
@@ -216,6 +222,7 @@ When invoked without arguments: `/context`
 ## Quick Reference
 
 ### Structure
+
 ```
 /Users/tim/.config/opencode/context/core/context-system/
 ├── operations/     # How to do things (harvest, extract, organize, update)
@@ -224,6 +231,7 @@ When invoked without arguments: `/context`
 ```
 
 ### MVI Principle (Quick)
+
 - Core concept: 1-3 sentences
 - Key points: 3-5 bullets
 - Minimal example: <10 lines
@@ -231,6 +239,7 @@ When invoked without arguments: `/context`
 - File size: <200 lines
 
 ### Function-Based Structure (Quick)
+
 ```
 {category}/
 ├── navigation.md       # Navigation
@@ -246,12 +255,14 @@ When invoked without arguments: `/context`
 ## Examples
 
 ### Default (Quick Scan)
+
 ```bash
 /context
 # Scans workspace, suggests harvest if summaries found
 ```
 
 ### Harvest Summaries
+
 ```bash
 /context harvest
 /context harvest .tmp/
@@ -259,24 +270,28 @@ When invoked without arguments: `/context`
 ```
 
 ### Extract from Docs
+
 ```bash
 /context extract from docs/api.md
 /context extract from https://react.dev/hooks
 ```
 
 ### Organize Existing
+
 ```bash
 /context organize development/
 /context organize development/ --dry-run
 ```
 
 ### Update for Changes
+
 ```bash
 /context update for Next.js 15
 /context update for React 19 breaking changes
 ```
 
 ### Migrate Global to Local
+
 ```bash
 /context migrate
 # Copies project-intelligence from ~/.config/opencode/context/ to /Users/tim/.config/opencode/context/
@@ -288,6 +303,7 @@ When invoked without arguments: `/context`
 ## Success Criteria
 
 After any operation:
+
 - [ ] All files <200 lines? (@critical_rules.mvi_strict)
 - [ ] Function-based structure used? (@critical_rules.function_structure)
 - [ ] Approval UI shown for destructive ops? (@critical_rules.approval_gate)
@@ -302,6 +318,7 @@ After any operation:
 **Context System Location**: `/Users/tim/.config/opencode/context/core/context-system/`
 
 **Structure**:
+
 - `operations/` - Detailed operation workflows
 - `standards/` - MVI, structure, templates
 - `guides/` - Interactive examples, creation standards

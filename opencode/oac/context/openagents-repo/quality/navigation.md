@@ -18,11 +18,11 @@ openagents-repo/quality/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **View quality docs** | `./` |
-| **Guides** | `../guides/navigation.md` |
-| **Errors** | `../errors/navigation.md` |
+| Task                  | Path                      |
+| --------------------- | ------------------------- |
+| **View quality docs** | `./`                      |
+| **Guides**            | `../guides/navigation.md` |
+| **Errors**            | `../errors/navigation.md` |
 
 ---
 

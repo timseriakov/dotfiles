@@ -20,11 +20,11 @@ openagents-repo/plugins/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **Context plugin** | `./context/` |
-| **View plugins** | `./` |
-| **Guides** | `../guides/navigation.md` |
+| Task               | Path                      |
+| ------------------ | ------------------------- |
+| **Context plugin** | `./context/`              |
+| **View plugins**   | `./`                      |
+| **Guides**         | `../guides/navigation.md` |
 
 ---
 

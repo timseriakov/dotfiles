@@ -9,26 +9,29 @@
 ---
 
 ## Workflow Definition
+
 ```typescript
 export const documentIngestionWorkflow = createWorkflow({
-  id: 'document-ingestion',
+  id: "document-ingestion",
   inputSchema: z.object({ filename: z.string(), fileBuffer: z.any() }),
   outputSchema: z.object({ documentId: z.string(), success: z.boolean() }),
 })
-  .then(uploadStep)      // Step 1: Upload
-  .then(extractionStep)  // Step 2: Extract Text
-  .parallel([            // Step 3: Process in parallel
+  .then(uploadStep) // Step 1: Upload
+  .then(extractionStep) // Step 2: Extract Text
+  .parallel([
+    // Step 3: Process in parallel
     classificationStep,
-    summarizationStep
+    summarizationStep,
   ])
   .then(mergeResultsStep) // Step 4: Merge
   .commit();
 ```
 
 ## Step Execution
+
 ```typescript
 const uploadStep = createStep({
-  id: 'upload-document',
+  id: "upload-document",
   execute: async ({ inputData, mastra }) => {
     const result = await documentUploadTool.execute(inputData, { mastra });
     return result;
@@ -38,5 +41,6 @@ const uploadStep = createStep({
 
 **Reference**: `src/mastra/workflows/document-ingestion-with-classification-workflow.ts`
 **Related**:
+
 - concepts/workflows.md
 - concepts/agents-tools.md

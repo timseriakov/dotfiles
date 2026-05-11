@@ -1,4 +1,5 @@
 <!-- Context: workflows/design-iteration-stage-layout | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Stage 1: Layout Design
 
 **Purpose**: Define the structure and component hierarchy before visual design
@@ -90,6 +91,7 @@ Mobile (< 768px):
 ## Best Practices
 
 ✅ **Do**:
+
 - Use ASCII wireframes for clarity
 - Break down into component hierarchy
 - Plan responsive behavior upfront
@@ -97,6 +99,7 @@ Mobile (< 768px):
 - Get approval before proceeding
 
 ❌ **Don't**:
+
 - Skip wireframing and jump to code
 - Ignore responsive considerations
 - Proceed without user approval

@@ -20,6 +20,7 @@
 ### 1. Identify Atomic Boundaries
 
 Break feature into tasks that are:
+
 - Completable in 1-2 hours
 - Have single, clear outcome
 - Testable independently
@@ -33,6 +34,7 @@ Break feature into tasks that are:
 ### 2. Map Dependencies
 
 For each task, ask:
+
 - What must exist before this can start?
 - What files/APIs does this need?
 
@@ -47,11 +49,13 @@ For each task, ask:
 ### 3. Identify Parallel Tasks
 
 Mark `parallel: true` when:
+
 - Task doesn't modify shared files
 - Task doesn't depend on runtime state from other tasks
 - Multiple agents could work simultaneously
 
 Example parallel tasks:
+
 - Writing independent unit tests
 - Creating isolated utility functions
 - Documentation for separate features
@@ -61,6 +65,7 @@ Example parallel tasks:
 ### 4. Define Acceptance Criteria
 
 Binary pass/fail conditions only:
+
 - "JWT tokens signed with RS256" ✓
 - "Tests pass" ✓
 - "Code is clean" ✗ (subjective)
@@ -70,6 +75,7 @@ Binary pass/fail conditions only:
 ### 5. Specify Deliverables
 
 Concrete files/endpoints:
+
 - `src/auth/hash.ts`
 - `POST /api/login`
 - `tests/auth.test.ts`
@@ -79,6 +85,7 @@ Concrete files/endpoints:
 ### 6. Reference Context Files
 
 Don't embed descriptions. Reference paths:
+
 ```json
 "context_files": [
   "(example: /Users/tim/.config/opencode/context/development/backend/auth/jwt-patterns.md)"
@@ -99,12 +106,12 @@ Don't embed descriptions. Reference paths:
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Task too big | Split into 2-3 smaller tasks |
-| Circular deps | Re-order or merge tasks |
-| Missing deps | Run `task-cli.ts validate` |
-| Vague criteria | Make binary pass/fail |
+| Mistake        | Fix                          |
+| -------------- | ---------------------------- |
+| Task too big   | Split into 2-3 smaller tasks |
+| Circular deps  | Re-order or merge tasks      |
+| Missing deps   | Run `task-cli.ts validate`   |
+| Vague criteria | Make binary pass/fail        |
 
 ---
 

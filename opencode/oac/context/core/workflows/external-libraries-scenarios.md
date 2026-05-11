@@ -1,4 +1,5 @@
 <!-- Context: workflows/external-libraries-scenarios | Priority: medium | Version: 1.0 | Updated: 2026-02-05 -->
+
 # External Libraries: Common Scenarios
 
 **Purpose**: Real-world examples of using ExternalScout
@@ -10,6 +11,7 @@
 **Example**: Next.js app with Drizzle + Better Auth
 
 **Process:**
+
 1. Check install scripts: `ls scripts/install/`
 2. Identify packages: Next.js, Drizzle ORM, Better Auth
 3. ExternalScout for each package
@@ -19,6 +21,7 @@
 7. Test integration points
 
 **ExternalScout calls:**
+
 ```javascript
 // Drizzle ORM
 task(
@@ -46,6 +49,7 @@ task(
 **Example**: `Error: Cannot find module 'drizzle-orm/pg-core'`
 
 **Process:**
+
 1. Identify package: Drizzle ORM
 2. ExternalScout: "Fetch Drizzle docs: PostgreSQL imports"
 3. Check current import patterns
@@ -60,6 +64,7 @@ task(
 **Example**: Setting up TanStack Query in Next.js
 
 **Process:**
+
 1. Check install scripts
 2. ExternalScout: "Fetch TanStack Query docs: Next.js App Router setup"
 3. Get: Install steps | Peer deps | Config | Patterns
@@ -74,6 +79,7 @@ task(
 **Example**: Next.js 14 → 15
 
 **Process:**
+
 1. ExternalScout: "Fetch Next.js 15 docs: Breaking changes and migration"
 2. Review breaking changes
 3. Identify affected code
@@ -115,12 +121,12 @@ task(
 
 ## Error Handling Patterns
 
-| Error Type | Process |
-|------------|---------|
+| Error Type               | Process                                                                          |
+| ------------------------ | -------------------------------------------------------------------------------- |
 | **Package Installation** | ExternalScout: installation docs → Verify package name/version → Check peer deps |
-| **Import/Module** | ExternalScout: import patterns → Check current API exports |
-| **API/Configuration** | ExternalScout: API docs → Check current signatures |
-| **Build Errors** | Identify package → ExternalScout: relevant docs → Check known issues |
+| **Import/Module**        | ExternalScout: import patterns → Check current API exports                       |
+| **API/Configuration**    | ExternalScout: API docs → Check current signatures                               |
+| **Build Errors**         | Identify package → ExternalScout: relevant docs → Check known issues             |
 
 ---
 

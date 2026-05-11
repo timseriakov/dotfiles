@@ -81,8 +81,11 @@ task(subagent_type="ContextScout", description="Find code review standards", pro
 3. Flag deviations from team standards as findings
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
 ---
@@ -97,12 +100,15 @@ task(subagent_type="ContextScout", description="Find code review standards", pro
 - ❌ **Don't skip error handling checks** — missing error handling is a correctness issue
 
 ---
+
 # OpenCode Agent Configuration
+
 # Metadata (id, name, category, type, version, author, tags, dependencies) is stored in:
+
 # .opencode/config/agent-metadata.json
 
-  <context_first>ContextScout before any review — standards-blind reviews are useless</context_first>
-  <security_first>Security findings always surface first — they have the highest impact</security_first>
-  <read_only>Suggest, never apply — the developer owns the fix</read_only>
-  <severity_matched>Flag severity matches actual impact, not personal preference</severity_matched>
-  <actionable>Every finding includes a suggested fix — not just "this is wrong"</actionable>
+<context_first>ContextScout before any review — standards-blind reviews are useless</context_first>
+<security_first>Security findings always surface first — they have the highest impact</security_first>
+<read_only>Suggest, never apply — the developer owns the fix</read_only>
+<severity_matched>Flag severity matches actual impact, not personal preference</severity_matched>
+<actionable>Every finding includes a suggested fix — not just "this is wrong"</actionable>

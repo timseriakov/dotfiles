@@ -9,9 +9,11 @@
 ---
 
 ## Core Idea
+
 Errors in Mastra typically fall into three categories: AI generation failures, structured output validation errors, and context/resource missing errors.
 
 ## Key Points
+
 - **AIGenerationError**: Occurs when the LLM fails to generate a response (e.g., safety filters, model downtime).
 - **StructuredOutputError**: Triggered when the LLM response doesn't match the Zod schema defined in the tool or step.
 - **RateLimitError**: Hit when exceeding provider limits. Includes a `retryAfter` value.
@@ -20,14 +22,15 @@ Errors in Mastra typically fall into three categories: AI generation failures, s
 
 ## Common Errors Table
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `StructuredOutputError` | LLM hallucinated wrong JSON | Refine prompt or use simpler schema |
-| `RateLimitError` | Too many concurrent requests | Implement rate limiting or increase quota |
-| `NotFoundError` | Case or Document ID missing in DB | Check DB state before workflow start |
-| `MastraContextError` | `services` not passed to tool | Ensure `services` is in `ToolExecutionContext` |
+| Error                   | Cause                             | Fix                                            |
+| ----------------------- | --------------------------------- | ---------------------------------------------- |
+| `StructuredOutputError` | LLM hallucinated wrong JSON       | Refine prompt or use simpler schema            |
+| `RateLimitError`        | Too many concurrent requests      | Implement rate limiting or increase quota      |
+| `NotFoundError`         | Case or Document ID missing in DB | Check DB state before workflow start           |
+| `MastraContextError`    | `services` not passed to tool     | Ensure `services` is in `ToolExecutionContext` |
 
 **Reference**: `src/lib/errors.ts`
 **Related**:
+
 - concepts/core.md
 - guides/testing.md

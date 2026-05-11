@@ -18,6 +18,7 @@ OpenCode plugins are JavaScript or TypeScript modules that hook into **25+ event
 ## Plugin Registration
 
 OpenCode looks for plugins in:
+
 1. **Project-level**: `.opencode/plugin/` (project root)
 2. **Global**: `~/.config/opencode/plugin/` (home directory)
 
@@ -30,7 +31,7 @@ export const MyPlugin = async (context) => {
   return {
     event: async ({ event }) => {
       // Handle events here
-    }
+    },
   };
 };
 ```
@@ -42,6 +43,7 @@ Each exported function becomes a separate plugin instance. The name of the expor
 OpenCode plugins are typically written in TypeScript and bundled into a single JavaScript file for execution.
 
 ### Build Command
+
 Use Bun to bundle the plugin into the `dist` directory:
 
 ```bash
@@ -51,6 +53,7 @@ bun build src/index.ts --outdir dist --target bun --format esm
 The output will be a single file (e.g., `./index.js`) containing all dependencies.
 
 ### Development Workflow
+
 1. **Source Code**: Write your plugin in `src/index.ts`.
 2. **Bundle**: Run the build command to generate `dist/index.js`.
 3. **Load**: Point OpenCode to the bundled file or the directory containing the manifest.

@@ -21,11 +21,13 @@ dependencies:
 ## What It Does
 
 Validates consistency between:
+
 1. **Actual usage** - Context files referenced in agent prompts
 2. **Declared dependencies** - Dependencies in agent frontmatter
 3. **Registry entries** - Dependencies in registry.json
 
 **Identifies**:
+
 - ✅ Missing dependency declarations (agents use context but don't declare it)
 - ✅ Unused context files (exist but no agent references them)
 - ✅ Broken references (referenced but don't exist)
@@ -228,16 +230,19 @@ Validates consistency between:
 ### Search Patterns
 
 **Find direct path references**:
+
 ```bash
 grep -rn "\/Users/tim/.config/opencode/context/" .opencode/agent/ .opencode/command/
 ```
 
 **Find @ references**:
+
 ```bash
 grep -rn "@\/Users/tim/.config/opencode/context/" .opencode/agent/ .opencode/command/
 ```
 
 **Find dependency declarations**:
+
 ```bash
 grep -rn "^\s*-\s*context:" .opencode/agent/ .opencode/command/
 ```
@@ -245,11 +250,13 @@ grep -rn "^\s*-\s*context:" .opencode/agent/ .opencode/command/
 ### Path Normalization
 
 **Convert to dependency format**:
+
 - `/Users/tim/.config/opencode/context/core/standards/code-quality.md` → `context:core/standards/code`
 - `@/Users/tim/.config/opencode/context/openagents-repo/quick-start.md` → `context:openagents-repo/quick-start`
 - `context/core/standards/code` → `context:core/standards/code`
 
 **Rules**:
+
 1. Strip `.opencode/` prefix
 2. Strip `.md` extension
 3. Add `context:` prefix for dependencies
@@ -257,11 +264,13 @@ grep -rn "^\s*-\s*context:" .opencode/agent/ .opencode/command/
 ### Registry Lookup
 
 **Check if context file is in registry**:
+
 ```bash
 jq '.components.contexts[] | select(.id == "core/standards/code")' registry.json
 ```
 
 **Get agent dependencies**:
+
 ```bash
 jq '.components.agents[] | select(.id == "opencoder") | .dependencies[]?' registry.json
 ```
@@ -274,9 +283,9 @@ This command delegates to an analysis agent to perform the work:
 
 ```javascript
 task(
-  subagent_type="PatternAnalyst",
-  description="Analyze context dependencies",
-  prompt=`
+  (subagent_type = "PatternAnalyst"),
+  (description = "Analyze context dependencies"),
+  (prompt = `
     Analyze context file usage across all agents in this repository.
     
     TASK:
@@ -306,21 +315,33 @@ task(
        - Missing context files (referenced but don't exist)
        - Context file usage map (which agents use which files)
     
-    ${ARGUMENTS.includes('--fix') ? `
+    ${
+      ARGUMENTS.includes("--fix")
+        ? `
     6. AUTO-FIX MODE:
        - Update agent frontmatter to add missing context dependencies
        - Use format: context:core/standards/code
        - Preserve existing dependencies
        - Show what was changed
-    ` : ''}
+    `
+        : ""
+    }
     
-    ${ARGUMENTS.includes('--verbose') ? `
+    ${
+      ARGUMENTS.includes("--verbose")
+        ? `
     VERBOSE MODE: Include all reference locations (file:line) in report
-    ` : ''}
+    `
+        : ""
+    }
     
-    ${ARGUMENTS.length > 0 && !ARGUMENTS.includes('--') ? `
+    ${
+      ARGUMENTS.length > 0 && !ARGUMENTS.includes("--")
+        ? `
     FILTER: Only analyze agent: ${ARGUMENTS[0]}
-    ` : ''}
+    `
+        : ""
+    }
     
     REPORT FORMAT:
     - Summary statistics
@@ -331,8 +352,8 @@ task(
     
     DO NOT make changes without --fix flag.
     ALWAYS show what would be changed before applying fixes.
-  `
-)
+  `),
+);
 ```
 
 ---
@@ -346,6 +367,7 @@ task(
 ```
 
 **Output**:
+
 ```
 Analyzing context file usage across 25 agents...
 
@@ -365,6 +387,7 @@ Run /check-context-deps --fix to auto-update frontmatter
 ```
 
 **Output**:
+
 ```
 Analyzing agent: contextscout
 
@@ -389,6 +412,7 @@ All dependencies properly declared ✅
 ```
 
 **Output**:
+
 ```
 Analyzing and fixing context dependencies...
 

@@ -20,8 +20,8 @@ frameworks/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
+| Task               | Path                           |
+| ------------------ | ------------------------------ |
 | **Tanstack Start** | `tanstack-start/navigation.md` |
 
 ---

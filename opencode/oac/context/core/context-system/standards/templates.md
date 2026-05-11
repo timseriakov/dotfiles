@@ -8,64 +8,77 @@
 
 ## Template Selection
 
-| Type | Max Lines | Required Sections |
-|------|-----------|-------------------|
-| Concept | 100 | Purpose, Core Idea (1-3 sentences), Key Points (3-5), Example (<10 lines), Reference, Related |
-| Example | 80 | Purpose, Use Case, Code (10-30 lines), Explanation, Related |
-| Guide | 150 | Purpose, Prerequisites, Steps (4-7), Verification, Related |
-| Lookup | 100 | Purpose, Tables/Lists, Commands, Related |
-| Error | 150 | Purpose, Per-error: Symptom, Cause, Solution, Prevention, Reference, Related |
-| README | 100 | Purpose, Navigation tables (all 5 folders), Loading Strategy, Statistics |
+| Type    | Max Lines | Required Sections                                                                             |
+| ------- | --------- | --------------------------------------------------------------------------------------------- |
+| Concept | 100       | Purpose, Core Idea (1-3 sentences), Key Points (3-5), Example (<10 lines), Reference, Related |
+| Example | 80        | Purpose, Use Case, Code (10-30 lines), Explanation, Related                                   |
+| Guide   | 150       | Purpose, Prerequisites, Steps (4-7), Verification, Related                                    |
+| Lookup  | 100       | Purpose, Tables/Lists, Commands, Related                                                      |
+| Error   | 150       | Purpose, Per-error: Symptom, Cause, Solution, Prevention, Reference, Related                  |
+| README  | 100       | Purpose, Navigation tables (all 5 folders), Loading Strategy, Statistics                      |
 
 ---
 
 ## 1. Concept Template
 
-```markdown
+````markdown
 <!-- Context: {category}/concepts | Priority: {critical|high|medium|low} | Version: 1.0 | Updated: YYYY-MM-DD -->
+
 # Concept: {Name}
 
 **Purpose**: [1 sentence]
 **Last Updated**: {YYYY-MM-DD}
 
 ## Core Idea
+
 [1-3 sentences]
 
 ## Key Points
+
 - Point 1
 - Point 2
 - Point 3
 
 ## When to Use
+
 - Use case 1
 - Use case 2
 
 ## Quick Example
+
 ```lang
 [<10 lines]
 ```
+````
 
 ## 📂 Codebase References
 
 **Business Logic** (if business domain):
+
 - `path/to/rules.ts` - {3-10 word description}
 
 **Implementation**:
+
 - `path/to/main.ts` - {3-10 word description}
 
 **Models/Types**:
+
 - `path/to/model.ts` - {3-10 word description}
 
 **Tests**:
+
 - `path/to/test.ts` - {3-10 word description}
 
 ## Deep Dive
+
 **Reference**: [Link or "See implementation above"]
 
 ## Related
+
 - concepts/x.md
 - examples/y.md
-```
+
+````
 
 ---
 
@@ -84,31 +97,38 @@
 ## Code
 ```lang
 [10-30 lines]
-```
+````
 
 ## Explanation
+
 1. Step 1
 2. Step 2
 3. Step 3
 
 **Key points**:
+
 - Detail 1
 - Detail 2
 
 ## 📂 Codebase References
 
 **Full Implementation**:
+
 - `path/to/real-implementation.ts` - {Production version}
 
 **Related Code**:
+
 - `path/to/helper.ts` - {Helper utilities}
 
 **Tests**:
+
 - `path/to/test.ts` - {Tests demonstrating pattern}
 
 ## Related
+
 - concepts/x.md
-```
+
+````
 
 ---
 
@@ -132,14 +152,17 @@
 ### 1. {Step}
 ```bash
 {command}
-```
+````
+
 **Expected**: [result]
 **Implementation**: `path/to/step.ts`
 
 ### 2. {Step}
+
 [Repeat 4-7 steps]
 
 ## Verification
+
 ```bash
 {verify command}
 ```
@@ -147,25 +170,32 @@
 ## 📂 Codebase References
 
 **Workflow Orchestration**:
+
 - `path/to/workflow.ts` - {Main workflow coordinator}
 
 **Business Logic** (if applicable):
+
 - `path/to/rules.ts` - {Process validation rules}
 
 **Integration Points**:
+
 - `path/to/api-client.ts` - {External integration}
 
 **Tests**:
+
 - `path/to/workflow.test.ts` - {End-to-end tests}
 
 ## Troubleshooting
-| Issue | Solution |
-|-------|----------|
-| Problem | Fix |
+
+| Issue   | Solution |
+| ------- | -------- |
+| Problem | Fix      |
 
 ## Related
+
 - concepts/x.md
-```
+
+````
 
 ---
 
@@ -187,9 +217,10 @@
 ```bash
 # Description
 {command}
-```
+````
 
 ## Paths
+
 ```
 {path} - {desc}
 ```
@@ -197,17 +228,22 @@
 ## 📂 Codebase References
 
 **Validation/Enforcement**:
+
 - `path/to/validator.ts` - {Validation logic}
 
 **Configuration**:
+
 - `path/to/config.ts` - {Configuration settings}
 
 **Tests**:
+
 - `path/to/test.ts` - {Validation tests}
 
 ## Related
+
 - concepts/x.md
-```
+
+````
 
 ---
 
@@ -223,9 +259,11 @@
 ## Error: {Name}
 
 **Symptom**:
-```
+````
+
 {error message}
-```
+
+````
 
 **Cause**: [1-2 sentences]
 
@@ -240,12 +278,13 @@
 
 // ✅ After
 {fixed}
-```
+````
 
 **Prevention**: [how to avoid]
 **Frequency**: common/occasional/rare
 
 **Code References**:
+
 - Error thrown: `path/to/error-source.ts`
 - Error handler: `path/to/error-handler.ts`
 - Prevention: `path/to/validator.ts`
@@ -257,20 +296,26 @@
 ## 📂 Codebase References
 
 **Error Definitions**:
+
 - `path/to/error-types.ts` - {Error class definitions}
 
 **Error Handling**:
+
 - `path/to/error-handler.ts` - {Error handler}
 
 **Prevention Logic**:
+
 - `path/to/validator.ts` - {Validation preventing errors}
 
 **Tests**:
+
 - `path/to/error-handling.test.ts` - {Error handling tests}
 
 ## Related
+
 - concepts/x.md
-```
+
+````
 
 ---
 
@@ -289,12 +334,14 @@
 
 ## Structure
 
-```
+````
+
 {category}/
 ├── navigation.md
 ├── {subcategory}/
-│   ├── navigation.md
-│   └── {files}.md
+│ ├── navigation.md
+│ └── {files}.md
+
 ```
 
 ---
@@ -338,9 +385,10 @@
 ---
 
 ## Structure
-
 ```
+
 {Relevant directories across multiple categories}
+
 ```
 
 ---

@@ -42,14 +42,14 @@ development/backend/           # [future]
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
-| **REST API** | `backend/api-patterns/rest-design.md` [future] |
-| **GraphQL** | `backend/api-patterns/graphql-design.md` [future] |
-| **API design principles** | `principles/api-design.md` |
-| **Node.js** | `backend/nodejs/express-patterns.md` [future] |
-| **Python** | `backend/python/fastapi-patterns.md` [future] |
-| **Auth (JWT)** | `backend/authentication/jwt-patterns.md` [future] |
+| Task                      | Path                                              |
+| ------------------------- | ------------------------------------------------- |
+| **REST API**              | `backend/api-patterns/rest-design.md` [future]    |
+| **GraphQL**               | `backend/api-patterns/graphql-design.md` [future] |
+| **API design principles** | `principles/api-design.md`                        |
+| **Node.js**               | `backend/nodejs/express-patterns.md` [future]     |
+| **Python**                | `backend/python/fastapi-patterns.md` [future]     |
+| **Auth (JWT)**            | `backend/authentication/jwt-patterns.md` [future] |
 
 ---
 

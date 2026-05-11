@@ -1,4 +1,5 @@
 <!-- Context: development/design-systems | Priority: high | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Design Systems
 
 ## Overview
@@ -20,7 +21,8 @@ This context file provides reusable design system patterns, theme templates, and
 
 **Characteristics**: 90s web design aesthetic, bold borders, flat shadows, high contrast
 
-**Use Cases**: 
+**Use Cases**:
+
 - Retro/vintage applications
 - Bold, statement-making interfaces
 - Art/creative portfolios
@@ -31,65 +33,69 @@ This context file provides reusable design system patterns, theme templates, and
 ```css
 :root {
   /* Colors - High contrast, bold */
-  --background: oklch(1.0000 0 0);
+  --background: oklch(1 0 0);
   --foreground: oklch(0 0 0);
-  --card: oklch(1.0000 0 0);
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0 0 0);
-  --popover: oklch(1.0000 0 0);
+  --popover: oklch(1 0 0);
   --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0.6489 0.2370 26.9728);
-  --primary-foreground: oklch(1.0000 0 0);
-  --secondary: oklch(0.9680 0.2110 109.7692);
+  --primary: oklch(0.6489 0.237 26.9728);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.968 0.211 109.7692);
   --secondary-foreground: oklch(0 0 0);
   --muted: oklch(0.9551 0 0);
   --muted-foreground: oklch(0.3211 0 0);
   --accent: oklch(0.5635 0.2408 260.8178);
-  --accent-foreground: oklch(1.0000 0 0);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0 0 0);
-  --destructive-foreground: oklch(1.0000 0 0);
+  --destructive-foreground: oklch(1 0 0);
   --border: oklch(0 0 0);
   --input: oklch(0 0 0);
-  --ring: oklch(0.6489 0.2370 26.9728);
-  
+  --ring: oklch(0.6489 0.237 26.9728);
+
   /* Chart colors */
-  --chart-1: oklch(0.6489 0.2370 26.9728);
-  --chart-2: oklch(0.9680 0.2110 109.7692);
+  --chart-1: oklch(0.6489 0.237 26.9728);
+  --chart-2: oklch(0.968 0.211 109.7692);
   --chart-3: oklch(0.5635 0.2408 260.8178);
   --chart-4: oklch(0.7323 0.2492 142.4953);
   --chart-5: oklch(0.5931 0.2726 328.3634);
-  
+
   /* Sidebar */
   --sidebar: oklch(0.9551 0 0);
   --sidebar-foreground: oklch(0 0 0);
-  --sidebar-primary: oklch(0.6489 0.2370 26.9728);
-  --sidebar-primary-foreground: oklch(1.0000 0 0);
+  --sidebar-primary: oklch(0.6489 0.237 26.9728);
+  --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.5635 0.2408 260.8178);
-  --sidebar-accent-foreground: oklch(1.0000 0 0);
+  --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0 0 0);
-  --sidebar-ring: oklch(0.6489 0.2370 26.9728);
-  
+  --sidebar-ring: oklch(0.6489 0.237 26.9728);
+
   /* Typography */
   --font-sans: DM Sans, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: Space Mono, monospace;
-  
+
   /* Border radius - Sharp corners */
   --radius: 0px;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
+
   /* Shadows - Bold, offset shadows */
-  --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-  --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.50);
-  --shadow-sm: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-  --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 1px 2px -1px hsl(0 0% 0% / 1.00);
-  --shadow-md: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 2px 4px -1px hsl(0 0% 0% / 1.00);
-  --shadow-lg: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 4px 6px -1px hsl(0 0% 0% / 1.00);
-  --shadow-xl: 4px 4px 0px 0px hsl(0 0% 0% / 1.00), 4px 8px 10px -1px hsl(0 0% 0% / 1.00);
-  --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.50);
-  
+  --shadow-2xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+  --shadow-xs: 4px 4px 0px 0px hsl(0 0% 0% / 0.5);
+  --shadow-sm:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+  --shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 1px 2px -1px hsl(0 0% 0% / 1);
+  --shadow-md:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 2px 4px -1px hsl(0 0% 0% / 1);
+  --shadow-lg:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 4px 6px -1px hsl(0 0% 0% / 1);
+  --shadow-xl:
+    4px 4px 0px 0px hsl(0 0% 0% / 1), 4px 8px 10px -1px hsl(0 0% 0% / 1);
+  --shadow-2xl: 4px 4px 0px 0px hsl(0 0% 0% / 2.5);
+
   /* Spacing */
   --tracking-normal: 0em;
   --spacing: 0.25rem;
@@ -103,6 +109,7 @@ This context file provides reusable design system patterns, theme templates, and
 **Characteristics**: Clean, minimal, professional (Vercel/Linear aesthetic)
 
 **Use Cases**:
+
 - SaaS applications
 - Developer tools
 - Professional dashboards
@@ -115,64 +122,73 @@ This context file provides reusable design system patterns, theme templates, and
 :root {
   /* Colors - Subtle, professional */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.1450 0 0);
+  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.1450 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.1450 0 0);
-  --primary: oklch(0.2050 0 0);
-  --primary-foreground: oklch(0.9850 0 0);
-  --secondary: oklch(0.9700 0 0);
-  --secondary-foreground: oklch(0.2050 0 0);
-  --muted: oklch(0.9700 0 0);
-  --muted-foreground: oklch(0.5560 0 0);
-  --accent: oklch(0.9700 0 0);
-  --accent-foreground: oklch(0.2050 0 0);
-  --destructive: oklch(0.5770 0.2450 27.3250);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.9220 0 0);
-  --input: oklch(0.9220 0 0);
-  --ring: oklch(0.7080 0 0);
-  
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
   /* Chart colors - Monochromatic blues */
-  --chart-1: oklch(0.8100 0.1000 252);
-  --chart-2: oklch(0.6200 0.1900 260);
-  --chart-3: oklch(0.5500 0.2200 263);
-  --chart-4: oklch(0.4900 0.2200 264);
-  --chart-5: oklch(0.4200 0.1800 266);
-  
+  --chart-1: oklch(0.81 0.1 252);
+  --chart-2: oklch(0.62 0.19 260);
+  --chart-3: oklch(0.55 0.22 263);
+  --chart-4: oklch(0.49 0.22 264);
+  --chart-5: oklch(0.42 0.18 266);
+
   /* Sidebar */
-  --sidebar: oklch(0.9850 0 0);
-  --sidebar-foreground: oklch(0.1450 0 0);
-  --sidebar-primary: oklch(0.2050 0 0);
-  --sidebar-primary-foreground: oklch(0.9850 0 0);
-  --sidebar-accent: oklch(0.9700 0 0);
-  --sidebar-accent-foreground: oklch(0.2050 0 0);
-  --sidebar-border: oklch(0.9220 0 0);
-  --sidebar-ring: oklch(0.7080 0 0);
-  
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
   /* Typography - System fonts */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
   /* Border radius - Rounded */
   --radius: 0.625rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
+
   /* Shadows - Subtle, soft */
   --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+  --shadow-sm:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl:
+    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  
+
   /* Spacing */
   --tracking-normal: 0em;
   --spacing: 0.25rem;
@@ -186,6 +202,7 @@ This context file provides reusable design system patterns, theme templates, and
 ### Recommended Font Families
 
 **Monospace Fonts** (Code, technical interfaces):
+
 - JetBrains Mono
 - Fira Code
 - Source Code Pro
@@ -195,6 +212,7 @@ This context file provides reusable design system patterns, theme templates, and
 - Geist Mono
 
 **Sans-Serif Fonts** (UI, body text):
+
 - Inter
 - Roboto
 - Open Sans
@@ -207,10 +225,12 @@ This context file provides reusable design system patterns, theme templates, and
 - Space Grotesk
 
 **Display/Decorative Fonts**:
+
 - Oxanium
 - Architects Daughter
 
 **Serif Fonts** (Editorial, formal):
+
 - Merriweather
 - Playfair Display
 - Lora
@@ -222,9 +242,12 @@ This context file provides reusable design system patterns, theme templates, and
 Always use Google Fonts for consistency and reliability:
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 ---
@@ -234,6 +257,7 @@ Always use Google Fonts for consistency and reliability:
 ### OKLCH Color Space
 
 Use OKLCH for perceptually uniform colors:
+
 - **L** (Lightness): 0-1 (0 = black, 1 = white)
 - **C** (Chroma): 0-0.4 (saturation)
 - **H** (Hue): 0-360 (color angle)
@@ -277,13 +301,15 @@ Shadows create depth and hierarchy:
 ### Shadow Styles
 
 **Soft Shadows** (Modern):
+
 ```css
-box-shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10);
+box-shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1);
 ```
 
 **Hard Shadows** (Neo-brutalism):
+
 ```css
-box-shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1.00);
+box-shadow: 4px 4px 0px 0px hsl(0 0% 0% / 1);
 ```
 
 ---
@@ -332,6 +358,7 @@ Use `--spacing: 0.25rem` (4px) as base unit
 ### When to Use Each Theme
 
 **Neo-Brutalism**:
+
 - ✅ Creative/artistic projects
 - ✅ Retro/vintage aesthetics
 - ✅ Bold, statement-making designs
@@ -339,6 +366,7 @@ Use `--spacing: 0.25rem` (4px) as base unit
 - ❌ Accessibility-critical interfaces
 
 **Modern Dark Mode**:
+
 - ✅ SaaS applications
 - ✅ Developer tools
 - ✅ Professional dashboards

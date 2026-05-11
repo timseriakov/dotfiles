@@ -31,12 +31,14 @@ Status: in_progress
 ## Relevant Standards (Load These Before Starting)
 
 **Core Standards**:
+
 - `/Users/tim/.config/opencode/context/core/standards/code.md` → Modular, functional code patterns
 - `/Users/tim/.config/opencode/context/core/standards/tests.md` → Testing requirements and TDD
 - `/Users/tim/.config/opencode/context/core/standards/docs.md` → Documentation standards
 - (example: `/Users/tim/.config/opencode/context/core/standards/patterns.md`) → Error handling, security patterns
 
 **Core Workflows**:
+
 - (example: `/Users/tim/.config/opencode/context/core/workflows/delegation.md`) → Delegation process
 - (example: `/Users/tim/.config/opencode/context/core/workflows/task-breakdown.md`) → Task breakdown methodology
 - (example: `/Users/tim/.config/opencode/context/core/workflows/review.md`) → Code review guidelines
@@ -44,21 +46,25 @@ Status: in_progress
 ## Repository-Specific Context (Load These Before Starting)
 
 **Quick Start** (ALWAYS load first):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/quick-start.md` → Repo orientation and common commands
 
 **Core Concepts** (Load based on task type):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/agents.md` → How agents work
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/evals.md` → How testing works
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/registry.md` → How registry works
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/categories.md` → How organization works
 
 **Guides** (Load for specific workflows):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/adding-agent-basics.md` → Step-by-step agent creation
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/testing-agent.md` → Testing workflow
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/updating-registry.md` → Registry workflow
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/debugging.md` → Troubleshooting
 
 **Lookup** (Quick reference):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/lookup/file-locations.md` → Where everything is
 - `/Users/tim/.config/opencode/context/openagents-repo/lookup/commands.md` → Command reference
 
@@ -67,20 +73,24 @@ Status: in_progress
 {Extract key requirements from loaded context}
 
 **From Standards**:
+
 - {requirement 1 from standards/code.md}
 - {requirement 2 from standards/tests.md}
 - {requirement 3 from standards/docs.md}
 
 **From Repository Context**:
+
 - {requirement 1 from repo context}
 - {requirement 2 from repo context}
 - {requirement 3 from repo context}
 
 **Naming Conventions**:
+
 - {convention 1}
 - {convention 2}
 
 **File Structure**:
+
 - {structure requirement 1}
 - {structure requirement 2}
 
@@ -97,10 +107,12 @@ Status: in_progress
 {List all files that need to be created or modified}
 
 **Create**:
+
 - `{file-path-1}` - {purpose and what it should contain}
 - `{file-path-2}` - {purpose and what it should contain}
 
 **Modify**:
+
 - `{file-path-3}` - {what needs to be changed}
 - `{file-path-4}` - {what needs to be changed}
 
@@ -118,14 +130,17 @@ Status: in_progress
 {How to validate the work}
 
 **Scripts to Run**:
+
 - `{validation-script-1}` - {what it validates}
 - `{validation-script-2}` - {what it validates}
 
 **Tests to Run**:
+
 - `{test-command-1}` - {what it tests}
 - `{test-command-2}` - {what it tests}
 
 **Manual Checks**:
+
 - {check 1}
 - {check 2}
 
@@ -134,10 +149,12 @@ Status: in_progress
 {What the subagent should produce}
 
 **Deliverables**:
+
 - {deliverable 1}
 - {deliverable 2}
 
 **Format**:
+
 - {format requirement 1}
 - {format requirement 2}
 
@@ -158,7 +175,8 @@ Status: in_progress
 
 {Specific, detailed instructions for the subagent}
 
-**IMPORTANT**: 
+**IMPORTANT**:
+
 1. Load ALL context files listed in "Relevant Standards" and "Repository-Specific Context" sections BEFORE starting work
 2. Follow ALL requirements from the loaded context
 3. Apply naming conventions and file structure requirements
@@ -185,6 +203,7 @@ Status: in_progress
 ### When to Create a Context Bundle
 
 Create a context bundle when:
+
 - Delegating to any subagent
 - Task requires coordination across multiple components
 - Subagent needs project-specific context
@@ -193,11 +212,13 @@ Create a context bundle when:
 ### How to Create a Context Bundle
 
 1. **Create session directory**:
+
    ```bash
    mkdir -p .tmp/context/{session-id}
    ```
 
 2. **Copy template**:
+
    ```bash
    cp /Users/tim/.config/opencode/context/openagents-repo/templates/context-bundle-template.md \
       .tmp/context/{session-id}/bundle.md
@@ -211,14 +232,15 @@ Create a context bundle when:
    - Provide specific instructions
 
 4. **Pass to subagent**:
+
    ```javascript
    task(
      subagent_type="subagents/core/{subagent}",
      description="Brief description",
      prompt="Load context from .tmp/context/{session-id}/bundle.md before starting.
-             
+
              {Specific task instructions}
-             
+
              Follow all standards and requirements in the context bundle."
    )
    ```
@@ -226,6 +248,7 @@ Create a context bundle when:
 ### Best Practices
 
 **DO**:
+
 - ✅ List context files with full paths (don't duplicate content)
 - ✅ Extract key requirements from loaded context
 - ✅ Define binary success criteria (pass/fail)
@@ -234,6 +257,7 @@ Create a context bundle when:
 - ✅ Track progress through the task
 
 **DON'T**:
+
 - ❌ Duplicate full context file content (just reference paths)
 - ❌ Use vague success criteria ("make it good")
 - ❌ Skip validation requirements

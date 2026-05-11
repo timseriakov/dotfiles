@@ -8,18 +8,19 @@
 
 ## Quick Reference
 
-| Action | Do This |
-|--------|---------|
-| Update existing file | Edit + bump frontmatter version |
-| Add new file | Create `.md` + add to navigation.md |
-| Add subfolder | Create folder + `navigation.md` + update parent nav |
-| Remove file | Rename `.deprecated.md` + archive, don't delete |
+| Action               | Do This                                             |
+| -------------------- | --------------------------------------------------- |
+| Update existing file | Edit + bump frontmatter version                     |
+| Add new file         | Create `.md` + add to navigation.md                 |
+| Add subfolder        | Create folder + `navigation.md` + update parent nav |
+| Remove file          | Rename `.deprecated.md` + archive, don't delete     |
 
 ---
 
 ## Update Existing Files
 
 **When**:
+
 - Business changes → Update `business-domain.md`
 - New decision → Add to `decisions-log.md`
 - New issues → Update `living-notes.md`
@@ -27,6 +28,7 @@
 - Stack changes → Update `technical-domain.md`
 
 **Process**:
+
 1. Edit the file
 2. Update frontmatter:
    ```html
@@ -40,38 +42,29 @@
 ## Add New Files
 
 **When**:
+
 - New domain area needs dedicated docs
 - Existing file exceeds 200 lines
 - Specialized context requires separation
 
 **Naming**:
+
 - Kebab-case: `user-research.md`, `api-docs.md`
 - Descriptive: filename tells you what's inside
 
 **Template**:
+
 ```html
 <!-- Context: project-intelligence/{filename} | Priority: {high|medium} | Version: 1.0 | Updated: {YYYY-MM-DD} -->
 
-# File Title
-
-> One-line purpose statement
-
-## Quick Reference
-
-- **Purpose**: [What this covers]
-- **Update When**: [Triggers]
-- **Related Files**: [Links]
-
-## Content
-
-[Follow patterns from existing files]
-
-## Related Files
-
-- [File 1] - [Description]
+# File Title > One-line purpose statement ## Quick Reference - **Purpose**:
+[What this covers] - **Update When**: [Triggers] - **Related Files**: [Links] ##
+Content [Follow patterns from existing files] ## Related Files - [File 1] -
+[Description]
 ```
 
 **Process**:
+
 1. Create file in `project-intelligence/`
 2. Add frontmatter with `project-intelligence/{filename}`
 3. Follow existing file patterns
@@ -83,11 +76,13 @@
 ## Create Subfolders
 
 **When**:
+
 - 5+ related files need grouping
 - Subdomain warrants separation (e.g., `api/`, `mobile/`, `integrations/`)
 - Improves navigation clarity
 
 **Structure**:
+
 ```
 project-intelligence/
 ├── navigation.md           # Root nav
@@ -98,21 +93,17 @@ project-intelligence/
 ```
 
 **Process**:
+
 1. Create folder: `mkdir project-intelligence/{name}/`
 2. Create `navigation.md` inside:
+
    ```html
    <!-- Context: project-intelligence/{name}/nav | Priority: medium | Version: 1.0 | Updated: {YYYY-MM-DD} -->
-   
-   # {Name} Navigation
-   
-   > Quick overview
-   
-   ## Files
-   
-   | File | Purpose |
-   |------|---------|
-   | `file-1.md` | [Desc] |
+
+   # {Name} Navigation > Quick overview ## Files | File | Purpose |
+   |------|---------| | `file-1.md` | [Desc] |
    ```
+
 3. Add content files
 4. Update root `navigation.md` with subfolder entry
 
@@ -123,11 +114,13 @@ project-intelligence/
 ## Remove/Deprecate Files
 
 **When**:
+
 - Content moved elsewhere
 - File no longer relevant
 - Merged with another file
 
 **Process**:
+
 1. Rename: `filename.md` → `filename.deprecated.md`
 2. Add frontmatter:
    ```html
@@ -139,6 +132,7 @@ project-intelligence/
 4. Mark as deprecated in `navigation.md`
 
 **Never Delete**:
+
 - Decision history (archive instead)
 - Lessons learned (move to `living-notes.md`)
 - Context that might be needed later
@@ -148,6 +142,7 @@ project-intelligence/
 ## Version Tracking
 
 **Frontmatter**:
+
 ```html
 <!-- Context: {category} | Priority: {level} | Version: {MAJOR.MINOR} | Updated: {YYYY-MM-DD} -->
 ```
@@ -167,10 +162,12 @@ project-intelligence/
 ## Quality Standards
 
 **Line Limits**:
+
 - Files: <200 lines
 - Sections: 3-7 per file
 
 **Required Elements**:
+
 - Frontmatter with all fields
 - Quick Reference section
 - Related files section
@@ -211,6 +208,7 @@ project-intelligence/
 ## Checklist
 
 ### Add New Intelligence File
+
 - [ ] Follow naming convention
 - [ ] Add complete frontmatter
 - [ ] Include Quick Reference
@@ -220,6 +218,7 @@ project-intelligence/
 - [ ] Version: 1.0
 
 ### Update Existing File
+
 - [ ] Make targeted changes
 - [ ] Update version/date in frontmatter
 - [ ] Verify <200 lines
@@ -227,6 +226,7 @@ project-intelligence/
 - [ ] Update related files
 
 ### Create Subfolder
+
 - [ ] Verify warranted (5+ files)
 - [ ] Create folder with kebab-case name
 - [ ] Create `navigation.md` inside
@@ -234,6 +234,7 @@ project-intelligence/
 - [ ] Create content files
 
 ### Deprecate File
+
 - [ ] Rename with `.deprecated.md`
 - [ ] Add deprecation frontmatter
 - [ ] Add deprecation banner

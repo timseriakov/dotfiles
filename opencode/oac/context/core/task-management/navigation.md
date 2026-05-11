@@ -27,30 +27,33 @@ core/task-management/
 
 ## Quick Routes
 
-| Task | Path | Priority |
-|------|------|----------|
-| **Understand base schema** | `standards/task-schema.md` | ⭐⭐⭐⭐⭐ |
-| **Use enhanced features** | `standards/enhanced-task-schema.md` | ⭐⭐⭐⭐ |
-| **Split a feature** | `guides/splitting-tasks.md` | ⭐⭐⭐⭐⭐ |
-| **Manage task lifecycle** | `guides/managing-tasks.md` | ⭐⭐⭐⭐ |
-| **Use CLI commands** | `lookup/task-commands.md` | ⭐⭐⭐⭐ |
+| Task                       | Path                                | Priority   |
+| -------------------------- | ----------------------------------- | ---------- |
+| **Understand base schema** | `standards/task-schema.md`          | ⭐⭐⭐⭐⭐ |
+| **Use enhanced features**  | `standards/enhanced-task-schema.md` | ⭐⭐⭐⭐   |
+| **Split a feature**        | `guides/splitting-tasks.md`         | ⭐⭐⭐⭐⭐ |
+| **Manage task lifecycle**  | `guides/managing-tasks.md`          | ⭐⭐⭐⭐   |
+| **Use CLI commands**       | `lookup/task-commands.md`           | ⭐⭐⭐⭐   |
 
 ---
 
 ## Loading Strategy
 
 ### For Creating Basic Tasks:
+
 1. Load `standards/task-schema.md` (understand base structure)
 2. Load `guides/splitting-tasks.md` (decomposition approach)
 3. Reference `lookup/task-commands.md` (validate after creation)
 
 ### For Multi-Stage Orchestration:
+
 1. Load `standards/enhanced-task-schema.md` (advanced features)
 2. Load `standards/task-schema.md` (base structure reference)
 3. Load `guides/splitting-tasks.md` (decomposition approach)
 4. Reference planning agents: ArchitectureAnalyzer, StoryMapper, PrioritizationEngine, ContractManager, ADRManager
 
 ### For Managing Tasks:
+
 1. Load `guides/managing-tasks.md` (workflow)
 2. Reference `lookup/task-commands.md` (CLI usage)
 

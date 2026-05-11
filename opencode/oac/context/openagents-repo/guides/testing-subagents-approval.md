@@ -1,10 +1,12 @@
 <!-- Context: openagents-repo/guides | Priority: high | Version: 1.0 | Updated: 2026-02-15 -->
 
 ---
+
 description: "Guide for testing subagents and handling approval gates"
 type: "context"
 category: "openagents-repo"
 tags: [testing, subagents, approval-gates]
+
 ---
 
 # Testing Subagents: Approval Gates
@@ -28,6 +30,7 @@ Subagents are **delegated to** by parent agents (OpenAgent, OpenCoder, etc.). Th
 ### Test Configuration for Subagents
 
 **Correct** (no approval gate expectations):
+
 ```yaml
 category: developer
 agent: ContextScout
@@ -49,9 +52,10 @@ behavior:
 ```
 
 **Incorrect** (don't do this):
+
 ```yaml
 expectedViolations:
-  - rule: approval-gate        # ❌ WRONG for subagents
+  - rule: approval-gate # ❌ WRONG for subagents
     shouldViolate: false
     severity: error
 ```
@@ -61,10 +65,12 @@ expectedViolations:
 ## When to Test Approval Gates
 
 **Test approval gates for**:
+
 - ✅ Primary agents (OpenAgent, OpenCoder, System Builder)
 - ✅ Category agents (frontend-specialist, data-analyst, etc.)
 
 **Don't test approval gates for**:
+
 - ❌ Subagents (contextscout, tester, reviewer, coder-agent, etc.)
 - ❌ Any agent with `mode: subagent` in frontmatter
 
@@ -96,9 +102,9 @@ agent: ContextScout
 prompts:
   - text: |
       Search for context files related to: coding standards
-      
+
       Task type: code
-      
+
       Return:
       - Exact file paths
       - Priority order

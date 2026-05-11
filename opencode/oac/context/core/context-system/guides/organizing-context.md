@@ -11,9 +11,11 @@
 ## Two Organizational Patterns
 
 ### Pattern A: Function-Based
+
 **Use for**: Repository-specific context
 
 **Structure**: Organize by what the information does
+
 ```
 {repo}/
 ├── concepts/     # What it is
@@ -28,9 +30,11 @@
 ---
 
 ### Pattern B: Concern-Based
+
 **Use for**: Multi-technology development context
 
 **Structure**: Organize by what you're doing (concern), then how (approach/tech)
+
 ```
 {concern}/
 ├── {approach}/   # How you're doing it
@@ -43,42 +47,48 @@
 
 ## Decision Tree
 
-| Question | Answer | Use Pattern |
-|----------|--------|-------------|
-| Is this repository-specific? | YES | **Pattern A** (Function-Based) |
-| Does content span multiple technologies? | YES | **Pattern B** (Concern-Based) |
-| Single domain/technology? | YES | **Pattern A** (Function-Based) |
+| Question                                 | Answer | Use Pattern                    |
+| ---------------------------------------- | ------ | ------------------------------ |
+| Is this repository-specific?             | YES    | **Pattern A** (Function-Based) |
+| Does content span multiple technologies? | YES    | **Pattern B** (Concern-Based)  |
+| Single domain/technology?                | YES    | **Pattern A** (Function-Based) |
 
 ---
 
 ## Quick Steps to Organize
 
 ### 1. Audit Existing Content
+
 - List all files
 - Identify natural groupings
 - Note overlaps/duplicates
 
 ### 2. Choose Pattern
+
 - Use decision tree above
 - Consider future growth
 - Check existing patterns in `/Users/tim/.config/opencode/context/`
 
 ### 3. Create Directory Structure
+
 ```bash
 mkdir -p {category}/{subcategory}
 ```
 
 ### 4. Move Files
+
 - Move files to new structure
 - Keep filenames descriptive
 - Follow naming conventions
 
 ### 5. Create Navigation Files
+
 - Add `navigation.md` to each directory
 - Follow navigation template (see navigation-templates.md)
 - Keep to 200-300 tokens
 
 ### 6. Update References
+
 - Update links in moved files
 - Update parent navigation.md
 - Test navigation paths
@@ -88,6 +98,7 @@ mkdir -p {category}/{subcategory}
 ## Pattern Examples
 
 ### Function-Based (openagents-repo/)
+
 ```
 openagents-repo/
 ├── concepts/agents.md
@@ -98,6 +109,7 @@ openagents-repo/
 ```
 
 ### Concern-Based (development/)
+
 ```
 development/
 ├── frontend/
@@ -111,6 +123,7 @@ development/
 ```
 
 ### Hybrid (ui/)
+
 ```
 ui/
 ├── web/
@@ -136,12 +149,12 @@ ui/
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| File fits multiple categories | Choose primary purpose, reference from others |
-| Too many files in one directory | Create subcategories |
-| Unclear hierarchy | Use concern-based pattern |
-| Navigation too complex | Simplify structure, use specialized navigation |
+| Issue                           | Solution                                       |
+| ------------------------------- | ---------------------------------------------- |
+| File fits multiple categories   | Choose primary purpose, reference from others  |
+| Too many files in one directory | Create subcategories                           |
+| Unclear hierarchy               | Use concern-based pattern                      |
+| Navigation too complex          | Simplify structure, use specialized navigation |
 
 ---
 

@@ -29,12 +29,12 @@ Map scroll position to video frames. As user scrolls, play through image sequenc
 ## Minimal Example
 
 ```tsx
-const { scrollYProgress } = useScroll({ target: containerRef })
-const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 119])
+const { scrollYProgress } = useScroll({ target: containerRef });
+const frameIndex = useTransform(scrollYProgress, [0, 1], [0, 119]);
 
 useEffect(() => {
-  ctx.drawImage(images[Math.round(frameIndex)], 0, 0)
-}, [frameIndex])
+  ctx.drawImage(images[Math.round(frameIndex)], 0, 0);
+}, [frameIndex]);
 ```
 
 **Why canvas?** 10x faster than swapping `<img src>`. DOM updates are slow.

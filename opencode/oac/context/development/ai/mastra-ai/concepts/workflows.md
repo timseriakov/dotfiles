@@ -9,15 +9,18 @@
 ---
 
 ## Core Idea
+
 Workflows in Mastra are directed graphs of steps that process data sequentially or in parallel. They provide a structured way to handle multi-stage LLM operations with built-in state management and human-in-the-loop (HITL) support.
 
 ## Key Points
+
 - **Step Definition**: Created with `createStep`, requiring `inputSchema`, `outputSchema`, and an `execute` function.
 - **Chaining**: Steps are linked using `.then()` for sequential and `.parallel()` for concurrent execution.
 - **HITL Support**: Steps can `suspend` execution to wait for human input and `resume` when data is provided.
 - **State Access**: Each step has access to the global workflow `state` and the `inputData` from the previous step.
 
 ## Quick Example
+
 ```typescript
 const workflow = createWorkflow({ id: 'my-workflow', inputSchema, outputSchema })
   .then(step1)
@@ -31,5 +34,6 @@ const result = await start({ inputData: { ... } });
 
 **Reference**: `src/mastra/workflows/`
 **Related**:
+
 - concepts/core.md
 - examples/workflow-example.md

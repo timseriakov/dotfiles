@@ -33,6 +33,7 @@ tasks/               # Task management files
 ## Core Patterns
 
 ### Agent Structure Pattern
+
 ```markdown
 ---
 description: "What this agent does"
@@ -48,15 +49,18 @@ permissions: [security restrictions]
 **EXECUTE** this [process type] for every [task type]:
 
 **1. [ACTION]** the [subject]:
+
 - [Specific instruction 1]
 - [Specific instruction 2]
 
 **RULES:**
+
 - **ALWAYS** [critical requirement]
 - **NEVER** [forbidden action]
 ```
 
 ### Command Structure Pattern
+
 ```markdown
 ---
 name: command-name
@@ -75,6 +79,7 @@ Execute [task] now.
 ```
 
 ### Context Loading Rules
+
 - Commands load context immediately using @ references
 - Agents can look up additional context deterministically
 - Maximum 4 context files per command (250-450 lines total)

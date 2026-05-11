@@ -18,25 +18,30 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 ## Relevant Standards (Load These Before Starting)
 
 **Core Standards**:
+
 - `/Users/tim/.config/opencode/context/core/standards/code-quality.md` → Modular, functional code patterns
 - `/Users/tim/.config/opencode/context/core/standards/test-coverage.md` → Testing requirements and TDD
 - `/Users/tim/.config/opencode/context/core/standards/documentation.md` → Documentation standards
 
 **Core Workflows**:
+
 - `/Users/tim/.config/opencode/context/core/workflows/feature-breakdown.md` → Task breakdown methodology
 
 ## Repository-Specific Context (Load These Before Starting)
 
 **Quick Start** (ALWAYS load first):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/quick-start.md` → Repo orientation and common commands
 
 **Core Concepts** (Load based on task type):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/agents.md` → How agents work
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/evals.md` → How testing works
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/registry.md` → How registry works
 - `/Users/tim/.config/opencode/context/openagents-repo/core-concepts/categories.md` → How organization works
 
 **Guides** (Load for specific workflows):
+
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/adding-agent-basics.md` → Step-by-step agent creation
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/testing-agent.md` → Testing workflow
 - `/Users/tim/.config/opencode/context/openagents-repo/guides/updating-registry.md` → Registry workflow
@@ -44,12 +49,14 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 ## Key Requirements
 
 **From Standards**:
+
 - Agent must follow modular, functional programming patterns
 - All code must be testable and maintainable
 - Documentation must be concise and high-signal
 - Include examples where helpful
 
 **From Repository Context**:
+
 - Agent file must be in `.opencode/agent/data/` directory (category-based organization)
 - Must include proper frontmatter metadata (id, name, description, category, type, version, etc.)
 - Must follow naming convention: `data-analyst.md` (kebab-case)
@@ -58,12 +65,14 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 - Must be registered in `registry.json`
 
 **Naming Conventions**:
+
 - File name: `data-analyst.md` (kebab-case)
 - Agent ID: `data-analyst`
 - Category: `data`
 - Type: `agent`
 
 **File Structure**:
+
 - Agent file: `.opencode/agent/data/data-analyst.md`
 - Eval directory: `evals/agents/data/data-analyst/`
 - Eval config: `evals/agents/data/data-analyst/config/eval-config.yaml`
@@ -84,6 +93,7 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 ## Files to Create/Modify
 
 **Create**:
+
 - `.opencode/agent/data/data-analyst.md` - Main agent definition with frontmatter and prompt
 - `evals/agents/data/data-analyst/config/eval-config.yaml` - Eval configuration
 - `evals/agents/data/data-analyst/tests/smoke-test.yaml` - Basic smoke test
@@ -91,6 +101,7 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 - `evals/agents/data/data-analyst/README.md` - Agent documentation
 
 **Modify**:
+
 - `registry.json` - Add data-analyst agent entry
 - `/Users/tim/.config/opencode/context/navigation.md` - Add data category context if needed
 
@@ -108,14 +119,17 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 ## Validation Requirements
 
 **Scripts to Run**:
+
 - `./scripts/registry/validate-registry.sh` - Validates registry.json schema and entries
 - `./scripts/validation/validate-test-suites.sh` - Validates eval test structure
 
 **Tests to Run**:
+
 - `cd evals/framework && npm run eval:sdk -- --agent=data/data-analyst --pattern="smoke-test.yaml"` - Run smoke test
 - `cd evals/framework && npm run eval:sdk -- --agent=data/data-analyst` - Run all tests
 
 **Manual Checks**:
+
 - Verify frontmatter includes all required fields
 - Check that tools and permissions are appropriate
 - Ensure prompt is clear and follows standards
@@ -124,12 +138,14 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 ## Expected Output
 
 **Deliverables**:
+
 - Functional data analyst agent
 - Complete eval test suite
 - Registry entry
 - Documentation
 
 **Format**:
+
 - Agent file: Markdown with YAML frontmatter
 - Eval config: YAML format
 - Eval tests: YAML format with test cases
@@ -154,7 +170,8 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 
 ## Instructions for Subagent
 
-**IMPORTANT**: 
+**IMPORTANT**:
+
 1. Load ALL context files listed in "Relevant Standards" and "Repository-Specific Context" sections BEFORE starting work
 2. Follow ALL requirements from the loaded context
 3. Apply naming conventions and file structure requirements
@@ -165,6 +182,7 @@ Create a new data analyst agent for the OpenAgents Control repository. This agen
 Create a complete data analyst agent for the OpenAgents Control repository following all established conventions and standards.
 
 **Approach**:
+
 1. **Load Context**: Read all context files listed above to understand:
    - How agents are structured (core-concepts/agents.md)
    - How to add an agent (guides/adding-agent-basics.md)
@@ -200,6 +218,7 @@ Create a complete data analyst agent for the OpenAgents Control repository follo
    - Fix any issues
 
 **Constraints**:
+
 - Agent must be in `data` category
 - Must follow functional programming patterns
 - Must include proper error handling
@@ -208,6 +227,7 @@ Create a complete data analyst agent for the OpenAgents Control repository follo
 - Eval tests must be meaningful and test actual capabilities
 
 **Questions/Clarifications**:
+
 - What specific data analysis capabilities should be emphasized? (visualization, statistics, transformation)
 - Should the agent support specific data formats? (CSV, JSON, Parquet)
 - Should the agent integrate with specific tools? (pandas, matplotlib, etc.)

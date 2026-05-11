@@ -12,80 +12,85 @@
 
 ## Technical Debt
 
-| Item | Impact | Priority | Mitigation |
-|------|--------|----------|------------|
+| Item        | Impact                 | Priority       | Mitigation      |
+| ----------- | ---------------------- | -------------- | --------------- |
 | [Debt item] | [What risk it creates] | [High/Med/Low] | [How to manage] |
 
 ### Technical Debt Details
 
 **[Debt Item]**  
-*Priority*: [High/Med/Low]  
-*Impact*: [What happens if not addressed]  
-*Root Cause*: [Why this debt exists]  
-*Proposed Solution*: [How to fix it]  
-*Effort*: [Small/Medium/Large]  
-*Status*: [Acknowledged | Scheduled | In Progress | Deferred]
+_Priority_: [High/Med/Low]  
+_Impact_: [What happens if not addressed]  
+_Root Cause_: [Why this debt exists]  
+_Proposed Solution_: [How to fix it]  
+_Effort_: [Small/Medium/Large]  
+_Status_: [Acknowledged | Scheduled | In Progress | Deferred]
 
 ## Open Questions
 
-| Question | Stakeholders | Status | Next Action |
-|----------|--------------|--------|-------------|
+| Question   | Stakeholders          | Status             | Next Action            |
+| ---------- | --------------------- | ------------------ | ---------------------- |
 | [Question] | [Who needs to decide] | [Open/In Progress] | [What needs to happen] |
 
 ### Open Question Details
 
 **[Question]**  
-*Context*: [Why this question matters]  
-*Stakeholders*: [Who needs to be involved]  
-*Options*: [What are the possibilities]  
-*Timeline*: [When does this need resolution]  
-*Status*: [Open/In Progress/Blocked]
+_Context_: [Why this question matters]  
+_Stakeholders_: [Who needs to be involved]  
+_Options_: [What are the possibilities]  
+_Timeline_: [When does this need resolution]  
+_Status_: [Open/In Progress/Blocked]
 
 ## Known Issues
 
-| Issue | Severity | Workaround | Status |
-|-------|----------|------------|--------|
+| Issue   | Severity                | Workaround      | Status                    |
+| ------- | ----------------------- | --------------- | ------------------------- |
 | [Issue] | [Critical/High/Med/Low] | [Temporary fix] | [Known/In Progress/Fixed] |
 
 ### Issue Details
 
 **[Issue Title]**  
-*Severity*: [Critical/High/Med/Low]  
-*Impact*: [Who/what is affected]  
-*Reproduction*: [Steps to reproduce if applicable]  
-*Workaround*: [Temporary solution if exists]  
-*Root Cause*: [If known]  
-*Fix Plan*: [How to properly fix]  
-*Status*: [Known/In Progress/Fixed in vX.X]
+_Severity_: [Critical/High/Med/Low]  
+_Impact_: [Who/what is affected]  
+_Reproduction_: [Steps to reproduce if applicable]  
+_Workaround_: [Temporary solution if exists]  
+_Root Cause_: [If known]  
+_Fix Plan_: [How to properly fix]  
+_Status_: [Known/In Progress/Fixed in vX.X]
 
 ## Insights & Lessons Learned
 
 ### What Works Well
+
 - [Positive pattern 1] - [Why it works]
 - [Positive pattern 2] - [Why it works]
 
 ### What Could Be Better
+
 - [Area for improvement 1] - [Why it's a problem]
 - [Area for improvement 2] - [Why it's a problem]
 
 ### Lessons Learned
+
 - [Lesson 1] - [Context and implication]
 - [Lesson 2] - [Context and implication]
 
 ## Patterns & Conventions
 
 ### Code Patterns Worth Preserving
+
 - [Pattern 1] - [Where it lives, why it's good]
 - [Pattern 2] - [Where it lives, why it's good]
 
 ### Gotchas for Maintainers
+
 - [Gotcha 1] - [What to watch out for]
 - [Gotcha 2] - [What to watch out for]
 
 ## Active Projects
 
-| Project | Goal | Owner | Timeline |
-|---------|------|-------|----------|
+| Project   | Goal               | Owner         | Timeline          |
+| --------- | ------------------ | ------------- | ----------------- |
 | [Project] | [What we're doing] | [Who owns it] | [When it matters] |
 
 ## Archive (Resolved Items)
@@ -93,6 +98,7 @@
 Moved here for historical reference. Current team should refer to current notes above.
 
 ### Resolved: [Item]
+
 - **Resolved**: [Date]
 - **Resolution**: [What was decided/done]
 - **Learnings**: [What we learned from this]

@@ -20,8 +20,8 @@ ai/
 
 ## Quick Routes
 
-| Task | Path |
-|------|------|
+| Task          | Path                      |
+| ------------- | ------------------------- |
 | **MAStra AI** | `mastra-ai/navigation.md` |
 
 ---

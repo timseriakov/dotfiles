@@ -1,4 +1,5 @@
 <!-- Context: ui/web/animation-advanced | Priority: medium | Version: 1.0 | Updated: 2025-12-09 -->
+
 # Advanced Animation Patterns
 
 Recipes, best practices, micro-interactions, and accessibility considerations.
@@ -15,8 +16,12 @@ Recipes, best practices, micro-interactions, and accessibility considerations.
   animation: fadeOut 200ms ease-in;
 }
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 /* Page fade in */
@@ -24,12 +29,17 @@ Recipes, best practices, micro-interactions, and accessibility considerations.
   animation: fadeIn 300ms ease-out;
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 ```
 
 **Micro-syntax**:
+
 ```
 pageExit: 200ms ease-in [α1→0]
 pageEnter: 300ms ease-out [α0→1]
@@ -47,7 +57,7 @@ pageEnter: 300ms ease-out [α0→1]
   position: relative;
 }
 .link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -62,6 +72,7 @@ pageEnter: 300ms ease-out [α0→1]
 ```
 
 **Micro-syntax**:
+
 ```
 linkHover: 250ms ease-out [width0→100%]
 ```
@@ -82,6 +93,7 @@ linkHover: 250ms ease-out [width0→100%]
 ```
 
 **Micro-syntax**:
+
 ```
 toggle: 200ms ease-out [X0→20, bg→accent]
 ```
@@ -99,7 +111,7 @@ aiMsg: 600ms bounce [Y+15→0, S0.95→1] +200ms
 typing: 1400ms ∞ [Y±8, α0.4→1] stagger+200ms
 status: 300ms ease-out [α0.6→1, S1→1.05→1]
 
-## Interface Transitions  
+## Interface Transitions
 sidebar: 350ms ease-out [X-280→0, α0→1]
 overlay: 300ms [α0→1, blur0→4px]
 input: 200ms [S1→1.01, shadow+ring] focus

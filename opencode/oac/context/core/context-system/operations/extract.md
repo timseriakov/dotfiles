@@ -20,6 +20,7 @@
 ## 7-Stage Workflow
 
 ### Stage 1: Read Source
+
 ```
 /context extract from https://react.dev/hooks
   ↓
@@ -32,9 +33,11 @@ Analyzing content for extractable items..."
 ---
 
 ### Stage 2: Analyze & Categorize
+
 **Action**: Extract and categorize content by function
 
 **Categorization**:
+
 - Design decisions → `concepts/`
 - Working code → `examples/`
 - Step-by-step workflows → `guides/`
@@ -46,9 +49,11 @@ Analyzing content for extractable items..."
 ---
 
 ### Stage 3: Select Category (APPROVAL REQUIRED)
+
 **Action**: User chooses target category and items
 
 **Format**:
+
 ```
 Found 12 extractable items from {source}:
 
@@ -75,9 +80,11 @@ Select items (A B I or 'all') + category (1/2/3):
 ---
 
 ### Stage 4: Preview (APPROVAL REQUIRED)
+
 **Action**: Show what will be created, check for conflicts
 
 **Format**:
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Extraction Plan: development/
@@ -124,9 +131,11 @@ Approve? [y/n/edit]: _
 ---
 
 ### Stage 5: Create
+
 **Action**: Create files in function folders
 
 **Process**:
+
 1. Apply MVI format (1-3 sentences, 3-5 key points, minimal example)
 2. Create files in correct function folders
 3. Ensure all files <200 lines
@@ -137,9 +146,11 @@ Approve? [y/n/edit]: _
 ---
 
 ### Stage 6: Update Navigation (preview included in Stage 4)
+
 **Action**: Update navigation.md and add cross-references
 
 **Process**:
+
 1. Update category navigation.md with new files (as previewed in Stage 4)
 2. Add priority levels (critical/high/medium/low)
 3. Add cross-references between related files
@@ -148,9 +159,11 @@ Approve? [y/n/edit]: _
 ---
 
 ### Stage 7: Report
+
 **Action**: Show comprehensive results
 
 **Format**:
+
 ```
 ✅ Extracted X items into {category}
 📄 Created Y files
@@ -167,17 +180,20 @@ Files created:
 ## Examples
 
 ### Extract from URL
+
 ```bash
 /context extract from https://react.dev/hooks
 ```
 
 ### Extract from Local Docs
+
 ```bash
 /context extract from docs/api.md
 /context extract from docs/architecture/
 ```
 
 ### Extract from Code
+
 ```bash
 /context extract from src/utils/
 ```
