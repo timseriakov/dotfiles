@@ -74,6 +74,8 @@ codex/sqlite/
 codex/tmp/
 codex/vendor_imports/
 
+cache.json
+
 # AI agent artifacts
 .sisyphus/
 
@@ -98,3 +100,4 @@ opencode/base/context-mode
 pi/agent/.extmgr-cache/
 pi/agent/git/
 pi/agent/sessions/
+/pi/agent/cache/sub-core
