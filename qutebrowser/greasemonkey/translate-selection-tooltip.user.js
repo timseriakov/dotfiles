@@ -88,6 +88,8 @@
     contextAllowlist: "quteTranslateSelectionTooltip.contextAllowlist",
   };
 
+  const DENY_EXACT_HOSTS = ["localhost:50474", "127.0.0.1:50474"];
+
   const DENY_SUBSTRINGS = [
     "accounts.",
     "account.",
@@ -290,7 +292,7 @@
     }
 
     const locationDenied = !TEST_MODE
-      ? isLocationDenied(location.hostname, location.pathname)
+      ? isLocationDenied(location.host, location.pathname)
       : false;
     if (locationDenied) {
       hideTooltip("denied");
@@ -1612,11 +1614,12 @@
     return "opencode_error";
   }
 
-  function isLocationDenied(hostname, pathname) {
-    const host = String(hostname || "").toLowerCase();
+  function isLocationDenied(hostWithPort, pathname) {
+    const host = String(hostWithPort || "").toLowerCase();
     const path = String(pathname || "").toLowerCase();
     const disabledHosts = getStoredStringArray(STORAGE_KEYS.disabledHosts, []);
     if (
+      DENY_EXACT_HOSTS.includes(host) ||
       disabledHosts.some(
         (h) => typeof h === "string" && h.toLowerCase() === host,
       )
