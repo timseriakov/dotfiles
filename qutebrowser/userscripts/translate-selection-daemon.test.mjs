@@ -26,9 +26,15 @@ test("extractTranslation picks last marker pair", () => {
   assert.equal(result, "two");
 });
 
-test("extractTranslation throws on missing markers", () => {
-  assert.throws(() => extractTranslation("no markers"), {
-    code: "parse_error",
+test("extractTranslation falls back to plain translation text", () => {
+  assert.equal(extractTranslation("Привет мир"), "Привет мир");
+  assert.equal(extractTranslation("```\nПривет мир\n```"), "Привет мир");
+  assert.equal(extractTranslation('"Привет мир"'), "Привет мир");
+});
+
+test("extractTranslation throws on empty output", () => {
+  assert.throws(() => extractTranslation("   \n\t  "), {
+    code: "empty_translation",
   });
 });
 

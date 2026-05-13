@@ -1,7 +1,52 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+: "${HOME:?HOME is required for translate-selection-daemon-control}"
+
+build_runtime_path() {
+  local -a dirs=()
+  local dir
+
+  dirs+=(
+    "$HOME/.pi/agent/bin"
+    "$HOME/.volta/bin"
+  )
+
+  shopt -s nullglob
+  for dir in "$HOME"/.volta/tools/image/node/*/bin; do
+    dirs+=("$dir")
+  done
+  for dir in "$HOME"/.volta/tools/image/npm/*/bin; do
+    dirs+=("$dir")
+  done
+  shopt -u nullglob
+
+  dirs+=(
+    "/opt/homebrew/bin"
+    "/usr/local/bin"
+    "/usr/bin"
+    "/bin"
+  )
+
+  if [[ -n "${PATH:-}" ]]; then
+    local -a current_path=()
+    IFS=':' read -r -a current_path <<<"$PATH"
+    dirs+=("${current_path[@]}")
+  fi
+
+  local new_path=""
+  for dir in "${dirs[@]}"; do
+    [[ -n "$dir" && -d "$dir" ]] || continue
+    case ":$new_path:" in
+      *":$dir:"*) ;;
+      *) new_path="${new_path:+$new_path:}$dir" ;;
+    esac
+  done
+
+  printf '%s\n' "$new_path"
+}
+
+export PATH="$(build_runtime_path)"
 
 : "${HOME:?HOME is required for translate-selection-daemon-control}"
 
@@ -148,6 +193,18 @@ is_pid_ours() {
   [[ "$command" == *"$DAEMON_NAME"* ]]
 }
 
+find_port_pid() {
+  local pid
+  while IFS= read -r pid; do
+    [[ -n "$pid" && "$pid" =~ ^[0-9]+$ ]] || continue
+    if is_pid_ours "$pid"; then
+      printf '%s\n' "$pid"
+      return 0
+    fi
+  done < <(lsof -nP -t -iTCP:"$PORT" -sTCP:LISTEN 2>/dev/null || true)
+  return 1
+}
+
 terminate_pid() {
   local pid="$1"
   if [[ -z "$pid" ]]; then
@@ -163,7 +220,7 @@ terminate_pid() {
   local attempt=0
   while kill -0 "$pid" >/dev/null 2>&1 && ((attempt < 20)); do
     sleep 0.1
-    ((attempt++))
+    attempt=$((attempt + 1))
   done
   if kill -0 "$pid" >/dev/null 2>&1; then
     kill -9 "$pid" >/dev/null 2>&1 || true
@@ -178,7 +235,7 @@ wait_for_health() {
       return 0
     fi
     sleep 0.2
-    ((attempt++))
+    attempt=$((attempt + 1))
   done
   return 1
 }
@@ -193,6 +250,11 @@ start_daemon() {
   fi
 
   if probe_meta; then
+    local live_pid
+    live_pid="$(find_port_pid || true)"
+    if [[ -n "$live_pid" ]]; then
+      printf '%s\n' "$live_pid" >"$PID_FILE"
+    fi
     info "daemon already running on port $PORT (meta.name=$PROBE_META_NAME)."
     return 0
   fi
@@ -243,9 +305,19 @@ stop_daemon() {
     remove_pid_file
   fi
 
+  local live_pid
+  live_pid="$(find_port_pid || true)"
+  if [[ -n "$live_pid" ]]; then
+    info "stopping discovered $DAEMON_NAME listener (pid $live_pid)"
+    terminate_pid "$live_pid"
+    remove_pid_file
+    info "daemon stopped"
+    return 0
+  fi
+
   if probe_meta && ((PROBE_STATUS == 0)); then
-    info "daemon still responds on $HOST:$PORT but pid file is missing"
-    info "leave it running or remove pid file and try stop again"
+    info "daemon still responds on $HOST:$PORT but no owning pid was found"
+    info "leave it running or stop it manually"
     return 0
   fi
 
@@ -257,8 +329,13 @@ status_daemon() {
     local version ready
     version="$(extract_meta_field version <<<"$PROBE_META_BODY")"
     ready="$(extract_meta_field ready <<<"$PROBE_META_BODY")"
-    local pid
+    local pid live_pid
     pid="$(read_pid_file)"
+    live_pid="$(find_port_pid || true)"
+    if [[ -n "$live_pid" && "$live_pid" != "$pid" ]]; then
+      printf '%s\n' "$live_pid" >"$PID_FILE"
+      pid="$live_pid"
+    fi
     info "$DAEMON_NAME is running on $HOST:$PORT (version=${version:-unknown}, ready=${ready:-unknown})"
     if [[ -n "$pid" ]]; then
       info "tracked pid=$pid"
@@ -307,7 +384,7 @@ install_daemon() {
   <key>EnvironmentVariables</key>
   <dict>
     <key>PATH</key>
-    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <string>$PATH</string>
   </dict>
   <key>StandardOutPath</key>
   <string>$LOG_FILE</string>

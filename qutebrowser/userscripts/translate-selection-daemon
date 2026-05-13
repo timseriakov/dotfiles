@@ -85,6 +85,39 @@ const buildPrompt = (text, context) => {
   ].join("\n");
 };
 
+const normalizePlainTranslation = (rawOutput) => {
+  let text = stripAnsi(rawOutput || "").trim();
+  if (!text) return "";
+
+  const fenced = text.match(/^```(?:[A-Za-z0-9_-]+)?\s*\n([\s\S]*?)\n```$/);
+  if (fenced) {
+    text = fenced[1].trim();
+  }
+
+  const quoted = text.match(/^(["'“”])(.*)\1$/s);
+  if (quoted && quoted[2]) {
+    text = quoted[2].trim();
+  }
+
+  return text;
+};
+
+const ensureValidTranslation = (text) => {
+  const trimmed = String(text || "").trim();
+  if (!trimmed) {
+    const err = new Error("empty translation");
+    err.code = "empty_translation";
+    throw err;
+  }
+  const bytes = Buffer.byteLength(trimmed, "utf8");
+  if (bytes > MAX_TEXT_BYTES) {
+    const err = new Error("response too large");
+    err.code = "invalid_response";
+    throw err;
+  }
+  return trimmed;
+};
+
 const extractTranslation = (rawOutput) => {
   const cleaned = stripAnsi(rawOutput || "");
   const begin = "BEGIN_TRANSLATION";
@@ -104,25 +137,11 @@ const extractTranslation = (rawOutput) => {
   }
 
   if (lastStart === -1 || lastEnd === -1) {
-    const err = new Error("missing markers");
-    err.code = "parse_error";
-    throw err;
+    return ensureValidTranslation(normalizePlainTranslation(cleaned));
   }
 
   const slice = cleaned.slice(lastStart, lastEnd);
-  const trimmed = slice.trim();
-  if (!trimmed) {
-    const err = new Error("empty translation");
-    err.code = "empty_translation";
-    throw err;
-  }
-  const bytes = Buffer.byteLength(trimmed, "utf8");
-  if (bytes > MAX_TEXT_BYTES) {
-    const err = new Error("response too large");
-    err.code = "invalid_response";
-    throw err;
-  }
-  return trimmed;
+  return ensureValidTranslation(slice);
 };
 
 const readJsonBody = (req) =>
