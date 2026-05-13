@@ -154,10 +154,7 @@ function sanitizeMarkdownText(markdown: string, mode: UnmojiMode): string {
     const nextSpecial = findNextSpecialIndex(markdown, cursor);
     const end = nextSpecial === -1 ? markdown.length : nextSpecial;
     const plainText = sanitizePlainText(markdown.slice(cursor, end), mode);
-    output += normalizePlainTextChunk(
-      plainText,
-      output.length === 0 || output.endsWith("\n"),
-    );
+    output += plainText;
     cursor = end;
   }
 
@@ -201,37 +198,6 @@ function isEmojiCluster(segment: string): boolean {
   if (hasVariationSelector) return true;
 
   return false;
-}
-
-function normalizePlainTextChunk(
-  text: string,
-  startsAtLineStart: boolean,
-): string {
-  const lines = text.split("\n");
-
-  return lines
-    .map((line, index) => {
-      const match = /^(\s*)(.*)$/.exec(line);
-      if (!match) return line;
-
-      const [, indent, body] = match;
-      const normalizedBody = body
-        .replace(/[ \t]{2,}/g, " ")
-        .replace(/[ \t]+$/g, "");
-      const isChunkLineStart = index === 0 ? startsAtLineStart : true;
-
-      if (!isChunkLineStart) {
-        return indent + normalizedBody;
-      }
-
-      const normalizedIndent = indent.length >= 2 ? indent : "";
-      const trimmedBody =
-        normalizedIndent === ""
-          ? normalizedBody.replace(/^[ \t]+/g, "")
-          : normalizedBody;
-      return normalizedIndent + trimmedBody;
-    })
-    .join("\n");
 }
 
 function findNextSpecialIndex(text: string, from: number): number {

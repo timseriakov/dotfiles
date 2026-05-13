@@ -42,15 +42,13 @@
     "npm:pi-interactive-shell",
     {
       "source": "npm:pi-themes",
-      "themes": [
-        "themes/*.json",
-        "!themes/catppuccin-mocha.json",
-        "!themes/gruvbox-dark.json"
-      ]
+      "themes": ["themes/nord.json"]
     },
     "git:github.com/v2nic/pi-caveman",
     "npm:context-mode",
-    "npm:pi-context-prune"
+    "npm:pi-wakatime",
+    "npm:@agnishc/edb-session-manager",
+    "npm:gentle-engram"
   ],
   "lastChangelogVersion": "0.74.0",
   "theme": "nord",
