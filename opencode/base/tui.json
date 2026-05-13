@@ -5,11 +5,12 @@
     "app_exit": "ctrl+x",
     "editor_open": "ctrl+g",
     "session_rename": "ctrl+r",
-    "model_list": "<leader>v",
+    "model_list": "\u003cleader\u003ev",
     "session_compact": "ctrl+k"
   },
-  "scroll_speed": 1,
+  "plugin": ["opencode-subagent-statusline"],
   "scroll_acceleration": {
     "enabled": false
-  }
+  },
+  "scroll_speed": 1
 }

@@ -20,7 +20,10 @@ import type { Plugin } from "@opencode-ai/plugin";
 
 const ENGRAM_PORT = parseInt(process.env.ENGRAM_PORT ?? "7437");
 const ENGRAM_URL = `http://127.0.0.1:${ENGRAM_PORT}`;
-const ENGRAM_BIN = process.env.ENGRAM_BIN ?? "engram";
+const ENGRAM_BIN =
+  process.env.ENGRAM_BIN ??
+  Bun.which("engram") ??
+  "/opt/homebrew/Cellar/engram/1.15.11/bin/engram";
 
 // Engram's own MCP tools — don't count these as "tool calls" for session stats
 const ENGRAM_TOOLS = new Set([
@@ -84,6 +87,7 @@ When the user asks to recall something — any variation of "remember", "recall"
 Also search memory PROACTIVELY when:
 - Starting work on something that might have been done before
 - The user mentions a topic you have no context on — check if past sessions covered it
+- The user's FIRST message references the project, a feature, or a problem — call \`mem_search\` with keywords from their message to check for prior work before responding
 
 ### SESSION CLOSE PROTOCOL (mandatory)
 
@@ -153,6 +157,44 @@ async function isEngramRunning(): Promise<boolean> {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function extractProjectName(directory: string): string {
+  // Try git remote origin URL
+  try {
+    const result = Bun.spawnSync([
+      "git",
+      "-C",
+      directory,
+      "remote",
+      "get-url",
+      "origin",
+    ]);
+    if (result.exitCode === 0) {
+      const url = result.stdout?.toString().trim();
+      if (url) {
+        const name = url
+          .replace(/\.git$/, "")
+          .split(/[/:]/)
+          .pop();
+        if (name) return name;
+      }
+    }
+  } catch {}
+
+  // Fallback: git root directory name (works in worktrees)
+  try {
+    const result = Bun.spawnSync([
+      "git",
+      "-C",
+      directory,
+      "rev-parse",
+      "--show-toplevel",
+    ]);
+    if (result.exitCode === 0) {
+      const root = result.stdout?.toString().trim();
+      if (root) return root.split("/").pop() ?? "unknown";
+    }
+  } catch {}
+
+  // Final fallback: cwd basename
   return directory.split("/").pop() ?? "unknown";
 }
 
@@ -174,6 +216,7 @@ function stripPrivateTags(str: string): string {
 // ─── Plugin Export ───────────────────────────────────────────────────────────
 
 export const Engram: Plugin = async (ctx) => {
+  const oldProject = ctx.directory.split("/").pop() ?? "unknown";
   const project = extractProjectName(ctx.directory);
 
   // Track tool counts per session (in-memory only, not critical)
@@ -182,12 +225,22 @@ export const Engram: Plugin = async (ctx) => {
   // Track which sessions we've already ensured exist in engram
   const knownSessions = new Set<string>();
 
+  // Track sub-agent session IDs so we can suppress their tool-hook registrations.
+  // Sub-agents (Task() calls) have a parentID or a title ending in " subagent)".
+  // We must not register them as top-level Engram sessions — they cause session
+  // inflation (e.g. 170 sessions for 1 real conversation, issue #116).
+  const subAgentSessions = new Set<string>();
+
   /**
    * Ensure a session exists in engram. Idempotent — calls POST /sessions
    * which uses INSERT OR IGNORE. Safe to call multiple times.
+   *
+   * Silently skips sub-agent sessions (tracked in `subAgentSessions`).
    */
   async function ensureSession(sessionId: string): Promise<void> {
     if (!sessionId || knownSessions.has(sessionId)) return;
+    // Do not register sub-agent sessions in Engram (issue #116).
+    if (subAgentSessions.has(sessionId)) return;
     knownSessions.add(sessionId);
     await engramFetch("/sessions", {
       method: "POST",
@@ -212,6 +265,15 @@ export const Engram: Plugin = async (ctx) => {
     } catch {
       // Binary not found or can't start — plugin will silently no-op
     }
+  }
+
+  // Migrate project name if it changed (one-time, idempotent)
+  // Must run AFTER server startup to ensure the endpoint is available
+  if (oldProject !== project) {
+    await engramFetch("/projects/migrate", {
+      method: "POST",
+      body: { old_project: oldProject, new_project: project },
+    });
   }
 
   // Auto-import: if .engram/manifest.json exists in the project repo,
@@ -239,47 +301,82 @@ export const Engram: Plugin = async (ctx) => {
     event: async ({ event }) => {
       // --- Session Created ---
       if (event.type === "session.created") {
-        const sessionId = (event.properties as any)?.id;
-        if (sessionId) {
+        // Bug fix (#116): session data is nested under event.properties.info,
+        // not event.properties directly.
+        const info = (event.properties as any)?.info;
+        const sessionId = info?.id;
+        const parentID = info?.parentID;
+        const title: string = info?.title ?? "";
+
+        // Sub-agent sessions (created via Task()) must NOT be registered as
+        // top-level Engram sessions. They cause massive session inflation
+        // (e.g. 170 sessions for 1 real conversation).
+        //
+        // Detection heuristics:
+        //   - parentID is set on all Task() sub-agent sessions
+        //   - title ends with " subagent)" as a secondary signal
+        const isSubAgent = !!parentID || title.endsWith(" subagent)");
+
+        if (sessionId && !isSubAgent) {
           await ensureSession(sessionId);
+        } else if (sessionId && isSubAgent) {
+          // Remember this as a sub-agent session so tool-hook calls
+          // to ensureSession() are also suppressed for it.
+          subAgentSessions.add(sessionId);
         }
       }
 
       // --- Session Deleted ---
       if (event.type === "session.deleted") {
-        const sessionId = (event.properties as any)?.id;
+        // Same properties.info path as session.created.
+        const info = (event.properties as any)?.info;
+        const sessionId = info?.id;
         if (sessionId) {
           toolCounts.delete(sessionId);
           knownSessions.delete(sessionId);
+          subAgentSessions.delete(sessionId);
         }
       }
+    },
 
-      // --- User Message: capture prompts ---
-      if (event.type === "message.updated") {
-        const msg = event.properties as any;
-        if (msg?.role === "user" && msg?.content) {
-          // message.updated doesn't give sessionID directly,
-          // use the most recently known session
-          const sessionId = [...knownSessions].pop() ?? "unknown-session";
+    // ─── User Prompt Capture ──────────────────────────────────────
+    // chat.message is called once per user message, before the LLM sees it.
+    // input.sessionID is always reliable here (no knownSessions workaround).
+    // output.message is typed as UserMessage (role:"user" already guaranteed).
+    // output.parts contains TextPart[] with the actual message text.
 
-          const content =
-            typeof msg.content === "string"
-              ? msg.content
-              : JSON.stringify(msg.content);
+    "chat.message": async (input, output) => {
+      // Skip sub-agent sessions — they inflate session counts (issue #116)
+      if (subAgentSessions.has(input.sessionID)) return;
 
-          // Only capture non-trivial prompts (>10 chars)
-          if (content.length > 10) {
-            await ensureSession(sessionId);
-            await engramFetch("/prompts", {
-              method: "POST",
-              body: {
-                session_id: sessionId,
-                content: stripPrivateTags(truncate(content, 2000)),
-                project,
-              },
-            });
-          }
-        }
+      const sessionId = input.sessionID;
+
+      // Extract text from parts (type:"text")
+      const content = output.parts
+        .filter((p) => p.type === "text")
+        .map((p) => (p as any).text ?? "")
+        .join("\n")
+        .trim();
+
+      // Also fallback to summary if parts yield nothing
+      const fallback =
+        !content && output.message.summary
+          ? `${output.message.summary.title ?? ""}\n${output.message.summary.body ?? ""}`.trim()
+          : "";
+
+      const finalContent = content || fallback;
+
+      // Only capture non-trivial prompts (>10 chars)
+      if (finalContent.length > 10) {
+        await ensureSession(sessionId);
+        await engramFetch("/prompts", {
+          method: "POST",
+          body: {
+            session_id: sessionId,
+            content: stripPrivateTags(truncate(finalContent, 2000)),
+            project,
+          },
+        });
       }
     },
 

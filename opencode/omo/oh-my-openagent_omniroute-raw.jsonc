@@ -6,7 +6,7 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "omniroute/cx/gpt-5.5",
+      "model": "omniroute/cx/gpt-5.5-medium",
       "temperature": 0.1,
       "prompt_append": "file:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-base.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/mcp-naming.md\n\nfile:///Users/tim/dev/dotfiles/opencode/omo/instructions/user-architect.md",
     },
