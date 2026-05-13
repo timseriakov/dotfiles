@@ -88,7 +88,7 @@
     contextAllowlist: "quteTranslateSelectionTooltip.contextAllowlist",
   };
 
-  const DENY_EXACT_HOSTS = ["localhost:50474", "127.0.0.1:50474"];
+  const DENY_LOCALHOST_PORT_PREFIXES = ["localhost:5", "127.0.0.1:5"];
 
   const DENY_SUBSTRINGS = [
     "accounts.",
@@ -1619,7 +1619,7 @@
     const path = String(pathname || "").toLowerCase();
     const disabledHosts = getStoredStringArray(STORAGE_KEYS.disabledHosts, []);
     if (
-      DENY_EXACT_HOSTS.includes(host) ||
+      DENY_LOCALHOST_PORT_PREFIXES.some((prefix) => host.startsWith(prefix)) ||
       disabledHosts.some(
         (h) => typeof h === "string" && h.toLowerCase() === host,
       )
