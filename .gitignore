@@ -104,3 +104,9 @@ pi/agent/sessions/
 /pi/agent/cache/sub-core
 /pi/agent/mcp-cache.json
 /pi/context-mode/sessions
+
+# Cliamp local state/artifacts
+cliamp/*.log
+cliamp/*.pid
+cliamp/history.toml
+cliamp/*_ocr.png

@@ -1,0 +1,6 @@
+compact = false
+provider = "radio"
+shuffle = false
+theme = "nord"
+
+visualizer = "BarsDot"

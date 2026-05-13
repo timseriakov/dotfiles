@@ -1,0 +1,59 @@
+[[station]]
+name = "DNB Radio: Main"
+url = "https://azrelay.drmnbss.org/listen/dnbradio/radio.aac"
+
+[[station]]
+name = "DNB Radio: Plush Recordings"
+url = "https://azura.drmnbss.org/listen/plushrecs/radio.mp3"
+
+[[station]]
+name = "DNB Radio: Section 8 Recordings"
+url = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
+
+[[station]]
+name = "DNB Radio: Darkstep"
+url = "https://azura.drmnbss.org/listen/darkstep/radio.mp3"
+
+[[station]]
+name = "SomaFM Chillits"
+url = "https://somafm.com/chillits256.pls"
+
+[[station]]
+name = "SomaFM Groove Salad Classic"
+url = "https://somafm.com/nossl/gsclassic.pls"
+
+[[station]]
+name = "SomaFM Dub Step Beyond"
+url = "https://somafm.com/nossl/dubstep256.pls"
+
+[[station]]
+name = "SomaFM Sonic Universe"
+url = "https://somafm.com/sonicuniverse256.pls"
+
+[[station]]
+name = "SomaFM Groove Salad"
+url = "https://somafm.com/nossl/groovesalad256.pls"
+
+[[station]]
+name = "SomaFM Mission Control"
+url = "https://somafm.com/nossl/missioncontrol.pls"
+
+[[station]]
+name = "SomaFM Space Station"
+url = "https://somafm.com/nossl/spacestation320.pls"
+
+[[station]]
+name = "Rinse FM: UK"
+url = "https://admin.stream.rinse.fm/proxy/rinse_uk/stream"
+
+[[station]]
+name = "Rinse FM: Kool FM"
+url = "https://admin.stream.rinse.fm/proxy/kool/stream"
+
+[[station]]
+name = "Rinse FM: SWU FM"
+url = "https://admin.stream.rinse.fm/proxy/swu/stream"
+
+[[station]]
+name = "Радыё Сталiца"
+url = "https://media2.datacenter.by/stream/stalica/stream"
