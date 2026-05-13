@@ -1,8 +1,7 @@
 model = "gpt-5.5"
-model_reasoning_effort = "high"
-
-model_provider = "codex-multi-auth-runtime-proxy"
-cli_auth_credentials_store = "file"
+model_reasoning_effort = "xhigh"
+personality = "pragmatic"
+suppress_unstable_features_warning = true
 
 [mcp_servers.mcpproxy]
 url = "http://localhost:8080/mcp"
@@ -37,15 +36,19 @@ trust_level = "trusted"
 [projects."/Users/tim/dev/dotfiles/opencode"]
 trust_level = "trusted"
 
+[projects."/Users/tim/dev/tries/memory-bank-start"]
+trust_level = "trusted"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 
 [features]
 hooks = true
+apps = false
 
 [marketplaces.caveman-repo]
-last_updated = "2026-05-11T13:00:21Z"
-last_revision = "754795ada42dea54adf061d42a61e560caa4f9ce"
+last_updated = "2026-05-13T08:06:24Z"
+last_revision = "63a91ecadbf4c4719a4602a5abb00883f9966034"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"
 
@@ -62,4 +65,3 @@ trusted_hash = "sha256:29a9cb962d4f0e1def58ecb64a3b7d277a5451ca57e9f3bd7c51baf7f
 
 [hooks.state."/Users/tim/.codex/hooks.json:user_prompt_submit:0:0"]
 trusted_hash = "sha256:7ed0c588635367dfa9e7af5d6ea98136e0b7d0a917f9118382371c156083a992"
-

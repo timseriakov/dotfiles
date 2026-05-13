@@ -127,7 +127,7 @@ abbr -a cx-4.1-mini 'codex -m gpt-4.1-mini'
 abbr -a cx-4.1-nano 'codex -m gpt-4.1-nano'
 
 # OpenCode
-abbr -a o oc-omo
+abbr -a o omo
 abbr -a oa 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
 abbr -a oc 'opencode --continue'
 abbr -a on opencode
