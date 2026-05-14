@@ -12,7 +12,7 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "omniroute/reasoning-main",
+      "model": "omniroute/reasoning-main-5.5-high",
       "fallback_models": [
         "omniroute/deep-premium",
         "omniroute/reasoning-cheap",
@@ -167,6 +167,10 @@
     "plugins": false,
     "plugins_override": {},
   },
+  "disabled_mcps": ["playwright"],
+  "disabled_skills": ["playwright"],
+  "disabled_agents": [],
+  "disabled_hooks": [],
   "lsp": {
     "markdown": {
       "command": ["npx", "-y", "remark-language-server", "--stdio"],

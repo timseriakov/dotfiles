@@ -29,6 +29,11 @@
       "type": "remote",
       "enabled": true,
     },
+    "playwriter": {
+      "command": ["npx", "-y", "playwriter@latest"],
+      "type": "local",
+      "enabled": true,
+    },
     "engram": {
       "type": "local",
       "command": ["engram", "mcp", "--tools=agent"],
