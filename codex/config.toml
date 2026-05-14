@@ -1,5 +1,5 @@
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 personality = "pragmatic"
 suppress_unstable_features_warning = true
 
@@ -65,3 +65,12 @@ trusted_hash = "sha256:29a9cb962d4f0e1def58ecb64a3b7d277a5451ca57e9f3bd7c51baf7f
 
 [hooks.state."/Users/tim/.codex/hooks.json:user_prompt_submit:0:0"]
 trusted_hash = "sha256:7ed0c588635367dfa9e7af5d6ea98136e0b7d0a917f9118382371c156083a992"
+
+[hooks.state."/Users/tim/dev/tries/memory-bank-start/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:ab104b80f9aede14066a7906dbade0efb4e29fc745c443b71d4f2b5d0c7f70cb"
+
+[hooks.state."/Users/tim/dev/tries/memory-bank-start/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:b667168b4504bb7b99c5afea6af0dbb0f45898bf61c6dabdee686a00e6dae992"
+
+[hooks.state."/Users/tim/dev/tries/memory-bank-start/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:2759d15170b986aa7d17c3fff2db61a5533b03dd5fe23f944a32b863af5458da"
