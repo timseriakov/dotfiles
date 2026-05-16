@@ -69,6 +69,25 @@ commit, rebase, and merge the branch.
 Then use the /merge skill to commit, rebase, and merge the branch.
 ```
 
+Only instruct worktree agent to `/merge` if explicitly requested by user in
+task.
+
+**`--fork`**: When passed, add `--fork` to the `workmux add` command. This copies
+the current conversation into the new worktree so the agent resumes with full
+context of what was discussed. Useful when the current conversation has built up
+context that the new worktree agent needs.
+
+When `--fork` is used, prepend this to the prompt file so the forked agent does
+not recursively dispatch more worktrees:
+
+```
+You are now running INSIDE a git worktree created by the /worktree skill. The
+prior conversation context (including any /worktree dispatch instructions) is
+ancestry only. Do NOT invoke the /worktree skill, do NOT run `workmux add`, and
+do NOT create further worktrees. Your job is to implement the task below
+directly in this worktree.
+```
+
 ## Workflow
 
 Write ALL temp files first, THEN run all workmux commands.
