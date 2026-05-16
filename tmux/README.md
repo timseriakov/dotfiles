@@ -114,15 +114,16 @@
 
 ### Workmux
 
-| Клавиша    | Действие                             |
-| ---------- | ------------------------------------ |
-| `Ctrl-a e` | `workmux sidebar`                    |
-| `Ctrl-a b` | `choose-tree -Zw`                    |
-| `Ctrl-a w` | popup `workmux dashboard -s`         |
-| `Ctrl-a W` | full `workmux dashboard`             |
-| `Alt+Tab`  | открыть sidebar и выбрать next agent |
-| `Tab`      | `workmux last-agent`                 |
-| `L`        | `workmux last-done`                  |
+| Клавиша         | Действие                                 |
+| --------------- | ---------------------------------------- |
+| `Ctrl-a e`      | `workmux sidebar`                        |
+| `Ctrl-a b`      | `choose-tree -Zw`                        |
+| `Ctrl-a w`      | popup `workmux dashboard -s`             |
+| `Ctrl-a W`      | full `workmux dashboard`                 |
+| `Alt+Tab`       | открыть sidebar и выбрать next agent     |
+| `Alt+Shift+Tab` | открыть sidebar и выбрать previous agent |
+| `Tab`           | `workmux last-agent`                     |
+| `L`             | `workmux last-done`                      |
 
 ### Copy mode
 
@@ -220,6 +221,7 @@
 - `Ctrl-a w` — popup dashboard
 - `Ctrl-a W` — full dashboard
 - `Alt+Tab` — сначала пытается `workmux sidebar next`, а если sidebar ещё не открыт — открывает sidebar и повторяет переключение; если переключать некуда, tmux не показывает ошибку
+- `Alt+Shift+Tab` — то же самое, но через `workmux sidebar prev`; для совместимости повешено и на `M-S-Tab`, и на `M-BTab`
 - `Tab` — прыгнуть к last agent
 - `L` — прыгнуть к last done
 

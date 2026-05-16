@@ -56,15 +56,16 @@
 
 ## Workmux
 
-| Key        | Action                               |
-| ---------- | ------------------------------------ |
-| `Ctrl-a e` | `workmux sidebar`                    |
-| `Ctrl-a b` | `choose-tree -Zw`                    |
-| `Ctrl-a w` | popup `workmux dashboard -s`         |
-| `Ctrl-a W` | full `workmux dashboard`             |
-| `Alt+Tab`  | открыть sidebar и выбрать next agent (без tmux error) |
-| `Tab`      | `workmux last-agent`                 |
-| `L`        | `workmux last-done`                  |
+| Key             | Action                                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `Ctrl-a e`      | `workmux sidebar`                                                                                                        |
+| `Ctrl-a b`      | `choose-tree -Zw`                                                                                                        |
+| `Ctrl-a w`      | popup `workmux dashboard -s`                                                                                             |
+| `Ctrl-a W`      | full `workmux dashboard`                                                                                                 |
+| `Alt+Tab`       | открыть sidebar и выбрать next agent (без tmux error)                                                                    |
+| `Alt+Shift+Tab` | открыть sidebar и выбрать previous agent (без tmux error; дополнительно продублировано через `M-BTab` для совместимости) |
+| `Tab`           | `workmux last-agent`                                                                                                     |
+| `L`             | `workmux last-done`                                                                                                      |
 
 ## Copy mode
 
