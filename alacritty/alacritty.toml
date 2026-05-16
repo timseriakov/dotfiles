@@ -48,84 +48,39 @@ background = "#3b4252"
 [selection]
 save_to_clipboard = true
 
+# macOS physical keycode 24 is the =/+ key; use it to make Plus work across layouts
 [[keyboard.bindings]]
-key = "Key0"
+key = 24
 mods = "Command"
 action = "ResetFontSize"
 
 [[keyboard.bindings]]
-key = "Key0"
-mods = "Control"
-action = "ResetFontSize"
-
-[[keyboard.bindings]]
-key = "Equals"
-mods = "Command"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "Equals"
+key = 24
 mods = "Command|Shift"
 action = "IncreaseFontSize"
 
 [[keyboard.bindings]]
-key = "Equals"
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = 24
 mods = "Control"
 action = "IncreaseFontSize"
 
 [[keyboard.bindings]]
-key = "Equals"
+key = 24
 mods = "Control|Shift"
 action = "IncreaseFontSize"
 
 [[keyboard.bindings]]
 key = "Minus"
-mods = "Command"
-action = "DecreaseFontSize"
-
-[[keyboard.bindings]]
-key = "Minus"
-mods = "Control"
-action = "DecreaseFontSize"
-
-# Duplicates for Super modifier (alias of Command) and numpad
-[[keyboard.bindings]]
-key = "Key0"
-mods = "Super"
-action = "ResetFontSize"
-
-[[keyboard.bindings]]
-key = "Equals"
-mods = "Super"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "Equals"
-mods = "Super|Shift"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "Minus"
-mods = "Super"
-action = "DecreaseFontSize"
-
-[[keyboard.bindings]]
-key = "NumpadAdd"
-mods = "Command"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "NumpadSubtract"
-mods = "Command"
-action = "DecreaseFontSize"
-
-[[keyboard.bindings]]
-key = "NumpadAdd"
-mods = "Control"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "NumpadSubtract"
 mods = "Control"
 action = "DecreaseFontSize"
 
