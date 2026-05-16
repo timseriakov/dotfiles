@@ -31,6 +31,15 @@
             "type": "command"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/tim/.local/bin/plannotator",
+            "timeout": 345600
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
