@@ -31,7 +31,10 @@
     "npm:pi-simplify",
     "npm:pi-add-dir",
     "npm:pi-prompt-template-model",
-    "npm:@plannotator/pi-extension",
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "skills": []
+    },
     "npm:pi-slopchop",
     "npm:@juanibiapina/pi-powerbar",
     "npm:@juanibiapina/pi-extension-settings",
