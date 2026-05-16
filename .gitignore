@@ -96,6 +96,7 @@ codex/cache/codex_apps_tools/
 *.sqlite-shm
 *.sqlite-wal
 codex/session_index.jsonl
+codex/multi-auth/
 opencode/skills/rtk-compress/_meta.json
 opencode/base/context-mode
 pi/agent/.extmgr-cache/
