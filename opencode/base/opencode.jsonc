@@ -7,7 +7,12 @@
     // "file:///Users/tim/dev/dotfiles/opencode/base/local-plugins",
     // "opencode-antigravity-auth",
 
-    "@plannotator/opencode@0.19.10",
+    [
+      "@plannotator/opencode@latest",
+      {
+        "workflow": "all-agents",
+      },
+    ],
 
     "@franlol/opencode-md-table-formatter",
     "@nick-vi/opencode-type-inject",
@@ -309,6 +314,13 @@
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "capabilities": { "vision": true },
         },
+        "reasoning-main-5.5-high": {
+          "name": "Reasoning Main 5.5 High",
+          "tools": true,
+          "limit": { "context": 400000, "output": 8192 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "capabilities": { "vision": true },
+        },
         "reasoning-cheap": {
           "name": "Reasoning Cheap",
           "tools": true,
@@ -320,6 +332,12 @@
           "name": "Coding Main",
           "tools": true,
           "limit": { "context": 200000, "output": 8192 },
+          "modalities": { "input": ["text"], "output": ["text"] },
+        },
+        "coding-main-5.5-medium": {
+          "name": "Coding Main 5.5 Medium",
+          "tools": true,
+          "limit": { "context": 400000, "output": 8192 },
           "modalities": { "input": ["text"], "output": ["text"] },
         },
         "coding-cheap": {
