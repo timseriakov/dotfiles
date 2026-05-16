@@ -132,30 +132,40 @@ if vim.g.neovide then
   -- Плавное мигание курсора
   vim.g.neovide_cursor_smooth_blink = true
 
-  -- zoom
-  vim.g.neovide_scale_factor = 1.0
+  -- zoom: match kitty's additive ±2 pt font-size step
+  local default_guifont = vim.o.guifont
+  local font_size_step = 2.0
 
-  local default_scale = 1.0
+  local change_guifont_size = function(delta)
+    local font, size = vim.o.guifont:match("^(.-):h([%d%.]+)$")
+    if not font or not size then
+      return
+    end
 
-  local change_scale_factor = function(delta)
-    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+    vim.o.guifont = string.format("%s:h%.1f", font, math.max(1, tonumber(size) + delta))
   end
 
-  local reset_scale_factor = function()
-    vim.g.neovide_scale_factor = default_scale
+  local reset_guifont_size = function()
+    vim.o.guifont = default_guifont
   end
 
-  vim.keymap.set("n", "<C-+>", function()
-    change_scale_factor(1.25)
-  end)
+  for _, lhs in ipairs({ "<C-+>", "<D-+>" }) do
+    vim.keymap.set("n", lhs, function()
+      change_guifont_size(font_size_step)
+    end)
+  end
 
-  vim.keymap.set("n", "<C-->", function()
-    change_scale_factor(1 / 1.25)
-  end)
+  for _, lhs in ipairs({ "<C-->", "<D-->" }) do
+    vim.keymap.set("n", lhs, function()
+      change_guifont_size(-font_size_step)
+    end)
+  end
 
-  vim.keymap.set("n", "<C-=>", function()
-    reset_scale_factor()
-  end)
+  for _, lhs in ipairs({ "<C-=>", "<D-=>" }) do
+    vim.keymap.set("n", lhs, function()
+      reset_guifont_size()
+    end)
+  end
 
   vim.g.neovide_input_use_logo = true
 

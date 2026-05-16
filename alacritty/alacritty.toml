@@ -60,24 +60,79 @@ mods = "Command|Shift"
 action = "IncreaseFontSize"
 
 [[keyboard.bindings]]
+key = 24
+mods = "Command|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = 24
+mods = "Command|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = 24
+mods = "Command|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
 key = "Minus"
 mods = "Command"
 action = "DecreaseFontSize"
 
 [[keyboard.bindings]]
-key = "Key0"
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Command"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = 24
 mods = "Control"
 action = "ResetFontSize"
 
 [[keyboard.bindings]]
 key = 24
-mods = "Control"
+mods = "Control|Shift"
 action = "IncreaseFontSize"
 
 [[keyboard.bindings]]
 key = 24
 mods = "Control|Shift"
 action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = 24
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = 24
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
 
 [[keyboard.bindings]]
 key = "Minus"
