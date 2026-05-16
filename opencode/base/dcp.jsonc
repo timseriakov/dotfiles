@@ -12,7 +12,7 @@
   },
 
   "turnProtection": {
-    "enabled": true,
+    "enabled": false,
     "turns": 4,
   },
 
@@ -21,83 +21,36 @@
     "customPrompts": false,
   },
 
-  "protectedFilePatterns": [
-    "**/bootstrap.md",
-    "**/index.md",
-    "**/structure.md",
-    "**/version.md",
-
-    "**/adr/index.md",
-    "**/adr/templates/**/*.md",
-
-    "**/spec/glossary.md",
-    "**/spec/index.md",
-
-    "**/spec/engineering/**/*.md",
-    "**/spec/project/architecture-blueprint.md",
-    "**/spec/project/system-overview.md",
-    "**/spec/project/repo-structure.md",
-    "**/spec/project/stack-and-tooling.md",
-    "**/spec/project/interface-contracts.md",
-    "**/spec/project/layers-and-vertical-slices.md",
-    "**/spec/project/cli-first-agent-development.md",
-
-    "**/spec/memory/**/*.md",
-
-    "**/plans/index.md",
-    "**/plans/how-we-plan.md",
-    "**/plans/implementation-playbook.md",
-    "**/plans/implementation-roadmap.md",
-    "**/plans/roadmap.md",
-    "**/plans/verification-matrix.md",
-
-    "**/mbb/index.md",
-    "**/mbb/principles.md",
-    "**/mbb/indexing.md",
-    "**/mbb/cross-references.md",
-    "**/mbb/frontmatter.md",
-    "**/mbb/templates/**/*.md",
-
-    "**/integrations/index.md",
-    "**/integrations/oh-my-openagent/index.md",
-  ],
+  "protectedFilePatterns": ["**/AGENTS.md", "**/.memory-bank/**/*.md"],
 
   "compress": {
     "mode": "range",
-    "permission": "ask",
+    "permission": "allow",
     "showCompression": false,
     "summaryBuffer": true,
 
-    "maxContextLimit": "70%",
-    "minContextLimit": "40%",
+    "maxContextLimit": 100000,
+    "minContextLimit": 50000,
 
     "nudgeFrequency": 5,
     "iterationNudgeThreshold": 15,
     "nudgeForce": "soft",
 
-    "protectUserMessages": true,
+    "protectUserMessages": false,
 
-    "protectedTools": [
-      "task",
-      "skill",
-      "todowrite",
-      "todoread",
-      "read",
-      "grep",
-      "glob",
-    ],
+    "protectedTools": ["task", "skill", "todowrite", "todoread"],
   },
 
   "strategies": {
     "deduplication": {
       "enabled": true,
-      "protectedTools": ["read", "grep", "glob"],
+      "protectedTools": [],
     },
 
     "purgeErrors": {
       "enabled": true,
       "turns": 4,
-      "protectedTools": ["read", "grep", "glob"],
+      "protectedTools": [],
     },
   },
 }
