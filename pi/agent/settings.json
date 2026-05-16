@@ -60,5 +60,6 @@
   "defaultProvider": "omni",
   "defaultModel": "cx/gpt-5.4",
   "editorPaddingX": 1,
-  "showHardwareCursor": false
+  "showHardwareCursor": false,
+  "defaultThinkingLevel": "high"
 }
