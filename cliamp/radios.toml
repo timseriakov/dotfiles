@@ -1,4 +1,8 @@
 [[station]]
+name = "DNB Radio: Darkstep"
+url = "https://azura.drmnbss.org/listen/darkstep/radio.mp3"
+
+[[station]]
 name = "DNB Radio: Main"
 url = "https://azrelay.drmnbss.org/listen/dnbradio/radio.aac"
 
@@ -11,48 +15,200 @@ name = "DNB Radio: Section 8 Recordings"
 url = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
 
 [[station]]
-name = "DNB Radio: Darkstep"
-url = "https://azura.drmnbss.org/listen/darkstep/radio.mp3"
-
-[[station]]
-name = "SomaFM Chillits"
-url = "https://somafm.com/chillits256.pls"
-
-[[station]]
-name = "SomaFM Groove Salad Classic"
-url = "https://somafm.com/nossl/gsclassic.pls"
-
-[[station]]
-name = "SomaFM Dub Step Beyond"
-url = "https://somafm.com/nossl/dubstep256.pls"
-
-[[station]]
-name = "SomaFM Sonic Universe"
-url = "https://somafm.com/sonicuniverse256.pls"
-
-[[station]]
-name = "SomaFM Groove Salad"
-url = "https://somafm.com/nossl/groovesalad256.pls"
-
-[[station]]
-name = "SomaFM Mission Control"
-url = "https://somafm.com/nossl/missioncontrol.pls"
-
-[[station]]
-name = "SomaFM Space Station"
-url = "https://somafm.com/nossl/spacestation320.pls"
-
-[[station]]
-name = "Rinse FM: UK"
-url = "https://admin.stream.rinse.fm/proxy/rinse_uk/stream"
-
-[[station]]
 name = "Rinse FM: Kool FM"
 url = "https://admin.stream.rinse.fm/proxy/kool/stream"
 
 [[station]]
 name = "Rinse FM: SWU FM"
 url = "https://admin.stream.rinse.fm/proxy/swu/stream"
+
+[[station]]
+name = "Rinse FM: UK"
+url = "https://admin.stream.rinse.fm/proxy/rinse_uk/stream"
+
+[[station]]
+name = "SomaFM Beat Blender"
+url = "https://somafm.com/beatblender.pls"
+
+[[station]]
+name = "SomaFM Black Rock FM"
+url = "https://somafm.com/brfm.pls"
+
+[[station]]
+name = "SomaFM Boot Liquor"
+url = "https://somafm.com/bootliquor.pls"
+
+[[station]]
+name = "SomaFM Bossa Beyond"
+url = "https://somafm.com/bossa.pls"
+
+[[station]]
+name = "SomaFM Chillits Radio"
+url = "https://somafm.com/chillits.pls"
+
+[[station]]
+name = "SomaFM cliqhop idm"
+url = "https://somafm.com/cliqhop.pls"
+
+[[station]]
+name = "SomaFM Covers"
+url = "https://somafm.com/covers.pls"
+
+[[station]]
+name = "SomaFM Deep Space One"
+url = "https://somafm.com/deepspaceone.pls"
+
+[[station]]
+name = "SomaFM DEF CON Radio"
+url = "https://somafm.com/defcon.pls"
+
+[[station]]
+name = "SomaFM Digitalis"
+url = "https://somafm.com/digitalis.pls"
+
+[[station]]
+name = "SomaFM Doomed"
+url = "https://somafm.com/doomed.pls"
+
+[[station]]
+name = "SomaFM Drone Zone"
+url = "https://somafm.com/dronezone.pls"
+
+[[station]]
+name = "SomaFM Drone Zone 2"
+url = "https://somafm.com/dz2.pls"
+
+[[station]]
+name = "SomaFM Dub Step Beyond"
+url = "https://somafm.com/dubstep.pls"
+
+[[station]]
+name = "SomaFM Fluid"
+url = "https://somafm.com/fluid.pls"
+
+[[station]]
+name = "SomaFM Folk Forward"
+url = "https://somafm.com/folkfwd.pls"
+
+[[station]]
+name = "SomaFM Groove Salad"
+url = "https://somafm.com/groovesalad.pls"
+
+[[station]]
+name = "SomaFM Groove Salad 2"
+url = "https://somafm.com/groovesalad2.pls"
+
+[[station]]
+name = "SomaFM Groove Salad Classic"
+url = "https://somafm.com/gsclassic.pls"
+
+[[station]]
+name = "SomaFM Heavyweight Reggae"
+url = "https://somafm.com/reggae.pls"
+
+[[station]]
+name = "SomaFM Illinois Street Lounge"
+url = "https://somafm.com/illstreet.pls"
+
+[[station]]
+name = "SomaFM Indie Pop Rocks!"
+url = "https://somafm.com/indiepop.pls"
+
+[[station]]
+name = "SomaFM Left Coast 70s"
+url = "https://somafm.com/seventies.pls"
+
+[[station]]
+name = "SomaFM Live"
+url = "https://somafm.com/live.pls"
+
+[[station]]
+name = "SomaFM Lush"
+url = "https://somafm.com/lush.pls"
+
+[[station]]
+name = "SomaFM Metal Detector"
+url = "https://somafm.com/metal.pls"
+
+[[station]]
+name = "SomaFM Mission Control"
+url = "https://somafm.com/missioncontrol.pls"
+
+[[station]]
+name = "SomaFM n5MD Radio"
+url = "https://somafm.com/n5md.pls"
+
+[[station]]
+name = "SomaFM PopTron"
+url = "https://somafm.com/poptron.pls"
+
+[[station]]
+name = "SomaFM Secret Agent"
+url = "https://somafm.com/secretagent.pls"
+
+[[station]]
+name = "SomaFM Seven Inch Soul"
+url = "https://somafm.com/7soul.pls"
+
+[[station]]
+name = "SomaFM SF 10-33"
+url = "https://somafm.com/sf1033.pls"
+
+[[station]]
+name = "SomaFM SF in SF"
+url = "https://somafm.com/sfinsf.pls"
+
+[[station]]
+name = "SomaFM SF Police Scanner"
+url = "https://somafm.com/scanner.pls"
+
+[[station]]
+name = "SomaFM Sonic Universe"
+url = "https://somafm.com/sonicuniverse.pls"
+
+[[station]]
+name = "SomaFM Space Station Soma"
+url = "https://somafm.com/spacestation.pls"
+
+[[station]]
+name = "SomaFM Specials"
+url = "https://somafm.com/specials.pls"
+
+[[station]]
+name = "SomaFM Suburbs of Goa"
+url = "https://somafm.com/suburbsofgoa.pls"
+
+[[station]]
+name = "SomaFM Synphaera Radio"
+url = "https://somafm.com/synphaera.pls"
+
+[[station]]
+name = "SomaFM The Dark Zone"
+url = "https://somafm.com/darkzone.pls"
+
+[[station]]
+name = "SomaFM The In-Sound"
+url = "https://somafm.com/insound.pls"
+
+[[station]]
+name = "SomaFM The Trip"
+url = "https://somafm.com/thetrip.pls"
+
+[[station]]
+name = "SomaFM ThistleRadio"
+url = "https://somafm.com/thistle.pls"
+
+[[station]]
+name = "SomaFM Tiki Time"
+url = "https://somafm.com/tikitime.pls"
+
+[[station]]
+name = "SomaFM Underground 80s"
+url = "https://somafm.com/u80s.pls"
+
+[[station]]
+name = "SomaFM Vaporwaves"
+url = "https://somafm.com/vaporwaves.pls"
 
 [[station]]
 name = "Радыё Сталiца"
