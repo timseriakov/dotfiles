@@ -53,7 +53,7 @@
     "npm:@agnishc/edb-session-manager",
     "npm:gentle-engram"
   ],
-  "lastChangelogVersion": "0.74.0",
+  "lastChangelogVersion": "0.75.0",
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
