@@ -218,6 +218,7 @@
 Самое полезное:
 
 - `Ctrl-a e` — sidebar
+- popup shell (`cmd+f` / `cmd+alt+f`) перед открытием автоматически закрывает `workmux sidebar` в текущем окне, если он открыт
 - `Ctrl-a w` — popup dashboard
 - `Ctrl-a W` — full dashboard
 - `Alt+Tab` — сначала пытается `workmux sidebar next`, а если sidebar ещё не открыт — открывает sidebar и повторяет переключение; если переключать некуда, tmux не показывает ошибку

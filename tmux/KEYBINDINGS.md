@@ -42,8 +42,8 @@
 
 | Key                       | Action                                                 |
 | ------------------------- | ------------------------------------------------------ |
-| `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7`              |
-| `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8`               |
+| `cmd+f` / `cmd+а`         | persistent popup shell через kitty → `F7` ; если открыт `workmux sidebar`, он сначала закрывается |
+| `cmd+alt+f` / `cmd+alt+а` | ephemeral popup shell через kitty → `F8` ; если открыт `workmux sidebar`, он сначала закрывается  |
 | `Ctrl-a f`                | promote popup в окно (только внутри popup)             |
 | `Ctrl-a g`                | promote popup в vertical split (только внутри popup)   |
 | `Ctrl-a G`                | promote popup в horizontal split (только внутри popup) |

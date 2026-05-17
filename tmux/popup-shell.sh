@@ -46,6 +46,16 @@ set_popup_metadata() {
     tmux set-option -t "$session_name" -q @popup_start_directory "$popup_start_directory"
 }
 
+close_parent_workmux_sidebar_if_open() {
+    local panes=""
+
+    panes="$(tmux list-panes -t "$PARENT_WINDOW_ID" -F '#{pane_current_command}\t#{pane_start_command}\t#{pane_title}' 2>/dev/null || true)"
+
+    if printf '%s\n' "$panes" | grep -Eiq '(^workmux\t|workmux .*_sidebar-|\tsidebar($|\t))'; then
+        /opt/homebrew/bin/workmux sidebar >/dev/null 2>&1 || true
+    fi
+}
+
 case "$MODE" in
     persistent|ephemeral) ;;
     *) usage ;;
@@ -63,6 +73,8 @@ if [[ -z "$WINDOW_KEY" ]]; then
 fi
 
 SESSION_START_DIRECTORY="$(resolve_start_directory)"
+
+close_parent_workmux_sidebar_if_open
 
 if command -v im-select >/dev/null 2>&1; then
     im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
