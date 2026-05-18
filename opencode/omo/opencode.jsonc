@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": ["oh-my-openagent@latest"],
-  "instructions": ["~/dev/dotfiles/opencode/omo/instructions/mcp-naming.md"],
+  "instructions": ["~/dev/dotfiles/opencode/omo/instructions/user-general.md"],
   "provider": {
     "omniroute": {
       "models": {

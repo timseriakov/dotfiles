@@ -53,12 +53,12 @@
     "npm:@agnishc/edb-session-manager",
     "npm:gentle-engram"
   ],
-  "lastChangelogVersion": "0.75.0",
+  "lastChangelogVersion": "0.75.1",
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
   "defaultProvider": "omni",
-  "defaultModel": "cx/gpt-5.4",
+  "defaultModel": "cx/gpt-5.5-medium",
   "editorPaddingX": 1,
   "showHardwareCursor": false,
   "defaultThinkingLevel": "high"
