@@ -1,5 +1,5 @@
 local function switch_to_abc()
-	if ya.target_os() ~= "macos" or not ya.which("im-select") then
+	if ya.target_os() ~= "macos" then
 		return
 	end
 
