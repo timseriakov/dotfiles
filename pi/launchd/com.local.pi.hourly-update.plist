@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.pi.hourly-update</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/tim/.volta/bin/pi</string>
+        <string>update</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tim</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tim/Library/Logs/pi/hourly-update.stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/Library/Logs/pi/hourly-update.stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/tim</string>
+        <key>PATH</key>
+        <string>/Users/tim/.volta/bin:/Users/tim/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
