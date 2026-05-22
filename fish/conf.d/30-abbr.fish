@@ -114,10 +114,11 @@ abbr -a cc-log 'npx -y vibe-log-cli@latest'
 abbr -a lm lsh # Translates natural language to shell commands using LLM
 
 # Gemini
-abbr -a ge gemini
-abbr -a ge-up 'npm install -g @google/gemini-cli'
-# abbr -a geup 'brew install gemini-cli'
-abbr -a ge-clear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+# abbr -a ge gemini
+# abbr -a ge-up 'npm install -g @google/gemini-cli'
+# abbr -a ge-clear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
+abbr -a ge agy
+abbr -a ge-up 'brew install antigravity-cli'
 
 # Codex
 abbr -a cx codex

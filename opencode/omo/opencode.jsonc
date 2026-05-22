@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["oh-my-openagent@latest"],
+  "plugin": [
+    "oh-my-openagent@latest",
+    // "opencode-chrome-annotation@latest"
+  ],
   "instructions": ["~/dev/dotfiles/opencode/omo/instructions/user-general.md"],
   "provider": {
     "omniroute": {
