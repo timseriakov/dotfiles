@@ -8,7 +8,16 @@
     "model_list": "\u003cleader\u003ev",
     "session_compact": "ctrl+k"
   },
-  "plugin": ["opencode-subagent-statusline"],
+  "plugin": [
+    "opencode-subagent-statusline",
+    [
+      "opencode-mini-session",
+      {
+        "model": "omniroute/reasoning-main",
+        "keybind": "alt+f"
+      }
+    ]
+  ],
   "scroll_acceleration": {
     "enabled": false
   },
