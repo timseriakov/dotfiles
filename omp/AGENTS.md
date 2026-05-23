@@ -42,6 +42,7 @@ Current patched behavior:
 - prompt gutter should match Starship: green ` ` (`U+F105` plus one following space)
 - prompt gutter width reserves 1 cell even if terminal width detection reports `` as width 0
 - `ctrl+k` is bound by the OMP editor extension to compact context, matching the user's OpenCode shortcut
+- `shift+enter` and `ctrl+j` are bound in `omp/agent/keybindings.json` to insert a newline (`tui.input.newLine`)
 
 ## Startup Banner
 
