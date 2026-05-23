@@ -41,6 +41,7 @@ Current patched behavior:
 - borderless editor still renders the status/top line; status starts at the left edge like Starship/fish, while only the input line uses the ` ` gutter
 - prompt gutter should match Starship: green ` ` (`U+F105` plus one following space)
 - prompt gutter width reserves 1 cell even if terminal width detection reports `` as width 0
+- `ctrl+k` is bound by the OMP editor extension to compact context, matching the user's OpenCode shortcut
 
 ## Startup Banner
 
