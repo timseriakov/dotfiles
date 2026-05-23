@@ -1,0 +1,66 @@
+mcp:
+  enableProjectConfig: false
+skills:
+  enableClaudeUser: false
+  enableClaudeProject: false
+commands:
+  enableClaudeUser: false
+  enableClaudeProject: false
+lastChangelogVersion: 15.2.4
+startup:
+  quiet: true
+theme:
+  dark: starship-nord
+colorBlindMode: false
+statusLine:
+  preset: custom
+  separator: none
+  leftSegments:
+    - path
+    - git
+    - mode
+    - context_pct
+    - subagents
+    - model
+  rightSegments: []
+  segmentOptions:
+    path:
+      abbreviate: false
+      maxLength: 32
+      stripWorkPrefix: true
+      lastSegment: true
+    git:
+      showBranch: true
+      showStaged: true
+      showUnstaged: true
+      showUntracked: true
+      compactDirty: true
+      showAheadBehind: true
+    model:
+      showThinkingLevel: false
+  sessionAccent: false
+  showHookStatus: false
+modelRoles:
+  default: omniroute/reasoning-main
+  smol: omniroute/quick-free
+  slow: omniroute/deep-premium
+  plan: omniroute/reasoning-main
+  task: omniroute/coding-main
+  vision: omniroute/reasoning-main
+disabledProviders:
+  - native
+  - opencode
+  - claude
+  - cursor
+  - gemini
+  - windsurf
+  - cline
+  - mcp-json
+  - vscode
+  - codex
+  - claude-plugins
+modelProviderOrder:
+  - omniroute
+symbolPreset: nerd
+extensions:
+  - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
