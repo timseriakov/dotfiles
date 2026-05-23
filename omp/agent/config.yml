@@ -22,7 +22,8 @@ statusLine:
     - context_pct
     - subagents
     - model
-  rightSegments: []
+  rightSegments:
+    - session_name
   segmentOptions:
     path:
       abbreviate: false
