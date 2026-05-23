@@ -8,7 +8,7 @@
  * What this patches:
  * - status line path: basename only (last directory segment)
  * - status line git: Starship-style `on  branch`, with `on` white and git info purple
- * - status line model: Starship-style `via Model Name`, with `via` white and model green, no Node.js hexagon icon
+ * - status line model: Starship-style `via Model Name OMNi`, with `via` white, model green, dim provider suffix, no Node.js hexagon icon
  * - status line spacing: no outer padding, configured separator only between segments
  * - chat messages: remove 1-column left padding from assistant/user text
  * - default editor: borderless, paddingX 0, green prompt gutter ` `
@@ -268,9 +268,10 @@ function patchSegments(content) {
     [
       `\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
       `\t\treturn { content: \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", content)}\`, visible: true };`,
+      `\t\tconst providerMatch = content.match(/^(.*) (OMNi)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
     ],
-    `\t\treturn { content: \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", content)}\`, visible: true };`,
-    "segments model white via prefix",
+    `\t\tconst providerMatch = content.match(/^(.*) (OMNi)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+    "segments model dim provider suffix",
   );
   out = r.content;
 

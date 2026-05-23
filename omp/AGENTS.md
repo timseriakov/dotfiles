@@ -31,7 +31,7 @@ Current patched behavior:
 
 - status-line path renders only the last directory segment, e.g. `dotfiles`
 - git display is Starship-like: `on  master ↑N ↓N [!+?]`; `on` is white/text color, git info is purple
-- model display is Starship-like text only: `via OmniRoute Reasoning Main`; `via` is white/text color, model is green, no `⬢` because that is a Node.js/package glyph in the shell prompt
+- model display is Starship-like text only: `via Reasoning Main OMNi`; `via` is white/text color, model is green, provider suffix `OMNi` is dim Nord color, no `⬢` because that is a Node.js/package glyph in the shell prompt
 - status-line group padding is reduced
 - pi-tui `visibleWidth()` is patched to strip ANSI escape sequences before measuring styled status segments; without this, white `on`/`via` splits make the status line overflow/collide
 - status-line segment separator should be Starship-like one space via theme `sep.space: " "`

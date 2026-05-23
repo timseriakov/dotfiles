@@ -1,6 +1,6 @@
 import { CustomEditor, type EditorTheme } from "@oh-my-pi/pi-coding-agent";
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
-import type { KeybindingsManager } from "@oh-my-pi/pi-coding-agent/keybindings";
+import type { KeybindingsManager } from "@oh-my-pi/pi-coding-agent";
 import type { TUI } from "@oh-my-pi/pi-tui";
 
 class StarshipMinimalEditor extends CustomEditor {

@@ -13,91 +13,91 @@ providers:
       supportsToolChoice: true
     models:
       - id: reasoning-main
-        name: OmniRoute Reasoning Main
+        name: Reasoning Main OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: reasoning-cheap
-        name: OmniRoute Reasoning Cheap
+        name: Reasoning Cheap OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 8192
       - id: coding-main
-        name: OmniRoute Coding Main
+        name: Coding Main OMNi
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: coding-cheap
-        name: OmniRoute Coding Cheap
+        name: Coding Cheap OMNi
         reasoning: true
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
       - id: deep-premium
-        name: OmniRoute Deep Premium
+        name: Deep Premium OMNi
         reasoning: true
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
       - id: research-fast
-        name: OmniRoute Research Fast
+        name: Research Fast OMNi
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: quick-free
-        name: OmniRoute Quick Free
+        name: Quick Free OMNi
         reasoning: false
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
       - id: writing-cheap
-        name: OmniRoute Writing Cheap
+        name: Writing Cheap OMNi
         reasoning: false
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: cx/gpt-5.5
-        name: OmniRoute CX GPT 5.5
+        name: CX GPT 5.5 OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: cx/gpt-5.5-medium
-        name: OmniRoute CX GPT 5.5 Medium
+        name: CX GPT 5.5 Medium OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: cx/gpt-5.5-high
-        name: OmniRoute CX GPT 5.5 High
+        name: CX GPT 5.5 High OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: cx/gpt-5.5-xhigh
-        name: OmniRoute CX GPT 5.5 XHigh
+        name: CX GPT 5.5 XHigh OMNi
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: cx/gpt-5.4
-        name: OmniRoute CX GPT 5.4
+        name: CX GPT 5.4 OMNi
         reasoning: true
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
       - id: cx/gpt-5.3-codex
-        name: OmniRoute CX GPT 5.3 Codex
+        name: CX GPT 5.3 Codex OMNi
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: cx/gpt-5.2
-        name: OmniRoute CX GPT 5.2
+        name: CX GPT 5.2 OMNi
         reasoning: true
         input: [text]
         contextWindow: 200000
