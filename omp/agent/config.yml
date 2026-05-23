@@ -1,5 +1,5 @@
 mcp:
-  enableProjectConfig: false
+  enableProjectConfig: true
 skills:
   enableClaudeUser: false
   enableClaudeProject: false
@@ -49,7 +49,6 @@ modelRoles:
   task: omniroute/coding-main
   vision: omniroute/reasoning-main
 disabledProviders:
-  - native
   - opencode
   - claude
   - cursor

@@ -111,3 +111,7 @@ cliamp/*.log
 cliamp/*.pid
 cliamp/history.toml
 cliamp/*_ocr.png
+/omp/agent/agent.db
+/omp/agent/agent.db-shm
+/omp/agent/agent.db-wal
+/pi/agent/cache/pi-usage
