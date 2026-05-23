@@ -8,7 +8,7 @@ commands:
   enableClaudeProject: false
 lastChangelogVersion: 15.2.4
 startup:
-  quiet: true
+  quiet: false
 theme:
   dark: starship-nord
 colorBlindMode: false

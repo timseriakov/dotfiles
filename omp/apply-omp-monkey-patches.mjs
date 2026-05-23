@@ -15,6 +15,7 @@
  * - visible width: strip ANSI SGR/control sequences before measuring styled status segments
  * - editor status line: render top status line even when border chrome is hidden
  * - editor prompt gutter width: reserve 1 cell even if the glyph measures as width 0
+ * - welcome screen: replace the full logo/tips/recent-sessions box with only `Welcome from Oh My Pi`
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -283,6 +284,21 @@ function patchSegments(content) {
   return out;
 }
 
+function patchWelcome(content) {
+  const alreadyPatched = `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
+  const upstream = `\trender(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
+  return replaceAny(
+    content,
+    [
+      upstream,
+      alreadyPatched,
+      `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+    ],
+    alreadyPatched,
+    "welcome minimal text only",
+  ).content;
+}
+
 function patchAssistantMessage(content) {
   let out = content;
   const replacements = [
@@ -338,6 +354,17 @@ function patchUserMessage(content) {
 function patchInteractiveMode(content) {
   let out = content;
   let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(new Spacer(1));\n\t\t\tthis.ui.addChild(this.#welcomeComponent);\n\t\t\tthis.ui.addChild(new Spacer(1));`,
+      `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
+    ],
+    `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
+    "interactive welcome spacing",
+  );
+  out = r.content;
 
   r = replaceAny(
     out,
@@ -457,6 +484,7 @@ try {
   patchFile("modes/components/status-line.ts", patchStatusLineTs);
   patchFile("modes/components/status-line/types.ts", patchStatusTypes);
   patchFile("modes/components/status-line/segments.ts", patchSegments);
+  patchFile("modes/components/welcome.ts", patchWelcome);
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/user-message.ts", patchUserMessage);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
