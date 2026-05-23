@@ -43,6 +43,7 @@ Current patched behavior:
 - prompt gutter width reserves 1 cell even if terminal width detection reports `` as width 0
 - `ctrl+k` is bound by the OMP editor extension to compact context, matching the user's OpenCode shortcut
 - `shift+enter` and `ctrl+j` are bound in `omp/agent/keybindings.json` to insert a newline (`tui.input.newLine`)
+- session persistence is patched so `SessionManager.close()` always drains pending atomic rewrites before exit; otherwise print/smoke sessions can remain as hidden `.tmp` files and `--resume` shows `No sessions found`
 
 ## Startup Banner
 

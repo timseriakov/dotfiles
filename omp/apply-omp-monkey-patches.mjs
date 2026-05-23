@@ -17,6 +17,7 @@
  * - editor prompt gutter width: reserve 1 cell even if the glyph measures as width 0
  * - welcome screen: replace the full logo/tips/recent-sessions box with only `Welcome from Oh My Pi`
  * - session name: right status segment is muted, truncated to 48 terminal cells, and padded right
+ * - session persistence: close drains pending atomic rewrites even before append writer opens
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -428,6 +429,24 @@ function patchTuiVisibleWidth(content) {
   ).content;
 }
 
+function patchSessionManager(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\tasync close(): Promise<void> {\n\t\tif (!this.#persistWriter) return;\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t});\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
+      `\tasync close(): Promise<void> {\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t}, { ignoreError: true });\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
+    ],
+    `\tasync close(): Promise<void> {\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t}, { ignoreError: true });\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
+    "session-manager close drains pending rewrites",
+  );
+  out = r.content;
+
+  return out;
+}
+
 function patchEditorGutterWidth(content) {
   let out = content;
   let r;
@@ -510,6 +529,7 @@ try {
   patchFile("modes/components/welcome.ts", patchWelcome);
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/user-message.ts", patchUserMessage);
+  patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
   console.log("OMP monkey patches applied.");
