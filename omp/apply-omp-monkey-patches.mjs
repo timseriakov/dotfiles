@@ -549,6 +549,25 @@ function patchSessionManager(content) {
   let out = content;
   let r;
 
+  r = insertAfter(
+    out,
+    `function createSessionId(): string {\n\treturn Bun.randomUUIDv7();\n}\n`,
+    `\nfunction inferSessionIdFromPath(filePath: string): string | undefined {\n\tconst fileName = path.basename(filePath, ".jsonl");\n\tconst separator = fileName.lastIndexOf("_");\n\tconst candidate = separator >= 0 ? fileName.slice(separator + 1) : fileName;\n\treturn /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(candidate)\n\t\t? candidate\n\t\t: undefined;\n}\n`,
+    "session-manager infer id from session file path",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
+      `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tconst explicitSessionId = inferSessionIdFromPath(explicitPath);\n\t\t\tif (explicitSessionId) {\n\t\t\t\tthis.#sessionId = explicitSessionId;\n\t\t\t\tconst header = this.#fileEntries.find(e => e.type === "session") as SessionHeader | undefined;\n\t\t\t\tif (header) header.id = explicitSessionId;\n\t\t\t}\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
+    ],
+    `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tconst explicitSessionId = inferSessionIdFromPath(explicitPath);\n\t\t\tif (explicitSessionId) {\n\t\t\t\tthis.#sessionId = explicitSessionId;\n\t\t\t\tconst header = this.#fileEntries.find(e => e.type === "session") as SessionHeader | undefined;\n\t\t\t\tif (header) header.id = explicitSessionId;\n\t\t\t}\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
+    "session-manager recovery keeps path id",
+  );
+  out = r.content;
+
   r = replaceAny(
     out,
     [
