@@ -15,6 +15,12 @@ vimcmd_visual_symbol = '[](bold yellow)'
 vimcmd_replace_symbol = '[](bold purple)'
 vimcmd_replace_one_symbol = '[](bold purple)'
 
+[git_status]
+format = '($all_status$ahead_behind )'
+ahead = '[↑${count}](green)'
+behind = '[↓${count}](red)'
+diverged = '[↑${ahead_count}](green) [↓${behind_count}](red)'
+
 [username]
 disabled = true
 [hostname]
