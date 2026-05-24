@@ -12,6 +12,7 @@ startup:
 theme:
   dark: starship-nord
 colorBlindMode: false
+showHardwareCursor: false
 statusLine:
   preset: custom
   separator: none
