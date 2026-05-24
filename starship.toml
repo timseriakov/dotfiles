@@ -16,7 +16,7 @@ vimcmd_replace_symbol = '[](bold purple)'
 vimcmd_replace_one_symbol = '[](bold purple)'
 
 [git_status]
-format = '([\[$all_status\]](red) $ahead_behind )'
+format = '($ahead_behind [\[$all_status\]](red) )'
 ahead = '[↑${count}](green)'
 behind = '[↓${count}](red)'
 diverged = '[↑${ahead_count}](green) [↓${behind_count}](red)'
