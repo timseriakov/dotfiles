@@ -10,6 +10,21 @@ OMP live config is linked into this directory:
 
 Edit OMP config, models, themes, and extensions in this repo, not directly in `~/.omp/agent`.
 
+## Runtime State
+
+OMP sessions and SQLite state must persist, but must not live as normal files in git. The patch script `omp/apply-omp-monkey-patches.mjs` keeps config in dotfiles and redirects runtime paths through symlinks:
+
+```text
+/Users/tim/dev/dotfiles/omp/agent/sessions -> /Users/tim/.local/share/omp/sessions
+/Users/tim/dev/dotfiles/omp/agent/blobs -> /Users/tim/.local/share/omp/blobs
+/Users/tim/dev/dotfiles/omp/agent/agent.db* -> /Users/tim/.local/share/omp/agent.db*
+/Users/tim/dev/dotfiles/omp/agent/history.db* -> /Users/tim/.local/share/omp/history.db*
+/Users/tim/dev/dotfiles/omp/agent/models.db* -> /Users/tim/.local/share/omp/models.db*
+/Users/tim/dev/dotfiles/omp/agent/terminal-sessions -> /Users/tim/.local/state/omp/terminal-sessions
+```
+
+Do not run `rm -rf omp/agent/sessions` as routine cleanup. If runtime paths appear under `omp/agent/`, preserve/move them; never delete sessions just to clean git status. They are gitignored only as a safety net.
+
 ## Monkey Patches After OMP Updates
 
 Some UI behavior is patched directly in the installed OMP package because OMP does not currently expose these options via config/extension APIs.
@@ -44,6 +59,7 @@ Current patched behavior:
 - `ctrl+k` is bound by the OMP editor extension to compact context, matching the user's OpenCode shortcut
 - `shift+enter` and `ctrl+j` are bound in `omp/agent/keybindings.json` to insert a newline (`tui.input.newLine`)
 - session persistence is patched so `SessionManager.close()` always drains pending atomic rewrites before exit; otherwise print/smoke sessions can remain as hidden `.tmp` files and `--resume` shows `No sessions found`
+- `Ctrl+Z` suspend is patched to send `SIGTSTP` only to the OMP process (`process.pid`) instead of process group `0`; this preserves normal shell job-control flow so `fg` can resume OMP
 
 ## Startup Banner
 

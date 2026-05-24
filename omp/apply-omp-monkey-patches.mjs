@@ -158,6 +158,66 @@ function patchAbsoluteFile(filePath, label, mutator) {
   }
 }
 
+function ensureRuntimeLink(linkPath, targetPath) {
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+
+  if (
+    fs.existsSync(linkPath) ||
+    fs.lstatSync(linkPath, { throwIfNoEntry: false })?.isSymbolicLink()
+  ) {
+    const stat = fs.lstatSync(linkPath);
+    if (stat.isSymbolicLink()) {
+      const currentTarget = fs.readlinkSync(linkPath);
+      if (currentTarget === targetPath) return;
+      fs.rmSync(linkPath);
+    } else if (!fs.existsSync(targetPath)) {
+      fs.renameSync(linkPath, targetPath);
+    } else {
+      if (stat.isDirectory()) {
+        fs.cpSync(linkPath, targetPath, {
+          recursive: true,
+          force: false,
+          errorOnExist: false,
+        });
+      }
+      fs.rmSync(linkPath, { recursive: true, force: true });
+    }
+  }
+
+  fs.symlinkSync(targetPath, linkPath);
+}
+
+function setupRuntimeStateLinks() {
+  const agentDir = path.join(home, "dev/dotfiles/omp/agent");
+  const dataRoot = path.join(home, ".local/share/omp");
+  const stateRoot = path.join(home, ".local/state/omp");
+
+  fs.mkdirSync(path.join(dataRoot, "sessions"), { recursive: true });
+  fs.mkdirSync(path.join(dataRoot, "blobs"), { recursive: true });
+  fs.mkdirSync(path.join(stateRoot, "terminal-sessions"), { recursive: true });
+
+  const links = [
+    ["agent.db", path.join(dataRoot, "agent.db")],
+    ["agent.db-shm", path.join(dataRoot, "agent.db-shm")],
+    ["agent.db-wal", path.join(dataRoot, "agent.db-wal")],
+    ["history.db", path.join(dataRoot, "history.db")],
+    ["history.db-shm", path.join(dataRoot, "history.db-shm")],
+    ["history.db-wal", path.join(dataRoot, "history.db-wal")],
+    ["models.db", path.join(dataRoot, "models.db")],
+    ["models.db-shm", path.join(dataRoot, "models.db-shm")],
+    ["models.db-wal", path.join(dataRoot, "models.db-wal")],
+    ["sessions", path.join(dataRoot, "sessions")],
+    ["blobs", path.join(dataRoot, "blobs")],
+    ["terminal-sessions", path.join(stateRoot, "terminal-sessions")],
+  ];
+
+  for (const [name, target] of links) {
+    ensureRuntimeLink(path.join(agentDir, name), target);
+  }
+
+  console.log("ok      OMP runtime state links");
+}
+
 function patchStatusLineTs(content) {
   let out = content;
   let r;
@@ -429,6 +489,62 @@ function patchTuiVisibleWidth(content) {
   ).content;
 }
 
+function patchInputController(content) {
+  return replaceAny(
+    content,
+    [
+      `	handleCtrlZ(): void {
+		// Set up handler to restore TUI when resumed
+		process.once("SIGCONT", () => {
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+		});
+
+		// Stop the TUI (restore terminal to normal mode)
+		this.ctx.ui.stop();
+
+		// Send SIGTSTP to process group (pid=0 means all processes in group)
+		process.kill(0, "SIGTSTP");
+	}`,
+      `	handleCtrlZ(): void {
+		if (process.platform === "win32" || !process.stdout.isTTY) return;
+
+		// Set up handler to restore TUI when resumed
+		process.once("SIGCONT", () => {
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+		});
+
+		// Stop the TUI (restore terminal to normal mode)
+		this.ctx.ui.stop();
+
+		// Send SIGTSTP to this process. Sending it to process group 0 can also stop
+		// the parent interactive shell in some terminals, so fish never regains
+		// job-control ownership for a normal bg/fg flow.
+		process.kill(process.pid, "SIGTSTP");
+	}`,
+    ],
+    `	handleCtrlZ(): void {
+		if (process.platform === "win32" || !process.stdout.isTTY) return;
+
+		// Set up handler to restore TUI when resumed
+		process.once("SIGCONT", () => {
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+		});
+
+		// Stop the TUI (restore terminal to normal mode)
+		this.ctx.ui.stop();
+
+		// Send SIGTSTP to this process. Sending it to process group 0 can also stop
+		// the parent interactive shell in some terminals, so fish never regains
+		// job-control ownership for a normal bg/fg flow.
+		process.kill(process.pid, "SIGTSTP");
+	}`,
+    "input-controller ctrl-z suspends only omp process",
+  ).content;
+}
+
 function patchSessionManager(content) {
   let out = content;
   let r;
@@ -522,6 +638,7 @@ function patchEditorGutterWidth(content) {
 }
 
 try {
+  setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
   patchFile("modes/components/status-line.ts", patchStatusLineTs);
   patchFile("modes/components/status-line/types.ts", patchStatusTypes);
@@ -529,6 +646,7 @@ try {
   patchFile("modes/components/welcome.ts", patchWelcome);
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/user-message.ts", patchUserMessage);
+  patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
