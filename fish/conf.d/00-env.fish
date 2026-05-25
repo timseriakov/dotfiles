@@ -90,3 +90,5 @@ set -gx YT_DLP_PATH /opt/homebrew/bin/yt-dlp
 set -gx OPENCODE_ENABLE_EXA 1
 
 set -gx CAVEMAN_RUNNER codex
+
+set -gx PLAYWRITER_AUTO_ENABLE 1

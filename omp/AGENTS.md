@@ -10,6 +10,15 @@ OMP live config is linked into this directory:
 
 Edit OMP config, models, themes, and extensions in this repo, not directly in `~/.omp/agent`.
 
+## User Shell
+
+The user's interactive shell is `fish`.
+
+- User-facing shell commands and examples must be `fish`-compatible, not bash snippets.
+- Do not suggest `export VAR=...`, `set -a; source .env; set +a`, bash arrays, or bash-only syntax.
+- Prefer running shell flows through tools directly; when the user needs to run something manually, write the `fish` version.
+- Code fences for shell snippets should use `fish` unless the snippet is intentionally for another shell.
+
 ## Runtime State
 
 OMP sessions and SQLite state must persist, but must not live as normal files in git. The patch script `omp/apply-omp-monkey-patches.mjs` keeps config in dotfiles and redirects runtime paths through symlinks:

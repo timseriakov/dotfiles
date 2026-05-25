@@ -16,17 +16,10 @@ vimcmd_replace_symbol = '[](bold purple)'
 vimcmd_replace_one_symbol = '[](bold purple)'
 
 [git_status]
-format = '($ahead_behind )($conflicted$deleted$renamed$modified$staged$untracked$stashed)'
+format = '($ahead_behind )([\[$all_status\]](red) )'
 ahead = '[↑${count}](green)'
 behind = '[↓${count}](red)'
 diverged = '[↑${ahead_count}](green) [↓${behind_count}](red)'
-conflicted = '[\[=\]](red) '
-deleted = '[\[✘\]](red) '
-renamed = '[\[»\]](red) '
-modified = '[\[!\]](red) '
-staged = '[\[+\]](red) '
-untracked = '[\[?\]](red) '
-stashed = '[\[$\]](red) '
 
 [username]
 disabled = true
