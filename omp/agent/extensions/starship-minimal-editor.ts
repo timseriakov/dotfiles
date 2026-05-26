@@ -9,7 +9,7 @@ class StarshipMinimalEditor extends CustomEditor {
     this.setBorderVisible(false);
     this.setPaddingX(0);
     this.setPromptGutter(" ");
-    this.setPromptGutterColor(theme.fg.bind(theme, "success"));
+
   }
 }
 

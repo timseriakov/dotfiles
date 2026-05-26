@@ -76,7 +76,7 @@ function replaceOnce(content, oldText, newText, label) {
     );
   }
   return {
-    content: content.replace(oldText, newText),
+    content: content.replace(oldText, () => newText),
     changed: true,
     already: false,
   };
@@ -90,7 +90,7 @@ function replaceAny(content, alternatives, newText, label) {
     const count = content.split(oldText).length - 1;
     if (count === 1) {
       return {
-        content: content.replace(oldText, newText),
+        content: content.replace(oldText, () => newText),
         changed: true,
         already: false,
       };
@@ -115,7 +115,7 @@ function insertAfter(content, anchor, insertion, label) {
     );
   }
   return {
-    content: content.replace(anchor, anchor + insertion),
+    content: content.replace(anchor, () => anchor + insertion),
     changed: true,
     already: false,
   };
@@ -132,7 +132,7 @@ function insertBefore(content, anchor, insertion, label) {
     );
   }
   return {
-    content: content.replace(anchor, insertion + anchor),
+    content: content.replace(anchor, () => insertion + anchor),
     changed: true,
     already: false,
   };
