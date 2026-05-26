@@ -123,6 +123,7 @@ prepend_fetchers = [
      { mime = "application/ms-*", run = "office" },
      { mime = "application/msword", run = "office" },
      { name = "*.docx", run = "office" },
+     { url = "*.astro", run = 'faster-piper -- bat --color=always --style=plain -l html "$1"' },
      { url = "*.jsonc", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
      { url = "*.lock", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
      { url = "*.sqlite", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
