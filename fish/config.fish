@@ -76,3 +76,6 @@ test ! -e "$HOME/.x-cmd.root/local/data/fish/rc.fish" || source "$HOME/.x-cmd.ro
 
 # Keep Starship on the repo-managed config even if x-cmd exports its own.
 set -gx STARSHIP_CONFIG "$HOME/.config/starship.toml"
+
+# pnpm managed via conf.d/10-path.fish
+set -gx PNPM_HOME "/Users/tim/Library/pnpm"

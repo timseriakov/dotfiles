@@ -15,6 +15,7 @@ fish_add_path -ga ~/dev/dotfiles/qutebrowser/bin
 fish_add_path -ga ~/.vapi/bin
 fish_add_path -ga ~/.bun/bin
 fish_add_path -ga ~/.volta/bin
+fish_add_path -ga /Users/tim/Library/pnpm/bin
 
 # Volta per-node "global npm bin" (npm -g sometimes lands here)
 if set -q VOLTA_HOME; and test -d "$VOLTA_HOME/tools/image/node"
