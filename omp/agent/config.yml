@@ -6,7 +6,7 @@ skills:
 commands:
   enableClaudeUser: false
   enableClaudeProject: false
-lastChangelogVersion: 15.2.4
+lastChangelogVersion: 15.3.2
 startup:
   quiet: false
 theme:
@@ -43,7 +43,7 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: omniroute/reasoning-main
+  default: omniroute/cx/gpt-5.5
   smol: omniroute/quick-free
   slow: omniroute/deep-premium
   plan: omniroute/reasoning-main
