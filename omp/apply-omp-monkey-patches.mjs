@@ -289,7 +289,7 @@ function patchStatusLineTs(content) {
       [
         `\t\t\tlet content = bgAnsi + fgAnsi + " ";\n\t\t\tcontent += parts.join(\`\${sepAnsi} \${sep} \${fgAnsi}\`);\n\t\t\tcontent += " \x1b[0m";`,
         '\t\t\tlet content = bgAnsi + fgAnsi + " ";\n\t\t\tcontent += parts.join(`${sepAnsi} ${sep} ${fgAnsi}`);\n\t\t\tcontent += " \x1b[0m";',
-        '\t\t\tlet content = bgAnsi + fgAnsi;\n\t\t\tcontent += ` ${parts.join(` ${sepAnsi}${sep}${fgAnsi} `)} `;',
+        "\t\t\tlet content = bgAnsi + fgAnsi;\n\t\t\tcontent += ` ${parts.join(` ${sepAnsi}${sep}${fgAnsi} `)} `;",
       ],
       `\t\t\tlet content = bgAnsi + fgAnsi;\n\t\t\tcontent += parts.join(\`\${sepAnsi}\${sep}\${fgAnsi}\`);\n\t\t\tcontent += "\x1b[0m";`,
       "status-line render group no outer padding",
@@ -401,7 +401,12 @@ function patchSegments(content) {
 	},
 };`;
   const newGit = `const gitSegment: StatusLineSegment = {\n\tid: "git",\n\trender(ctx) {\n\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return { content: "", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\tconst parts: string[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) parts.push(theme.fg("statusLineStaged", \`↑\${remote.ahead}\`));\n\t\t\tif (remote.behind > 0) parts.push(theme.fg("statusLineDirty", \`↓\${remote.behind}\`));\n\t\t}\n\n\t\tif (gitStatus) {\n\t\t\tconst dirtyParts: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "!" : \`*\${gitStatus.unstaged}\`);\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "+" : \`+\${gitStatus.staged}\`);\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "?" : \`?\${gitStatus.untracked}\`);\n\t\t\t}\n\t\t\tif (dirtyParts.length > 0) {\n\t\t\t\tconst dirtyText = opts.compactDirty === true ? \`[\${dirtyParts.join("")}]\` : dirtyParts.join(" ");\n\t\t\t\tparts.push(theme.fg("statusLineDirty", dirtyText));\n\t\t\t}\n\t\t}\n\n\t\tif (parts.length > 0) {\n\t\t\tconst indicatorText = parts.join(" ");\n\t\t\tif (!content && showBranch === false) {\n\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t} else {\n\t\t\t\tcontent += content ? \` \${indicatorText}\` : indicatorText;\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: "", visible: false };\n\n\t\treturn { content: \`\${theme.fg("text", "on ")}\${theme.fg("statusLineGitClean", content)}\`, visible: true };\n\t},\n};`;
-  r = replaceAny(out, [oldGit, upstreamGitWithColorName, newGit], newGit, "segments compact git renderer");
+  r = replaceAny(
+    out,
+    [oldGit, upstreamGitWithColorName, newGit],
+    newGit,
+    "segments compact git renderer",
+  );
   out = r.content;
 
   const upstreamSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst ansi = getSessionAccentAnsi(getSessionAccentHex(name)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
