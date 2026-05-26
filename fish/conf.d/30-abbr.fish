@@ -149,6 +149,7 @@ abbr -a o-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /U
 
 # Oh My Pi
 abbr -a om omp
+abbr -a щь omp
 
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
