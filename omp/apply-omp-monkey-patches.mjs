@@ -218,6 +218,84 @@ function setupRuntimeStateLinks() {
   console.log("ok      OMP runtime state links");
 }
 
+function patchPlannotatorBrowser(content) {
+  let out = content;
+  let r;
+
+  if (!out.includes(`import { homedir, tmpdir } from "node:os";`)) {
+    r = replaceOnce(
+      out,
+      `import { tmpdir } from "node:os";`,
+      `import { homedir, tmpdir } from "node:os";`,
+      "plannotator browser homedir import",
+    );
+    out = r.content;
+  }
+
+  r = replaceAny(
+    out,
+    [
+      `const __dirname = dirname(fileURLToPath(import.meta.url));
+let planHtmlContent = "";
+let reviewHtmlContent = "";
+
+try {
+	planHtmlContent = readFileSync(resolve(__dirname, "plannotator.html"), "utf-8");
+} catch {
+	// built assets unavailable
+}
+
+try {
+	reviewHtmlContent = readFileSync(resolve(__dirname, "review-editor.html"), "utf-8");
+} catch {
+	// built assets unavailable
+}`,
+      `const __dirname = dirname(fileURLToPath(import.meta.url));
+const pluginAssetDir = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
+let planHtmlContent = "";
+let reviewHtmlContent = "";
+
+function readBundledAsset(fileName: string): string {
+	const candidates = [resolve(__dirname, fileName), resolve(pluginAssetDir, fileName)];
+	for (const candidate of candidates) {
+		try {
+			return readFileSync(candidate, "utf-8");
+		} catch {
+			// try the next candidate
+		}
+	}
+	return "";
+}
+
+planHtmlContent = readBundledAsset("plannotator.html");
+reviewHtmlContent = readBundledAsset("review-editor.html");`,
+    ],
+    `const __dirname = dirname(fileURLToPath(import.meta.url));
+const pluginAssetDir = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
+let planHtmlContent = "";
+let reviewHtmlContent = "";
+
+function readBundledAsset(fileName: string): string {
+	const candidates = [resolve(__dirname, fileName), resolve(pluginAssetDir, fileName)];
+	for (const candidate of candidates) {
+		try {
+			return readFileSync(candidate, "utf-8");
+		} catch {
+			// try the next candidate
+		}
+	}
+	return "";
+}
+
+planHtmlContent = readBundledAsset("plannotator.html");
+reviewHtmlContent = readBundledAsset("review-editor.html");`,
+    "plannotator browser asset fallback",
+  );
+  out = r.content;
+
+  return out;
+}
+
 function patchStatusLineTs(content) {
   let out = content;
   let r;
@@ -724,6 +802,14 @@ try {
   patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
+  patchAbsoluteFile(
+    path.join(
+      home,
+      ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
+    ),
+    "plannotator browser asset fallback",
+    patchPlannotatorBrowser,
+  );
   console.log("OMP monkey patches applied.");
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
