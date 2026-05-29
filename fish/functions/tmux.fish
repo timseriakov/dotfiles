@@ -10,5 +10,5 @@ function tmux
     end
   end
 
-  command tmux -2 $argv
+  command tmux $argv
 end

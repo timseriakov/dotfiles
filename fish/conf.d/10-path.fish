@@ -10,7 +10,7 @@ set -eU fish_user_paths
 fish_add_path -ga ~/.antigravity/antigravity/bin
 
 # User/local tool bins
-fish_add_path -ga ~/.local/bin
+fish_add_path -gpm ~/.local/bin
 fish_add_path -ga ~/dev/dotfiles/qutebrowser/bin
 fish_add_path -ga ~/.vapi/bin
 fish_add_path -ga ~/.bun/bin

@@ -109,30 +109,29 @@ prepend_fetchers = [
   { id = "mime", name = "*", run = "mime", if = "!mime", prio = "high" },
 ]
 
- prepend_preloaders = [
-    { mime = "application/openxmlformats-officedocument.*", run = "office" },
-    { mime = "application/oasis.opendocument.*", run = "office" },
-    { mime = "application/ms-*", run = "office" },
-    { mime = "application/msword", run = "office" },
-    { url = "*.docx", run = "office" },
+prepend_preloaders = [
+  { mime = "application/openxmlformats-officedocument.*", run = "office" },
+  { mime = "application/oasis.opendocument.*", run = "office" },
+  { mime = "application/ms-*", run = "office" },
+  { mime = "application/msword", run = "office" },
+  { url = "*.docx", run = "office" },
 ]
 
-  prepend_previewers = [
-     { mime = "application/openxmlformats-officedocument.*", run = "office" },
-     { mime = "application/oasis.opendocument.*", run = "office" },
-     { mime = "application/ms-*", run = "office" },
-     { mime = "application/msword", run = "office" },
-     { name = "*.docx", run = "office" },
-     { url = "*.astro", run = 'faster-piper -- bat --color=always --style=plain -l html "$1"' },
-     { url = "*.jsonc", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
-     { url = "*.lock", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
-     { url = "*.sqlite", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
-     { url = "*.sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
-     { url = "*.db", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
-     { mime = "application/vnd.sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
-     { mime = "application/x-sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
-
-  ]
+prepend_previewers = [
+  { mime = "application/openxmlformats-officedocument.*", run = "office" },
+  { mime = "application/oasis.opendocument.*", run = "office" },
+  { mime = "application/ms-*", run = "office" },
+  { mime = "application/msword", run = "office" },
+  { name = "*.docx", run = "office" },
+  { url = "*.astro", run = 'faster-piper -- bat --color=always --style=plain -l html "$1"' },
+  { url = "*.jsonc", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
+  { url = "*.lock", run = 'faster-piper -- bat --color=always --style=plain -l json "$1"' },
+  { url = "*.sqlite", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
+  { url = "*.sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
+  { url = "*.db", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
+  { mime = "application/vnd.sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
+  { mime = "application/x-sqlite3", run = "mux preview-sqlite sqlite_tables sqlite_sample" },
+]
 spotters = [
   { url = "*/", run = "folder" },
   # Code
