@@ -13,6 +13,12 @@ theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
+compaction:
+  enabled: true
+  strategy: context-full
+  thresholdPercent: 85
+  keepRecentTokens: 30000
+  idleEnabled: false
 statusLine:
   preset: custom
   separator: none
