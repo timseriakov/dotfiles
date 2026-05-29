@@ -4,7 +4,7 @@
       "name": "OmniRoute",
       "api": "openai-completions",
       "baseUrl": "https://omniroute.e6ejok.easypanel.host/v1",
-      "apiKey": "OMNIROUTE_PI_API_KEY",
+      "apiKey": "$OMNIROUTE_PI_API_KEY",
       "authHeader": true,
       "compat": {
         "supportsDeveloperRole": false,
