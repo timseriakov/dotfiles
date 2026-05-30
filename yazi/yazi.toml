@@ -156,7 +156,7 @@ preloaders = [
   { mime = "image/svg+xml", run = "svg" },
   { mime = "image/*", run = "image" },
   # Video
-  { mime = "video/*", run = "video" },
+  { mime = "video/*", run = "video-frame" },
   # PDF
   { mime = "application/pdf", run = "pdf" },
   # Font
@@ -179,7 +179,7 @@ preloaders = [
   { mime = "image/svg+xml", run = "svg" },
   { mime = "image/*", run = "image" },
   # Video
-  { mime = "video/*", run = "video" },
+  { mime = "video/*", run = "video-frame" },
   # PDF
   { mime = "application/pdf", run = "pdf" },
   # Archive

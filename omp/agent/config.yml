@@ -71,3 +71,4 @@ modelProviderOrder:
 symbolPreset: nerd
 extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
+hideThinkingBlock: true
