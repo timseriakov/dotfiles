@@ -18,6 +18,9 @@
  * - welcome screen: replace the full logo/tips/recent-sessions box with only `Welcome from Oh My Pi`
  * - session name: right status segment is muted, truncated to 48 terminal cells, and padded right
  * - session persistence: close drains pending atomic rewrites even before append writer opens
+ * - OpenAI-compatible wire schemas: strip regex `pattern` keywords containing lookaround, because
+ *   OpenAI rejects them in tool schemas even though JavaScript accepts them
+ * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -47,6 +50,14 @@ function file(rel) {
 
 function tuiFile(rel) {
   return path.join(tuiSrcRoot, rel);
+}
+
+function piAiFile(rel) {
+  return path.join(
+    home,
+    ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src",
+    rel,
+  );
 }
 
 function read(filePath) {
@@ -146,6 +157,10 @@ function patchTuiFile(rel, mutator) {
   patchAbsoluteFile(tuiFile(rel), `pi-tui/${rel}`, mutator);
 }
 
+function patchPiAiFile(rel, mutator) {
+  patchAbsoluteFile(piAiFile(rel), `pi-ai/${rel}`, mutator);
+}
+
 function patchAbsoluteFile(filePath, label, mutator) {
   requireFile(filePath);
   const before = read(filePath);
@@ -216,6 +231,64 @@ function setupRuntimeStateLinks() {
   }
 
   console.log("ok      OMP runtime state links");
+}
+
+function patchPiAiOpenAICompletions(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `import { adaptSchemaForStrict, NO_STRICT, toolWireSchema } from "../utils/schema";`,
+      `import { adaptSchemaForStrict, NO_STRICT, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
+    ],
+    `import { adaptSchemaForStrict, NO_STRICT, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
+    "pi-ai openai-completions import schema sanitizer",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst baseParameters = toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+      `\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+    ],
+    `\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+    "pi-ai openai-completions sanitize base tool schema",
+  );
+  out = r.content;
+
+  return out;
+}
+
+function patchPiAiSchemaNormalize(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `const OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
+      `const UNSUPPORTED_OPENAI_REGEX_TOKENS = /\\(\\?[=!<]/;\n\nconst OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
+    ],
+    `const UNSUPPORTED_OPENAI_REGEX_TOKENS = /\\(\\?[=!<]/;\n\nconst OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
+    "pi-ai openai schema unsupported regex constant",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
+      `\t\tif (key === "pattern" && typeof value.pattern === "string" && UNSUPPORTED_OPENAI_REGEX_TOKENS.test(value.pattern)) {\n\t\t\tchanged = true;\n\t\t\tcontinue;\n\t\t}\n\n\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
+    ],
+    `\t\tif (key === "pattern" && typeof value.pattern === "string" && UNSUPPORTED_OPENAI_REGEX_TOKENS.test(value.pattern)) {\n\t\t\tchanged = true;\n\t\t\tcontinue;\n\t\t}\n\n\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
+    "pi-ai openai schema strip lookaround patterns",
+  );
+  out = r.content;
+
+  return out;
 }
 
 function patchPlannotatorBrowser(content) {
@@ -802,6 +875,8 @@ try {
   patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
+  patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
+  patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
   patchAbsoluteFile(
     path.join(
       home,
