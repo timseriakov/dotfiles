@@ -3,7 +3,7 @@
     "omni": {
       "name": "OmniRoute",
       "api": "openai-completions",
-      "baseUrl": "https://omniroute.e6ejok.easypanel.host/v1",
+      "baseUrl": "https://router.mjdgme.easypanel.host/v1",
       "apiKey": "$OMNIROUTE_PI_API_KEY",
       "authHeader": true,
       "compat": {
@@ -98,6 +98,75 @@
           "reasoning": true,
           "contextWindow": 200000,
           "maxTokens": 12000
+        }
+      ]
+    },
+    "opencode": {
+      "name": "OpenCode Zen Free",
+      "api": "openai-completions",
+      "baseUrl": "https://opencode.ai/zen/v1",
+      "apiKey": "$OPENCODE_ZEN_FREE",
+      "authHeader": true,
+      "compat": {
+        "supportsDeveloperRole": false,
+        "maxTokensField": "max_tokens"
+      },
+      "models": [
+        {
+          "id": "deepseek-v4-flash-free",
+          "name": "DeepSeek V4 Flash Free",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 1000000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mimo-v2.5-free",
+          "name": "MiMo V2.5 Free",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 1000000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nemotron-3-super-free",
+          "name": "Nemotron 3 Super Free",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 1000000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "big-pickle",
+          "name": "Big Pickle Free",
+          "input": ["text"],
+          "reasoning": true,
+          "contextWindow": 1000000,
+          "maxTokens": 64000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         }
       ]
     }

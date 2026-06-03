@@ -125,3 +125,6 @@ cliamp/*_ocr.png
 /omp/agent/blobs
 /pi/agent/cache/pi-usage
 /pi/exa-usage.json
+/omp/agent/autoqa.db
+/omp/agent/autoqa.db-shm
+/omp/agent/autoqa.db-wal

@@ -303,7 +303,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "OMNi",
       "options": {
-        "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
+        "baseURL": "https://router.mjdgme.easypanel.host/v1",
         "apiKey": "{env:OMNIROUTE_OPENCODE_API_KEY}",
       },
       "models": {
@@ -421,7 +421,7 @@
         "npm": "@ai-sdk/openai-compatible",
         "name": "OmniRouteRaw",
         "options": {
-          "baseURL": "https://omniroute.e6ejok.easypanel.host/v1",
+          "baseURL": "https://router.mjdgme.easypanel.host/v1",
           "apiKey": "{env:OMNIROUTE_OPENCODE_API_KEY}",
         },
         "models": {

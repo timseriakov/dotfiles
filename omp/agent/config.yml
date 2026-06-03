@@ -6,7 +6,7 @@ skills:
 commands:
   enableClaudeUser: false
   enableClaudeProject: false
-lastChangelogVersion: 15.7.2
+lastChangelogVersion: 15.8.3
 startup:
   quiet: true
 theme:
@@ -49,7 +49,7 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: omniroute/reasoning-main
+  default: omniroute/cx/gpt-5.5-medium:medium
   smol: omniroute/quick-free
   slow: omniroute/deep-premium
   plan: omniroute/reasoning-main
@@ -75,3 +75,6 @@ extensions:
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
 hideThinkingBlock: true
 setupVersion: 1
+dev:
+  autoqa:
+    consent: granted

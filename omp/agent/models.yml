@@ -1,6 +1,6 @@
 providers:
   omniroute:
-    baseUrl: https://omniroute.e6ejok.easypanel.host/v1
+    baseUrl: https://router.mjdgme.easypanel.host/v1
     apiKey: OMNIROUTE_OMP_API_KEY
     api: openai-completions
     authHeader: true

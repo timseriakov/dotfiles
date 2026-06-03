@@ -58,9 +58,15 @@
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
-  "defaultProvider": "omni",
-  "defaultModel": "cx/gpt-5.5-medium",
+  "defaultProvider": "opencode",
+  "defaultModel": "deepseek-v4-flash-free",
   "editorPaddingX": 1,
   "showHardwareCursor": false,
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "high",
+  "enabledModels": [
+    "opencode/deepseek-v4-flash-free:high",
+    "opencode/mimo-v2.5-free:high",
+    "opencode/nemotron-3-super-free:high",
+    "opencode/big-pickle:high"
+  ]
 }
