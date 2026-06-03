@@ -113,7 +113,12 @@ status_icons:
 
 # Agent command for '<agent>' placeholder in pane commands.
 # Default: "claude"
-agent: opencode
+agents:
+  omp:
+    command: omp
+    type: pi
+
+agent: omp
 
 # LLM-based branch name generation (`workmux add -A`).
 # auto_name:

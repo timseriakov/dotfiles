@@ -51,7 +51,8 @@
     "npm:context-mode",
     "npm:pi-wakatime",
     "npm:@agnishc/edb-session-manager",
-    "npm:gentle-engram"
+    "npm:gentle-engram",
+    "extensions/workmux-status.ts"
   ],
   "lastChangelogVersion": "0.78.0",
   "theme": "nord",

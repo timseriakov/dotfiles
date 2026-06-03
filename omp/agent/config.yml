@@ -72,5 +72,6 @@ modelProviderOrder:
 symbolPreset: nerd
 extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
+  - /Users/tim/.omp/agent/extensions/workmux-status.ts
 hideThinkingBlock: true
 setupVersion: 1
