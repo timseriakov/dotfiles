@@ -601,8 +601,8 @@ function patchAssistantMessage(content) {
       'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 0, 0)',
     ],
     [
-      "new Markdown(content.thinking.trim(), 1, 0, getMarkdownTheme(), {",
-      "new Markdown(content.thinking.trim(), 0, 0, getMarkdownTheme(), {",
+      "new Markdown(thinkingText, 1, 0, getMarkdownTheme(), {",
+      "new Markdown(thinkingText, 0, 0, getMarkdownTheme(), {",
     ],
     [
       'new Text(theme.fg("error", abortMessage), 1, 0)',
