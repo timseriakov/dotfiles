@@ -6,7 +6,7 @@ skills:
 commands:
   enableClaudeUser: false
   enableClaudeProject: false
-lastChangelogVersion: 15.8.3
+lastChangelogVersion: 15.9.0
 startup:
   quiet: true
 theme:
