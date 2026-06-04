@@ -8,6 +8,9 @@ launcher.launchSettleSeconds = 0.8
 launcher.launchPollIntervalSeconds = 0.1
 launcher.launchTimeoutSeconds = 5.0
 launcher.pickerDelaySeconds = 0.15
+launcher.focusPollIntervalSeconds = 0.05
+launcher.focusTimeoutSeconds = 1.5
+launcher.prefixDelaySeconds = 0.08
 
 local pendingTimer = nil
 local pollTimer = nil
@@ -69,23 +72,50 @@ local function clearTimers()
 	end
 end
 
+local function isKittyFrontmost()
+	local frontmostApp = hs.application.frontmostApplication()
+	if not frontmostApp then
+		return false
+	end
+	return frontmostApp:bundleID() == launcher.kittyBundleId or frontmostApp:name() == launcher.kittyAppName
+end
+
+local function sendPickerKeys()
+	hs.eventtap.keyStroke({ "ctrl" }, "a", 0)
+	pendingTimer = hs.timer.doAfter(launcher.prefixDelaySeconds, function()
+		pendingTimer = nil
+		hs.eventtap.keyStroke({}, "s", 0)
+		logInfo("Triggered tmux session picker")
+	end)
+end
+
+local function waitForFocusedKitty(startedAt)
+	if isKittyFrontmost() then
+		clearTimers()
+		sendPickerKeys()
+		return
+	end
+
+	if hs.timer.secondsSinceEpoch() - startedAt >= launcher.focusTimeoutSeconds then
+		clearTimers()
+		alertAndLog("Timed out focusing Kitty")
+		return
+	end
+end
+
 local function triggerPicker(app)
 	if not app then
 		alertAndLog("Kitty is not running")
 		return false
 	end
 
-	local targetApp = app
-	focusKitty(targetApp)
+	focusKitty(app)
+	local startedAt = hs.timer.secondsSinceEpoch()
+	pollTimer = hs.timer.doEvery(launcher.focusPollIntervalSeconds, function()
+		waitForFocusedKitty(startedAt)
+	end)
 	pendingTimer = hs.timer.doAfter(launcher.pickerDelaySeconds, function()
-		pendingTimer = nil
-		local frontmostApp = hs.application.frontmostApplication()
-		if frontmostApp and (frontmostApp:bundleID() == launcher.kittyBundleId or frontmostApp:name() == launcher.kittyAppName) then
-			targetApp = frontmostApp
-		end
-		hs.eventtap.keyStroke({ "ctrl" }, "a", 0, targetApp)
-		hs.eventtap.keyStroke({}, "s", 0, targetApp)
-		logInfo("Triggered tmux session picker")
+		waitForFocusedKitty(startedAt)
 	end)
 	return true
 end
