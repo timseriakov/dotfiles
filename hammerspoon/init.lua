@@ -3,6 +3,8 @@ hs.ipc.cliInstall()
 
 local qutebrowserTemporarySplit = require("qutebrowser_temporary_split")
 qutebrowserTemporarySplit.init()
+local tmuxSeshLauncher = require("tmux_sesh_launcher")
+tmuxSeshLauncher.init()
 -- Auto-reload Hammerspoon config on change
 local function reloadConfig(files)
 	local doReload = false
