@@ -57,7 +57,9 @@
     const filter = style.getPropertyValue("filter");
     const webkitFilter = style.getPropertyValue("-webkit-filter");
     const backdropFilter = style.getPropertyValue("backdrop-filter");
-    const webkitBackdropFilter = style.getPropertyValue("-webkit-backdrop-filter");
+    const webkitBackdropFilter = style.getPropertyValue(
+      "-webkit-backdrop-filter",
+    );
 
     if (hasBlur(filter) || hasBlur(webkitFilter)) {
       style.setProperty("filter", "none", "important");
@@ -134,7 +136,9 @@
   injectStyle();
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startObserver, { once: true });
+    document.addEventListener("DOMContentLoaded", startObserver, {
+      once: true,
+    });
   } else {
     startObserver();
   }
