@@ -59,12 +59,15 @@
     (url) => /changelog/i.test(`${url.hostname}${url.pathname}`),
     (url) => /canny/i.test(`${url.hostname}${url.pathname}`),
     (url) => url.hostname === "docs.easypanel.io",
-    (url) => url.hostname === "discord.gg" && url.pathname.includes("easypanel"),
-    (url) => url.hostname === "discord.com" && url.pathname.includes("easypanel"),
+    (url) =>
+      url.hostname === "discord.gg" && url.pathname.includes("easypanel"),
+    (url) =>
+      url.hostname === "discord.com" && url.pathname.includes("easypanel"),
     (url) => url.hostname === "easypanel.canny.io",
     (url) => url.hostname === "feedback.easypanel.io",
     (url) => url.hostname === "changelog.easypanel.io",
-    (url) => url.hostname === "easypanel.io" && url.pathname.includes("changelog"),
+    (url) =>
+      url.hostname === "easypanel.io" && url.pathname.includes("changelog"),
   ];
 
   function injectStyle() {
@@ -213,14 +216,13 @@
       const url = new URL(href, window.location.href);
       return SUPPORT_LINK_MATCHERS.some((matches) => matches(url));
     } catch (_) {
-      return /docs?|documentation|discord|feedback|changelog|canny/i.test(
-        href,
-      );
+      return /docs?|documentation|discord|feedback|changelog|canny/i.test(href);
     }
   }
 
   function countSupportLinks(element) {
-    return Array.from(element.querySelectorAll("a")).filter(isSupportLink).length;
+    return Array.from(element.querySelectorAll("a")).filter(isSupportLink)
+      .length;
   }
 
   function isDividerElement(element) {
@@ -240,7 +242,10 @@
     return (
       element.tagName === "HR" ||
       role === "separator" ||
-      (textLength === 0 && isThin && isWideEnough && (hasBorder || hasDividerClass))
+      (textLength === 0 &&
+        isThin &&
+        isWideEnough &&
+        (hasBorder || hasDividerClass))
     );
   }
 
@@ -338,7 +343,10 @@
   function hideLicenseNotices(root) {
     const scanRoot = root instanceof Element ? root : document;
 
-    if (scanRoot instanceof HTMLElement && scanRoot.matches(LICENSE_NOTICE_SELECTOR)) {
+    if (
+      scanRoot instanceof HTMLElement &&
+      scanRoot.matches(LICENSE_NOTICE_SELECTOR)
+    ) {
       hideElement(scanRoot);
     }
 
