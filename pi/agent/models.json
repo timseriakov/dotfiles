@@ -8,7 +8,8 @@
       "authHeader": true,
       "compat": {
         "supportsDeveloperRole": false,
-        "supportsReasoningEffort": false
+        "supportsReasoningEffort": false,
+        "maxTokensField": "max_tokens"
       },
       "models": [
         {
