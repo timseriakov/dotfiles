@@ -691,15 +691,9 @@ function patchInteractiveMode(content) {
 }
 
 function patchTuiVisibleWidth(content) {
-  return replaceAny(
-    content,
-    [
-      `export function visibleWidth(str: string): number {\n\tif (!str) return 0;\n\treturn visibleWidthRaw(str);\n}`,
-      `export function visibleWidth(str: string): number {\n\tif (!str) return 0;\n\treturn visibleWidthRaw(str.replace(/\\x1b\\[[0-?]*[ -/]*[@-~]/g, ""));\n}`,
-    ],
-    `export function visibleWidth(str: string): number {\n\tif (!str) return 0;\n\treturn visibleWidthRaw(str.replace(/\\x1b\\[[0-?]*[ -/]*[@-~]/g, ""));\n}`,
-    "tui visible width strips ansi",
-  ).content;
+  // Upstream 15.10+ handles ANSI natively via Bun.stringWidth and its own
+  // escape scanner — the old ANSI-strip workaround is no longer needed.
+  return content;
 }
 
 function patchInputController(content) {
@@ -736,23 +730,88 @@ function patchInputController(content) {
 		// job-control ownership for a normal bg/fg flow.
 		process.kill(process.pid, "SIGTSTP");
 	}`,
-    ],
-    `	handleCtrlZ(): void {
-		if (process.platform === "win32" || !process.stdout.isTTY) return;
+      `	handleCtrlZ(): void {
+		// SIGTSTP is POSIX job-control: Windows has no equivalent and
+		// \`process.kill(_, "SIGTSTP")\` throws \`TypeError: Unknown signal:
+		// SIGTSTP\` there, taking the whole agent down via an uncaught
+		// exception (issue #2036). No-op on platforms that cannot suspend.
+		if (process.platform === "win32") {
+			this.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
+			return;
+		}
 
-		// Set up handler to restore TUI when resumed
-		process.once("SIGCONT", () => {
+		// Capture the listener so we can detach it if the signal never
+		// fires; otherwise a failed suspend would leave a stale SIGCONT
+		// handler that fires on the next unrelated continue and tries to
+		// re-\`start()\` an already-running TUI.
+		const onResume = (): void => {
 			this.ctx.ui.start();
 			this.ctx.ui.requestRender(true);
-		});
+		};
+		process.once("SIGCONT", onResume);
 
-		// Stop the TUI (restore terminal to normal mode)
+		// Stop the TUI (restore terminal to normal mode) before sending the
+		// signal so the parent shell sees a sane terminal state.
 		this.ctx.ui.stop();
 
-		// Send SIGTSTP to this process. Sending it to process group 0 can also stop
-		// the parent interactive shell in some terminals, so fish never regains
-		// job-control ownership for a normal bg/fg flow.
-		process.kill(process.pid, "SIGTSTP");
+		try {
+			// pid=0 \u2192 entire foreground process group; the shell receives
+			// SIGTSTP and parks the job.
+			process.kill(0, "SIGTSTP");
+		} catch (err) {
+			// Either the runtime refused the signal or the kernel rejected
+			// it (some sandboxes block sending to pid=0). Tear the resume
+			// hook down and bring the TUI back so the user is not stranded
+			// on a frozen prompt.
+			process.removeListener("SIGCONT", onResume);
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+			const reason = err instanceof Error ? err.message : String(err);
+			this.ctx.showError(\`Failed to suspend: \${reason}\`);
+		}
+	}`,
+    ],
+    `	handleCtrlZ(): void {
+		// SIGTSTP is POSIX job-control: Windows has no equivalent and
+		// \`process.kill(_, "SIGTSTP")\` throws \`TypeError: Unknown signal:
+		// SIGTSTP\` there, taking the whole agent down via an uncaught
+		// exception (issue #2036). No-op on platforms that cannot suspend.
+		if (process.platform === "win32") {
+			this.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
+			return;
+		}
+
+		// Capture the listener so we can detach it if the signal never
+		// fires; otherwise a failed suspend would leave a stale SIGCONT
+		// handler that fires on the next unrelated continue and tries to
+		// re-\`start()\` an already-running TUI.
+		const onResume = (): void => {
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+		};
+		process.once("SIGCONT", onResume);
+
+		// Stop the TUI (restore terminal to normal mode) before sending the
+		// signal so the parent shell sees a sane terminal state.
+		this.ctx.ui.stop();
+
+		try {
+			// Send SIGTSTP to this process, not pid=0. Sending to pid=0 (entire
+			// foreground process group) can also stop the parent interactive shell
+			// in some terminals, so fish never regains job-control ownership for
+			// a normal bg/fg flow.
+			process.kill(process.pid, "SIGTSTP");
+		} catch (err) {
+			// Either the runtime refused the signal or the kernel rejected
+			// it (some sandboxes block sending signals). Tear the resume
+			// hook down and bring the TUI back so the user is not stranded
+			// on a frozen prompt.
+			process.removeListener("SIGCONT", onResume);
+			this.ctx.ui.start();
+			this.ctx.ui.requestRender(true);
+			const reason = err instanceof Error ? err.message : String(err);
+			this.ctx.showError(\`Failed to suspend: \${reason}\`);
+		}
 	}`,
     "input-controller ctrl-z suspends only omp process",
   ).content;
