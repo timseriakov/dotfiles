@@ -227,11 +227,9 @@ chars = "\u001b[24~" # F12
 
 [window]
 decorations = "Buttonless" # Без кнопок, но с тенью
+option_as_alt = "Both" # macOS Option key as Alt for keybindings
 
 # Внутренний паддинг (отступы от краев окна)
 [window.padding]
 x = 16 # Горизонтальный паддинг (слева и справа)
 y = 16 # Вертикальный паддинг (сверху и снизу)
-
-[keyboard]
-option_as_alt = "Both"
