@@ -105,7 +105,19 @@
 ## Notes
 
 - `Ctrl-b` отключён.
-- В tmux prompt'ах (`rename-window`, `command-prompt`, etc.) `Alt+Backspace` удаляет слово влево; для надёжности это также принудительно мапится на `Ctrl-W` на уровне терминала.
+- В tmux prompt'ах (`rename-window`, `command-prompt`, etc.) теперь включён `vi`-режим через `status-keys vi`.
+- Шпаргалка по tmux prompt vi-mode:
+  - insert mode: обычный ввод текста
+  - `Esc`: перейти в normal mode
+  - `i` / `a`: вернуться в insert mode
+  - `Enter`: подтвердить prompt
+  - `Ctrl-C`: отменить/закрыть prompt
+  - `h` / `l`: движение по символам
+  - `b` / `w` / `e`: движение по словам
+  - `0` / `$`: начало / конец строки
+  - `x`: удалить символ
+  - `dw` / `db` / `D`: удалить слово / назад по слову / до конца строки
+- `Alt+Backspace` в tmux prompt'ах удаляет слово влево; для надёжности это также принудительно мапится на `Ctrl-W` на уровне терминала.
 - Часть сценариев copy-mode использует `pbcopy`.
 - Popup shell бывает двух типов: persistent и ephemeral.
 - Setup глубоко интегрирован с `workmux`.
