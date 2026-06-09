@@ -19,6 +19,7 @@
 - `q` — quit copy-mode
 - `Ctrl-a r` — reload config
 - `cmd+j` / `cmd+о`, `cmd+k` / `cmd+л` — prev / next window
+- `cmd+h` / `cmd+р`, `cmd+l` / `cmd+д` — prev / next session
 
 ## If Russian layout
 
