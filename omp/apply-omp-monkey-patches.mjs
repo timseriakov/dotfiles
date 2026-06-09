@@ -373,27 +373,6 @@ function patchStatusLineTs(content) {
   let out = content;
   let r;
 
-  r = replaceOnce(
-    out,
-    "path?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean };",
-    "path?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean; lastSegment?: boolean };",
-    "status-line path.lastSegment option",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\tgit?: {\n\t\tshowBranch?: boolean;\n\t\tshowStaged?: boolean;\n\t\tshowUnstaged?: boolean;\n\t\tshowUntracked?: boolean;\n\t};`,
-      `git?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean };`,
-      `\tgit?: {\n\t\tshowBranch?: boolean;\n\t\tshowStaged?: boolean;\n\t\tshowUnstaged?: boolean;\n\t\tshowUntracked?: boolean;\n\t\tcompactDirty?: boolean;\n\t\tshowAheadBehind?: boolean;\n\t};`,
-      `git?: {\n\tshowBranch?: boolean;\n\tshowStaged?: boolean;\n\tshowUnstaged?: boolean;\n\tshowUntracked?: boolean;\n\tcompactDirty?: boolean;\n\tshowAheadBehind?: boolean;\n};`,
-    ],
-    `git?: {\n\tshowBranch?: boolean;\n\tshowStaged?: boolean;\n\tshowUnstaged?: boolean;\n\tshowUntracked?: boolean;\n\tcompactDirty?: boolean;\n\tshowAheadBehind?: boolean;\n};`,
-    "status-line git compact/ahead options",
-  );
-  out = r.content;
-
   r = insertAfter(
     out,
     `\t#gitStatusLastFetch = 0;\n\t#gitStatusInFlight = false;`,
@@ -452,10 +431,47 @@ function patchStatusLineTs(content) {
 }
 
 function patchStatusTypes(content) {
-  const oldText = `\tgit: {\n\t\tbranch: string | null;\n\t\tstatus: { staged: number; unstaged: number; untracked: number } | null;\n\t\tpr: { number: number; url: string } | null;\n\t};`;
-  const newText = `\tgit: {\n\t\tbranch: string | null;\n\t\tstatus: { staged: number; unstaged: number; untracked: number } | null;\n\t\tremote: { ahead: number; behind: number } | null;\n\t\tpr: { number: number; url: string } | null;\n\t};`;
-  return replaceOnce(content, oldText, newText, "status-line types git.remote")
-    .content;
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\tpath?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean };`,
+      `\tpath?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean; lastSegment?: boolean };`,
+      `path?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean };`,
+      `path?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean; lastSegment?: boolean };`,
+    ],
+    `\tpath?: { abbreviate?: boolean; maxLength?: number; stripWorkPrefix?: boolean; lastSegment?: boolean };`,
+    "status-line path.lastSegment option",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\tgit?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean };`,
+      `\tgit?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean; compactDirty?: boolean; showAheadBehind?: boolean };`,
+      `git?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean };`,
+      `git?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean; compactDirty?: boolean; showAheadBehind?: boolean };`,
+    ],
+    `\tgit?: { showBranch?: boolean; showStaged?: boolean; showUnstaged?: boolean; showUntracked?: boolean; compactDirty?: boolean; showAheadBehind?: boolean };`,
+    "status-line git compact/ahead options",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\tgit: {\n\t\tbranch: string | null;\n\t\tstatus: { staged: number; unstaged: number; untracked: number } | null;\n\t\tpr: { number: number; url: string } | null;\n\t};`,
+      `\tgit: {\n\t\tbranch: string | null;\n\t\tstatus: { staged: number; unstaged: number; untracked: number } | null;\n\t\tremote: { ahead: number; behind: number } | null;\n\t\tpr: { number: number; url: string } | null;\n\t};`,
+    ],
+    `\tgit: {\n\t\tbranch: string | null;\n\t\tstatus: { staged: number; unstaged: number; untracked: number } | null;\n\t\tremote: { ahead: number; behind: number } | null;\n\t\tpr: { number: number; url: string } | null;\n\t};`,
+    "status-line types git.remote",
+  );
+  out = r.content;
+
+  return out;
 }
 
 function patchSegments(content) {
@@ -600,41 +616,48 @@ function patchAssistantMessage(content) {
   let out = content;
   const replacements = [
     [
-      "new Markdown(content.text.trim(), 1, 0, getMarkdownTheme())",
+      [
+        "new Markdown(content.text.trim(), 1, 0, getMarkdownTheme())",
+        "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
+      ],
       "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
+      "assistant text padding",
     ],
     [
-      'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 1, 0)',
+      [
+        'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 1, 0)',
+        'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 0, 0)',
+      ],
       'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 0, 0)',
+      "assistant thinking label padding",
     ],
     [
-      "new Markdown(thinkingText, 1, 0, getMarkdownTheme(), {",
+      [
+        "new Markdown(thinkingText, 1, 0, getMarkdownTheme(), {",
+        "new Markdown(thinkingText, 0, 0, getMarkdownTheme(), {",
+      ],
       "new Markdown(thinkingText, 0, 0, getMarkdownTheme(), {",
+      "assistant thinking block padding",
     ],
     [
-      'new Text(theme.fg("error", abortMessage), 1, 0)',
+      [
+        'new Text(theme.fg("error", abortMessage), 1, 0)',
+        'new Text(theme.fg("error", abortMessage), 0, 0)',
+      ],
       'new Text(theme.fg("error", abortMessage), 0, 0)',
+      "assistant abort padding",
     ],
     [
-      'new Text(theme.fg("error", `Error: ${errorMsg}`), 1, 0)',
-      'new Text(theme.fg("error", `Error: ${errorMsg}`), 0, 0)',
-    ],
-    [
-      'new Text(theme.fg("error", `Error: ${message.errorMessage}`), 1, 0)',
-      'new Text(theme.fg("error", `Error: ${message.errorMessage}`), 0, 0)',
-    ],
-    [
-      'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
+      [
+        'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
+        'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+      ],
       'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+      "assistant usage padding",
     ],
   ];
-  for (const [oldText, newText] of replacements) {
-    out = replaceOnce(
-      out,
-      oldText,
-      newText,
-      `assistant padding ${oldText}`,
-    ).content;
+  for (const [alternatives, newText, label] of replacements) {
+    out = replaceAny(out, alternatives, newText, label).content;
   }
   return out;
 }
@@ -931,7 +954,7 @@ function patchEditorGutterWidth(content) {
 try {
   setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
-  patchFile("modes/components/status-line.ts", patchStatusLineTs);
+  patchFile("modes/components/status-line/component.ts", patchStatusLineTs);
   patchFile("modes/components/status-line/types.ts", patchStatusTypes);
   patchFile("modes/components/status-line/segments.ts", patchSegments);
   patchFile("modes/components/welcome.ts", patchWelcome);
