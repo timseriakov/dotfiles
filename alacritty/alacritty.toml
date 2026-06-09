@@ -166,6 +166,11 @@ mods = "Command|Shift"
 action = "None"
 
 [[keyboard.bindings]]
+key = "Back"
+mods = "Option"
+chars = "\u0017"
+
+[[keyboard.bindings]]
 key = "Enter"
 mods = "Control"
 chars = "\u001b[13;5u"
@@ -219,6 +224,7 @@ chars = "\u001b[23~" # F11
 key = "U"
 mods = "Command"
 chars = "\u001b[24~" # F12
+
 [window]
 decorations = "Buttonless" # Без кнопок, но с тенью
 
@@ -226,3 +232,6 @@ decorations = "Buttonless" # Без кнопок, но с тенью
 [window.padding]
 x = 16 # Горизонтальный паддинг (слева и справа)
 y = 16 # Вертикальный паддинг (сверху и снизу)
+
+[keyboard]
+option_as_alt = "Both"

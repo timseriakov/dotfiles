@@ -105,6 +105,7 @@
 ## Notes
 
 - `Ctrl-b` отключён.
+- В tmux prompt'ах (`rename-window`, `command-prompt`, etc.) `Alt+Backspace` удаляет слово влево; для надёжности это также принудительно мапится на `Ctrl-W` на уровне терминала.
 - Часть сценариев copy-mode использует `pbcopy`.
 - Popup shell бывает двух типов: persistent и ephemeral.
 - Setup глубоко интегрирован с `workmux`.
