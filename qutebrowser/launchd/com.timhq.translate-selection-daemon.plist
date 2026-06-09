@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.timhq.translate-selection-daemon</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/tim/dev/dotfiles/qutebrowser/userscripts/translate-selection-daemon-control</string>
+    <string>start</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <false/>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/tim/dev/dotfiles/qutebrowser/userscripts</string>
+
+  <key>StandardOutPath</key>
+  <string>/Users/tim/tmp/qute-translate-selection/translate-selection-daemon.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/tim/tmp/qute-translate-selection/translate-selection-daemon.log</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>/Users/tim</string>
+    <key>PATH</key>
+    <string>/Users/tim/.pi/agent/bin:/Users/tim/.volta/bin:/Users/tim/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

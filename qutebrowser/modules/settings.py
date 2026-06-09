@@ -17,7 +17,7 @@ c.scrolling.bar = "when-searching"
 c.statusbar.show = "in-mode"
 c.statusbar.position = "bottom"
 c.tabs.show = "always"  # multiple # never
-c.tabs.last_close = "close"
+c.tabs.last_close = "blank"
 c.tabs.position = "top"
 # c.tabs.new_position.related = "last"
 # Open new tabs in background (e.g., middle-click on links)

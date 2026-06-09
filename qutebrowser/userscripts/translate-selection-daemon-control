@@ -64,6 +64,8 @@ META_URL="http://${HOST}:${PORT}/meta"
 LAUNCHD_LABEL="com.timhq.translate-selection-daemon"
 LAUNCHD_DIR="$HOME/Library/LaunchAgents"
 LAUNCHD_PLIST="$LAUNCHD_DIR/${LAUNCHD_LABEL}.plist"
+LAUNCHD_SOURCE_DIR="$SCRIPT_DIR/../launchd"
+LAUNCHD_SOURCE_PLIST="$LAUNCHD_SOURCE_DIR/${LAUNCHD_LABEL}.plist"
 
 PROBE_STATUS=1
 PROBE_META_NAME=""
@@ -350,6 +352,21 @@ status_daemon() {
   info "$DAEMON_NAME is stopped"
 }
 
+uninstall_daemon() {
+  if [[ -L "$LAUNCHD_PLIST" ]]; then
+    if launchctl list "$LAUNCHD_LABEL" >/dev/null 2>&1; then
+      launchctl unload "$LAUNCHD_PLIST" 2>/dev/null || true
+    fi
+    rm -f "$LAUNCHD_PLIST"
+    info "removed launchd plist symlink"
+    return 0
+  fi
+  if [[ -e "$LAUNCHD_PLIST" ]]; then
+    die "plist is not a symlink; remove manually: $LAUNCHD_PLIST"
+  fi
+  info "launchd plist not found at $LAUNCHD_PLIST"
+}
+
 install_daemon() {
   require_runtime
   ensure_directories
@@ -361,10 +378,18 @@ install_daemon() {
       die "launchd plist already exists and does not belong to $LAUNCHD_LABEL: $LAUNCHD_PLIST"
     fi
     info "launchd plist already installed at $LAUNCHD_PLIST"
+    if launchctl list "$LAUNCHD_LABEL" >/dev/null 2>&1; then
+      return 0
+    fi
+    launchctl load "$LAUNCHD_PLIST"
+    info "loaded existing plist into launchd"
     return 0
   fi
 
-  cat >"$LAUNCHD_PLIST" <<EOF
+  mkdir -p "$LAUNCHD_SOURCE_DIR"
+
+  if [[ ! -f "$LAUNCHD_SOURCE_PLIST" ]]; then
+    cat >"$LAUNCHD_SOURCE_PLIST" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -373,16 +398,19 @@ install_daemon() {
   <string>$LAUNCHD_LABEL</string>
   <key>ProgramArguments</key>
   <array>
-    <string>$SCRIPT_DIR/translate-selection-daemon</string>
+    <string>$SCRIPT_DIR/translate-selection-daemon-control</string>
+    <string>start</string>
   </array>
   <key>RunAtLoad</key>
-  <false/>
+  <true/>
   <key>KeepAlive</key>
   <false/>
   <key>WorkingDirectory</key>
   <string>$SCRIPT_DIR</string>
   <key>EnvironmentVariables</key>
   <dict>
+    <key>HOME</key>
+    <string>$HOME</string>
     <key>PATH</key>
     <string>$PATH</string>
   </dict>
@@ -390,20 +418,45 @@ install_daemon() {
   <string>$LOG_FILE</string>
   <key>StandardErrorPath</key>
   <string>$LOG_FILE</string>
+  <key>ProcessType</key>
+  <string>Background</string>
 </dict>
 </plist>
 EOF
-  info "installed launchd plist at $LAUNCHD_PLIST"
+    info "created source plist at $LAUNCHD_SOURCE_PLIST"
+  fi
+
+  mkdir -p "$LAUNCHD_DIR"
+
+  if [[ -e "$LAUNCHD_PLIST" && ! -L "$LAUNCHD_PLIST" ]]; then
+    if grep -q "$LAUNCHD_LABEL" "$LAUNCHD_PLIST" 2>/dev/null; then
+      info "replacing stale direct plist with symlink"
+      rm -f "$LAUNCHD_PLIST"
+    else
+      die "plist already exists and does not belong to $LAUNCHD_LABEL: $LAUNCHD_PLIST"
+    fi
+  fi
+
+  ln -sf "$LAUNCHD_SOURCE_PLIST" "$LAUNCHD_PLIST"
+  info "symlinked $LAUNCHD_PLIST -> $LAUNCHD_SOURCE_PLIST"
+
+  if launchctl list "$LAUNCHD_LABEL" >/dev/null 2>&1; then
+    info "launchd job already loaded"
+  else
+    launchctl load "$LAUNCHD_PLIST"
+    info "loaded launchd job (will auto-start on login)"
+  fi
 }
 
 usage() {
   cat <<EOF
-Usage: $SCRIPT_NAME <start|stop|status|install>
+Usage: $SCRIPT_NAME <start|stop|status|install|uninstall>
 Commands:
-  start   Launch translate-selection daemon and wait for /health
-  stop    Terminate the tracked daemon (idempotent)
-  status  Query /meta and /health to report the current state
-  install Prepare runtime directories/logs and ensure node/opencode are present
+  start     Launch translate-selection daemon and wait for /health
+  stop      Terminate the tracked daemon (idempotent)
+  status    Query /meta and /health to report the current state
+  install   Install launchd plist (symlink from dotfiles repo) and load job
+  uninstall Unload launchd job and remove plist symlink
 EOF
   exit 1
 }
@@ -421,6 +474,7 @@ main() {
     stop) stop_daemon ;;
     status) status_daemon ;;
     install) install_daemon ;;
+    uninstall) uninstall_daemon ;;
     --help|-h) usage ;;
     *) usage ;;
   esac
