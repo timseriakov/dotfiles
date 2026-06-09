@@ -104,6 +104,7 @@ pi/agent/git/
 pi/agent/sessions/
 /pi/agent/cache/sub-core
 /pi/agent/mcp-cache.json
+/pi/agent/trust.json
 /pi/context-mode/sessions
 
 # Cliamp local state/artifacts
