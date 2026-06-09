@@ -153,6 +153,20 @@ function patchFile(rel, mutator) {
   patchAbsoluteFile(file(rel), rel, mutator);
 }
 
+function patchFirstExistingFile(candidates, mutator) {
+  for (const rel of candidates) {
+    const filePath = file(rel);
+    if (fs.existsSync(filePath)) {
+      patchAbsoluteFile(filePath, rel, mutator);
+      return;
+    }
+  }
+
+  throw new Error(
+    `Missing OMP source file: tried ${candidates.map((rel) => file(rel)).join(", ")}\nIs @oh-my-pi/pi-coding-agent installed globally with Bun?`,
+  );
+}
+
 function patchTuiFile(rel, mutator) {
   patchAbsoluteFile(tuiFile(rel), `pi-tui/${rel}`, mutator);
 }
@@ -954,9 +968,27 @@ function patchEditorGutterWidth(content) {
 try {
   setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
-  patchFile("modes/components/status-line/component.ts", patchStatusLineTs);
-  patchFile("modes/components/status-line/types.ts", patchStatusTypes);
-  patchFile("modes/components/status-line/segments.ts", patchSegments);
+  patchFirstExistingFile(
+    [
+      "modes/components/status-line/component.ts",
+      "modes/components/status-line.ts",
+    ],
+    patchStatusLineTs,
+  );
+  patchFirstExistingFile(
+    [
+      "modes/components/status-line/types.ts",
+      "modes/components/status-line.ts",
+    ],
+    patchStatusTypes,
+  );
+  patchFirstExistingFile(
+    [
+      "modes/components/status-line/segments.ts",
+      "modes/components/status-line.ts",
+    ],
+    patchSegments,
+  );
   patchFile("modes/components/welcome.ts", patchWelcome);
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/user-message.ts", patchUserMessage);
