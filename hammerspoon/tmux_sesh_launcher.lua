@@ -7,13 +7,17 @@ launcher.kittyBinary = "/Applications/kitty.app/Contents/MacOS/kitty"
 launcher.launchSettleSeconds = 0.8
 launcher.launchPollIntervalSeconds = 0.1
 launcher.launchTimeoutSeconds = 5.0
-launcher.pickerDelaySeconds = 0.15
+launcher.pickerDelaySeconds = 0.3
 launcher.focusPollIntervalSeconds = 0.05
-launcher.focusTimeoutSeconds = 1.5
-launcher.prefixDelaySeconds = 0.08
+launcher.focusStableSeconds = 0.15
+launcher.focusTimeoutSeconds = 2.0
+launcher.prefixDelaySeconds = 0.18
+launcher.ansiKeyCodeA = 0
+launcher.ansiKeyCodeS = 1
 
 local pendingTimer = nil
 local pollTimer = nil
+local focusReadyAt = nil
 
 local function logInfo(message)
 	print(string.format("[tmux-sesh-launcher] %s", message))
@@ -70,6 +74,7 @@ local function clearTimers()
 		pollTimer:stop()
 		pollTimer = nil
 	end
+	focusReadyAt = nil
 end
 
 local function isKittyFrontmost()
@@ -80,20 +85,63 @@ local function isKittyFrontmost()
 	return frontmostApp:bundleID() == launcher.kittyBundleId or frontmostApp:name() == launcher.kittyAppName
 end
 
-local function sendPickerKeys()
-	hs.eventtap.keyStroke({ "ctrl" }, "a", 0)
+local function hasFocusedKittyWindow(app)
+	if not app then
+		return false
+	end
+
+	local focusedWindow = hs.window.focusedWindow()
+	if not focusedWindow or not isStandardWindow(focusedWindow) then
+		return false
+	end
+
+	local windowApp = focusedWindow:application()
+	if not windowApp then
+		return false
+	end
+
+	return windowApp:bundleID() == launcher.kittyBundleId or windowApp:name() == launcher.kittyAppName
+end
+
+local function isKittyReady(app)
+	return isKittyFrontmost() and hasFocusedKittyWindow(app)
+end
+
+local function postKeyCode(app, modifiers, keyCode)
+	hs.eventtap.event.newKeyEvent(modifiers, keyCode, true):post(app)
+	hs.eventtap.event.newKeyEvent(modifiers, keyCode, false):post(app)
+end
+
+local function sendPickerKeys(app)
+	if app then
+		app:activate(true)
+	end
+	logInfo("Sending tmux prefix")
+	postKeyCode(app, { "ctrl" }, launcher.ansiKeyCodeA)
 	pendingTimer = hs.timer.doAfter(launcher.prefixDelaySeconds, function()
 		pendingTimer = nil
-		hs.eventtap.keyStroke({}, "s", 0)
+		if app then
+			app:activate(true)
+		end
+		postKeyCode(app, {}, launcher.ansiKeyCodeS)
 		logInfo("Triggered tmux session picker")
 	end)
 end
 
-local function waitForFocusedKitty(startedAt)
-	if isKittyFrontmost() then
-		clearTimers()
-		sendPickerKeys()
-		return
+local function waitForFocusedKitty(app, startedAt)
+	if isKittyReady(app) then
+		local now = hs.timer.secondsSinceEpoch()
+		if not focusReadyAt then
+			focusReadyAt = now
+			return
+		end
+		if now - focusReadyAt >= launcher.focusStableSeconds then
+			clearTimers()
+			sendPickerKeys(app)
+			return
+		end
+	else
+		focusReadyAt = nil
 	end
 
 	if hs.timer.secondsSinceEpoch() - startedAt >= launcher.focusTimeoutSeconds then
@@ -109,13 +157,14 @@ local function triggerPicker(app)
 		return false
 	end
 
+	focusReadyAt = nil
 	focusKitty(app)
 	local startedAt = hs.timer.secondsSinceEpoch()
 	pollTimer = hs.timer.doEvery(launcher.focusPollIntervalSeconds, function()
-		waitForFocusedKitty(startedAt)
+		waitForFocusedKitty(app, startedAt)
 	end)
 	pendingTimer = hs.timer.doAfter(launcher.pickerDelaySeconds, function()
-		waitForFocusedKitty(startedAt)
+		waitForFocusedKitty(app, startedAt)
 	end)
 	return true
 end
