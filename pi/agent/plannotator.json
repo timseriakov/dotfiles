@@ -1,0 +1,32 @@
+{
+  "defaults": {
+    "model": {
+      "provider": "omni",
+      "id": "cx/gpt-5.5"
+    },
+    "thinking": "high"
+  },
+  "phases": {
+    "planning": {
+      "model": {
+        "provider": "omni",
+        "id": "cx/gpt-5.5"
+      },
+      "thinking": "high"
+    },
+    "executing": {
+      "model": {
+        "provider": "omni",
+        "id": "cx/gpt-5.5"
+      },
+      "thinking": "high"
+    },
+    "reviewing": {
+      "model": {
+        "provider": "omni",
+        "id": "cx/gpt-5.5"
+      },
+      "thinking": "high"
+    }
+  }
+}
