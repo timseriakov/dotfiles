@@ -38,6 +38,68 @@ Do not run `rm -rf omp/agent/sessions` as routine cleanup. If runtime paths appe
 
 Some UI behavior is patched directly in the installed OMP package because OMP does not currently expose these options via config/extension APIs.
 
+Keep the patch workflows version-specific:
+
+- `apply-omp-monkey-patches.mjs` is the known-good OMP 15.10.8 workflow. Preserve it when adapting newer OMP releases.
+- `apply-omp-monkey-patches-15.10.12.mjs` is the side-by-side OMP 15.10.12 adaptation.
+
+### OMP 15.10.12 gotcha: rebuild the bundle
+
+OMP 15.10.12 installs `omp` as a bundled CLI, not as a direct source runner:
+
+```text
+~/.bun/bin/omp -> ../install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js
+```
+
+`@oh-my-pi/pi-coding-agent/package.json` has `bin.omp = dist/cli.js`, and `scripts/bundle-dist.ts` bundles `src/cli.ts` into that file. Patching installed `src` files is therefore insufficient on 15.10.12 unless the bundle is rebuilt afterwards.
+
+After 15.10.12 source monkey patches, rebuild from the installed package root:
+
+```bash
+cd /Users/tim/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent
+bun scripts/bundle-dist.ts
+```
+
+The 15.10.12 side script should do this automatically with `rebuildBundledCli()` after applying source patches. If runtime output disagrees with patched source, suspect a stale `dist/cli.js` first.
+
+Stale bundle signature:
+
+- installed source contains `pwd = path.basename(pwd) || pwd;` in `status-line/segments.ts`
+- installed source contains `setPromptGutter(" ")` in `interactive-mode.ts`
+- but interactive startup still shows an absolute path like `/Users/tim/dev/dotfiles` and a bare `▏` prompt
+
+Correct visual signature:
+
+- status starts with basename `dotfiles ...`
+- prompt line shows Fish/Starship-style ` ▏`
+
+### OMP 15.10.12 drift points already handled
+
+- `welcome.ts` refactored to a cached `render(...)` wrapper plus `#renderLines(...)`; patch the `#renderLines(...)` path for minimal `Welcome from Oh My Pi` behavior.
+- `assistant-message.ts` removed the old static hidden-thinking `Thinking...` label; the 15.10.12 matcher for that label must be optional.
+- Obvious renderer patches still matter: status-line padding, basename path, compact git/model segments, borderless editor, prompt gutter color, prompt gutter width fallback, and bundle rebuild.
+
+### Visual verification standard
+
+Do not accept patch idempotence or prompt-mode success as visual verification. `omp --no-session -p ...` can return `ok` while the interactive startup layout is still wrong.
+
+Use a PTY-based interactive startup capture and compare against patched 15.10.8 / Fish behavior. The acceptance criteria are exact visual parity: same prompt icon ``, same left padding/indentation, and same spacing.
+
+Useful historical capture files from the 15.10.12 debugging session:
+
+```text
+/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-startup.bin          # broken pre-rebundle capture
+/Users/tim/tmp/opencode/omp-ptycapture-15.10.8-startup.bin           # patched 15.10.8 comparison
+/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-bundled-startup.bin  # manual post-rebundle capture
+/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-rebundled-startup.bin # script-managed rebundle capture
+```
+
+Theme/config facts that are intentional, not accidental:
+
+- `agent/config.yml` uses `theme.dark: starship-nord`, `statusLine.separator: none`, custom segments, `symbolPreset: nerd`, and `hideThinkingBlock: true`.
+- `agent/themes/starship-nord.json` intentionally blanks many `icon.*` values, uses space separators, keeps `boxRound.*` mostly empty/space-only, and sets `nav.cursor` to ``.
+- Fish Starship prompt uses `success_symbol = '[](bold green)'` and `error_symbol = '[](bold red)'` in `starship.toml`.
+
 Reapply patches after any OMP package update/reinstall:
 
 ```bash
