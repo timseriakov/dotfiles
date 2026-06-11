@@ -33,6 +33,7 @@
           },
           {
             "description": "Change hyper+v to ctrl+a",
+            "enabled": false,
             "manipulators": [
               {
                 "from": {
