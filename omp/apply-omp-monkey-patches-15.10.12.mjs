@@ -210,17 +210,38 @@ function rebuildBundledCli() {
   requireFile(bundleScript);
 
   console.log("rebundle dist/cli.js");
-  const result = spawnSync("bun", ["scripts/bundle-dist.ts"], {
-    cwd: packageRoot,
-    stdio: "inherit",
-  });
+  const result = spawnSync(
+    "bun",
+    [
+      "build",
+      "--target=bun",
+      "--outdir",
+      "dist",
+      "--minify-whitespace",
+      "--minify-syntax",
+      "--keep-names",
+      "--external",
+      "mupdf",
+      "--external",
+      "@oh-my-pi/pi-natives",
+      "--external",
+      "@huggingface/transformers",
+      "--define",
+      'process.env.PI_BUNDLED="true"',
+      "./src/cli.ts",
+    ],
+    {
+      cwd: packageRoot,
+      stdio: "inherit",
+    },
+  );
 
   if (result.error) {
     throw result.error;
   }
   if (result.status !== 0) {
     throw new Error(
-      `Failed to rebundle OMP CLI: bun scripts/bundle-dist.ts exited with status ${result.status}`,
+      `Failed to rebundle OMP CLI: bun build exited with status ${result.status}`,
     );
   }
 }
