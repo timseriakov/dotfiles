@@ -79,3 +79,7 @@ set -gx STARSHIP_CONFIG "$HOME/.config/starship.toml"
 
 # pnpm managed via conf.d/10-path.fish
 set -gx PNPM_HOME "/Users/tim/Library/pnpm"
+
+# mimocode
+fish_add_path /Users/tim/.mimocode/bin
+

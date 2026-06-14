@@ -4,3 +4,4 @@ shuffle = false
 theme = "nord"
 
 visualizer = "BarsDot"
+repeat = "All"

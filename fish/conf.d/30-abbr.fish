@@ -151,6 +151,7 @@ abbr -a o-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /U
 abbr -a om omp
 abbr -a щь omp
 abbr -a om-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
+abbr -a om-ask-free 'omp --no-session --model deepseek-v4-flash-free -p ""'
 
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
@@ -164,6 +165,7 @@ abbr -a pi-up 'npm install -g @mariozechner/pi-coding-agent'
 abbr -a pirc 'cd ~/dev/dotfiles/pi/agent/ && nvim settings.json'
 abbr -a picd 'cd ~/dev/dotfiles/pi/agent/'
 abbr -a picdj 'cd ~/dev/dotfiles/pi/agent/ && yazi'
+abbr -a pir 'pi -r'
 
 # mcpproxy
 abbr -a mp mcpproxy
@@ -269,6 +271,8 @@ abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
 abbr -a entire-up 'brew install entireio/tap'
 abbr -a engram-up 'brew install gentleman-programming/tap'
+
+abbr -a mi mimo
 
 # workmuxabbr -a mbb ekphos ./.memory-bank
 

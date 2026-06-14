@@ -54,14 +54,15 @@
     "npm:gentle-engram",
     "extensions/workmux-status.ts",
     "extensions/pi-compact-shortcut/index.ts",
-    "npm:@sherif-fanous/pi-rtk"
+    "npm:@sherif-fanous/pi-rtk",
+    "git:github.com/DietrichGebert/ponytail"
   ],
   "lastChangelogVersion": "0.79.1",
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
   "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4-flash-free",
+  "defaultModel": "mimo-v2.5-free",
   "editorPaddingX": 1,
   "showHardwareCursor": false,
   "defaultThinkingLevel": "high",
