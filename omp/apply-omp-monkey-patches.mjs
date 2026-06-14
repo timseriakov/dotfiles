@@ -32,6 +32,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const home = os.homedir();
 const packageRoot = path.join(
@@ -185,6 +186,32 @@ function patchAbsoluteFile(filePath, label, mutator) {
   } else {
     console.log(`ok      ${label}`);
   }
+}
+
+function rebuildBundledCli() {
+  execFileSync(
+    "bun",
+    [
+      "build",
+      "--target=bun",
+      "--outfile=dist/cli.js",
+      "--minify-whitespace",
+      "--minify-syntax",
+      "--keep-names",
+      "--external=mupdf",
+      "--external=@oh-my-pi/pi-natives",
+      "--external=@huggingface/transformers",
+      "--external=fastembed",
+      "--external=onnxruntime-node",
+      '--define=process.env.PI_BUNDLED="true"',
+      "./src/cli.ts",
+    ],
+    { cwd: packageRoot, stdio: "inherit" },
+  );
+  const cliPath = path.join(packageRoot, "dist/cli.js");
+  const bundled = read(cliPath);
+  if (!bundled.startsWith("#!")) write(cliPath, `#!/usr/bin/env bun\n${bundled}`);
+  console.log("rebuilt OMP bundled CLI");
 }
 
 function ensureRuntimeLink(linkPath, targetPath) {
@@ -668,20 +695,28 @@ function patchAssistantMessage(content) {
       'new Text(theme.fg("error", abortMessage), 0, 0)',
       "assistant abort padding",
     ],
-    [
-      [
-        'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
-        'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
-      ],
-      'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
-      "assistant usage padding",
-    ],
   ];
   for (const [alternatives, newText, label, skipIfMissing] of replacements) {
-    if (skipIfMissing && !alternatives.some(a => out.includes(a.replace(/, 1, 0/, ", 0, 0")))) continue;
+    if (
+      skipIfMissing &&
+      !alternatives.some((a) => out.includes(a.replace(/, 1, 0/, ", 0, 0")))
+    )
+      continue;
     out = replaceAny(out, alternatives, newText, label).content;
   }
   return out;
+}
+
+function patchUsageRow(content) {
+  return replaceAny(
+    content,
+    [
+      'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
+      'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+    ],
+    'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+    "assistant usage padding",
+  ).content;
 }
 
 function patchUserMessage(content) {
@@ -868,7 +903,7 @@ function patchSessionManager(content) {
 
   r = insertAfter(
     out,
-    `function createSessionId(): string {\n\treturn Bun.randomUUIDv7();\n}\n`,
+    `function mintSessionId(): string {\n\treturn Bun.randomUUIDv7();\n}\n`,
     `\nfunction inferSessionIdFromPath(filePath: string): string | undefined {\n\tconst fileName = path.basename(filePath, ".jsonl");\n\tconst separator = fileName.lastIndexOf("_");\n\tconst candidate = separator >= 0 ? fileName.slice(separator + 1) : fileName;\n\treturn /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(candidate)\n\t\t? candidate\n\t\t: undefined;\n}\n`,
     "session-manager infer id from session file path",
   );
@@ -877,10 +912,10 @@ function patchSessionManager(content) {
   r = replaceAny(
     out,
     [
-      `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
-      `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tconst explicitSessionId = inferSessionIdFromPath(explicitPath);\n\t\t\tif (explicitSessionId) {\n\t\t\t\tthis.#sessionId = explicitSessionId;\n\t\t\t\tconst header = this.#fileEntries.find(e => e.type === "session") as SessionHeader | undefined;\n\t\t\t\tif (header) header.id = explicitSessionId;\n\t\t\t}\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
+      `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = mintSessionId();`,
+      `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
     ],
-    `\t\t} else {\n\t\t\tconst explicitPath = this.#sessionFile;\n\t\t\tthis.#newSessionSync();\n\t\t\tthis.#sessionFile = explicitPath; // preserve explicit path from --session flag\n\t\t\tconst explicitSessionId = inferSessionIdFromPath(explicitPath);\n\t\t\tif (explicitSessionId) {\n\t\t\t\tthis.#sessionId = explicitSessionId;\n\t\t\t\tconst header = this.#fileEntries.find(e => e.type === "session") as SessionHeader | undefined;\n\t\t\t\tif (header) header.id = explicitSessionId;\n\t\t\t}\n\t\t\tawait this.#rewriteFile();\n\t\t\tthis.#flushed = true;\n\t\t\tthis.#ensuredOnDisk = true;\n\t\t\treturn;\n\t\t}`,
+    `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
     "session-manager recovery keeps path id",
   );
   out = r.content;
@@ -888,10 +923,9 @@ function patchSessionManager(content) {
   r = replaceAny(
     out,
     [
-      `\tasync close(): Promise<void> {\n\t\tif (!this.#persistWriter) return;\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t});\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
-      `\tasync close(): Promise<void> {\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t}, { ignoreError: true });\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
+      `\tasync close(): Promise<void> {\n\t\tif (!this.#persist) return;\n\t\tawait this.#scheduleDiskWork(async () => {\n\t\t\tawait this.#closeWriterHandle();\n\t\t\tthis.#fileIsCurrent = true;\n\t\t});\n\t\tif (this.#diskFailure) throw this.#diskFailure;\n\t}`,
     ],
-    `\tasync close(): Promise<void> {\n\t\tawait this.#queuePersistTask(async () => {\n\t\t\tawait this.#closePersistWriterInternal();\n\t\t\tthis.#flushed = true;\n\t\t}, { ignoreError: true });\n\t\tif (this.#persistError) throw this.#persistError;\n\t}`,
+    `\tasync close(): Promise<void> {\n\t\tif (!this.#persist) return;\n\t\tawait this.#scheduleDiskWork(async () => {\n\t\t\tawait this.#closeWriterHandle();\n\t\t\tthis.#fileIsCurrent = true;\n\t\t});\n\t\tif (this.#diskFailure) throw this.#diskFailure;\n\t}`,
     "session-manager close drains pending rewrites",
   );
   out = r.content;
@@ -999,6 +1033,7 @@ try {
   );
   patchFile("modes/components/welcome.ts", patchWelcome);
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
+  patchFile("modes/components/usage-row.ts", patchUsageRow);
   patchFile("modes/components/user-message.ts", patchUserMessage);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
@@ -1014,6 +1049,7 @@ try {
     "plannotator browser asset fallback",
     patchPlannotatorBrowser,
   );
+  rebuildBundledCli();
   console.log("OMP monkey patches applied.");
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
