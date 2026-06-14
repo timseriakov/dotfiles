@@ -1,9 +1,0 @@
-telegram.json
-sessions
-tmp
-git
-
-# Local accounts/state (treat like secrets)
-codex-accounts.json
-update-cache.json
-extensions/quotas.json
