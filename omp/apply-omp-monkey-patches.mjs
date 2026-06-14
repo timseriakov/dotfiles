@@ -210,7 +210,8 @@ function rebuildBundledCli() {
   );
   const cliPath = path.join(packageRoot, "dist/cli.js");
   const bundled = read(cliPath);
-  if (!bundled.startsWith("#!")) write(cliPath, `#!/usr/bin/env bun\n${bundled}`);
+  if (!bundled.startsWith("#!"))
+    write(cliPath, `#!/usr/bin/env bun\n${bundled}`);
   console.log("rebuilt OMP bundled CLI");
 }
 
