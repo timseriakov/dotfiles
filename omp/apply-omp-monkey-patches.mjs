@@ -592,6 +592,7 @@ function patchSegments(content) {
 
   const upstreamSessionName15_8 = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst ansi = getSessionAccentAnsi(getSessionAccentHex(name)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
   const upstreamSessionName15_9 = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst ansi =\n\t\t\tgetSessionAccentAnsi(getSessionAccentHex(name, theme.accentSurfaceLuminance)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
+  const upstreamSessionName15_12 = `const sessionNameSegment: StatusLineSegment = {\n\tid: \"session_name\",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: \"\", visible: false };\n\n\t\tconst ansi =\n\t\t\tgetSessionAccentAnsi(\n\t\t\t\tgetSessionAccentHex(name, theme.getMajorThemeColorHexes(), theme.accentSurfaceLuminance),\n\t\t\t) ?? theme.getFgAnsi(\"accent\");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
   const accentedLimitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 24;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\tconst ansi = getSessionAccentAnsi(getSessionAccentHex(name)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${display}\\x1b[39m\`, visible: true };\n\t},\n};`;
   const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: \`\${theme.fg("muted", display)}  \`, visible: true };\n\t},\n};`;
 
@@ -600,6 +601,7 @@ function patchSegments(content) {
     [
       upstreamSessionName15_8,
       upstreamSessionName15_9,
+      upstreamSessionName15_12,
       accentedLimitedSessionName,
       limitedSessionName,
     ],
@@ -612,29 +614,33 @@ function patchSegments(content) {
 }
 
 function patchWelcome(content) {
-  const alreadyPatched = `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
-  const upstream = `\trender(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
+  const alreadyPatched = `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
+  const alreadyPatchedOld = `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
   return replaceAny(
     content,
     [
-      upstream,
+      `\t#renderLines(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
       alreadyPatched,
-      `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+      `\trender(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+      alreadyPatchedOld,
+      `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+      `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
     ],
     alreadyPatched,
     "welcome minimal text only",
   ).content;
 }
-
 function patchAssistantMessage(content) {
   let out = content;
   const replacements = [
     [
       [
         "new Markdown(content.text.trim(), 1, 0, getMarkdownTheme())",
+        "new Markdown(trimmed, 1, 0, getMarkdownTheme())",
         "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
+        "new Markdown(trimmed, 0, 0, getMarkdownTheme())",
       ],
-      "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
+      "new Markdown(trimmed, 0, 0, getMarkdownTheme())",
       "assistant text padding",
     ],
     [
@@ -644,6 +650,7 @@ function patchAssistantMessage(content) {
       ],
       'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 0, 0)',
       "assistant thinking label padding",
+      true, // skipIfMissing
     ],
     [
       [
@@ -670,7 +677,8 @@ function patchAssistantMessage(content) {
       "assistant usage padding",
     ],
   ];
-  for (const [alternatives, newText, label] of replacements) {
+  for (const [alternatives, newText, label, skipIfMissing] of replacements) {
+    if (skipIfMissing && !alternatives.some(a => out.includes(a.replace(/, 1, 0/, ", 0, 0")))) continue;
     out = replaceAny(out, alternatives, newText, label).content;
   }
   return out;
