@@ -1,8 +1,17 @@
 {
   "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "workmux set-window-status working",
+            "type": "command"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
-        "matcher": "startup|resume",
         "hooks": [
           {
             "command": "echo 'CAVEMAN MODE ACTIVE. Rules: Drop articles/filler/pleasantries/hedging. Fragments OK. Short synonyms. Pattern: [thing] [action] [reason]. [next step]. Not: Sure! I would be happy to help you with that. Yes: Bug in auth middleware. Fix: Code/commits/security: write normal. User says stop caveman or normal mode to deactivate.'",
@@ -10,14 +19,14 @@
             "timeout": 5,
             "type": "command"
           }
-        ]
-      }
-    ],
-    "PostToolUse": [
+        ],
+        "matcher": "startup|resume"
+      },
       {
         "hooks": [
           {
-            "command": "workmux set-window-status working",
+            "command": "bash '/Users/tim/.codex/herdr-agent-state.sh' session",
+            "timeout": 10,
             "type": "command"
           }
         ]
@@ -35,9 +44,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "/Users/tim/.local/bin/plannotator",
-            "timeout": 345600
+            "timeout": 345600,
+            "type": "command"
           }
         ]
       }

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "daemon": {
+    "listen": "127.0.0.1:6767",
+    "mcp": {
+      "injectIntoAgents": false
+    },
+    "autoArchiveAfterMerge": false,
+    "appendSystemPrompt": "",
+    "cors": {
+      "allowedOrigins": ["https://app.paseo.sh"]
+    },
+    "relay": {
+      "enabled": true
+    }
+  },
+  "app": {
+    "baseUrl": "https://app.paseo.sh"
+  },
+  "agents": {
+    "providers": {
+      "claude": {
+        "enabled": false
+      },
+      "codex": {
+        "enabled": false
+      },
+      "copilot": {
+        "enabled": false
+      },
+      "opencode": {
+        "enabled": false
+      },
+      "pi": {
+        "enabled": true,
+        "command": ["/Users/tim/.volta/bin/pi"]
+      },
+      "omp": {
+        "enabled": true,
+        "command": ["/Users/tim/.bun/bin/omp"]
+      }
+    }
+  }
+}
