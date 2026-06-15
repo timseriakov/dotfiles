@@ -26,7 +26,6 @@ statusLine:
     - git
     - mode
     - context_pct
-    - subagents
     - model
   rightSegments:
     - session_name
