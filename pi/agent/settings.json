@@ -55,7 +55,8 @@
     "extensions/workmux-status.ts",
     "extensions/pi-compact-shortcut/index.ts",
     "npm:@sherif-fanous/pi-rtk",
-    "git:github.com/DietrichGebert/ponytail"
+    "git:github.com/DietrichGebert/ponytail",
+    "npm:pi-annotate"
   ],
   "lastChangelogVersion": "0.79.1",
   "theme": "nord",

@@ -542,26 +542,12 @@ function patchSegments(content) {
   r = replaceAny(
     out,
     [
-      `\t\tlet content = withIcon(theme.icon.model, modelName);`,
-      `\t\tlet content = \`via \${withIcon(theme.icon.model, modelName)}\`;`,
-      `\t\tlet content = \`via \${modelName}\`;`,
-      `\t\tlet content = modelName;`,
+      `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
+      `\t\tlet content = modelName;\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+      `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(theme.icon.model, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
     ],
-    `\t\tlet content = modelName;`,
-    "segments model no icon",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
-      `\t\treturn { content: \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", content)}\`, visible: true };`,
-      `\t\tconst providerMatch = content.match(/^(.*) (OMNi)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-      `\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-    ],
-    `\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-    "segments dim provider and thinking suffix",
+    `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+    "segments model starship colors",
   );
   out = r.content;
 

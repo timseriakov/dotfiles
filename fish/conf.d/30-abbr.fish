@@ -292,6 +292,7 @@ abbr -a wmrc 'nvim ./.workmux.yaml'
 abbr -a disk-cull cull
 abbr -a k rip
 abbr -a ports 'snitch -t -l -e'
+abbr -a pk 'snitch -t -l -e'
 abbr -a battery-monitor jolt
 abbr -a json-view otree
 abbr -a lan whosthere
