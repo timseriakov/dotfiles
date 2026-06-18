@@ -6,6 +6,10 @@ suppress_unstable_features_warning = true
 [mcp_servers.mcpproxy]
 url = "http://localhost:8080/mcp"
 
+[mcp_servers.pencil]
+command = "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64"
+args = [ "--app", "desktop" ]
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -60,8 +64,6 @@ last_updated = "2026-05-21T05:51:57Z"
 last_revision = "655b7d9c5431f822264b7732e9901c5578ac84cf"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"
-
-[hooks.state]
 
 [hooks.state."/Users/tim/.codex/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:5986c7e013f70b9f369ca6e559bee8cb423a5ce91cb2ab0131da53262b18cf88"
