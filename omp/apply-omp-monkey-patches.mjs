@@ -923,7 +923,6 @@ function patchSessionManager(content) {
   );
   out = r.content;
 
-
   return out;
 }
 
