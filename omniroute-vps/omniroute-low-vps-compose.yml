@@ -1,0 +1,71 @@
+volumes:
+  omniroute_data:
+  omniroute_redis_data:
+
+services:
+  omniroute:
+    image: diegosouzapw/omniroute:3.8.7
+    restart: unless-stopped
+    stop_grace_period: 40s
+    mem_limit: 448m
+    memswap_limit: 768m
+    environment:
+      - NODE_ENV=production
+      - PORT=20128
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_BASE_URL=https://router.mjdgme.easypanel.host
+      - REDIS_URL=redis://redis:6379
+
+      # Heap ниже лимита контейнера: остальное нужно Node native memory, Next.js, SQLite и сокетам.
+      - OMNIROUTE_MEMORY_MB=256
+
+      # Меньше фоновой работы на одном ядре.
+      - OMNIROUTE_DISABLE_BACKGROUND_SERVICES=true
+      - OMNIROUTE_DISABLE_CREDENTIAL_HEALTH_CHECK=true
+      - MODEL_SYNC_INTERVAL_HOURS=168
+      - PROVIDER_LIMITS_SYNC_INTERVAL_MINUTES=360
+
+      # Меньше RAM под кэши и live dashboard.
+      - OMNIROUTE_CGPT_WEB_IMAGE_CACHE_MAX_MB=32
+      - PROMPT_CACHE_MAX_SIZE=20
+      - PROMPT_CACHE_MAX_BYTES=524288
+      - SEMANTIC_CACHE_MAX_SIZE=20
+      - SEMANTIC_CACHE_MAX_BYTES=1048576
+      - STREAM_HISTORY_MAX=10
+
+      # Меньше диска, SQLite и log churn.
+      - APP_LOG_LEVEL=warn
+      - APP_LOG_TO_FILE=false
+      - CALL_LOG_MAX_ENTRIES=1000
+      - CALL_LOGS_TABLE_MAX_ROWS=10000
+      - PROXY_LOGS_TABLE_MAX_ROWS=10000
+      - CHAT_LOG_TEXT_LIMIT=16384
+      - CHAT_LOG_ARRAY_TAIL_ITEMS=8
+      - CHAT_LOG_MAX_DEPTH=4
+      - CHAT_LOG_MAX_OBJECT_KEYS=30
+
+      # Быстрее рестарты; если будут странности с БД, убери эти две строки первыми.
+      - OMNIROUTE_SKIP_DB_HEALTHCHECK=1
+      - DISABLE_SQLITE_AUTO_BACKUP=true
+
+      # Секреты.
+      - INITIAL_PASSWORD=!1Qaz2Wsx
+      - OMNIROUTE_WS_BRIDGE_SECRET=n5tRZK6vszYjAH8EHrkbFwh2P3eyW6U84Wm92QvVqvY
+    volumes:
+      - omniroute_data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    mem_limit: 48m
+    command: redis-server --save "" --appendonly no --maxmemory 32mb --maxmemory-policy allkeys-lru --loglevel warning
+    volumes:
+      - omniroute_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
