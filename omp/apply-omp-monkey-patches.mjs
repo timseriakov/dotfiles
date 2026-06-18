@@ -17,7 +17,6 @@
  * - editor prompt gutter width: reserve 1 cell even if the glyph measures as width 0
  * - welcome screen: replace the full logo/tips/recent-sessions box with only `Welcome from Oh My Pi`
  * - session name: right status segment is muted, truncated to 48 terminal cells, and padded right
- * - session persistence: close drains pending atomic rewrites even before append writer opens
  * - OpenAI-compatible wire schemas: strip regex `pattern` keywords containing lookaround, because
  *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
@@ -284,8 +283,10 @@ function patchPiAiOpenAICompletions(content) {
     [
       `import { adaptSchemaForStrict, NO_STRICT, toolWireSchema } from "../utils/schema";`,
       `import { adaptSchemaForStrict, NO_STRICT, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
+      `import { adaptSchemaForStrict, NO_STRICT, normalizeSchemaForMoonshot, toolWireSchema } from "../utils/schema";`,
+      `import { adaptSchemaForStrict, NO_STRICT, normalizeSchemaForMoonshot, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
     ],
-    `import { adaptSchemaForStrict, NO_STRICT, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
+    `import { adaptSchemaForStrict, NO_STRICT, normalizeSchemaForMoonshot, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
     "pi-ai openai-completions import schema sanitizer",
   );
   out = r.content;
@@ -432,10 +433,13 @@ function patchStatusLineTs(content) {
   );
   out = r.content;
 
-  r = replaceOnce(
+  r = replaceAny(
     out,
-    `\t\t\tgit: {\n\t\t\t\tbranch: this.#getCurrentBranch(),\n\t\t\t\tstatus: this.#getGitStatus(),\n\t\t\t\tpr: this.#lookupPr(),\n\t\t\t},`,
-    `\t\t\tgit: {\n\t\t\t\tbranch: this.#getCurrentBranch(),\n\t\t\t\tstatus: this.#getGitStatus(),\n\t\t\t\tremote: this.#getGitRemote(),\n\t\t\t\tpr: this.#lookupPr(),\n\t\t\t},`,
+    [
+      `\t\t\tgit: {\n\t\t\t\tbranch: this.#getCurrentBranch(),\n\t\t\t\tstatus: this.#getGitStatus(),\n\t\t\t\tpr: this.#lookupPr(),\n\t\t\t},`,
+      `\t\t\tgit: {\n\t\t\t\tbranch: gitBranch,\n\t\t\t\tstatus: gitStatus,\n\t\t\t\tpr: gitPr,\n\t\t\t},`,
+    ],
+    `\t\t\tgit: {\n\t\t\t\tbranch: gitBranch,\n\t\t\t\tstatus: gitStatus,\n\t\t\t\tremote: this.#getGitRemote(),\n\t\t\t\tpr: gitPr,\n\t\t\t},`,
     "status-line context git.remote",
   );
   out = r.content;
@@ -919,15 +923,6 @@ function patchSessionManager(content) {
   );
   out = r.content;
 
-  r = replaceAny(
-    out,
-    [
-      `\tasync close(): Promise<void> {\n\t\tif (!this.#persist) return;\n\t\tawait this.#scheduleDiskWork(async () => {\n\t\t\tawait this.#closeWriterHandle();\n\t\t\tthis.#fileIsCurrent = true;\n\t\t});\n\t\tif (this.#diskFailure) throw this.#diskFailure;\n\t}`,
-    ],
-    `\tasync close(): Promise<void> {\n\t\tif (!this.#persist) return;\n\t\tawait this.#scheduleDiskWork(async () => {\n\t\t\tawait this.#closeWriterHandle();\n\t\t\tthis.#fileIsCurrent = true;\n\t\t});\n\t\tif (this.#diskFailure) throw this.#diskFailure;\n\t}`,
-    "session-manager close drains pending rewrites",
-  );
-  out = r.content;
 
   return out;
 }
