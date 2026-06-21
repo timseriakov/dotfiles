@@ -45,7 +45,9 @@
     "npm:pi-interactive-shell",
     {
       "source": "npm:pi-themes",
-      "themes": ["themes/nord.json"]
+      "themes": [
+        "themes/nord.json"
+      ]
     },
     "git:github.com/v2nic/pi-caveman",
     "npm:context-mode",
@@ -58,7 +60,7 @@
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-annotate"
   ],
-  "lastChangelogVersion": "0.79.1",
+  "lastChangelogVersion": "0.79.9",
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,

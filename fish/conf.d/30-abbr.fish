@@ -325,4 +325,4 @@ abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang
 abbr -a pdf-print plutoprint
 abbr -a rss eilmeldung
 
-abbr -a he 'open -na "Helium" --args --profile-directory="Default"'
+abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'

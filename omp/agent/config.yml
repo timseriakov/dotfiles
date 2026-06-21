@@ -1,59 +1,59 @@
-mcp:
+mcp: 
   enableProjectConfig: true
-skills:
+skills: 
   enableClaudeUser: false
   enableClaudeProject: false
-commands:
+commands: 
   enableClaudeUser: false
   enableClaudeProject: false
-startup:
+startup: 
   quiet: false
-theme:
+theme: 
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
-compaction:
+compaction: 
   enabled: true
   strategy: context-full
   thresholdPercent: 85
   keepRecentTokens: 30000
   idleEnabled: false
-statusLine:
+statusLine: 
   preset: custom
   separator: none
-  leftSegments:
+  leftSegments: 
     - path
     - git
     - mode
     - context_pct
     - model
-  rightSegments:
+  rightSegments: 
     - session_name
-  segmentOptions:
-    path:
+  segmentOptions: 
+    path: 
       abbreviate: false
       maxLength: 32
       stripWorkPrefix: true
       lastSegment: true
-    git:
+    git: 
       showBranch: true
       showStaged: true
       showUnstaged: true
       showUntracked: true
       compactDirty: true
       showAheadBehind: true
-    model:
+    model: 
       showThinkingLevel: false
   sessionAccent: false
   showHookStatus: false
-modelRoles:
-  default: omniroute/cx/gpt-5.5
+modelRoles: 
+  default: omniroute/cx/gpt-5.5-medium
   smol: omniroute/quick-free
   slow: omniroute/deep-premium
   plan: omniroute/reasoning-main
   task: omniroute/coding-main
   vision: omniroute/reasoning-main
-disabledProviders:
+disabledProviders: 
   - opencode
   - opencode-zen
   - claude
@@ -66,16 +66,16 @@ disabledProviders:
   - codex
   - openai
   - claude-plugins
-modelProviderOrder:
+modelProviderOrder: 
   - omniroute
   - zen-free
 symbolPreset: nerd
-extensions:
+extensions: 
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
 hideThinkingBlock: true
 setupVersion: 1
-dev:
-  autoqa:
+dev: 
+  autoqa: 
     consent: granted
 treeFilterMode: user-only
