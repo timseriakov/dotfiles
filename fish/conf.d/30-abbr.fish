@@ -249,8 +249,8 @@ abbr -a icat 'kitten icat'
 abbr -a hg 'hgrep --theme Nord'
 abbr -a fxp 'fx package.json'
 
-abbr -a srv 'npx http-server .'
-abbr -a serve 'npx serve .'
+abbr -a srv 'npx -y http-server .'
+abbr -a serve 'npx -y serve .'
 abbr -a ff 'npx -y fast-cli'
 
 abbr -a r rum

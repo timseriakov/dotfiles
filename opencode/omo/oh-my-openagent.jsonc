@@ -1,1 +1,194 @@
-/Users/tim/dev/dotfiles/opencode/omo/oh-my-openagent_omniroute.jsonc
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "hashline_edit": true,
+  "git_master": {
+    "commit_footer": false,
+    "include_co_authored_by": false,
+  },
+  "team_mode": {
+    "enabled": false,
+    "tmux_visualization": true,
+    "max_parallel_members": 3,
+    "max_members": 5,
+    "max_wall_clock_minutes": 120,
+    "max_member_turns": 300,
+    "mailbox_poll_interval_ms": 3000,
+  },
+  "sisyphus_agent": {
+    "planner_enabled": true,
+    "replace_plan": true,
+  },
+  "agents": {
+    "sisyphus": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.\n\n# Инструкции для планирования\n\nПиши все планы строго на русском языке.\n\nЕсли в проекте есть `.memory-bank`, учитывай его правило оформления: prose — на русском, canonical identifiers/paths/tool names — на английском.",
+    },
+    "oracle": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "hephaestus": {
+      "model": "omniroute/deep-premium",
+      "variant": "medium",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "atlas": {
+      "model": "omniroute/coding-main",
+      "fallback_models": ["omniroute/coding-cheap", "omniroute/reasoning-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "librarian": {
+      "model": "omniroute/research-fast",
+      "fallback_models": ["omniroute/reasoning-cheap", "omniroute/quick-free"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "explore": {
+      "model": "omniroute/quick-free",
+      "fallback_models": ["omniroute/research-fast", "omniroute/coding-cheap"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "multimodal-looker": {
+      "model": "omniroute/reasoning-cheap",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "plan": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.\n\n# Инструкции для планирования\n\nПиши все планы строго на русском языке.\n\nЕсли в проекте есть `.memory-bank`, учитывай его правило оформления: prose — на русском, canonical identifiers/paths/tool names — на английском.",
+    },
+    "prometheus": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.\n\n# Инструкции для планирования\n\nПиши все планы строго на русском языке.\n\nЕсли в проекте есть `.memory-bank`, учитывай его правило оформления: prose — на русском, canonical identifiers/paths/tool names — на английском.",
+    },
+    "metis": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "momus": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "sisyphus-junior": {
+      "model": "omniroute/coding-cheap",
+      "fallback_models": ["omniroute/quick-free", "omniroute/reasoning-cheap"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "OpenCode-Builder": {
+      "model": "omniroute/coding-main",
+      "fallback_models": ["omniroute/coding-cheap", "omniroute/reasoning-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+  },
+  "categories": {
+    "deep": {
+      "model": "omniroute/deep-premium",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "quick": {
+      "model": "omniroute/quick-free",
+      "fallback_models": [
+        "omniroute/coding-cheap",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "writing": {
+      "model": "omniroute/writing-cheap",
+      "fallback_models": ["omniroute/reasoning-cheap", "omniroute/quick-free"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "visual-engineering": {
+      "model": "omniroute/coding-main",
+      "fallback_models": [
+        "omniroute/reasoning-main",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "artistry": {
+      "model": "omniroute/reasoning-cheap",
+      "fallback_models": ["omniroute/reasoning-main", "omniroute/coding-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "ultrabrain": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": [
+        "omniroute/deep-premium",
+        "omniroute/reasoning-cheap",
+      ],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "unspecified-low": {
+      "model": "omniroute/coding-cheap",
+      "fallback_models": ["omniroute/quick-free", "omniroute/reasoning-cheap"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+    "unspecified-high": {
+      "model": "omniroute/reasoning-main",
+      "fallback_models": ["omniroute/deep-premium", "omniroute/coding-main"],
+      "prompt_append": "# MCP: playwriter vs playwright\n\n`playwriter` — MCP-сервер для браузерной автоматизации в этой конфигурации; `playwright` — фреймворк, не имя MCP. Не подменяй `playwriter` на `playwright` и не запускай Playwright без явной просьбы.",
+    },
+  },
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [400, 401, 403, 404, 429, 500, 502, 503, 504],
+    "max_fallback_attempts": 2,
+    "cooldown_seconds": 15,
+    "timeout_seconds": 10,
+    "notify_on_fallback": true,
+  },
+  "background_task": {
+    "defaultConcurrency": 5,
+    "providerConcurrency": {
+      "omniroute": 5,
+    },
+    "modelConcurrency": {
+      "omniroute/quick-free": 5,
+      "omniroute/coding-cheap": 4,
+      "omniroute/coding-main": 2,
+      "omniroute/reasoning-cheap": 3,
+      "omniroute/reasoning-main": 2,
+      "omniroute/deep-premium": 1,
+      "omniroute/research-fast": 4,
+      "omniroute/writing-cheap": 3,
+    },
+  },
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": false,
+    "agents": false,
+    "hooks": false,
+    "plugins": false,
+    "plugins_override": {},
+  },
+}
