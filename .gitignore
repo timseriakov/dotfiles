@@ -130,3 +130,4 @@ cliamp/*_ocr.png
 /omp/agent/autoqa.db-shm
 /omp/agent/autoqa.db-wal
 /pi/context-mode/content
+/omp/.omo/run-continuation
