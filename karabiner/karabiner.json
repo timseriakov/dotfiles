@@ -1,9 +1,36 @@
 {
   "global": { "enable_notification_window": false },
+  "machine_specific": {
+    "krbn-5bfa5661-9235-4f86-bda4-60c347f8aea0": {
+      "external_editor_path": "/Applications/Neovide.app"
+    }
+  },
   "profiles": [
     {
       "complex_modifications": {
         "rules": [
+          {
+            "description": "Change ctrl+space to ctrl+tab",
+            "enabled": false,
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "spacebar",
+                  "modifiers": {
+                    "mandatory": ["left_control"],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "tab",
+                    "modifiers": ["left_control"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
           {
             "description": "Ctrl+S -> Search Tabs (Shift+Cmd+A) in Helium",
             "manipulators": [
