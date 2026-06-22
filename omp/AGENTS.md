@@ -127,8 +127,9 @@ Current patched behavior:
 - borderless editor still renders the status/top line; status starts at the left edge like Starship/fish, while only the input line uses the ` ` gutter
 - prompt gutter should match Starship: green ` ` (`U+F105` plus one following space)
 - prompt gutter width reserves 1 cell even if terminal width detection reports `` as width 0
-- `ctrl+k` is bound by the OMP editor extension to compact context, matching the user's OpenCode shortcut
-- `shift+enter` and `ctrl+j` are bound in `omp/agent/keybindings.json` to insert a newline (`tui.input.newLine`)
+- `ctrl+k` is bound by OMP keybindings as `app.session.compact` and calls the same manual compact path as `/compact`
+- `omp/agent/keybindings.yml` is the current primary OMP keybindings file; legacy `keybindings.json` was removed
+- `shift+enter` and `ctrl+j` insert a newline via `tui.input.newLine`
 - session persistence is patched so `SessionManager.close()` always drains pending atomic rewrites before exit; otherwise print/smoke sessions can remain as hidden `.tmp` files and `--resume` shows `No sessions found`
 - `Ctrl+Z` suspend is patched to send `SIGTSTP` only to the OMP process (`process.pid`) instead of process group `0`; this preserves normal shell job-control flow so `fg` can resume OMP
 
