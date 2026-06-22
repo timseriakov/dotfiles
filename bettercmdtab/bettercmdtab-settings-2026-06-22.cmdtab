@@ -1,0 +1,27 @@
+{
+  "app" : "BetterCmdTab",
+  "schemaVersion" : 1,
+  "values" : {
+    "Switcher.appExceptions" : [
+      {
+        "bundleID" : "com.apple.finder",
+        "hide" : "whenNoWindows",
+        "ignore" : "never"
+      }
+    ],
+    "Switcher.applicationsOnly" : true,
+    "Switcher.currentSpaceOnly" : true,
+    "Switcher.expandBrowserTabsAsWindows" : true,
+    "Switcher.expandTabsAsWindows" : true,
+    "Switcher.hoverActionsEnabled" : true,
+    "Switcher.layoutMode" : "iconDock",
+    "Switcher.panelSize" : "large",
+    "Switcher.scrollToSwitch" : false,
+    "Switcher.searchDismissMode" : "stayOpen",
+    "Switcher.showHiddenApps" : false,
+    "Switcher.showMinimizedWindows" : false,
+    "Switcher.showUnreadBadges" : false,
+    "Switcher.showWindowlessApps" : false,
+    "Switcher.vimNavigationEnabled" : false
+  }
+}
