@@ -1,5 +1,0 @@
-{
-  "tui.input.newLine": ["shift+enter", "ctrl+j"],
-  "tui.editor.deleteToLineEnd": [],
-  "app.stt.toggle": []
-}

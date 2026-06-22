@@ -779,7 +779,28 @@ function patchTuiVisibleWidth(content) {
   return content;
 }
 
-function patchInputController(content) {
+function patchKeybindingsConfig(content) {
+  let out = content;
+  let r;
+
+  r = insertAfter(
+    out,
+    `\t"app.session.observe": true;\n`,
+    `\t"app.session.compact": true;\n`,
+    "keybindings app.session.compact interface",
+  );
+  out = r.content;
+
+  r = insertAfter(
+    out,
+    `\t"app.session.observe": {\n\t\tdefaultKeys: "ctrl+s",\n\t\tdescription: "Open the agent hub",\n\t},\n`,
+    `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`,
+    "keybindings app.session.compact definition",
+  );
+  return r.content;
+}
+
+function patchInputControllerBase(content) {
   return replaceAny(
     content,
     [
@@ -898,6 +919,25 @@ function patchInputController(content) {
 	}`,
     "input-controller ctrl-z suspends only omp process",
   ).content;
+}
+
+function patchInputController(content) {
+  let out = patchInputControllerBase(content);
+  const r = insertAfter(
+    out,
+    `		const planModeKeys = this.ctx.keybindings.getKeys("app.plan.toggle");
+		for (const key of planModeKeys) {
+			this.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handlePlanModeCommand());
+		}
+`,
+    `
+		for (const key of this.ctx.keybindings.getKeys("app.session.compact")) {
+			this.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());
+		}
+`,
+    "input-controller app.session.compact handler",
+  );
+  return r.content;
 }
 
 function patchSessionManager(content) {
@@ -1028,6 +1068,7 @@ try {
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/usage-row.ts", patchUsageRow);
   patchFile("modes/components/user-message.ts", patchUserMessage);
+  patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);

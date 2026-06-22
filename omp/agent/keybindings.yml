@@ -3,3 +3,4 @@ tui.input.newLine:
   - ctrl+j
 tui.editor.deleteToLineEnd: []
 app.stt.toggle: []
+app.session.compact: ctrl+k
