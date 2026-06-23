@@ -58,7 +58,7 @@
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-annotate"
   ],
-  "lastChangelogVersion": "0.79.9",
+  "lastChangelogVersion": "0.79.10",
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
