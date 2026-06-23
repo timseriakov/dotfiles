@@ -6,6 +6,10 @@ config = config
 c = c
 
 config.load_autoconfig()
+# Upstream QtWebEngine HTTP/2 issue breaks Reddit media/CDN loads.
+# Remove after Qt fixes QTBUG-137535 / qutebrowser#8599.
+c.qt.args = [*c.qt.args, "disable-http2"]
+
 
 import importlib
 from modules import base as base

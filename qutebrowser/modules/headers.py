@@ -23,11 +23,5 @@ config.set(
 )
 # Standard headers for all sites (навигационный профиль)
 config.set("content.headers.accept_language", "en-US,en;q=0.9")
-config.set(
-    "content.headers.custom",
-    {
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    },
-)
 
 config.set("content.autoplay", False)
