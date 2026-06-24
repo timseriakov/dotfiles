@@ -19,17 +19,6 @@
 [interactive]
 	diffFilter = delta --color-only
 
-[delta]
-  theme = Nord
-	side-by-side = true
-  line-numbers = true
-	navigate = true
-  syntax-theme = Nord
-  light = false
-  zero-style = syntax
-  keep-plus-minus-markers = true
-  hyperlinks = false
-
 [merge]
 	conflictstyle = diff3
 	tool = nvimdiff
@@ -40,10 +29,6 @@
 
 [difftool]
 	prompt = false
-
-[difftool "nvimdiff"]
-	cmd = nvim -d "$LOCAL" "$REMOTE"
-
 
 [difftool "nvimdiff"]
 	# Separate minimal profile
