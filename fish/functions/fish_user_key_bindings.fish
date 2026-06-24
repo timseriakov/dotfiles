@@ -1,3 +1,11 @@
+function _backspace_or_parent_dir
+    if test -z (commandline)
+        cd ..; commandline -f repaint
+    else
+        commandline -f backward-delete-char
+    end
+end
+
 function fish_user_key_bindings
     fish_vi_key_bindings
 
@@ -6,6 +14,7 @@ function fish_user_key_bindings
         bind -M $mode \cj 'history --merge; down-or-search'
         bind -M $mode ctrl-enter accept-autosuggestion
         bind -M $mode \ch 'cd ..; commandline -f repaint'
+        bind -M $mode backspace _backspace_or_parent_dir
         bind -M $mode \cb 'cd -; commandline -f repaint'
         bind -M $mode \cl accept-autosuggestion
         bind -M $mode \cf forward-word
