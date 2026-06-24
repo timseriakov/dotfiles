@@ -295,6 +295,31 @@
 
 Если странно ведут себя `Esc`, функциональные клавиши, passthrough или focus, смотреть terminal settings в `~/.tmux.conf`.
 
+## tmux-palette local patch
+
+`eduwass/tmux-palette` is installed by TPM under `~/.tmux/plugins/tmux-palette`.
+After plugin updates, reapply this tiny local patch if `Ctrl-d` / `Ctrl-u` stop paging the palette like Vim:
+
+```ts
+// ~/.tmux/plugins/tmux-palette/src/palette.ts
+const NAV_KEYS: Record<string, number> = {
+  "\x1b[A": -1,
+  "\x10": -1,
+  "\x1b[B": 1,
+  "\x0e": 1,
+  "\x15": -10, // Ctrl-u: page up
+  "\x04": 10,  // Ctrl-d: page down
+  "\x1b[5~": -10,
+  "\x1b[6~": 10,
+}
+```
+
+Check after patch:
+
+```sh
+cd ~/.tmux/plugins/tmux-palette && bun test
+```
+
 ## Recovery / persistence
 
 Подключены:
