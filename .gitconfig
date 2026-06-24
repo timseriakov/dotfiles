@@ -12,7 +12,7 @@
 	defaultBranch = master
 
 [core]
-	pager = delta
+	pager = hunk pager
     autocrlf = input
 	hooksPath = /Users/tim/.codex/git-hooks
 
