@@ -44,8 +44,6 @@
 [difftool "nvimdiff"]
 	cmd = nvim -d "$LOCAL" "$REMOTE"
 
-[pager]
-	diff =                     # disable pager for `git diff` so difftastic prints directly
 
 [difftool "nvimdiff"]
 	# Separate minimal profile
