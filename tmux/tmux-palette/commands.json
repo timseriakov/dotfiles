@@ -3,12 +3,12 @@
     "icon": "󰙨",
     "title": "Review Changes (hunk diff)",
     "category": "Review",
-    "action": { "popup": "hunk diff" }
+    "action": { "tmux": "display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1' hunk diff" }
   },
   {
     "icon": "󰜈",
     "title": "Review Last Commit (hunk show)",
     "category": "Review",
-    "action": { "popup": "hunk show" }
+    "action": { "tmux": "display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1' hunk show" }
   }
 ]
