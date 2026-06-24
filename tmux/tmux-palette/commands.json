@@ -1,0 +1,14 @@
+[
+  {
+    "icon": "󰙨",
+    "title": "Review Changes (hunk diff)",
+    "category": "Review",
+    "action": { "popup": "hunk diff" }
+  },
+  {
+    "icon": "󰜈",
+    "title": "Review Last Commit (hunk show)",
+    "category": "Review",
+    "action": { "popup": "hunk show" }
+  }
+]
