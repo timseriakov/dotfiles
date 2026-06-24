@@ -1,15 +1,14 @@
 theme = "custom"
-transparent_background = true
 
 [custom_theme]
 base = "nord"
 label = "Nord+"
 
 accent = "#88C0D0"
-badgeAdded = "#8FBCBB"
-badgeRemoved = "#D35F5F"
-fileNew = "#8FBCBB"
-fileDeleted = "#D35F5F"
+badgeAdded = "#A3BE8C"
+badgeRemoved = "#BF616A"
+fileNew = "#A3BE8C"
+fileDeleted = "#BF616A"
 fileModified = "#81A1C1"
 fileRenamed = "#B48EAD"
 fileUntracked = "#D08770"
