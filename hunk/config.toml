@@ -1,6 +1,7 @@
 theme = "custom"
 watch = true
 transparent_background = true
+agent_notes = true
 
 [custom_theme]
 base = "nord"
