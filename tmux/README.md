@@ -308,10 +308,10 @@ const NAV_KEYS: Record<string, number> = {
   "\x1b[B": 1,
   "\x0e": 1,
   "\x15": -10, // Ctrl-u: page up
-  "\x04": 10,  // Ctrl-d: page down
+  "\x04": 10, // Ctrl-d: page down
   "\x1b[5~": -10,
   "\x1b[6~": 10,
-}
+};
 ```
 
 Check after patch:
