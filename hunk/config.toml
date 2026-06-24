@@ -1,4 +1,5 @@
 theme = "custom"
+transparent_background = true
 
 [custom_theme]
 base = "nord"
