@@ -4,7 +4,7 @@
     "title": "Review Changes (hunk diff)",
     "category": "Review",
     "action": {
-      "tmux": "display-popup -E -w 95% -h 90% -B hunk diff"
+      "tmux": "display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1,bg=#2e3440' hunk diff"
     }
   },
   {
@@ -12,7 +12,7 @@
     "title": "Review Last Commit (hunk show)",
     "category": "Review",
     "action": {
-      "tmux": "display-popup -E -w 95% -h 90% -B hunk show"
+      "tmux": "display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1,bg=#2e3440' hunk show"
     }
   }
 ]
