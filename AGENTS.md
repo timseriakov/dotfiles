@@ -117,3 +117,45 @@ set -ga update-environment TERM
 set -ga update-environment TERM_PROGRAM
 set -g terminal-features 'xterm-kitty:passthrough:clipboard:ccolour:cstyle:focus:title:RGB'
 ```
+
+## Hunk — live diff review with agents
+
+Hunk (`hunk diff` / `hunk show`) — интерактивный просмотрщик diff'ов в терминале.
+Агент может подключиться к запущенному hunk через `hunk session ...`:
+
+```text
+Load the Hunk skill and use it for this review. Run `hunk skill path` to get the skill path.
+```
+
+Skill даёт агенту команды: `hunk session list|get|review|navigate|reload|comment add|comment apply`.
+После загрузки скилла агент видит твой текущий diff, может листать файлы и оставлять inline-заметки.
+
+### Quick start для агента
+
+```bash
+hunk skill path                      # путь к SKILL.md
+hunk session list                    # список активных hunk-окон
+hunk session review --repo . --json  # посмотреть что открыто
+hunk session navigate --file F --hunk N  # перейти к файлу/хунку
+hunk session comment add --file F --new-line N --summary "..."  # заметка
+```
+
+### Git pager (опционально)
+
+Заменить delta на hunk как git pager:
+
+```bash
+git config --global core.pager 'hunk pager'
+```
+
+Или алиасы для выборочного использования:
+
+```bash
+git config --global alias.hdiff "-c core.pager='hunk pager' diff"
+git config --global alias.hshow "-c core.pager='hunk pager' show"
+```
+
+### Конфиг
+
+`~/.config/hunk/config.toml` → `hunk/config.toml` в dotfiles (symlink).
+Тема: Nord+, watch mode включён.

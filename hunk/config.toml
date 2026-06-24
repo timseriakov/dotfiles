@@ -1,4 +1,5 @@
 theme = "custom"
+watch = true
 transparent_background = true
 
 [custom_theme]
