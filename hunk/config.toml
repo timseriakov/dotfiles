@@ -7,6 +7,7 @@ agent_notes = true
 base = "nord"
 label = "Nord+"
 
+selectedHunk = "#D08770"
 accent = "#88C0D0"
 badgeAdded = "#A3BE8C"
 badgeRemoved = "#BF616A"
