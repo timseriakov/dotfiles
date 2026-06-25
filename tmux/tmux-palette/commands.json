@@ -1,7 +1,7 @@
 [
   {
     "icon": "󰙨",
-    "title": "Review Changes (hunk diff)",
+    "title": "Review Changes",
     "category": "Review",
     "action": {
       "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' hunk diff"
@@ -9,7 +9,7 @@
   },
   {
     "icon": "󰜈",
-    "title": "Review Last Commit (hunk show)",
+    "title": "Review Last Commit",
     "category": "Review",
     "action": {
       "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' hunk show"
