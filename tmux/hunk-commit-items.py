@@ -7,6 +7,12 @@ if len(sys.argv) != 3:
     raise SystemExit("usage: hunk-commit-items.py <start-directory> <popup-helper>")
 
 start_dir, popup_helper = sys.argv[1:]
+if start_dir.startswith("#{"):
+    start_dir = subprocess.check_output(
+        ["tmux", "display-message", "-p", "#{pane_current_path}"],
+        text=True,
+    ).strip()
+
 try:
     repo = subprocess.check_output(
         ["git", "-C", start_dir, "rev-parse", "--show-toplevel"],
