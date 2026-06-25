@@ -298,7 +298,7 @@
 ## tmux-palette local patch
 
 `eduwass/tmux-palette` is installed by TPM under `~/.tmux/plugins/tmux-palette`.
-After plugin updates, reapply this tiny local patch if `Ctrl-d` / `Ctrl-u` stop paging the palette like Vim:
+After plugin updates, reapply these tiny local patches if `Ctrl-d` / `Ctrl-u` stop paging the palette like Vim, or user commands stop appearing before built-ins:
 
 ```ts
 // ~/.tmux/plugins/tmux-palette/src/palette.ts
@@ -312,6 +312,11 @@ const NAV_KEYS: Record<string, number> = {
   "\x1b[5~": -10,
   "\x1b[6~": 10,
 };
+```
+
+```ts
+// ~/.tmux/plugins/tmux-palette/src/cli.ts
+const merged = [...extras, ...baseItems].filter((i) => !hidden.has(i.title));
 ```
 
 Check after patch:
