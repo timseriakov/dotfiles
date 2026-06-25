@@ -320,29 +320,6 @@ Check after patch:
 cd ~/.tmux/plugins/tmux-palette && bun test
 ```
 
-## hunk local patch
-
-`hunk` installed via `npm i -g hunkdiff` under Volta. After updates, reapply if
-`selectedHunk` highlight stops working (the hunk selection becomes invisible).
-
-The issue: `withTransparentBackground()` overrides `selectedHunk` to `"transparent"`
-even when a custom theme value is set. The patch removes that override so the
-custom theme color (Nord orange `#D08770`) survives transparent mode.
-
-```js
-// ~/.volta/tools/image/packages/hunkdiff/lib/node_modules/hunkdiff/dist/npm/main.js
-// Line 85303 — comment out:
-// selectedHunk: TRANSPARENT_BACKGROUND,  // patched: keep custom selectedHunk
-```
-
-Backup + patch:
-
-```sh
-cd ~/.volta/tools/image/packages/hunkdiff/lib/node_modules/hunkdiff/dist/npm
-cp main.js main.js.bak
-sed -i '' 's/    selectedHunk: TRANSPARENT_BACKGROUND,/    \/\/ selectedHunk: TRANSPARENT_BACKGROUND,  \/\/ patched: keep custom selectedHunk/' main.js
-```
-
 ## Recovery / persistence
 
 Подключены:
