@@ -1,0 +1,6 @@
+{
+  "title": "Review Commit",
+  "grouped": true,
+  "emptyText": "No commits found",
+  "command": "/Users/tim/dev/dotfiles/tmux/hunk-commit-items.py '#{pane_current_path}' /Users/tim/dev/dotfiles/tmux/hunk-popup.sh"
+}

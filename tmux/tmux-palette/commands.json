@@ -4,7 +4,7 @@
     "title": "Review Changes (hunk diff)",
     "category": "Review",
     "action": {
-      "shell": "tmux display-message -p '#{pane_current_path}' > /tmp/hunk-dir; tmux display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1,bg=#2e3440' sh -c 'cd \"$(cat /tmp/hunk-dir)\" && exec hunk diff'"
+      "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' hunk diff"
     }
   },
   {
@@ -12,7 +12,15 @@
     "title": "Review Last Commit (hunk show)",
     "category": "Review",
     "action": {
-      "shell": "tmux display-message -p '#{pane_current_path}' > /tmp/hunk-dir; tmux display-popup -E -w 95% -h 90% -b rounded -S 'fg=#81A1C1,bg=#2e3440' sh -c 'cd \"$(cat /tmp/hunk-dir)\" && exec hunk show'"
+      "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' hunk show"
+    }
+  },
+  {
+    "icon": "󰜘",
+    "title": "Review Commit...",
+    "category": "Review",
+    "action": {
+      "palette": "hunk-commits"
     }
   }
 ]
