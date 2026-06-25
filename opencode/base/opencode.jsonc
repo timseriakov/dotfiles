@@ -35,7 +35,7 @@
       "enabled": true,
     },
     "playwriter": {
-      "command": ["npx", "-y", "playwriter@latest"],
+      "command": ["playwriter"],
       "type": "local",
       "enabled": true,
     },

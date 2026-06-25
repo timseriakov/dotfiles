@@ -327,3 +327,4 @@ abbr -a pdf-print plutoprint
 abbr -a rss eilmeldung
 
 abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'
+abbr -a hunk-kill 'pkill -f hunk.daemon'
