@@ -1,12 +1,20 @@
 theme = "custom"
 watch = true
-transparent_background = true
+transparent_background = false
 agent_notes = true
 
 [custom_theme]
 base = "nord"
 label = "Nord+"
 
+background = "#2E3440"
+panel = "#2E3440"
+panelAlt = "#2E3440"
+contextBg = "#2E3440"
+contextContentBg = "#2E3440"
+lineNumberBg = "#2E3440"
+noteBackground = "#2E3440"
+noteTitleBackground = "#2E3440"
 selectedHunk = "#D08770"
 accent = "#88C0D0"
 badgeAdded = "#A3BE8C"

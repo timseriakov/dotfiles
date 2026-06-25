@@ -47,7 +47,7 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: omniroute/cx/gpt-5.5:medium
+  default: omniroute/cx/gpt-5.5
   smol: omniroute/quick-free
   slow: omniroute/deep-premium
   plan: omniroute/reasoning-main
