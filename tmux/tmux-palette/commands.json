@@ -30,5 +30,13 @@
     "action": {
       "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' lazygit"
     }
+  },
+  {
+    "icon": "󰇥",
+    "title": "Yazi",
+    "category": "Files",
+    "action": {
+      "shell": "/Users/tim/dev/dotfiles/tmux/yazi-popup.sh '#{window_id}' '#{pane_current_path}'"
+    }
   }
 ]
