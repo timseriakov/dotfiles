@@ -2,6 +2,9 @@
 set -euo pipefail
 
 start_directory=${1:?start directory required}
+if [[ $start_directory == '#{'* ]]; then
+  start_directory=$(tmux display-message -p '#{pane_current_path}')
+fi
 shift
 
 repo_root=$(git -C "$start_directory" rev-parse --show-toplevel 2>/dev/null || printf '%s' "$start_directory")
