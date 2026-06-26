@@ -20,6 +20,7 @@
  * - OpenAI-compatible wire schemas: strip regex `pattern` keywords containing lookaround, because
  *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
+ * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -801,124 +802,44 @@ function patchKeybindingsConfig(content) {
 }
 
 function patchInputControllerBase(content) {
-  return replaceAny(
-    content,
-    [
-      `	handleCtrlZ(): void {
-		// Set up handler to restore TUI when resumed
-		process.once("SIGCONT", () => {
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-		});
+  const newHandler = `\thandleCtrlZ(): void {
+\t\tif (process.platform === "win32" || !process.stdout.isTTY) {
+\t\t\tthis.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
+\t\t\treturn;
+\t\t}
 
-		// Stop the TUI (restore terminal to normal mode)
-		this.ctx.ui.stop();
+\t\t// Set up handler to restore TUI when resumed.
+\t\tconst onResume = (): void => {
+\t\t\tthis.ctx.ui.start();
+\t\t\tthis.ctx.ui.requestRender(true);
+\t\t};
+\t\tprocess.once("SIGCONT", onResume);
 
-		// Send SIGTSTP to process group (pid=0 means all processes in group)
-		process.kill(0, "SIGTSTP");
-	}`,
-      `	handleCtrlZ(): void {
-		if (process.platform === "win32" || !process.stdout.isTTY) return;
+\t\t// Stop the TUI (restore terminal to normal mode) before suspending only OMP.
+\t\tthis.ctx.ui.stop();
 
-		// Set up handler to restore TUI when resumed
-		process.once("SIGCONT", () => {
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-		});
+\t\ttry {
+\t\t\t// Keep shell job-control flow intact: suspend OMP itself, not the whole process group.
+\t\t\tprocess.kill(process.pid, "SIGTSTP");
+\t\t} catch (err) {
+\t\t\tprocess.removeListener("SIGCONT", onResume);
+\t\t\tthis.ctx.ui.start();
+\t\t\tthis.ctx.ui.requestRender(true);
+\t\t\tconst reason = err instanceof Error ? err.message : String(err);
+\t\t\tthis.ctx.showError(\`Failed to suspend: \${reason}\`);
+\t\t}
+\t}`;
 
-		// Stop the TUI (restore terminal to normal mode)
-		this.ctx.ui.stop();
+  if (content.includes(newHandler)) return content;
 
-		// Send SIGTSTP to this process. Sending it to process group 0 can also stop
-		// the parent interactive shell in some terminals, so fish never regains
-		// job-control ownership for a normal bg/fg flow.
-		process.kill(process.pid, "SIGTSTP");
-	}`,
-      `	handleCtrlZ(): void {
-		// SIGTSTP is POSIX job-control: Windows has no equivalent and
-		// \`process.kill(_, "SIGTSTP")\` throws \`TypeError: Unknown signal:
-		// SIGTSTP\` there, taking the whole agent down via an uncaught
-		// exception (issue #2036). No-op on platforms that cannot suspend.
-		if (process.platform === "win32") {
-			this.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
-			return;
-		}
+  const start = content.indexOf("\thandleCtrlZ(): void {");
+  const endAnchor = "\n\n\thandleDequeue(): void {";
+  const end = start === -1 ? -1 : content.indexOf(endAnchor, start);
+  if (start === -1 || end === -1) {
+    throw new Error("Patch 'input-controller ctrl-z suspends only omp process' could not find handleCtrlZ block. Upstream source changed.");
+  }
 
-		// Capture the listener so we can detach it if the signal never
-		// fires; otherwise a failed suspend would leave a stale SIGCONT
-		// handler that fires on the next unrelated continue and tries to
-		// re-\`start()\` an already-running TUI.
-		const onResume = (): void => {
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-		};
-		process.once("SIGCONT", onResume);
-
-		// Stop the TUI (restore terminal to normal mode) before sending the
-		// signal so the parent shell sees a sane terminal state.
-		this.ctx.ui.stop();
-
-		try {
-			// pid=0 \u2192 entire foreground process group; the shell receives
-			// SIGTSTP and parks the job.
-			process.kill(0, "SIGTSTP");
-		} catch (err) {
-			// Either the runtime refused the signal or the kernel rejected
-			// it (some sandboxes block sending to pid=0). Tear the resume
-			// hook down and bring the TUI back so the user is not stranded
-			// on a frozen prompt.
-			process.removeListener("SIGCONT", onResume);
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-			const reason = err instanceof Error ? err.message : String(err);
-			this.ctx.showError(\`Failed to suspend: \${reason}\`);
-		}
-	}`,
-    ],
-    `	handleCtrlZ(): void {
-		// SIGTSTP is POSIX job-control: Windows has no equivalent and
-		// \`process.kill(_, "SIGTSTP")\` throws \`TypeError: Unknown signal:
-		// SIGTSTP\` there, taking the whole agent down via an uncaught
-		// exception (issue #2036). No-op on platforms that cannot suspend.
-		if (process.platform === "win32") {
-			this.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
-			return;
-		}
-
-		// Capture the listener so we can detach it if the signal never
-		// fires; otherwise a failed suspend would leave a stale SIGCONT
-		// handler that fires on the next unrelated continue and tries to
-		// re-\`start()\` an already-running TUI.
-		const onResume = (): void => {
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-		};
-		process.once("SIGCONT", onResume);
-
-		// Stop the TUI (restore terminal to normal mode) before sending the
-		// signal so the parent shell sees a sane terminal state.
-		this.ctx.ui.stop();
-
-		try {
-			// Send SIGTSTP to this process, not pid=0. Sending to pid=0 (entire
-			// foreground process group) can also stop the parent interactive shell
-			// in some terminals, so fish never regains job-control ownership for
-			// a normal bg/fg flow.
-			process.kill(process.pid, "SIGTSTP");
-		} catch (err) {
-			// Either the runtime refused the signal or the kernel rejected
-			// it (some sandboxes block sending signals). Tear the resume
-			// hook down and bring the TUI back so the user is not stranded
-			// on a frozen prompt.
-			process.removeListener("SIGCONT", onResume);
-			this.ctx.ui.start();
-			this.ctx.ui.requestRender(true);
-			const reason = err instanceof Error ? err.message : String(err);
-			this.ctx.showError(\`Failed to suspend: \${reason}\`);
-		}
-	}`,
-    "input-controller ctrl-z suspends only omp process",
-  ).content;
+  return `${content.slice(0, start)}${newHandler}${content.slice(end)}`;
 }
 
 function patchInputController(content) {
@@ -1039,6 +960,34 @@ function patchEditorGutterWidth(content) {
 
   return out;
 }
+function patchTuiTerminal(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\t// Wrap the probe under tmux so terminals behind \`allow-passthrough on\`\n\t\t// can still respond (mirroring how \`TerminalInfo.sendNotification\`\n\t\t// wraps notification deliveries). Without it the probe is swallowed\n\t\t// inside tmux even when the outer terminal speaks OSC 99, and rich\n\t\t// notifications stay permanently downgraded to the single-line fallback.\n\t\tconst probe = \`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\`;\n\t\tconst sequence = isInsideTmux() ? wrapTmuxPassthrough(probe) : probe;\n\t\tthis.#safeWrite(\`\${sequence}\\x1b[c\`);\n`,
+      `\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\tthis.#safeWrite(\`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\\x1b[c\`);\n`,
+    ],
+    `\t\tif (isInsideTmux()) return;\n\n\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\tthis.#safeWrite(\`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\\x1b[c\`);\n`,
+    "terminal OSC99 tmux probe leak",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `import {\n\tisInsideTmux,\n\tNotifyProtocol,\n\tsetCellDimensions,\n\tsetOsc99Supported,\n\tTERMINAL,\n\twrapTmuxPassthrough,\n} from "./terminal-capabilities";`,
+    ],
+    `import {\n\tisInsideTmux,\n\tNotifyProtocol,\n\tsetCellDimensions,\n\tsetOsc99Supported,\n\tTERMINAL,\n} from "./terminal-capabilities";`,
+    "terminal unused tmux passthrough import",
+  );
+  out = r.content;
+
+  return out;
+}
+
 
 try {
   setupRuntimeStateLinks();
@@ -1073,6 +1022,7 @@ try {
   patchFile("session/session-manager.ts", patchSessionManager);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
+  patchTuiFile("terminal.ts", patchTuiTerminal);
   patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
   patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
   patchAbsoluteFile(
