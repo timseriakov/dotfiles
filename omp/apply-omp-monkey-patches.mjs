@@ -836,7 +836,9 @@ function patchInputControllerBase(content) {
   const endAnchor = "\n\n\thandleDequeue(): void {";
   const end = start === -1 ? -1 : content.indexOf(endAnchor, start);
   if (start === -1 || end === -1) {
-    throw new Error("Patch 'input-controller ctrl-z suspends only omp process' could not find handleCtrlZ block. Upstream source changed.");
+    throw new Error(
+      "Patch 'input-controller ctrl-z suspends only omp process' could not find handleCtrlZ block. Upstream source changed.",
+    );
   }
 
   return `${content.slice(0, start)}${newHandler}${content.slice(end)}`;
@@ -987,7 +989,6 @@ function patchTuiTerminal(content) {
 
   return out;
 }
-
 
 try {
   setupRuntimeStateLinks();
