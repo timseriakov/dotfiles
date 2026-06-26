@@ -21,6 +21,7 @@
  *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
+ * - Kitty image graphics: wrap APC sequences in tmux passthrough so screenshots render in Kitty under tmux
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -962,6 +963,79 @@ function patchEditorGutterWidth(content) {
 
   return out;
 }
+function patchTuiTerminalCapabilities(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\treturn \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;`,
+      `\t\tconst sequence = \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;\n\t\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    ],
+    `\t\tconst sequence = \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;\n\t\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    "kitty image single chunk tmux passthrough",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\t\tchunks.push(\`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`);`,
+      `\t\t\tconst sequence = \`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    ],
+    `\t\t\tconst sequence = \`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    "kitty image first chunk tmux passthrough",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\t\tchunks.push(\`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`);`,
+      `\t\t\tconst sequence = \`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    ],
+    `\t\t\tconst sequence = \`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    "kitty image last chunk tmux passthrough",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\t\tchunks.push(\`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`);`,
+      `\t\t\tconst sequence = \`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    ],
+    `\t\t\tconst sequence = \`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
+    "kitty image middle chunk tmux passthrough",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\treturn \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;`,
+      `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    ],
+    `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    "kitty placement tmux passthrough",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\treturn \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;`,
+      `\tconst sequence = \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    ],
+    `\tconst sequence = \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    "kitty delete tmux passthrough",
+  );
+  out = r.content;
+
+  return out;
+}
+
 function patchTuiTerminal(content) {
   let out = content;
   let r;
@@ -1024,6 +1098,7 @@ try {
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
   patchTuiFile("terminal.ts", patchTuiTerminal);
+  patchTuiFile("terminal-capabilities.ts", patchTuiTerminalCapabilities);
   patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
   patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
   patchAbsoluteFile(
