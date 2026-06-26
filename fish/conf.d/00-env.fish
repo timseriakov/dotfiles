@@ -12,6 +12,7 @@ set -gx fish_command_timeout 8000
 set -gx fish_greeting "Welcome from Fish"
 set -gx NEOVIDE_TITLE_HIDDEN 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
+set -gx HOMEBREW_NO_REQUIRE_TAP_TRUST 1
 set -gx EDITOR /opt/homebrew/bin/nvim
 
 # XDG
