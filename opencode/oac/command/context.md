@@ -19,11 +19,11 @@ Files MUST be <200 lines. Extract core concepts only (1-3 sentences), 3-5 key po
   <rule id="approval_gate">
     ALWAYS present approval UI before deleting/archiving files. Letter-based selection (A B C or 'all'). NEVER auto-delete.
   </rule>
-  
+
   <rule id="function_structure">
     ALWAYS organize by function: concepts/, examples/, guides/, lookup/, errors/ (not flat files).
   </rule>
-  
+
   <rule id="lazy_load">
     ALWAYS read required context files from /Users/tim/.config/opencode/context/core/context-system/ BEFORE executing operations.
   </rule>
@@ -56,25 +56,26 @@ When invoked without arguments: `/context`
     - Files in .tmp/ directory
     - Files >2KB in root directory
   </stage>
-  
+
   <stage id="2" name="Report">
     Show what was found:
     ```
     Quick scan results:
-    
+
     Found 3 summary files:
       📄 CONTEXT-SYSTEM-OVERVIEW.md (4.2 KB)
       📄 SESSION-auth-work.md (1.8 KB)
       📄 .tmp/NOTES.md (800 bytes)
-    
+
     Recommended action:
       /context harvest  - Clean up summaries → permanent context
-    
+
     Other options:
       /context extract {source}  - Extract from docs/code
       /context organize {category}  - Restructure existing files
       /context help  - Show all operations
     ```
+
   </stage>
 </workflow>
 
@@ -166,31 +167,31 @@ Read: operations/harvest.md, standards/mvi.md
   <operation name="harvest">
     Read: operations/harvest.md, standards/mvi.md, guides/workflows.md
   </operation>
-  
+
   <operation name="compact">
     Read: guides/compact.md, standards/mvi.md
   </operation>
-  
+
   <operation name="extract">
     Read: operations/extract.md, standards/mvi.md, guides/compact.md, guides/workflows.md
   </operation>
-  
+
   <operation name="organize">
     Read: operations/organize.md, standards/structure.md, guides/workflows.md
   </operation>
-  
+
   <operation name="update">
     Read: operations/update.md, guides/workflows.md, standards/mvi.md
   </operation>
-  
+
   <operation name="error">
     Read: operations/error.md, standards/templates.md, guides/workflows.md
   </operation>
-  
+
   <operation name="create">
     Read: guides/creation.md, standards/structure.md, standards/templates.md
   </operation>
-  
+
   <operation name="migrate">
     Read: standards/mvi.md
   </operation>
@@ -210,7 +211,7 @@ Read: operations/harvest.md, standards/mvi.md
     Subagent loads: Required context files from /Users/tim/.config/opencode/context/core/context-system/
     Subagent executes: Multi-stage workflow per operation
   </route>
-  
+
   <route operations="map|validate" to="ContextScout">
     Pass: operation name, arguments
     Subagent executes: Read-only analysis and reporting

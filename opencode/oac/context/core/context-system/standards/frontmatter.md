@@ -10,10 +10,11 @@
 
 <rule id="frontmatter_required" enforcement="strict">
   ALL context files MUST start with:
-  
-  ```markdown
-  <!-- Context: {category}/{function} | Priority: {level} | Version: X.Y | Updated: YYYY-MM-DD -->
-  ```
+
+```markdown
+<!-- Context: {category}/{function} | Priority: {level} | Version: X.Y | Updated: YYYY-MM-DD -->
+```
+
 </rule>
 
 ---

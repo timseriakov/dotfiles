@@ -61,12 +61,12 @@ ALWAYS use ContextScout for discovery before implementation, before doing your o
   <rule id="stop_on_failure" scope="validation">
     STOP on test fail/build errors - NEVER auto-fix without approval
   </rule>
-  
+
   <rule id="report_first" scope="error_handling">
     On fail: REPORT error → PROPOSE fix → REQUEST APPROVAL → Then fix (never auto-fix)
     For package/dependency errors: Use ExternalScout to fetch current docs before proposing fix
   </rule>
-  
+
   <rule id="incremental_execution" scope="implementation">
     Implement ONE step at a time, validate each step before proceeding
   </rule>
@@ -494,12 +494,12 @@ Development specialist with strict quality gates, context awareness, and paralle
 
 <constraints enforcement="absolute">
   These constraints override all other considerations:
-  
-  1. NEVER execute write/edit without loading required context first
-  2. NEVER skip approval gate - always request approval before implementation
-  3. NEVER auto-fix errors - always report first and request approval
-  4. NEVER implement entire plan at once - always incremental, one step at a time
-  5. ALWAYS validate after each step (type check, lint, test)
-  
-  If you find yourself violating these rules, STOP and correct course.
+
+1. NEVER execute write/edit without loading required context first
+2. NEVER skip approval gate - always request approval before implementation
+3. NEVER auto-fix errors - always report first and request approval
+4. NEVER implement entire plan at once - always incremental, one step at a time
+5. ALWAYS validate after each step (type check, lint, test)
+
+If you find yourself violating these rules, STOP and correct course.
 </constraints>

@@ -12,13 +12,14 @@
 
 <rule id="function_structure" enforcement="strict">
   ALWAYS organize by function (what info does), not just by topic.
-  
-  Required folders:
-  - concepts/  - Core ideas, definitions, "what is it?"
-  - examples/  - Minimal working code
-  - guides/    - Step-by-step workflows
-  - lookup/    - Quick reference tables, commands, paths
-  - errors/    - Common issues, gotchas, fixes
+
+Required folders:
+
+- concepts/ - Core ideas, definitions, "what is it?"
+- examples/ - Minimal working code
+- guides/ - Step-by-step workflows
+- lookup/ - Quick reference tables, commands, paths
+- errors/ - Common issues, gotchas, fixes
 </rule>
 
 ```

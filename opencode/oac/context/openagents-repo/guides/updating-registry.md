@@ -417,7 +417,7 @@ Registry can be auto-updated after merge:
      - tag2
 
    # ❌ Invalid
-   tags: tag1, tag2  # Missing brackets
+   tags: tag1, tag2 # Missing brackets
    ```
 
 3. **Check dependency format**:
@@ -427,7 +427,7 @@ Registry can be auto-updated after merge:
    dependencies: [subagent:coder-agent, context:core/standards/code]
 
    # ❌ Invalid
-   dependencies: [coder-agent]  # Missing type prefix
+   dependencies: [coder-agent] # Missing type prefix
    ```
 
 4. **Run dry-run to debug**:

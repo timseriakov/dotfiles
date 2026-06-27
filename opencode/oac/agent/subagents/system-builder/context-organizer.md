@@ -139,19 +139,12 @@ task(subagent_type="ContextScout", description="Find context system standards", 
     - use_cases are provided
     - Codebase structure discovered (Step 1)
   </pre_flight>
-  
-  <post_flight>
-    - All files have frontmatter
-    - All files have codebase references
-    - All files follow MVI format
-    - All files under size limits
-    - Function-based folder structure used
-    - navigation.md exists
-    - No duplication across files
-  </post_flight>
-  <context_first>ContextScout before any generation — understand what exists first</context_first>
-  <standards_driven>All files follow centralized standards from context-system</standards_driven>
-  <modular_design>Each file serves ONE clear purpose (50-200 lines)</modular_design>
-  <no_duplication>Each piece of knowledge in exactly one file</no_duplication>
-  <code_linked>All context files link to actual implementation via codebase references</code_linked>
-  <mvi_compliant>Minimal viable information — scannable in <30 seconds</mvi_compliant>
+
+<post_flight> - All files have frontmatter - All files have codebase references - All files follow MVI format - All files under size limits - Function-based folder structure used - navigation.md exists - No duplication across files
+</post_flight>
+<context_first>ContextScout before any generation — understand what exists first</context_first>
+<standards_driven>All files follow centralized standards from context-system</standards_driven>
+<modular_design>Each file serves ONE clear purpose (50-200 lines)</modular_design>
+<no_duplication>Each piece of knowledge in exactly one file</no_duplication>
+<code_linked>All context files link to actual implementation via codebase references</code_linked>
+<mvi_compliant>Minimal viable information — scannable in <30 seconds</mvi_compliant>

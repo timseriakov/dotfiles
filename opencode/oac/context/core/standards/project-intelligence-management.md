@@ -148,12 +148,13 @@ project-intelligence/
 ```
 
 **Version Rules**:
-| Change | Version |
-|--------|---------|
-| New file | 1.0 |
-| Content addition/update | MINOR |
-| Structure change | MAJOR |
-| Typo fix | PATCH |
+
+| Change                  | Version |
+| ----------------------- | ------- |
+| New file                | 1.0     |
+| Content addition/update | MINOR   |
+| Structure change        | MAJOR   |
+| Typo fix                | PATCH   |
 
 **Date**: Always `YYYY-MM-DD`
 
@@ -189,18 +190,20 @@ project-intelligence/
 ## Governance
 
 **Ownership**:
-| Area | Owner | Responsibility |
-|------|-------|----------------|
-| Business domain | Product Owner | Keep current, accurate |
-| Technical domain | Tech Lead | Keep current, accurate |
-| Decisions log | Tech Lead | Document decisions |
-| Living notes | Team | Keep active items current |
+
+| Area             | Owner         | Responsibility            |
+| ---------------- | ------------- | ------------------------- |
+| Business domain  | Product Owner | Keep current, accurate    |
+| Technical domain | Tech Lead     | Keep current, accurate    |
+| Decisions log    | Tech Lead     | Document decisions        |
+| Living notes     | Team          | Keep active items current |
 
 **Review Cadence**:
-| Activity | Frequency |
-|----------|-----------|
-| Quick review | Per PR |
-| Full review | Quarterly |
+
+| Activity       | Frequency     |
+| -------------- | ------------- |
+| Quick review   | Per PR        |
+| Full review    | Quarterly     |
 | Archive review | Semi-annually |
 
 ---

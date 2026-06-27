@@ -20,18 +20,20 @@ AI agents create summary files (OVERVIEW.md, SESSION-\*.md, SUMMARY.md) that con
 
 <rule id="summary_patterns" enforcement="strict">
   Harvest automatically detects these patterns:
-  
-  Filename patterns:
-  - *OVERVIEW.md
-  - *SUMMARY.md
-  - SESSION-*.md
-  - CONTEXT-*.md
-  - *NOTES.md
-  
-  Location patterns:
-  - Files in .tmp/ directory
-  - Files with "Summary", "Overview", "Session" in title
-  - Files >2KB in root directory (likely summaries)
+
+Filename patterns:
+
+- *OVERVIEW.md
+- *SUMMARY.md
+- SESSION-*.md
+- CONTEXT-*.md
+- *NOTES.md
+
+Location patterns:
+
+- Files in .tmp/ directory
+- Files with "Summary", "Overview", "Session" in title
+- Files >2KB in root directory (likely summaries)
 </rule>
 
 ---
@@ -39,8 +41,9 @@ AI agents create summary files (OVERVIEW.md, SESSION-\*.md, SUMMARY.md) that con
 ## 6-Stage Workflow
 
 <workflow id="harvest" enforce="@critical_rules">
-  
+
 ### Stage 1: Scan
+
 **Action**: Find all summary files in workspace
 
 **Process**:
@@ -68,13 +71,14 @@ Found 3 summary documents:
 **Action**: Categorize content by function
 
 **Mapping Rules**:
-| Content Type | Target Folder | How to Identify |
-|--------------|---------------|-----------------|
-| Design decisions | `concepts/` | "We decided to...", "Architecture", "Pattern" |
-| Solutions/patterns | `examples/` | Code snippets, "Here's how we..." |
-| Workflows | `guides/` | Numbered steps, "How to...", "Setup" |
-| Errors encountered | `errors/` | Error messages, "Fixed issue", "Gotcha" |
-| Reference data | `lookup/` | Tables, lists, paths, commands |
+
+| Content Type       | Target Folder | How to Identify                               |
+| ------------------ | ------------- | --------------------------------------------- |
+| Design decisions   | `concepts/`   | "We decided to...", "Architecture", "Pattern" |
+| Solutions/patterns | `examples/`   | Code snippets, "Here's how we..."             |
+| Workflows          | `guides/`     | Numbered steps, "How to...", "Setup"          |
+| Errors encountered | `errors/`     | Error messages, "Fixed issue", "Gotcha"       |
+| Reference data     | `lookup/`     | Tables, lists, paths, commands                |
 
 **Process**:
 

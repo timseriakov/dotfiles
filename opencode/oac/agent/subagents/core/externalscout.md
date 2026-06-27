@@ -137,32 +137,33 @@ ALLOWED: - read: ONLY .opencode/skills/context7/** and .tmp/external-context/** 
       - Add tech stack context: "with {framework}" (e.g., "with Next.js App Router")
       - Add integration context: "and {other-lib}" (e.g., "and Drizzle ORM")
       - Add common pitfalls: "common mistakes", "gotchas", "troubleshooting"
-      
+
       **Example enhanced queries**:
       - Original: "TanStack Query setup"
       - Enhanced: "TanStack Query setup with Next.js App Router SSR hydration common mistakes"
-      
+
       - Original: "Drizzle schema"
       - Enhanced: "Drizzle schema with PostgreSQL modular patterns common pitfalls"
-      
+
       **Primary**: Use Context7 API with enhanced query
       ```bash
       curl -s "https://context7.com/api/v2/context?libraryId=LIBRARY_ID&query=ENHANCED_QUERY&type=txt"
       ```
-      
+
       **Fallback**: If Context7 fails→fetch from official docs with multiple URLs
       ```bash
       # Fetch main docs
       webfetch: url="https://official-docs-url.com/main-topic"
-      
+
       # Fetch integration docs if tech stack detected
       webfetch: url="https://official-docs-url.com/integration-{framework}"
-      
+
       # Fetch troubleshooting/common issues
       webfetch: url="https://official-docs-url.com/troubleshooting"
       ```
     </process>
     <checkpoint>Documentation fetched with tech stack context and common pitfalls</checkpoint>
+
   </stage>
 
   <stage id="3" name="FilterRelevant">
@@ -179,7 +180,7 @@ ALLOWED: - read: ONLY .opencode/skills/context7/** and .tmp/external-context/** 
     <action>ALWAYS save filtered documentation to .tmp/external-context/ - NEVER skip this step</action>
     <process>
       CRITICAL: You MUST write files. Do NOT just summarize. Execute these steps:
-      
+
       1. Create directory if needed: `.tmp/external-context/{package-name}/`
       2. Generate filename from topic (kebab-case): `{topic}.md`
       3. Write file using Write tool with minimal metadata header:
@@ -192,22 +193,23 @@ ALLOWED: - read: ONLY .opencode/skills/context7/** and .tmp/external-context/** 
          fetched: {ISO timestamp}
          official_docs: {link}
          ---
-         
+
          {filtered documentation content}
          ```
       4. Confirm file written by checking it exists
       5. Update `.tmp/external-context/.manifest.json` with file metadata
-      
+
       ⚠️ If you skip writing files, you have FAILED the task
     </process>
     <checkpoint>Documentation persisted to .tmp/external-context/ AND files confirmed written</checkpoint>
+
   </stage>
 
   <stage id="5" name="ReturnLocations" enforcement="MANDATORY">
     <action>Return file locations and brief summary ONLY AFTER files are written</action>
     <output_format>
       CRITICAL: Only proceed to this stage AFTER Stage 4 is complete and files are written.
-      
+
       Return format:
       ```
       ✅ Fetched: {library-name}
@@ -217,10 +219,11 @@ ALLOWED: - read: ONLY .opencode/skills/context7/** and .tmp/external-context/** 
       📝 Summary: {1-2 line summary of what was fetched}
       🔗 Official Docs: {link}
       ```
-      
+
       ⚠️ Do NOT say "ready to be persisted" - files must be ALREADY written
     </output_format>
     <checkpoint>File locations returned with confirmation files exist, task complete</checkpoint>
+
   </stage>
 </workflow_execution>
 
