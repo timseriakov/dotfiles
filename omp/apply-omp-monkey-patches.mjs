@@ -21,7 +21,7 @@
  *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
- * - Kitty image graphics: wrap APC sequences in tmux passthrough so screenshots render in Kitty under tmux
+ * - Kitty image graphics: wrap APC sequences in tmux passthrough and disable Unicode placeholders under tmux
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -1033,6 +1033,16 @@ function patchTuiTerminalCapabilities(content) {
   );
   out = r.content;
 
+  r = replaceAny(
+    out,
+    [
+      `setKittyGraphics({ unicodePlaceholders: detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
+      `setKittyGraphics({ unicodePlaceholders: !isInsideTmux() && detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
+    ],
+    `setKittyGraphics({ unicodePlaceholders: !isInsideTmux() && detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
+    "disable kitty placeholders under tmux",
+  );
+  out = r.content;
   return out;
 }
 
