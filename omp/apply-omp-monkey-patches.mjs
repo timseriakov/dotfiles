@@ -420,16 +420,16 @@ function patchStatusLineTs(content) {
 
   r = insertAfter(
     out,
-    `\t#gitStatusLastFetch = 0;\n\t#gitStatusInFlight = false;`,
+    `\t#gitStatusLastFetch = 0;\n\t#gitStatusInFlightCwd: string | undefined = undefined;`,
     `\n\t#cachedGitRemote: { ahead: number; behind: number } | null = null;\n\t#gitRemoteLastFetch = 0;\n\t#gitRemoteInFlight = false;`,
     "status-line git remote cache fields",
   );
   out = r.content;
 
-  const remoteMethod = `\n\t#getGitRemote(): { ahead: number; behind: number } | null {\n\t\tif (this.#gitRemoteInFlight || Date.now() - this.#gitRemoteLastFetch < 5000) {\n\t\t\treturn this.#cachedGitRemote;\n\t\t}\n\n\t\tthis.#gitRemoteInFlight = true;\n\n\t\t(async () => {\n\t\t\ttry {\n\t\t\t\tconst result = await $\`git rev-list --left-right --count @{upstream}...HEAD\`.cwd(getProjectDir()).quiet().nothrow();\n\t\t\t\tif (result.exitCode !== 0) {\n\t\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tconst [behindText, aheadText] = result.stdout.toString().trim().split(/\\s+/);\n\t\t\t\tconst behind = Number.parseInt(behindText ?? "0", 10);\n\t\t\t\tconst ahead = Number.parseInt(aheadText ?? "0", 10);\n\t\t\t\tthis.#cachedGitRemote = {\n\t\t\t\t\tahead: Number.isFinite(ahead) ? ahead : 0,\n\t\t\t\t\tbehind: Number.isFinite(behind) ? behind : 0,\n\t\t\t\t};\n\t\t\t} catch {\n\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t} finally {\n\t\t\t\tthis.#gitRemoteLastFetch = Date.now();\n\t\t\t\tthis.#gitRemoteInFlight = false;\n\t\t\t}\n\t\t})();\n\n\t\treturn this.#cachedGitRemote;\n\t}\n`;
+  const remoteMethod = `\n\t#getGitRemote(effectiveGitCwd?: string): { ahead: number; behind: number } | null {\n\t\tconst gitCwd = effectiveGitCwd ?? this.#resolveActiveRepoCache().effectiveGitCwd;\n\t\tif (this.#gitRemoteInFlight || Date.now() - this.#gitRemoteLastFetch < 5000) {\n\t\t\treturn this.#cachedGitRemote;\n\t\t}\n\n\t\tthis.#gitRemoteInFlight = true;\n\n\t\t(async () => {\n\t\t\ttry {\n\t\t\t\tconst result = await $\`git rev-list --left-right --count @{upstream}...HEAD\`.cwd(gitCwd).quiet().nothrow();\n\t\t\t\tif (result.exitCode !== 0) {\n\t\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tconst [behindText, aheadText] = result.stdout.toString().trim().split(/\\s+/);\n\t\t\t\tconst behind = Number.parseInt(behindText ?? "0", 10);\n\t\t\t\tconst ahead = Number.parseInt(aheadText ?? "0", 10);\n\t\t\t\tthis.#cachedGitRemote = {\n\t\t\t\t\tahead: Number.isFinite(ahead) ? ahead : 0,\n\t\t\t\t\tbehind: Number.isFinite(behind) ? behind : 0,\n\t\t\t\t};\n\t\t\t} catch {\n\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t} finally {\n\t\t\t\tthis.#gitRemoteLastFetch = Date.now();\n\t\t\t\tthis.#gitRemoteInFlight = false;\n\t\t\t}\n\t\t})();\n\n\t\treturn this.#cachedGitRemote;\n\t}\n`;
   r = insertBefore(
     out,
-    `\n\t#lookupPr(): { number: number; url: string } | null {`,
+    `\n\t#lookupPr(effectiveGitCwd?: string): { number: number; url: string } | null {`,
     remoteMethod,
     "status-line #getGitRemote method",
   );
@@ -441,7 +441,7 @@ function patchStatusLineTs(content) {
       `\t\t\tgit: {\n\t\t\t\tbranch: this.#getCurrentBranch(),\n\t\t\t\tstatus: this.#getGitStatus(),\n\t\t\t\tpr: this.#lookupPr(),\n\t\t\t},`,
       `\t\t\tgit: {\n\t\t\t\tbranch: gitBranch,\n\t\t\t\tstatus: gitStatus,\n\t\t\t\tpr: gitPr,\n\t\t\t},`,
     ],
-    `\t\t\tgit: {\n\t\t\t\tbranch: gitBranch,\n\t\t\t\tstatus: gitStatus,\n\t\t\t\tremote: this.#getGitRemote(),\n\t\t\t\tpr: gitPr,\n\t\t\t},`,
+    `\t\t\tgit: {\n\t\t\t\tbranch: gitBranch,\n\t\t\t\tstatus: gitStatus,\n\t\t\t\tremote: this.#getGitRemote(activeRepoCache.effectiveGitCwd),\n\t\t\t\tpr: gitPr,\n\t\t\t},`,
     "status-line context git.remote",
   );
   out = r.content;
