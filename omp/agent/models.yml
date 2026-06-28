@@ -90,8 +90,8 @@ providers:
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
-      - id: cx/gpt-5.3-codex
-        name: CX GPT 5.3 Codex OMNi
+      - id: cx/gpt-5.4-mini
+        name: CX GPT 5.4 Mini OMNi
         reasoning: true
         input: [text]
         contextWindow: 200000

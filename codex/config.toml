@@ -65,6 +65,11 @@ last_revision = "655b7d9c5431f822264b7732e9901c5578ac84cf"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"
 
+[marketplaces.openai-bundled]
+last_updated = "2026-06-28T12:49:10Z"
+source_type = "local"
+source = "/Users/tim/dev/dotfiles/codex/.tmp/bundled-marketplaces/openai-bundled"
+
 [hooks.state."/Users/tim/.codex/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:5986c7e013f70b9f369ca6e559bee8cb423a5ce91cb2ab0131da53262b18cf88"
 

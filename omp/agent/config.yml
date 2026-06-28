@@ -47,8 +47,8 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: omniroute/quick-free
-  smol: omniroute/quick-free
+  default: omniroute/cx/gpt-5.5
+  smol: omniroute/cx/gpt-5.4-mini
   slow: omniroute/deep-premium
   plan: omniroute/reasoning-main
   task: omniroute/coding-main
@@ -79,3 +79,4 @@ dev:
   autoqa:
     consent: granted
 treeFilterMode: user-only
+defaultThinkingLevel: auto
