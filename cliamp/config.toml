@@ -3,5 +3,5 @@ provider = "radio"
 shuffle = false
 theme = "nord"
 
-visualizer = "BarsDot"
+visualizer = "Matrix"
 repeat = "All"
