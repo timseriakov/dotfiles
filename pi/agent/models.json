@@ -100,7 +100,13 @@
           "contextWindow": 200000,
           "maxTokens": 12000
         }
-      ]
+      ],
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheWrite": 0
+      }
     },
     "opencode": {
       "name": "OpenCode Zen Free",
@@ -144,20 +150,6 @@
         {
           "id": "nemotron-3-super-free",
           "name": "Nemotron 3 Super Free",
-          "input": ["text"],
-          "reasoning": true,
-          "contextWindow": 1000000,
-          "maxTokens": 64000,
-          "cost": {
-            "input": 0,
-            "output": 0,
-            "cacheRead": 0,
-            "cacheWrite": 0
-          }
-        },
-        {
-          "id": "big-pickle",
-          "name": "Big Pickle Free",
           "input": ["text"],
           "reasoning": true,
           "contextWindow": 1000000,

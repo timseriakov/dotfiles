@@ -62,8 +62,8 @@
   "theme": "nord",
   "enableInstallTelemetry": false,
   "autocompleteMaxVisible": 15,
-  "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4-flash-free",
+  "defaultProvider": "omni",
+  "defaultModel": "cx/gpt-5.5",
   "editorPaddingX": 1,
   "showHardwareCursor": false,
   "defaultThinkingLevel": "high",
@@ -77,11 +77,6 @@
     "omni/cx/gpt-5.4-mini:high",
     "omni/cx/gpt-5.3-codex:high",
     "omni/cx/gpt-5.3-codex-spark:high",
-    "omni/cx/gpt-5.2:high",
-    "omni/cx/codex-auto-review:high",
-    "opencode/deepseek-v4-flash-free:high",
-    "opencode/mimo-v2.5-free:high",
-    "opencode/nemotron-3-super-free:high",
-    "opencode/big-pickle:high"
+    "omni/cx/gpt-5.2:high"
   ]
 }

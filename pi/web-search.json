@@ -1,3 +1,4 @@
 {
-  "allowBrowserCookies": true
+  "allowBrowserCookies": true,
+  "workflow": "auto-summary"
 }
