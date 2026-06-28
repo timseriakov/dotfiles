@@ -21,7 +21,7 @@
  *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
- * - Kitty image graphics: wrap APC sequences in tmux passthrough and disable Unicode placeholders under tmux
+ * - Kitty image graphics: wrap APC sequences in tmux passthrough, including Unicode placeholder placement
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -1039,10 +1039,44 @@ function patchTuiTerminalCapabilities(content) {
       `setKittyGraphics({ unicodePlaceholders: detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
       `setKittyGraphics({ unicodePlaceholders: !isInsideTmux() && detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
     ],
-    `setKittyGraphics({ unicodePlaceholders: !isInsideTmux() && detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
-    "disable kitty placeholders under tmux",
+    `setKittyGraphics({ unicodePlaceholders: detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
+    "enable kitty placeholders under tmux",
   );
   out = r.content;
+  return out;
+}
+
+function patchTuiKittyGraphics(content) {
+  let out = content;
+  let r;
+
+  r = insertBefore(
+    out,
+    `/** Kitty Unicode placeholder base character (U+10EEEE, Plane 16 PUA). */`,
+    `function isInsideTmux(env = Bun.env) {
+\treturn Boolean(env.TMUX);
+}
+
+function wrapTmuxPassthrough(payload) {
+\treturn "\\x1bPtmux;" + payload.replaceAll("\\x1b", "\\x1b\\x1b") + "\\x1b\\\\";
+}
+
+`,
+    "kitty graphics tmux passthrough helpers",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\treturn \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;`,
+      `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    ],
+    `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
+    "kitty placeholder virtual placement tmux passthrough",
+  );
+  out = r.content;
+
   return out;
 }
 
@@ -1108,6 +1142,7 @@ try {
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
   patchTuiFile("terminal.ts", patchTuiTerminal);
+  patchTuiFile("kitty-graphics.ts", patchTuiKittyGraphics);
   patchTuiFile("terminal-capabilities.ts", patchTuiTerminalCapabilities);
   patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
   patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
