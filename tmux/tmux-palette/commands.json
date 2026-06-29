@@ -32,6 +32,14 @@
     }
   },
   {
+    "icon": "󰎞",
+    "title": "Local Notes",
+    "category": "Files",
+    "action": {
+      "shell": "/Users/tim/dev/dotfiles/tmux/notes-popup.sh '#{window_id}' '#{pane_current_path}'"
+    }
+  },
+  {
     "icon": "󰇥",
     "title": "Yazi",
     "category": "Files",

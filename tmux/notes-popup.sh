@@ -3,6 +3,14 @@ set -euo pipefail
 
 parent_window_id="${1:?parent window id required}"
 start_directory="${2:?start directory required}"
+
+if [[ $parent_window_id == '#{'* ]]; then
+  parent_window_id=$(tmux display-message -p '#{window_id}')
+fi
+if [[ $start_directory == '#{'* ]]; then
+  start_directory=$(tmux display-message -p '#{pane_current_path}')
+fi
+
 window_key="${parent_window_id#@}"
 session="_popup_notes_${window_key//[^[:alnum:]_-]/_}"
 
