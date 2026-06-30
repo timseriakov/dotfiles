@@ -34,8 +34,8 @@ providers:
         name: Coding Cheap OMNi
         reasoning: true
         input: [text]
-        contextWindow: 400000
-        maxTokens: 8192
+        contextWindow: 409600
+        maxTokens: 131072
       - id: deep-premium
         name: Deep Premium OMNi
         reasoning: true
@@ -50,16 +50,34 @@ providers:
         maxTokens: 8192
       - id: quick-free
         name: Quick Free OMNi
-        reasoning: false
+        reasoning: true
         input: [text]
-        contextWindow: 400000
-        maxTokens: 8192
+        contextWindow: 1000000
+        maxTokens: 384000
       - id: writing-cheap
         name: Writing Cheap OMNi
         reasoning: false
         input: [text]
+        contextWindow: 409600
+        maxTokens: 131072
+      - id: opencode-zen/deepseek-v4-flash-free
+        name: DeepSeek V4 Flash Free OMNi
+        reasoning: true
+        input: [text]
+        contextWindow: 1000000
+        maxTokens: 384000
+      - id: opencode-zen/mimo-v2.5-free
+        name: MiMo V2.5 Free OMNi
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1048576
+        maxTokens: 131072
+      - id: opencode-zen/nemotron-3-ultra-free
+        name: Nemotron 3 Ultra Free OMNi
+        reasoning: true
+        input: [text]
         contextWindow: 200000
-        maxTokens: 8192
+        maxTokens: 131072
       - id: cx/gpt-5.5
         name: CX GPT 5.5 OMNi
         reasoning: true
@@ -126,33 +144,3 @@ providers:
         input: [text, image]
         contextWindow: 409600
         maxTokens: 131072
-
-  zen-free:
-    baseUrl: https://opencode.ai/zen/v1
-    apiKey: OPENCODE_ZEN_FREE
-    api: openai-completions
-    authHeader: true
-    compat:
-      supportsStore: false
-      supportsDeveloperRole: false
-      supportsReasoningEffort: false
-      maxTokensField: max_tokens
-    models:
-      - id: deepseek-v4-flash-free
-        name: DeepSeek V4 Flash Free
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 64000
-      - id: mimo-v2.5-free
-        name: MiMo V2.5 Free
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 64000
-      - id: nemotron-3-ultra-free
-        name: Nemotron 3 Ultra Free
-        reasoning: true
-        input: [text]
-        contextWindow: 1000000
-        maxTokens: 128000

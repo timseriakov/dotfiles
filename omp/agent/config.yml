@@ -71,7 +71,6 @@ disabledProviders:
   - claude-plugins
 modelProviderOrder:
   - omniroute
-  - zen-free
 symbolPreset: nerd
 extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
