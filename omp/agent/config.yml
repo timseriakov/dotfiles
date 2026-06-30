@@ -73,6 +73,7 @@ symbolPreset: nerd
 extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
+  - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
 hideThinkingBlock: false
 setupVersion: 1
 dev:
