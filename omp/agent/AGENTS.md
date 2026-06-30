@@ -11,6 +11,18 @@
 
 Если правишь Kitty/tmux/Fish PATH/Yazi/Chafa/терминальные картинки — сначала сохрани эти инварианты. Подробный rebuild/verify recipe лежит в `/Users/tim/dev/dotfiles/AGENTS.md`, раздел `Dual-Yazi tmux Kitty Image Preview`.
 
+## OMP update workflow
+
+Если пользователь просит `omp update`, обновить OMP, накатить/проверить monkey patches или затем говорит `cmt`, используй формальный workflow из:
+
+```text
+/Users/tim/dev/dotfiles/omp/AGENTS.md
+```
+
+Раздел: `OMP Update Workflow`.
+
+Ключевые инварианты: после `omp update` обязательно запустить `/Users/tim/dev/dotfiles/omp/apply-omp-monkey-patches.mjs`, убедиться что bundle пересобран (`rebuilt OMP bundled CLI`), и сделать PTY visual check. Prompt-mode `omp --no-session -p ...` сам по себе недостаточен.
+
 ## Hunk — live diff review (используй автоматически)
 
 У пользователя установлен hunk — терминальный просмотрщик diff'ов с поддержкой живых сессий.
