@@ -245,7 +245,7 @@
   "telemetry": {
     "anonymous_id": "e63d2692-4922-4c7c-b3f5-17ce4c009f8d",
     "anonymous_id_created_at": "2026-05-07T07:14:02Z",
-    "last_startup_outcome": "success",
+    "last_startup_outcome": "db_locked",
     "notice_shown": true
   },
   "routing_mode": "retrieve_tools"
