@@ -74,9 +74,10 @@
     "omni/cx/gpt-5.5:high",
     "omni/cx/gpt-5.5-low:high",
     "omni/cx/gpt-5.4:high",
-    "omni/cx/gpt-5.4-mini:high",
-    "omni/cx/gpt-5.3-codex:high",
-    "omni/cx/gpt-5.3-codex-spark:high",
-    "omni/cx/gpt-5.2:high"
+    "omni/cx/gpt-5.4-xhigh:high",
+    "omni/cx/gpt-5.4-high:high",
+    "omni/cx/gpt-5.4-medium:high",
+    "omni/cx/gpt-5.4-low:high",
+    "omni/cx/gpt-5.4-mini:high"
   ]
 }

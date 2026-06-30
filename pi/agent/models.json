@@ -3,7 +3,7 @@
     "omni": {
       "name": "OmniRoute",
       "api": "openai-completions",
-      "baseUrl": "https://router.mjdgme.easypanel.host/v1",
+      "baseUrl": "https://router.hwqtpa.easypanel.host/v1",
       "apiKey": "$OMNIROUTE_PI_API_KEY",
       "authHeader": true,
       "compat": {
@@ -17,48 +17,48 @@
           "name": "Codex Auto Review",
           "input": ["text"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 16000
+          "contextWindow": 400000,
+          "maxTokens": 8192
         },
         {
           "id": "cx/gpt-5.5-xhigh",
           "name": "GPT-5.5 XHigh",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 32000
+          "contextWindow": 400000,
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.5-high",
           "name": "GPT-5.5 High",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 24000
+          "contextWindow": 400000,
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.5-medium",
           "name": "GPT-5.5 Medium",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 20000
+          "contextWindow": 400000,
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.5",
           "name": "GPT-5.5",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 20000
+          "contextWindow": 400000,
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.5-low",
           "name": "GPT-5.5 Low",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 16000
+          "contextWindow": 400000,
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.4",
@@ -66,39 +66,47 @@
           "input": ["text", "image"],
           "reasoning": true,
           "contextWindow": 200000,
-          "maxTokens": 20000
+          "maxTokens": 128000
         },
         {
           "id": "cx/gpt-5.4-mini",
           "name": "GPT-5.4 Mini",
           "input": ["text", "image"],
           "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 12000
+          "contextWindow": 409600,
+          "maxTokens": 131072
         },
         {
-          "id": "cx/gpt-5.3-codex",
-          "name": "GPT-5.3 Codex",
-          "input": ["text"],
-          "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 20000
-        },
-        {
-          "id": "cx/gpt-5.3-codex-spark",
-          "name": "GPT-5.3 Codex Spark",
-          "input": ["text"],
-          "reasoning": true,
-          "contextWindow": 200000,
-          "maxTokens": 12000
-        },
-        {
-          "id": "cx/gpt-5.2",
-          "name": "GPT-5.2",
+          "id": "cx/gpt-5.4-xhigh",
+          "name": "GPT-5.4 XHigh",
           "input": ["text", "image"],
           "reasoning": true,
           "contextWindow": 200000,
-          "maxTokens": 12000
+          "maxTokens": 128000
+        },
+        {
+          "id": "cx/gpt-5.4-high",
+          "name": "GPT-5.4 High",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "cx/gpt-5.4-medium",
+          "name": "GPT-5.4 Medium",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "cx/gpt-5.4-low",
+          "name": "GPT-5.4 Low",
+          "input": ["text", "image"],
+          "reasoning": true,
+          "contextWindow": 200000,
+          "maxTokens": 128000
         }
       ],
       "cost": {

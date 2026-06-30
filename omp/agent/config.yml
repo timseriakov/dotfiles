@@ -15,9 +15,12 @@ showHardwareCursor: false
 compaction:
   enabled: true
   strategy: context-full
-  thresholdPercent: 70
+  thresholdPercent: 60
   keepRecentTokens: 30000
-  idleEnabled: false
+  midTurnEnabled: true
+  idleEnabled: true
+  idleThresholdTokens: 150000
+  idleTimeoutSeconds: 180
 statusLine:
   preset: custom
   separator: none
@@ -47,12 +50,12 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: omniroute/cx/gpt-5.5
-  smol: zen-free/deepseek-v4-flash-free
-  slow: omniroute/deep-premium
-  plan: omniroute/reasoning-main
-  task: omniroute/coding-main
-  vision: omniroute/reasoning-main
+  default: omniroute/cx/gpt-5.4-medium
+  smol: omniroute/cx/gpt-5.4-mini
+  slow: omniroute/cx/gpt-5.5-xhigh
+  plan: omniroute/cx/gpt-5.5-high
+  task: omniroute/cx/gpt-5.4-high
+  vision: omniroute/cx/gpt-5.4-high
 disabledProviders:
   - opencode
   - opencode-zen
