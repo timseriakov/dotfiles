@@ -39,7 +39,7 @@ bg https://moodist.mvze.net/
 t https://web.telegram.org/a/
 fl https://flibusta.is/
 go https://opencode.ai/workspace/wrk_01KFRB1ERBFM4SRGAKC06APNZY/go
-vps https://mjdgme.easypanel.host/
+vps http://2.26.23.152:3000/
 wg https://wg.mjdgme.easypanel.host/login
 ge https://business.gemini.google/home/cid/969f3a2f-7316-4e98-b453-0d3a3ba2c27b?csesidx=1565544068&utm_source=gemini-business&utm_medium=email&utm_campaign=mandatory-emails-welcome&utm_content=sign-in&mods=
 tg https://web.telegram.org/k/
@@ -55,7 +55,7 @@ omo https://github.com/code-yeongyu/oh-my-openagent
 zus https://z.ai/manage-apikey/subscription
 tab https://tabletka.by/
 ht https://hackatime.hackclub.com/
-rlog https://router.mjdgme.easypanel.host/dashboard/logs
+rlog https://router.hwqtpa.easypanel.host/dashboard/logs
 in https://insnc.by/
 dnb https://dnbradio.com/player/
 rb https://www.radio-browser.info/
@@ -67,6 +67,8 @@ ve https://vercel.com/tim-seriakovs-projects
 r2 https://dash.cloudflare.com/71c848240b9145931616ab5d099e915d/r2/overview
 holst https://app.holst.so/share/b/603afda1-08d6-4a19-bddf-a7fb08b1268b
 crm-stage https://staging-crm.urbanprime.ge/admin
-web-stage https://staging.urbanprime.ge/ru/
 crm https://crm.urbanprime.ge/admin
 web https://urbanprime.ge/ru/
+web-staging https://staging.urbanprime.ge/ru/
+ghu https://github.com/timseriakov/urban-prime-mono
+vps-old https://mjdgme.easypanel.host/
