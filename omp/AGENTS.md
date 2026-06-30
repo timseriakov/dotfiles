@@ -155,3 +155,145 @@ Expected output:
 ```text
 ok
 ```
+
+## OMP Update Workflow
+
+Formalised sequence for `omp update` + patch + verify + commit. Follow exactly in any new session.
+
+### 1. Pre-update
+
+```bash
+cd /Users/tim/dev/dotfiles/omp
+omp --version                          # текущая версия
+```
+
+Note any unstaged changes in `omp/` — они могут конфликтовать с обновлением.
+
+### 2. Update
+
+```bash
+omp update                             # bun-апдейт пакета
+```
+
+### 3. Apply monkey patches
+
+```bash
+node /Users/tim/dev/dotfiles/omp/apply-omp-monkey-patches.mjs
+```
+
+Ожидаемый успех:
+
+```text
+rebuilt OMP bundled CLI
+OMP monkey patches applied.
+```
+
+**При дрифте** — patch script сообщит `expected one of N alternatives, counts [0,…]`.
+
+1. Прочитать upstream source в `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/src/<file>`
+2. Сравнить с anchor-паттернами в `apply-omp-monkey-patches.mjs` (функции `patch*`)
+3. Адаптировать anchors: добавить новую альтернативу в `replaceAny`, НЕ удалять старые
+4. Перезапустить скрипт
+
+### 4. Verify
+
+4a. **Smoke — prompt mode**:
+
+```bash
+omp --version                          # ожидается новая версия
+fish -lc 'timeout 45s omp --no-session -p "ok"'
+```
+
+4b. **Markers in bundled CLI** — проверить что патчи реально в dist/cli.js:
+
+```js
+dist = read(
+  "~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js",
+);
+check: "Welcome from Oh My Pi" in dist;
+check: "OMNi" in dist;
+check: "path.basename" in dist;
+check: "process.kill(process.pid" in dist;
+```
+
+4c. **PTY visual capture** — главный критерий, prompt-mode НЕ достаточен:
+
+```py
+import os, pty, re, select, signal, subprocess, time
+ansi = re.compile(r'\x1b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+master, slave = pty.openpty()
+env = os.environ | {'TERM': 'xterm-256color', 'COLUMNS': '140', 'LINES': '30'}
+p = subprocess.Popen(['fish', '-lc', 'omp --no-session'],
+    cwd='/Users/tim/dev/dotfiles/omp', stdin=slave, stdout=slave, stderr=slave, env=env, start_new_session=True)
+os.close(slave)
+data = b''
+end = time.time() + 10
+while time.time() < end:
+    r, _, _ = select.select([master], [], [], 0.2)
+    if r:
+        try: data += os.read(master, 65536)
+        except OSError: break
+try: os.kill(p.pid, signal.SIGTERM)
+except ProcessLookupError: pass
+try: p.wait(timeout=2)
+except subprocess.TimeoutExpired:
+    try: os.kill(p.pid, signal.SIGKILL)
+    except ProcessLookupError: pass
+text = ansi.sub('', data.decode('utf-8', 'replace')).replace('\r', '')
+assert 'Welcome from Oh My Pi' in text
+assert 'omp on ' in text
+assert '/Users/tim/dev/dotfiles/omp' not in text  # basename only
+assert ' via ' in text
+assert 'OMNi' in text
+assert ' ' in text
+print('interactive patch ok')
+```
+
+Ожидаемый вывод:
+
+```text
+Welcome from Oh My Pi
+omp on  master … via … OMNi
+ ▏
+```
+
+### 5. Read changelog
+
+```bash
+grep -A 30 "^## \[$(omp --version | cut -d/ -f2)\]" \
+  /Users/tim/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/CHANGELOG.md
+```
+
+Кратко пересказать пользователю что изменилось.
+
+### 6. Commit
+
+```bash
+cd /Users/tim/dev/dotfiles
+git diff --stat -- omp/
+```
+
+Добавить и закоммитить изменения, вызванные обновлением (version file, `models.yml`, patch script если менялся):
+
+```bash
+git add omp/agent/last-changelog-version omp/agent/models.yml
+# + omp/apply-omp-monkey-patches.mjs если был дрифт
+git commit -m "bump OMP to <new-version>"
+```
+
+Не включать несвязанные изменения (wakatime, quickmarks, Raycast, NOTES.md и т.д.) если пользователь не попросил.
+
+### 7. Если пользователь сказал `cmt` — выполнить шаг 6.
+
+### Anchor-адаптация: памятка по типовым дрифтам
+
+| Компонент              | Файл                              | Типичный дрифт                                                                       |
+| ---------------------- | --------------------------------- | ------------------------------------------------------------------------------------ |
+| Status-line git        | `segments.ts`                     | Поля кэша gitStatus переименовываются (`gitStatusInFlight` → `gitStatusInFlightCwd`) |
+| Status-line git remote | `segments.ts`                     | `#lookupPr()` → `#lookupPr(effectiveGitCwd?)`                                        |
+| Status-line model      | `segments.ts`                     | Добавляются `compactThinkingLevel`/`modelIcon`, меняется `withIcon(…)` вызов         |
+| Welcome                | `welcome.ts`                      | `render()` рефакторится в cached обёртку, body уходит в `#renderLines()`             |
+| Usage row              | `usage-row.ts`                    | Вынесен из `assistant-message.ts` в отдельный компонент                              |
+| Session manager        | `session-manager.ts`              | `mintSessionId()`, `inferSessionIdFromPath()`, `forcedSessionFile`                   |
+| editor                 | pi-tui `editor.ts`                | padding/стили меняются                                                               |
+| terminal-capabilities  | pi-tui `terminal-capabilities.ts` | Kitty graphics adapter mapping                                                       |
