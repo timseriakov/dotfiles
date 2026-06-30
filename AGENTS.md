@@ -67,7 +67,22 @@ Never edit configs in-place inside application directories — always edit insid
 
 ## Dual-Yazi tmux Kitty Image Preview
 
-This workstation intentionally uses `jtianling/tap/dual-yazi`, not upstream `yazi`.
+This workstation intentionally uses `jtianling/tap/dual-yazi`, not upstream `yazi`, because the current Kitty + tmux + Yazi image preview path works correctly and is fragile. Do not "simplify" it back to upstream Yazi, Chafa, or default tmux terminal settings.
+
+Working contract agents must preserve:
+
+- `command -v yazi` must resolve to `/Users/tim/.local/bin/yazi`.
+- Fish must keep `~/.local/bin` ahead of Homebrew; `fish/conf.d/10-path.fish` uses `fish_add_path -gpm ~/.local/bin`.
+- `.tmux.conf` must keep Kitty passthrough enabled and advertise Kitty features:
+
+```tmux
+set -g allow-passthrough on
+set -ga update-environment TERM
+set -ga update-environment TERM_PROGRAM
+set -g terminal-features 'xterm-kitty:passthrough:clipboard:ccolour:cstyle:focus:title:RGB'
+set -g default-terminal "xterm-kitty"
+set -ga terminal-overrides ",xterm-kitty:Tc"
+```
 
 If image previews work in Kitty outside tmux but fall back to Chafa inside tmux, check `yazi --debug` inside tmux. The broken signature is:
 
@@ -100,23 +115,18 @@ cp target/release/yazi target/release/ya ~/.local/bin/
 chmod 755 ~/.local/bin/yazi ~/.local/bin/ya
 ```
 
-Fish must prefer `~/.local/bin` before Homebrew; `fish/conf.d/10-path.fish` uses `fish_add_path -gpm ~/.local/bin` for that. Verify with:
+Verify after changes:
 
 ```sh
 command -v yazi
 # expected: /Users/tim/.local/bin/yazi
+yazi --version
+# expected current pinned build: Yazi 26.3.0 (c8921e3 2026-06-14)
 yazi --debug
 # inside tmux expected: Adapter.matches: Kgp
 ```
 
-Keep tmux passthrough enabled in `.tmux.conf`:
-
-```tmux
-set -g allow-passthrough on
-set -ga update-environment TERM
-set -ga update-environment TERM_PROGRAM
-set -g terminal-features 'xterm-kitty:passthrough:clipboard:ccolour:cstyle:focus:title:RGB'
-```
+If an agent needs to edit terminal, tmux, Fish path, Kitty, Chafa, or Yazi config, it must preserve this contract first.
 
 ## Hunk — live diff review with agents
 

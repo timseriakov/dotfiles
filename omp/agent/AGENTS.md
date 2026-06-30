@@ -1,3 +1,16 @@
+## Kitty/tmux/Yazi image preview — не ломать
+
+Текущая связка Kitty + tmux + dual-yazi показывает картинки в терминале правильно. Это хрупкая рабочая настройка, не заменяй её на upstream `yazi`, Chafa fallback или дефолтные tmux terminal settings.
+
+Инварианты:
+
+- `command -v yazi` → `/Users/tim/.local/bin/yazi`.
+- `fish/conf.d/10-path.fish` держит `~/.local/bin` впереди Homebrew через `fish_add_path -gpm ~/.local/bin`.
+- `.tmux.conf` держит `allow-passthrough on`, `TERM`, `TERM_PROGRAM`, `xterm-kitty:passthrough:clipboard:ccolour:cstyle:focus:title:RGB`, `default-terminal "xterm-kitty"`, `terminal-overrides ",xterm-kitty:Tc"`.
+- dual-yazi 26.3.0 локально собран с `B::Tmux => vec![A::Kgp]` в `yazi-adapter/src/adapters.rs`.
+
+Если правишь Kitty/tmux/Fish PATH/Yazi/Chafa/терминальные картинки — сначала сохрани эти инварианты. Подробный rebuild/verify recipe лежит в `/Users/tim/dev/dotfiles/AGENTS.md`, раздел `Dual-Yazi tmux Kitty Image Preview`.
+
 ## Hunk — live diff review (используй автоматически)
 
 У пользователя установлен hunk — терминальный просмотрщик diff'ов с поддержкой живых сессий.
