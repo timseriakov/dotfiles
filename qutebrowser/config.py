@@ -15,6 +15,10 @@ import importlib
 from modules import base as base
 
 importlib.reload(base)
+from modules import qutebrowser_patches as qutebrowser_patches
+
+importlib.reload(qutebrowser_patches)
+
 
 config.source("modules/headers.py")
 config.source("modules/settings.py")
