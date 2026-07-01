@@ -51,11 +51,13 @@ statusLine:
   showHookStatus: false
 modelRoles:
   default: omniroute/cx/gpt-5.4-medium
-  smol: omniroute/cx/gpt-5.4-mini
+  smol: omniroute/opencode-zen/deepseek-v4-flash-free
   slow: omniroute/cx/gpt-5.5-xhigh
   plan: omniroute/cx/gpt-5.5-high
   task: omniroute/cx/gpt-5.4-high
   vision: omniroute/cx/gpt-5.4-high
+  commit: omniroute/opencode-zen/deepseek-v4-flash-free
+  tiny: omniroute/opencode-zen/deepseek-v4-flash-free:off
 disabledProviders:
   - opencode
   - opencode-zen
