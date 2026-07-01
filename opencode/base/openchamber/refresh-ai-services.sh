@@ -57,7 +57,7 @@ cat > "$OPENCODE_PLIST" <<EOF
     <string>$HOME</string>
 
     <key>RunAtLoad</key>
-    <true/>
+    <false/>
 
     <key>StandardOutPath</key>
     <string>$HOME/tmp/opencode/serve-stdout.log</string>

@@ -33,8 +33,7 @@ case "$1" in
 
         launchctl bootout "$SERVICE" 2>/dev/null || true
         launchctl bootstrap "$DOMAIN" "$PLIST_DEST" 2>/dev/null || true
-        launchctl kickstart -k "$SERVICE" 2>/dev/null || true
-        echo -e "${GREEN}Service installed and started!${NC}"
+        echo -e "${GREEN}Service installed. Manual start only.${NC}"
 
         sleep 1
         launchctl list | grep com.opencode.serve || true

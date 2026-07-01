@@ -19,7 +19,7 @@
     <string>/Users/tim</string>
 
     <key>RunAtLoad</key>
-    <true/>
+    <false/>
 
     <key>StandardOutPath</key>
     <string>/Users/tim/tmp/opencode/serve-stdout.log</string>
