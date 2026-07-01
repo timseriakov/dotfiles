@@ -12,7 +12,6 @@ abbr -a 'o.' 'open .'
 abbr -a R 'glow --pager'
 abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
-abbr -a fe 'exec fish'
 
 # npm
 abbr -a n npm
@@ -125,40 +124,35 @@ abbr -a cx codex
 abbr -a cx-up 'npm install -g @openai/codex'
 
 # OpenCode
-abbr -a o omo
-abbr -a щ omo
-abbr -a oa 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
-abbr -a oc 'opencode --continue'
-abbr -a on opencode
-abbr -a o-monitor ocsight # Usage Monitor
+abbr -a oc omo
+abbr -a щс omo
+abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
+abbr -a occ 'opencode --continue'
+abbr -a oc-monitor ocsight # Usage Monitor
 
-abbr -a orc 'cd ~/dev/dotfiles/opencode && nvim .'
-abbr -a orcc 'cd ~/dev/dotfiles/opencode/base && nvim opencode.jsonc'
-abbr -a ocd 'cd ~/dev/dotfiles/opencode'
-abbr -a ocdj 'cd ~/dev/dotfiles/opencode && yazi'
+abbr -a ocrc 'cd ~/dev/dotfiles/opencode && nvim .'
+abbr -a occd 'cd ~/dev/dotfiles/opencode'
+abbr -a occdj 'cd ~/dev/dotfiles/opencode && yazi'
 
-abbr -a o-up 'brew install anomalyco/tap/opencode'
-abbr -a o-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
-abbr -a os '~/dev/dotfiles/opencode/omo/omo-switch'
+abbr -a oc-up 'brew install anomalyco/tap/opencode'
+abbr -a oc-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
+abbr -a ocs '~/dev/dotfiles/opencode/omo/omo-switch'
 
-abbr -a o-web 'openchamber --daemon --port 1911'
-abbr -a o-skills 'npx -y openskills'
-abbr -a o-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
-# abbr -a oup 'npm install -g opencode-ai && rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
-# abbr -a o-repare 'rm /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode && ln -s ../node_modules/opencode-darwin-arm64/bin/opencode /Users/tim/.volta/tools/image/packages/opencode-ai/lib/node_modules/opencode-ai/bin/opencode'
+abbr -a oc-web 'openchamber --daemon --port 1911'
+abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
 
 # Oh My Pi
-abbr -a om omp
-abbr -a omc 'omp -c'
-abbr -a щь omp
-abbr -a om-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
+abbr -a o omp
+abbr -a oc 'omp -c'
+abbr -a щ omp
+abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
 abbr -a omr 'omp -r'
-abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
 abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
+abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
 
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
-  https://omniroute.e6ejok.easypanel.host/v1/models | jq'
+  https://router.hwqtpa.easypanel.host/v1 | jq'
 
 abbr -a add-mcp 'npx -y add-mcp'
 abbr -a autoskills 'npx -y autoskills'
@@ -263,7 +257,6 @@ abbr -a beads /Users/tim/.local/bin/bd
 abbr -a trrnts /opt/homebrew/bin/bv
 
 abbr -a va ekphos
-# abbr -a mbb ekphos ./.memory-bank
 abbr -a mbb 'set repo (git rev-parse --show-toplevel 2>/dev/null); or echo "Not inside a Git repository"; and test -n "$repo"; and builtin cd $repo; and ekphos ./.memory-bank'
 
 abbr -a hn clx
@@ -272,12 +265,10 @@ abbr -a tmap 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
 abbr -a tk tmux-take-alacritty
 abbr -a dmt 'dark-mode toggle'
 abbr -a surge-up 'brew install surge-downloader/tap/surge'
-abbr -a entire-up 'brew install entireio/tap'
-abbr -a engram-up 'brew install gentleman-programming/tap'
+abbr -a entire-up 'brew install --cask entireio/tap/entire'
+abbr -a engram-up 'brew install --cask gentleman-programming/tap/engram'
 
 abbr -a mi mimo
-
-# workmuxabbr -a mbb ekphos ./.memory-bank
 
 abbr -a wm workmux
 abbr -a wma 'workmux add'
