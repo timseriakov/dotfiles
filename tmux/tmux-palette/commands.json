@@ -46,5 +46,21 @@
     "action": {
       "shell": "/Users/tim/dev/dotfiles/tmux/yazi-popup.sh '#{window_id}' '#{pane_current_path}'"
     }
+  },
+  {
+    "icon": "",
+    "title": "Persistent Popup",
+    "category": "Shell",
+    "action": {
+      "shell": "/Users/tim/dev/dotfiles/tmux/popup-shell.sh persistent '#{window_id}' '#{pane_current_path}'"
+    }
+  },
+  {
+    "icon": "",
+    "title": "Ephemeral Popup",
+    "category": "Shell",
+    "action": {
+      "shell": "/Users/tim/dev/dotfiles/tmux/popup-shell.sh ephemeral '#{window_id}' '#{pane_current_path}'"
+    }
   }
 ]
