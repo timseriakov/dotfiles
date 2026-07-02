@@ -50,9 +50,9 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  default: zen-free/deepseek-v4-flash-free
+  default: omniroute/opencode-zen/deepseek-v4-flash-free
   smol: omniroute/opencode-zen/deepseek-v4-flash-free
-  slow: omniroute/cx/gpt-5.5-xhigh
+  slow: omniroute/cx/gpt-5.5-high
   plan: omniroute/cx/gpt-5.5-high
   task: omniroute/cx/gpt-5.4-high
   vision: omniroute/cx/gpt-5.4-high
