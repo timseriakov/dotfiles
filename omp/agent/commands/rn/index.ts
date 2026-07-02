@@ -12,7 +12,8 @@ const TMUX_OPTS = { timeout: 3000 };
 export default function renameCommand(api: CustomCommandAPI): CustomCommand {
   return {
     name: "rn",
-    description: "Rename tmux window + OMP session. Tmux: strips vowels, spaces→-, lowercase, icon preserved.",
+    description:
+      "Rename tmux window + OMP session. Tmux: strips vowels, spaces→-, lowercase, icon preserved.",
     async execute(
       args: string[],
       ctx: HookCommandContext,

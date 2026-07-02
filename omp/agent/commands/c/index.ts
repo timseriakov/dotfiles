@@ -9,10 +9,7 @@ export default function commitCommand(_api: CustomCommandAPI): CustomCommand {
   return {
     name: "c",
     description: "Закоммитить текущие изменения",
-    execute(
-      _args: string[],
-      _ctx: HookCommandContext,
-    ): string | undefined {
+    execute(_args: string[], _ctx: HookCommandContext): string | undefined {
       return "Закоммить текущие изменения. Пиши сообщение на английском, conventional commit. Ответь кратко, что и как закоммитил, на русском.";
     },
   };
