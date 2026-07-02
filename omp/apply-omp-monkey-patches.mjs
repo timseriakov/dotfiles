@@ -1121,6 +1121,21 @@ function patchTuiTerminal(content) {
   return out;
 }
 
+function patchCustomEditor(content) {
+  let out = content;
+  let r;
+  r = replaceAny(
+    out,
+    [
+      `\t\t\t// Intercept configured forward model cycling\n\t\t\tif (this.#matchesAction(canonical, "app.model.cycleForward") && this.onCycleModelForward) {\n\t\t\t\tthis.onCycleModelForward();\n\t\t\t\treturn;\n\t\t\t}`,
+    ],
+    `\t\t\t// Intercept configured forward model cycling\n\t\t\tif (this.#matchesAction(canonical, "app.model.cycleForward") && this.onCycleModelForward && !this.isShowingAutocomplete()) {\n\t\t\t\tthis.onCycleModelForward();\n\t\t\t\treturn;\n\t\t\t}`,
+    "custom-editor cycleForward autocomplete guard",
+  );
+  out = r.content;
+  return out;
+}
+
 try {
   setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
@@ -1167,6 +1182,7 @@ try {
     "plannotator browser asset fallback",
     patchPlannotatorBrowser,
   );
+  patchFile("modes/components/custom-editor.ts", patchCustomEditor);
   rebuildBundledCli();
   console.log("OMP monkey patches applied.");
 } catch (error) {

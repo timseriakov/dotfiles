@@ -4,3 +4,6 @@ tui.input.newLine:
 tui.editor.deleteToLineEnd: []
 app.stt.toggle: []
 app.session.compact: ctrl+k
+app.model.cycleForward:
+  - ctrl+p
+  - tab
