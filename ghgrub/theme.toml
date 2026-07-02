@@ -1,0 +1,15 @@
+# ghgrab Nord theme
+#
+# Symlink to ~/.config/ghgrab/theme.toml
+# See: https://github.com/abhixdd/ghgrab
+
+bg_color = "#2e3440"   # nord0  — main background
+fg_color = "#d8dee9"   # nord4  — primary text
+accent_color = "#81a1c1" # nord9  — borders, highlights, active elements
+warning_color = "#ebcb8b" # nord13 — warnings (yellow)
+error_color = "#bf616a"   # nord11 — errors (red)
+success_color = "#a3be8c" # nord14 — success indicators (green)
+folder_color = "#88c0d0"  # nord8  — folder icons (teal)
+selected_color = "#d08770" # nord12 — selected items (orange)
+border_color = "#4c566a"  # nord3  — inactive borders (dimmer)
+highlight_bg = "#3b4252"  # nord1  — highlighted row background
