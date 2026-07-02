@@ -1,18 +1,18 @@
-mcp: 
+mcp:
   enableProjectConfig: true
-skills: 
+skills:
   enableClaudeUser: false
   enableClaudeProject: false
-commands: 
+commands:
   enableClaudeUser: false
   enableClaudeProject: false
-startup: 
+startup:
   quiet: false
-theme: 
+theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
-compaction: 
+compaction:
   enabled: true
   strategy: context-full
   thresholdPercent: 60
@@ -21,35 +21,35 @@ compaction:
   idleEnabled: true
   idleThresholdTokens: 150000
   idleTimeoutSeconds: 180
-statusLine: 
+statusLine:
   preset: custom
   separator: none
-  leftSegments: 
+  leftSegments:
     - path
     - git
     - mode
     - context_pct
     - model
-  rightSegments: 
+  rightSegments:
     - session_name
-  segmentOptions: 
-    path: 
+  segmentOptions:
+    path:
       abbreviate: false
       maxLength: 32
       stripWorkPrefix: true
       lastSegment: true
-    git: 
+    git:
       showBranch: true
       showStaged: true
       showUnstaged: true
       showUntracked: true
       compactDirty: true
       showAheadBehind: true
-    model: 
+    model:
       showThinkingLevel: false
   sessionAccent: false
   showHookStatus: false
-modelRoles: 
+modelRoles:
   default: zen-free/deepseek-v4-flash-free
   smol: omniroute/opencode-zen/deepseek-v4-flash-free
   slow: omniroute/cx/gpt-5.5-xhigh
@@ -58,7 +58,7 @@ modelRoles:
   vision: omniroute/cx/gpt-5.4-high
   commit: omniroute/opencode-zen/deepseek-v4-flash-free
   tiny: omniroute/opencode-zen/deepseek-v4-flash-free:off
-disabledProviders: 
+disabledProviders:
   - opencode
   - opencode-zen
   - claude
@@ -71,18 +71,18 @@ disabledProviders:
   - codex
   - openai
   - claude-plugins
-modelProviderOrder: 
+modelProviderOrder:
   - omniroute
   - zen-free
 symbolPreset: nerd
-extensions: 
+extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
 hideThinkingBlock: false
 setupVersion: 1
-dev: 
-  autoqa: 
+dev:
+  autoqa:
     consent: granted
 treeFilterMode: user-only
 defaultThinkingLevel: auto
