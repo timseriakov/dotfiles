@@ -1,51 +1,37 @@
-// /r <name> — renames both tmux window and OMP session.
-// Tmux: strips vowels, spaces→-, lowercase, preserves Nerd icon.
-// OMP: original name as-is.
+// Intercept /r <name>: rename tmux window (strips vowels, etc.)
+// then forward to builtin /rename for session rename + proper UI cleanup.
 export default function (pi) {
-  pi.registerCommand("r", {
-    description:
-      "Rename tmux window + OMP session. Tmux: strips vowels, spaces→-, lowercase, icon preserved.",
-    handler: async (args, ctx) => {
-      const name = args.trim();
-      if (!name) {
-        ctx.ui.setEditorText("");
-        return;
-      }
+  pi.on("input", async (event) => {
+    const text = event.text;
+    if (!text.startsWith("/r") || (text.length > 2 && text[2] !== " ")) return;
 
-      // 1. Rename OMP session with original name
-      try {
-        await ctx.sessionManager.setSessionName(name, "user");
-      } catch {
-        /* ignore */
-      }
+    const name = text.slice(2).trim();
+    if (!name) return;
 
-      // 2. Rename tmux window with transformed name.
-      //    Use plain rename-window (current window), no -t needed.
-      //    Extract Nerd icon from current window name first.
-      try {
-        const cur = await pi.exec("tmux", [
-          "display-message",
-          "-p",
-          "#{window_name}",
-        ]);
+    // Tmux rename side-effect (fire-and-forget with 3s timeout)
+    const opts = { timeout: 3000 };
+    try {
+      const cur = await pi.exec(
+        "tmux",
+        ["display-message", "-p", "#{window_name}"],
+        opts,
+      );
+      const currentName = cur.stdout.trim();
+      const icon =
+        currentName.match(/^([^\x20-\x7E]+ ?)/)?.[1]?.trimEnd() ?? "";
 
-        const currentName = cur.stdout.trim();
-        const icon =
-          currentName.match(/^([^\x20-\x7E]+ ?)/)?.[1]?.trimEnd() ?? "";
+      const stripped = name
+        .replace(/[aeiouyаеёиоуыэюяAEIOUYАЕЁИОУЫЭЮЯ]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase();
 
-        const stripped = name
-          .replace(/[aeiouyаеёиоуыэюяAEIOUYАЕЁИОУЫЭЮЯ]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase();
+      const newName = icon ? `${icon} ${stripped}` : stripped;
+      await pi.exec("tmux", ["rename-window", newName], opts);
+    } catch {
+      // not in tmux — ignore
+    }
 
-        const newName = icon ? `${icon} ${stripped}` : stripped;
-
-        await pi.exec("tmux", ["rename-window", newName]);
-      } catch {
-        // not in tmux — session rename already done
-      }
-
-      ctx.ui.setEditorText("");
-    },
+    // Redirect to builtin /rename for session rename + proper UI cleanup
+    return { text: `/rename ${name}` };
   });
 }
