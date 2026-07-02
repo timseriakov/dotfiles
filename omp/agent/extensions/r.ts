@@ -22,9 +22,9 @@ export default function (pi) {
 
       const stripped = name
         .replace(/[aeiouyаеёиоуыэюяAEIOUYАЕЁИОУЫЭЮЯ]/g, "")
+        .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase();
-
       const newName = icon ? `${icon} ${stripped}` : stripped;
       await pi.exec("tmux", ["rename-window", newName], opts);
     } catch {
