@@ -1,4 +1,6 @@
-// /rn <name> — strips vowels, spaces→-, lowercase, preserves Nerd icon.
+// /rn <name> — renames both tmux window and OMP session.
+// Tmux: strips vowels, spaces→-, lowercase, preserves Nerd icon.
+// OMP: original name as-is.
 import type {
   CustomCommand,
   CustomCommandAPI,
@@ -10,8 +12,7 @@ const TMUX_OPTS = { timeout: 3000 };
 export default function renameCommand(api: CustomCommandAPI): CustomCommand {
   return {
     name: "rn",
-    description:
-      "Rename tmux window (strips vowels, spaces→-, lowercase, preserves nerd icon)",
+    description: "Rename tmux window + OMP session. Tmux: strips vowels, spaces→-, lowercase, icon preserved.",
     async execute(
       args: string[],
       ctx: HookCommandContext,
@@ -19,6 +20,14 @@ export default function renameCommand(api: CustomCommandAPI): CustomCommand {
       const name = args.join(" ");
       if (!name) return;
 
+      // 1. Rename OMP session with original name
+      try {
+        await ctx.sessionManager.setSessionName(name, "user");
+      } catch {
+        ctx.ui.notify("failed to rename session", "error");
+      }
+
+      // 2. Rename tmux window with transformed name
       let currentName = "";
       let windowId = "";
       try {
@@ -27,7 +36,7 @@ export default function renameCommand(api: CustomCommandAPI): CustomCommand {
           tmux(api, "display-message", "-p", "#{window_id}"),
         ]);
       } catch {
-        ctx.ui.notify("not in tmux", "error");
+        // not in tmux — session rename already done, that's enough
         return;
       }
 
@@ -44,8 +53,10 @@ export default function renameCommand(api: CustomCommandAPI): CustomCommand {
       try {
         await tmux(api, "rename-window", "-t", windowId, newName);
       } catch {
-        ctx.ui.notify(`failed to rename to "${newName}"`, "error");
+        ctx.ui.notify(`failed to rename tmux window to "${newName}"`, "error");
       }
+      // Clear the editor so user doesn't need to press Enter again
+      ctx.ui.setEditorText("");
     },
   };
 }
