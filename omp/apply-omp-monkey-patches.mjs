@@ -536,6 +536,16 @@ function patchSegments(content) {
     "segments width helpers import",
   );
   out = r.content;
+  r = replaceAny(
+    out,
+    [
+      `import { resolveModelRoleValue } from "../../../config/model-resolver";`,
+      `import { type ThemeColor, theme } from "../../../modes/theme/theme";`,
+    ],
+    `import { resolveModelRoleValue } from "../../../config/model-resolver";\nimport { type ThemeColor, theme } from "../../../modes/theme/theme";`,
+    "segments model role resolver import",
+  );
+  out = r.content;
 
   r = replaceOnce(
     out,
@@ -550,11 +560,11 @@ function patchSegments(content) {
     [
       `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
       `\t\tlet content = modelName;\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+      `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
       `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(theme.icon.model, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
       `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
     ],
-    `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-    "segments model starship colors",
+    `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\tconst roleColors = { smol: "statusLineSpend", default: "success", slow: "warning" } as const;\n\t\tconst roles = (["smol", "default", "slow"] as const).filter(role => {\n\t\t\tconst resolved = resolveModelRoleValue(\n\t\t\t\tctx.session.settings.getModelRole(role),\n\t\t\t\tctx.session.modelRegistry.getAvailable(),\n\t\t\t\t{ settings: ctx.session.settings },\n\t\t\t).model;\n\t\t\treturn resolved?.provider === state.model?.provider && resolved.id === state.model?.id;\n\t\t});\n\t\tconst roleContent = roles.length\n\t\t\t? \` \${roles.map(role => theme.fg(roleColors[role], role)).join("/")}\`\n\t\t\t: "";\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\${roleContent}\`, visible: true };`,
   );
   out = r.content;
 

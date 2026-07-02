@@ -79,7 +79,6 @@ extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
-  - /Users/tim/.omp/agent/extensions/rename.ts
 hideThinkingBlock: false
 setupVersion: 1
 dev:
