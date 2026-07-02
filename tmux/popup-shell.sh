@@ -22,6 +22,8 @@ usage() {
 resolve_start_directory() {
     if [[ -n "$START_DIRECTORY" && -d "$START_DIRECTORY" ]]; then
         printf '%s' "$START_DIRECTORY"
+    elif [[ $START_DIRECTORY == '#{'* ]]; then
+        tmux display-message -p '#{pane_current_path}'
     else
         printf '%s' "$HOME"
     fi
@@ -60,6 +62,10 @@ case "$MODE" in
     persistent|ephemeral) ;;
     *) usage ;;
 esac
+
+if [[ $PARENT_WINDOW_ID == '#{'* ]]; then
+    PARENT_WINDOW_ID=$(tmux display-message -p '#{window_id}')
+fi
 
 if [[ -z "$PARENT_WINDOW_ID" ]]; then
     usage
