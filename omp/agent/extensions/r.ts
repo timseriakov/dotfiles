@@ -2,7 +2,7 @@
 // Tmux: strips vowels, spaces→-, lowercase, preserves Nerd icon.
 // OMP: original name as-is.
 export default function (pi) {
-  pi.registerCommand("rn", {
+  pi.registerCommand("r", {
     description:
       "Rename tmux window + OMP session. Tmux: strips vowels, spaces→-, lowercase, icon preserved.",
     handler: async (args, ctx) => {
