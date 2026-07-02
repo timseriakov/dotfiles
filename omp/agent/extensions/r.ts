@@ -5,7 +5,8 @@ export default function (pi) {
     const text = event.text;
     if (!text.startsWith("/r") || (text.length > 2 && text[2] !== " ")) return;
 
-    const name = text.slice(2).trim();
+    let name = text.slice(2).trim();
+    name = name.replace(/[«»"'""\u2018\u2019\u201c\u201d«»]/g, "").trim();
     if (!name) return;
 
     // Tmux rename side-effect (fire-and-forget with 3s timeout)

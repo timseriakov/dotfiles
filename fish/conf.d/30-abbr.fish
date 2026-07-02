@@ -125,7 +125,6 @@ abbr -a cx-up 'npm install -g @openai/codex'
 
 # OpenCode
 abbr -a oc omo
-abbr -a щс omo
 abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
 abbr -a occ 'opencode --continue'
 abbr -a oc-monitor ocsight # Usage Monitor
@@ -143,8 +142,10 @@ abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /
 
 # Oh My Pi
 abbr -a o omp
+abbr -a om omp
 abbr -a oc 'omp -c'
 abbr -a щ omp
+abbr -a щь omp
 abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
 abbr -a omr 'omp -r'
 abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
