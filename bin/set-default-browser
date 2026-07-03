@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+"""
+Set system default browser on macOS via Launch Services.
+Usage: set-default-browser <bundle-id>
+"""
+import plistlib, subprocess, sys
+
+LS_PATH = "/Users/tim/Library/Preferences/com.apple.LaunchServices/" \
+          "com.apple.launchservices.secure.plist"
+SCHEMES = ("http", "https")
+
+
+def main():
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} <bundle-id>", file=sys.stderr)
+        sys.exit(1)
+
+    bundle_id = sys.argv[1]
+
+    with open(LS_PATH, "rb") as f:
+        data = plistlib.load(f)
+
+    # Remove existing http/https entries, keep everything else
+    handlers = [
+        h for h in data.get("LSHandlers", [])
+        if h.get("LSHandlerURLScheme") not in SCHEMES
+    ]
+
+    # Append new entries for the target browser
+    for scheme in SCHEMES:
+        handlers.append({
+            "LSHandlerURLScheme": scheme,
+            "LSHandlerRoleAll": bundle_id,
+        })
+
+    data["LSHandlers"] = handlers
+
+    with open(LS_PATH, "wb") as f:
+        plistlib.dump(data, f)
+
+    # Force lsd to reload the database
+    subprocess.run(["killall", "lsd"], capture_output=True)
+
+    print(f"Default browser → {bundle_id}")
+
+
+if __name__ == "__main__":
+    main()
