@@ -9,8 +9,9 @@ export default function (_api: CustomCommandAPI): CustomCommand[] {
   const cmd: CustomCommand = {
     name: "c",
     description: "Commit current changes",
-    execute(_args: string[], _ctx: HookCommandContext): string | undefined {
-      return "Закоммить текущие изменения. Пиши сообщение на английском, conventional commit. Ответь кратко, что и как закоммитил, на русском.";
+    execute(args: string[], _ctx: HookCommandContext): string | undefined {
+      const base = "commit.";
+      return args.length ? `${base} ${args.join(" ")}` : base;
     },
   };
   return [cmd, { ...cmd, name: "с" }];
