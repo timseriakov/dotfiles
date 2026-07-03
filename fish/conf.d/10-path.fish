@@ -53,6 +53,7 @@ fish_add_path -ga /opt/homebrew/opt/qt@5/bin
 
 # Homebrew (give brewed tools precedence over system ones, e.g. `less`)
 fish_add_path -ga /opt/homebrew/bin
+fish_add_path -ga /opt/homebrew/sbin
 
 # MacPorts (if installed)
 if test -d /opt/local/bin

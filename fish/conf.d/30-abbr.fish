@@ -142,14 +142,18 @@ abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /
 
 # Oh My Pi
 abbr -a o omp
-abbr -a om omp
-abbr -a oc 'omp -c'
 abbr -a щ omp
+abbr -a om omp
 abbr -a щь omp
-abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
+abbr -a oc 'omp -c'
+abbr -a щс 'omp -c'
 abbr -a omr 'omp -r'
+abbr -a щьк 'omp -r'
+abbr -a orr 'omp -r'
+abbr -a щкк 'omp -r'
 abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
 abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
+abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
 
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
