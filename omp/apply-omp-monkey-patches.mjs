@@ -571,6 +571,16 @@ function patchSegments(content) {
   r = replaceAny(
     out,
     [
+      `\t\t// Compact mode swaps the model icon for the thinking-level glyph and drops\n\t\t// the " · <level>" tail, keeping the level visible as a single icon.`,
+    ],
+    `\t\tif (!ctx.session.isAutoThinking && thinkingDisplay) {\n\t\t\tconst thinkingLabel = thinkingDisplay.trim().split(/\\s+/).at(-1)?.toLowerCase();\n\t\t\tconst modelWords = modelName.toLowerCase().split(/[^a-z0-9]+/);\n\t\t\tif (thinkingLabel && modelWords.includes(thinkingLabel)) {\n\t\t\t\tthinkingDisplay = "";\n\t\t\t}\n\t\t}\n\n\t\t// Compact mode swaps the model icon for the thinking-level glyph and drops\n\t\t// the " · <level>" tail, keeping the level visible as a single icon.`,
+    "segments hide duplicate thinking label",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
       `\t\tconst color = getContextUsageThemeColor(getContextUsageLevel(pct ?? 0, window));`,
       `\t\tconst color = (pct ?? 0) >= 80 ? "error" : (pct ?? 0) >= 50 ? "warning" : "statusLineContext";`,
     ],
