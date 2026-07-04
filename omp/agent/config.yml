@@ -87,3 +87,4 @@ dev:
     consent: granted
 treeFilterMode: user-only
 defaultThinkingLevel: auto
+autocompleteMaxVisible: 15

@@ -25,7 +25,10 @@ export default function (pi) {
         .split(/\s+/)
         .map((w) => {
           const vi = w.search(v);
-          return vi < 0 ? w : w.slice(0, vi + 1) + w.slice(vi + 1).replace(/[aeiouyаеёиоуыэюя]/gi, "");
+          return vi < 0
+            ? w
+            : w.slice(0, vi + 1) +
+                w.slice(vi + 1).replace(/[aeiouyаеёиоуыэюя]/gi, "");
         })
         .join(" ")
         .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
