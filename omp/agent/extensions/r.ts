@@ -20,16 +20,13 @@ export default function (pi) {
       const currentName = cur.stdout.trim();
       const icon =
         currentName.match(/^([^\x20-\x7E]+ ?)/)?.[1]?.trimEnd() ?? "";
-      const v = /[aeiouyаеёиоуыэюя]/i;
       const stripped = name
         .split(/\s+/)
-        .map((w) => {
-          const vi = w.search(v);
-          return vi < 0
+        .map((w) =>
+          w.length <= 2
             ? w
-            : w.slice(0, vi + 1) +
-                w.slice(vi + 1).replace(/[aeiouyаеёиоуыэюя]/gi, "");
-        })
+            : w.replace(/[aeiouyаеёиоуыэюяAEIOUYАЕЁИОУЫЭЮЯ]/g, ""),
+        )
         .join(" ")
         .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
         .replace(/\s+/g, "-")
