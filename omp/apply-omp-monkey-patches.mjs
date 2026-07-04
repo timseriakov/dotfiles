@@ -715,10 +715,12 @@ function patchAssistantMessage(content) {
     ],
     [
       [
+        'new Text(theme.fg("error", errorPresentation.text), 1, 0)',
+        'new Text(theme.fg("error", errorPresentation.text), 0, 0)',
         'new Text(theme.fg("error", abortMessage), 1, 0)',
         'new Text(theme.fg("error", abortMessage), 0, 0)',
       ],
-      'new Text(theme.fg("error", abortMessage), 0, 0)',
+      'new Text(theme.fg("error", errorPresentation.text), 1, 0)',
       "assistant abort padding",
     ],
   ];
