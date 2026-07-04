@@ -1,3 +1,19 @@
+// ponytail: pure fn extracted for testability
+export function transformTmuxName(raw: string): string {
+  return raw
+    .split(/\s+/)
+    .map((w) => {
+      if (w.length <= 2) return w;
+      return /^[aeiouyаеёиоуыэюя]/i.test(w)
+        ? w[0] + w.slice(1).replace(/[aeiouyаеёиоуыэюя]/gi, "")
+        : w.replace(/[aeiouyаеёиоуыэюя]/gi, "");
+    })
+    .join(" ")
+    .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
+
 // Intercept /r <name>: rename tmux window (strips vowels, etc.)
 // then forward to builtin /rename for session rename + proper UI cleanup.
 export default function (pi) {
@@ -20,18 +36,7 @@ export default function (pi) {
       const currentName = cur.stdout.trim();
       const icon =
         currentName.match(/^([^\x20-\x7E]+ ?)/)?.[1]?.trimEnd() ?? "";
-      const stripped = name
-        .split(/\s+/)
-        .map((w) => {
-          if (w.length <= 2) return w;
-          return /^[aeiouyаеёиоуыэюя]/i.test(w)
-            ? w[0] + w.slice(1).replace(/[aeiouyаеёиоуыэюя]/gi, "")
-            : w.replace(/[aeiouyаеёиоуыэюя]/gi, "");
-        })
-        .join(" ")
-        .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase();
+      const stripped = transformTmuxName(name);
       const newName = icon ? `${icon} ${stripped}` : stripped;
       await pi.exec("tmux", ["rename-window", newName], opts);
     } catch {
