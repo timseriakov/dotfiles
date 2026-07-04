@@ -14,8 +14,8 @@ describe("/r transformTmuxName", () => {
     expect(transformTmuxName("reasoning main omni")).toBe("rsnng-mn-omn");
   });
 
-  it("'abbr -a щ omp' → 'abbr--a-щ-omp' (дефис сохраняется)", () => {
-    expect(transformTmuxName("abbr -a щ omp")).toBe("abbr--a-щ-omp");
+  it("'abbr -a щ omp' → 'abbr-a-щ-omp' (дубли тире схлопнуты)", () => {
+    expect(transformTmuxName("abbr -a щ omp")).toBe("abbr-a-щ-omp");
   });
 
   it("'some config, bro' → 'sm-cnfg-bro' (3-букв не режем)", () => {

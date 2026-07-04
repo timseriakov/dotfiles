@@ -11,6 +11,7 @@ export function transformTmuxName(raw: string): string {
     .join(" ")
     .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
     .replace(/\s+/g, "-")
+    .replace(/-{2,}/g, "-")
     .toLowerCase();
 }
 
