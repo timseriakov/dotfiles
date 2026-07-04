@@ -148,6 +148,11 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
+        leader + "uh",
+        "config-cycle statusbar.show always in-mode ;; config-cycle tabs.show multiple never",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
         leader + "ua",
         ":set content.autoplay true ;; message-info 'Autoplay enabled'",
         hide_ru_in_keyhint=True,
