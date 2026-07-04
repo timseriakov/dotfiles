@@ -10,7 +10,7 @@ export default function (_api: CustomCommandAPI): CustomCommand[] {
     name: "c",
     description: "Commit current changes",
     execute(args: string[], _ctx: HookCommandContext): string | undefined {
-      const base = "commit.";
+      const base = "commit";
       return args.length ? `${base} ${args.join(" ")}` : base;
     },
   };
