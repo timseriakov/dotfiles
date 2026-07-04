@@ -22,11 +22,12 @@ export default function (pi) {
         currentName.match(/^([^\x20-\x7E]+ ?)/)?.[1]?.trimEnd() ?? "";
       const stripped = name
         .split(/\s+/)
-        .map((w) =>
-          w.length <= 2
-            ? w
-            : w.replace(/[aeiouyаеёиоуыэюяAEIOUYАЕЁИОУЫЭЮЯ]/g, ""),
-        )
+        .map((w) => {
+          if (w.length <= 2) return w;
+          return /^[aeiouyаеёиоуыэюя]/i.test(w)
+            ? w[0] + w.slice(1).replace(/[aeiouyаеёиоуыэюя]/gi, "")
+            : w.replace(/[aeiouyаеёиоуыэюя]/gi, "");
+        })
         .join(" ")
         .replace(/[.,"'«»—\u2018\u2019\u201c\u201d«»]/g, "")
         .replace(/\s+/g, "-")
