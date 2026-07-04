@@ -18,8 +18,8 @@ describe("/r transformTmuxName", () => {
     expect(transformTmuxName("abbr -a щ omp")).toBe("abbr--a-щ-omp");
   });
 
-  it("'some config, bro' → 'sm-cnfg-br' (запятые убираются, bro→br)", () => {
-    expect(transformTmuxName('some config, bro')).toBe("sm-cnfg-br");
+  it("'some config, bro' → 'sm-cnfg-bro' (3-букв не режем)", () => {
+    expect(transformTmuxName('some config, bro')).toBe("sm-cnfg-bro");
   });
 
   it("пустая строка → ''", () => {

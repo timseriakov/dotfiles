@@ -3,7 +3,7 @@ export function transformTmuxName(raw: string): string {
   return raw
     .split(/\s+/)
     .map((w) => {
-      if (w.length <= 2) return w;
+      if (w.length <= 3) return w;
       return /^[aeiouyаеёиоуыэюя]/i.test(w)
         ? w[0] + w.slice(1).replace(/[aeiouyаеёиоуыэюя]/gi, "")
         : w.replace(/[aeiouyаеёиоуыэюя]/gi, "");
