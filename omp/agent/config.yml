@@ -51,7 +51,7 @@ statusLine:
   showHookStatus: false
 modelRoles: 
   default: omniroute/cx/gpt-5.4-high
-  smol: zen-free/deepseek-v4-flash-free
+  smol: zen-free/mimo-v2.5-free
   slow: omniroute/cx/gpt-5.5-high
   plan: omniroute/cx/gpt-5.5-high
   task: omniroute/cx/gpt-5.4-high
