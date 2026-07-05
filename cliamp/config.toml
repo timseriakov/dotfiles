@@ -5,3 +5,5 @@ theme = "nord"
 
 visualizer = "BarsDot"
 repeat = "All"
+eq_preset = "Custom"
+eq = [-3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
