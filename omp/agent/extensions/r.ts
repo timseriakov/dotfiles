@@ -1,7 +1,7 @@
 // ponytail: pure fn extracted for testability
 export function transformTmuxName(raw: string): string {
   return raw
-    .split(/\s+/)
+    .split(/[\s-]+/)
     .map((w) => {
       if (w.length <= 3) return w;
       return /^[aeiouyаеёиоуыэюя]/i.test(w)

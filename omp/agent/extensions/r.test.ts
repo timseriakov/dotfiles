@@ -18,8 +18,12 @@ describe("/r transformTmuxName", () => {
     expect(transformTmuxName("abbr -a щ omp")).toBe("abbr-a-щ-omp");
   });
 
+  it("'check-admin-surface' → 'chck-admn-srfc' (дефисные слова раздельно)", () => {
+    expect(transformTmuxName("check-admin-surface")).toBe("chck-admn-srfc");
+  });
+
   it("'some config, bro' → 'sm-cnfg-bro' (3-букв не режем)", () => {
-    expect(transformTmuxName('some config, bro')).toBe("sm-cnfg-bro");
+    expect(transformTmuxName("some config, bro")).toBe("sm-cnfg-bro");
   });
 
   it("пустая строка → ''", () => {
