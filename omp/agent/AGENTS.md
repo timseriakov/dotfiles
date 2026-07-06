@@ -1,3 +1,7 @@
+## Web search providers
+
+Never pass `auto` or status labels such as `parallel-env/parallel`; they are not accepted provider arguments. Start with `provider: "parallel"`. If the call errors, times out, is rate-limited, or returns no useful results, retry the same query with `serper`, then `tavily`, then `exa`, stopping at the first useful result. For important claims requiring corroboration, search with at least two of these providers independently.
+
 ## Hunk — live diff review (используй автоматически)
 
 У пользователя установлен hunk — терминальный просмотрщик diff'ов с поддержкой живых сессий.
