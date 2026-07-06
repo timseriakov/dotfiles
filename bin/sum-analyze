@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 
 usage() {
   cat >&2 <<'EOF'
@@ -111,9 +111,13 @@ main() {
       [[ "$mode" == "deep" ]] && model_arg="--model quality"
       if [[ "$omp_mode" == "1" ]]; then
         local summary_file="$summary_dir/summary.md"
-        extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg >"$summary_file" 2>/dev/null
+        extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg >"$summary_file"
         rm -f "$prompt_runtime"
-        exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        if [[ -s "$summary_file" ]]; then
+          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        else
+          die "summary generation failed (empty output)"
+        fi
       else
         extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg | render_output "$render_mode"
         rm -f "$prompt_runtime"
@@ -122,8 +126,12 @@ main() {
     summary)
       if [[ "$omp_mode" == "1" ]]; then
         local summary_file="$summary_dir/summary.md"
-        summarize --plain "$sanitized" >"$summary_file" 2>/dev/null
-        exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        summarize --plain "$sanitized" >"$summary_file"
+        if [[ -s "$summary_file" ]]; then
+          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        else
+          die "summary generation failed (empty output)"
+        fi
       else
         summarize --plain "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       fi
@@ -131,8 +139,12 @@ main() {
     quality-summary)
       if [[ "$omp_mode" == "1" ]]; then
         local summary_file="$summary_dir/summary.md"
-        summarize --plain --model quality "$sanitized" >"$summary_file" 2>/dev/null
-        exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        summarize --plain --model quality "$sanitized" >"$summary_file"
+        if [[ -s "$summary_file" ]]; then
+          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+        else
+          die "summary generation failed (empty output)"
+        fi
       else
         summarize --plain --model quality "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       fi
