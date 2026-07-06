@@ -173,8 +173,10 @@ main() {
   [[ "$analyze_mode" == "deep" ]] && mode="deep"
 
   # Properly escape URL and mode for tmux send-keys
+  local render_flag="--omp"
+  [[ "$mode" == "quick" ]] && render_flag="--mcat"
   local summarize_cmd
-  summarize_cmd="'$shared_abs' --mcat $mode '$url'"
+  summarize_cmd="'$shared_abs' $render_flag $mode '$url'"
 
   local existing_window_id
   existing_window_id="$(find_target_window_id "$session" "summarize")"

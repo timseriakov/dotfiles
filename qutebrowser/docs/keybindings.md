@@ -65,7 +65,7 @@
 | <kbd>sw</kbd> | spawn -u summarize-url --analyze-quick {url} |
 | <kbd>sd</kbd> | spawn -u summarize-url --analyze-deep {url}  |
 
-This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and invokes summarize workflows in the current tmux session: normal summary (`ss`), quality summary (`sq`), quick analysis (`sw`), and deep analysis (`sd`).
+This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and runs the summary in the current tmux session. Quick analysis (`sw`) renders to console via mcat. Deep analysis (`sd`), normal summary (`ss`), and quality summary (`sq`) generate the summary and start an interactive Oh My Pi session with the result as context, so you can ask follow-up questions.
 
 ## Hints Bindings
 
