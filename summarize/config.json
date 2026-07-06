@@ -2,10 +2,10 @@
   "model": "fast",
   "models": {
     "fast": {
-      "id": "openai/gpt-4o-mini"
+      "id": "openai/cx/gpt-5.4-mini"
     },
     "quality": {
-      "id": "openai/gpt-5-mini"
+      "id": "openai/cx/gpt-5.5"
     }
   },
   "output": {
