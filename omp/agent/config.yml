@@ -71,7 +71,7 @@ disabledProviders:
   - codex
   - openai
   - claude-plugins
-providers:
+providers: 
   webSearch: parallel
 modelProviderOrder: 
   - omniroute

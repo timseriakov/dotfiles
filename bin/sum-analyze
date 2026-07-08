@@ -97,8 +97,10 @@ main() {
 
   # omp mode: summary goes to file, then exec omp
   local summary_dir=""
+  local omp_msg=""
   if [[ "$omp_mode" == "1" ]]; then
     summary_dir="$(mktemp -d /tmp/sum-analyze-omp.XXXXXX)"
+    omp_msg="Вот саммари страницы: $sanitized Задавай вопросы и продолжай обсуждение."
   fi
   case "$mode" in
     quick|deep)
@@ -119,7 +121,7 @@ main() {
         extract_markdown "$sanitized" | summarize - --plain --prompt-file "$prompt_runtime" --length "$length_arg" $model_arg >"$summary_file"
         rm -f "$prompt_runtime"
         if [[ -s "$summary_file" ]]; then
-          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+          exec omp "@$summary_file" "$omp_msg"
         else
           die "summary generation failed (empty output)"
         fi
@@ -133,7 +135,7 @@ main() {
         local summary_file="$summary_dir/summary.md"
         summarize --plain "$sanitized" >"$summary_file"
         if [[ -s "$summary_file" ]]; then
-          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+          exec omp "@$summary_file" "$omp_msg"
         else
           die "summary generation failed (empty output)"
         fi
@@ -146,7 +148,7 @@ main() {
         local summary_file="$summary_dir/summary.md"
         summarize --plain --model quality "$sanitized" >"$summary_file"
         if [[ -s "$summary_file" ]]; then
-          exec omp "@$summary_file" "Вот саммари веб-страницы. Задавай вопросы и продолжай обсуждение."
+          exec omp "@$summary_file" "$omp_msg"
         else
           die "summary generation failed (empty output)"
         fi
