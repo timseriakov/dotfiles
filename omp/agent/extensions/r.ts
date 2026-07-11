@@ -18,6 +18,12 @@ export function transformTmuxName(raw: string): string {
 // Intercept /r <name>: rename tmux window (strips vowels, etc.)
 // then forward to builtin /rename for session rename + proper UI cleanup.
 export default function (pi) {
+  // registerCommand just for autocomplete; execution via on("input")
+  pi.registerCommand("r", {
+    description: "Rename tmux window + OMP session. /r <name>",
+    handler: async () => {},
+  });
+
   pi.on("input", async (event) => {
     const text = event.text;
     if (!text.startsWith("/r") || (text.length > 2 && text[2] !== " ")) return;
