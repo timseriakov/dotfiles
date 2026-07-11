@@ -1,26 +1,31 @@
 {
-  "subagents": {
-    "agentOverrides": {
-      "context-builder": {
-        "model": ""
-      },
-      "planner": {
-        "model": ""
-      },
-      "researcher": {
-        "model": ""
-      },
-      "reviewer": {
-        "model": ""
-      },
-      "scout": {
-        "model": ""
-      },
-      "worker": {
-        "model": ""
-      }
-    }
-  },
+  "autocompleteMaxVisible": 15,
+  "defaultModel": "cx/gpt-5.5",
+  "defaultProvider": "omni",
+  "defaultThinkingLevel": "high",
+  "editorPaddingX": 1,
+  "enableInstallTelemetry": false,
+  "enabledModels": [
+    "omni/cx/gpt-5.5-xhigh:high",
+    "omni/cx/gpt-5.5-high:high",
+    "omni/cx/gpt-5.5-medium:high",
+    "omni/cx/gpt-5.5:high",
+    "omni/cx/gpt-5.5-low:high",
+    "omni/cx/gpt-5.4:high",
+    "omni/cx/gpt-5.4-xhigh:high",
+    "omni/cx/gpt-5.4-high:high",
+    "omni/cx/gpt-5.4-medium:high",
+    "omni/cx/gpt-5.4-low:high",
+    "omni/cx/gpt-5.4-mini:high"
+  ],
+  "lastChangelogVersion": "0.80.3",
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@mise WARN  Plugin node does not have a version set",
+    "--",
+    "npm"
+  ],
   "packages": [
     "npm:pi-subagents",
     "npm:pi-ask-user",
@@ -51,33 +56,35 @@
     "npm:context-mode",
     "npm:pi-wakatime",
     "npm:@agnishc/edb-session-manager",
-    "npm:gentle-engram",
+    "npm:gentle-engram@0.1.8",
     "extensions/workmux-status.ts",
     "extensions/pi-compact-shortcut/index.ts",
     "npm:@sherif-fanous/pi-rtk",
     "git:github.com/DietrichGebert/ponytail",
     "npm:pi-annotate"
   ],
-  "lastChangelogVersion": "0.80.3",
-  "theme": "nord",
-  "enableInstallTelemetry": false,
-  "autocompleteMaxVisible": 15,
-  "defaultProvider": "omni",
-  "defaultModel": "cx/gpt-5.5",
-  "editorPaddingX": 1,
   "showHardwareCursor": false,
-  "defaultThinkingLevel": "high",
-  "enabledModels": [
-    "omni/cx/gpt-5.5-xhigh:high",
-    "omni/cx/gpt-5.5-high:high",
-    "omni/cx/gpt-5.5-medium:high",
-    "omni/cx/gpt-5.5:high",
-    "omni/cx/gpt-5.5-low:high",
-    "omni/cx/gpt-5.4:high",
-    "omni/cx/gpt-5.4-xhigh:high",
-    "omni/cx/gpt-5.4-high:high",
-    "omni/cx/gpt-5.4-medium:high",
-    "omni/cx/gpt-5.4-low:high",
-    "omni/cx/gpt-5.4-mini:high"
-  ]
+  "subagents": {
+    "agentOverrides": {
+      "context-builder": {
+        "model": ""
+      },
+      "planner": {
+        "model": ""
+      },
+      "researcher": {
+        "model": ""
+      },
+      "reviewer": {
+        "model": ""
+      },
+      "scout": {
+        "model": ""
+      },
+      "worker": {
+        "model": ""
+      }
+    }
+  },
+  "theme": "nord"
 }

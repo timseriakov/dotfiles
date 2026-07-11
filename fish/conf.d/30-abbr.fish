@@ -124,21 +124,21 @@ abbr -a cx codex
 abbr -a cx-up 'npm install -g @openai/codex'
 
 # OpenCode
-abbr -a oc omo
-abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
-abbr -a occ 'opencode --continue'
-abbr -a oc-monitor ocsight # Usage Monitor
-
-abbr -a ocrc 'cd ~/dev/dotfiles/opencode && nvim .'
-abbr -a occd 'cd ~/dev/dotfiles/opencode'
-abbr -a occdj 'cd ~/dev/dotfiles/opencode && yazi'
-
-abbr -a oc-up 'brew install anomalyco/tap/opencode'
-abbr -a oc-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
-abbr -a ocs '~/dev/dotfiles/opencode/omo/omo-switch'
-
-abbr -a oc-web 'openchamber --daemon --port 1911'
-abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
+# abbr -a oc omo
+# abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
+# abbr -a occ 'opencode --continue'
+# abbr -a oc-monitor ocsight # Usage Monitor
+#
+# abbr -a ocrc 'cd ~/dev/dotfiles/opencode && nvim .'
+# abbr -a occd 'cd ~/dev/dotfiles/opencode'
+# abbr -a occdj 'cd ~/dev/dotfiles/opencode && yazi'
+#
+# abbr -a oc-up 'brew install anomalyco/tap/opencode'
+# abbr -a oc-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
+# abbr -a ocs '~/dev/dotfiles/opencode/omo/omo-switch'
+#
+# abbr -a oc-web 'openchamber --daemon --port 1911'
+# abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
 
 # Oh My Pi
 abbr -a o omp
@@ -146,7 +146,9 @@ abbr -a щ omp
 abbr -a om omp
 abbr -a щь omp
 abbr -a oc 'omp -c'
+abbr -a occ 'omp -c'
 abbr -a щс 'omp -c'
+abbr -a щсс 'omp -c'
 abbr -a omr 'omp -r'
 abbr -a щьк 'omp -r'
 abbr -a orr 'omp -r'
