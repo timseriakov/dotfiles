@@ -1134,7 +1134,6 @@ function patchTuiTerminal(content) {
   return out;
 }
 
-
 function patchCustomEditor(content) {
   let out = content;
   let r;

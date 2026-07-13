@@ -112,6 +112,31 @@
             ]
           },
           {
+            "description": "Handy: hyper+r -> toggle transcription",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "r",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control",
+                      "left_option",
+                      "left_command",
+                      "left_shift"
+                    ],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "/Applications/Handy.app/Contents/MacOS/handy --toggle-transcription"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "qutebrowser: cmd+q to close tab (consistent with tmux)",
             "manipulators": [
               {

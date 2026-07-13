@@ -1,0 +1,215 @@
+{
+  "settings": {
+    "always_on_microphone": false,
+    "app_language": "en",
+    "append_trailing_space": false,
+    "audio_feedback": true,
+    "audio_feedback_volume": 0.07000000029802322,
+    "auto_submit": false,
+    "auto_submit_key": "enter",
+    "autostart_enabled": true,
+    "bindings": {
+      "cancel": {
+        "current_binding": "escape",
+        "default_binding": "escape",
+        "description": "Cancels the current recording.",
+        "id": "cancel",
+        "name": "Cancel"
+      },
+      "transcribe": {
+        "current_binding": "ctrl+option+shift+command+insert",
+        "default_binding": "option+space",
+        "description": "Converts your speech into text.",
+        "id": "transcribe",
+        "name": "Transcribe"
+      },
+      "transcribe_with_post_process": {
+        "current_binding": "ctrl+option+shift+command+pause",
+        "default_binding": "option+shift+space",
+        "description": "Converts your speech into text and applies AI post-processing.",
+        "id": "transcribe_with_post_process",
+        "name": "Transcribe with Post-Processing"
+      }
+    },
+    "clamshell_microphone": null,
+    "clipboard_handling": "copy_to_clipboard",
+    "custom_filler_words": null,
+    "custom_words": [
+      "OpenAI",
+      "Gemini.",
+      "Claude",
+      "OmniRoute",
+      "Codex",
+      "opencode",
+      "Yazi",
+      "dotfiles",
+      "model",
+      "provider",
+      "endpoint",
+      "TUI",
+      "SDK",
+      "CLI",
+      "API",
+      "JSONC",
+      "JSON",
+      "MCPProxy",
+      "MCP",
+      "TMUX",
+      "nvim",
+      "Neovide",
+      "Neovim",
+      "qutebrowser",
+      "Payload",
+      "CMS",
+      "CRM"
+    ],
+    "debug_mode": false,
+    "experimental_enabled": true,
+    "external_script_path": null,
+    "extra_recording_buffer_ms": 0,
+    "history_limit": 5,
+    "keyboard_implementation": "handy_keys",
+    "lazy_stream_close": false,
+    "log_level": "debug",
+    "model_unload_timeout": "never",
+    "mute_while_recording": true,
+    "onboarding_completed": true,
+    "ort_accelerator": "auto",
+    "overlay_position": "bottom",
+    "overlay_style": "live",
+    "paste_delay_after_ms": 60,
+    "paste_delay_ms": 60,
+    "paste_method": "ctrl_v",
+    "post_process_api_keys": {
+      "anthropic": "",
+      "apple_intelligence": "",
+      "bedrock_mantle": "",
+      "cerebras": "",
+      "custom": "sk-9756b5d2cb3555cb-37c739-fad6ca64",
+      "groq": "",
+      "openai": "",
+      "openrouter": "",
+      "zai": ""
+    },
+    "post_process_enabled": false,
+    "post_process_models": {
+      "anthropic": "",
+      "apple_intelligence": "Apple Intelligence",
+      "bedrock_mantle": "",
+      "cerebras": "",
+      "custom": "cx/gpt-5.4-mini",
+      "groq": "",
+      "openai": "",
+      "openrouter": "deepseek/deepseek-v4-flash:free",
+      "zai": ""
+    },
+    "post_process_prompts": [
+      {
+        "id": "default_improve_transcriptions",
+        "name": "Improve Transcriptions",
+        "prompt": "Clean this transcript:\n1. Fix spelling, capitalization, and punctuation errors\n2. Convert number words to digits (twenty-five → 25, ten percent → 10%, five dollars → $5)\n3. Replace spoken punctuation with symbols (period → ., comma → ,, question mark → ?)\n4. Remove filler words (um, uh, like as filler)\n5. Keep the language in the original version (if it was french, keep it in french for example)\n\nPreserve exact meaning and word order. Do not paraphrase or reorder content.\n\nReturn only the cleaned transcript.\n\nTranscript:\n${output}"
+      },
+      {
+        "id": "prompt_1779435463864",
+        "name": "Post-processor for voice input",
+        "prompt": "You are a transcript post-processor for voice input.\n\nClean the transcript while preserving the user's intended meaning.\n\nMain tasks:\n1. Fix spelling, capitalization, punctuation, and obvious speech-recognition errors.\n2. Preserve the original language of each phrase. Do not translate.\n3. Preserve mixed-language text: Russian stays Russian, English technical terms stay English.\n4. Recover English technical terms, product names, model names, file formats, acronyms, CLI/API terms, and code-related words when they were transcribed phonetically or incorrectly.\n5. Convert number words to digits when appropriate:\n   - twenty-five -> 25\n   - ten percent -> 10%\n   - five dollars -> $5\n6. Replace spoken punctuation with symbols:\n   - period / full stop / точка -> .\n   - comma / запятая -> ,\n   - question mark / вопросительный знак -> ?\n   - exclamation mark / восклицательный знак -> !\n   - colon / двоеточие -> :\n   - semicolon / точка с запятой -> ;\n   - slash / слэш -> /\n   - backslash / обратный слэш -> \\\n   - dash / hyphen / тире / дефис -> -\n   - quotes / кавычки -> quotation marks when clearly intended\n7. Remove filler words only when they are clearly fillers:\n   - um, uh, эээ, эм, ну, like as filler\n8. Remove profanity, insults, abusive language, and hostile emotional outbursts while preserving the substantive request, technical details, urgency, and frustration if relevant.\n9. Keep commands, paths, filenames, model names, variables, identifiers, and code-like text exact when recognizable.\n\nTechnical term recovery:\n- When Russian phonetic words likely refer to English technical terms, prefer the English technical spelling even if the ASR output is not exact.\n- Do not translate product names, tool names, model names, commands, APIs, file formats, or acronyms.\n- Prefer known technical spellings over literal phonetic transcription.\n\nCommon technical vocabulary:\nOpenAI, OmniRoute, OpenRouter, GPT, GPT-5, GPT-5.4, GPT-5.4-mini,\nChatGPT, Claude, Gemini, Codex, opencode, OpenCode,\nNeovim, nvim, Vim, Lua, tmux, tmuxai, qutebrowser, Hammerspoon, Yazi,\nMCP, MCPProxy, API, SDK, CLI, TUI, JSON, JSONC, YAML, TOML, Markdown,\nendpoint, provider, model, prompt, transcript, post-processing,\ndotfiles, config, plugin, userscript, GitHub, Git, SSH, HTTP, URL.\n\nTechnical term examples:\n- \"опен эй\" -> \"OpenAI\"\n- \"омни роут\" -> \"OmniRoute\"\n- \"опен роутер\" -> \"OpenRouter\"\n- \"чат гпт\" -> \"ChatGPT\"\n- \"джи пи ти\" -> \"GPT\"\n- \"джи пи ти пять\" -> \"GPT-5\"\n- \"джи пи ти пять четыре мини\" -> \"GPT-5.4-mini\"\n- \"клод\" -> \"Claude\"\n- \"джемини\" -> \"Gemini\"\n- \"кодекс\" -> \"Codex\"\n- \"эм си пи\" -> \"MCP\"\n- \"эм си пи прокси\" -> \"MCPProxy\"\n- \"эй пи ай\" -> \"API\"\n- \"эс ди кей\" -> \"SDK\"\n- \"си эл ай\" -> \"CLI\"\n- \"ти ю ай\" -> \"TUI\"\n- \"джейсон\" -> \"JSON\"\n- \"джейсон си\" -> \"JSONC\"\n- \"ямл\" -> \"YAML\"\n- \"томл\" -> \"TOML\"\n- \"энвим\" -> \"nvim\"\n- \"неовим\" -> \"Neovim\"\n- \"тимакс\" -> \"tmux\"\n- \"опен код\" -> \"opencode\"\n- \"кью браузер\" -> \"qutebrowser\"\n- \"гит хаб\" -> \"GitHub\"\n\nTone cleanup:\n- Remove profanity, insults, abusive language, and hostile emotional outbursts.\n- Preserve the substantive request, technical details, urgency, and frustration if relevant.\n- Do not moralize, apologize, or comment on the removed language.\n- If profanity is used only for emphasis, replace it with a neutral intensifier or remove it.\n- Do not remove profanity when it is explicitly being quoted, discussed as text, used in dialogue, or intentionally part of content the user is editing.\n\nTone cleanup examples:\n- \"этот ебаный скрипт опять не работает\" -> \"этот скрипт опять не работает\"\n- \"ты тупой, я же сказал используй OmniRoute\" -> \"я же сказал использовать OmniRoute\"\n- \"какого хуя он добавляет точку в конце\" -> \"почему он добавляет точку в конце\"\n- \"почини эту хуйню\" -> \"почини это\"\n- \"он опять все сломал, сука\" -> \"он опять все сломал\"\n\nEnd-of-transcript rules:\n- Do not add a final period at the end of the transcript.\n- Do not add a trailing ellipsis at the end of the transcript.\n- If the transcript ends with \"...\" or an ellipsis that was not explicitly spoken, remove it.\n- It is okay for the transcript to end without sentence-ending punctuation.\n- If the transcript is clearly an intentional question, end it with a question mark.\n- Keep or add a final question mark when the wording or intent is clearly interrogative, even if the user did not explicitly say \"question mark\".\n- Keep a final exclamation mark only if it was explicitly spoken or clearly intentional.\n- Do not use a trailing ellipsis to indicate that the speaker paused, stopped early, or may continue typing manually.\n\nImportant constraints:\n- Do not answer the transcript.\n- Do not add new facts.\n- Do not paraphrase intentionally.\n- Do not reorder content intentionally.\n- Do not make the text more formal unless punctuation, capitalization, or tone cleanup requires it.\n- Preserve the user's style as much as possible after cleanup.\n- Return only the cleaned transcript.\n\nTranscript:\n${output}"
+      }
+    ],
+    "post_process_provider_id": "openrouter",
+    "post_process_providers": [
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://api.openai.com/v1",
+        "id": "openai",
+        "label": "OpenAI",
+        "models_endpoint": "/models",
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://api.z.ai/api/paas/v4",
+        "id": "zai",
+        "label": "Z.AI",
+        "models_endpoint": "/models",
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://openrouter.ai/api/v1",
+        "id": "openrouter",
+        "label": "OpenRouter",
+        "models_endpoint": "/models",
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://api.anthropic.com/v1",
+        "id": "anthropic",
+        "label": "Anthropic",
+        "models_endpoint": "/models",
+        "supports_structured_output": false
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://api.groq.com/openai/v1",
+        "id": "groq",
+        "label": "Groq",
+        "models_endpoint": "/models",
+        "supports_structured_output": false
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://api.cerebras.ai/v1",
+        "id": "cerebras",
+        "label": "Cerebras",
+        "models_endpoint": "/models",
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "apple-intelligence://local",
+        "id": "apple_intelligence",
+        "label": "Apple Intelligence",
+        "models_endpoint": null,
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": false,
+        "base_url": "https://bedrock-mantle.us-east-1.api.aws/v1",
+        "id": "bedrock_mantle",
+        "label": "AWS Bedrock (Mantle)",
+        "models_endpoint": "/models",
+        "supports_structured_output": true
+      },
+      {
+        "allow_base_url_edit": true,
+        "base_url": "https://omniroute.e6ejok.easypanel.host/v1?stream=false",
+        "id": "custom",
+        "label": "Custom",
+        "models_endpoint": "/models",
+        "supports_structured_output": false
+      }
+    ],
+    "post_process_selected_prompt_id": "prompt_1779435463864",
+    "push_to_talk": false,
+    "recording_retention_period": "preserve_limit",
+    "selected_language": "auto",
+    "selected_microphone": null,
+    "selected_model": "parakeet-tdt-0.6b-v3",
+    "selected_output_device": null,
+    "settings_schema_version": 1,
+    "show_tray_icon": true,
+    "show_whats_new_on_update": true,
+    "sound_theme": "marimba",
+    "start_hidden": true,
+    "theme": "system",
+    "transcribe_accelerator": "auto",
+    "transcribe_gpu_device": -1,
+    "translate_to_english": false,
+    "typing_tool": "auto",
+    "update_checks_enabled": true,
+    "vad_enabled": true,
+    "whats_new_last_seen_version": "0.9.0",
+    "word_correction_threshold": 0.18
+  }
+}
