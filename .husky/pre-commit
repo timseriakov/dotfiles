@@ -18,8 +18,11 @@ for file in $(git diff --cached --name-only --diff-filter=A); do
   fi
 done
 
-# Lint YAML files
-npx yaml-lint **/*.yml **/*.yaml
-
-# Format files with prettier
-npx prettier --write .
+# Check only staged files; commits must never rewrite the working tree.
+git diff --cached --name-only --diff-filter=ACMR |
+while IFS= read -r file; do
+  case "$file" in
+    *.yml|*.yaml) npx yaml-lint "$file" || exit $? ;;
+  esac
+  npx prettier --check --ignore-unknown "$file" || exit $?
+done
