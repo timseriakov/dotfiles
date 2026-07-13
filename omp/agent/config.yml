@@ -59,18 +59,78 @@ modelRoles:
   commit: omniroute/opencode-zen/deepseek-v4-flash-free
   tiny: omniroute/opencode-zen/deepseek-v4-flash-free:off
 disabledProviders: 
-  - opencode
-  - opencode-zen
+  - aimlapi
+  - alibaba-coding-plan
+  - amazon-bedrock
+  - anthropic
+  - azure
+  - baseten
+  - cerebras
   - claude
-  - cursor
-  - gemini
-  - windsurf
-  - cline
-  - mcp-json
-  - vscode
-  - codex
-  - openai
   - claude-plugins
+  - cline
+  - cloudflare-ai-gateway
+  - codex
+  - coreweave
+  - cursor
+  - deepseek
+  - devin
+  - firepass
+  - fireworks
+  - gemini
+  - github-copilot
+  - gitlab-duo
+  - gitlab-duo-agent
+  - google
+  - google-antigravity
+  - google-gemini-cli
+  - google-vertex
+  - groq
+  - huggingface
+  - kilo
+  - kimi-code
+  - litellm
+  - llama.cpp
+  - lm-studio
+  - mcp-json
+  - minimax
+  - minimax-cn
+  - minimax-code
+  - minimax-code-cn
+  - mistral
+  - moonshot
+  - nanogpt
+  - novita
+  - nvidia
+  - ollama
+  - ollama-cloud
+  - openai
+  - openai-codex
+  - opencode
+  - opencode-go
+  - opencode-zen
+  - openrouter
+  - qianfan
+  - qwen-portal
+  - sakana
+  - synthetic
+  - together
+  - umans
+  - venice
+  - vercel-ai-gateway
+  - vllm
+  - vscode
+  - wafer-serverless
+  - windsurf
+  - xai
+  - xai-oauth
+  - xiaomi
+  - xiaomi-token-plan-ams
+  - xiaomi-token-plan-cn
+  - xiaomi-token-plan-sgp
+  - zai
+  - zenmux
+  - zhipu-coding-plan
 providers: 
   webSearch: parallel
 modelProviderOrder: 
