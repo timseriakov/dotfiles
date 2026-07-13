@@ -204,6 +204,7 @@ function rebuildBundledCli() {
       "--external=@huggingface/transformers",
       "--external=fastembed",
       "--external=onnxruntime-node",
+      "--external=omp-legacy-pi-modules",
       '--define=process.env.PI_BUNDLED="true"',
       "./src/cli.ts",
     ],
