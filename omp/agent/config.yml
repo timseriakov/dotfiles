@@ -143,6 +143,7 @@ extensions:
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
   - /Users/tim/.omp/agent/extensions/r.ts
   - /Users/tim/.omp/agent/extensions/plannotator-aliases.ts
+  - /Users/tim/.omp/agent/extensions/dcg-guard.ts
 hideThinkingBlock: false
 setupVersion: 1
 dev: 
