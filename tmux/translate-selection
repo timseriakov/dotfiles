@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""Translate a tmux copy-mode selection to Russian in a popup."""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import shlex
+import subprocess
+import sys
+import tempfile
+import urllib.error
+import urllib.request
+import shutil
+import uuid
+from pathlib import Path
+
+DAEMON_URL = "http://127.0.0.1:38123/translate"
+AUTH_TOKEN = "qute-translate-v1"
+
+def tmux(*args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["tmux", *args], check=False, text=True, capture_output=True
+    )
+
+def tmux_output(*args: str) -> str:
+    return subprocess.run(
+        ["tmux", *args], check=False, capture_output=True, text=True
+    ).stdout.strip()
+
+def show_translation(path: Path) -> int:
+    quoted = shlex.quote(str(path))
+    command = "\n".join(
+        [
+            "function __tmux_translation --on-event fish_prompt",
+            "    clear",
+            f"    set -l cols (tput cols 2>/dev/null || echo 80)",
+            f"    set -l src (sed '/^───━───━───━───$/q' {quoted} | sed '$d')",
+            f"    set -l tgt (sed -n '/^───━───━───━───$/,$p' {quoted} | tail -n +2)",
+            f"    rm -f {quoted}",
+            "    if test -n \"$src\"",
+            "        set_color 4C566A",
+            "        for line in $src",
+            "            echo $line",
+            "        end",
+            "    end",
+            "    echo",
+            "    set_color 81A1C1",
+            "    printf '%*s' $cols '' | tr ' ' '─'",
+            "    set_color normal",
+            "    echo",
+            "    if test -n \"$tgt\"",
+            "        set_color normal",
+            "        for line in $tgt",
+            "            echo $line",
+            "        end",
+            "    end",
+            "    functions -e __tmux_translation",
+            "end",
+        ]
+    )
+    os.execvp("fish", ["fish", "-l", "-i", "--init-command", "set -g fish_greeting ''; " + command])
+
+
+def translate(text: str) -> str:
+    payload = json.dumps(
+        {
+            "requestId": str(uuid.uuid4()),
+            "text": text,
+            "targetLang": "ru",
+            "auth": AUTH_TOKEN,
+        },
+    ).encode()
+    request = urllib.request.Request(
+        DAEMON_URL,
+        data=payload,
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(request, timeout=50) as response:
+        result = json.load(response)
+    translation = result.get("translation")
+    if not isinstance(translation, str) or not translation:
+        raise ValueError("no translation returned")
+    return translation
+
+
+def main() -> int:
+    if len(sys.argv) == 3 and sys.argv[1] == "--show":
+        return show_translation(Path(sys.argv[2]))
+
+    text = sys.stdin.read().strip()
+    if not text:
+        tmux("display-message", "No text selected")
+        return 0
+
+    try:
+        translation = translate(text)
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, json.JSONDecodeError) as error:
+        tmux("display-message", f"Translation failed: {error}"[:300])
+        return 1
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", prefix="tmux-translation-", suffix=".txt", delete=False
+    ) as file:
+        file.write(text)
+        file.write("\n───━───━───━───\n")
+        file.write(translation)
+        file.write("\n")
+        path = Path(file.name)
+    parent_window_id = tmux_output("display-message", "-p", "#{window_id}")
+    start_directory = tmux_output("display-message", "-p", "#{pane_current_path}")
+    if not parent_window_id or not start_directory:
+        path.unlink(missing_ok=True)
+        tmux("display-message", "Could not determine popup context")
+        return 1
+
+    session = f"_popup_translate_{re.sub(r'[^A-Za-z0-9_-]', '_', parent_window_id)}"
+    tmux("kill-session", "-t", session)
+    command = " ".join(
+        [
+            "until [ -n \"$(tmux list-clients -t \"$1\" 2>/dev/null)\" ]; do sleep 0.05; done; exec",
+            shlex.quote(sys.executable),
+            shlex.quote(str(Path(__file__).resolve())),
+            "--show",
+            shlex.quote(str(path)),
+        ]
+    )
+    try:
+        subprocess.run(
+            [
+                "tmux",
+                "new-session",
+                "-d",
+                "-c",
+                start_directory,
+                "-s",
+                session,
+                "sh",
+                "-c",
+                command,
+                "sh",
+                session,
+            ],
+            check=True,
+            env=os.environ | {"TMUX": ""},
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as error:
+        path.unlink(missing_ok=True)
+        tmux("display-message", f"Could not create translation session: {error.stderr}"[:300])
+        return 1
+    for option, value in (
+        ("status", "off"),
+        ("@is_popup_session", "1"),
+        ("@popup_parent_window_id", parent_window_id),
+        ("@popup_kind", "ephemeral"),
+        ("@popup_label", "translation"),
+        ("@popup_start_directory", start_directory),
+    ):
+        tmux("set-option", "-t", session, "-q", option, value)
+
+    result = tmux(
+        "display-popup",
+        "-E",
+        "-w",
+        "95%",
+        "-h",
+        "90%",
+        "-b",
+        "rounded",
+        "-S",
+        "fg=#81A1C1,bg=#2e3440",
+        f"tmux attach-session -t {session}",
+    )
+    tmux("kill-session", "-t", session)
+    if result.returncode:
+        path.unlink(missing_ok=True)
+        tmux("display-message", "Could not open translation popup")
+        return result.returncode
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
