@@ -6,6 +6,8 @@ skills:
 commands: 
   enableClaudeUser: false
   enableClaudeProject: false
+astGrep:
+  enabled: true
 startup: 
   quiet: false
 theme: 
