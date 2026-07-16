@@ -16,6 +16,7 @@
 - `Ctrl-a w` — workmux dashboard popup
 - `Ctrl-a v` — copy-mode
 - `y` / `Enter` — копировать в copy-mode
+- `t` / `е` — перевести selection на русский в copy-mode
 - `q` — выйти из copy-mode
 - `Ctrl-a r` — reload config
 - `cmd+j` / `cmd+о`, `cmd+k` / `cmd+л` — предыдущее / следующее окно
@@ -137,6 +138,7 @@
 | `v` / `м`  | начать выделение                                            |
 | `y` / `н`  | копировать selection                                        |
 | `Enter`    | копировать selection                                        |
+| `t` / `е`  | перевести selection на русский; после закрытия popup выйти из copy-mode |
 | `q` / `й`  | выйти; если есть selection — скопировать в `pbcopy` и выйти |
 | `a` / `ф`  | выйти из copy-mode                                          |
 | `i` / `ш`  | очистить selection                                          |
