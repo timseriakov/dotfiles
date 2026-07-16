@@ -990,148 +990,20 @@ function patchEditorGutterWidth(content) {
   return out;
 }
 function patchTuiTerminalCapabilities(content) {
-  let out = content;
-  let r;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\treturn \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;`,
-      `\t\tconst sequence = \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;\n\t\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    ],
-    `\t\tconst sequence = \`\\x1b_G\${leadParams};\${base64Data}\\x1b\\\\\`;\n\t\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    "kitty image single chunk tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\t\tchunks.push(\`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`);`,
-      `\t\t\tconst sequence = \`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    ],
-    `\t\t\tconst sequence = \`\\x1b_G\${leadParams},m=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    "kitty image first chunk tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\t\tchunks.push(\`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`);`,
-      `\t\t\tconst sequence = \`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    ],
-    `\t\t\tconst sequence = \`\\x1b_Gm=0;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    "kitty image last chunk tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\t\tchunks.push(\`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`);`,
-      `\t\t\tconst sequence = \`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    ],
-    `\t\t\tconst sequence = \`\\x1b_Gm=1;\${chunk}\\x1b\\\\\`;\n\t\t\tchunks.push(isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence);`,
-    "kitty image middle chunk tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\treturn \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;`,
-      `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    ],
-    `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    "kitty placement tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\treturn \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;`,
-      `\tconst sequence = \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    ],
-    `\tconst sequence = \`\\x1b_Ga=d,d=I,i=\${imageId},q=2\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    "kitty delete tmux passthrough",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `setKittyGraphics({ unicodePlaceholders: detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
-      `setKittyGraphics({ unicodePlaceholders: !isInsideTmux() && detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
-    ],
-    `setKittyGraphics({ unicodePlaceholders: detectKittyUnicodePlaceholdersSupport(TERMINAL.id, Bun.env) });`,
-    "enable kitty placeholders under tmux",
-  );
-  out = r.content;
-  return out;
+  // Upstream 16.5.2+ moved kitty image transmission to kitty-graphics.ts and
+  // already wraps APC sequences with wrapTmuxPassthroughIfNeeded.
+  return content;
 }
 
 function patchTuiKittyGraphics(content) {
-  let out = content;
-  let r;
-
-  r = insertBefore(
-    out,
-    `/** Kitty Unicode placeholder base character (U+10EEEE, Plane 16 PUA). */`,
-    `function isInsideTmux(env = Bun.env) {
-\treturn Boolean(env.TMUX);
-}
-
-function wrapTmuxPassthrough(payload) {
-\treturn "\\x1bPtmux;" + payload.replaceAll("\\x1b", "\\x1b\\x1b") + "\\x1b\\\\";
-}
-
-`,
-    "kitty graphics tmux passthrough helpers",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\treturn \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;`,
-      `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    ],
-    `\tconst sequence = \`\\x1b_G\${params.join(",")}\\x1b\\\\\`;\n\treturn isInsideTmux() ? wrapTmuxPassthrough(sequence) : sequence;`,
-    "kitty placeholder virtual placement tmux passthrough",
-  );
-  out = r.content;
-
-  return out;
+  // Upstream 16.5.2+ moved tmux helpers to ./tmux.ts and already uses
+  // wrapTmuxPassthroughIfNeeded for APC wrapping, so no patch needed.
+  return content;
 }
 
 function patchTuiTerminal(content) {
-  let out = content;
-  let r;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\t// Wrap the probe under tmux so terminals behind \`allow-passthrough on\`\n\t\t// can still respond (mirroring how \`TerminalInfo.sendNotification\`\n\t\t// wraps notification deliveries). Without it the probe is swallowed\n\t\t// inside tmux even when the outer terminal speaks OSC 99, and rich\n\t\t// notifications stay permanently downgraded to the single-line fallback.\n\t\tconst probe = \`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\`;\n\t\tconst sequence = isInsideTmux() ? wrapTmuxPassthrough(probe) : probe;\n\t\tthis.#safeWrite(\`\${sequence}\\x1b[c\`);\n`,
-      `\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\tthis.#safeWrite(\`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\\x1b[c\`);\n`,
-    ],
-    `\t\tif (isInsideTmux()) return;\n\n\t\tconst id = \`omp-probe-\${nextOsc99ProbeId++}\`;\n\t\tthis.#osc99PendingId = id;\n\t\tthis.#da1SentinelOwners.push({ kind: "osc99Probe", id });\n\t\tthis.#safeWrite(\`\\x1b]99;i=\${id}:p=?;\\x1b\\\\\\x1b[c\`);\n`,
-    "terminal OSC99 tmux probe leak",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `import {\n\tisInsideTmux,\n\tNotifyProtocol,\n\tsetCellDimensions,\n\tsetOsc99Supported,\n\tTERMINAL,\n\twrapTmuxPassthrough,\n} from "./terminal-capabilities";`,
-    ],
-    `import {\n\tisInsideTmux,\n\tNotifyProtocol,\n\tsetCellDimensions,\n\tsetOsc99Supported,\n\tTERMINAL,\n} from "./terminal-capabilities";`,
-    "terminal unused tmux passthrough import",
-  );
-  out = r.content;
-
-  return out;
+  // OMP 17.0.1 avoids OSC 99 capability probes in terminal multiplexers.
+  return content;
 }
 
 function patchCustomEditor(content) {
