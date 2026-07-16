@@ -83,3 +83,8 @@ set -gx PNPM_HOME "/Users/tim/Library/pnpm"
 # mimocode
 fish_add_path /Users/tim/.mimocode/bin
 
+
+# Added by jcode installer
+if not contains "/Users/tim/.local/bin" $PATH
+    set -gx PATH "/Users/tim/.local/bin" $PATH
+end

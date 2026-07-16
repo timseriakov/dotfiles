@@ -4,11 +4,8 @@
 set -gx LANG en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
 
-# ZeroClaw
-set -gx ZEROCLAW_CONFIG_DIR /Users/tim/dev/ai/zeroclaw
-
 # Shell UX
-set -gx fish_command_timeout 8000
+set -gx fish_command_timeout 9000
 set -gx fish_greeting "Welcome from Fish"
 set -gx NEOVIDE_TITLE_HIDDEN 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
@@ -90,6 +87,6 @@ set -gx YT_DLP_PATH /opt/homebrew/bin/yt-dlp
 # Added by clikit-plugin
 set -gx OPENCODE_ENABLE_EXA 1
 
-set -gx CAVEMAN_RUNNER codex
-
 set -gx PLAYWRITER_AUTO_ENABLE 1
+
+set -gx PI_CODING_AGENT_DIR $HOME/.omp/agent
