@@ -3,334 +3,308 @@ if not status is-interactive
     return
 end
 
-# Editors and quick openers
+# Navigation and editors
 abbr -a v nvim
 abbr -a vv 'nvim .'
 abbr -a мм 'nvim .'
 abbr -a op open
 abbr -a 'o.' 'open .'
-abbr -a R 'glow --pager'
-abbr -a RM 'glow README.md'
 abbr -a ef 'exec fish'
-
-# npm
-abbr -a n npm
-abbr -a ni 'npm install'
-abbr -a nid 'npm install -D'
-abbr -a nr 'npm run'
-abbr -a nd 'npm run dev'
-abbr -a nb 'npm run build'
-abbr -a nrm 'npm uninstall'
-abbr -a npk 'npx npkill'
-abbr -a npxy 'npx -y'
-abbr -a npm-explore forage
-abbr -a n-explore forage
-
-# pnpm
-abbr -a p pnpm
-abbr -a pii 'pnpm install'
-abbr -a pd 'pnpm dev'
-abbr -a px pnpx
-
-# yarn
-abbr -a y yarn
-abbr -a ydd 'yarn add'
-abbr -a yddd 'yarn add -D'
-abbr -a yrm 'yarn remove'
-abbr -a ys 'yarn start --reset-cache'
-abbr -a yi 'yarn ios'
-abbr -a yiv 'yarn ios --verbose'
-abbr -a yan 'yarn android:pre-build && yarn android && watchman watch-del .; watchman watch-project .'
-abbr -a yanv 'yarn android --verbose'
-abbr -a yb 'yarn build'
-abbr -a yd 'yarn dev'
-abbr -a wd 'watchman watch-del .; watchman watch-project .' # mobile RN project related
-
-# bun
-abbr -a b bun
-abbr -a ba 'bun a'
-abbr -a bi 'bun i'
-abbr -a bid 'bun i -D'
-# because of a bd (beads) cli conflict
-abbr -a bde 'bun dev'
-abbr -a be 'bun dev'
-
-abbr -a bdd 'bun add'
-abbr -a bddd 'bun add -D'
-abbr -a bx bunx
-abbr -a de-it 'docker exec -it'
-
-# Git
-abbr -a gl 'git slog'
-abbr -a gd 'git sdiff'
-abbr -a gvd 'git vdiff'
-abbr -a gvl 'git vlog'
-abbr -a gprune 'git remote prune origin'
-abbr -a gg lazygit
-abbr -a пп lazygit
-abbr -a tg tig
-abbr -a prs 'env -u GITHUB_TOKEN gh dash'
-abbr -a g-redeploy 'git commit --allow-empty -m "chore: trigger redeploy"'
-abbr -a bl 'npx -y branchlet'
-
-# Brew helpers
-abbr -a bri 'brew install'
-abbr -a brrm 'brew uninstall'
-abbr -a brs 'brew services'
-abbr -a brugh 'brew upgrade gh'
-abbr -a brc 'nvim ~/dev/dotfiles/Brewfile'
-abbr -a brewfile-dump 'brew bundle dump --global --force'
-abbr -a brewfile-cleanup 'brew bundle cleanup --force'
-abbr -a brewfile-upgrade 'brew bundle upgrade --global'
-
-# Deno
-abbr -a de deno
-
-# Docker
-abbr -a dcu 'docker compose up'
-abbr -a dcub 'docker compose up --build'
-abbr -a dcubd 'docker-compose up --build -d'
-abbr -a de-it 'docker exec -it'
-
-# CLaude Code
-abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
-abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --resume'
-abbr -a clc 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --continue'
-abbr -a .c 'cd ~/.claude'
-abbr -a c. 'cd ~/.claude'
-abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
-abbr -a cl-opus 'claude --model claude-opus-4-20250514'
-# Claude Code tools
-abbr -a cc-up 'npm install -g @anthropic-ai/claude-code'
-abbr -a ccline-up 'npm update -g @cometix/ccline'
-abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
-abbr -a cc-history 'npx -y cchistory@latest'
-abbr -a cc-logviewer 'cclogviewer -input'
-abbr -a cc-exp 'npx -y ccexp@latest'
-abbr -a cc-mon 'claude-monitor  --time-format 24h'
-abbr -a cc-cmd claude-cmd
-abbr -a cc-log 'npx -y vibe-log-cli@latest'
-abbr -a lm lsh # Translates natural language to shell commands using LLM
-
-# Gemini
-# abbr -a ge gemini
-# abbr -a ge-up 'npm install -g @google/gemini-cli'
-# abbr -a ge-clear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id  google_accounts.json'
-abbr -a ge agy
-abbr -a ge-up 'brew install antigravity-cli'
-
-# Codex
-abbr -a cx codex
-abbr -a cx-up 'npm install -g @openai/codex'
-
-# OpenCode
-# abbr -a oc omo
-# abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
-# abbr -a occ 'opencode --continue'
-# abbr -a oc-monitor ocsight # Usage Monitor
-#
-# abbr -a ocrc 'cd ~/dev/dotfiles/opencode && nvim .'
-# abbr -a occd 'cd ~/dev/dotfiles/opencode'
-# abbr -a occdj 'cd ~/dev/dotfiles/opencode && yazi'
-#
-# abbr -a oc-up 'brew install anomalyco/tap/opencode'
-# abbr -a oc-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
-# abbr -a ocs '~/dev/dotfiles/opencode/omo/omo-switch'
-#
-# abbr -a oc-web 'openchamber --daemon --port 1911'
-# abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
-
-# Oh My Pi
-abbr -a o omp
-abbr -a щ omp
-abbr -a om omp
-abbr -a щь omp
-abbr -a oc 'omp -c'
-abbr -a occ 'omp -c'
-abbr -a щс 'omp -c'
-abbr -a щсс 'omp -c'
-abbr -a omr 'omp -r'
-abbr -a щьк 'omp -r'
-abbr -a orr 'omp -r'
-abbr -a щкк 'omp -r'
-abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
-abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
-abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
-
-abbr -a omniroute-models 'curl -sS \
-  -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
-  https://router.hwqtpa.easypanel.host/v1 | jq'
-
-abbr -a add-mcp 'npx -y add-mcp'
-abbr -a autoskills 'npx -y autoskills'
-
-# pi
-abbr -a pi-up 'npm install -g @mariozechner/pi-coding-agent'
-abbr -a pirc 'cd ~/dev/dotfiles/pi/agent/ && nvim settings.json'
-abbr -a picd 'cd ~/dev/dotfiles/pi/agent/'
-abbr -a picdj 'cd ~/dev/dotfiles/pi/agent/ && yazi'
-abbr -a pir 'pi -r'
-
-# mcpproxy
-abbr -a mp mcpproxy
-abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
-abbr -a mp-fix '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
-abbr -a mp-up 'brew install smart-mcp-proxy/mcpproxy/mcpproxy'
-
-# Other AI tools
-abbr -a cr cursor-agent
-abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
-abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
-abbr -a goo goose
-abbr -a amp 'npx -y @sourcegraph/amp@latest'
-
-abbr -a qw qwen
-abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
-
-# Summarize
-abbr -a sum summarize
-abbr -a sumq 'summarize --model quality'
-abbr -a sumx 'summarize --extract --format md'
-abbr -a sumw 'sum-analyze quick'
-abbr -a sumd 'sum-analyze deep'
-abbr -a sumss 'summarize --slides'
-abbr -a sumso 'summarize slides --slides-ocr'
-abbr -a sumsj 'summarize slides --json'
-
-# z jumps
 abbr -a dev 'cd ~/dev'
 abbr -a dl 'z dl'
 abbr -a zd 'cd ~/dev/dotfiles'
 abbr -a do 'cd ~/dev/dotfiles'
 
-# Open configs
-abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
-abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
-abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
-abbr -a qrc 'cd ~/dev/dotfiles/qutebrowser && nvim config.py'
-abbr -a trc 'nvim ~/.tmux.conf'
-abbr -a tmrc 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
+# Configuration
+abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish && exec fish'
+abbr -a brc 'nvim ~/dev/dotfiles/Brewfile'
+abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
+abbr -a frc 'cd ~/dev/dotfiles/fish && nvim . && exec fish'
 abbr -a glarc 'nvim ~/Library/LaunchAgents/app.glance.plist'
 abbr -a glrc 'cd ~/dev/dotfiles/glance && nvim ./glance.yml'
 abbr -a grc 'cd ~/.gemini'
-abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
-abbr -a frc 'cd ~/dev/dotfiles/fish && nvim . && exec fish'
-abbr -a arc 'nvim ~/dev/dotfiles/fish/conf.d/30-abbr.fish && exec fish'
-abbr -a envs 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
+abbr -a krc 'nvim ~/.config/kitty/kitty.conf'
+abbr -a nprc 'cd ~/dev/dotfiles/nvim/lua/plugins/ && nvim .'
+abbr -a nrc 'cd ~/dev/dotfiles/nvim/lua && nvim .'
+abbr -a pirc 'cd ~/dev/dotfiles/pi/agent/ && nvim settings.json'
+abbr -a qrc 'cd ~/dev/dotfiles/qutebrowser && nvim config.py'
+abbr -a tmap 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
+abbr -a tmrc 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
 abbr -a tokens 'nvim ~/dev/dotfiles/fish/secrets.fish && exec fish'
+abbr -a trc 'nvim ~/.tmux.conf'
+abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
+abbr -a wmrc 'nvim ./.workmux.yaml'
+abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
 
-# Misc
-abbr -a cls clear
+# JavaScript package managers
+## npm
+abbr -a n npm
+abbr -a nb 'npm run build'
+abbr -a nd 'npm run dev'
+abbr -a n-explore forage
+abbr -a ni 'npm install'
+abbr -a nid 'npm install -D'
+abbr -a npm-explore forage
+abbr -a npk 'npx npkill'
+abbr -a npxy 'npx -y'
+abbr -a nr 'npm run'
+abbr -a nrm 'npm uninstall'
 
-abbr -a pb pbcopy
-abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
+## pnpm
+abbr -a p pnpm
+abbr -a pd 'pnpm dev'
+abbr -a pii 'pnpm install'
+abbr -a px pnpx
 
-# Copy/Paste
+## yarn
+abbr -a y yarn
+abbr -a yan 'yarn android:pre-build && yarn android && watchman watch-del .; watchman watch-project .'
+abbr -a yanv 'yarn android --verbose'
+abbr -a yb 'yarn build'
+abbr -a yd 'yarn dev'
+abbr -a ydd 'yarn add'
+abbr -a yddd 'yarn add -D'
+abbr -a yi 'yarn ios'
+abbr -a yiv 'yarn ios --verbose'
+abbr -a yrm 'yarn remove'
+abbr -a ys 'yarn start --reset-cache'
+abbr -a wd 'watchman watch-del .; watchman watch-project .' # mobile RN project related
+
+## bun
+abbr -a b bun
+abbr -a ba 'bun a'
+abbr -a bdd 'bun add'
+abbr -a bddd 'bun add -D'
+abbr -a bde 'bun dev' # bd is beads
+abbr -a be 'bun dev'
+abbr -a bi 'bun i'
+abbr -a bid 'bun i -D'
+abbr -a bx bunx
+
+# Other runtimes
+abbr -a de deno
+abbr -a r rum
+
+# Containers
+abbr -a dcu 'docker compose up'
+abbr -a dcub 'docker compose up --build'
+abbr -a dcubd 'docker-compose up --build -d'
+abbr -a de-it 'docker exec -it'
+
+# Version control
+abbr -a bl 'npx -y branchlet'
+abbr -a g-redeploy 'git commit --allow-empty -m "chore: trigger redeploy"'
+abbr -a gd 'git sdiff'
+abbr -a gg lazygit
+abbr -a gl 'git slog'
+abbr -a gprune 'git remote prune origin'
+abbr -a gvd 'git vdiff'
+abbr -a gvl 'git vlog'
+abbr -a mbb 'set repo (git rev-parse --show-toplevel 2>/dev/null); or echo "Not inside a Git repository"; and test -n "$repo"; and builtin cd $repo; and ekphos ./.memory-bank'
+abbr -a prs 'env -u GITHUB_TOKEN gh dash'
+abbr -a tg tig
+abbr -a пп lazygit
+
+# Homebrew
+abbr -a bri 'brew install'
+abbr -a brs 'brew services'
+abbr -a brrm 'brew uninstall'
+abbr -a brugh 'brew upgrade gh'
+abbr -a brewfile-cleanup 'brew bundle cleanup --force'
+abbr -a brewfile-dump 'brew bundle dump --global --force'
+abbr -a brewfile-upgrade 'brew bundle upgrade --global'
+
+# AI assistants
+## Claude Code
+abbr -a .c 'cd ~/.claude'
+abbr -a c. 'cd ~/.claude'
+abbr -a cc-cmd claude-cmd
+abbr -a cc-exp 'npx -y ccexp@latest'
+abbr -a cc-history 'npx -y cchistory@latest'
+abbr -a cc-log 'npx -y vibe-log-cli@latest'
+abbr -a cc-logviewer 'cclogviewer -input'
+abbr -a cc-mon 'claude-monitor  --time-format 24h'
+abbr -a cc-tw tweakcc # or 'npx -y tweakcc@latest'
+abbr -a cc-up 'npm install -g @anthropic-ai/claude-code'
+abbr -a ccline-up 'npm update -g @cometix/ccline'
+abbr -a cl 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt)'
+abbr -a clc 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --continue'
+abbr -a cl-haiku 'claude --model claude-3-5-haiku-20241022'
+abbr -a cl-opus 'claude --model claude-opus-4-20250514'
+abbr -a clr 'claude --append-system-prompt (cat $HOME/.claude/auto-plan-mode.txt) --resume'
+abbr -a lm lsh # translates natural language to shell commands
+
+## Codex
+abbr -a cx codex
+abbr -a cx-up 'npm install -g @openai/codex'
+
+## Gemini
+# abbr -a ge gemini
+# abbr -a ge-up 'npm install -g @google/gemini-cli'
+# abbr -a ge-clear 'bat --style=plain --decorations=never --color=always google_accounts.json && rm -rf oauth_creds.json installation_id google_accounts.json'
+abbr -a ge agy
+abbr -a ge-up 'brew install antigravity-cli'
+
+## Oh My Pi
+abbr -a add-mcp 'npx -y add-mcp'
+abbr -a autoskills 'npx -y autoskills'
+abbr -a o omp
+abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
+abbr -a oc 'omp -c'
+abbr -a occ 'omp -c'
+abbr -a om omp
+abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
+abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
+abbr -a omr 'omp -r'
+abbr -a omniroute-models 'curl -sS \
+  -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
+  https://router.hwqtpa.easypanel.host/v1 | jq'
+abbr -a orr 'omp -r'
+abbr -a щ omp
+abbr -a щс 'omp -c'
+abbr -a щсс 'omp -c'
+abbr -a щкк 'omp -r'
+abbr -a щь omp
+abbr -a щьк 'omp -r'
+
+## Pi
+abbr -a pi-up 'npm install -g @mariozechner/pi-coding-agent'
+abbr -a picd 'cd ~/dev/dotfiles/pi/agent/'
+abbr -a picdj 'cd ~/dev/dotfiles/pi/agent/ && yazi'
+abbr -a pir 'pi -r'
+
+## MCPProxy
+abbr -a mp mcpproxy
+abbr -a mp-fix '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mp-restart '$HOME/dev/dotfiles/mcpproxy/fix-mcpproxy.sh'
+abbr -a mp-up 'brew install smart-mcp-proxy/mcpproxy/mcpproxy'
+
+## Other
+abbr -a ag 'npx -y @augmentcode/auggie --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a agc 'npx -y @augmentcode/auggie session continue --rules $HOME/dev/claude/CLAUDE.md'
+abbr -a amp 'npx -y @sourcegraph/amp@latest'
+abbr -a cr cursor-agent
+abbr -a goo goose
+abbr -a qw qwen
+abbr -a qwup 'npm i @qwen-code/qwen-code@latest -g'
+
+# Summarization
+abbr -a sum summarize
+abbr -a sumd 'sum-analyze deep'
+abbr -a sumq 'summarize --model quality'
+abbr -a sumsj 'summarize slides --json'
+abbr -a sumso 'summarize slides --slides-ocr'
+abbr -a sumss 'summarize --slides'
+abbr -a sumw 'sum-analyze quick'
+abbr -a sumx 'summarize --extract --format md'
+
+# Shell, clipboard, and file operations
+abbr -a c 'bat --style=plain --decorations=never --color=always'
 abbr -a cbs 'cb show'
 abbr -a ccc 'cb cp'
-abbr -a ppp 'cb p'
+abbr -a chmd chmod-cli
+abbr -a cls clear
 abbr -a cpr 'cp -r'
-
+abbr -a lsl 'ls -l -a | grep '^l'' # show symlinks
+abbr -a pb pbcopy
+abbr -a ppp 'cb p'
+abbr -a pwdc 'pwd | tee /dev/tty | pbcopy'
 abbr -a rf 'rm -rf'
 abbr -a rfl 'rm -rf *.lock'
 
-abbr -a lsl 'ls -l -a | grep '^l'' # show simlinks
-abbr -a c 'bat --style=plain --decorations=never --color=always'
-
-# mcat
+# Terminal tools
+abbr -a bt btop
+abbr -a fxp 'fx package.json'
+abbr -a hg 'hgrep --theme Nord'
+abbr -a icat 'kitten icat'
 abbr -a m mcat
-abbr -a mm 'mcat .'
 abbr -a mcopy 'mcat . | pbcopy'
+abbr -a mi mimo
 abbr -a mls 'mcat ls'
-
-abbr -a chmd chmod-cli
-
+abbr -a mm 'mcat .'
 abbr -a mtrx 'cmatrix -C blue -s'
 abbr -a mtrx-cyan 'cmatrix -C cyan -s'
+abbr -a R 'glow --pager'
+abbr -a RM 'glow README.md'
 abbr -a sshh ggh
-
-abbr -a icat 'kitten icat'
-abbr -a hg 'hgrep --theme Nord'
-abbr -a fxp 'fx package.json'
-
-abbr -a srv 'npx -y http-server .'
-abbr -a serve 'npx -y serve .'
-abbr -a ff 'npx -y fast-cli'
-
-abbr -a r rum
-abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
-
-abbr -a beads /Users/tim/.local/bin/bd
-abbr -a trrnts /opt/homebrew/bin/bv
-
-abbr -a va ekphos
-abbr -a mbb 'set repo (git rev-parse --show-toplevel 2>/dev/null); or echo "Not inside a Git repository"; and test -n "$repo"; and builtin cd $repo; and ekphos ./.memory-bank'
-
-abbr -a hn clx
-abbr -a take tmux-take-alacritty
-abbr -a tmap 'nvim ~/dev/dotfiles/tmux/title-mappings.conf'
-abbr -a tk tmux-take-alacritty
-abbr -a dmt 'dark-mode toggle'
-abbr -a surge-up 'brew install surge-downloader/tap/surge'
-abbr -a entire-up 'brew install --cask entireio/tap/entire'
-abbr -a engram-up 'brew install --cask gentleman-programming/tap/engram'
-
-abbr -a mi mimo
-
-abbr -a wm workmux
-abbr -a wma 'workmux add'
-abbr -a wml 'workmux list'
-abbr -a wmr 'workmux remove'
-abbr -a wmm 'workmux merge'
-abbr -a wmd 'workmux dashboard'
-abbr -a wms 'workmux sidebar'
-abbr -a wm-up 'brew install raine/workmux/workmux'
-abbr -a workmux-up 'brew install raine/workmux/workmux'
-abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
-abbr -a wmrc 'nvim ./.workmux.yaml'
-
-# System tools
-abbr -a disk-cull cull
-abbr -a k rip
-abbr -a ports 'snitch -t -l -e'
-abbr -a pk 'snitch -t -l -e'
-abbr -a battery-monitor jolt
-abbr -a json-view otree
-abbr -a lan whosthere
-abbr -a why-run witr
-abbr -a mu 'mole uninstall'
-abbr -a un 'mole uninstall'
-abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
-abbr -a ipinfo 'curl -s -H "Authorization: Bearer $IPINFO_TOKEN" https://api.ipinfo.io/lite/me'
-abbr -a ipinfo-more 'curl -s ipwho.is'
-abbr -a bt btop
 abbr -a vtop 'vtop --theme nord'
 
-# Misc
-abbr -a webm2telegram-gif 'ffmpeg -i w.webm \
--movflags +faststart \
--pix_fmt yuv420p \
--vf "fps=30,scale=512:-2:flags=lanczos" \
--c:v libx264 -profile:v baseline -level 3.0 \
--an -loop 0 output.mp4'
+# Development and local tools
+abbr -a beads /Users/tim/.local/bin/bd
+abbr -a ccrd concord
+abbr -a dbh default-browser-helium
+abbr -a dbq default-browser-qutebrowser
+abbr -a dmt 'dark-mode toggle'
+abbr -a engram-up 'brew install --cask gentleman-programming/tap/engram'
+abbr -a entire-up 'brew install --cask entireio/tap/entire'
+abbr -a hn clx
+abbr -a srv 'npx -y http-server .'
+abbr -a serve 'npx -y serve .'
+abbr -a surge-up 'brew install surge-downloader/tap/surge'
+abbr -a take tmux-take-alacritty
+abbr -a tk tmux-take-alacritty
+abbr -a trrnts /opt/homebrew/bin/bv
+abbr -a uvx-serena 'uvx --from git+https://github.com/oraios/serena serena'
+abbr -a va ekphos
 
+# Workmux
+abbr -a wm workmux
+abbr -a wm-up 'brew install raine/workmux/workmux'
+abbr -a wma 'workmux add'
+abbr -a wmd 'workmux dashboard'
+abbr -a wml 'workmux list'
+abbr -a wmm 'workmux merge'
+abbr -a wmr 'workmux remove'
+abbr -a wms 'workmux sidebar'
+abbr -a workmux-up 'brew install raine/workmux/workmux'
+
+# System and network
+abbr -a battery-monitor jolt
+abbr -a disk-cull cull
+abbr -a ipinfo 'curl -s -H "Authorization: Bearer $IPINFO_TOKEN" https://api.ipinfo.io/lite/me'
+abbr -a ipinfo-more 'curl -s ipwho.is'
+abbr -a json-view otree
+abbr -a dnss dnsglobe
+abbr -a k rip
+abbr -a lan whosthere
+abbr -a locks wlocks
+abbr -a mem-usage 'vm_stat && sysctl vm.swapusage && memory_pressure && ps aux | sort -nrk 4 | head -30'
+abbr -a mu 'mole uninstall'
+abbr -a pk 'snitch -t -l -e'
+abbr -a ports 'snitch -t -l -e'
+abbr -a un 'mole uninstall'
+abbr -a why-run witr
+
+# Media and web
+abbr -a ff 'npx -y fast-cli'
+abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'
+abbr -a hunk-kill 'pkill -f hunk.daemon'
+abbr -a pdf-print plutoprint
+abbr -a rss eilmeldung
 abbr -a web2telegram-gif-with-audio 'ffmpeg -i w.webm \
 -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
 -c:v libx264 \
 -c:a aac \
 -movflags +faststart \
 output1.mp4'
-
+abbr -a webm2telegram-gif 'ffmpeg -i w.webm \
+-movflags +faststart \
+-pix_fmt yuv420p \
+-vf "fps=30,scale=512:-2:flags=lanczos" \
+-c:v libx264 -profile:v baseline -level 3.0 \
+-an -loop 0 output.mp4'
 abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
-abbr -a pdf-print plutoprint
-abbr -a rss eilmeldung
-
-abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'
-abbr -a hunk-kill 'pkill -f hunk.daemon'
-
-abbr -a locks wlocks
-abbr -a dnss dnsglobe
-
-abbr -a dbq default-browser-qutebrowser
-abbr -a dbh default-browser-helium
+# Disabled OpenCode abbreviations
+# abbr -a oc omo
+# abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
+# abbr -a occ 'opencode --continue'
+# abbr -a oc-monitor ocsight # Usage Monitor
+# abbr -a ocrc 'cd ~/dev/dotfiles/opencode && nvim .'
+# abbr -a occd 'cd ~/dev/dotfiles/opencode'
+# abbr -a occdj 'cd ~/dev/dotfiles/opencode && yazi'
+# abbr -a oc-up 'brew install anomalyco/tap/opencode'
+# abbr -a oc-clear-cache 'rm -rf /Users/tim/.bun/install/cache/oh-my-opencode* && rm -rf /Users/tim/.cache/opencode*'
+# abbr -a ocs '~/dev/dotfiles/opencode/omo/omo-switch'
+# abbr -a oc-web 'openchamber --daemon --port 1911'
+# abbr -a oc-fmt 'npx prettier --write /Users/tim/dev/dotfiles/opencode/*/*.json /Users/tim/dev/dotfiles/opencode/*/*.jsonc'
