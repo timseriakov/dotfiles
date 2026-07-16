@@ -1,3 +1,3 @@
-function ll --wraps=nls --description 'List contents of directory using long format'
-    nls -lh $argv
+function ll --wraps=nls --description 'List contents with compact columns'
+    nls -hA --group-directories-first $argv
 end
