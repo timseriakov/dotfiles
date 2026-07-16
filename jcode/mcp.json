@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "MCPProxy": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "http://localhost:8080/mcp/"],
+      "env": {},
+      "shared": true
+    }
+  }
+}

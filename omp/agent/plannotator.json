@@ -1,0 +1,32 @@
+{
+  "defaults": {
+    "model": {
+      "provider": "omniroute",
+      "id": "cx/gpt-5.6-sol"
+    },
+    "thinking": "high"
+  },
+  "phases": {
+    "planning": {
+      "model": {
+        "provider": "omniroute",
+        "id": "cx/gpt-5.6-sol"
+      },
+      "thinking": "high"
+    },
+    "executing": {
+      "model": {
+        "provider": "omniroute",
+        "id": "cx/gpt-5.6-terra"
+      },
+      "thinking": "high"
+    },
+    "reviewing": {
+      "model": {
+        "provider": "omniroute",
+        "id": "cx/gpt-5.6-sol"
+      },
+      "thinking": "high"
+    }
+  }
+}
