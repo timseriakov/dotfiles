@@ -329,5 +329,8 @@ abbr -a rss eilmeldung
 abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'
 abbr -a hunk-kill 'pkill -f hunk.daemon'
 
+abbr -a locks wlocks
+abbr -a dnss dnsglobe
+
 abbr -a dbq default-browser-qutebrowser
 abbr -a dbh default-browser-helium
