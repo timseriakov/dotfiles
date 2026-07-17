@@ -8,7 +8,8 @@ tmuxSeshLauncher.init()
 
 ut2004JumpTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp }, function(event)
 	local app = hs.application.frontmostApplication()
-	if app == nil or app:bundleID() ~= "com.oldunreal.UT2004" or event:getKeyCode() ~= hs.keycodes.map.space then
+	local isUT2004 = app ~= nil and (app:bundleID() == "com.oldunreal.UT2004" or app:name() == "UT2004")
+	if not isUT2004 or event:getKeyCode() ~= hs.keycodes.map.space then
 		return false
 	end
 
@@ -23,11 +24,12 @@ ut2004JumpTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown, hs.eventtap.e
 
 	local isRepeat = event:getProperty(hs.eventtap.event.properties.keyboardEventAutorepeat) == 1
 	if not isRepeat then
-		hs.eventtap.keyStroke({}, "f13", 0)
+		hs.eventtap.keyStroke({}, "h", 0)
 		hs.timer.doAfter(0.34, function()
 			local frontmost = hs.application.frontmostApplication()
-			if frontmost ~= nil and frontmost:bundleID() == "com.oldunreal.UT2004" then
-				hs.eventtap.keyStroke({}, "f13", 0)
+			local gameActive = frontmost ~= nil and (frontmost:bundleID() == "com.oldunreal.UT2004" or frontmost:name() == "UT2004")
+			if gameActive then
+				hs.eventtap.keyStroke({}, "h", 0)
 			end
 		end)
 	end
