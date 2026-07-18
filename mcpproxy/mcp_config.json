@@ -5,21 +5,13 @@
   "debug_search": false,
   "mcpServers": [
     {
-      "name": "lightpanda",
-      "protocol": "stdio",
-      "command": "fish",
-      "args": ["-lc", "gomcp stdio"],
-      "oauth": null,
-      "enabled": true,
-      "quarantined": false,
-      "created": "2025-12-21T22:46:44.826522+03:00",
-      "updated": "2026-04-01T14:54:24.475502+03:00"
-    },
-    {
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
@@ -28,7 +20,7 @@
       "enabled": false,
       "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-04-01T14:54:24.484153+03:00"
+      "updated": "2026-07-18T15:09:31.307185+03:00"
     },
     {
       "name": "shoogle",
@@ -38,13 +30,15 @@
       "enabled": true,
       "quarantined": false,
       "created": "2026-03-16T13:45:57.221182+03:00",
-      "updated": "2026-04-01T14:54:24.499111+03:00"
+      "updated": "2026-07-18T15:09:31.315198+03:00"
     }
   ],
   "tools_limit": 15,
   "tool_response_limit": 20000,
   "call_tool_timeout": "2m0s",
   "max_result_size_chars": 500000,
+  "toon_output": "off",
+  "toon_min_savings_pct": 15,
   "environment": {
     "inherit_system_safe": true,
     "allowed_system_vars": [
@@ -141,49 +135,16 @@
   },
   "registries": [
     {
-      "id": "pulse",
-      "name": "Pulse MCP",
-      "description": "Browse and discover MCP use-cases, servers, clients, and news",
-      "url": "https://www.pulsemcp.com/",
-      "servers_url": "https://api.pulsemcp.com/v0beta/servers",
-      "tags": ["verified"],
-      "protocol": "custom/pulse"
-    },
-    {
       "id": "docker-mcp-catalog",
       "name": "Docker MCP Catalog",
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": ["verified"],
-      "protocol": "custom/docker"
-    },
-    {
-      "id": "fleur",
-      "name": "Fleur",
-      "description": "Fleur is the app store for Claude",
-      "url": "https://www.fleurmcp.com/",
-      "servers_url": "https://raw.githubusercontent.com/fleuristes/app-registry/refs/heads/main/apps.json",
-      "tags": ["verified"],
-      "protocol": "custom/fleur"
-    },
-    {
-      "id": "azure-mcp-demo",
-      "name": "Azure MCP Registry Demo",
-      "description": "A reference implementation of MCP registry using Azure API Center",
-      "url": "https://demo.registry.azure-mcp.net/",
-      "servers_url": "https://demo.registry.azure-mcp.net/v0/servers",
-      "tags": ["verified", "demo", "azure", "reference"],
-      "protocol": "mcp/v0"
-    },
-    {
-      "id": "remote-mcp-servers",
-      "name": "Remote MCP Servers",
-      "description": "Community-maintained list of remote Model Context Protocol servers",
-      "url": "https://remote-mcp-servers.com/",
-      "servers_url": "https://remote-mcp-servers.com/api/servers",
-      "tags": ["verified", "community", "remote"],
-      "protocol": "custom/remote"
+      "tags": [
+        "verified"
+      ],
+      "protocol": "custom/docker",
+      "provenance": "official"
     }
   ],
   "features": {
@@ -220,6 +181,7 @@
   "code_execution_pool_size": 10,
   "activity_retention_days": 90,
   "activity_max_records": 100000,
+  "activity_max_size_mb": 256,
   "activity_max_response_size": 65536,
   "activity_cleanup_interval_min": 60,
   "intent_declaration": {
@@ -242,11 +204,40 @@
       "sensitive_file": true
     }
   },
+  "output_validation": {
+    "mode": "warn",
+    "max_bytes": 5242880,
+    "max_depth": 64,
+    "missing_structured_content": "allow"
+  },
+  "output_sanitisation": {
+    "response_action": "spotlight",
+    "strip_classes": [
+      "ansi",
+      "c0c1",
+      "bidi",
+      "zero_width"
+    ],
+    "max_redactions": 100
+  },
   "telemetry": {
     "anonymous_id": "e63d2692-4922-4c7c-b3f5-17ce4c009f8d",
     "anonymous_id_created_at": "2026-05-07T07:14:02Z",
-    "last_startup_outcome": "db_locked",
+    "last_startup_outcome": "success",
     "notice_shown": true
+  },
+  "observability": {
+    "usage_cache_ttl": "5s",
+    "usage_persist_interval": "30s",
+    "metrics": {
+      "enabled": false
+    },
+    "tracing": {
+      "enabled": false,
+      "protocol": "http",
+      "endpoint": "localhost:4318",
+      "sample_rate": 0.1
+    }
   },
   "routing_mode": "retrieve_tools"
 }
