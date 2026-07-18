@@ -154,3 +154,5 @@ dev:
 treeFilterMode: user-only
 defaultThinkingLevel: auto
 autocompleteMaxVisible: 15
+edit:
+  enforceSeenLines: true
