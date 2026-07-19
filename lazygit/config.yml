@@ -1,3 +1,10 @@
+keybinding:
+  universal:
+    prevPage: <c-u>
+    nextPage: <c-d>
+    scrollUpMain-alt2: <disabled>
+    scrollDownMain-alt2: <disabled>
+
 customCommands:
   - key: "L"
     context: "files"
