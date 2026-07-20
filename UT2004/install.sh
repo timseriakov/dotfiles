@@ -11,6 +11,8 @@ CONFIGS=(
   "User.ini"
   "UPlaylists.ini"
   "TargetPractice.ini"
+  "utcompv17a.u"
+  "utcompldg.u"
 )
 
 bail_if_missing() {
