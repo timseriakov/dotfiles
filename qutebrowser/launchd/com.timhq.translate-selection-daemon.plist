@@ -7,15 +7,15 @@
 
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/tim/.volta/bin/node</string>
-    <string>/Users/tim/dev/dotfiles/qutebrowser/userscripts/translate-selection-daemon</string>
+    <string>/Users/tim/dev/dotfiles/qutebrowser/userscripts/translate-selection-daemon-control</string>
+    <string>start</string>
   </array>
 
   <key>RunAtLoad</key>
   <true/>
 
   <key>KeepAlive</key>
-  <true/>
+  <false/>
 
   <key>WorkingDirectory</key>
   <string>/Users/tim/dev/dotfiles/qutebrowser/userscripts</string>
