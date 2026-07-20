@@ -14,73 +14,73 @@ providers:
       supportsToolChoice: true
     models:
       - id: reasoning-main
-        name: Reasoning Main OMNi
+        name: Reasoning Main
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 8192
       - id: reasoning-cheap
-        name: Reasoning Cheap OMNi
+        name: Reasoning Cheap
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 8192
       - id: coding-main
-        name: Coding Main OMNi
+        name: Coding Main
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: coding-cheap
-        name: Coding Cheap OMNi
+        name: Coding Cheap
         reasoning: true
         input: [text]
         contextWindow: 409600
         maxTokens: 131072
       - id: deep-premium
-        name: Deep Premium OMNi
+        name: Deep Premium
         reasoning: true
         input: [text]
         contextWindow: 400000
         maxTokens: 8192
       - id: research-fast
-        name: Research Fast OMNi
+        name: Research Fast
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 8192
       - id: quick-free
-        name: Quick Free OMNi
+        name: Quick Free
         reasoning: true
         input: [text]
         contextWindow: 1000000
         maxTokens: 384000
       - id: writing-cheap
-        name: Writing Cheap OMNi
+        name: Writing Cheap
         reasoning: false
         input: [text]
         contextWindow: 409600
         maxTokens: 131072
       - id: opencode-zen/deepseek-v4-flash-free
-        name: DeepSeek V4 Flash Free OMNi
+        name: V4 Flash
         reasoning: true
         input: [text]
         contextWindow: 1000000
         maxTokens: 384000
       - id: opencode-zen/mimo-v2.5-free
-        name: MiMo V2.5 Free OMNi
+        name: MiMo V2.5 Free
         reasoning: true
         input: [text, image]
         contextWindow: 1048576
         maxTokens: 131072
       - id: opencode-zen/nemotron-3-ultra-free
-        name: Nemotron 3 Ultra Free OMNi
+        name: Nemotron 3 Ultra Free
         reasoning: true
         input: [text]
         contextWindow: 200000
         maxTokens: 131072
       - id: cx/gpt-5.5
-        name: CX GPT 5.5 OMNi
+        name: 5.5 _
         reasoning: true
         input: [text, image]
         contextWindow: 400000
@@ -107,61 +107,61 @@ providers:
         contextWindow: 372000
         maxTokens: 128000
       - id: cx/gpt-5.5-medium
-        name: CX GPT 5.5 Medium OMNi
+        name: 5.5 Medium
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 128000
       - id: cx/gpt-5.5-high
-        name: CX GPT 5.5 High OMNi
+        name: 5.5 High
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 128000
       - id: cx/gpt-5.5-xhigh
-        name: CX GPT 5.5 XHigh OMNi
+        name: 5.5 XHigh
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 128000
       - id: cx/gpt-5.5-low
-        name: CX GPT 5.5 Low OMNi
+        name: 5.5 Low
         reasoning: true
         input: [text, image]
         contextWindow: 400000
         maxTokens: 128000
       - id: cx/gpt-5.4
-        name: CX GPT 5.4 OMNi
+        name: 5.4 _
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 128000
       - id: cx/gpt-5.4-xhigh
-        name: CX GPT 5.4 XHigh OMNi
+        name: 5.4 XHigh
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 128000
       - id: cx/gpt-5.4-high
-        name: CX GPT 5.4 High OMNi
+        name: 5.4 High
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 128000
       - id: cx/gpt-5.4-medium
-        name: CX GPT 5.4 Medium OMNi
+        name: 5.4 Medium
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 128000
       - id: cx/gpt-5.4-low
-        name: CX GPT 5.4 Low OMNi
+        name: 5.4 Low
         reasoning: true
         input: [text, image]
         contextWindow: 200000
         maxTokens: 128000
       - id: cx/gpt-5.4-mini
-        name: CX GPT 5.4 Mini OMNi
+        name: 5.4 Mini
         reasoning: true
         input: [text, image]
         contextWindow: 409600
@@ -179,7 +179,7 @@ providers:
       maxTokensField: max_tokens
     models:
       - id: deepseek-v4-flash-free
-        name: DeepSeek V4 Flash Free
+        name: V4 Flash
         reasoning: true
         input: [text]
         contextWindow: 1000000
