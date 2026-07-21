@@ -1029,6 +1029,70 @@ function patchCustomEditor(content) {
   return out;
 }
 
+function patchUltrathink(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `const ULTRATHINK_WORD = magicKeywordRegex("ultrathink");`,
+      `const ULTRATHINK_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
+    ],
+    `const ULTRATHINK_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
+    "ultrathink ulw alias detection",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\tprobe: /ultrathink/,\n\thighlight: magicKeywordRegex("ultrathink", "g"),`,
+      `\tprobe: /ultrathink|ulw/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
+    ],
+    `\tprobe: /ultrathink|ulw/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
+    "ultrathink ulw alias highlight",
+  );
+  out = r.content;
+  return out;
+}
+
+function patchMagicKeywords(content) {
+  return replaceAny(
+    content,
+    [
+      `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+      `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+    ],
+    `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+    "magic keyword ulw fast probe",
+  ).content;
+}
+
+function patchExtensionLoader(content) {
+  return replaceAny(
+    content,
+    [
+      `function isExtensionFile(name: string): boolean {\n\treturn name.endsWith(".ts") || name.endsWith(".js");\n}`,
+      `function isExtensionFile(name: string): boolean {\n\treturn !name.includes(".test.") && (name.endsWith(".ts") || name.endsWith(".js"));\n}`,
+    ],
+    `function isExtensionFile(name: string): boolean {\n\treturn !name.includes(".test.") && (name.endsWith(".ts") || name.endsWith(".js"));\n}`,
+    "extension discovery skips test files",
+  ).content;
+}
+
+function patchDiscoveryHelpers(content) {
+  return replaceAny(
+    content,
+    [
+      `\tfor (const match of directFiles) {\n\t\tif (match.path.includes("/")) continue;\n\t\tdiscovered.add(path.join(dir, match.path));\n\t}`,
+      `\tfor (const match of directFiles) {\n\t\tif (match.path.includes("/") || match.path.includes(".test.")) continue;\n\t\tdiscovered.add(path.join(dir, match.path));\n\t}`,
+    ],
+    `\tfor (const match of directFiles) {\n\t\tif (match.path.includes("/") || match.path.includes(".test.")) continue;\n\t\tdiscovered.add(path.join(dir, match.path));\n\t}`,
+    "extension discovery skips direct test files",
+  ).content;
+}
+
 try {
   setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
@@ -1060,6 +1124,10 @@ try {
   patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
+  patchFile("modes/ultrathink.ts", patchUltrathink);
+  patchFile("modes/magic-keywords.ts", patchMagicKeywords);
+  patchFile("extensibility/extensions/loader.ts", patchExtensionLoader);
+  patchFile("discovery/helpers.ts", patchDiscoveryHelpers);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);
   patchTuiFile("components/editor.ts", patchEditorGutterWidth);
   patchTuiFile("terminal.ts", patchTuiTerminal);
