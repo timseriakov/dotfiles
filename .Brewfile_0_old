@@ -191,7 +191,7 @@ brew "trash-cli", link: true
 brew "tree"
 brew "unar"
 brew "unzip"
-brew "vercel-cli"
+brew "vercel"
 brew "viu"
 brew "vnstat"
 brew "watchman"

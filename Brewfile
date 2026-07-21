@@ -22,7 +22,7 @@ tap "koekeishiya/formulae"
 tap "libsql/sqld"
 tap "oven-sh/bun"
 tap "skardyy/mcat"
-tap "sst/tap"
+tap "anomalyco/tap"
 tap "tokuhirom/tap"
 tap "tursodatabase/tap"
 # JPEG image codec that aids compression and decompression
@@ -101,6 +101,8 @@ brew "cloc"
 brew "cmake"
 # Console Matrix
 brew "cmatrix"
+# Terminal user interface client for Discord
+brew "concord"
 # Interactive terminal based UI application for tracking cryptocurrencies
 brew "cointop"
 # GNU File, Shell, and Text utilities
@@ -388,7 +390,7 @@ brew "unzip"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Command-line interface for Vercel
-brew "vercel-cli"
+brew "vercel"
 # Simple terminal image viewer written in Rust
 brew "viu"
 # Console-based network traffic monitor
@@ -429,7 +431,7 @@ brew "oven-sh/bun/bun"
 # a powerfull extended cat command, to cat all the things you couldn't before
 brew "skardyy/mcat/mcat"
 # The AI coding agent built for the terminal.
-brew "sst/tap/opencode"
+brew "anomalyco/tap/opencode"
 # Docker Compose Viewer - A TUI tool for monitoring Docker Compose applications
 brew "tokuhirom/tap/dcv"
 brew "tursodatabase/tap/turso"
