@@ -341,15 +341,16 @@ function patchPiAiSchemaNormalize(content) {
   return out;
 }
 
-function patchPlannotatorBrowser(content) {
+function patchPlannotatorBrowserRuntime(content) {
   let out = content;
   let r;
 
-  if (!out.includes(`import { homedir, tmpdir } from "node:os";`)) {
+  if (!out.includes(`import { homedir } from "node:os";`)) {
     r = replaceOnce(
       out,
-      `import { tmpdir } from "node:os";`,
-      `import { homedir, tmpdir } from "node:os";`,
+      `import { fileURLToPath } from "node:url";`,
+      `import { fileURLToPath } from "node:url";
+import { homedir } from "node:os";`,
       "plannotator browser homedir import",
     );
     out = r.content;
@@ -358,31 +359,83 @@ function patchPlannotatorBrowser(content) {
   r = replaceAny(
     out,
     [
-      `const __dirname = dirname(fileURLToPath(import.meta.url));
-let planHtmlContent = "";
-let reviewHtmlContent = "";
+      `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
+const planHtmlPath = resolve(moduleDirectory, "plannotator.html");
+const reviewHtmlPath = resolve(moduleDirectory, "review-editor.html");
 
-try {
-	planHtmlContent = readFileSync(resolve(__dirname, "plannotator.html"), "utf-8");
-} catch {
-	// built assets unavailable
+let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
+let planHtmlContent: string | undefined;
+let reviewHtmlContent: string | undefined;
+
+function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
+	if (cachedContent) return true;
+	try {
+		const stats = statSync(path);
+		return stats.isFile() && stats.size > 0;
+	} catch {
+		return false;
+	}
 }
 
-try {
-	reviewHtmlContent = readFileSync(resolve(__dirname, "review-editor.html"), "utf-8");
-} catch {
-	// built assets unavailable
+function readBrowserAsset(path: string, cachedContent: string | undefined): string {
+	if (cachedContent !== undefined) return cachedContent;
+	try {
+		return readFileSync(path, "utf-8");
+	} catch {
+		return "";
+	}
+}
+
+/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
+export function hasPlanBrowserHtml(): boolean {
+	return hasReadableAsset(planHtmlPath, planHtmlContent);
+}
+
+/** Return whether the built code-review UI is available without reading it into memory. */
+export function hasReviewBrowserHtml(): boolean {
+	return hasReadableAsset(reviewHtmlPath, reviewHtmlContent);
+}
+
+/** Read and cache the built plan/annotation/archive UI on first use. */
+export function getPlanBrowserHtml(): string {
+	const content = readBrowserAsset(planHtmlPath, planHtmlContent);
+	if (content) planHtmlContent = content;
+	return content;
+}
+
+/** Read and cache the built code-review UI on first use. */
+export function getReviewBrowserHtml(): string {
+	const content = readBrowserAsset(reviewHtmlPath, reviewHtmlContent);
+	if (content) reviewHtmlContent = content;
+	return content;
 }`,
-      `const __dirname = dirname(fileURLToPath(import.meta.url));
-const pluginAssetDir = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
-let planHtmlContent = "";
-let reviewHtmlContent = "";
+      `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
+const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
+const planHtmlPaths = [resolve(moduleDirectory, "plannotator.html"), resolve(pluginAssetDirectory, "plannotator.html")];
+const reviewHtmlPaths = [resolve(moduleDirectory, "review-editor.html"), resolve(pluginAssetDirectory, "review-editor.html")];
 
-function readBundledAsset(fileName: string): string {
-	const candidates = [resolve(__dirname, fileName), resolve(pluginAssetDir, fileName)];
-	for (const candidate of candidates) {
+let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
+let planHtmlContent: string | undefined;
+let reviewHtmlContent: string | undefined;
+
+function hasReadableAsset(paths: string[], cachedContent: string | undefined): boolean {
+	if (cachedContent) return true;
+	for (const path of paths) {
 		try {
-			return readFileSync(candidate, "utf-8");
+			const stats = statSync(path);
+			if (stats.isFile() && stats.size > 0) return true;
+		} catch {
+			// try the next candidate
+		}
+	}
+	return false;
+}
+
+function readBrowserAsset(paths: string[], cachedContent: string | undefined): string {
+	if (cachedContent !== undefined) return cachedContent;
+	for (const path of paths) {
+		try {
+			return readFileSync(path, "utf-8");
 		} catch {
 			// try the next candidate
 		}
@@ -390,19 +443,57 @@ function readBundledAsset(fileName: string): string {
 	return "";
 }
 
-planHtmlContent = readBundledAsset("plannotator.html");
-reviewHtmlContent = readBundledAsset("review-editor.html");`,
+/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
+export function hasPlanBrowserHtml(): boolean {
+	return hasReadableAsset(planHtmlPaths, planHtmlContent);
+}
+
+/** Return whether the built code-review UI is available without reading it into memory. */
+export function hasReviewBrowserHtml(): boolean {
+	return hasReadableAsset(reviewHtmlPaths, reviewHtmlContent);
+}
+
+/** Read and cache the built plan/annotation/archive UI on first use. */
+export function getPlanBrowserHtml(): string {
+	const content = readBrowserAsset(planHtmlPaths, planHtmlContent);
+	if (content) planHtmlContent = content;
+	return content;
+}
+
+/** Read and cache the built code-review UI on first use. */
+export function getReviewBrowserHtml(): string {
+	const content = readBrowserAsset(reviewHtmlPaths, reviewHtmlContent);
+	if (content) reviewHtmlContent = content;
+	return content;
+}`,
     ],
-    `const __dirname = dirname(fileURLToPath(import.meta.url));
-const pluginAssetDir = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
-let planHtmlContent = "";
-let reviewHtmlContent = "";
+    `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
+const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
+const planHtmlPaths = [resolve(moduleDirectory, "plannotator.html"), resolve(pluginAssetDirectory, "plannotator.html")];
+const reviewHtmlPaths = [resolve(moduleDirectory, "review-editor.html"), resolve(pluginAssetDirectory, "review-editor.html")];
 
-function readBundledAsset(fileName: string): string {
-	const candidates = [resolve(__dirname, fileName), resolve(pluginAssetDir, fileName)];
-	for (const candidate of candidates) {
+let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
+let planHtmlContent: string | undefined;
+let reviewHtmlContent: string | undefined;
+
+function hasReadableAsset(paths: string[], cachedContent: string | undefined): boolean {
+	if (cachedContent) return true;
+	for (const path of paths) {
 		try {
-			return readFileSync(candidate, "utf-8");
+			const stats = statSync(path);
+			if (stats.isFile() && stats.size > 0) return true;
+		} catch {
+			// try the next candidate
+		}
+	}
+	return false;
+}
+
+function readBrowserAsset(paths: string[], cachedContent: string | undefined): string {
+	if (cachedContent !== undefined) return cachedContent;
+	for (const path of paths) {
+		try {
+			return readFileSync(path, "utf-8");
 		} catch {
 			// try the next candidate
 		}
@@ -410,14 +501,36 @@ function readBundledAsset(fileName: string): string {
 	return "";
 }
 
-planHtmlContent = readBundledAsset("plannotator.html");
-reviewHtmlContent = readBundledAsset("review-editor.html");`,
+/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
+export function hasPlanBrowserHtml(): boolean {
+	return hasReadableAsset(planHtmlPaths, planHtmlContent);
+}
+
+/** Return whether the built code-review UI is available without reading it into memory. */
+export function hasReviewBrowserHtml(): boolean {
+	return hasReadableAsset(reviewHtmlPaths, reviewHtmlContent);
+}
+
+/** Read and cache the built plan/annotation/archive UI on first use. */
+export function getPlanBrowserHtml(): string {
+	const content = readBrowserAsset(planHtmlPaths, planHtmlContent);
+	if (content) planHtmlContent = content;
+	return content;
+}
+
+/** Read and cache the built code-review UI on first use. */
+export function getReviewBrowserHtml(): string {
+	const content = readBrowserAsset(reviewHtmlPaths, reviewHtmlContent);
+	if (content) reviewHtmlContent = content;
+	return content;
+}`,
     "plannotator browser asset fallback",
   );
   out = r.content;
 
   return out;
 }
+
 
 function patchStatusLineTs(content) {
   let out = content;
@@ -559,6 +672,46 @@ function patchSegments(content) {
     "segments path basename only",
   );
   out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `		if (modelName.startsWith("Claude ")) {
+			modelName = modelName.slice(7);
+		}`,
+      `		if (modelName.startsWith("Claude ")) {
+			modelName = modelName.slice(7);
+		}
+		if (state.model?.provider === "omniroute/cx" && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}`,
+      `		if (modelName.startsWith("Claude ")) {
+			modelName = modelName.slice(7);
+		}
+		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}`,
+    ],
+    `		if (modelName.startsWith("Claude ")) {
+			modelName = modelName.slice(7);
+		}
+		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}`,
+    "segments omniroute suffix",
+  );
+  out = r.content;
+  out = out.replace(
+    `		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}
+		if (state.model?.provider === "omniroute/cx" && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}`,
+    `		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
+			modelName = \`\${modelName} OMNi\`;
+		}`,
+  );
 
   r = replaceAny(
     out,
@@ -1138,10 +1291,10 @@ try {
   patchAbsoluteFile(
     path.join(
       home,
-      ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
+      ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser-runtime.ts",
     ),
     "plannotator browser asset fallback",
-    patchPlannotatorBrowser,
+    patchPlannotatorBrowserRuntime,
   );
   patchFile("modes/components/custom-editor.ts", patchCustomEditor);
   rebuildBundledCli();
