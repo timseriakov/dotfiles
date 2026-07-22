@@ -149,6 +149,7 @@ abbr -a ge-up 'brew install antigravity-cli'
 abbr -a add-mcp 'npx -y add-mcp'
 abbr -a autoskills 'npx -y autoskills'
 abbr -a o omp
+abbr -a ow 'omp -p "/mb-warm-context"'
 abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs'
 abbr -a oc 'omp -c'
 abbr -a occ 'omp -c'
