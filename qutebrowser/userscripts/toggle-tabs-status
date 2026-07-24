@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
 
 if [[ -z "${QUTE_FIFO:-}" || ! -p "$QUTE_FIFO" ]]; then
   echo "Error: Must be run as qutebrowser userscript (QUTE_FIFO not set)" >&2
