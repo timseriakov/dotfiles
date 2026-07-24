@@ -850,10 +850,12 @@ function patchAssistantMessage(content) {
       [
         "new Markdown(content.text.trim(), 1, 0, getMarkdownTheme())",
         "new Markdown(trimmed, 1, 0, getMarkdownTheme())",
+        "new Markdown(trimmed, 1, 0, getMarkdownTheme(), mdOptions)",
         "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
         "new Markdown(trimmed, 0, 0, getMarkdownTheme())",
+        "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions)",
       ],
-      "new Markdown(trimmed, 0, 0, getMarkdownTheme())",
+      "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions)",
       "assistant text padding",
     ],
     [
@@ -880,7 +882,7 @@ function patchAssistantMessage(content) {
         'new Text(theme.fg("error", abortMessage), 1, 0)',
         'new Text(theme.fg("error", abortMessage), 0, 0)',
       ],
-      'new Text(theme.fg("error", errorPresentation.text), 1, 0)',
+      'new Text(theme.fg("error", errorPresentation.text), 0, 0)',
       "assistant abort padding",
     ],
   ];
