@@ -149,7 +149,7 @@ BINDING_SPECS: list[BindingSpec] = [
     ),
     BindingSpec(
         leader + "uh",
-        "config-cycle statusbar.show always in-mode ;; config-cycle tabs.show multiple never",
+        "spawn --userscript toggle-tabs-status",
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(

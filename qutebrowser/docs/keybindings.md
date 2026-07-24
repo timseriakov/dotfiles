@@ -144,7 +144,7 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 | ------------------------------- | ----------------------------------------------------------------------------------- |
 | <kbd>Leader</kbd> <kbd>uy</kbd> | config-cycle tabs.show multiple never                                               |
 | <kbd>Leader</kbd> <kbd>uu</kbd> | config-cycle statusbar.show always in-mode                                          |
-| <kbd>Leader</kbd> <kbd>uh</kbd> | config-cycle statusbar.show always in-mode ;; config-cycle tabs.show multiple never |
+| <kbd>Leader</kbd> <kbd>uh</kbd> | toggle tabs/status together (own state, ignores current config)                     |
 | <kbd>Leader</kbd> <kbd>ui</kbd> | toggle webpage theme (atomic light/dark pair)                                       |
 | <kbd>Leader</kbd> <kbd>ua</kbd> | :set content.autoplay true ;; message-info 'Autoplay enabled'                       |
 | <kbd>Leader</kbd> <kbd>uf</kbd> | :set content.autoplay false ;; message-info 'Autoplay disabled'                     |

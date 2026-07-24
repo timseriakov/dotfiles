@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -z "${QUTE_FIFO:-}" || ! -p "$QUTE_FIFO" ]]; then
+  echo "Error: Must be run as qutebrowser userscript (QUTE_FIFO not set)" >&2
+  exit 1
+fi
+
+state_dir="${QUTE_DATA_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/qutebrowser}"
+state_file="$state_dir/tabs-status-hidden"
+mkdir -p "$state_dir"
+
+hidden=0
+[[ -r "$state_file" ]] && read -r hidden <"$state_file"
+
+if [[ "$hidden" == "1" ]]; then
+  printf '%s\n' \
+    'set statusbar.show always' \
+    'set tabs.show multiple' \
+    "message-info 'Tabs/status shown'" >>"$QUTE_FIFO"
+  printf '0\n' >"$state_file"
+else
+  printf '%s\n' \
+    'set statusbar.show in-mode' \
+    'set tabs.show never' \
+    "message-info 'Tabs/status hidden'" >>"$QUTE_FIFO"
+  printf '1\n' >"$state_file"
+fi
