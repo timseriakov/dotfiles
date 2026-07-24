@@ -11,15 +11,25 @@ state_dir="${QUTE_DATA_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/qutebrowser}"
 state_file="$state_dir/tabs-status-hidden"
 mkdir -p "$state_dir"
 
-hidden=0
-[[ -r "$state_file" ]] && read -r hidden <"$state_file"
-
-if [[ "$hidden" == "1" ]]; then
-  echo "set statusbar.show always" >> "$QUTE_FIFO"
-  echo "set tabs.show multiple" >> "$QUTE_FIFO"
-  echo 0 > "$state_file"
+if [[ ! -f "$state_file" ]]; then
+  # First run: unconditionally hide both
+  {
+    echo "set statusbar.show in-mode"
+    echo "set tabs.show never"
+  } >> "$QUTE_FIFO"
+  printf 0 > "$state_file"
+elif [[ "$(cat "$state_file")" == "0" ]]; then
+  # Hidden → show both
+  {
+    echo "set statusbar.show always"
+    echo "set tabs.show multiple"
+  } >> "$QUTE_FIFO"
+  printf 1 > "$state_file"
 else
-  echo "set statusbar.show in-mode" >> "$QUTE_FIFO"
-  echo "set tabs.show never" >> "$QUTE_FIFO"
-  echo 1 > "$state_file"
+  # Shown → hide both
+  {
+    echo "set statusbar.show in-mode"
+    echo "set tabs.show never"
+  } >> "$QUTE_FIFO"
+  printf 0 > "$state_file"
 fi

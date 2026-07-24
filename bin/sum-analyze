@@ -80,6 +80,13 @@ render_output() {
   cat
 }
 
+start_omp() {
+  local summary_file="$1"
+  local source_url="$2"
+  [[ -s "$summary_file" ]] || die "summary generation failed (empty output)"
+  exec omp "@$summary_file" "Вот саммари страницы: $source_url. Задавай вопросы и продолжай обсуждение."
+}
+
 main() {
   local render_mode="plain"
   [[ "${1:-}" == "--mcat" ]] && { render_mode="pager"; shift; }
@@ -98,9 +105,12 @@ main() {
   case "$mode" in
     quick|deep)
       if [[ "$omp_mode" == "1" ]]; then
-        local prompt_suffix=""
-        [[ "$mode" == "deep" ]] && prompt_suffix=" Сделай глубокий анализ."
-        exec omp "Изучи ссылку: $sanitized.$prompt_suffix"
+        local summary_file source_context
+        summary_file="$(mktemp /tmp/sum-analyze-omp.XXXXXX).md"
+        source_context="$sanitized"
+        [[ "$mode" == "deep" ]] && source_context="$source_context. Сделай глубокий анализ"
+        extract_markdown "$sanitized" | summarize - --plain --prompt-file "$(prompt_template_path "$mode")" --length "$([[ "$mode" == "deep" ]] && echo xxl || echo medium)" $([[ "$mode" == "deep" ]] && echo --model quality) >"$summary_file"
+        start_omp "$summary_file" "$source_context"
       fi
       local prompt_template prompt_runtime
       prompt_template="$(prompt_template_path "$mode")"
@@ -119,13 +129,19 @@ main() {
       ;;
     summary)
       if [[ "$omp_mode" == "1" ]]; then
-        exec omp "Изучи ссылку: $sanitized."
+        local summary_file
+        summary_file="$(mktemp /tmp/sum-analyze-omp.XXXXXX).md"
+        summarize --plain "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) >"$summary_file"
+        start_omp "$summary_file" "$sanitized"
       fi
       summarize --plain "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       ;;
     quality-summary)
       if [[ "$omp_mode" == "1" ]]; then
-        exec omp "Изучи ссылку: $sanitized."
+        local summary_file
+        summary_file="$(mktemp /tmp/sum-analyze-omp.XXXXXX).md"
+        summarize --plain --model quality "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) >"$summary_file"
+        start_omp "$summary_file" "$sanitized"
       fi
       summarize --plain --model quality "$sanitized" 2> >(grep -v "^Decompression error: ZlibError$" >&2) | render_output "$render_mode"
       ;;
