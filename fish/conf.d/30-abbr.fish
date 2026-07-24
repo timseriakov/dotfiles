@@ -295,6 +295,8 @@ abbr -a webm2telegram-gif 'ffmpeg -i w.webm \
 -an -loop 0 output.mp4'
 abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
+abbr -a who-lock-input "ioreg -l -w 0 | grep -o 'kCGSSessionSecureInputPID\"=[0-9]*' | grep -o '[0-9]*' | head -1 | xargs ps -o pid,comm -p"
+
 # Disabled OpenCode abbreviations
 # abbr -a oc omo
 # abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
