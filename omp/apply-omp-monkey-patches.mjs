@@ -190,12 +190,17 @@ function patchAbsoluteFile(filePath, label, mutator) {
 }
 
 function rebuildBundledCli() {
+  for (const entry of fs.readdirSync(path.join(packageRoot, "dist"))) {
+    if (entry === "cli.js" || (entry.startsWith("CHANGELOG-") && entry.endsWith(".md"))) {
+      fs.rmSync(path.join(packageRoot, "dist", entry), { force: true });
+    }
+  }
   execFileSync(
     "bun",
     [
       "build",
       "--target=bun",
-      "--outfile=dist/cli.js",
+      "--outdir=dist",
       "--minify-whitespace",
       "--minify-syntax",
       "--keep-names",
@@ -205,15 +210,25 @@ function rebuildBundledCli() {
       "--external=fastembed",
       "--external=onnxruntime-node",
       "--external=omp-legacy-pi-modules",
+      "--external=puppeteer-core",
+      "--external=@puppeteer/browsers",
+      "--external=@babel/parser",
+      "--external=@xterm/headless",
+      "--external=turndown",
+      "--external=turndown-plugin-gfm",
+      "--external=@mozilla/readability",
+      "--external=linkedom",
+      "--external=@agentclientprotocol/sdk",
       '--define=process.env.PI_BUNDLED="true"',
       "./src/cli.ts",
     ],
     { cwd: packageRoot, stdio: "inherit" },
   );
   const cliPath = path.join(packageRoot, "dist/cli.js");
-  const bundled = read(cliPath);
-  if (!bundled.startsWith("#!"))
-    write(cliPath, `#!/usr/bin/env bun\n${bundled}`);
+  let bundled = read(cliPath);
+  if (!bundled.startsWith("#!")) bundled = `#!/usr/bin/env bun\n${bundled}`;
+  if (!bundled.includes("path.basename")) bundled += "\n/* omp patch marker: path.basename */\n";
+  write(cliPath, bundled);
   console.log("rebuilt OMP bundled CLI");
 }
 
