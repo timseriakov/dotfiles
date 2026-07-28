@@ -22,6 +22,7 @@
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
  * - Kitty image graphics: wrap APC sequences in tmux passthrough, including Unicode placeholder placement
+ * - Goal tool: ignore model-provided `token_budget` so goals stay unbounded while still counting usage
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -1198,6 +1199,24 @@ function patchCustomEditor(content) {
   out = r.content;
   return out;
 }
+function patchGoalTool(content) {
+  return replaceAny(
+    content,
+    [
+      `	const tokenBudget = params.token_budget;
+	if (tokenBudget !== undefined && (!Number.isInteger(tokenBudget) || tokenBudget <= 0)) {
+		throw new ToolError("token_budget must be a positive integer when provided");
+	}
+	return { objective, tokenBudget };`,
+      `	const tokenBudget = undefined;
+	return { objective, tokenBudget };`,
+    ],
+    `	const tokenBudget = undefined;
+	return { objective, tokenBudget };`,
+    "goal ignores model token budget",
+  ).content;
+}
+
 
 function patchUltrathink(content) {
   let out = content;
@@ -1294,6 +1313,7 @@ try {
   patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
+  patchFile("goals/tools/goal-tool.ts", patchGoalTool);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
   patchFile("extensibility/extensions/loader.ts", patchExtensionLoader);
