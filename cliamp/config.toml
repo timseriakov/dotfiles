@@ -3,7 +3,7 @@ provider = "radio"
 shuffle = false
 theme = "nord"
 
-visualizer = "BarsDot"
+visualizer = "Terrain"
 repeat = "All"
 eq_preset = "Custom"
 eq = [-3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
