@@ -1,22 +1,22 @@
-mcp: 
+mcp:
   enableProjectConfig: true
-skills: 
+skills:
   enableClaudeUser: false
   enableClaudeProject: false
-commands: 
+commands:
   enableClaudeUser: false
   enableClaudeProject: false
   enableOpencodeUser: false
   enableOpencodeProject: false
-astGrep: 
+astGrep:
   enabled: true
-startup: 
+startup:
   quiet: false
-theme: 
+theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
-compaction: 
+compaction:
   enabled: true
   strategy: context-full
   thresholdPercent: 60
@@ -25,45 +25,45 @@ compaction:
   idleEnabled: true
   idleThresholdTokens: 150000
   idleTimeoutSeconds: 180
-statusLine: 
+statusLine:
   preset: custom
   separator: none
-  leftSegments: 
+  leftSegments:
     - path
     - git
     - mode
     - context_pct
     - model
-  rightSegments: 
+  rightSegments:
     - session_name
-  segmentOptions: 
-    path: 
+  segmentOptions:
+    path:
       abbreviate: false
       maxLength: 32
       stripWorkPrefix: true
       lastSegment: true
-    git: 
+    git:
       showBranch: true
       showStaged: true
       showUnstaged: true
       showUntracked: true
       compactDirty: true
       showAheadBehind: true
-    model: 
+    model:
       showThinkingLevel: false
   sessionAccent: false
   showHookStatus: false
-modelRoles: 
+modelRoles:
   default: omniroute/cx/gpt-5.5-medium:medium
   smol: omniroute/opencode-zen/deepseek-v4-flash-free
   slow: omniroute/cx/gpt-5.5-high:high
-  plan: omniroute/cx/gpt-5.6-sol
-  task: omniroute/cx/gpt-5.6-terra
-  vision: omniroute/cx/gpt-5.6-terra
+  plan: omniroute/cx/gpt-5.5-high:high
+  task: omniroute/cx/gpt-5.5-medium:medium
+  vision: omniroute/cx/gpt-5.5-medium:medium
   tiny: omniroute/cx/gpt-5.6-luna:off
-  advisor: omniroute/cx/gpt-5.6-sol:high
+  advisor: omniroute/cx/gpt-5.5:high
   commit: omniroute/opencode-zen/deepseek-v4-flash-free
-disabledProviders: 
+disabledProviders:
   - aimlapi
   - alibaba-coding-plan
   - amazon-bedrock
@@ -136,13 +136,36 @@ disabledProviders:
   - zai
   - zenmux
   - zhipu-coding-plan
-providers: 
-  webSearch: parallel
-modelProviderOrder: 
+providers:
+  webSearchOrder:
+    - parallel
+    - perplexity
+    - gemini
+    - anthropic
+    - codex
+    - xai
+    - zai
+    - exa
+    - tinyfish
+    - jina
+    - kagi
+    - tavily
+    - firecrawl
+    - brave
+    - kimi
+    - synthetic
+    - searxng
+    - startpage
+    - duckduckgo
+    - ecosia
+    - google
+    - mojeek
+    - public
+modelProviderOrder:
   - omniroute
   - zen-free
 symbolPreset: nerd
-extensions: 
+extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
@@ -150,10 +173,10 @@ extensions:
   - /Users/tim/.omp/agent/extensions/dcg-guard.ts
 hideThinkingBlock: true
 setupVersion: 1
-dev: 
+dev:
   autoqaConsent: granted
 treeFilterMode: user-only
 defaultThinkingLevel: auto
 autocompleteMaxVisible: 15
-edit: 
+edit:
   enforceSeenLines: true

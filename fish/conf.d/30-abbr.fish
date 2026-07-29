@@ -7,6 +7,7 @@ end
 abbr -a v nvim
 abbr -a vv 'nvim .'
 abbr -a мм 'nvim .'
+abbr -a 'O.' 'nv .'
 abbr -a op open
 abbr -a 'o.' 'open .'
 abbr -a ef 'exec fish'

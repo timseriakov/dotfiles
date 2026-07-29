@@ -1,0 +1,25 @@
+[[station]]
+name = "Full Spectrum Radio - DnB | Jungle | Dubstep | Electronic"
+url = "https://fullspectrumradio.com/listen"
+country = "Canada"
+bitrate = 320
+codec = "MP3"
+homepage = "https://fullspectrumradio.com/"
+
+[[station]]
+name = "Radio Caprice LIQUID FUNK / INTELLIGENT / ATMOSPHERIC DRUM'n'BASS"
+url = "http://79.111.119.111:8000/liquidfunk"
+country = "The Russian Federation"
+bitrate = 320
+codec = "AAC+"
+tags = "drum 'n' bass,funk"
+homepage = "http://radcap.ru/liquidfunk.html"
+
+[[station]]
+name = "drumfunk.ru"
+url = "https://ice.drumfunk.ru:8050/on.mp3"
+country = "The Russian Federation"
+bitrate = 192
+codec = "MP3"
+tags = "breakcore"
+homepage = "https://drumfunk.ru/"
