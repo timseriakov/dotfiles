@@ -870,8 +870,10 @@ function patchAssistantMessage(content) {
         "new Markdown(content.text.trim(), 0, 0, getMarkdownTheme())",
         "new Markdown(trimmed, 0, 0, getMarkdownTheme())",
         "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions)",
+        "new Markdown(trimmed, 1, 0, getMarkdownTheme(), mdOptions, 0)",
+        "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions, 0)",
       ],
-      "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions)",
+      "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions, 0)",
       "assistant text padding",
     ],
     [
@@ -919,11 +921,14 @@ function patchUsageRow(content) {
     [
       'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
       'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 1, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
     ],
-    'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+    'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
     "assistant usage padding",
   ).content;
 }
+
 
 function patchUserMessage(content) {
   return replaceOnce(

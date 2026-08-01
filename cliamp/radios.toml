@@ -15,18 +15,6 @@ name = "DNB Radio: Section 8 Recordings"
 url = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
 
 [[station]]
-name = "Rinse FM: Kool FM"
-url = "https://admin.stream.rinse.fm/proxy/kool/stream"
-
-[[station]]
-name = "Rinse FM: SWU FM"
-url = "https://admin.stream.rinse.fm/proxy/swu/stream"
-
-[[station]]
-name = "Rinse FM: UK"
-url = "https://admin.stream.rinse.fm/proxy/rinse_uk/stream"
-
-[[station]]
 name = "SomaFM Beat Blender"
 url = "https://somafm.com/beatblender.pls"
 
@@ -85,10 +73,6 @@ url = "https://somafm.com/dubstep.pls"
 [[station]]
 name = "SomaFM Fluid"
 url = "https://somafm.com/fluid.pls"
-
-[[station]]
-name = "SomaFM Folk Forward"
-url = "https://somafm.com/folkfwd.pls"
 
 [[station]]
 name = "SomaFM Groove Salad"

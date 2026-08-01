@@ -3,10 +3,10 @@ provider = "radio"
 shuffle = false
 theme = "nord"
 
-visualizer = "Terrain"
-repeat = "All"
+visualizer = "BarsDot"
+repeat = "One"
 eq_preset = "Custom"
-eq = [-3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+eq = [-10, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 [soundcloud]
 enabled = true
