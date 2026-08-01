@@ -1287,6 +1287,17 @@ function patchDiscoveryHelpers(content) {
   ).content;
 }
 
+function patchSessionTools(content) {
+  return replaceAny(
+    content,
+    [
+      `\t\tthis.#host.emitNotice(\n\t\t\t"info",\n\t\t\tafter\n\t\t\t\t? \`inspect_image is now available: \${modelName} has no native image input.\`\n\t\t\t\t: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,\n\t\t\t"vision",\n\t\t);`,
+      `\t\tconst model = this.#host.model();\n\t\tconst modelName = model ? formatModelString(model) : "the current model";\n\t\tthis.#host.emitNotice(\n\t\t\t"info",\n\t\t\tafter\n\t\t\t\t? \`inspect_image is now available: \${modelName} has no native image input.\`\n\t\t\t\t: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,\n\t\t\t"vision",\n\t\t);`,
+    ],
+    `\t\t// dotfiles patch: avoid noisy vision flip notices.\n\t\treturn;`,
+    "suppress inspect_image flip notice",
+  ).content;
+}
 try {
   setupRuntimeStateLinks();
   patchFile("modes/interactive-mode.ts", patchInteractiveMode);
@@ -1318,6 +1329,7 @@ try {
   patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
+  patchFile("session/session-tools.ts", patchSessionTools);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
