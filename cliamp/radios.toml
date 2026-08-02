@@ -1,4 +1,8 @@
 [[station]]
+name = "──── DnB ────"
+url = "https://azura.drmnbss.org/listen/plushrecs/radio.mp3"
+
+[[station]]
 name = "DNB Radio: Darkstep"
 url = "https://azura.drmnbss.org/listen/darkstep/radio.mp3"
 
@@ -15,79 +19,84 @@ name = "DNB Radio: Section 8 Recordings"
 url = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
 
 [[station]]
-name = "SomaFM Beat Blender"
-url = "https://somafm.com/beatblender.pls"
+name = "Full Spectrum Radio: DnB"
+url = "https://fullspectrumradio.com/listen"
+country = "Canada"
+bitrate = 320
+codec = "MP3"
+homepage = "https://fullspectrumradio.com/"
 
 [[station]]
-name = "SomaFM Black Rock FM"
-url = "https://somafm.com/brfm.pls"
+name = "Radio Caprice: LIQUID FUNK / INTELLIGENT / ATMOSPHERIC DRUM'n'BASS"
+url = "http://79.111.119.111:8000/liquidfunk"
+country = "The Russian Federation"
+bitrate = 320
+codec = "AAC+"
+homepage = "http://radcap.ru/liquidfunk.html"
 
 [[station]]
-name = "SomaFM Boot Liquor"
-url = "https://somafm.com/bootliquor.pls"
+name = "drumfunk.ru"
+url = "https://ice.drumfunk.ru:8050/on.mp3"
+country = "The Russian Federation"
+bitrate = 192
+codec = "MP3"
+tags = "breakcore"
+homepage = "https://drumfunk.ru/"
 
 [[station]]
-name = "SomaFM Bossa Beyond"
-url = "https://somafm.com/bossa.pls"
-
-[[station]]
-name = "SomaFM Chillits Radio"
-url = "https://somafm.com/chillits.pls"
-
-[[station]]
-name = "SomaFM cliqhop idm"
-url = "https://somafm.com/cliqhop.pls"
-
-[[station]]
-name = "SomaFM Covers"
-url = "https://somafm.com/covers.pls"
-
-[[station]]
-name = "SomaFM Deep Space One"
-url = "https://somafm.com/deepspaceone.pls"
-
-[[station]]
-name = "SomaFM DEF CON Radio"
-url = "https://somafm.com/defcon.pls"
-
-[[station]]
-name = "SomaFM Digitalis"
-url = "https://somafm.com/digitalis.pls"
-
-[[station]]
-name = "SomaFM Doomed"
-url = "https://somafm.com/doomed.pls"
-
-[[station]]
-name = "SomaFM Drone Zone"
-url = "https://somafm.com/dronezone.pls"
-
-[[station]]
-name = "SomaFM Drone Zone 2"
-url = "https://somafm.com/dz2.pls"
-
-[[station]]
-name = "SomaFM Dub Step Beyond"
-url = "https://somafm.com/dubstep.pls"
-
-[[station]]
-name = "SomaFM Fluid"
-url = "https://somafm.com/fluid.pls"
-
-[[station]]
-name = "SomaFM Groove Salad"
+name = "──── SomaFM ────"
 url = "https://somafm.com/groovesalad.pls"
 
 [[station]]
-name = "SomaFM Groove Salad 2"
+name = "SomaFM Groove Salad: A nicely chilled plate of ambient/downtempo beats and grooves."
+url = "https://somafm.com/groovesalad.pls"
+
+[[station]]
+name = "SomaFM Groove Salad 2: A different mix of  nicely chilled ambient/downtempo beats and grooves."
 url = "https://somafm.com/groovesalad2.pls"
 
 [[station]]
-name = "SomaFM Groove Salad Classic"
+name = "SomaFM Groove Salad Classic: The classic (early 2000s) version of a nicely chilled plate of ambient/downtempo beats and grooves."
 url = "https://somafm.com/gsclassic.pls"
 
 [[station]]
-name = "SomaFM Heavyweight Reggae"
+name = "SomaFM Beat Blender: A late night blend of deep-house and downtempo chill."
+url = "https://somafm.com/beatblender.pls"
+
+[[station]]
+name = "SomaFM Deep Space One: Deep ambient electronic, experimental and space music. For inner and outer space exploration."
+url = "https://somafm.com/deepspaceone.pls"
+
+[[station]]
+name = "SomaFM Black Rock FM: From the Black Rock Desert playa to the world, year round!"
+url = "https://somafm.com/brfm.pls"
+
+[[station]]
+name = "SomaFM cliqhop IDM: Blips'n'beeps backed mostly w/beats. Intelligent Dance Music."
+url = "https://somafm.com/cliqhop.pls"
+
+[[station]]
+name = "SomaFM Doomed: Dark industrial/ambient music for tortured souls. Where every day is Halloween."
+url = "https://somafm.com/doomed.pls"
+
+[[station]]
+name = "SomaFM Drone Zone: Served best chilled, safe with most medications. Atmospheric textures with minimal beats."
+url = "https://somafm.com/dronezone.pls"
+
+[[station]]
+name = "SomaFM Drone Zone 2: A more eclectic alternative mix of atmospheric textures with minimal beats."
+url = "https://somafm.com/dz2.pls"
+
+[[station]]
+name = "SomaFM Dub Step Beyond: Dubstep, Dub and Deep Bass. May damage speakers at high volume."
+url = "https://somafm.com/dubstep.pls"
+
+[[station]]
+name = "SomaFM Fluid: Drown in the electronic sound of instrumental hiphop, future soul and liquid trap."
+url = "https://somafm.com/fluid.pls"
+
+[[station]]
+name = "SomaFM Heavyweight Reggae: Reggae, Ska, Rocksteady classic and deep tracks."
 url = "https://somafm.com/reggae.pls"
 
 [[station]]
@@ -197,3 +206,24 @@ url = "https://somafm.com/vaporwaves.pls"
 [[station]]
 name = "Радыё Сталiца"
 url = "https://media2.datacenter.by/stream/stalica/stream"
+
+# [[station]]
+# name = "SomaFM Boot Liquor"
+# url = "https://somafm.com/bootliquor.pls"
+
+# [[station]]
+# name = "SomaFM Bossa Beyond"
+# url = "https://somafm.com/bossa.pls"
+
+# [[station]]
+# name = "SomaFM Chillits Radio"
+# url = "https://somafm.com/chillits.pls"
+
+# [[station]]
+# name = "SomaFM Covers"
+# url = "https://somafm.com/covers.pls"
+
+
+# [[station]]
+# name = "SomaFM Digitalis"
+# url = "https://somafm.com/digitalis.pls"

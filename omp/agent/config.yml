@@ -16,6 +16,10 @@ theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
+stt:
+  enabled: true
+  language: ru
+
 compaction:
   enabled: true
   strategy: context-full

@@ -111,6 +111,7 @@ pi/agent/sessions/
 cliamp/*.log
 cliamp/*.pid
 cliamp/history.toml
+cliamp/spotify_credentials.json
 cliamp/*_ocr.png
 /omp/agent/agent.db
 /omp/agent/agent.db-shm

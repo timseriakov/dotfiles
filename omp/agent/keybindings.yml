@@ -2,7 +2,7 @@ tui.input.newLine:
   - shift+enter
   - ctrl+j
 tui.editor.deleteToLineEnd: []
-app.stt.toggle: []
+app.stt.toggle: alt+v
 app.session.compact: ctrl+k
 app.model.cycleForward:
   - ctrl+p
