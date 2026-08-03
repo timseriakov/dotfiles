@@ -23,3 +23,12 @@ bitrate = 192
 codec = "MP3"
 tags = "breakcore"
 homepage = "https://drumfunk.ru/"
+
+[[station]]
+name = "Deep House Lounge"
+url = "http://198.15.94.34:8006/stream"
+country = "The United States Of America"
+bitrate = 128
+codec = "MP3"
+tags = "deep house,disco,electronica,funky,house,jazzy,lounge,philadelphia,techno"
+homepage = "http://www.deephouselounge.com/"
