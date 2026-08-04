@@ -3,7 +3,7 @@ provider = "radio"
 shuffle = false
 theme = "nord"
 
-visualizer = "BarsDot"
+visualizer = "Stereo"
 repeat = "One"
 eq_preset = "Flat"
 eq = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

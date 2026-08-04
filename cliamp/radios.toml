@@ -44,7 +44,7 @@ tags = "breakcore"
 homepage = "https://drumfunk.ru/"
 
 [[station]]
-name = "──── [SomaFM] ────"
+name = "──── SomaFM ────"
 url = "https://somafm.com/groovesalad.pls"
 
 [[station]]
