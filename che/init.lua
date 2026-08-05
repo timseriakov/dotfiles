@@ -28,6 +28,21 @@ require("searchjump"):setup({
 	opt_search_patterns = {}, -- demo:{"%.e%d+","s%d+e%d+"}
 })
 
+function Linemode:size_and_mtime()
+	local size = self._file:size()
+	local size_str = size and ya.readable_size(size) or "-"
+
+	local mtime = self._file.cha.mtime
+	local mtime_str = mtime and os.date("%d.%m.%y %H:%M", math.floor(mtime)) or "----"
+	local result = string.format("%8s  %s", size_str, mtime_str)
+
+	if mtime and os.time() - math.floor(mtime) <= 172800 then
+		return ui.Line({ ui.Span(result):fg("green") })
+	end
+
+	return result
+end
+
 -- if os.getenv("NVIM") then
 -- 	require("toggle-pane"):entry("min-preview")
 -- end
