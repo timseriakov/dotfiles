@@ -106,6 +106,8 @@ suppress_preload = false
 [plugin]
 
 prepend_fetchers = [
+  { id = "git", url = "*", run = "git", prio = "high" },
+  { id = "git", url = "*/", run = "git", prio = "high" },
   { id = "mime", name = "*", run = "mime", if = "!mime", prio = "high" },
 ]
 

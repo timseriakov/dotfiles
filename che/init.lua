@@ -1,5 +1,5 @@
 require("starship"):setup()
-require("git"):setup()
+require("git"):setup({ order = 500 })
 require("no-status"):setup()
 require("close-and-restore-tab")
 require("mux"):setup({
