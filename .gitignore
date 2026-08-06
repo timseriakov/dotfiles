@@ -136,3 +136,4 @@ cliamp/*_ocr.png
 /omp/.omo/run-continuation
 /.antigravitycli
 handy/.tinbase/
+handy/settings_store.json
