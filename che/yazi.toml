@@ -6,6 +6,12 @@
 # ratio = [1, 4, 3]
 ratio = [1, 2, 3]
 
+# che
+smart_glob = true
+show_upparent = false
+hide_inactive_cursor = true
+# che
+
 sort_by = "extension"
 sort_fallback = "natural"
 sort_sensitive = false
@@ -73,26 +79,58 @@ glow = [
 [open]
 rules = [
   # Folder
-  { url = "*/", use = [ "edit", "open", "reveal", ] },
+  { url = "*/", use = [
+    "edit",
+    "open",
+    "reveal",
+  ] },
   # Text
-  { mime = "text/*", use = [ "edit", "reveal", ] },
+  { mime = "text/*", use = [
+    "edit",
+    "reveal",
+  ] },
   # Image
-  { mime = "image/*", use = [ "open", "reveal", ] },
+  { mime = "image/*", use = [
+    "open",
+    "reveal",
+  ] },
   # Media
-  { mime = "{audio,video}/*", use = [ "play", "reveal", ] },
+  { mime = "{audio,video}/*", use = [
+    "play",
+    "reveal",
+  ] },
   # Archive
-  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "extract", "reveal", ] },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [
+    "extract",
+    "reveal",
+  ] },
   # JSON
-  { mime = "application/{json,ndjson}", use = [ "edit", "reveal", ] },
-  { mime = "*/javascript", use = [ "edit", "reveal", ] },
+  { mime = "application/{json,ndjson}", use = [
+    "edit",
+    "reveal",
+  ] },
+  { mime = "*/javascript", use = [
+    "edit",
+    "reveal",
+  ] },
   # Empty file
-  { mime = "inode/empty", use = [ "edit", "reveal", ] },
+  { mime = "inode/empty", use = [
+    "edit",
+    "reveal",
+  ] },
   # Markdown
-  { name = "*.md", use = [ "glow", "edit", "reveal", ] },
+  { name = "*.md", use = [
+    "glow",
+    "edit",
+    "reveal",
+  ] },
   # Virtual file system
   { mime = "vfs/{absent,stale}", use = "download" },
   # Fallback
-  { url = "*", use = [ "open", "reveal", ] },
+  { url = "*", use = [
+    "open",
+    "reveal",
+  ] },
 ]
 
 [tasks]
@@ -150,7 +188,7 @@ spotters = [
   # Error
   { mime = "null/*", run = "null" },
   # Fallback
-  { url = "*", run = "file" },
+  { url = "*", run = 'faster-piper -- file -bL -- "$1"' },
 ]
 preloaders = [
   # Image
@@ -165,7 +203,7 @@ preloaders = [
   { mime = "font/*", run = "font" },
   { mime = "application/ms-opentype", run = "font" },
 ]
-  previewers = [
+previewers = [
   { url = "*/", run = "folder" },
 
   # JSON - use code previewer for syntax highlighting
@@ -201,12 +239,15 @@ preloaders = [
   { mime = "vfs/*", run = "vfs" },
   # Error
   { mime = "null/*", run = "null" },
-  # Fallback
-  { url = "*", run = "file" },
 ]
 
 [input]
 cursor_blink = false
+
+# che
+vim_mode = true
+rename_highlight_stem = true
+# che
 
 # cd
 cd_title = "Change directory:"
@@ -248,6 +289,10 @@ shell_offset = [0, 2, 50, 3]
 trash_title = "Trash {n} selected file{s}?"
 trash_origin = "center"
 trash_offset = [0, 0, 70, 20]
+
+# che
+overwrite_dialog = true
+# che
 
 # delete
 delete_title = "Permanently delete {n} selected file{s}?"

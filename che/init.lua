@@ -27,7 +27,6 @@ require("searchjump"):setup({
 	opt_only_current = false, -- only search the current window
 	opt_search_patterns = {}, -- demo:{"%.e%d+","s%d+e%d+"}
 })
-
 function Linemode:size_and_mtime()
 	local size = self._file:size()
 	local size_str = size and ya.readable_size(size) or "-"
@@ -42,7 +41,6 @@ function Linemode:size_and_mtime()
 
 	return result
 end
-
 -- if os.getenv("NVIM") then
 -- 	require("toggle-pane"):entry("min-preview")
 -- end
