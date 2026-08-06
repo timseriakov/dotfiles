@@ -35,6 +35,15 @@ codec = "AAC+"
 homepage = "http://radcap.ru/liquidfunk.html"
 
 [[station]]
+name = "Radio Caprice: Future Garage / Chillstep / Deep / Post Dubstep"
+url = "http://79.120.39.202:8002/futuregarage"
+country = "The Russian Federation"
+bitrate = 48
+codec = "AAC+"
+tags = "chillstep,deep,future garage,post dubstep,radcap"
+homepage = "http://radcap.ru/futuregarage.html"
+
+[[station]]
 name = "drumfunk.ru"
 url = "https://ice.drumfunk.ru:8050/on.mp3"
 country = "The Russian Federation"

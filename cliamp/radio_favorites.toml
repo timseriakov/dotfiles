@@ -41,3 +41,12 @@ bitrate = 128
 codec = "MP3"
 tags = "easy listening,jazz,smooth jazz"
 homepage = "http://101smoothjazz.com/"
+
+[[station]]
+name = "Radio Caprice - Future Garage / Chillstep / Deep / Post Dubstep"
+url = "http://79.120.39.202:8002/futuregarage"
+country = "The Russian Federation"
+bitrate = 48
+codec = "AAC+"
+tags = "chillstep,deep,future garage,post dubstep,radcap"
+homepage = "http://radcap.ru/futuregarage.html"
