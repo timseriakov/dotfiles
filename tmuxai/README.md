@@ -18,11 +18,9 @@ cd ~/dev/dotfiles/tmuxai && ./install.sh
 
 ## Required environment variables
 
-- `OPENROUTER_API_KEY` (used by the default `fast` model)
-- `OPENAI_API_KEY` (optional, powers the `codex` fallback)
-- `GOOGLE_API_KEY` (optional, only needed if you enable `gemini-flash`)
+- `OMNIROUTE_TMUX_AI_API_KEY` (used by the `fast` and `smart` models)
 
-Keep secrets out of version control; the YAML references them via `${VAR}`.
+Keep secrets out of version control; `config.yaml` references the key via `${OMNIROUTE_TMUX_AI_API_KEY}`.
 
 ## Launch tmuxai
 

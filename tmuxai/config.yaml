@@ -9,12 +9,14 @@ default_model: fast
 models:
   fast:
     provider: openai
-    model: "gpt-5-mini"
-    api_key: "${OPENAI_API_KEY}"
+    model: "opencode-zen/deepseek-v4-flash-free"
+    api_key: "${OMNIROUTE_TMUX_AI_API_KEY}"
+    base_url: "https://router.hwqtpa.easypanel.host/v1"
   smart:
     provider: openai
-    model: "gpt-5"
-    api_key: "${OPENAI_API_KEY}"
+    model: "cx/gpt-5.6-luna"
+    api_key: "${OMNIROUTE_TMUX_AI_API_KEY}"
+    base_url: "https://router.hwqtpa.easypanel.host/v1"
 
 exec_confirm: true
 send_keys_confirm: true
