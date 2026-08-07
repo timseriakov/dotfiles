@@ -8,6 +8,7 @@ repeat = "One"
 eq_preset = "Flat"
 eq = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+speed = 1.00
 [soundcloud]
 enabled = true
 user = "serious-jack"
