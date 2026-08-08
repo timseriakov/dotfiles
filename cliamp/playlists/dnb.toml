@@ -1,0 +1,31 @@
+[[track]]
+path = "https://azura.drmnbss.org/listen/darkstep/radio.mp3"
+title = "DNB Radio: Darkstep"
+
+[[track]]
+path = "https://azrelay.drmnbss.org/listen/dnbradio/radio.aac"
+title = "DNB Radio: Main"
+
+[[track]]
+path = "https://azura.drmnbss.org/listen/plushrecs/radio.mp3"
+title = "DNB Radio: Plush Recordings"
+
+[[track]]
+path = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
+title = "DNB Radio: Section 8 Recordings"
+
+[[track]]
+path = "https://fullspectrumradio.com/listen"
+title = "Full Spectrum Radio: DnB"
+
+[[track]]
+path = "http://79.111.119.111:8000/liquidfunk"
+title = "Radio Caprice: Liquid Funk / Intelligent / Atmospheric Drum'n'Bass"
+
+[[track]]
+path = "http://79.120.39.202:8002/futuregarage"
+title = "Radio Caprice: Future Garage / Chillstep / Deep / Post Dubstep"
+
+[[track]]
+path = "https://ice.drumfunk.ru:8050/on.mp3"
+title = "drumfunk.ru"
