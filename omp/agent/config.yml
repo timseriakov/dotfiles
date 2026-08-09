@@ -63,10 +63,12 @@ modelRoles:
   task: omniroute/cx/gpt-5.5-medium:medium
   vision: omniroute/cx/gpt-5.5-medium:medium
   tiny: omniroute/cx/gpt-5.6-luna:off
-  fast: omniroute/cx/gpt-5.6-luna:low
+  fast: omniroute/cx/gpt-5.6-luna:max
   advisor: omniroute/cx/gpt-5.5:high
   commit: omniroute/opencode-zen/deepseek-v4-flash-free
   default: omniroute/cx/gpt-5.6-luna:max
+tier:
+  openai: priority
 disabledProviders: 
   - aimlapi
   - alibaba-coding-plan
@@ -175,7 +177,7 @@ extensions:
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
   - /Users/tim/.omp/agent/extensions/r.ts
   - /Users/tim/.omp/agent/extensions/dcg-guard.ts
-hideThinkingBlock: true
+hideThinkingBlock: false
 setupVersion: 1
 dev: 
   autoqaConsent: granted
