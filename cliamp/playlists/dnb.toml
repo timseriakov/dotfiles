@@ -15,7 +15,7 @@ path = "https://azura.drmnbss.org/listen/section8recs/radio.mp3"
 title = "DNB Radio: Section 8 Recordings"
 
 [[track]]
-path = "https://fullspectrumradio.com/listen"
+path = "https://fullspectrumradio.com:8000/fslisten"
 title = "Full Spectrum Radio: DnB"
 
 [[track]]
@@ -27,5 +27,5 @@ path = "http://79.120.39.202:8002/futuregarage"
 title = "Radio Caprice: Future Garage / Chillstep / Deep / Post Dubstep"
 
 [[track]]
-path = "https://ice.drumfunk.ru:8050/on.mp3"
+path = "http://ice.drumfunk.ru:8050/on.mp3"
 title = "drumfunk.ru"

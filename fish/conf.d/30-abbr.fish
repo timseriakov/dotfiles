@@ -154,8 +154,8 @@ abbr -a o-up 'omp update && node ~/dev/dotfiles/omp/apply-omp-monkey-patches.mjs
 abbr -a oc 'omp -c'
 abbr -a occ 'omp -c'
 abbr -a om omp
-abbr -a oma --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
-abbr -a omaf --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
+abbr -a oa --set-cursor 'omp --no-session --model omniroute/quick-free -p "%"'
+abbr -a oar --set-cursor 'omp --no-session --model omniroute/reasoning-main -p "%"'
 abbr -a omr 'omp -r'
 abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \

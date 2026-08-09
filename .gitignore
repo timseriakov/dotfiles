@@ -137,3 +137,4 @@ cliamp/*_ocr.png
 /.antigravitycli
 handy/.tinbase/
 handy/settings_store.json
+/omp/agent/config.yml.lock
