@@ -752,7 +752,7 @@ function patchSegments(content) {
     r = insertBefore(
       out,
       `\t\tlet content = withIcon(modelIcon, modelName);`,
-      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("dim", symbol) + (parts.length ? \` \${theme.fg("thinkingText", parts.join(" "))}\` : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += \` \${theme.fg("dim", theme.icon.fast)}\`;\n\t\t\tif (!compact && thinkingDisplay) tail += \`\${theme.sep.dot}\${thinkingDisplay}\`;\n\t\t}\n`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("statusLineSep", symbol) + (parts.length ? \` \${theme.fg("thinkingText", parts.join(" "))}\` : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += \` \${theme.fg("dim", theme.icon.fast)}\`;\n\t\t\tif (!compact && thinkingDisplay) tail += \`\${theme.sep.dot}\${thinkingDisplay}\`;\n\t\t}\n`,
       "segments thinking label colors",
     );
     out = r.content;
