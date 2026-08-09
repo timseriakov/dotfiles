@@ -1274,14 +1274,42 @@ function patchUltrathink(content) {
   return out;
 }
 
+function patchOrchestrate(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `const ORCHESTRATE_WORD = magicKeywordRegex("orchestrate");`,
+      `const ORCHESTRATE_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
+    ],
+    `const ORCHESTRATE_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
+    "orchestrate orch alias detection",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\tprobe: /orchestrate/,\n\thighlight: magicKeywordRegex("orchestrate", "g"),`,
+      `\tprobe: /orchestrate|orch/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
+    ],
+    `\tprobe: /orchestrate|orch/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
+    "orchestrate orch alias highlight",
+  );
+  out = r.content;
+  return out;
+}
+
 function patchMagicKeywords(content) {
   return replaceAny(
     content,
     [
-      `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+    `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
       `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
     ],
-    `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+    `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("orch") && !text.includes("workflowz")) {`,
     "magic keyword ulw fast probe",
   ).content;
 }
@@ -1356,6 +1384,7 @@ try {
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
+  patchFile("modes/orchestrate.ts", patchOrchestrate);
   patchFile("extensibility/extensions/loader.ts", patchExtensionLoader);
   patchFile("discovery/helpers.ts", patchDiscoveryHelpers);
   patchTuiFile("utils.ts", patchTuiVisibleWidth);

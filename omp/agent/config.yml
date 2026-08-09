@@ -60,15 +60,16 @@ modelRoles:
   smol: zen-free/deepseek-v4-flash-free:max
   slow: omniroute/cx/gpt-5.5-medium:medium
   plan: omniroute/cx/gpt-5.5-high:high
-  task: omniroute/cx/gpt-5.5-medium:medium
+  task: omniroute/cx/gpt-5.6-luna:max
   vision: omniroute/cx/gpt-5.5-medium:medium
   tiny: omniroute/cx/gpt-5.6-luna:off
   fast: omniroute/cx/gpt-5.6-luna:max
   advisor: omniroute/cx/gpt-5.5:high
   commit: omniroute/opencode-zen/deepseek-v4-flash-free
   default: omniroute/cx/gpt-5.6-luna:max
-tier:
-  openai: priority
+tier: 
+  openai: none
+  subagent: priority
 disabledProviders: 
   - aimlapi
   - alibaba-coding-plan
