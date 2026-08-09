@@ -7,3 +7,7 @@ app.session.compact: ctrl+k
 app.model.cycleForward:
   - ctrl+p
   - tab
+app.thinking.cycle:
+  - shift+tab
+  - ctrl+t
+app.thinking.toggle: []

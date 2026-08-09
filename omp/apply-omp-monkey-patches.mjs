@@ -729,6 +729,7 @@ function patchSegments(content) {
 		}`,
   );
 
+  if (!out.includes(`\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`)) {
   r = replaceAny(
     out,
     [
@@ -743,6 +744,26 @@ function patchSegments(content) {
     `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\tconst roleColors = { smol: "statusLineSpend", default: "success", slow: "warning" } as const;\n\t\tconst roles = (["smol", "default", "slow"] as const).filter(role => {\n\t\t\tconst resolved = resolveModelRoleValue(\n\t\t\t\tctx.session.settings.getModelRole(role),\n\t\t\t\tctx.session.modelRegistry.getAvailable(),\n\t\t\t\t{ settings: ctx.session.settings },\n\t\t\t).model;\n\t\t\treturn resolved?.provider === state.model?.provider && resolved.id === state.model?.id;\n\t\t});\n\t\tconst roleContent = roles.length\n\t\t\t? \` \${roles.map(role => theme.fg(roleColors[role], role)).join("/")}\`\n\t\t\t: "";\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\${roleContent}\`, visible: true };`
     , "segments model display via");
   out = r.content;
+  }
+  if (
+    out.includes(`\t\tlet content = withIcon(modelIcon, modelName);`) &&
+    !out.includes(`\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`)
+  ) {
+    r = insertBefore(
+      out,
+      `\t\tlet content = withIcon(modelIcon, modelName);`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("dim", symbol) + (parts.length ? \` \${theme.fg("thinkingText", parts.join(" "))}\` : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += \` \${theme.fg("dim", theme.icon.fast)}\`;\n\t\t\tif (!compact && thinkingDisplay) tail += \`\${theme.sep.dot}\${thinkingDisplay}\`;\n\t\t}\n`,
+      "segments thinking label colors",
+    );
+    out = r.content;
+    r = insertAfter(
+      out,
+      `\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}`,
+      `\t\tcontent += providerSuffix;\n`,
+      "segments provider suffix after thinking",
+    );
+    out = r.content;
+  }
 
   r = replaceAny(
     out,
