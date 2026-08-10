@@ -48,6 +48,22 @@
     }
   },
   {
+    "icon": "󰒭",
+    "title": "d3k:crm restart",
+    "category": "Urban Prime",
+    "action": {
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh left crm '#{window_id}'\""
+    }
+  },
+  {
+    "icon": "󰒭",
+    "title": "d3k:web restart",
+    "category": "Urban Prime",
+    "action": {
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh right web '#{window_id}'\""
+    }
+  },
+  {
     "icon": "",
     "title": "Persistent Popup",
     "category": "Shell",
