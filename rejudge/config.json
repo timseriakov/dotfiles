@@ -1,7 +1,7 @@
 {
   "reviewers": [
     "omniroute/cx/gpt-5.6-sol@high",
-    "omniroute/cx/gpt-5.6-terra@high",
+    "omniroute/cx/gpt-5.5-medium@medium",
     "omniroute/cx/gpt-5.6-luna@high"
   ],
   "judge": "omniroute/cx/gpt-5.6-luna@xhigh"
