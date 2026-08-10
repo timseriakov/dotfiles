@@ -5,6 +5,7 @@
   "packages": [
     "npm:@plannotator/pi-extension",
     "npm:gentle-engram@0.1.10",
+    "npm:pi-side-chat",
     "npm:pi-mcp-adapter"
   ]
 }

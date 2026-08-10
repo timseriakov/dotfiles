@@ -11,7 +11,7 @@ commands:
 astGrep:
   enabled: true
 startup:
-  quiet: false
+  quiet: true
 theme:
   dark: starship-nord
 colorBlindMode: false
