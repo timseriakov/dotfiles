@@ -1337,6 +1337,70 @@ function patchDiscoveryHelpers(content) {
     "extension discovery skips direct test files",
   ).content;
 }
+function patchLegacyModelRuntime(content) {
+  let out = content;
+  let r;
+  r = replaceAny(
+    out,
+    [
+      `import { type AuthCredential, SqliteAuthCredentialStore, type TSchema } from "@oh-my-pi/pi-ai";`,
+    ],
+    `import { type Api, type AuthCredential, type Model, SqliteAuthCredentialStore, type TSchema } from "@oh-my-pi/pi-ai";`,
+    "legacy ModelRuntime model types",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [`import { getPackageDir as getOmpPackageDir } from "../config";`],
+    `import { getPackageDir as getOmpPackageDir } from "../config";\nimport { ModelRegistry } from "../config/model-registry";`,
+    "legacy ModelRuntime registry import",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [`\tdiscoverSkills,\n\tcreateAgentSession as ompCreateAgentSession,`],
+    `\tdiscoverSkills,\n\tdiscoverAuthStorage,\n\tcreateAgentSession as ompCreateAgentSession,`,
+    "legacy ModelRuntime auth import",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [`/**\n * Legacy pi extensions call \`createAgentSession({ resourceLoader })\`.`],
+    `export class ModelRuntime {\n\treadonly modelRegistry: ModelRegistry;\n\n\tprivate constructor(modelRegistry: ModelRegistry) {\n\t\tthis.modelRegistry = modelRegistry;\n\t}\n\n\tstatic async create(): Promise<ModelRuntime> {\n\t\tconst authStorage = await discoverAuthStorage();\n\t\treturn new ModelRuntime(new ModelRegistry(authStorage));\n\t}\n\n\tgetModel(provider: string, modelId: string): Model<Api> | undefined {\n\t\treturn this.modelRegistry.find(provider, modelId);\n\t}\n}\n\n/**\n * Legacy pi extensions call \`createAgentSession({ resourceLoader })\`.`,
+    "legacy ModelRuntime export",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [`export type LegacyPiCreateAgentSessionOptions = CreateAgentSessionOptions & {\n\tresourceLoader?: ResourceLoader;\n};`],
+    `export type LegacyPiCreateAgentSessionOptions = CreateAgentSessionOptions & {\n\tresourceLoader?: ResourceLoader;\n\tmodelRuntime?: ModelRuntime;\n};`,
+    "legacy ModelRuntime session option",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [
+      `\tconst loader = options.resourceLoader;\n\tif (!loader) {\n\t\treturn ompCreateAgentSession(options);\n\t}`,
+      `\tconst loader = options.resourceLoader;\n\tconst { resourceLoader: _, modelRuntime, ...rest } = options;\n\tif (!loader) {\n\t\tconst forwarded: CreateAgentSessionOptions = { ...rest };\n\t\tif (rest.modelRegistry === undefined && modelRuntime !== undefined) {\n\t\t\tforwarded.modelRegistry = modelRuntime.modelRegistry;\n\t\t}\n\t\treturn ompCreateAgentSession(forwarded);\n\t}`,
+    ],
+    `\tconst loader = options.resourceLoader;\n\tconst { resourceLoader: _, modelRuntime, ...rest } = options;\n\tif (!loader) {\n\t\tconst forwarded: CreateAgentSessionOptions = { ...rest };\n\t\tif (rest.modelRegistry === undefined && modelRuntime !== undefined) {\n\t\t\tforwarded.modelRegistry = modelRuntime.modelRegistry;\n\t\t}\n\t\treturn ompCreateAgentSession(forwarded);\n\t}`,
+    "legacy ModelRuntime no-loader adapter",
+  );
+  out = r.content;
+  r = replaceAny(
+    out,
+    [
+      `\tconst { resourceLoader: _, ...rest } = options;\n\tconst forwarded: CreateAgentSessionOptions = {\n\t\t...rest,\n\t\tcwd: rest.cwd ?? state.cwd,\n\t\tagentDir: rest.agentDir ?? state.agentDir,\n\t};`,
+      `\tconst { resourceLoader: _, modelRuntime, ...rest } = options;\n\tconst forwarded: CreateAgentSessionOptions = {\n\t\t...rest,\n\t\tcwd: rest.cwd ?? state.cwd,\n\t\tagentDir: rest.agentDir ?? state.agentDir,\n\t};\n\tif (rest.modelRegistry === undefined && modelRuntime !== undefined) {\n\t\tforwarded.modelRegistry = modelRuntime.modelRegistry;\n\t}`,
+      `\t// resourceLoader and modelRuntime were stripped above.\n\tconst forwarded: CreateAgentSessionOptions = {\n\t\t...rest,\n\t\tcwd: rest.cwd ?? state.cwd,\n\t\tagentDir: rest.agentDir ?? state.agentDir,\n\t};`,
+    ],
+    `\t// resourceLoader and modelRuntime were stripped above.\n\tconst forwarded: CreateAgentSessionOptions = {\n\t\t...rest,\n\t\tcwd: rest.cwd ?? state.cwd,\n\t\tagentDir: rest.agentDir ?? state.agentDir,\n\t};\n\tif (rest.modelRegistry === undefined && modelRuntime !== undefined) {\n\t\tforwarded.modelRegistry = modelRuntime.modelRegistry;\n\t}`,
+    "legacy ModelRuntime loader adapter",
+  );
+  out = r.content;
+  return out;
+}
+
 
 function patchSessionTools(content) {
   return replaceAny(
@@ -1403,6 +1467,7 @@ try {
     patchPlannotatorBrowserRuntime,
   );
   patchFile("modes/components/custom-editor.ts", patchCustomEditor);
+  patchFile("extensibility/legacy-pi-coding-agent-shim.ts", patchLegacyModelRuntime);
   rebuildBundledCli();
   console.log("OMP monkey patches applied.");
 } catch (error) {
