@@ -1,5 +1,10 @@
 {
+  "npmCommand": [
+    "/Users/tim/.volta/bin/npm"
+  ],
   "packages": [
-    "npm:@plannotator/pi-extension"
+    "npm:@plannotator/pi-extension",
+    "npm:gentle-engram@0.1.10",
+    "npm:pi-mcp-adapter"
   ]
 }
