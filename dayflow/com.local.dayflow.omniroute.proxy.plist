@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.dayflow.omniroute.proxy</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/tim/.bun/bin/bun</string>
+        <string>/Users/tim/dev/dotfiles/dayflow/proxy.js</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/tim/dev/dotfiles/dayflow</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/tim/Library/Logs/dayflow/proxy-stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/tim/Library/Logs/dayflow/proxy-stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tim/.bun/bin:/Users/tim/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/tim</string>
+    </dict>
+
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+</dict>
+</plist>

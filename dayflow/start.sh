@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+exec bun run "$SCRIPT_DIR/proxy.js"
