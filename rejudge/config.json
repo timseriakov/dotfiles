@@ -2,6 +2,8 @@
   "reviewers": [
     "omniroute/cx/gpt-5.6-sol@high",
     "omniroute/cx/gpt-5.5-medium@medium",
+    "omniroute/opencode-zen/mimo-v2.5-free@high",
+    "omniroute/opencode-zen/deepseek-v4-flash-free@medium",
     "omniroute/cx/gpt-5.6-luna@high"
   ],
   "judge": "omniroute/cx/gpt-5.6-luna@xhigh"
