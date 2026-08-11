@@ -20,7 +20,7 @@
 | `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`                                  |
 | `alacritty: cmd+a` | убить окно через alacritty → `F3`                              |
 | `cmd+enter`        | horizontal split через kitty → `F4`                            |
-| `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5`                            |
+| `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5`; zoomed pane получает фокус, при unzoom фокус возвращается на соседнюю pane |
 | `cmd+r` / `cmd+к`  | rename window через kitty → `F6`                               |
 | `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s`                        |
 | `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`                             |

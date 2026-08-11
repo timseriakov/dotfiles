@@ -275,6 +275,7 @@ abbr -a pk 'snitch -t -l -e'
 abbr -a ports 'snitch -t -l -e'
 abbr -a un 'mole uninstall'
 abbr -a why-run witr
+abbr -a cli cliamp
 
 # Media and web
 abbr -a ff 'npx -y fast-cli'
