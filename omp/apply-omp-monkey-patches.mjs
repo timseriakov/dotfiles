@@ -1526,10 +1526,32 @@ function patchSessionTools(content) {
   return replaceAny(
     content,
     [
-      `\t\tthis.#host.emitNotice(\n\t\t\t"info",\n\t\t\tafter\n\t\t\t\t? \`inspect_image is now available: \${modelName} has no native image input.\`\n\t\t\t\t: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,\n\t\t\t"vision",\n\t\t);`,
-      `\t\tconst model = this.#host.model();\n\t\tconst modelName = model ? formatModelString(model) : "the current model";\n\t\tthis.#host.emitNotice(\n\t\t\t"info",\n\t\t\tafter\n\t\t\t\t? \`inspect_image is now available: \${modelName} has no native image input.\`\n\t\t\t\t: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,\n\t\t\t"vision",\n\t\t);`,
+      `		this.#host.emitNotice(
+			"info",
+			after
+				? \`inspect_image is now available: \${modelName} has no native image input.\`
+				: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
+			"vision",
+		);`,
+      `		const model = this.#host.model();
+		const modelName = model ? formatModelString(model) : "the current model";
+		this.#host.emitNotice(
+			"info",
+			after
+				? \`inspect_image is now available: \${modelName} has no native image input.\`
+				: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
+			"vision",
+		);`,
+      `			this.#host.emitNotice(
+				"info",
+				after
+					? \`inspect_image is now available: \${modelName} has no native image input.\`
+					: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
+				"vision",
+			);`,
     ],
-    `\t\t// dotfiles patch: avoid noisy vision flip notices.\n\t\treturn;`,
+    `		// dotfiles patch: avoid noisy vision flip notices.
+		return;`,
     "suppress inspect_image flip notice",
   ).content;
 }
@@ -1547,6 +1569,21 @@ function patchExtensionUiController(content) {
 					...(overlayConfig.overlayOptions ?? {}),
 				});
 				overlayConfig.onHandle?.(overlayHandle);
+				return;
+			}`;
+  const currentOverlayModern = `			if (options?.overlay) {
+				const overlayOptions =
+					typeof options.overlayOptions === "function" ? options.overlayOptions() : options.overlayOptions;
+				overlayHandle = this.ctx.ui.showOverlay(
+					component,
+					overlayOptions ?? {
+						anchor: "bottom-center",
+						width: "100%",
+						maxHeight: "100%",
+						margin: 0,
+					},
+				);
+				options.onHandle?.(overlayHandle);
 				return;
 			}`;
   const patchedOverlay = `			if (options?.overlay) {
@@ -1571,7 +1608,7 @@ function patchExtensionUiController(content) {
 				overlayConfig.onHandle?.(overlayHandle);
 				return;
 			}`;
-  return replaceAny(content, [currentOverlay, patchedOverlay], patchedOverlay, "custom overlay options and focus handle").content;
+  return replaceAny(content, [currentOverlay, currentOverlayModern, patchedOverlay], patchedOverlay, "custom overlay options and focus handle").content;
 }
 function patchTuiOverlayFocus(content) {
   const current = `		if (topVisibleOverlay && !isOverlayFocusTarget(topVisibleOverlay.component, component)) {
