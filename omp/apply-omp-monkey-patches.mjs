@@ -35,9 +35,11 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { patchPiSideChatIndex, patchPiSideChatOverlay, SIDE_CHAT_CONFIG } from "./patches/side-chat.mjs";
 
 const home = os.homedir();
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.join(
   home,
   ".bun/install/global/node_modules/@oh-my-pi/pi-coding-agent",
@@ -56,12 +58,12 @@ function tuiFile(rel) {
   return path.join(tuiSrcRoot, rel);
 }
 
-function piAiFile(rel) {
-  return path.join(
-    home,
-    ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src",
-    rel,
-  );
+function piAiFiles(rel) {
+  const roots = [
+    path.join(home, ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src"),
+    path.join(scriptDir, "../node_modules/@oh-my-pi/pi-ai/src"),
+  ];
+  return [...new Set(roots.map((root) => path.resolve(root, rel)))].filter(fs.existsSync);
 }
 
 function read(filePath) {
@@ -176,7 +178,14 @@ function patchTuiFile(rel, mutator) {
 }
 
 function patchPiAiFile(rel, mutator) {
-  patchAbsoluteFile(piAiFile(rel), `pi-ai/${rel}`, mutator);
+  const files = piAiFiles(rel);
+  if (files.length === 0) requireFile(path.join(home, ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src", rel));
+  for (const filePath of files) {
+    const label = filePath.includes(`${path.sep}dev${path.sep}dotfiles${path.sep}`)
+      ? `workspace pi-ai/${rel}`
+      : `pi-ai/${rel}`;
+    patchAbsoluteFile(filePath, label, mutator);
+  }
 }
 
 function patchAbsoluteFile(filePath, label, mutator) {
@@ -356,6 +365,30 @@ function patchPiAiSchemaNormalize(content) {
   out = r.content;
 
   return out;
+}
+
+function patchPiAiTypes(content) {
+  const current = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
+	const provider = model.provider;
+	if (provider === "openrouter") {`;
+  const previousLunaOnly = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
+	if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "openai";
+	const provider = model.provider;
+	if (provider === "openrouter") {`;
+  const patched = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
+	if (model.provider === "omniroute") return model.id === "cx/gpt-5.6-luna" ? "openai" : undefined;
+	const provider = model.provider;
+	if (provider === "openrouter") {`;
+  return replaceAny(content, [current, previousLunaOnly, patched], patched, "pi-ai Luna-only service tier family").content;
+}
+
+function patchModelControlsLunaPriority(content) {
+  const current = `		if (!model) return undefined;
+		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+  const patched = `		if (!model) return undefined;
+		if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
+		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+  return replaceAny(content, [current, patched], patched, "Luna always uses priority service tier").content;
 }
 
 function patchPlannotatorBrowserRuntime(content) {
@@ -980,6 +1013,33 @@ function patchInteractiveMode(content) {
 
   r = replaceAny(
     out,
+    [`		if (!startupQuiet) {`, `		if (true) {`],
+    `		if (true) {`,
+    "interactive minimal welcome visible in quiet mode",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [`			if (!options.suppressWelcomeIntro) {`, `			if (!startupQuiet && !options.suppressWelcomeIntro) {`],
+    `			if (!startupQuiet && !options.suppressWelcomeIntro) {`,
+    "interactive quiet skips welcome intro animation",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `			if (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+      `			if (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+    ],
+    `			if (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+    "interactive quiet suppresses changelog noise",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
     [
       `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
       `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.ui.enableScopedInputRender(this.editor);\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
@@ -1503,6 +1563,7 @@ try {
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
   patchFile("session/session-tools.ts", patchSessionTools);
+  patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
@@ -1515,6 +1576,7 @@ try {
   patchTuiFile("kitty-graphics.ts", patchTuiKittyGraphics);
   patchTuiFile("terminal-capabilities.ts", patchTuiTerminalCapabilities);
   patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
+  patchPiAiFile("types.ts", patchPiAiTypes);
   patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
   patchAbsoluteFile(
     path.join(
