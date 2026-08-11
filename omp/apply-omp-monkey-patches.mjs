@@ -36,6 +36,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import { patchPiSideChatIndex, patchPiSideChatOverlay, SIDE_CHAT_CONFIG } from "./patches/side-chat.mjs";
 
 const home = os.homedir();
@@ -1657,6 +1658,16 @@ try {
     path.join(home, ".omp/plugins/node_modules/pi-side-chat/index.ts"),
     "pi-side-chat tmux popup geometry and shortcuts",
     (content) => patchPiSideChatIndex(content, { replaceAny }),
+  );
+  patchAbsoluteFile(
+    path.join(home, ".omp/plugins/node_modules/rejudge/dist/extension.js"),
+    "rejudge extension unique inner agent ids",
+    (content) => patchRejudgeAgentIds(content, { replaceAny }),
+  );
+  patchAbsoluteFile(
+    path.join(home, ".omp/plugins/node_modules/rejudge/bin/rejudge.js"),
+    "rejudge CLI unique inner agent ids",
+    (content) => patchRejudgeAgentIds(content, { replaceAny }),
   );
   write(
     path.join(home, ".omp/plugins/node_modules/pi-side-chat/config.json"),
