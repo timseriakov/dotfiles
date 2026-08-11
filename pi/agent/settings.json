@@ -37,7 +37,7 @@
     "npm:pi-add-dir",
     "npm:pi-prompt-template-model",
     {
-      "source": "npm:@plannotator/pi-extension",
+      "source": "npm:@plannotator/pi-extension@0.26.8",
       "skills": []
     },
     "npm:pi-slopchop",
@@ -61,7 +61,7 @@
     "extensions/pi-compact-shortcut/index.ts",
     "npm:@sherif-fanous/pi-rtk",
     "git:github.com/DietrichGebert/ponytail",
-    "npm:pi-annotate"
+    "npm:pi-annotate@0.5.0"
   ],
   "showHardwareCursor": false,
   "subagents": {
