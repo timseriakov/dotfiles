@@ -1221,6 +1221,25 @@ function patchSessionPaths(content) {
 
   return out;
 }
+
+function patchSessionListing(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst files = await Array.fromAsync(new Bun.Glob("*/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
+      `\t\tconst files = await Array.fromAsync(new Bun.Glob("**/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
+    ],
+    `\t\tconst files = await Array.fromAsync(new Bun.Glob("**/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
+    "session-listing recursive all sessions",
+  );
+  out = r.content;
+
+  return out;
+}
+
 function patchEditorGutterWidth(content) {
   let out = content;
   let r;
@@ -1602,6 +1621,7 @@ try {
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
   patchFile("session/session-paths.ts", patchSessionPaths);
+  patchFile("session/session-listing.ts", patchSessionListing);
   patchFile("session/session-tools.ts", patchSessionTools);
   patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
