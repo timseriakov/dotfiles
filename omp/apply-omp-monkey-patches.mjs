@@ -1179,6 +1179,28 @@ function patchSessionManager(content) {
   );
   out = r.content;
 
+  r = replaceAny(
+    out,
+    [
+      `function isAssistantEntry(entry: SessionEntry): boolean {\n\treturn entry.type === "message" && entry.message.role === "assistant";\n}\n`,
+      `function isUserOrAssistantEntry(entry: SessionEntry): boolean {\n\treturn entry.type === "message" && (entry.message.role === "user" || entry.message.role === "assistant");\n}\n`,
+    ],
+    `function isUserOrAssistantEntry(entry: SessionEntry): boolean {\n\treturn entry.type === "message" && (entry.message.role === "user" || entry.message.role === "assistant");\n}\n`,
+    "session-manager persist submitted prompts",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t#historyContainsAssistantMessage(): boolean {\n\t\treturn this.#entries.some(isAssistantEntry);\n\t}\n`,
+      `\t#historyContainsAssistantMessage(): boolean {\n\t\treturn this.#entries.some(isUserOrAssistantEntry);\n\t}\n`,
+    ],
+    `\t#historyContainsAssistantMessage(): boolean {\n\t\treturn this.#entries.some(isUserOrAssistantEntry);\n\t}\n`,
+    "session-manager user prompt opens session file",
+  );
+  out = r.content;
+
   return out;
 }
 
