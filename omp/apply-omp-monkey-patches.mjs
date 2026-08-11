@@ -577,6 +577,17 @@ function patchPiSideChatOverlay(content) {
   const oldConstructor = '    this.editor = new Editor(tui, { borderColor: (t) => theme.fg("borderMuted", t), selectList: getSelectListTheme() }, { paddingX: 0 });';
   const newConstructor = "    this.editor = new CustomEditor(tui, getSideChatEditorTheme(theme), undefined, { paddingX: 0 });";
   r = replaceAny(out, [oldConstructor, "    this.editor = new CustomEditor(tui, getSideChatEditorTheme(theme), undefined, { paddingX: 0 });"], newConstructor, "pi-side-chat canonical editor constructor");
+  const oldApiKeyResolver = `      getApiKey: async (provider) => {
+        const key = await modelRegistry.getApiKeyForProvider(provider);
+        if (!key) throw new Error("No API key available");
+        return key;
+      },`;
+  const newApiKeyResolver = `      getApiKey: async (model) => {
+        const key = await modelRegistry.getApiKey(model);
+        if (!key) throw new Error("No API key available");
+        return key;
+      },`;
+  r = replaceAny(out, [oldApiKeyResolver, newApiKeyResolver], newApiKeyResolver, "pi-side-chat use model-specific API key");
   out = r.content;
   const editorTheme = String.raw`function getSideChatEditorTheme(theme: Theme) {
   const asciiBox = { topLeft: "+", topRight: "+", bottomLeft: "+", bottomRight: "+", horizontal: "-", vertical: "|", cross: "+", teeDown: "+", teeUp: "+", teeLeft: "+", teeRight: "+" };
