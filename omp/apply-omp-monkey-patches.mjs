@@ -1204,6 +1204,23 @@ function patchSessionManager(content) {
   return out;
 }
 
+function patchSessionPaths(content) {
+  let out = content;
+  let r;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\t// A materialized target resumes normally; a missing target is honored only\n\t\t// for a fresh \`/new\` boundary (never-written lazy session).\n\t\tif (exists || fresh) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
+      `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\tconst breadcrumbStat = fs.statSync(breadcrumbFile, { throwIfNoEntry: false });\n\t\tconst freshIsRecent =\n\t\t\tfresh && breadcrumbStat?.isFile() === true && Date.now() - breadcrumbStat.mtimeMs < 5 * 60_000;\n\t\t// A materialized target resumes normally; a missing fresh target is honored\n\t\t// only briefly, so stale fresh breadcrumbs cannot hide older sessions forever.\n\t\tif (exists || freshIsRecent) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
+    ],
+    `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\tconst breadcrumbStat = fs.statSync(breadcrumbFile, { throwIfNoEntry: false });\n\t\tconst freshIsRecent =\n\t\t\tfresh && breadcrumbStat?.isFile() === true && Date.now() - breadcrumbStat.mtimeMs < 5 * 60_000;\n\t\t// A materialized target resumes normally; a missing fresh target is honored\n\t\t// only briefly, so stale fresh breadcrumbs cannot hide older sessions forever.\n\t\tif (exists || freshIsRecent) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
+    "session-paths stale fresh breadcrumb expiry",
+  );
+  out = r.content;
+
+  return out;
+}
 function patchEditorGutterWidth(content) {
   let out = content;
   let r;
@@ -1584,6 +1601,7 @@ try {
   patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
+  patchFile("session/session-paths.ts", patchSessionPaths);
   patchFile("session/session-tools.ts", patchSessionTools);
   patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
