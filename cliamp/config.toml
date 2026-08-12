@@ -4,9 +4,9 @@ shuffle = false
 theme = "nord"
 
 visualizer = "Bricks"
-repeat = "Off"
-eq_preset = "Jazz"
-eq = [3, 4, 2, 1, -1, -1, 1, 2, 3, 4]
+repeat = "All"
+eq_preset = "Classical"
+eq = [3, 2, 1, 0, -1, -1, 0, 2, 3, 4]
 
 speed = 1.00
 [soundcloud]

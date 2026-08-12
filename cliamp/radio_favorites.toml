@@ -50,3 +50,37 @@ bitrate = 48
 codec = "AAC+"
 tags = "chillstep,deep,future garage,post dubstep,radcap"
 homepage = "http://radcap.ru/futuregarage.html"
+
+[[station]]
+name = "Radio Caprice - Breakcore"
+url = "http://79.111.119.111:8004/breakcore"
+country = "The Russian Federation"
+bitrate = 320
+codec = "AAC+"
+tags = "breakcore,electronic,idm"
+homepage = "http://radcap.ru/breakcore.html"
+
+[[station]]
+name = "Adroit Jazz Underground"
+url = "https://icecast.walmradio.com:8443/jazz"
+country = "The United States Of America"
+bitrate = 320
+codec = "MP3"
+tags = "avant-garde,bebop,big band,bop,combos,contemporary,contemporary jazz,cool,cool jazz,free jazz,fusion,hard bop,hd,mainstream,mainstream jazz,modern,modern big band,post-bop,straight-ahead,walm,west coast"
+homepage = "https://walmradio.com/jazz"
+
+[[station]]
+name = "Jazz Lounge"
+url = "http://eu8.fastcast4u.com:5068/;"
+country = "Malaysia"
+bitrate = 320
+codec = "MP3"
+tags = "320kbps,classic jazz,jazz,smooth jazz"
+homepage = "http://shoutcast.flashradio.info/#/Jazz/1292701/"
+
+[[station]]
+name = "dubtechno247station"
+url = "http://135.148.46.104:8010/radio.mp3"
+country = "The United States Of America"
+bitrate = 128
+codec = "MP3"
