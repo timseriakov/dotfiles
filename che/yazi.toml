@@ -10,6 +10,8 @@ ratio = [1, 2, 3]
 smart_glob = true
 show_upparent = false
 hide_inactive_cursor = true
+archive_vfs = true
+dual_pane_min_width = 80
 # che
 
 sort_by = "extension"

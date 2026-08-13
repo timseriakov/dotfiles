@@ -12,6 +12,7 @@ keymap = [
 	{ on = "Q",     run = "quit --no-cwd-file", desc = "Quit without outputting cwd-file" },
 	{ on = "Й",     run = "quit --no-cwd-file", desc = "Quit without outputting cwd-file" },
 	{ on = "<C-w>", run = "plugin close-and-restore-tab close_to_left", desc = "Close the current tab and turn to left tab, or quit if it is last tab" },
+  { on = "<C-c>", run = "plugin system-copy", desc = "Copy files to system clipboard" },
 	{ on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
 
 	# Russian command variants switch back to ABC after Yazi handles the action.
@@ -76,6 +77,16 @@ keymap = [
 	{ on = "K", run = "seek -5", desc = "Seek up 5 units in the preview" },
 	{ on = "Л", run = "seek -5", desc = "Seek up 5 units in the preview" },
 	{ on = "J", run = "seek 5",  desc = "Seek down 5 units in the preview" },
+  # che pane operations and navigation
+  { on = "=", run = "pane_sync_dir", desc = "Sync other pane to current directory" },
+  { on = "<C-Right>", run = "pane_open_other", desc = "Open hovered directory in the other pane" },
+  { on = "<C-Left>", run = "pane_open_other", desc = "Open hovered directory in the other pane" },
+  { on = "<C-v>", run = "pane_preview", desc = "Toggle preview (Quick View)" },
+  { on = "<C-j>", run = "jump_mode", desc = "Toggle letter jump mode" },
+  { on = "<F5>", run = "copy_to", desc = "Copy selected files to the other pane" },
+  { on = "<S-F5>", run = "copy_to --force", desc = "Copy selected files to the other pane (overwrite)" },
+  { on = "<F6>", run = "move_to", desc = "Move selected files to the other pane" },
+  { on = "<S-F6>", run = "move_to --force", desc = "Move selected files to the other pane (overwrite)" },
 	{ on = "О", run = "seek 5",  desc = "Seek down 5 units in the preview" },
 
 	# Spotting
@@ -185,6 +196,17 @@ keymap = [
 	{ on = [ ",", "S" ], run = [ "sort size --reverse=yes", "linemode size" ],   desc = "Sort by size (reverse)" },
 	{ on = [ ",", "r" ], run = "sort random --reverse=no",                       desc = "Sort randomly" },
 
+  { on = [ "g", "m" ], run = "disks", desc = "Select disk or volume" },
+  { on = [ "п", "ь" ], run = [ "plugin abc", "disks" ], desc = "Select disk or volume" },
+  { on = [ "c", "m" ], run = "comment", desc = "Edit file/folder comment (descript.ion)" },
+  { on = [ "с", "ь" ], run = [ "plugin abc", "comment" ], desc = "Edit file/folder comment (descript.ion)" },
+  { on = [ "c", "r" ], run = "plugin multirename", desc = "Batch multirename" },
+  { on = "<C-S-r>", run = "plugin multirename", desc = "Batch multirename" },
+  { on = "<C-y>", run = "plugin system-copy", desc = "Copy files to system clipboard" },
+  { on = "<C-S-y>", run = "plugin system-copy", desc = "Copy files to system clipboard" },
+  { on = [ "c", "y" ], run = "plugin system-copy", desc = "Copy files to system clipboard" },
+  { on = [ "с", "н" ], run = [ "plugin abc", "plugin system-copy" ], desc = "Copy files to system clipboard" },
+  { on = [ "с", "к" ], run = [ "plugin abc", "plugin multirename" ], desc = "Batch multirename" },
 	# Goto
 	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
 	{ on = [ "п", "р" ],       run = [ "plugin abc", "cd ~" ], desc = "Go home" },
@@ -218,7 +240,6 @@ keymap = [
 	{ on = "{", run = "tab_swap -1", desc = "Swap current tab with previous tab" },
 	{ on = "}", run = "tab_swap 1",  desc = "Swap current tab with next tab" },
 
-	{ on = "<C-c>", run = "quit",               desc = "Quit the process" },
 	{ on = "<C-t>", run = "plugin close-and-restore-tab restore", desc = "Restore last closed tab" },
 
 	# Tasks
@@ -244,7 +265,7 @@ prepend_keymap = [
   # glow.yazi
   { on = [ "<S-j>", ], run = "seek 5" },
   { on = [ "<S-k>", ], run = "seek -5" },
-  { on = [ "<C-y>", ], run = "plugin system-clipboard" },
+  { on = [ "<C-y>", ], run = "plugin system-copy", desc = "Copy files to system clipboard" },
   # { on = "T", run = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview pane" },
   { on = [ "g", "t", ], run = "plugin lazygit", desc = "Run lazygit" },
   { on = [ "п", "е", ], run = [ "plugin abc", "plugin lazygit" ], desc = "Run lazygit" },
@@ -254,7 +275,7 @@ prepend_keymap = [
   { on = [ "с", "ф", ], run = [ "plugin abc", "plugin ouch" ], desc = "Archive selected files" },
   { on = "f", run = "cd --interactive", desc = "Jump interactively" },
   { on = "а", run = "cd --interactive", desc = "Jump interactively" },
-  { on = "<C-p>", run = "plugin mux next", desc = "Next SQLite preview" },
+  { on = "<C-p>", run = "paste", desc = "Paste yanked files" },
   { on = "<A-y>", run = "plugin copy-content", desc = "Copy content of text files" },
 
 ]
