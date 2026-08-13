@@ -1,13 +1,14 @@
 {
   "mcpServers": {
     "engram": {
-      "args": [
-        "mcp",
-        "--tools=agent"
-      ],
+      "args": ["mcp", "--tools=agent"],
       "command": "/opt/homebrew/bin/engram",
       "directTools": false,
       "lifecycle": "lazy"
+    },
+    "dayflow": {
+      "command": "/Applications/Dayflow.app/Contents/Helpers/dayflow",
+      "args": ["mcp"]
     }
   }
 }
