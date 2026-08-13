@@ -19,6 +19,16 @@ if [[ -z "$window" || "$window" == '#{'* ]]; then
   window=$(tmux display-message -p '#{window_id}')
 fi
 
+project=/Users/tim/dev/my/urban-prime-mono
+if [[ "$(tmux list-panes -t "$window" | wc -l | tr -d ' ')" -lt 2 ]]; then
+  if [[ "$side" == left ]]; then
+    tmux split-window -h -b -t "$window" -c "$project"
+  else
+    tmux split-window -h -t "$window" -c "$project"
+  fi
+  sleep 3
+fi
+
 pane=$(tmux list-panes -t "$window" -F '#{pane_id} #{pane_left}' \
   | sort -k2,2n \
   | { [[ "$side" == left ]] && sed -n '1p' || sed -n '$p'; } \
@@ -29,7 +39,6 @@ if [[ -z "$pane" ]]; then
   exit 1
 fi
 
-project=/Users/tim/dev/my/urban-prime-mono
 restart=${D3K_RESTART_SH:-/Users/tim/dev/dotfiles/tmux/d3k-restart.sh}
 
 wait_for_shell() {

@@ -64,6 +64,14 @@
     }
   },
   {
+    "icon": "󰒭",
+    "title": "d3k:all",
+    "category": "Urban Prime",
+    "action": {
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-all.sh '#{window_id}'\""
+    }
+  },
+  {
     "icon": "",
     "title": "Persistent Popup",
     "category": "Shell",

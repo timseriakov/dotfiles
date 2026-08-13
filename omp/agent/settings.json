@@ -3,7 +3,7 @@
     "/Users/tim/.volta/bin/npm"
   ],
   "packages": [
-    "npm:@plannotator/pi-extension@0.26.8",
+    "npm:@plannotator/pi-extension",
     "npm:gentle-engram@0.1.10",
     "npm:pi-side-chat",
     "npm:pi-mcp-adapter"
