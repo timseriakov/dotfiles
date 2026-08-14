@@ -84,3 +84,12 @@ url = "http://135.148.46.104:8010/radio.mp3"
 country = "The United States Of America"
 bitrate = 128
 codec = "MP3"
+
+[[station]]
+name = "Psyndora Psytrance"
+url = "http://cast.magicstreams.gr:9111/stream"
+country = "Greece"
+bitrate = 128
+codec = "MP3"
+tags = "goa,non-stop music,psyndora,psytrance,trance"
+homepage = "https://www.psyndora.com/"
