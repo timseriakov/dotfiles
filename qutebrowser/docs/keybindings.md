@@ -48,26 +48,26 @@
 
 ## Generic Bindings
 
-| Shortcut      | Action                                             |
-| ------------- | -------------------------------------------------- |
-| <kbd>d</kbd>  | scroll-page 0 0.5                                  |
-| <kbd>u</kbd>  | scroll-page 0 -0.5                                 |
-| <kbd>t</kbd>  | cmd-set-text -s :open -t                           |
-| <kbd>x</kbd>  | tab-close                                          |
-| <kbd><</kbd>  | tab-move -                                         |
-| <kbd>></kbd>  | tab-move +                                         |
-| <kbd>H</kbd>  | back                                               |
-| <kbd>L</kbd>  | forward                                            |
-| <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url)             |
-| <kbd>gu</kbd> | navigate up                                        |
-| <kbd>ss</kbd> | cmd-set-text -s :session-save                      |
-| <kbd>sw</kbd> | cmd-set-text -s :session-save --only-active-window |
-| <kbd>sl</kbd> | spawn --userscript session-add                     |
-| <kbd>sL</kbd> | cmd-set-text -s :spawn --userscript session-add    |
-| <kbd>sd</kbd> | cmd-set-text -s :session-delete                    |
-| <kbd>sr</kbd> | cmd-set-text -s :session-rename                    |
+| Shortcut                      | Action                                             |
+| ----------------------------- | -------------------------------------------------- |
+| <kbd>d</kbd>                  | scroll-page 0 0.5                                  |
+| <kbd>u</kbd>                  | scroll-page 0 -0.5                                 |
+| <kbd>t</kbd>                  | cmd-set-text -s :open -t                           |
+| <kbd>x</kbd>                  | tab-close                                          |
+| <kbd><</kbd>                  | tab-move -                                         |
+| <kbd>></kbd>                  | tab-move +                                         |
+| <kbd>H</kbd>                  | back                                               |
+| <kbd>L</kbd>                  | forward                                            |
+| <kbd>ge</kbd>                 | cmd-set-text -s :open {url} (edit url)             |
+| <kbd>gu</kbd>                 | navigate up                                        |
+| <kbd>sa</kbd> / <kbd>ыф</kbd> | cmd-set-text -s :session-save                      |
+| <kbd>sw</kbd> / <kbd>ыц</kbd> | cmd-set-text -s :session-save --only-active-window |
+| <kbd>ss</kbd> / <kbd>ыы</kbd> | spawn --userscript session-add                     |
+| <kbd>sL</kbd> / <kbd>ыД</kbd> | cmd-set-text -s :spawn --userscript session-add    |
+| <kbd>sd</kbd> / <kbd>ыв</kbd> | cmd-set-text -s :session-delete                    |
+| <kbd>sr</kbd> / <kbd>ык</kbd> | cmd-set-text -s :session-rename                    |
 
-Session manager: `sl` opens the picker immediately; `sL` opens the command prompt with `:spawn --userscript session-add ` so you can type a session name manually.
+Session manager: `ss` opens the picker immediately; `sL` opens the command prompt with `:spawn --userscript session-add ` so you can type a session name manually.
 
 ## Hints Bindings
 

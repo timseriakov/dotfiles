@@ -32,7 +32,7 @@ if [ "$1" == "--preview" ] && [ -n "$2" ]; then
 
   # Python скрипт для генерации красивого превью
   python3 -c "
-import sys, yaml
+import sys, yaml, shutil
 
 RESET = '\033[0m'
 BLUE = '\033[38;2;129;161;193m'
@@ -46,6 +46,17 @@ BOLD = '\033[1m'
 def c(color, text):
     return f'{color}{text}{RESET}'
 
+def rule():
+    return c(BLUE, '─' * max(1, shutil.get_terminal_size((100, 20)).columns - 1))
+
+def ellipsize(text, width):
+    text = ' '.join(str(text).split())
+    if width <= 0:
+        return ''
+    if len(text) <= width:
+        return text
+    return '.' * width if width <= 3 else text[:width - 3] + '...'
+
 try:
     with open('$SESSION_FILE', 'r') as f:
         data = yaml.safe_load(f)
@@ -55,8 +66,8 @@ try:
     total_tabs = 0
 
     print()
-    print(c(BLUE, '') + ' ' + c(DIM, 'Session:') + ' ' + c(BOLD + CYAN, sys.argv[1]))
-    print(c(BLUE, '') + ' ' + c(DIM, 'Windows:') + ' ' + c(YELLOW, total_wins))
+    print(c(BLUE, '') + ' ' + c(BOLD + CYAN, sys.argv[1]))
+    print(rule())
 
     for idx, win in enumerate(windows, 1):
         tabs = win.get('tabs', [])
@@ -68,14 +79,17 @@ try:
             if not history: continue
 
             page = history[-1]
-            title = page.get('title', 'No Title')
-
-            if len(title) > 80: title = title[:77] + '...'
+            title = ' '.join(str(page.get('title', 'No Title')).split())
+            url = ' '.join(str(page.get('url', '')).split())
+            width = shutil.get_terminal_size((100, 20)).columns - 4
+            title = ellipsize(title, min(80, max(20, width - 20)))
+            url = ellipsize(url, max(0, width - len(title) - 1))
 
             marker = c(MAGENTA, '›') if tab.get('active') else c(DIM, '•')
-            print(f'  {marker} {title}')
+            print(f'  {marker} {title}' + (c(DIM, f' {url}') if url else ''))
 
-    print('\n' + c(GREEN, '') + ' ' + c(DIM, 'Total Tabs:') + ' ' + c(YELLOW, total_tabs))
+    print('\n' + rule())
+    print(c(GREEN, '') + ' ' + c(DIM, 'Total Tabs:') + ' ' + c(YELLOW, total_tabs))
 
 except Exception as e:
     print(f'Error reading session: {e}')
@@ -183,6 +197,37 @@ if [ \$? -ne 0 ]; then
     exit 1
 fi
 
+# Old autosaves used a visible [A] prefix; strip it in-place when opening picker.
+for file in '[A] '*.yml; do
+    [ -e "\$file" ] || break
+    target="\${file#'[A] '}"
+    [ -e "\$target" ] || mv -- "\$file" "\$target"
+done
+
+
+# Session list helpers used by fzf reload bindings.
+list_all() {
+    for file in *.yml; do
+        [ -e "\$file" ] || return
+        printf '%s\n' "\${file%.yml}"
+    done
+}
+
+list_autosaves() {
+    list_all | while IFS= read -r name; do
+        case "\$name" in
+            _autosave|[0-9][0-9]-[0-9][0-9]' '[0-9][0-9]-[0-9][0-9]*|'[A] '*) printf '%s\n' "\$name" ;;
+        esac
+    done
+}
+
+delete_session() {
+    [ -n "\$1" ] && rm -f -- "\$1.yml"
+}
+
+export SHELL=/bin/bash
+export -f list_all list_autosaves delete_session
+
 # Sesh-style fzf UI
 export FZF_DEFAULT_OPTS="
 --no-sort
@@ -196,14 +241,17 @@ export FZF_DEFAULT_OPTS="
 
 # Запускаем fzf с превью
 # Передаем текущий скрипт для генерации превью
-ls -1 *.yml | sed 's/\.yml$//' | $FZF \
+list_all | $FZF \
     --prompt=' ' \
-    --header='  ↵/^n-open ^x-del' \
+    --header='  ↵/^n-open ^x-del ^a-all ^s-autosaves' \
     --preview-window='right:70%:nowrap:border-left' \
     --preview "bash '$CURRENT_SCRIPT' --preview {}" \
+    --bind "ctrl-a:reload(list_all)" \
+    --bind "ctrl-s:reload(list_autosaves)" \
     --bind "ctrl-n:execute-silent(printf '%s\n' {} > '$SELECT_FILE')+abort" \
-    --bind "ctrl-x:execute-silent(bash -c 'rm -f -- \"\$1.yml\"' _ {})+reload(ls -1 *.yml | sed 's/\\.yml$//')" \
+    --bind "ctrl-x:execute-silent(delete_session {})+reload(list_all)" \
     > "$SELECT_FILE"
+
 EOF
 
   chmod +x "$HELPER_SCRIPT"

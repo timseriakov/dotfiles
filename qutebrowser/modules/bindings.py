@@ -328,14 +328,18 @@ BINDING_SPECS: list[BindingSpec] = [
 
 run_generator(config, c, BINDING_SPECS)
 
-# Special bindings and unbinds that are not in specs
+# Special unbinds before rebinding keys through BindingSpec for automatic RU twins.
 config.unbind("ss")
 config.unbind("sl")
 config.unbind("m")
-config.bind("ss", "cmd-set-text -s :session-save ")
-config.bind("sw", "cmd-set-text -s :session-save --only-active-window ")
-config.bind("sl", "spawn --userscript session-add")
-config.bind("sL", "cmd-set-text -s :spawn --userscript session-add ")
-config.bind("sd", "cmd-set-text -s :session-delete ")
-config.bind("sr", "cmd-set-text -s :session-rename ")
+
+run_generator(config, c, [
+    BindingSpec("sa", "cmd-set-text -s :session-save "),
+    BindingSpec("ss", "spawn --userscript session-add"),
+    BindingSpec("sw", "cmd-set-text -s :session-save --only-active-window "),
+    BindingSpec("sL", "cmd-set-text -s :spawn --userscript session-add "),
+    BindingSpec("sd", "cmd-set-text -s :session-delete "),
+    BindingSpec("sr", "cmd-set-text -s :session-rename "),
+])
+
 config.bind("sS", "cmd-set-text -s :set")
