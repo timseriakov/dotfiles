@@ -52,7 +52,7 @@
     "title": "d3k:crm restart",
     "category": "Urban Prime",
     "action": {
-      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh left crm '#{window_id}'\""
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh left crm '#{session_name}:1'\""
     }
   },
   {
@@ -60,7 +60,7 @@
     "title": "d3k:web restart",
     "category": "Urban Prime",
     "action": {
-      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh right web '#{window_id}'\""
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-pane.sh right web '#{session_name}:1'\""
     }
   },
   {
@@ -68,7 +68,7 @@
     "title": "d3k:all",
     "category": "Urban Prime",
     "action": {
-      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-all.sh '#{window_id}'\""
+      "tmux": "run-shell -b \"/Users/tim/dev/dotfiles/tmux/d3k-all.sh '#{session_name}:1'\""
     }
   },
   {
