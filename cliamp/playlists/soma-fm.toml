@@ -19,18 +19,6 @@ path = "https://ice6.somafm.com/deepspaceone-128-mp3"
 title = "[SomaFM] Deep Space One: Deep ambient electronic, experimental and space music. For inner and outer space exploration."
 
 [[track]]
-path = "https://ice6.somafm.com/brfm-128-mp3"
-title = "[SomaFM] Black Rock FM: From the Black Rock Desert playa to the world, year round!"
-
-[[track]]
-path = "https://ice6.somafm.com/cliqhop-128-mp3"
-title = "[SomaFM] cliqhop IDM: Blips'n'beeps backed mostly w/beats. Intelligent Dance Music."
-
-[[track]]
-path = "https://ice6.somafm.com/doomed-128-mp3"
-title = "[SomaFM] Doomed: Dark industrial/ambient music for tortured souls. Where every day is Halloween."
-
-[[track]]
 path = "https://ice6.somafm.com/dronezone-128-mp3"
 title = "[SomaFM] Drone Zone: Served best chilled, safe with most medications. Atmospheric textures with minimal beats."
 
@@ -43,20 +31,12 @@ path = "https://ice6.somafm.com/dubstep-128-mp3"
 title = "[SomaFM] Dub Step Beyond: Dubstep, Dub and Deep Bass. May damage speakers at high volume."
 
 [[track]]
-path = "https://ice6.somafm.com/fluid-128-mp3"
-title = "[SomaFM] Fluid: Drown in the electronic sound of instrumental hiphop, future soul and liquid trap."
-
-[[track]]
-path = "https://ice6.somafm.com/reggae-128-mp3"
-title = "[SomaFM] Heavyweight Reggae: Reggae, Ska, Rocksteady classic and deep tracks."
-
-[[track]]
 path = "https://ice6.somafm.com/missioncontrol-128-mp3"
 title = "[SomaFM] Mission Control: Celebrating NASA and Space Explorers everywhere."
 
-[[track]]
-path = "https://ice6.somafm.com/secretagent-128-mp3"
-title = "[SomaFM] Secret Agent: The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too!"
+# [[track]]
+# path = "https://ice6.somafm.com/secretagent-128-mp3"
+# title = "[SomaFM] Secret Agent: The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too!"
 
 [[track]]
 path = "https://ice6.somafm.com/7soul-128-mp3"
@@ -81,10 +61,6 @@ title = "[SomaFM] Specials: Now featuring Afternoon Jazz, Wavepool, DubX, The Su
 [[track]]
 path = "https://ice6.somafm.com/synphaera-128-mp3"
 title = "[SomaFM] Synphaera Radio: Featuring the music from an independent record label focused on modern electronic ambient and space music."
-
-[[track]]
-path = "https://ice6.somafm.com/darkzone-128-mp3"
-title = "[SomaFM] The Dark Zone: The darker side of deep ambient. Music for staring into the Abyss."
 
 [[track]]
 path = "https://ice6.somafm.com/insound-128-mp3"
