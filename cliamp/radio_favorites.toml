@@ -93,3 +93,12 @@ bitrate = 128
 codec = "MP3"
 tags = "goa,non-stop music,psyndora,psytrance,trance"
 homepage = "https://www.psyndora.com/"
+
+[[station]]
+name = "Brokenbeats"
+url = "https://brokenbeats.net/stream/aac"
+country = "Ukraine"
+bitrate = 320
+codec = "AAC"
+tags = "drum & bass,drum 'n' bass,drum and bass"
+homepage = "https://brokenbeats.net/"
