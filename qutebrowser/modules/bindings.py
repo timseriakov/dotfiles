@@ -292,39 +292,23 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec("ge", en("cmd-set-text -s :open {url}"), wrap_ru_with_en=False),
     BindingSpec(
         leader + "ss",
-        en("cmd-set-text -s :session-save "),
+        "spawn -u summarize-url {url}",
         hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
+    ),
+    BindingSpec(
+        leader + "sq",
+        "spawn -u summarize-url --quality {url}",
+        hide_ru_in_keyhint=True,
     ),
     BindingSpec(
         leader + "sw",
-        en("cmd-set-text -s :session-save --only-active-window "),
+        "spawn -u summarize-url --analyze-quick {url}",
         hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
-    ),
-    BindingSpec(
-        leader + "sl",
-        en("spawn --userscript session-add"),
-        hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
-    ),
-    BindingSpec(
-        leader + "sL",
-        en("cmd-set-text -s :spawn --userscript session-add "),
-        hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
     ),
     BindingSpec(
         leader + "sd",
-        en("cmd-set-text -s :session-delete "),
+        "spawn -u summarize-url --analyze-deep {url}",
         hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
-    ),
-    BindingSpec(
-        leader + "sr",
-        en("cmd-set-text -s :session-rename "),
-        hide_ru_in_keyhint=True,
-        wrap_ru_with_en=False,
     ),
     BindingSpec(
         leader + "tm",
@@ -348,9 +332,10 @@ run_generator(config, c, BINDING_SPECS)
 config.unbind("ss")
 config.unbind("sl")
 config.unbind("m")
-config.bind("ss", "spawn -u summarize-url {url}")
-config.bind("sq", "spawn -u summarize-url --quality {url}")
-config.bind("sw", "spawn -u summarize-url --analyze-quick {url}")
-config.bind("sd", "spawn -u summarize-url --analyze-deep {url}")
+config.bind("ss", "cmd-set-text -s :session-save ")
+config.bind("sw", "cmd-set-text -s :session-save --only-active-window ")
+config.bind("sl", "spawn --userscript session-add")
+config.bind("sL", "cmd-set-text -s :spawn --userscript session-add ")
+config.bind("sd", "cmd-set-text -s :session-delete ")
+config.bind("sr", "cmd-set-text -s :session-rename ")
 config.bind("sS", "cmd-set-text -s :set")
-config.bind("sL", "cmd-set-text -s :set -t")

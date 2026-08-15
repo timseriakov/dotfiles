@@ -34,6 +34,18 @@ if [ "$1" == "--preview" ] && [ -n "$2" ]; then
   python3 -c "
 import sys, yaml
 
+RESET = '\033[0m'
+BLUE = '\033[38;2;129;161;193m'
+CYAN = '\033[38;2;136;192;208m'
+GREEN = '\033[38;2;163;190;140m'
+YELLOW = '\033[38;2;235;203;139m'
+MAGENTA = '\033[38;2;180;142;173m'
+DIM = '\033[38;2;76;86;106m'
+BOLD = '\033[1m'
+
+def c(color, text):
+    return f'{color}{text}{RESET}'
+
 try:
     with open('$SESSION_FILE', 'r') as f:
         data = yaml.safe_load(f)
@@ -42,13 +54,14 @@ try:
     total_wins = len(windows)
     total_tabs = 0
 
-    print(f'  Session: {sys.argv[1]}')
-    print(f'  Windows: {total_wins}')
+    print()
+    print(c(BLUE, '') + ' ' + c(DIM, 'Session:') + ' ' + c(BOLD + CYAN, sys.argv[1]))
+    print(c(BLUE, '') + ' ' + c(DIM, 'Windows:') + ' ' + c(YELLOW, total_wins))
 
     for idx, win in enumerate(windows, 1):
         tabs = win.get('tabs', [])
         total_tabs += len(tabs)
-        print(f'\n  Window {idx} ({len(tabs)} tabs):')
+        print('\n  ' + c(BLUE, 'Window') + ' ' + c(YELLOW, idx) + ' ' + c(DIM, f'({len(tabs)} tabs):'))
 
         for t_idx, tab in enumerate(tabs, 1):
             history = tab.get('history', [])
@@ -59,10 +72,10 @@ try:
 
             if len(title) > 80: title = title[:77] + '...'
 
-            marker = '' if tab.get('active') else ' '
+            marker = c(MAGENTA, '›') if tab.get('active') else c(DIM, '•')
             print(f'  {marker} {title}')
 
-    print(f'\n  Total Tabs: {total_tabs}')
+    print('\n' + c(GREEN, '') + ' ' + c(DIM, 'Total Tabs:') + ' ' + c(YELLOW, total_tabs))
 
 except Exception as e:
     print(f'Error reading session: {e}')
@@ -106,6 +119,7 @@ try:
     total_wins = len(windows)
     total_tabs = 0
 
+    print()
     print(f'  Session: {sys.argv[1]}')
     print(f'  Windows: {total_wins}')
 
@@ -169,30 +183,26 @@ if [ \$? -ne 0 ]; then
     exit 1
 fi
 
-# Nord theme for fzf
+# Sesh-style fzf UI
 export FZF_DEFAULT_OPTS="
+--no-sort
 --ansi
---height=100%
+--cycle
+--layout=reverse
 --border=none
---prompt=' '
---pointer=''
---marker=''
---info=inline
---color=fg:#d8dee9,bg:#2e3440,hl:#81a1c1
---color=fg+:#eceff4,bg+:#4c566a,hl+:#88c0d0
---color=info:#e5e9f0,prompt:#81a1c1,pointer:#bf616a
---color=marker:#a3be8c,spinner:#b48ead,header:#a3be8c
---color=gutter:#2e3440
---color=border:#4c566a,label:#81a1c1
+--color=fg:#D8DEE9,bg:#2E3440,hl:#BF616A,fg+:#E5E9F0,bg+:#3B4252,hl+:#BF616A
+--color=info:#81A1C1,prompt:#81A1C1,pointer:#BF616A,marker:#EBCB8B,spinner:#5E81AC,header:#5E81AC,border:#81A1C1
 "
 
 # Запускаем fzf с превью
 # Передаем текущий скрипт для генерации превью
 ls -1 *.yml | sed 's/\.yml$//' | $FZF \
-    --cycle \
-    --prompt='Session > ' \
-    --preview-window=right:70%:wrap \
+    --prompt=' ' \
+    --header='  ↵/^n-open ^x-del' \
+    --preview-window='right:70%:nowrap:border-left' \
     --preview "bash '$CURRENT_SCRIPT' --preview {}" \
+    --bind "ctrl-n:execute-silent(printf '%s\n' {} > '$SELECT_FILE')+abort" \
+    --bind "ctrl-x:execute-silent(bash -c 'rm -f -- \"\$1.yml\"' _ {})+reload(ls -1 *.yml | sed 's/\\.yml$//')" \
     > "$SELECT_FILE"
 EOF
 

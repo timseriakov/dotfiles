@@ -48,24 +48,26 @@
 
 ## Generic Bindings
 
-| Shortcut      | Action                                       |
-| ------------- | -------------------------------------------- |
-| <kbd>d</kbd>  | scroll-page 0 0.5                            |
-| <kbd>u</kbd>  | scroll-page 0 -0.5                           |
-| <kbd>t</kbd>  | cmd-set-text -s :open -t                     |
-| <kbd>x</kbd>  | tab-close                                    |
-| <kbd><</kbd>  | tab-move -                                   |
-| <kbd>></kbd>  | tab-move +                                   |
-| <kbd>H</kbd>  | back                                         |
-| <kbd>L</kbd>  | forward                                      |
-| <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url)       |
-| <kbd>gu</kbd> | navigate up                                  |
-| <kbd>ss</kbd> | spawn -u summarize-url {url}                 |
-| <kbd>sq</kbd> | spawn -u summarize-url --quality {url}       |
-| <kbd>sw</kbd> | spawn -u summarize-url --analyze-quick {url} |
-| <kbd>sd</kbd> | spawn -u summarize-url --analyze-deep {url}  |
+| Shortcut      | Action                                             |
+| ------------- | -------------------------------------------------- |
+| <kbd>d</kbd>  | scroll-page 0 0.5                                  |
+| <kbd>u</kbd>  | scroll-page 0 -0.5                                 |
+| <kbd>t</kbd>  | cmd-set-text -s :open -t                           |
+| <kbd>x</kbd>  | tab-close                                          |
+| <kbd><</kbd>  | tab-move -                                         |
+| <kbd>></kbd>  | tab-move +                                         |
+| <kbd>H</kbd>  | back                                               |
+| <kbd>L</kbd>  | forward                                            |
+| <kbd>ge</kbd> | cmd-set-text -s :open {url} (edit url)             |
+| <kbd>gu</kbd> | navigate up                                        |
+| <kbd>ss</kbd> | cmd-set-text -s :session-save                      |
+| <kbd>sw</kbd> | cmd-set-text -s :session-save --only-active-window |
+| <kbd>sl</kbd> | spawn --userscript session-add                     |
+| <kbd>sL</kbd> | cmd-set-text -s :spawn --userscript session-add    |
+| <kbd>sd</kbd> | cmd-set-text -s :session-delete                    |
+| <kbd>sr</kbd> | cmd-set-text -s :session-rename                    |
 
-This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux window and runs the summary in the current tmux session. Quick analysis (`sw`) renders to console via mcat. Deep analysis (`sd`), normal summary (`ss`), and quality summary (`sq`) generate the summary and start an interactive Oh My Pi session with the result as context, so you can ask follow-up questions.
+Session manager: `sl` opens the picker immediately; `sL` opens the command prompt with `:spawn --userscript session-add ` so you can type a session name manually.
 
 ## Hints Bindings
 
@@ -140,14 +142,14 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 
 ## UI Bindings
 
-| Shortcut                        | Action                                                                              |
-| ------------------------------- | ----------------------------------------------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>uy</kbd> | config-cycle tabs.show multiple never                                               |
-| <kbd>Leader</kbd> <kbd>uu</kbd> | config-cycle statusbar.show always in-mode                                          |
-| <kbd>Leader</kbd> <kbd>uh</kbd> | toggle tabs/status together (own state, ignores current config)                     |
-| <kbd>Leader</kbd> <kbd>ui</kbd> | toggle webpage theme (atomic light/dark pair)                                       |
-| <kbd>Leader</kbd> <kbd>ua</kbd> | :set content.autoplay true ;; message-info 'Autoplay enabled'                       |
-| <kbd>Leader</kbd> <kbd>uf</kbd> | :set content.autoplay false ;; message-info 'Autoplay disabled'                     |
+| Shortcut                        | Action                                                          |
+| ------------------------------- | --------------------------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>uy</kbd> | config-cycle tabs.show multiple never                           |
+| <kbd>Leader</kbd> <kbd>uu</kbd> | config-cycle statusbar.show always in-mode                      |
+| <kbd>Leader</kbd> <kbd>uh</kbd> | toggle tabs/status together (own state, ignores current config) |
+| <kbd>Leader</kbd> <kbd>ui</kbd> | toggle webpage theme (atomic light/dark pair)                   |
+| <kbd>Leader</kbd> <kbd>ua</kbd> | :set content.autoplay true ;; message-info 'Autoplay enabled'   |
+| <kbd>Leader</kbd> <kbd>uf</kbd> | :set content.autoplay false ;; message-info 'Autoplay disabled' |
 
 ## Yank Bindings
 
@@ -179,18 +181,16 @@ This runs `qutebrowser/userscripts/summarize-url`, which creates/selects a tmux 
 
 ## History & Sessions
 
-| Shortcut                        | Action                                             |
-| ------------------------------- | -------------------------------------------------- |
-| <kbd>Leader</kbd> <kbd>h</kbd>  | spawn -u fzfhistory-userscript                     |
-| <kbd>Leader</kbd> <kbd>H</kbd>  | spawn -u fzfhistory-userscript closed-tabs         |
-| <kbd>Leader</kbd> <kbd>ss</kbd> | cmd-set-text -s :session-save                      |
-| <kbd>Leader</kbd> <kbd>sw</kbd> | cmd-set-text -s :session-save --only-active-window |
-| <kbd>Leader</kbd> <kbd>sl</kbd> | spawn --userscript session-add                     |
-| <kbd>Leader</kbd> <kbd>sL</kbd> | cmd-set-text -s :spawn --userscript session-add    |
-| <kbd>Leader</kbd> <kbd>sd</kbd> | cmd-set-text -s :session-delete                    |
-| <kbd>Leader</kbd> <kbd>sr</kbd> | cmd-set-text -s :session-rename                    |
-| <kbd>Leader</kbd> <kbd>sc</kbd> | session-clean                                      |
-| <kbd>Leader</kbd> <kbd>sz</kbd> | config-cycle -p session.lazy_restore true false    |
+| Shortcut                        | Action                                          |
+| ------------------------------- | ----------------------------------------------- |
+| <kbd>Leader</kbd> <kbd>h</kbd>  | spawn -u fzfhistory-userscript                  |
+| <kbd>Leader</kbd> <kbd>H</kbd>  | spawn -u fzfhistory-userscript closed-tabs      |
+| <kbd>Leader</kbd> <kbd>ss</kbd> | spawn -u summarize-url {url}                    |
+| <kbd>Leader</kbd> <kbd>sq</kbd> | spawn -u summarize-url --quality {url}          |
+| <kbd>Leader</kbd> <kbd>sw</kbd> | spawn -u summarize-url --analyze-quick {url}    |
+| <kbd>Leader</kbd> <kbd>sd</kbd> | spawn -u summarize-url --analyze-deep {url}     |
+| <kbd>Leader</kbd> <kbd>sc</kbd> | session-clean                                   |
+| <kbd>Leader</kbd> <kbd>sz</kbd> | config-cycle -p session.lazy_restore true false |
 
 ## Temporary Split
 

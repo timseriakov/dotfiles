@@ -1,8 +1,8 @@
 [window]
 decorations = "none"
-opacity = 0.70
+opacity = 0.95
 startup_mode = "Maximized"
-padding = { x = 130, y = 100 }
+padding = { x = 0, y = 0 }
 dynamic_title = false
 
 [font]
@@ -14,6 +14,7 @@ family = "ShureTechMono Nerd Font Mono"
 # Nord colors
 [colors.primary]
 foreground = "#d8dee9"
+background = "#2e3440"
 
 [colors.normal]
 black = "#3b4252"
