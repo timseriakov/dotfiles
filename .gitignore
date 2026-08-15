@@ -138,3 +138,4 @@ cliamp/*_ocr.png
 handy/.tinbase/
 handy/settings_store.json
 /omp/agent/config.yml.lock
+/omp/agent/tmp/extensions/npm/f35b2129
