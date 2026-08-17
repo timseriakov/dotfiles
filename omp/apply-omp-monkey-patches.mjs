@@ -37,7 +37,11 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
-import { patchPiSideChatIndex, patchPiSideChatOverlay, SIDE_CHAT_CONFIG } from "./patches/side-chat.mjs";
+import {
+  patchPiSideChatIndex,
+  patchPiSideChatOverlay,
+  SIDE_CHAT_CONFIG,
+} from "./patches/side-chat.mjs";
 
 const home = os.homedir();
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -64,7 +68,9 @@ function piAiFiles(rel) {
     path.join(home, ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src"),
     path.join(scriptDir, "../node_modules/@oh-my-pi/pi-ai/src"),
   ];
-  return [...new Set(roots.map((root) => path.resolve(root, rel)))].filter(fs.existsSync);
+  return [...new Set(roots.map((root) => path.resolve(root, rel)))].filter(
+    fs.existsSync,
+  );
 }
 
 function read(filePath) {
@@ -180,9 +186,18 @@ function patchTuiFile(rel, mutator) {
 
 function patchPiAiFile(rel, mutator) {
   const files = piAiFiles(rel);
-  if (files.length === 0) requireFile(path.join(home, ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src", rel));
+  if (files.length === 0)
+    requireFile(
+      path.join(
+        home,
+        ".bun/install/global/node_modules/@oh-my-pi/pi-ai/src",
+        rel,
+      ),
+    );
   for (const filePath of files) {
-    const label = filePath.includes(`${path.sep}dev${path.sep}dotfiles${path.sep}`)
+    const label = filePath.includes(
+      `${path.sep}dev${path.sep}dotfiles${path.sep}`,
+    )
       ? `workspace pi-ai/${rel}`
       : `pi-ai/${rel}`;
     patchAbsoluteFile(filePath, label, mutator);
@@ -203,7 +218,10 @@ function patchAbsoluteFile(filePath, label, mutator) {
 
 function rebuildBundledCli() {
   for (const entry of fs.readdirSync(path.join(packageRoot, "dist"))) {
-    if (entry === "cli.js" || (entry.startsWith("CHANGELOG-") && entry.endsWith(".md"))) {
+    if (
+      entry === "cli.js" ||
+      (entry.startsWith("CHANGELOG-") && entry.endsWith(".md"))
+    ) {
       fs.rmSync(path.join(packageRoot, "dist", entry), { force: true });
     }
   }
@@ -239,7 +257,8 @@ function rebuildBundledCli() {
   const cliPath = path.join(packageRoot, "dist/cli.js");
   let bundled = read(cliPath);
   if (!bundled.startsWith("#!")) bundled = `#!/usr/bin/env bun\n${bundled}`;
-  if (!bundled.includes("path.basename")) bundled += "\n/* omp patch marker: path.basename */\n";
+  if (!bundled.includes("path.basename"))
+    bundled += "\n/* omp patch marker: path.basename */\n";
   write(cliPath, bundled);
   console.log("rebuilt OMP bundled CLI");
 }
@@ -305,40 +324,52 @@ function setupRuntimeStateLinks() {
 }
 
 function patchPiAiOpenAICompletions(content) {
-  let out = content;
-  let r;
-
-  r = replaceAny(
-    out,
-    [
-      `import { adaptSchemaForStrict, NO_STRICT, toolWireSchema } from "../utils/schema";`,
-      `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,
-      `import { adaptSchemaForStrict, NO_STRICT, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
-      `import { adaptSchemaForStrict, NO_STRICT, normalizeSchemaForMoonshot, toolWireSchema } from "../utils/schema";`,
-      `import { adaptSchemaForStrict, NO_STRICT, normalizeSchemaForMoonshot, sanitizeSchemaForOpenAIResponses, toolWireSchema } from "../utils/schema";`,
-      `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\tsanitizeSchemaForOpenAIResponses,\n\ttoolWireSchema,\n} from "../utils/schema";`,
-    ],
-    `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\tsanitizeSchemaForOpenAIResponses,\n\ttoolWireSchema,\n} from "../utils/schema";`,
+  const hasExtendedSchemaHelpers = content.includes(
+    "findStrictToolSchemaViolation",
+  );
+  const currentImports = hasExtendedSchemaHelpers
+    ? [
+        `import {\n\tadaptSchemaForStrict,\n\tfindStrictToolSchemaViolation,\n\tflattenExclusiveRequiredRootUnion,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,
+      ]
+    : [
+        `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,
+      ];
+  const patchedImport = hasExtendedSchemaHelpers
+    ? `import {\n\tadaptSchemaForStrict,\n\tfindStrictToolSchemaViolation,\n\tflattenExclusiveRequiredRootUnion,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\tsanitizeSchemaForOpenAIResponses,\n\ttoolWireSchema,\n} from "../utils/schema";`
+    : `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\tsanitizeSchemaForOpenAIResponses,\n\ttoolWireSchema,\n} from "../utils/schema";`;
+  let out = replaceAny(
+    content,
+    currentImports,
+    patchedImport,
     "pi-ai openai-completions import schema sanitizer",
-  );
-  out = r.content;
-
-  r = replaceAny(
-    out,
-    [
-      `\t\tconst baseParameters = toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+  ).content;
+  if (
+    out.includes(
+      'const rejectXaiRootObjectUnion = provider === "xai" || provider === "xai-oauth";',
+    )
+  ) {
+    out = replaceAny(
+      out,
+      [
+        `\t\tconst baseParameters = rejectXaiRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(toolWireSchema(tool))\n\t\t\t: toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+        `\t\tconst baseParameters = rejectXaiRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(sanitizeSchemaForOpenAIResponses(toolWireSchema(tool)))\n\t\t\t: sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+      ],
+      `\t\tconst baseParameters = rejectXaiRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(sanitizeSchemaForOpenAIResponses(toolWireSchema(tool)))\n\t\t\t: sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+      "pi-ai openai-completions global schema sanitizer",
+    ).content;
+  } else {
+    out = replaceAny(
+      out,
+      [
+        `\t\tconst baseParameters = toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+        `\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+      ],
       `\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
-      `\t\tconst strict = !NO_STRICT && compat.supportsStrictMode !== false && tool.strict !== false;\n\t\tconst baseParameters = toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
-      `\t\tconst strict = !NO_STRICT && compat.supportsStrictMode !== false && tool.strict !== false;\n\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
-    ],
-    `\t\tconst baseParameters = sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
-    "pi-ai openai-completions sanitize base tool schema",
-  );
-  out = r.content;
-
+      "pi-ai openai-completions workspace schema sanitizer",
+    ).content;
+  }
   return out;
 }
-
 function patchPiAiSchemaNormalize(content) {
   let out = content;
   let r;
@@ -380,7 +411,12 @@ function patchPiAiTypes(content) {
 	if (model.provider === "omniroute") return model.id === "cx/gpt-5.6-luna" ? "openai" : undefined;
 	const provider = model.provider;
 	if (provider === "openrouter") {`;
-  return replaceAny(content, [current, previousLunaOnly, patched], patched, "pi-ai Luna-only service tier family").content;
+  return replaceAny(
+    content,
+    [current, previousLunaOnly, patched],
+    patched,
+    "pi-ai Luna-only service tier family",
+  ).content;
 }
 
 function patchModelControlsLunaPriority(content) {
@@ -389,7 +425,12 @@ function patchModelControlsLunaPriority(content) {
   const patched = `		if (!model) return undefined;
 		if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
 		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
-  return replaceAny(content, [current, patched], patched, "Luna always uses priority service tier").content;
+  return replaceAny(
+    content,
+    [current, patched],
+    patched,
+    "Luna always uses priority service tier",
+  ).content;
 }
 
 function patchPlannotatorBrowserRuntime(content) {
@@ -582,7 +623,6 @@ export function getReviewBrowserHtml(): string {
   return out;
 }
 
-
 function patchStatusLineTs(content) {
   let out = content;
   let r;
@@ -764,25 +804,32 @@ function patchSegments(content) {
 		}`,
   );
 
-  if (!out.includes(`\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`)) {
-  r = replaceAny(
-    out,
-    [
-      `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
-      `\t\tlet content = modelName;\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-      `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-      `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(theme.icon.model, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
-      `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
+  if (
+    !out.includes(
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
+    )
+  ) {
+    r = replaceAny(
+      out,
+      [
+        `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
+        `\t\tlet content = modelName;\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+        `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
+        `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(theme.icon.model, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
+        `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
 
-      `// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses status colors to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\t// Advisor "++" badge, colored by the worst status in the roster:\n\t\t// success = all running, warning = quota-exhausted, error = failed,\n\t\t// dim = everything paused/no-model. Per-advisor detail lives in\n\t\t// \`/advisor status\`.\n\t\t// Optional chaining: lightweight session doubles (test mocks) that don't\n\t\t// implement getAdvisorStatusOverview skip the badge instead of crashing.\n\t\tconst advisorStats = ctx.session.getAdvisorStatusOverview?.();\n\t\tif (advisorStats?.configured && advisorStats.advisors.length > 0) {\n\t\t\tconst statuses = advisorStats.advisors.map(a => a.status);\n\t\t\tconst badgeColor = statuses.includes("error")\n\t\t\t\t? "error"\n\t\t\t\t: statuses.includes("quota_exhausted")\n\t\t\t\t\t? "warning"\n\t\t\t\t\t: statuses.includes("running")\n\t\t\t\t\t\t? "success"\n\t\t\t\t\t\t: "dim";\n\t\t\tcontent += theme.fg(badgeColor, "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
-        ],
-    `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\tconst roleColors = { smol: "statusLineSpend", default: "success", slow: "warning" } as const;\n\t\tconst roles = (["smol", "default", "slow"] as const).filter(role => {\n\t\t\tconst resolved = resolveModelRoleValue(\n\t\t\t\tctx.session.settings.getModelRole(role),\n\t\t\t\tctx.session.modelRegistry.getAvailable(),\n\t\t\t\t{ settings: ctx.session.settings },\n\t\t\t).model;\n\t\t\treturn resolved?.provider === state.model?.provider && resolved.id === state.model?.id;\n\t\t});\n\t\tconst roleContent = roles.length\n\t\t\t? \` \${roles.map(role => theme.fg(roleColors[role], role)).join("/")}\`\n\t\t\t: "";\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\${roleContent}\`, visible: true };`
-    , "segments model display via");
-  out = r.content;
+        `// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses status colors to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\t// Advisor "++" badge, colored by the worst status in the roster:\n\t\t// success = all running, warning = quota-exhausted, error = failed,\n\t\t// dim = everything paused/no-model. Per-advisor detail lives in\n\t\t// \`/advisor status\`.\n\t\t// Optional chaining: lightweight session doubles (test mocks) that don't\n\t\t// implement getAdvisorStatusOverview skip the badge instead of crashing.\n\t\tconst advisorStats = ctx.session.getAdvisorStatusOverview?.();\n\t\tif (advisorStats?.configured && advisorStats.advisors.length > 0) {\n\t\t\tconst statuses = advisorStats.advisors.map(a => a.status);\n\t\t\tconst badgeColor = statuses.includes("error")\n\t\t\t\t? "error"\n\t\t\t\t: statuses.includes("quota_exhausted")\n\t\t\t\t\t? "warning"\n\t\t\t\t\t: statuses.includes("running")\n\t\t\t\t\t\t? "success"\n\t\t\t\t\t\t: "dim";\n\t\t\tcontent += theme.fg(badgeColor, "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
+      ],
+      `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\tconst roleColors = { smol: "statusLineSpend", default: "success", slow: "warning" } as const;\n\t\tconst roles = (["smol", "default", "slow"] as const).filter(role => {\n\t\t\tconst resolved = resolveModelRoleValue(\n\t\t\t\tctx.session.settings.getModelRole(role),\n\t\t\t\tctx.session.modelRegistry.getAvailable(),\n\t\t\t\t{ settings: ctx.session.settings },\n\t\t\t).model;\n\t\t\treturn resolved?.provider === state.model?.provider && resolved.id === state.model?.id;\n\t\t});\n\t\tconst roleContent = roles.length\n\t\t\t? \` \${roles.map(role => theme.fg(roleColors[role], role)).join("/")}\`\n\t\t\t: "";\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\${roleContent}\`, visible: true };`,
+      "segments model display via",
+    );
+    out = r.content;
   }
   if (
     out.includes(`\t\tlet content = withIcon(modelIcon, modelName);`) &&
-    !out.includes(`\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`)
+    !out.includes(
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
+    )
   ) {
     r = insertBefore(
       out,
@@ -987,7 +1034,6 @@ function patchUsageRow(content) {
   ).content;
 }
 
-
 function patchUserMessage(content) {
   return replaceOnce(
     content,
@@ -1022,7 +1068,10 @@ function patchInteractiveMode(content) {
 
   r = replaceAny(
     out,
-    [`			if (!options.suppressWelcomeIntro) {`, `			if (!startupQuiet && !options.suppressWelcomeIntro) {`],
+    [
+      `			if (!options.suppressWelcomeIntro) {`,
+      `			if (!startupQuiet && !options.suppressWelcomeIntro) {`,
+    ],
     `			if (!startupQuiet && !options.suppressWelcomeIntro) {`,
     "interactive quiet skips welcome intro animation",
   );
@@ -1365,7 +1414,6 @@ function patchGoalTool(content) {
   ).content;
 }
 
-
 function patchUltrathink(content) {
   let out = content;
   let r;
@@ -1426,7 +1474,7 @@ function patchMagicKeywords(content) {
   return replaceAny(
     content,
     [
-    `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
+      `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
       `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
     ],
     `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("orch") && !text.includes("workflowz")) {`,
@@ -1485,14 +1533,18 @@ function patchLegacyModelRuntime(content) {
   out = r.content;
   r = replaceAny(
     out,
-    [`/**\n * Legacy pi extensions call \`createAgentSession({ resourceLoader })\`.`],
+    [
+      `/**\n * Legacy pi extensions call \`createAgentSession({ resourceLoader })\`.`,
+    ],
     `export class ModelRuntime {\n\treadonly modelRegistry: ModelRegistry;\n\n\tprivate constructor(modelRegistry: ModelRegistry) {\n\t\tthis.modelRegistry = modelRegistry;\n\t}\n\n\tstatic async create(): Promise<ModelRuntime> {\n\t\tconst authStorage = await discoverAuthStorage();\n\t\treturn new ModelRuntime(new ModelRegistry(authStorage));\n\t}\n\n\tgetModel(provider: string, modelId: string): Model<Api> | undefined {\n\t\treturn this.modelRegistry.find(provider, modelId);\n\t}\n}\n\n/**\n * Legacy pi extensions call \`createAgentSession({ resourceLoader })\`.`,
     "legacy ModelRuntime export",
   );
   out = r.content;
   r = replaceAny(
     out,
-    [`export type LegacyPiCreateAgentSessionOptions = CreateAgentSessionOptions & {\n\tresourceLoader?: ResourceLoader;\n};`],
+    [
+      `export type LegacyPiCreateAgentSessionOptions = CreateAgentSessionOptions & {\n\tresourceLoader?: ResourceLoader;\n};`,
+    ],
     `export type LegacyPiCreateAgentSessionOptions = CreateAgentSessionOptions & {\n\tresourceLoader?: ResourceLoader;\n\tmodelRuntime?: ModelRuntime;\n};`,
     "legacy ModelRuntime session option",
   );
@@ -1520,7 +1572,6 @@ function patchLegacyModelRuntime(content) {
   out = r.content;
   return out;
 }
-
 
 function patchSessionTools(content) {
   return replaceAny(
@@ -1586,6 +1637,21 @@ function patchExtensionUiController(content) {
 				options.onHandle?.(overlayHandle);
 				return;
 			}`;
+  const currentOverlayLatest = `				if (options?.overlay) {
+					const overlayOptions =
+						typeof options.overlayOptions === "function" ? options.overlayOptions() : options.overlayOptions;
+					overlayHandle = this.ctx.ui.showOverlay(
+						component,
+						overlayOptions ?? {
+							anchor: "bottom-center",
+							width: "100%",
+							maxHeight: "100%",
+							margin: 0,
+						},
+					);
+					options.onHandle?.(overlayHandle);
+					return;
+				}`;
   const patchedOverlay = `			if (options?.overlay) {
 				const overlayConfig = options as {
 					overlayOptions?: Record<string, unknown>;
@@ -1608,7 +1674,17 @@ function patchExtensionUiController(content) {
 				overlayConfig.onHandle?.(overlayHandle);
 				return;
 			}`;
-  return replaceAny(content, [currentOverlay, currentOverlayModern, patchedOverlay], patchedOverlay, "custom overlay options and focus handle").content;
+  return replaceAny(
+    content,
+    [
+      currentOverlay,
+      currentOverlayModern,
+      currentOverlayLatest,
+      patchedOverlay,
+    ],
+    patchedOverlay,
+    "custom overlay options and focus handle",
+  ).content;
 }
 function patchTuiOverlayFocus(content) {
   const current = `		if (topVisibleOverlay && !isOverlayFocusTarget(topVisibleOverlay.component, component)) {
@@ -1623,7 +1699,12 @@ function patchTuiOverlayFocus(content) {
 				? currentFocus
 				: topVisibleOverlay.component;
 		}`;
-  return replaceAny(content, [current, patched], patched, "pi-tui nonCapturing overlay focus").content;
+  return replaceAny(
+    content,
+    [current, patched],
+    patched,
+    "pi-tui nonCapturing overlay focus",
+  ).content;
 }
 try {
   setupRuntimeStateLinks();
@@ -1654,7 +1735,10 @@ try {
   patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
   patchFile("modes/components/usage-row.ts", patchUsageRow);
   patchFile("modes/components/user-message.ts", patchUserMessage);
-  patchFile("modes/controllers/extension-ui-controller.ts", patchExtensionUiController);
+  patchFile(
+    "modes/controllers/extension-ui-controller.ts",
+    patchExtensionUiController,
+  );
   patchFile("config/keybindings.ts", patchKeybindingsConfig);
   patchFile("modes/controllers/input-controller.ts", patchInputController);
   patchFile("session/session-manager.ts", patchSessionManager);
@@ -1685,9 +1769,15 @@ try {
     patchPlannotatorBrowserRuntime,
   );
   patchFile("modes/components/custom-editor.ts", patchCustomEditor);
-  patchFile("extensibility/legacy-pi-coding-agent-shim.ts", patchLegacyModelRuntime);
+  patchFile(
+    "extensibility/legacy-pi-coding-agent-shim.ts",
+    patchLegacyModelRuntime,
+  );
   patchAbsoluteFile(
-    path.join(home, ".omp/plugins/node_modules/pi-side-chat/side-chat-overlay.ts"),
+    path.join(
+      home,
+      ".omp/plugins/node_modules/pi-side-chat/side-chat-overlay.ts",
+    ),
     "pi-side-chat canonical editor and Nord frame",
     (content) => patchPiSideChatOverlay(content, { replaceAny }),
   );
