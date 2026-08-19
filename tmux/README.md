@@ -40,6 +40,7 @@
 - `tmux/sesh-fzf-picker.sh` — session picker
 - `fish/functions/tmux.fish` — wrapper вокруг `tmux`
 - `fish/functions/tmux-monitor.fish` — monitor session
+- `fish/functions/tmux-weather.fish` — weather session (Minsk)
 - `fish/conf.d/90-tmux-hooks.fish` — refresh title после команд
 
 ## Базовые принципы
@@ -67,25 +68,25 @@
 
 ### Everyday
 
-| Клавиша            | Действие                                                       |
-| ------------------ | -------------------------------------------------------------- |
-| `Ctrl-a`           | leader                                                         |
-| `Ctrl-a r`         | reload config                                                  |
-| `Ctrl-a c`         | новое окно в текущей директории                                |
-| `Ctrl-a Enter`     | split horizontal                                               |
-| `Ctrl-a =`         | split vertical                                                 |
-| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`                                  |
-| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`                                  |
-| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`                                  |
-| `alacritty: cmd+a` | убить окно через alacritty → `F3`                              |
-| `cmd+enter`        | horizontal split через kitty → `F4`                            |
+| Клавиша            | Действие                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `Ctrl-a`           | leader                                                                                                          |
+| `Ctrl-a r`         | reload config                                                                                                   |
+| `Ctrl-a c`         | новое окно в текущей директории                                                                                 |
+| `Ctrl-a Enter`     | split horizontal                                                                                                |
+| `Ctrl-a =`         | split vertical                                                                                                  |
+| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`                                                                                   |
+| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`                                                                                   |
+| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`                                                                                   |
+| `alacritty: cmd+a` | убить окно через alacritty → `F3`                                                                               |
+| `cmd+enter`        | horizontal split через kitty → `F4`                                                                             |
 | `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5`; zoomed pane получает фокус, при unzoom фокус возвращается на соседнюю pane |
-| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`                               |
-| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s`                        |
-| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`                             |
-| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`                             |
-| `cmd+h` / `cmd+р`  | предыдущая session, кроме popup/alacritty/monitor → `Ctrl-a (` |
-| `cmd+l` / `cmd+д`  | следующая session, кроме popup/alacritty/monitor → `Ctrl-a )`  |
+| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`                                                                                |
+| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s`                                                                         |
+| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`                                                                              |
+| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`                                                                              |
+| `cmd+h` / `cmd+р`  | предыдущая session, кроме popup/alacritty/monitor → `Ctrl-a (`                                                  |
+| `cmd+l` / `cmd+д`  | следующая session, кроме popup/alacritty/monitor → `Ctrl-a )`                                                   |
 
 ### Layout / move
 
@@ -132,19 +133,19 @@
 
 ### Copy mode
 
-| Клавиша    | Действие                                                    |
-| ---------- | ----------------------------------------------------------- |
-| `Ctrl-a v` | войти в copy-mode                                           |
-| `v` / `м`  | начать выделение                                            |
-| `y` / `н`  | копировать selection                                        |
-| `Enter`    | копировать selection                                        |
+| Клавиша    | Действие                                                                |
+| ---------- | ----------------------------------------------------------------------- |
+| `Ctrl-a v` | войти в copy-mode                                                       |
+| `v` / `м`  | начать выделение                                                        |
+| `y` / `н`  | копировать selection                                                    |
+| `Enter`    | копировать selection                                                    |
 | `t` / `е`  | перевести selection на русский; после закрытия popup выйти из copy-mode |
-| `q` / `й`  | выйти; если есть selection — скопировать в `pbcopy` и выйти |
-| `a` / `ф`  | выйти из copy-mode                                          |
-| `i` / `ш`  | очистить selection                                          |
-| `p` / `з`  | выйти и вставить buffer                                     |
-| `Ctrl-v`   | выйти и вставить buffer                                     |
-| `F1`       | выделить всё в copy-mode                                    |
+| `q` / `й`  | выйти; если есть selection — скопировать в `pbcopy` и выйти             |
+| `a` / `ф`  | выйти из copy-mode                                                      |
+| `i` / `ш`  | очистить selection                                                      |
+| `p` / `з`  | выйти и вставить buffer                                                 |
+| `Ctrl-v`   | выйти и вставить buffer                                                 |
+| `F1`       | выделить всё в copy-mode                                                |
 
 ### Search helpers
 
@@ -270,6 +271,22 @@
 
 - `tmux-monitor` — перейти/attach к monitor session
 - `tmux-monitor --no-attach` — только создать/обновить её
+
+## Weather session
+
+Отдельная session `weather` с погодой по Минску через `linecast` (`WEATHER_LOCATION=53.9002,27.5665`), live-режим по умолчанию.
+
+Окна:
+
+- `weather` — дашборд: температура, почасовой график, alerts
+- `sunshine` — солнечная дуга (Solar arc)
+- `moon` — фаза луны
+- `radar` — радар осадков
+
+Как использовать:
+
+- `tmux-weather` — перейти/attach к weather session
+- `tmux-weather --no-attach` — только создать/обновить её
 
 ## Clipboard / mouse / terminal
 
