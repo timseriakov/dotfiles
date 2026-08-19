@@ -1494,6 +1494,18 @@ function patchCustomEditor(content) {
   out = r.content;
   return out;
 }
+function patchBtwAliases(content) {
+  return replaceOnce(
+    content,
+    `\t\tname: "btw",
+\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+    `\t\tname: "btw",
+\t\taliases: ["b", "и"],
+\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+    "btw aliases /b /и",
+  ).content;
+}
+
 function patchGoalTool(content) {
   return replaceAny(
     content,
@@ -1846,6 +1858,7 @@ try {
   patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
   patchFile("config/model-registry.ts", patchModelRegistryCatalog);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
+  patchFile("slash-commands/builtin-lifecycle.ts", patchBtwAliases);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
   patchFile("modes/orchestrate.ts", patchOrchestrate);
