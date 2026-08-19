@@ -37,6 +37,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
+import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
 import {
   patchPiSideChatIndex,
   patchPiSideChatOverlay,
@@ -216,6 +217,54 @@ function patchAbsoluteFile(filePath, label, mutator) {
   }
 }
 
+function statsPackageRoot() {
+  return path.join(packageRoot, "..", "omp-stats");
+}
+
+// The published @oh-my-pi/omp-stats package ships the prebuilt dashboard at
+// dist/client but not the monorepo gen:stats script. `bundle-dist.ts` runs
+// `gen:stats` before bundling to embed the client; replicate that inline so the
+// raw `bun build` below picks up a populated embed instead of the empty
+// checked-in placeholder (which makes `omp stats` 404 the dashboard).
+function regenerateStatsClientArchive() {
+  const statsRoot = statsPackageRoot();
+  const clientDir = path.join(statsRoot, "dist", "client");
+  const generatedPath = path.join(
+    statsRoot,
+    "src",
+    "embedded-client.generated.txt",
+  );
+  if (!fs.existsSync(path.join(clientDir, "index.html"))) {
+    return;
+  }
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "omp-stats-client-"));
+  const tarPath = path.join(tmp, "client.tar.gz");
+  try {
+    execFileSync("tar", ["-czf", tarPath, "-C", clientDir, "."], {
+      stdio: "inherit",
+    });
+    fs.writeFileSync(
+      generatedPath,
+      fs.readFileSync(tarPath).toString("base64"),
+    );
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
+function resetStatsClientArchive() {
+  const generatedPath = path.join(
+    statsPackageRoot(),
+    "src",
+    "embedded-client.generated.txt",
+  );
+  try {
+    fs.writeFileSync(generatedPath, "");
+  } catch {
+    // Best-effort: the embed is already inlined into dist/cli.js.
+  }
+}
+
 function rebuildBundledCli() {
   for (const entry of fs.readdirSync(path.join(packageRoot, "dist"))) {
     if (
@@ -225,35 +274,40 @@ function rebuildBundledCli() {
       fs.rmSync(path.join(packageRoot, "dist", entry), { force: true });
     }
   }
-  execFileSync(
-    "bun",
-    [
-      "build",
-      "--target=bun",
-      "--outdir=dist",
-      "--minify-whitespace",
-      "--minify-syntax",
-      "--keep-names",
-      "--external=mupdf",
-      "--external=@oh-my-pi/pi-natives",
-      "--external=@huggingface/transformers",
-      "--external=fastembed",
-      "--external=onnxruntime-node",
-      "--external=omp-legacy-pi-modules",
-      "--external=puppeteer-core",
-      "--external=@puppeteer/browsers",
-      "--external=@babel/parser",
-      "--external=@xterm/headless",
-      "--external=turndown",
-      "--external=turndown-plugin-gfm",
-      "--external=@mozilla/readability",
-      "--external=linkedom",
-      "--external=@agentclientprotocol/sdk",
-      '--define=process.env.PI_BUNDLED="true"',
-      "./src/cli.ts",
-    ],
-    { cwd: packageRoot, stdio: "inherit" },
-  );
+  regenerateStatsClientArchive();
+  try {
+    execFileSync(
+      "bun",
+      [
+        "build",
+        "--target=bun",
+        "--outdir=dist",
+        "--minify-whitespace",
+        "--minify-syntax",
+        "--keep-names",
+        "--external=mupdf",
+        "--external=@oh-my-pi/pi-natives",
+        "--external=@huggingface/transformers",
+        "--external=fastembed",
+        "--external=onnxruntime-node",
+        "--external=omp-legacy-pi-modules",
+        "--external=puppeteer-core",
+        "--external=@puppeteer/browsers",
+        "--external=@babel/parser",
+        "--external=@xterm/headless",
+        "--external=turndown",
+        "--external=turndown-plugin-gfm",
+        "--external=@mozilla/readability",
+        "--external=linkedom",
+        "--external=@agentclientprotocol/sdk",
+        '--define=process.env.PI_BUNDLED="true"',
+        "./src/cli.ts",
+      ],
+      { cwd: packageRoot, stdio: "inherit" },
+    );
+  } finally {
+    resetStatsClientArchive();
+  }
   const cliPath = path.join(packageRoot, "dist/cli.js");
   let bundled = read(cliPath);
   if (!bundled.startsWith("#!")) bundled = `#!/usr/bin/env bun\n${bundled}`;
@@ -431,6 +485,50 @@ function patchModelControlsLunaPriority(content) {
     patched,
     "Luna always uses priority service tier",
   ).content;
+}
+
+function patchModelRegistryCatalog(content) {
+  let out = content;
+  let r;
+
+  // OpenRouter retired its free DeepSeek tier: the bundled catalog still lists
+  // `deepseek/deepseek-v4-flash:free`, which 404s on every call. Filter it at
+  // the catalog-load boundary (bundled models) AND at the final registry
+  // composition (covers the 24h model cache merge, which also carries it).
+  r = replaceAny(
+    out,
+    [
+      `\t\t\tconst models = getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[];`,
+    ],
+    `\t\t\tlet models = getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[];\n\t\t\t// OpenRouter no longer serves deepseek/deepseek-v4-flash:free (404).\n\t\t\tif (provider === "openrouter") {\n\t\t\t\tmodels = models.filter(m => m.id !== "deepseek/deepseek-v4-flash:free");\n\t\t\t}`,
+    "drop retired openrouter :free catalog models",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withModelOverrides));\n\t}`,
+    ],
+    `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withModelOverrides.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+    "drop retired openrouter :free from composed registry",
+  );
+  out = r.content;
+
+  // Every model-merge path (static compose, 24h model cache, discovery refresh)
+  // funnels through this helper, so prune the retired :free entry here as the
+  // single choke point for paths that rebuild the snapshot outside compose.
+  r = replaceAny(
+    out,
+    [
+      `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\treturn mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow: replacementModel.contextWindow ?? existing.contextWindow,\n\t\t\t\tmaxTokens: replacementModel.maxTokens ?? existing.maxTokens,\n\t\t\t\tomitMaxOutputTokens: replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t}`,
+    ],
+    `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\t// OpenRouter retired its free DeepSeek tier; drop the stale bundled\n\t\t// deepseek/deepseek-v4-flash:free entry from every merge path.\n\t\tconst merged = mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow: replacementModel.contextWindow ?? existing.contextWindow,\n\t\t\t\tmaxTokens: replacementModel.maxTokens ?? existing.maxTokens,\n\t\t\t\tomitMaxOutputTokens: replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t\treturn merged.filter(model => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"));\n\t}`,
+    "drop retired openrouter :free from every model merge",
+  );
+  out = r.content;
+
+  return out;
 }
 
 function patchPlannotatorBrowserRuntime(content) {
@@ -1746,6 +1844,7 @@ try {
   patchFile("session/session-listing.ts", patchSessionListing);
   patchFile("session/session-tools.ts", patchSessionTools);
   patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
+  patchFile("config/model-registry.ts", patchModelRegistryCatalog);
   patchFile("goals/tools/goal-tool.ts", patchGoalTool);
   patchFile("modes/ultrathink.ts", patchUltrathink);
   patchFile("modes/magic-keywords.ts", patchMagicKeywords);
@@ -1767,6 +1866,14 @@ try {
     ),
     "plannotator browser asset fallback",
     patchPlannotatorBrowserRuntime,
+  );
+  patchAbsoluteFile(
+    path.join(
+      home,
+      ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
+    ),
+    "suppress Plannotator version warning",
+    (content) => patchPlannotatorVersionWarning(content, { replaceAny }),
   );
   patchFile("modes/components/custom-editor.ts", patchCustomEditor);
   patchFile(
