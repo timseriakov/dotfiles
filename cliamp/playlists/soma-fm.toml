@@ -62,6 +62,6 @@ title = "[SomaFM] Specials: Now featuring Afternoon Jazz, Wavepool, DubX, The Su
 path = "https://ice6.somafm.com/synphaera-128-mp3"
 title = "[SomaFM] Synphaera Radio: Featuring the music from an independent record label focused on modern electronic ambient and space music."
 
-[[track]]
-path = "https://ice6.somafm.com/insound-128-mp3"
-title = "[SomaFM] The In-Sound: 60s/70s Hipster Euro Pop where psychedelic melodies meets groovy vibes."
+# [[track]]
+# path = "https://ice6.somafm.com/insound-128-mp3"
+# title = "[SomaFM] The In-Sound: 60s/70s Hipster Euro Pop where psychedelic melodies meets groovy vibes."
