@@ -122,6 +122,7 @@ cliamp/*_ocr.png
 /omp/agent/models.db
 /omp/agent/models.db-shm
 /omp/agent/models.db-wal
+/omp/agent/models.json
 /omp/agent/sessions
 /omp/agent/.env
 /omp/agent/terminal-sessions
