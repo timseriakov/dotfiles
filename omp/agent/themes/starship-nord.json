@@ -118,6 +118,8 @@
       "icon.agents": "",
       "icon.advisor": "",
       "icon.job": "",
+      "context.speculation": "",
+      "context.compaction": "",
       "icon.cache": "",
       "icon.input": "",
       "icon.output": "",
