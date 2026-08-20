@@ -3,8 +3,7 @@
 # Clear old fish_user_paths to avoid duplicates (universal)
 set -eU fish_user_paths
 
-# Note: rbenv and pyenv shims are managed by their init scripts in 20-tooling.fish
-# Don't add them manually here to avoid duplicates
+# pyenv and rbenv shims are added when their lazy wrappers are defined in 20-tooling.fish.
 
 # Antigravity (high priority)
 fish_add_path -ga ~/.antigravity/antigravity/bin

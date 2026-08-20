@@ -1,14 +1,32 @@
 #!/usr/bin/env fish
 # Tooling initialization (keep light; interactive-only where possible)
 
-# rbenv (interactive init)
-if status --is-interactive; and type -q rbenv
-    rbenv init - fish | source
+# Keep shims available immediately; initialize each manager only on first use.
+if type -q rbenv
+    fish_add_path -gpm ~/.rbenv/shims
+    function rbenv
+        functions --erase rbenv
+        command rbenv init - fish | source
+        command rbenv $argv
+    end
 end
 
-# pyenv (interactive init)
-if status --is-interactive; and type -q pyenv
-    pyenv init - | source
+if type -q pyenv
+    fish_add_path -gpm ~/.pyenv/shims
+    function pyenv
+        functions --erase pyenv
+        command pyenv init - | source
+        command pyenv $argv
+    end
+end
+
+if type -q mole
+    function mole
+        functions --erase mole
+        set -l output (command mole completion fish 2>/dev/null)
+        test -n "$output"; and echo "$output" | source
+        command mole $argv
+    end
 end
 
 # OrbStack
