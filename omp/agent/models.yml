@@ -79,6 +79,12 @@ providers:
         input: [text]
         contextWindow: 200000
         maxTokens: 131072
+      - id: openrouter/~deepseek/deepseek-v4-flash-latest
+        name: V4 Flash Latest
+        reasoning: true
+        input: [text]
+        contextWindow: 1310720
+        maxTokens: 384000
       - id: cx/gpt-5.5
         name: 5.5 _
         reasoning: true

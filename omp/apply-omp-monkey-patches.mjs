@@ -782,6 +782,17 @@ function patchStatusLineTs(content) {
     out = r.content;
   }
 
+  r = replaceAny(
+    out,
+    [
+      `\t\tif (layout !== "plain-left") {\n\t\t\tconst runningBackgroundJobs = this.session.getAsyncJobSnapshot()?.running.length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", \`\${theme.icon.job} \${runningBackgroundJobs}\`));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\trightParts.unshift(subagentBadge);\n\t\t\t}\n\t\t}\n`,
+      `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
+    ],
+    `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
+    "status-line no injected right badges",
+  );
+  out = r.content;
+
   return out;
 }
 
@@ -843,20 +854,15 @@ function patchSegments(content) {
     "segments width helpers import",
   );
   out = r.content;
+  // 17.4.0 removed the model-role resolver from segments.ts (role display is
+  // no longer part of the status-line model segment), so there is no
+  // resolver import to add anymore.
+
   r = replaceAny(
     out,
     [
-      `import { resolveModelRoleValue } from "../../../config/model-resolver";`,
-      `import { type ThemeColor, theme } from "../../../modes/theme/theme";`,
+      `\t\tif (opts.abbreviate !== false) {\n\t\t\tpwd = shortenPath(pwd);\n\t\t}`,
     ],
-    `import { resolveModelRoleValue } from "../../../config/model-resolver";\nimport { type ThemeColor, theme } from "../../../modes/theme/theme";`,
-    "segments model role resolver import",
-  );
-  out = r.content;
-
-  r = replaceOnce(
-    out,
-    `\t\tif (opts.abbreviate !== false) {\n\t\t\tpwd = shortenPath(pwd);\n\t\t}`,
     `\t\t// Starship-style minimal path: always show only the last directory segment.\n\t\t// This keeps the display stable even if custom statusLine.segmentOptions are not loaded.\n\t\tpwd = path.basename(pwd) || pwd;`,
     "segments path basename only",
   );
@@ -903,6 +909,7 @@ function patchSegments(content) {
   );
 
   if (
+    false && // 17.4.0 retired role/via display from segments.ts; role indicator removed
     !out.includes(
       `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
     )
@@ -945,6 +952,38 @@ function patchSegments(content) {
     out = r.content;
   }
 
+  r = replaceAny(
+    out,
+    [
+      `\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));`,
+      `\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, modelName))}\`;`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\${providerSuffix ? theme.fg("dim", providerSuffix) : ""}\`;`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tconst modelId = state.model?.id ?? "";\n\t\tconst modelKey = state.model ? state.model.provider + "/" + modelId : "";\n\t\tconst modelRole = modelId\n\t\t\t? Object.entries(ctx.session.settings?.get("modelRoles") ?? {}).find(([, value]) =>\n\t\t\t\ttypeof value === "string" && (value.includes(modelKey) || value.includes(modelId)),\n\t\t\t)?.[0] ?? ""\n\t\t\t: "";\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tconst modelId = state.model?.id ?? "";\n\t\tconst modelKey = state.model ? state.model.provider + "/" + modelId : "";\n\t\tconst modelRoles = ctx.session.settings?.get("modelRoles") ?? {};\n\t\tconst modelRoleEntries = Object.entries(modelRoles).sort(([a], [b]) => (a === "default" ? -1 : b === "default" ? 1 : 0));\n\t\tconst modelRole = modelId\n\t\t\t? modelRoleEntries.find(([, value]) =>\n\t\t\t\ttypeof value === "string" && (value.includes(modelKey) || value.includes(modelId)),\n\t\t\t)?.[0] ?? ""\n\t\t\t: "";\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
+      `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses status colors to stay visibly distinct from the model name color.\n\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
+      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}`,
+    ],
+    `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}`,
+    "segments model via prefix and provider setup",
+  );
+  out = r.content;
+
+  r = replaceAny(
+    out,
+    [
+      `\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}`,
+      `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}`,
+      `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}\n\t\tif (modelRole) {\n\t\t\tcontent += theme.fg("statusLineModel", " " + modelRole);\n\t\t}`,
+    ],
+    `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
+    "segments dim thinking glyph and white level",
+  );
+  out = r.content;
+
+  out = out.replace(
+    `\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}\n\t\tif (modelRole) {\n\t\t\tcontent += theme.fg("statusLineModel", " " + modelRole);\n\t\t}\n`,
+    "",
+  );
   r = replaceAny(
     out,
     [
@@ -1024,8 +1063,24 @@ function patchSegments(content) {
   const upstreamSessionName15_9 = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst ansi =\n\t\t\tgetSessionAccentAnsi(getSessionAccentHex(name, theme.accentSurfaceLuminance)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
   const upstreamSessionName15_12 = `const sessionNameSegment: StatusLineSegment = {\n\tid: \"session_name\",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: \"\", visible: false };\n\n\t\tconst ansi =\n\t\t\tgetSessionAccentAnsi(\n\t\t\t\tgetSessionAccentHex(name, theme.getMajorThemeColorHexes(), theme.accentSurfaceLuminance),\n\t\t\t) ?? theme.getFgAnsi(\"accent\");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
   const upstreamSessionName17_2_11 = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst accentEnabled = ctx.sessionAccent !== false;\n\t\tconst ansi = accentEnabled\n\t\t\t? (getSessionAccentAnsi(\n\t\t\t\t\tgetSessionAccentHex(name, theme.getMajorThemeColorHexes(), theme.accentSurfaceLuminance),\n\t\t\t\t) ?? theme.getFgAnsi("accent"))\n\t\t\t: theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };\n\t},\n};`;
+  const upstreamSessionName17_4 = `const sessionNameSegment: StatusLineSegment = {
+	id: "session_name",
+	render(ctx) {
+		const sessionManager = ctx.session.sessionManager;
+		const name = sessionManager?.getSessionName() || ctx.previewTitle;
+		if (!name) return { content: "", visible: false };
+
+		const accentEnabled = ctx.sessionAccent !== false;
+		const ansi = accentEnabled
+			? (getSessionAccentAnsi(
+					getSessionAccentHex(name, theme.getMajorThemeColorHexes(), theme.accentSurfaceLuminance),
+				) ?? theme.getFgAnsi("accent"))
+			: theme.getFgAnsi("accent");
+		return { content: \`\${ansi}\${sanitizeStatusText(name)}\\x1b[39m\`, visible: true };
+	},
+};`;
   const accentedLimitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 24;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\tconst ansi = getSessionAccentAnsi(getSessionAccentHex(name)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${display}\\x1b[39m\`, visible: true };\n\t},\n};`;
-  const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: \`\${theme.fg("muted", display)}  \`, visible: true };\n\t},\n};`;
+  const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: \`\${theme.fg("muted", display)}  \`, visible: true };\n\t},\n};`;
 
   r = replaceAny(
     out,
@@ -1034,6 +1089,7 @@ function patchSegments(content) {
       upstreamSessionName15_9,
       upstreamSessionName15_12,
       upstreamSessionName17_2_11,
+      upstreamSessionName17_4,
       accentedLimitedSessionName,
       limitedSessionName,
     ],
@@ -1419,6 +1475,7 @@ function patchEditorGutterWidth(content) {
     [
       `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(this.#promptGutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
       `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+      `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(gutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
     ],
     `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
     "editor prompt gutter green style",
@@ -1441,25 +1498,31 @@ function patchEditorGutterWidth(content) {
     [
       `\t#getPromptGutterWidth(width: number, paddingX: number): number {\n\t\tif (this.#borderVisible || !this.#promptGutter) return 0;\n\t\tconst chromeWidth = 2 * this.#getHorizontalChromeWidth(paddingX);\n\t\tconst availableWidth = Math.max(0, width - chromeWidth);\n\t\treturn Math.min(visibleWidth(this.#promptGutter), availableWidth);\n\t}\n`,
       `\t#getPromptGutterWidth(width: number, paddingX: number): number {\n\t\tif (this.#borderVisible || !this.#promptGutter) return 0;\n\t\tconst chromeWidth = 2 * this.#getHorizontalChromeWidth(paddingX);\n\t\tconst availableWidth = Math.max(0, width - chromeWidth);\n\t\tconst promptGutterWidth = visibleWidth(this.#promptGutter);\n\t\treturn Math.min(promptGutterWidth > 0 ? promptGutterWidth : 1, availableWidth);\n\t}\n`,
+      `\t#getPromptGutterWidth(width: number, paddingX: number): number {\n\t\tconst gutter = this.#getEffectivePromptGutter();\n\t\tif (!gutter) return 0;\n\t\tconst chromeWidth = 2 * this.#getHorizontalChromeWidth(paddingX);\n\t\tconst availableWidth = Math.max(0, width - chromeWidth);\n\t\treturn Math.min(visibleWidth(gutter), availableWidth);\n\t}\n`,
     ],
     `\t#getPromptGutterWidth(width: number, paddingX: number): number {\n\t\tif (this.#borderVisible || !this.#promptGutter) return 0;\n\t\tconst chromeWidth = 2 * this.#getHorizontalChromeWidth(paddingX);\n\t\tconst availableWidth = Math.max(0, width - chromeWidth);\n\t\tconst promptGutterWidth = visibleWidth(this.#promptGutter);\n\t\treturn Math.min(promptGutterWidth > 0 ? promptGutterWidth : 1, availableWidth);\n\t}\n`,
     "editor prompt gutter width fallback",
   );
   out = r.content;
 
-  r = replaceAny(
-    out,
-    [
-      `\t\t// Render each layout line\n`,
-      `\t\tif (!borderVisible && this.#topBorderContent) {\n\t\t\tconst gutterPrefix = promptGutter?.continuation ?? "";\n\t\t\tconst contentWidth = Math.max(0, width - visibleWidth(gutterPrefix));\n\t\t\tconst { content, width: statusWidth } = this.#topBorderContent;\n\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\tresult.push(gutterPrefix + content + padding(contentWidth - statusWidth));\n\t\t\t} else {\n\t\t\t\tresult.push(gutterPrefix + truncateToWidth(content, contentWidth));\n\t\t\t}\n\t\t}\n\n\t\t// Render each layout line\n`,
-      `\t\tif (!borderVisible && this.#topBorderContent) {\n\t\t\tconst contentWidth = Math.max(0, width);\n\t\t\tconst { content, width: statusWidth } = this.#topBorderContent;\n\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\tresult.push(content + padding(contentWidth - statusWidth));\n\t\t\t} else {\n\t\t\t\tresult.push(truncateToWidth(content, contentWidth));\n\t\t\t}\n\t\t}\n\n\t\t// Render each layout line\n`,
-      `\t\tif (!borderVisible && this.#topBorderContent) {\n\t\t\tconst contentWidth = Math.max(0, width);\n\t\t\tconst { content, width: statusWidth } = this.#topBorderContent;\n\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\tresult.push(content + padding(contentWidth - statusWidth));\n\t\t\t} else {\n\t\t\t\tresult.push(truncateToWidth(content, contentWidth));\n\t\t\t}\n\t\t}\n\n\t\t// Render each layout line\n`,
-      `\t\tif (!borderVisible) {\n\t\t\tconst topBorder = this.#topBorderProvider ? this.#topBorderProvider(width) : this.#topBorderContent;\n\t\t\tif (topBorder) {\n\t\t\t\tconst contentWidth = Math.max(0, width);\n\t\t\t\tconst { content, width: statusWidth } = topBorder;\n\t\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\t\tresult.push(content + padding(contentWidth - statusWidth));\n\t\t\t\t} else {\n\t\t\t\t\tresult.push(truncateToWidth(content, contentWidth));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t// Render each layout line\n`,
-    ],
-    `\t\tif (!borderVisible) {\n\t\t\tconst topBorder = this.#topBorderProvider ? this.#topBorderProvider(width) : this.#topBorderContent;\n\t\t\tif (topBorder) {\n\t\t\t\tconst contentWidth = Math.max(0, width);\n\t\t\t\tconst { content, width: statusWidth } = topBorder;\n\t\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\t\tresult.push(content + padding(contentWidth - statusWidth));\n\t\t\t\t} else {\n\t\t\t\t\tresult.push(truncateToWidth(content, contentWidth));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t// Render each layout line\n`,
-    "editor borderless status line render",
+  // 17.4.0 moved top-border/chrome rendering into the composer style's
+  // `renderTop(chromeCtx)`, but the borderless style intentionally renders no
+  // chrome. Keep the old Starship-like status row for the borderless editor,
+  // using the current private field instead of the removed local `borderVisible`.
+  const badBorderlessStatusBlock = `\t\tif (!borderVisible) {\n\t\t\tconst topBorder = this.#topBorderProvider ? this.#topBorderProvider(width) : this.#topBorderContent;\n\t\t\tif (topBorder) {\n\t\t\t\tconst contentWidth = Math.max(0, width);\n\t\t\t\tconst { content, width: statusWidth } = topBorder;\n\t\t\t\tif (statusWidth <= contentWidth) {\n\t\t\t\t\tresult.push(content + padding(contentWidth - statusWidth));\n\t\t\t\t} else {\n\t\t\t\t\tresult.push(truncateToWidth(content, contentWidth));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n`;
+  const borderlessStatusBlock = badBorderlessStatusBlock.replace(
+    "if (!borderVisible)",
+    "if (!this.#borderVisible)",
   );
-  out = r.content;
+  const borderlessStatusAnchor = `\t\tconst topRow = style.renderTop(chromeCtx);\n\t\tif (topRow !== undefined) result.push(topRow);\n\n`;
+  if (out.includes(badBorderlessStatusBlock)) {
+    out = out.replace(badBorderlessStatusBlock, borderlessStatusBlock);
+  } else if (!out.includes(borderlessStatusBlock)) {
+    out = out.replace(
+      borderlessStatusAnchor,
+      borderlessStatusAnchor + borderlessStatusBlock,
+    );
+  }
 
   return out;
 }
