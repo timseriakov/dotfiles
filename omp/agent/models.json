@@ -8,9 +8,7 @@
           "id": "nomic-embed-text:latest",
           "name": "nomic-embed-text:latest",
           "reasoning": false,
-          "input": [
-            "text"
-          ],
+          "input": ["text"],
           "cost": {
             "input": 0,
             "output": 0,
@@ -41,10 +39,7 @@
           "id": "cx/gpt-5.6-sol",
           "name": "Sol",
           "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
+          "input": ["text", "image"],
           "supportsTools": true,
           "contextWindow": 372000,
           "maxTokens": 128000
@@ -53,10 +48,7 @@
           "id": "cx/gpt-5.6-terra",
           "name": "Terra",
           "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
+          "input": ["text", "image"],
           "supportsTools": true,
           "contextWindow": 372000,
           "maxTokens": 128000
@@ -65,10 +57,7 @@
           "id": "cx/gpt-5.5-medium",
           "name": "5.5 Medium",
           "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
+          "input": ["text", "image"],
           "supportsTools": true,
           "contextWindow": 400000,
           "maxTokens": 128000
@@ -77,10 +66,7 @@
           "id": "cx/gpt-5.6-luna",
           "name": "Luna",
           "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
+          "input": ["text", "image"],
           "supportsTools": true,
           "contextWindow": 372000,
           "maxTokens": 128000
@@ -89,9 +75,7 @@
           "id": "opencode-zen/deepseek-v4-flash-free",
           "name": "V4 Flash",
           "reasoning": true,
-          "input": [
-            "text"
-          ],
+          "input": ["text"],
           "contextWindow": 1000000,
           "maxTokens": 384000
         },
@@ -99,10 +83,7 @@
           "id": "opencode-zen/mimo-v2.5-free",
           "name": "MiMo V2.5 Free",
           "reasoning": true,
-          "input": [
-            "text",
-            "image"
-          ],
+          "input": ["text", "image"],
           "contextWindow": 1048576,
           "maxTokens": 131072
         },
@@ -110,9 +91,7 @@
           "id": "opencode-zen/nemotron-3-ultra-free",
           "name": "Nemotron 3 Ultra Free",
           "reasoning": true,
-          "input": [
-            "text"
-          ],
+          "input": ["text"],
           "contextWindow": 200000,
           "maxTokens": 131072
         }
@@ -134,13 +113,60 @@
           "id": "deepseek-v4-flash-free",
           "name": "V4 Flash",
           "reasoning": true,
-          "input": [
-            "text"
-          ],
+          "input": ["text"],
           "contextWindow": 1000000,
           "maxTokens": 64000
         }
       ]
+    },
+    "openrouter": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "api": "openai-completions",
+      "models": [
+        {
+          "id": "auto",
+          "name": "OpenRouter Auto",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 200000,
+          "maxTokens": 8192
+        },
+        {
+          "id": "openrouter/hunter-alpha",
+          "name": "Hunter Alpha",
+          "reasoning": true,
+          "input": ["text"],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 1048576,
+          "maxTokens": 65536
+        },
+        {
+          "id": "openrouter/healer-alpha",
+          "name": "Healer Alpha",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "contextWindow": 262144,
+          "maxTokens": 65536
+        }
+      ],
+      "apiKey": "OPENROUTER_API_KEY"
     }
   }
 }

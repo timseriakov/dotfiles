@@ -58,7 +58,8 @@ function sessionID(
   ctx: Record<string, unknown>,
 ): string {
   const sessionManager = ctx.sessionManager as
-    Record<string, unknown> | undefined;
+    | Record<string, unknown>
+    | undefined;
   const getSessionFile = sessionManager?.getSessionFile;
   let sessionFile = "";
   if (typeof getSessionFile === "function") {

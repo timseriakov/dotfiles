@@ -15,7 +15,7 @@ export function patchRejudgeAgentIds(content, { replaceAny }) {
   );
   out = r.content;
 
-  if (out.includes('    agentId: `Rejudge-${roleKey}`')) {
+  if (out.includes("    agentId: `Rejudge-${roleKey}`")) {
     return out;
   }
 
