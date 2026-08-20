@@ -3,7 +3,7 @@ export function transformTmuxName(raw: string): string {
   return raw
     .split(/[\s-]+/)
     .map((w) => {
-      if (w.length <= 3) return w;
+      if (w.length <= 4) return w;
       return /^[aeiouyаеёиоуыэюя]/i.test(w)
         ? w[0] + w.slice(1).replace(/[aeiouyаеёиоуыэюя]/gi, "")
         : w.replace(/[aeiouyаеёиоуыэюя]/gi, "");
@@ -23,13 +23,22 @@ export default function (pi) {
     description: "Rename tmux window + OMP session. /r <name>",
     handler: async () => {},
   });
+  pi.registerCommand("к", {
+    description: "Rename tmux window + OMP session. Alias for /r",
+    handler: async () => {},
+  });
 
   pi.on("input", async (event) => {
     const text = event.text;
-    if (!text.startsWith("/r") || (text.length > 2 && text[2] !== " ")) return;
+    const command = text.startsWith("/к") ? "/к" : "/r";
+    if (
+      !text.startsWith(command) ||
+      (text.length > command.length && text[command.length] !== " ")
+    )
+      return;
 
-    let name = text.slice(2).trim();
-    name = name.replace(/[«»"'""\u2018\u2019\u201c\u201d«»]/g, "").trim();
+    let name = text.slice(command.length).trim();
+    name = name.replace(/[«»"'\u2018\u2019\u201c\u201d]/g, "").trim();
     if (!name) return;
 
     // Tmux rename side-effect (fire-and-forget with 3s timeout)

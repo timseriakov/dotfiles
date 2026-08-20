@@ -1,7 +1,24 @@
 import { describe, it, expect } from "bun:test";
-import { transformTmuxName } from "./r.ts";
+import rExtension, { transformTmuxName } from "./r.ts";
 
 describe("/r transformTmuxName", () => {
+  it("регистрирует /к и очищает кавычки в имени", async () => {
+    const commands: string[] = [];
+    let inputHandler:
+      | ((event: { text: string }) => Promise<unknown>)
+      | undefined;
+    rExtension({
+      registerCommand: (name: string) => commands.push(name),
+      on: (_event: string, handler: typeof inputHandler) => {
+        inputHandler = handler;
+      },
+      exec: async () => ({ stdout: "" }),
+    } as any);
+    expect(commands).toEqual(["r", "к"]);
+    expect(await inputHandler?.({ text: "/к “code task”" })).toEqual({
+      text: "/rename code task",
+    });
+  });
   it("'owner phone' → 'ownr-phn' (гласная в начале — сохраняется первая)", () => {
     expect(transformTmuxName("owner phone")).toBe("ownr-phn");
   });
@@ -9,9 +26,12 @@ describe("/r transformTmuxName", () => {
   it("'search by id' → 'srch-by-id' (короткие слова не трогать)", () => {
     expect(transformTmuxName("search by id")).toBe("srch-by-id");
   });
+  it("'code task' → 'code-task' (4-буквенные слова не трогать)", () => {
+    expect(transformTmuxName("code task")).toBe("code-task");
+  });
 
-  it("'reasoning main omni' → 'rsnng-mn-omn' (omni начинается с гласной)", () => {
-    expect(transformTmuxName("reasoning main omni")).toBe("rsnng-mn-omn");
+  it("'reasoning main omni' → 'rsnng-main-omni' (4-буквенные слова не сокращаются)", () => {
+    expect(transformTmuxName("reasoning main omni")).toBe("rsnng-main-omni");
   });
 
   it("'abbr -a щ omp' → 'abbr-a-щ-omp' (дубли тире схлопнуты)", () => {
@@ -22,8 +42,8 @@ describe("/r transformTmuxName", () => {
     expect(transformTmuxName("check-admin-surface")).toBe("chck-admn-srfc");
   });
 
-  it("'some config, bro' → 'sm-cnfg-bro' (3-букв не режем)", () => {
-    expect(transformTmuxName("some config, bro")).toBe("sm-cnfg-bro");
+  it("'some config, bro' → 'some-cnfg-bro' (4-буквенные слова не режем)", () => {
+    expect(transformTmuxName("some config, bro")).toBe("some-cnfg-bro");
   });
 
   it("пустая строка → ''", () => {
@@ -34,7 +54,7 @@ describe("/r transformTmuxName", () => {
     expect(transformTmuxName("in")).toBe("in");
   });
 
-  it("кириллица 'яблоко дело' → 'яблк-дл' (я — гласная, сохраняется)", () => {
-    expect(transformTmuxName("яблоко дело")).toBe("яблк-дл");
+  it("кириллица 'яблоко дело' → 'яблк-дело' (4-буквенное слово не сокращается)", () => {
+    expect(transformTmuxName("яблоко дело")).toBe("яблк-дело");
   });
 });
