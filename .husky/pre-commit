@@ -21,6 +21,9 @@ done
 # Check only staged files; commits must never rewrite the working tree.
 git diff --cached --name-only --diff-filter=ACMR |
 while IFS= read -r file; do
+  if [ -L "$file" ]; then
+    continue
+  fi
   case "$file" in
     *.yml|*.yaml) npx yaml-lint "$file" || exit $? ;;
   esac

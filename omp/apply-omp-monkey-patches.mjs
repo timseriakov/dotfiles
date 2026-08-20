@@ -38,6 +38,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
+import { runPatchRoutes } from "./patches/routes.mjs";
 import {
   patchPiSideChatIndex,
   patchPiSideChatOverlay,
@@ -1880,110 +1881,62 @@ function patchTuiOverlayFocus(content) {
   ).content;
 }
 try {
-  setupRuntimeStateLinks();
-  patchFile("modes/interactive-mode.ts", patchInteractiveMode);
-  patchFirstExistingFile(
-    [
-      "modes/components/status-line/component.ts",
-      "modes/components/status-line.ts",
-    ],
-    patchStatusLineTs,
-  );
-  patchFirstExistingFile(
-    [
-      "modes/components/status-line/types.ts",
-      "modes/components/status-line.ts",
-    ],
-    patchStatusTypes,
-  );
-  patchTuiFile("tui.ts", patchTuiOverlayFocus);
-  patchFirstExistingFile(
-    [
-      "modes/components/status-line/segments.ts",
-      "modes/components/status-line.ts",
-    ],
-    patchSegments,
-  );
-  patchFile("modes/components/welcome.ts", patchWelcome);
-  patchFile("modes/components/assistant-message.ts", patchAssistantMessage);
-  patchFile("modes/components/usage-row.ts", patchUsageRow);
-  patchFile("modes/components/user-message.ts", patchUserMessage);
-  patchFile(
-    "modes/controllers/extension-ui-controller.ts",
-    patchExtensionUiController,
-  );
-  patchFile("config/keybindings.ts", patchKeybindingsConfig);
-  patchFile("modes/controllers/input-controller.ts", patchInputController);
-  patchFile("session/session-manager.ts", patchSessionManager);
-  patchFile("session/session-paths.ts", patchSessionPaths);
-  patchFile("session/session-listing.ts", patchSessionListing);
-  patchFile("session/session-tools.ts", patchSessionTools);
-  patchFile("session/model-controls.ts", patchModelControlsLunaPriority);
-  patchFile("config/model-registry.ts", patchModelRegistryCatalog);
-  patchFile("goals/tools/goal-tool.ts", patchGoalTool);
-  patchFile("slash-commands/builtin-lifecycle.ts", patchBtwAliases);
-  patchFile("modes/ultrathink.ts", patchUltrathink);
-  patchFile("modes/magic-keywords.ts", patchMagicKeywords);
-  patchFile("modes/orchestrate.ts", patchOrchestrate);
-  patchFile("extensibility/extensions/loader.ts", patchExtensionLoader);
-  patchFile("discovery/helpers.ts", patchDiscoveryHelpers);
-  patchTuiFile("utils.ts", patchTuiVisibleWidth);
-  patchTuiFile("components/editor.ts", patchEditorGutterWidth);
-  patchTuiFile("terminal.ts", patchTuiTerminal);
-  patchTuiFile("kitty-graphics.ts", patchTuiKittyGraphics);
-  patchTuiFile("terminal-capabilities.ts", patchTuiTerminalCapabilities);
-  patchPiAiFile("utils/schema/normalize.ts", patchPiAiSchemaNormalize);
-  patchPiAiFile("types.ts", patchPiAiTypes);
-  patchPiAiFile("providers/openai-completions.ts", patchPiAiOpenAICompletions);
-  patchAbsoluteFile(
-    path.join(
-      home,
-      ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser-runtime.ts",
-    ),
-    "plannotator browser asset fallback",
-    patchPlannotatorBrowserRuntime,
-  );
-  patchAbsoluteFile(
-    path.join(
-      home,
-      ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
-    ),
-    "suppress Plannotator version warning",
-    (content) => patchPlannotatorVersionWarning(content, { replaceAny }),
-  );
-  patchFile("modes/components/custom-editor.ts", patchCustomEditor);
-  patchFile(
-    "extensibility/legacy-pi-coding-agent-shim.ts",
-    patchLegacyModelRuntime,
-  );
-  patchAbsoluteFile(
-    path.join(
-      home,
-      ".omp/plugins/node_modules/pi-side-chat/side-chat-overlay.ts",
-    ),
-    "pi-side-chat canonical editor and Nord frame",
-    (content) => patchPiSideChatOverlay(content, { replaceAny }),
-  );
-  patchAbsoluteFile(
-    path.join(home, ".omp/plugins/node_modules/pi-side-chat/index.ts"),
-    "pi-side-chat tmux popup geometry and shortcuts",
-    (content) => patchPiSideChatIndex(content, { replaceAny }),
-  );
-  patchAbsoluteFile(
-    path.join(home, ".omp/plugins/node_modules/rejudge/dist/extension.js"),
-    "rejudge extension unique inner agent ids",
-    (content) => patchRejudgeAgentIds(content, { replaceAny }),
-  );
-  patchAbsoluteFile(
-    path.join(home, ".omp/plugins/node_modules/rejudge/bin/rejudge.js"),
-    "rejudge CLI unique inner agent ids",
-    (content) => patchRejudgeAgentIds(content, { replaceAny }),
-  );
-  write(
-    path.join(home, ".omp/plugins/node_modules/pi-side-chat/config.json"),
-    `${JSON.stringify(SIDE_CHAT_CONFIG, null, 2)}\n`,
-  );
-  rebuildBundledCli();
+  runPatchRoutes({
+    home,
+    path,
+    write,
+    replaceAny,
+    patchFile,
+    patchFirstExistingFile,
+    patchTuiFile,
+    patchPiAiFile,
+    patchAbsoluteFile,
+    setupRuntimeStateLinks,
+    rebuildBundledCli,
+    SIDE_CHAT_CONFIG,
+    patches: {
+      patchInteractiveMode,
+      patchStatusLineTs,
+      patchStatusTypes,
+      patchTuiOverlayFocus,
+      patchSegments,
+      patchWelcome,
+      patchAssistantMessage,
+      patchUsageRow,
+      patchUserMessage,
+      patchExtensionUiController,
+      patchKeybindingsConfig,
+      patchInputController,
+      patchSessionManager,
+      patchSessionPaths,
+      patchSessionListing,
+      patchSessionTools,
+      patchModelControlsLunaPriority,
+      patchModelRegistryCatalog,
+      patchGoalTool,
+      patchBtwAliases,
+      patchUltrathink,
+      patchMagicKeywords,
+      patchOrchestrate,
+      patchExtensionLoader,
+      patchDiscoveryHelpers,
+      patchTuiVisibleWidth,
+      patchEditorGutterWidth,
+      patchTuiTerminal,
+      patchTuiKittyGraphics,
+      patchTuiTerminalCapabilities,
+      patchPiAiSchemaNormalize,
+      patchPiAiTypes,
+      patchPiAiOpenAICompletions,
+      patchPlannotatorBrowserRuntime,
+      patchPlannotatorVersionWarning,
+      patchCustomEditor,
+      patchLegacyModelRuntime,
+      patchPiSideChatOverlay,
+      patchPiSideChatIndex,
+      patchRejudgeAgentIds,
+    },
+  });
   console.log("OMP monkey patches applied.");
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
