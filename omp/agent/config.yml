@@ -66,7 +66,7 @@ modelRoles:
   task: omniroute/cx/gpt-5.6-luna:max
   vision: omniroute/cx/gpt-5.5-medium:medium
   tiny: omniroute/cx/gpt-5.6-luna:off
-  advisor: omniroute/cx/gpt-5.5:medium
+  advisor: omniroute/cx/gpt-5.6-luna:max
   commit: omniroute/openrouter/~deepseek/deepseek-v4-flash-latest:low
   default: omniroute/cx/gpt-5.6-luna:max
 task:

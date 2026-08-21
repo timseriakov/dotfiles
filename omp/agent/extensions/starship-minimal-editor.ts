@@ -39,4 +39,26 @@ export default function starshipMinimalEditor(pi: ExtensionAPI): void {
       });
     },
   });
+
+  pi.registerShortcut("ctrl+b", {
+    description: "Commit current changes",
+    handler: async (ctx) => {
+      if (!ctx.isIdle()) {
+        if (ctx.hasUI)
+          ctx.ui.notify(
+            "Wait for current turn to finish before committing.",
+            "info",
+          );
+        return;
+      }
+
+      if (ctx.hasPendingMessages()) {
+        if (ctx.hasUI)
+          ctx.ui.notify("Process queued messages before committing.", "info");
+        return;
+      }
+
+      pi.sendUserMessage("commit");
+    },
+  });
 }
