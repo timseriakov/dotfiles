@@ -161,6 +161,7 @@ abbr -a omniroute-models 'curl -sS \
   -H "Authorization: Bearer $OMNIROUTE_TOKEN" \
   https://router.hwqtpa.easypanel.host/v1 | jq'
 abbr -a orr 'omp -r'
+abbr -a oo 'omp -r'
 abbr -a щ omp
 abbr -a щс 'omp -c'
 abbr -a щсс 'omp -c'

@@ -73,6 +73,127 @@ export function createStatusLinePatches(ctx) {
     );
     out = r.content;
 
+    r = replaceAny(
+      out,
+      [
+        `		if (plain) {
+			// Standalone composers: no gauge line between the groups, just air.
+			return leftGroup + padding(gapWidth) + rightGroup;
+		}`,
+        `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 2);
+			return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;
+		}`,
+        `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 1);
+			return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + rightGroup;
+		}`,
+        `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 1);
+			return leftGroup + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;
+		}`,
+        `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 2);
+			return (
+				leftGroup +
+				" " +
+				this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) +
+				" " +
+				rightGroup
+			);
+		}`,
+        `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 2);
+			const leftPad = gapWidth > 1 ? 1 : 0;
+			const rightPad = Math.max(0, gapWidth - gaugeWidth - leftPad);
+			return (
+				leftGroup +
+				padding(leftPad) +
+				this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) +
+				padding(rightPad) +
+				rightGroup
+			);
+		}`,
+      ],
+      `		if (plain) {
+			// Borderless composers keep the configured context gauge subtle and reversible.
+			if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+			const gaugeWidth = Math.max(1, gapWidth - 2);
+			return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;
+		}`,
+      "status-line plain composer context gauge",
+    );
+    out = r.content;
+
+    r = replaceAny(
+      out,
+      [
+        `		if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+		const gaugeWidth = Math.max(1, gapWidth - 2);
+		return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;`,
+        `		if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+		const gaugeWidth = Math.max(1, gapWidth - 1);
+		return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + rightGroup;`,
+        `		if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+		const gaugeWidth = Math.max(1, gapWidth - 1);
+		return leftGroup + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;`,
+        `		if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+		const gaugeWidth = Math.max(1, gapWidth - 2);
+		return (
+			leftGroup +
+			" " +
+			this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) +
+			" " +
+			rightGroup
+		);`,
+      ],
+      `		if (effectiveSettings.contextLine === "off") return leftGroup + padding(gapWidth) + rightGroup;
+		const gaugeWidth = Math.max(1, gapWidth - 2);
+		return leftGroup + " " + this.#buildContextGaugeFill(gaugeWidth, ctx, effectiveSettings, embedContext) + " " + rightGroup;`,
+      "status-line box context gauge padding and off toggle",
+    );
+    out = r.content;
+
+    r = replaceAny(
+      out,
+      [
+        `		const usedColor = getSessionAccentAnsi(accentHex) ?? theme.getFgAnsi("borderAccent");
+		const horizontal = theme.boxRound.horizontal;
+		const mode = effectiveSettings.contextLine ?? "embedded";`,
+        `		const horizontal = theme.boxRound.horizontal;
+		const mode = effectiveSettings.contextLine ?? "embedded";
+		const usedColor =
+			mode === "percentage" ? theme.getFgAnsi("dim") : getSessionAccentAnsi(accentHex) ?? theme.getFgAnsi("borderAccent");`,
+      ],
+      `		const horizontal = theme.boxRound.horizontal;
+		const mode = effectiveSettings.contextLine ?? "embedded";
+		const usedColor =
+			mode === "percentage" ? theme.getFgAnsi("dim") : getSessionAccentAnsi(accentHex) ?? theme.getFgAnsi("borderAccent");`,
+      "status-line percentage gauge dim color",
+    );
+    out = r.content;
+
+    r = replaceAny(
+      out,
+      [
+        `		const unusedColor = theme.getFgAnsi("border");`,
+        `		const unusedColor = mode === "percentage" ? usedColor : theme.getFgAnsi("border");`,
+      ],
+      `		const unusedColor = mode === "percentage" ? usedColor : theme.getFgAnsi("border");`,
+      "status-line percentage gauge all dim",
+    );
+    out = r.content;
+
     return out;
   }
 
@@ -253,24 +374,71 @@ export function createStatusLinePatches(ctx) {
       [
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}`,
+        `\t\tif (tail) {\n\t\t\tcontent += theme.fg("text", tail);\n\t\t}`,
+        `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}\n\t\tif (modelRole) {\n\t\t\tcontent += theme.fg("statusLineModel", " " + modelRole);\n\t\t}`,
       ],
-      `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
-      "segments dim thinking glyph and white level",
+      `		if (tail) {
+			const tailMatch = tail.match(/^(.*\\s)(\\S+)$/);
+			content += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("text", tail);
+		}
+		if (providerSuffix) {
+			content += theme.fg("dim", providerSuffix);
+		}`,
+      "segments dim full model tail",
     );
     out = r.content;
 
     out = out.replace(
-      `\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}\n\t\tif (modelRole) {\n\t\t\tcontent += theme.fg("statusLineModel", " " + modelRole);\n\t\t}\n`,
-      "",
+      `		if (providerSuffix) {
+			content += theme.fg("dim", providerSuffix);
+		}
+		if (providerSuffix) {
+			content += theme.fg("dim", providerSuffix);
+		}`,
+      `		if (providerSuffix) {
+			content += theme.fg("dim", providerSuffix);
+		}`,
     );
     r = replaceAny(
       out,
       [
-        `\t\t// Compact mode swaps the model icon for the thinking-level glyph and drops\n\t\t// the " · <level>" tail, keeping the level visible as a single icon.`,
+        `		// Compact mode swaps the model icon for the thinking-level glyph and drops
+		// the " · <level>" tail, keeping the level visible as a single icon.`,
       ],
-      `\t\tif (!ctx.session.isAutoThinking && thinkingDisplay) {\n\t\t\tconst thinkingLabel = thinkingDisplay.trim().split(/\\s+/).at(-1)?.toLowerCase();\n\t\t\tconst modelWords = modelName.toLowerCase().split(/[^a-z0-9]+/);\n\t\t\tif (thinkingLabel && modelWords.includes(thinkingLabel)) {\n\t\t\t\tthinkingDisplay = "";\n\t\t\t}\n\t\t}\n\n\t\t// Compact mode swaps the model icon for the thinking-level glyph and drops\n\t\t// the " · <level>" tail, keeping the level visible as a single icon.`,
+      `		if (!ctx.session.isAutoThinking && thinkingDisplay) {
+			const thinkingLabel = thinkingDisplay.trim().split(/\s+/).at(-1)?.toLowerCase();
+			const modelWords = modelName.toLowerCase().split(/[^a-z0-9]+/);
+			if (thinkingLabel && modelWords.includes(thinkingLabel)) {
+				thinkingDisplay = "";
+			}
+		}
+
+		// Compact mode swaps the model icon for the thinking-level glyph and drops
+		// the " · <level>" tail, keeping the level visible as a single icon.`,
       "segments hide duplicate thinking label",
+    );
+    out = r.content;
+
+    r = replaceAny(
+      out,
+      [
+        `		if (tail) {
+			content += theme.fg("dim", tail);
+		}`,
+        `		if (tail) {
+			content += theme.fg("text", tail);
+		}`,
+        `		if (tail) {
+			const tailMatch = tail.match(/^(.*\\s)(\\S+)$/);
+			content += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("text", tail);
+		}`,
+      ],
+      `		if (tail) {
+			const tailMatch = tail.match(/^(.*\\s)(\\S+)$/);
+			content += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("text", tail);
+		}`,
+      "segments thinking level tail text color",
     );
     out = r.content;
 

@@ -34,12 +34,13 @@ compaction:
 statusLine:
   preset: custom
   separator: none
+  contextLine: percentage
   leftSegments:
     - path
     - git
     - mode
-    - context_pct
     - model
+    - context_pct
   rightSegments:
     - session_name
   segmentOptions:

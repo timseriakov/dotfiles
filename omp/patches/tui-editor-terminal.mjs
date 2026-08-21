@@ -112,6 +112,32 @@ export function createTuiEditorTerminalPatches(ctx) {
       "custom-editor cycleForward autocomplete guard",
     );
     out = r.content;
+
+    r = replaceAny(
+      out,
+      [
+        `				if (form === "chip") {
+					// Chip tokens carry their attachment identity color (matches the band card).
+					const styled = \`\${attachmentSgr(kind, index)}\\x1b[1m\${value}\\x1b[22m\\x1b[39m\`;
+					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
+				}`,
+        `				if (form === "chip") {
+					const styled = fgOrPlain("dim", value, \`\\x1b[2m\${value}\\x1b[22m\`);
+					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
+				}`,
+      ],
+      `				if (form === "chip") {
+					// Chip tokens carry their attachment identity color (matches the band card).
+					const styled = ` +
+        "`" +
+        `\${attachmentSgr(kind, index)}\x1b[1m\${value}\x1b[22m\x1b[39m` +
+        "`" +
+        `;
+					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
+				}`,
+      "custom-editor attachment chip identity colors",
+    );
+    out = r.content;
     return out;
   }
 
