@@ -129,14 +129,32 @@ export function createUiComponentPatches(ctx) {
     r = replaceAny(
       out,
       [
-        `		if (!this.#preferences.quiet) this.#ensureWelcome();
-		this.#rebuildHeader();`,
-        `		this.#ensureWelcome();
-		this.#rebuildHeader();`,
+        `		if (this.#preferences.quiet) {
+			this.#welcome?.stopIntro();
+			this.#welcome = undefined;
+		} else {
+			this.#ensureWelcome();
+			this.#welcome?.invalidate();
+			if (wasQuiet && this.#started) this.playWelcomeIntro();
+		}`,
+        `		if (this.#preferences.quiet) {
+			this.#ensureWelcome();
+			this.#welcome?.stopIntro();
+		} else {
+			this.#ensureWelcome();
+			this.#welcome?.invalidate();
+			if (wasQuiet && this.#started) this.playWelcomeIntro();
+		}`,
       ],
-      `		this.#ensureWelcome();
-		this.#rebuildHeader();`,
-      "composer welcome visible in quiet mode",
+      `		if (this.#preferences.quiet) {
+			this.#ensureWelcome();
+			this.#welcome?.stopIntro();
+		} else {
+			this.#ensureWelcome();
+			this.#welcome?.invalidate();
+			if (wasQuiet && this.#started) this.playWelcomeIntro();
+		}`,
+      "composer keeps welcome line in quiet mode",
     );
     out = r.content;
 

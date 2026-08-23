@@ -15,6 +15,37 @@ export function createCommandRuntimePatches(ctx) {
     ).content;
   }
 
+  function patchCliStartupPrepaint(content) {
+    const block = `\tlet stopStartupComposer: (() => void) | undefined;
+\tif (
+\t\t!process.env.PI_TIMING &&
+\t\tprocess.stdin.isTTY === true &&
+\t\tprocess.stdout.isTTY === true &&
+\t\t(resolvedArgv.length === 0 || (resolvedArgv.length === 1 && resolvedArgv[0] === "--no-session"))
+\t) {
+\t\t// Intentional exception to the static-import convention: this latency boundary
+\t\t// keeps the TUI graph out of worker, subcommand, help, and version launches.
+\t\t// Loading it statically would erase the measured cold-start improvement.
+\t\tconst { beginStartupComposer, stopPendingStartupComposer } = await import("./modes/startup-composer");
+\t\tbeginStartupComposer({ version: VERSION });
+\t\tstopStartupComposer = stopPendingStartupComposer;
+\t}`;
+    const patched = `\tlet stopStartupComposer: (() => void) | undefined;
+\t// Startup prepaint intentionally disabled: it painted the welcome + prompt before
+\t// the real status line was mounted, producing a two-phase render. Disabling it lets
+\t// the full layout (welcome + status + prompt) paint together after InteractiveMode init.
+\tif (false && !process.env.PI_TIMING && process.stdin.isTTY === true) {
+\t\tconst { beginStartupComposer, stopPendingStartupComposer } = await import("./modes/startup-composer");
+\t\tbeginStartupComposer({ version: VERSION });
+\t\tstopStartupComposer = stopPendingStartupComposer;
+\t}`;
+    return replaceAny(
+      content,
+      [block],
+      patched,
+      "disable startup prepaint composer",
+    ).content;
+  }
   function patchGoalTool(content) {
     return replaceAny(
       content,
@@ -338,5 +369,6 @@ export function createCommandRuntimePatches(ctx) {
     patchSessionTools,
     patchExtensionUiController,
     patchTuiOverlayFocus,
+    patchCliStartupPrepaint,
   };
 }

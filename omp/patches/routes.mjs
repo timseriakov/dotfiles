@@ -19,6 +19,7 @@ export function runPatchRoutes(ctx) {
 
   const sourceRoutes = [
     ["modes/composer.ts", patches.patchComposer],
+    ["cli.ts", patches.patchCliStartupPrepaint],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],
     [
       [
