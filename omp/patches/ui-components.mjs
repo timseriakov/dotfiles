@@ -158,6 +158,42 @@ export function createUiComponentPatches(ctx) {
     );
     out = r.content;
 
+    r = replaceAny(
+      out,
+      [
+        `	#rebuildHeader(): void {
+		this.#header.clear();
+		for (const component of this.#headerBefore) this.#header.addChild(component);
+		if (this.#welcome) {
+			this.#header.addChild(new Spacer(1));
+			this.#header.addChild(this.#welcome);
+			this.#header.addChild(new Spacer(1));
+		}
+		for (const component of this.#headerAfter) this.#header.addChild(component);
+	}`,
+        `	#rebuildHeader(): void {
+		this.#header.clear();
+		for (const component of this.#headerBefore) this.#header.addChild(component);
+		if (this.#welcome) {
+			this.#header.addChild(this.#welcome);
+			this.#header.addChild(new Spacer(1));
+		}
+		for (const component of this.#headerAfter) this.#header.addChild(component);
+	}`,
+      ],
+      `	#rebuildHeader(): void {
+		this.#header.clear();
+		for (const component of this.#headerBefore) this.#header.addChild(component);
+		if (this.#welcome) {
+			this.#header.addChild(this.#welcome);
+			this.#header.addChild(new Spacer(1));
+		}
+		for (const component of this.#headerAfter) this.#header.addChild(component);
+	}`,
+      "composer no blank line before welcome",
+    );
+    out = r.content;
+
     return out;
   }
 

@@ -138,6 +138,14 @@ export function runPatchRoutes(ctx) {
       "rejudge CLI unique inner agent ids",
       (content) => patches.patchRejudgeAgentIds(content, { replaceAny }),
     ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/ponytail/pi-extension/index.js",
+      ),
+      "suppress Ponytail startup loaded notification",
+      (content) => patches.patchPonytailStartupNotify(content, { replaceAny }),
+    ],
   ];
   for (const [target, label, patch] of pluginRoutes)
     patchAbsoluteFile(target, label, patch);
