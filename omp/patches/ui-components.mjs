@@ -186,7 +186,6 @@ export function createUiComponentPatches(ctx) {
 		for (const component of this.#headerBefore) this.#header.addChild(component);
 		if (this.#welcome) {
 			this.#header.addChild(this.#welcome);
-			this.#header.addChild(new Spacer(1));
 		}
 		for (const component of this.#headerAfter) this.#header.addChild(component);
 	}`,
