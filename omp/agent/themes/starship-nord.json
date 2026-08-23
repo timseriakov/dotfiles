@@ -21,9 +21,9 @@
   },
   "colors": {
     "accent": "nord8",
-    "border": "",
+    "border": "nord3",
     "borderAccent": "nord8",
-    "borderMuted": "",
+    "borderMuted": "nord3",
     "success": "nord14",
     "error": "nord11",
     "warning": "nord13",

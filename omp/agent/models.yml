@@ -246,3 +246,9 @@ providers:
         input: [text]
         contextWindow: 1048576
         maxTokens: 384000
+      - id: stealth/ox-alpha
+        name: Ox Alpha
+        reasoning: true
+        input: [text, image]
+        contextWindow: 1048576
+        maxTokens: 65536

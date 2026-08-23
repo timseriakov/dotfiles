@@ -161,34 +161,34 @@ export function createUiComponentPatches(ctx) {
     r = replaceAny(
       out,
       [
-        `	#rebuildHeader(): void {
-		this.#header.clear();
-		for (const component of this.#headerBefore) this.#header.addChild(component);
-		if (this.#welcome) {
-			this.#header.addChild(new Spacer(1));
-			this.#header.addChild(this.#welcome);
-			this.#header.addChild(new Spacer(1));
-		}
-		for (const component of this.#headerAfter) this.#header.addChild(component);
-	}`,
-        `	#rebuildHeader(): void {
-		this.#header.clear();
-		for (const component of this.#headerBefore) this.#header.addChild(component);
-		if (this.#welcome) {
-			this.#header.addChild(this.#welcome);
-			this.#header.addChild(new Spacer(1));
-		}
-		for (const component of this.#headerAfter) this.#header.addChild(component);
-	}`,
+        `\t#rebuildHeader(): void {
+\t\tthis.#header.clear();
+\t\tfor (const component of this.#headerBefore) this.#header.addChild(component);
+\t\tif (this.#welcome) {
+\t\t\tthis.#header.addChild(new Spacer(1));
+\t\t\tthis.#header.addChild(this.#welcome);
+\t\t\tthis.#header.addChild(new Spacer(1));
+\t\t}
+\t\tfor (const component of this.#headerAfter) this.#header.addChild(component);
+\t}`,
+        `\t#rebuildHeader(): void {
+\t\tthis.#header.clear();
+\t\tfor (const component of this.#headerBefore) this.#header.addChild(component);
+\t\tif (this.#welcome) {
+\t\t\tthis.#header.addChild(this.#welcome);
+\t\t\tthis.#header.addChild(new Spacer(1));
+\t\t}
+\t\tfor (const component of this.#headerAfter) this.#header.addChild(component);
+\t}`,
       ],
-      `	#rebuildHeader(): void {
-		this.#header.clear();
-		for (const component of this.#headerBefore) this.#header.addChild(component);
-		if (this.#welcome) {
-			this.#header.addChild(this.#welcome);
-		}
-		for (const component of this.#headerAfter) this.#header.addChild(component);
-	}`,
+      `\t#rebuildHeader(): void {
+\t\tthis.#header.clear();
+\t\tfor (const component of this.#headerBefore) this.#header.addChild(component);
+\t\tif (this.#welcome) {
+\t\t\tthis.#header.addChild(this.#welcome);
+\t\t}
+\t\tfor (const component of this.#headerAfter) this.#header.addChild(component);
+\t}`,
       "composer no blank line before welcome",
     );
     out = r.content;
