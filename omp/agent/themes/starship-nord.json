@@ -140,7 +140,7 @@
       "boxRound.topRight": "",
       "boxRound.bottomLeft": "",
       "boxRound.bottomRight": "",
-      "boxRound.horizontal": "─",
+      "boxRound.horizontal": "",
       "boxRound.vertical": ""
     }
   },
