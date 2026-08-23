@@ -68,6 +68,7 @@ export function runPatchRoutes(ctx) {
     ["extensibility/extensions/loader.ts", patches.patchExtensionLoader],
     ["discovery/helpers.ts", patches.patchDiscoveryHelpers],
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
+    ["web/search/providers/codex.ts", patches.patchCodexWebSearchModels],
     ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
     [
       "extensibility/legacy-pi-coding-agent-shim.ts",

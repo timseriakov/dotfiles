@@ -270,6 +270,25 @@ export function createCommandRuntimePatches(ctx) {
       "suppress inspect_image flip notice",
     ).content;
   }
+  function patchCodexWebSearchModels(content) {
+    return replaceAny(
+      content,
+      [
+        `const DEFAULT_MODEL_PREFERENCES = [
+	"gpt-5.6-luna",
+	"gpt-5.6-terra",
+	"gpt-5.6-sol",`,
+        `const DEFAULT_MODEL_PREFERENCES = [
+	"gpt-5.6-luna",
+	"gpt-5.6-sol",`,
+      ],
+      `const DEFAULT_MODEL_PREFERENCES = [
+	"gpt-5.6-luna",
+	"gpt-5.6-sol",`,
+      "Codex web search never falls back to Terra",
+    ).content;
+  }
+
   function patchExtensionUiController(content) {
     const currentOverlay = `			if (options?.overlay) {
 				const overlayConfig = options as {
@@ -381,6 +400,7 @@ export function createCommandRuntimePatches(ctx) {
     patchDiscoveryHelpers,
     patchLegacyModelRuntime,
     patchSessionTools,
+    patchCodexWebSearchModels,
     patchExtensionUiController,
     patchTuiOverlayFocus,
     patchCliStartupPrepaint,
