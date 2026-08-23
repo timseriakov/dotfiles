@@ -13,15 +13,18 @@ export function patchPlannotatorVersionWarning(content, { replaceAny }) {
     out,
     [
       `\t\tif (typeof trustFn !== "function") {
-			ctx.ui.notify(
-				"Plannotator requires Pi 0.79.1 or newer. Update Pi; project-local config is disabled on this host.",
-				"warning",
-			);
-		}`,
+\t\t\tctx.ui.notify(
+\t\t\t\t"Plannotator requires Pi 0.79.1 or newer. Update Pi; project-local config is disabled on this host.",
+\t\t\t\t"warning",
+\t\t\t);
+\t\t}`,
+      `\t\tif (typeof trustFn !== "function") {
+\t\t\tctx.ui.notify(PROJECT_TRUST_CAPABILITY_WARNING, "warning");
+\t\t}`,
     ],
     `\t\tif (typeof trustFn !== "function") {
-			// version-gated banner suppressed by monkey patch
-		}`,
+\t\t\t// version-gated banner suppressed by monkey patch
+\t\t}`,
     "suppress Plannotator version warning",
   );
   out = r.content;
