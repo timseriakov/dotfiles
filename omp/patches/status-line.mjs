@@ -529,7 +529,21 @@ export function createStatusLinePatches(ctx) {
 	},
 };`;
     const accentedLimitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName();\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 24;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\tconst ansi = getSessionAccentAnsi(getSessionAccentHex(name)) ?? theme.getFgAnsi("accent");\n\t\treturn { content: \`\${ansi}\${display}\\x1b[39m\`, visible: true };\n\t},\n};`;
-    const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: theme.fg("muted", display), visible: true };\n\t},\n};`;
+    const limitedSessionNameNoSpace = `const sessionNameSegment: StatusLineSegment = {
+	id: "session_name",
+	render(ctx) {
+		const sessionName = ctx.session.sessionManager?.getSessionName();
+		const name = sessionName || ctx.previewTitle;
+		if (!name) return { content: "", visible: false };
+
+		const maxSessionNameWidth = 48;
+		const cleanName = sanitizeStatusText(name);
+		const display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;
+
+		return { content: theme.fg("muted", display), visible: true };
+	},
+};`;
+    const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: theme.fg("muted", display + " "), visible: true };\n\t},\n};`;
     const paddedLimitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: \`\${theme.fg("muted", display)}  \`, visible: true };\n\t},\n};`;
 
     r = replaceAny(
@@ -541,6 +555,7 @@ export function createStatusLinePatches(ctx) {
         upstreamSessionName17_2_11,
         upstreamSessionName17_4,
         accentedLimitedSessionName,
+        limitedSessionNameNoSpace,
         limitedSessionName,
         paddedLimitedSessionName,
       ],
