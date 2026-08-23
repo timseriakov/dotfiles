@@ -42,7 +42,6 @@ import { createUiComponentPatches } from "./patches/ui-components.mjs";
 import { createInputSessionPatches } from "./patches/input-session.mjs";
 import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mjs";
 import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
-import { createThinLinePatches } from "./patches/thin-lines.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
@@ -394,7 +393,6 @@ const patches = {
   ...createInputSessionPatches(patchHelpers),
   ...createTuiEditorTerminalPatches(patchHelpers),
   ...createCommandRuntimePatches(patchHelpers),
-  ...createThinLinePatches(patchHelpers),
 };
 try {
   runPatchRoutes({

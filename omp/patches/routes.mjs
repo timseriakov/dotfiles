@@ -68,14 +68,6 @@ export function runPatchRoutes(ctx) {
     ["extensibility/extensions/loader.ts", patches.patchExtensionLoader],
     ["discovery/helpers.ts", patches.patchDiscoveryHelpers],
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
-    ["modes/components/agent-hub-renderer.ts", patches.patchAgentHubThinLines],
-    [
-      "modes/controllers/mcp-command-controller.ts",
-      patches.patchMcpAuthThinLines,
-    ],
-    ["modes/setup-wizard/scenes/outro.ts", patches.patchSetupWizardThinLines],
-    ["modes/theme/symbols.ts", patches.patchThemeSymbolsThinLines],
-    ["tui/output-block.ts", patches.patchOutputBlockThinLines],
     ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
     [
       "extensibility/legacy-pi-coding-agent-shim.ts",
