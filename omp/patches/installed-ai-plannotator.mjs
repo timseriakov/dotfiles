@@ -46,8 +46,61 @@ export function createInstalledAiPlannotatorPatches(ctx) {
         "pi-ai openai-completions workspace schema sanitizer",
       ).content;
     }
+
+    out = replaceAny(
+      out,
+      [
+        `\t\t\tif (output.stopReason === "error" && output.errorMessage === "Provider returned error finish_reason" && hasVisibleAssistantContent(output)) {
+\t\t\t\toutput.stopReason = "stop";
+\t\t\t\toutput.errorMessage = undefined;
+\t\t\t}
+
+\t\t\tif (output.stopReason === "stop" && output.content.some(b => b.type === "toolCall")) {
+\t\t\t\toutput.stopReason = "toolUse";
+\t\t\t}`,
+        `\t\t\tif (output.stopReason === "stop" && output.content.some(b => b.type === "toolCall")) {
+\t\t\t\toutput.stopReason = "toolUse";
+\t\t\t}`,
+      ],
+      `			// Bare provider finish_reason:error is retried by TurnRecovery, even after partial text.
+			if (output.stopReason === "stop" && output.content.some(b => b.type === "toolCall")) {
+				output.stopReason = "toolUse";
+			}`,
+      "pi-ai openai-completions retry finish_reason errors after partial text",
+    ).content;
     return out;
   }
+
+  function patchTurnRecovery(content) {
+    return replaceAny(
+      content,
+      [
+        `\t\tif (this.#hasReplayUnsafeOutput(message) && !replaySafeUnexecutedTools) return false;
+\t\tif (AIError.is(id, AIError.Flag.AccountPolicy) || this.isClassifierRefusal(message)) return true;
+\t\treturn AIError.retriable(id);`,
+        `\t\tconst providerFinishErrorReplaySafe =
+\t\t\tAIError.is(id, AIError.Flag.ProviderFinishError) &&
+\t\t\t!message.content.some(
+\t\t\t\tblock => block.type === "toolCall" || block.type === "image" || block.type === "anthropicServerTool",
+\t\t\t);
+\t\tif (this.#hasReplayUnsafeOutput(message) && !replaySafeUnexecutedTools && !providerFinishErrorReplaySafe) return false;
+\t\tif (providerFinishErrorReplaySafe) return true;
+\t\tif (AIError.is(id, AIError.Flag.AccountPolicy) || this.isClassifierRefusal(message)) return true;
+\t\treturn AIError.retriable(id);`,
+      ],
+      `\t\tconst providerFinishErrorReplaySafe =
+\t\t\tAIError.is(id, AIError.Flag.ProviderFinishError) &&
+\t\t\t!message.content.some(
+\t\t\t\tblock => block.type === "toolCall" || block.type === "image" || block.type === "anthropicServerTool",
+\t\t\t);
+\t\tif (this.#hasReplayUnsafeOutput(message) && !replaySafeUnexecutedTools && !providerFinishErrorReplaySafe) return false;
+\t\tif (providerFinishErrorReplaySafe) return true;
+\t\tif (AIError.is(id, AIError.Flag.AccountPolicy) || this.isClassifierRefusal(message)) return true;
+\t\treturn AIError.retriable(id);`,
+      "turn-recovery retries provider finish_reason after partial text",
+    ).content;
+  }
+
   function patchPiAiSchemaNormalize(content) {
     let out = content;
     let r;
@@ -133,8 +186,11 @@ export function createInstalledAiPlannotatorPatches(ctx) {
       out,
       [
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withModelOverrides));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderGuardrails));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withModelOverrides.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       ],
-      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withModelOverrides.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       "drop retired openrouter :free from composed registry",
     );
     out = r.content;
@@ -347,6 +403,7 @@ export function getReviewBrowserHtml(): string {
 
   return {
     patchPiAiOpenAICompletions,
+    patchTurnRecovery,
     patchPiAiSchemaNormalize,
     patchPiAiTypes,
     patchModelControlsLunaPriority,

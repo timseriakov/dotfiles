@@ -113,31 +113,78 @@ export function createTuiEditorTerminalPatches(ctx) {
     );
     out = r.content;
 
-    r = replaceAny(
+    return out;
+  }
+
+  function patchAttachmentChips(content) {
+    let out = content;
+    out = replaceAny(
       out,
       [
-        `				if (form === "chip") {
-					// Chip tokens carry their attachment identity color (matches the band card).
-					const styled = \`\${attachmentSgr(kind, index)}\\x1b[1m\${value}\\x1b[22m\\x1b[39m\`;
-					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
-				}`,
-        `				if (form === "chip") {
-					const styled = fgOrPlain("dim", value, \`\\x1b[2m\${value}\\x1b[22m\`);
-					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
-				}`,
+        `		if (chip.kind === "image") {
+			const dims = this.#imageDims(chip.image);
+			bottomCaption = dims ? \`\${dims.width}x\${dims.height}\` : "";
+			interior = this.#imageInterior(chip.image, dims);
+		} else {`,
+        `		if (chip.kind === "image") {
+			const dims = this.#imageDims(chip.image);
+			return ["", ...this.#imageInterior(chip.image, dims), ""];
+		} else {`,
       ],
-      `				if (form === "chip") {
-					// Chip tokens carry their attachment identity color (matches the band card).
-					const styled = ` +
-        "`" +
-        `\${attachmentSgr(kind, index)}\x1b[1m\${value}\x1b[22m\x1b[39m` +
-        "`" +
-        `;
-					return kind === "image" ? imageReferenceHyperlink(value, index, this.imageLinks, () => styled) : styled;
-				}`,
-      "custom-editor attachment chip identity colors",
-    );
-    out = r.content;
+      `		if (chip.kind === "image") {
+			const dims = this.#imageDims(chip.image);
+			return ["", ...this.#imageInterior(chip.image, dims), ""];
+		} else {`,
+      "attachment image chips without border fallback lines",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `			if (!budget.observe(imageId)) {
+				const result = renderImage(
+					image.data,
+					{ widthPx: dims.width, heightPx: dims.height },
+					{
+						maxWidthCells: INNER_COLS,
+						maxHeightCells: INNER_ROWS,
+						imageId,
+						includeTransmit: budget.shouldTransmit(imageId),
+					},
+				);
+				if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
+				if (result?.lines) return this.#centerGrid(result.lines);
+			}`,
+        `\t\t\t\tif (!budget.observe(imageId)) {\n\t\t\t\t\tconst result = renderImage(\n\t\t\t\t\t\tdisplay.data,\n\t\t\t\t\t\t{ widthPx: dims.width, heightPx: dims.height },\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tmaxWidthCells: INNER_COLS,\n\t\t\t\t\t\t\tmaxHeightCells: INNER_ROWS,\n\t\t\t\t\t\t\timageId,\n\t\t\t\t\t\t\tincludeTransmit: budget.shouldTransmit(imageId),\n\t\t\t\t\t\t},\n\t\t\t\t\t);\n\t\t\t\t\tif (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);\n\t\t\t\t\tif (result?.lines) return this.#centerGrid(result.lines);\n\t\t\t\t}`,
+        `\t\t\t\tbudget.observe(imageId);\n\t\t\t\tconst result = renderImage(\n\t\t\t\t\tdisplay.data,\n\t\t\t\t\t{ widthPx: dims.width, heightPx: dims.height },\n\t\t\t\t\t{\n\t\t\t\t\t\tmaxWidthCells: INNER_COLS,\n\t\t\t\t\t\tmaxHeightCells: INNER_ROWS,\n\t\t\t\t\t\timageId,\n\t\t\t\t\t\tincludeTransmit: budget.shouldTransmit(imageId),\n\t\t\t\t\t},\n\t\t\t\t);\n\t\t\t\tif (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);\n\t\t\t\tif (result?.lines) return this.#centerGrid(result.lines);`,
+        `			budget.observe(imageId);
+			const result = renderImage(
+				image.data,
+				{ widthPx: dims.width, heightPx: dims.height },
+				{
+					maxWidthCells: INNER_COLS,
+					maxHeightCells: INNER_ROWS,
+					imageId,
+					includeTransmit: budget.shouldTransmit(imageId),
+				},
+			);
+			if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
+			if (result?.lines) return this.#centerGrid(result.lines);`,
+      ],
+      `				budget.observe(imageId);
+				const result = renderImage(
+					display.data,
+					{ widthPx: dims.width, heightPx: dims.height },
+					{
+						maxWidthCells: INNER_COLS,
+						maxHeightCells: INNER_ROWS,
+						imageId,
+						includeTransmit: budget.shouldTransmit(imageId),
+					},
+				);
+				if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
+				if (result?.lines) return this.#centerGrid(result.lines);`,
+      "attachment image chips are not budget-demoted",
+    ).content;
     return out;
   }
 
@@ -147,5 +194,6 @@ export function createTuiEditorTerminalPatches(ctx) {
     patchTuiKittyGraphics,
     patchTuiTerminal,
     patchCustomEditor,
+    patchAttachmentChips,
   };
 }

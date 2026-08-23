@@ -97,36 +97,86 @@ export function createUiComponentPatches(ctx) {
     ).content;
   }
 
-  function patchInteractiveMode(content) {
+  function patchComposer(content) {
     let out = content;
     let r;
 
     r = replaceAny(
       out,
       [
-        `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(new Spacer(1));\n\t\t\tthis.ui.addChild(this.#welcomeComponent);\n\t\t\tthis.ui.addChild(new Spacer(1));`,
-        `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
+        `		this.#editor = new CustomEditor(getEditorTheme());
+		this.editor.disableSubmit = true;
+		this.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+        `		this.#editor = new CustomEditor(getEditorTheme());
+		this.editor.disableSubmit = true;
+		this.editor.setBorderVisible(false);
+		this.editor.setPaddingX(0);
+		this.editor.setPromptGutter(" ");
+		this.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));
+		this.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
       ],
-      `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
-      "interactive welcome spacing",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [`		if (!startupQuiet) {`, `		if (true) {`],
-      `		if (true) {`,
-      "interactive minimal welcome visible in quiet mode",
+      `		this.#editor = new CustomEditor(getEditorTheme());
+		this.editor.disableSubmit = true;
+		this.editor.setBorderVisible(false);
+		this.editor.setPaddingX(0);
+		this.editor.setPromptGutter(" ");
+		this.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));
+		this.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+      "composer startup editor gutter",
     );
     out = r.content;
 
     r = replaceAny(
       out,
       [
-        `			if (!options.suppressWelcomeIntro) {`,
-        `			if (!startupQuiet && !options.suppressWelcomeIntro) {`,
+        `		if (!this.#preferences.quiet) this.#ensureWelcome();
+		this.#rebuildHeader();`,
+        `		this.#ensureWelcome();
+		this.#rebuildHeader();`,
       ],
-      `			if (!startupQuiet && !options.suppressWelcomeIntro) {`,
+      `		this.#ensureWelcome();
+		this.#rebuildHeader();`,
+      "composer welcome visible in quiet mode",
+    );
+    out = r.content;
+
+    return out;
+  }
+
+  function patchInteractiveMode(content) {
+    let out = content;
+    let r;
+
+    if (out.includes("this.#welcomeComponent")) {
+      r = replaceAny(
+        out,
+        [
+          `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(new Spacer(1));\n\t\t\tthis.ui.addChild(this.#welcomeComponent);\n\t\t\tthis.ui.addChild(new Spacer(1));`,
+          `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
+        ],
+        `\t\t\t// Setup UI layout\n\t\t\tthis.ui.addChild(this.#welcomeComponent);`,
+        "interactive welcome spacing",
+      );
+      out = r.content;
+
+      r = replaceAny(
+        out,
+        [`\t\tif (!startupQuiet) {`, `\t\tif (true) {`],
+        `\t\tif (true) {`,
+        "interactive minimal welcome visible in quiet mode",
+      );
+      out = r.content;
+    }
+
+    r = replaceAny(
+      out,
+      [
+        `\t\t\tif (!options.suppressWelcomeIntro) {`,
+        `\t\t\tif (!startupQuiet && !options.suppressWelcomeIntro) {`,
+        `\t\t\t\tplayWelcomeIntro: !options.suppressWelcomeIntro,`,
+        `\t\t\t\tplayWelcomeIntro: !startupQuiet && !options.suppressWelcomeIntro,`,
+      ],
+      `\t\t\t\tplayWelcomeIntro: !startupQuiet && !options.suppressWelcomeIntro,`,
       "interactive quiet skips welcome intro animation",
     );
     out = r.content;
@@ -134,10 +184,12 @@ export function createUiComponentPatches(ctx) {
     r = replaceAny(
       out,
       [
-        `			if (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
-        `			if (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+        `\t\t\tif (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+        `\t\t\tif (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+        `\t\tif (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+        `\t\tif (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
       ],
-      `			if (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
+      `\t\tif (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
       "interactive quiet suppresses changelog noise",
     );
     out = r.content;
@@ -149,8 +201,10 @@ export function createUiComponentPatches(ctx) {
         `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.ui.enableScopedInputRender(this.editor);\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
         `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.editor.setBorderVisible(false);\n\t\tthis.editor.setPaddingX(0);\n\t\tthis.editor.setPromptGutter(" ");\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
         `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.editor.setBorderVisible(false);\n\t\tthis.editor.setPaddingX(0);\n\t\tthis.editor.setPromptGutter(" ");\n\t\tthis.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+        `\t\tthis.editor = this.composer.editor;\n\t\tthis.editor.magicKeywordsEnabled = () => this.settings.get("magicKeywords.enabled");`,
+        `\t\tthis.editor = this.composer.editor;\n\t\tthis.editor.setBorderVisible(false);\n\t\tthis.editor.setPaddingX(0);\n\t\tthis.editor.setPromptGutter(" ");\n\t\tthis.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tthis.editor.magicKeywordsEnabled = () => this.settings.get("magicKeywords.enabled");`,
       ],
-      `\t\tthis.editor = new CustomEditor(getEditorTheme());\n\t\tthis.ui.enableScopedInputRender(this.editor);\n\t\tthis.editor.setBorderVisible(false);\n\t\tthis.editor.setPaddingX(0);\n\t\tthis.editor.setPromptGutter(" ");\n\t\tthis.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tthis.editor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+      `\t\tthis.editor = this.composer.editor;\n\t\tthis.editor.setBorderVisible(false);\n\t\tthis.editor.setPaddingX(0);\n\t\tthis.editor.setPromptGutter(" ");\n\t\tthis.editor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tthis.editor.magicKeywordsEnabled = () => this.settings.get("magicKeywords.enabled");`,
       "interactive editor default gutter",
     );
     out = r.content;
@@ -162,6 +216,8 @@ export function createUiComponentPatches(ctx) {
         `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\t\tif (!factory) this.ui.enableScopedInputRender(nextEditor);\n\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
         `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\n\t\tnextEditor.setBorderVisible(false);\n\t\tnextEditor.setPaddingX(0);\n\t\tnextEditor.setPromptGutter(" ");\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
         `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\n\t\tnextEditor.setBorderVisible(false);\n\t\tnextEditor.setPaddingX(0);\n\t\tnextEditor.setPromptGutter(" ");\n\t\tnextEditor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+        `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
+        `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\t\tif (!factory) this.ui.enableScopedInputRender(nextEditor);\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
       ],
       `\t\tconst nextEditor = factory\n\t\t\t? factory(this.ui, getEditorTheme(), this.keybindings)\n\t\t\t: new CustomEditor(getEditorTheme());\n\t\tif (!factory) this.ui.enableScopedInputRender(nextEditor);\n\n\t\tnextEditor.setBorderVisible(false);\n\t\tnextEditor.setPaddingX(0);\n\t\tnextEditor.setPromptGutter(" ");\n\t\tnextEditor.setPromptGutterColor(theme.fg.bind(theme, "success"));\n\t\tnextEditor.setUseTerminalCursor(this.ui.getShowHardwareCursor());`,
       "interactive replacement editor gutter",
@@ -169,6 +225,31 @@ export function createUiComponentPatches(ctx) {
     out = r.content;
 
     return out;
+  }
+
+  function patchDynamicBorder(content) {
+    return replaceAny(
+      content,
+      [
+        `\trender(width: number): readonly string[] {
+\t\tif (this.#cachedLines && this.#cachedWidth === width) {
+\t\t\treturn this.#cachedLines;
+\t\t}
+\t\tconst horizontal = typeof theme === "undefined" ? "─" : theme.boxRound.horizontal;
+\t\tconst lines = [this.#color(horizontal.repeat(Math.max(1, width)))];
+\t\tthis.#cachedWidth = width;
+\t\tthis.#cachedLines = lines;
+\t\treturn lines;
+\t}`,
+        `\trender(_width: number): readonly string[] {
+\t\treturn [];
+\t}`,
+      ],
+      `\trender(_width: number): readonly string[] {
+\t\treturn [];
+\t}`,
+      "dynamic message border lines disabled",
+    ).content;
   }
 
   function patchTuiVisibleWidth(content) {
@@ -182,6 +263,8 @@ export function createUiComponentPatches(ctx) {
     patchAssistantMessage,
     patchUsageRow,
     patchUserMessage,
+    patchComposer,
+    patchDynamicBorder,
     patchInteractiveMode,
     patchTuiVisibleWidth,
   };

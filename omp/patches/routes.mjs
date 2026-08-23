@@ -18,6 +18,7 @@ export function runPatchRoutes(ctx) {
   setupRuntimeStateLinks();
 
   const sourceRoutes = [
+    ["modes/composer.ts", patches.patchComposer],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],
     [
       [
@@ -44,6 +45,7 @@ export function runPatchRoutes(ctx) {
     ["modes/components/assistant-message.ts", patches.patchAssistantMessage],
     ["modes/components/usage-row.ts", patches.patchUsageRow],
     ["modes/components/user-message.ts", patches.patchUserMessage],
+    ["modes/components/dynamic-border.ts", patches.patchDynamicBorder],
     [
       "modes/controllers/extension-ui-controller.ts",
       patches.patchExtensionUiController,
@@ -54,6 +56,7 @@ export function runPatchRoutes(ctx) {
     ["session/session-paths.ts", patches.patchSessionPaths],
     ["session/session-listing.ts", patches.patchSessionListing],
     ["session/session-tools.ts", patches.patchSessionTools],
+    ["session/turn-recovery.ts", patches.patchTurnRecovery],
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
     ["config/model-registry.ts", patches.patchModelRegistryCatalog],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
@@ -64,6 +67,7 @@ export function runPatchRoutes(ctx) {
     ["extensibility/extensions/loader.ts", patches.patchExtensionLoader],
     ["discovery/helpers.ts", patches.patchDiscoveryHelpers],
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
+    ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
     [
       "extensibility/legacy-pi-coding-agent-shim.ts",
       patches.patchLegacyModelRuntime,

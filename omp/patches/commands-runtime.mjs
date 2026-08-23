@@ -2,13 +2,15 @@ export function createCommandRuntimePatches(ctx) {
   const { replaceOnce, replaceAny, insertAfter, insertBefore } = ctx;
 
   function patchBtwAliases(content) {
-    return replaceOnce(
+    return replaceAny(
       content,
-      `\t\tname: "btw",
-\t\tdescription: "Ask an ephemeral side question using the current session context",`,
-      `\t\tname: "btw",
-\t\taliases: ["b", "и"],
-\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+      [
+        `\t\tname: "btw",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+        `\t\tname: "btw",\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+        `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+        `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+      ],
+      `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
       "btw aliases /b /и",
     ).content;
   }

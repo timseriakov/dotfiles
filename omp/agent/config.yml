@@ -34,7 +34,7 @@ compaction:
 statusLine:
   preset: custom
   separator: none
-  contextLine: percentage
+  contextLine: off
   leftSegments:
     - path
     - git
