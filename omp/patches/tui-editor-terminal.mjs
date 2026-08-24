@@ -300,6 +300,15 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     out = replaceAny(
       out,
       [
+        `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + card[r];`,
+        `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));`,
+      ],
+      `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));`,
+      "attachment chip render pads missing rows",
+    ).content;
+    out = replaceAny(
+      out,
+      [
         `			if (!budget.observe(imageId)) {
 				const result = renderImage(
 					image.data,
