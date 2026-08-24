@@ -17,7 +17,7 @@
     "executing": {
       "model": {
         "provider": "omniroute",
-        "id": "cx/gpt-5.6-terra"
+        "id": "cx/gpt-5.6-sol"
       },
       "thinking": "high"
     },

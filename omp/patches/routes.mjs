@@ -71,6 +71,7 @@ export function runPatchRoutes(ctx) {
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
     ["web/search/providers/codex.ts", patches.patchCodexWebSearchModels],
     ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
+    ["cli/git-tui/colors.ts", patches.patchGitTuiColors],
     [
       "extensibility/legacy-pi-coding-agent-shim.ts",
       patches.patchLegacyModelRuntime,
