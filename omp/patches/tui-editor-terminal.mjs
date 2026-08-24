@@ -116,8 +116,168 @@ export function createTuiEditorTerminalPatches(ctx) {
     return out;
   }
 
+  function patchSettingsSchemaAttachmentPreview(content) {
+    return replaceAny(
+      content,
+      [
+        `	"images.blockImages": {
+		type: "boolean",
+		default: false,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Block Images",
+			description: "Prevent images from being sent to LLM providers",
+		},
+	},`,
+        `	"images.attachmentPreviewWidth": {
+		type: "number",
+		default: 12,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Attachment Preview Width",
+			description: "Maximum inline attachment thumbnail width in terminal cells",
+		},
+	},
+
+	"images.attachmentPreviewHeight": {
+		type: "number",
+		default: 4,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Attachment Preview Height",
+			description: "Maximum inline attachment thumbnail height in terminal rows",
+		},
+	},
+
+	"images.blockImages": {
+		type: "boolean",
+		default: false,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Block Images",
+			description: "Prevent images from being sent to LLM providers",
+		},
+	},`,
+      ],
+      `	"images.attachmentPreviewWidth": {
+		type: "number",
+		default: 12,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Attachment Preview Width",
+			description: "Maximum inline attachment thumbnail width in terminal cells",
+		},
+	},
+
+	"images.attachmentPreviewHeight": {
+		type: "number",
+		default: 4,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Attachment Preview Height",
+			description: "Maximum inline attachment thumbnail height in terminal rows",
+		},
+	},
+
+	"images.blockImages": {
+		type: "boolean",
+		default: false,
+		ui: {
+			tab: "appearance",
+			group: "Images",
+			label: "Block Images",
+			description: "Prevent images from being sent to LLM providers",
+		},
+	},`,
+      "attachment preview size settings schema",
+    ).content;
+  }
+
   function patchAttachmentChips(content) {
     let out = content;
+    out = replaceAny(
+      out,
+      [
+        `import { convertImageToPng } from "../../utils/image-loading";`,
+        `import { settings } from "../../config/settings";
+import { convertImageToPng } from "../../utils/image-loading";`,
+      ],
+      `import { settings } from "../../config/settings";
+import { convertImageToPng } from "../../utils/image-loading";`,
+      "attachment chips can read preview size settings",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `const INNER_COLS = 12;
+const INNER_ROWS = 4;
+const CARD_COLS = INNER_COLS + 2;
+const CARD_GAP = 2;`,
+        `let INNER_COLS = 12;
+let INNER_ROWS = 4;
+let CARD_COLS = INNER_COLS + 2;
+const CARD_GAP = 2;
+
+function clampPreviewSize(value: number | undefined, fallback: number, min: number, max: number): number {
+	if (!Number.isFinite(value)) return fallback;
+	return Math.max(min, Math.min(max, Math.floor(value!)));
+}`,
+      ],
+      `let INNER_COLS = 12;
+let INNER_ROWS = 4;
+let CARD_COLS = INNER_COLS + 2;
+const CARD_GAP = 2;
+
+function clampPreviewSize(value: number | undefined, fallback: number, min: number, max: number): number {
+	if (!Number.isFinite(value)) return fallback;
+	return Math.max(min, Math.min(max, Math.floor(value!)));
+}`,
+      "attachment preview geometry is configurable",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+	) {}`,
+        `	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+	) {
+		INNER_COLS = clampPreviewSize(settings.get("images.attachmentPreviewWidth"), 12, 4, 80);
+		INNER_ROWS = clampPreviewSize(settings.get("images.attachmentPreviewHeight"), 4, 1, 30);
+		CARD_COLS = INNER_COLS + 2;
+	}`,
+      ],
+      `	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+	) {
+		INNER_COLS = clampPreviewSize(settings.get("images.attachmentPreviewWidth"), 12, 4, 80);
+		INNER_ROWS = clampPreviewSize(settings.get("images.attachmentPreviewHeight"), 4, 1, 30);
+		CARD_COLS = INNER_COLS + 2;
+	}`,
+      "attachment preview geometry reads settings",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `		const rows = ["", "", "", "", "", ""];`,
+        `		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");`,
+      ],
+      `		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");`,
+      "attachment chip rows follow preview height",
+    ).content;
     out = replaceAny(
       out,
       [
@@ -154,21 +314,33 @@ export function createTuiEditorTerminalPatches(ctx) {
 				if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
 				if (result?.lines) return this.#centerGrid(result.lines);
 			}`,
-        `\t\t\t\tif (!budget.observe(imageId)) {\n\t\t\t\t\tconst result = renderImage(\n\t\t\t\t\t\tdisplay.data,\n\t\t\t\t\t\t{ widthPx: dims.width, heightPx: dims.height },\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tmaxWidthCells: INNER_COLS,\n\t\t\t\t\t\t\tmaxHeightCells: INNER_ROWS,\n\t\t\t\t\t\t\timageId,\n\t\t\t\t\t\t\tincludeTransmit: budget.shouldTransmit(imageId),\n\t\t\t\t\t\t},\n\t\t\t\t\t);\n\t\t\t\t\tif (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);\n\t\t\t\t\tif (result?.lines) return this.#centerGrid(result.lines);\n\t\t\t\t}`,
-        `\t\t\t\tbudget.observe(imageId);\n\t\t\t\tconst result = renderImage(\n\t\t\t\t\tdisplay.data,\n\t\t\t\t\t{ widthPx: dims.width, heightPx: dims.height },\n\t\t\t\t\t{\n\t\t\t\t\t\tmaxWidthCells: INNER_COLS,\n\t\t\t\t\t\tmaxHeightCells: INNER_ROWS,\n\t\t\t\t\t\timageId,\n\t\t\t\t\t\tincludeTransmit: budget.shouldTransmit(imageId),\n\t\t\t\t\t},\n\t\t\t\t);\n\t\t\t\tif (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);\n\t\t\t\tif (result?.lines) return this.#centerGrid(result.lines);`,
-        `			budget.observe(imageId);
-			const result = renderImage(
-				image.data,
-				{ widthPx: dims.width, heightPx: dims.height },
-				{
-					maxWidthCells: INNER_COLS,
-					maxHeightCells: INNER_ROWS,
-					imageId,
-					includeTransmit: budget.shouldTransmit(imageId),
-				},
-			);
-			if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
-			if (result?.lines) return this.#centerGrid(result.lines);`,
+        `				if (!budget.observe(imageId)) {
+					const result = renderImage(
+						display.data,
+						{ widthPx: dims.width, heightPx: dims.height },
+						{
+							maxWidthCells: INNER_COLS,
+							maxHeightCells: INNER_ROWS,
+							imageId,
+							includeTransmit: budget.shouldTransmit(imageId),
+						},
+					);
+					if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
+					if (result?.lines) return this.#centerGrid(result.lines);
+				}`,
+        `				budget.observe(imageId);
+				const result = renderImage(
+					display.data,
+					{ widthPx: dims.width, heightPx: dims.height },
+					{
+						maxWidthCells: INNER_COLS,
+						maxHeightCells: INNER_ROWS,
+						imageId,
+						includeTransmit: budget.shouldTransmit(imageId),
+					},
+				);
+				if (result?.transmit) budget.enqueueTransmit(imageId, result.transmit);
+				if (result?.lines) return this.#centerGrid(result.lines);`,
       ],
       `				budget.observe(imageId);
 				const result = renderImage(
@@ -194,6 +366,7 @@ export function createTuiEditorTerminalPatches(ctx) {
     patchTuiKittyGraphics,
     patchTuiTerminal,
     patchCustomEditor,
+    patchSettingsSchemaAttachmentPreview,
     patchAttachmentChips,
   };
 }

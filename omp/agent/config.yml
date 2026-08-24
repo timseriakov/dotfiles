@@ -17,6 +17,9 @@ theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
+images:
+  attachmentPreviewWidth: 24
+  attachmentPreviewHeight: 8
 stt:
   enabled: true
   language: ru
