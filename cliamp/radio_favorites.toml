@@ -1,4 +1,38 @@
 [[station]]
+name = "Brokenbeats"
+url = "https://brokenbeats.net/stream/aac"
+country = "Ukraine"
+bitrate = 320
+codec = "AAC"
+tags = "drum & bass,drum 'n' bass,drum and bass"
+homepage = "https://brokenbeats.net/"
+
+[[station]]
+name = "drumfunk.ru"
+url = "https://ice.drumfunk.ru:8050/on.mp3"
+country = "The Russian Federation"
+bitrate = 192
+codec = "MP3"
+tags = "breakcore"
+homepage = "https://drumfunk.ru/"
+
+[[station]]
+name = "Radio Caprice - Breakcore"
+url = "http://79.111.119.111:8004/breakcore"
+country = "The Russian Federation"
+bitrate = 320
+codec = "AAC+"
+tags = "breakcore,electronic,idm"
+homepage = "http://radcap.ru/breakcore.html"
+
+[[station]]
+name = "dubtechno247station"
+url = "http://135.148.46.104:8010/radio.mp3"
+country = "The United States Of America"
+bitrate = 128
+codec = "MP3"
+
+[[station]]
 name = "Full Spectrum Radio - DnB | Jungle | Dubstep | Electronic"
 url = "https://fullspectrumradio.com/listen"
 country = "Canada"
@@ -14,15 +48,6 @@ bitrate = 320
 codec = "AAC+"
 tags = "drum 'n' bass,funk"
 homepage = "http://radcap.ru/liquidfunk.html"
-
-[[station]]
-name = "drumfunk.ru"
-url = "https://ice.drumfunk.ru:8050/on.mp3"
-country = "The Russian Federation"
-bitrate = 192
-codec = "MP3"
-tags = "breakcore"
-homepage = "https://drumfunk.ru/"
 
 [[station]]
 name = "Deep House Lounge"
@@ -52,15 +77,6 @@ tags = "chillstep,deep,future garage,post dubstep,radcap"
 homepage = "http://radcap.ru/futuregarage.html"
 
 [[station]]
-name = "Radio Caprice - Breakcore"
-url = "http://79.111.119.111:8004/breakcore"
-country = "The Russian Federation"
-bitrate = 320
-codec = "AAC+"
-tags = "breakcore,electronic,idm"
-homepage = "http://radcap.ru/breakcore.html"
-
-[[station]]
 name = "Adroit Jazz Underground"
 url = "https://icecast.walmradio.com:8443/jazz"
 country = "The United States Of America"
@@ -79,13 +95,6 @@ tags = "320kbps,classic jazz,jazz,smooth jazz"
 homepage = "http://shoutcast.flashradio.info/#/Jazz/1292701/"
 
 [[station]]
-name = "dubtechno247station"
-url = "http://135.148.46.104:8010/radio.mp3"
-country = "The United States Of America"
-bitrate = 128
-codec = "MP3"
-
-[[station]]
 name = "Psyndora Psytrance"
 url = "http://cast.magicstreams.gr:9111/stream"
 country = "Greece"
@@ -93,12 +102,3 @@ bitrate = 128
 codec = "MP3"
 tags = "goa,non-stop music,psyndora,psytrance,trance"
 homepage = "https://www.psyndora.com/"
-
-[[station]]
-name = "Brokenbeats"
-url = "https://brokenbeats.net/stream/aac"
-country = "Ukraine"
-bitrate = 320
-codec = "AAC"
-tags = "drum & bass,drum 'n' bass,drum and bass"
-homepage = "https://brokenbeats.net/"
