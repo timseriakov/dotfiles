@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.local.fx.omniroute-proxy</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/tim/.bun/bin/bun</string>
+    <string>/Users/tim/dev/dotfiles/fx/omniroute-proxy.js</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/tim/dev/dotfiles/fx</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/tim/Library/Logs/fx-omniroute-proxy.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tim/Library/Logs/fx-omniroute-proxy.log</string>
+</dict>
+</plist>

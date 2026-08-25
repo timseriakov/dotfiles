@@ -2,6 +2,11 @@ if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
 
+if set -q OMNIROUTE_OMP_API_KEY
+    set -gx AI_GATEWAY_API_KEY $OMNIROUTE_OMP_API_KEY
+    set -gx FX_GATEWAY_CHAT_URL http://127.0.0.1:58372/v1/ai/language-model
+end
+
 # Start tmux automatically only when allowed
 if status is-interactive
     if test -t 0; and not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT; and not set -q CODEX_SHELL

@@ -1,0 +1,7 @@
+{
+  "models": { "gateway": "openai/gpt-5.6-luna" },
+  "provider": "gateway",
+  "effort": "max",
+  "fast_mode": true,
+  "statusLine": { "context": true, "session": true, "workspace": true }
+}
