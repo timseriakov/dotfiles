@@ -14,6 +14,29 @@ OMP live config is linked into this directory:
 
 Edit OMP config, models, themes, and extensions in this repo, not directly in `~/.omp/agent`.
 
+## Image Processing
+
+OMP currently has no real `sharp` dependency. For new OMP image-processing code, prefer Bun 1.4+ `Bun.Image` / `Bun.file(path).image()` before adding `sharp` or another native image dependency. Add `sharp` only if `Bun.Image` cannot cover the required operation.
+
+One-shot examples:
+
+```ts
+// Resize/convert without sharp.
+await Bun.file(inputPath)
+  .image()
+  .resize(1024, 1024, { fit: "inside" })
+  .webp({ quality: 85 })
+  .write(outputPath);
+
+// Encode directly for APIs/responses.
+return new Response(new Bun.Image(inputPath).resize(200).jpeg());
+
+// Read dimensions/metadata after decode.
+const image = Bun.file(inputPath).image();
+await image.metadata();
+console.log(image.width, image.height);
+```
+
 ## User Shell
 
 The user's interactive shell is `fish`.
