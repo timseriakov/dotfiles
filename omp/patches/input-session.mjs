@@ -101,8 +101,10 @@ export function createInputSessionPatches(ctx) {
       [
         `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = mintSessionId();`,
         `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
+        `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = mintSessionId();`,
+        `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
       ],
-      `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
+      `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
       "session-manager recovery keeps path id",
     );
     out = r.content;

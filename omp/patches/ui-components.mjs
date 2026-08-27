@@ -82,8 +82,10 @@ export function createUiComponentPatches(ctx) {
         'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
         'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 1, 0)',
         'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
+        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 1, 0)',
+        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 0, 0)',
       ],
-      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 0, 0)',
       "assistant usage padding",
     ).content;
   }
