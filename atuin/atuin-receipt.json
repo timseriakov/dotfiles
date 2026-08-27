@@ -6,12 +6,12 @@
   "install_layout": "flat",
   "install_prefix": "/Users/tim/.atuin/bin",
   "modify_path": true,
-  "provider": { "source": "cargo-dist", "version": "0.28.3" },
+  "provider": { "source": "cargo-dist", "version": "0.31.0" },
   "source": {
     "app_name": "atuin",
     "name": "atuin",
     "owner": "atuinsh",
     "release_type": "github"
   },
-  "version": "18.6.1"
+  "version": "18.20.1"
 }
