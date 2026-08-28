@@ -10,8 +10,13 @@ return {
     {
       "<leader>ff",
       mode = { "n", "v" },
-      "<cmd>Yazi<cr>",
-      desc = "Yazi (current file)",
+      function()
+        require("toggleterm.terminal").Terminal:new({
+          cmd = "che",
+          direction = "float",
+        }):toggle()
+      end,
+      desc = "Che",
     },
     {
       "<leader>fj",
