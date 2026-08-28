@@ -165,13 +165,6 @@ providers:
         input: [text, image]
         contextWindow: 409600
         maxTokens: 131072
-      - id: openrouter/stealth/ox-alpha
-        name: Ox Alpha
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1048576
-        maxTokens: 131072
 
   zen-free:
     baseUrl: https://opencode.ai/zen/v1
@@ -246,9 +239,3 @@ providers:
         input: [text]
         contextWindow: 1048576
         maxTokens: 384000
-      - id: stealth/ox-alpha
-        name: Ox Alpha
-        reasoning: true
-        input: [text, image]
-        contextWindow: 1048576
-        maxTokens: 65536

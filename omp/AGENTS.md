@@ -1,326 +1,199 @@
-## Web search providers
+# Repository Guidelines
 
-Never pass `auto` or status labels such as `parallel-env/parallel`; they are not accepted provider arguments. Start with `provider: "parallel"`. If the call errors, times out, is rate-limited, or returns no useful results, retry the same query with `serper`, then `tavily`, then `exa`, stopping at the first useful result. For important claims requiring corroboration, search with at least two of these providers independently.
+## Project Overview
 
-# OMP Dotfiles Notes
+This directory is the dotfiles-owned customization layer for Oh My Pi (OMP), not the upstream OMP source tree. It stores the live OMP agent config, local extensions/commands/themes, and monkey-patch scripts that are reapplied after OMP package updates.
 
-## Source of Truth
-
-OMP live config is linked into this directory:
+Source of truth:
 
 ```text
-~/.omp/agent -> /Users/tim/dev/dotfiles/omp/agent
+/Users/tim/dev/dotfiles/omp/agent -> ~/.omp/agent
 ```
 
-Edit OMP config, models, themes, and extensions in this repo, not directly in `~/.omp/agent`.
+Edit OMP config in this repo. Do not edit linked live config in place under `~/.omp/agent`.
 
-## Image Processing
+## Architecture & Data Flow
 
-OMP currently has no real `sharp` dependency. For new OMP image-processing code, prefer Bun 1.4+ `Bun.Image` / `Bun.file(path).image()` before adding `sharp` or another native image dependency. Add `sharp` only if `Bun.Image` cannot cover the required operation.
+- `agent/` contains OMP runtime configuration loaded by the installed `omp` CLI.
+- `agent/settings.json` tells OMP which npm plugin packages to load, including Plannotator, Engram, side-chat, and MCP adapter packages.
+- `agent/mcp.json` configures MCP servers such as Engram and Dayflow.
+- `agent/models.yml` defines OmniRoute/Zen model providers and model aliases consumed by OMP.
+- `agent/commands/*/index.ts` exports OMP custom slash commands.
+- `agent/extensions/*.ts` exports OMP extension hooks that receive an `ExtensionAPI`/`pi` object and subscribe to events or call `pi.exec`.
+- `patches/*.mjs` contains small patch factories for installed OMP, `pi-tui`, `pi-ai`, and plugin files.
+- `apply-omp-monkey-patches.mjs` orchestrates all OMP patch routes, runtime-state symlinks, plugin patching, and bundled CLI rebuild.
+- `apply-backpass-omp-patches.mjs` patches the installed Backpass package so Backpass can analyze through `omp acp` via `acpx`.
 
-One-shot examples:
-
-```ts
-// Resize/convert without sharp.
-await Bun.file(inputPath)
-  .image()
-  .resize(1024, 1024, { fit: "inside" })
-  .webp({ quality: 85 })
-  .write(outputPath);
-
-// Encode directly for APIs/responses.
-return new Response(new Bun.Image(inputPath).resize(200).jpeg());
-
-// Read dimensions/metadata after decode.
-const image = Bun.file(inputPath).image();
-await image.metadata();
-console.log(image.width, image.height);
-```
-
-## User Shell
-
-The user's interactive shell is `fish`.
-
-- User-facing shell commands and examples must be `fish`-compatible, not bash snippets.
-- Do not suggest `export VAR=...`, `set -a; source .env; set +a`, bash arrays, or bash-only syntax.
-- Prefer running shell flows through tools directly; when the user needs to run something manually, write the `fish` version.
-- Code fences for shell snippets should use `fish` unless the snippet is intentionally for another shell.
-
-## Runtime State
-
-OMP sessions and SQLite state must persist, but must not live as normal files in git. The patch script `omp/apply-omp-monkey-patches.mjs` keeps config in dotfiles and redirects runtime paths through symlinks:
+Patch flow after an OMP update:
 
 ```text
-/Users/tim/dev/dotfiles/omp/agent/sessions -> /Users/tim/.local/share/omp/sessions
-/Users/tim/dev/dotfiles/omp/agent/blobs -> /Users/tim/.local/share/omp/blobs
-/Users/tim/dev/dotfiles/omp/agent/agent.db* -> /Users/tim/.local/share/omp/agent.db*
-/Users/tim/dev/dotfiles/omp/agent/history.db* -> /Users/tim/.local/share/omp/history.db*
-/Users/tim/dev/dotfiles/omp/agent/models.db* -> /Users/tim/.local/share/omp/models.db*
-/Users/tim/dev/dotfiles/omp/agent/terminal-sessions -> /Users/tim/.local/state/omp/terminal-sessions
+installed OMP package source
+  -> apply-omp-monkey-patches.mjs
+  -> patched installed source + rebuilt dist/cli.js
+  -> omp runtime behavior
 ```
 
-Do not run `rm -rf omp/agent/sessions` as routine cleanup. If runtime paths appear under `omp/agent/`, preserve/move them; never delete sessions just to clean git status. They are gitignored only as a safety net.
-
-## Monkey Patches After OMP Updates
-
-Some UI behavior is patched directly in the installed OMP package because OMP does not currently expose these options via config/extension APIs.
-
-Keep the patch workflows version-specific:
-
-- `apply-omp-monkey-patches.mjs` is the known-good OMP 15.10.8 workflow. Preserve it when adapting newer OMP releases.
-- `apply-omp-monkey-patches-15.10.12.mjs` is the side-by-side OMP 15.10.12 adaptation.
-
-### OMP 15.10.12 gotcha: rebuild the bundle
-
-OMP 15.10.12 installs `omp` as a bundled CLI, not as a direct source runner:
+Backpass flow:
 
 ```text
-~/.bun/bin/omp -> ../install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js
+backpass analyze
+  -> installed Backpass harness
+  -> acpx --agent "omp acp" prompt -s <session> --file <prompt>
+  -> OMP ACP session
 ```
 
-`@oh-my-pi/pi-coding-agent/package.json` has `bin.omp = dist/cli.js`, and `scripts/bundle-dist.ts` bundles `src/cli.ts` into that file. Patching installed `src` files is therefore insufficient on 15.10.12 unless the bundle is rebuilt afterwards.
+## Key Directories
 
-After 15.10.12 source monkey patches, rebuild from the installed package root:
+- `agent/` — OMP config, models, MCP config, commands, extensions, themes, and linked runtime entry point.
+- `agent/commands/backpass/` — `/backpass`, `/bp`, `/бп`; runs Backpass and asks OMP to summarize the result.
+- `agent/commands/c/` — `/c` and `/с`; expands to the user-facing commit prompt.
+- `agent/extensions/` — local OMP hooks: Atuin integration, rename helper, DCG guard, Wakatime heartbeat, Workmux status.
+- `agent/themes/` — `starship-nord.json`, the minimal Nord/Starship-like OMP theme.
+- `agent/npm/` — local npm dependency install for OMP extension packages; package files are ignored unless force-added intentionally.
+- `patches/` — version-sensitive patch modules grouped by subsystem: status line, UI components, input/session, TUI/editor/terminal, commands runtime, Plannotator, Rejudge, side-chat, routes.
+- `agent/tmp/`, `agent/agent.db*`, `agent/history.db*`, `agent/sessions`, `agent/blobs` — runtime state paths; preserve/move via symlinks, never delete as cleanup.
 
-```bash
-cd /Users/tim/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent
-bun scripts/bundle-dist.ts
-```
+## Development Commands
 
-The 15.10.12 side script should do this automatically with `rebuildBundledCli()` after applying source patches. If runtime output disagrees with patched source, suspect a stale `dist/cli.js` first.
+Run from `/Users/tim/dev/dotfiles/omp` unless noted.
 
-Stale bundle signature:
+```fish
+# Reapply local patches after an OMP update
+node apply-omp-monkey-patches.mjs
 
-- installed source contains `pwd = path.basename(pwd) || pwd;` in `status-line/segments.ts`
-- installed source contains `setPromptGutter(" ")` in `interactive-mode.ts`
-- but interactive startup still shows an absolute path like `/Users/tim/dev/dotfiles` and a bare `▏` prompt
+# Patch installed Backpass integration with OMP/acpx
+node apply-backpass-omp-patches.mjs
 
-Correct visual signature:
+# Syntax-check patch scripts
+node --check apply-omp-monkey-patches.mjs
+node --check apply-backpass-omp-patches.mjs
+node --check patches/status-line.mjs
 
-- status starts with basename `dotfiles ...`
-- prompt line shows Fish/Starship-style ` ▏`
-
-### OMP 15.10.12 drift points already handled
-
-- `welcome.ts` refactored to a cached `render(...)` wrapper plus `#renderLines(...)`; patch the `#renderLines(...)` path for minimal `Welcome from Oh My Pi` behavior.
-- `assistant-message.ts` removed the old static hidden-thinking `Thinking...` label; the 15.10.12 matcher for that label must be optional.
-- Obvious renderer patches still matter: status-line padding, basename path, compact git/model segments, borderless editor, prompt gutter color, prompt gutter width fallback, and bundle rebuild.
-
-### Visual verification standard
-
-Do not accept patch idempotence or prompt-mode success as visual verification. `omp --no-session -p ...` can return `ok` while the interactive startup layout is still wrong.
-
-Use a PTY-based interactive startup capture and compare against patched 15.10.8 / Fish behavior. The acceptance criteria are exact visual parity: same prompt icon ``, same left padding/indentation, and same spacing.
-
-Useful historical capture files from the 15.10.12 debugging session:
-
-```text
-/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-startup.bin          # broken pre-rebundle capture
-/Users/tim/tmp/opencode/omp-ptycapture-15.10.8-startup.bin           # patched 15.10.8 comparison
-/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-bundled-startup.bin  # manual post-rebundle capture
-/Users/tim/tmp/opencode/omp-ptycapture-15.10.12-rebundled-startup.bin # script-managed rebundle capture
-```
-
-Theme/config facts that are intentional, not accidental:
-
-- `agent/config.yml` uses `theme.dark: starship-nord`, `statusLine.separator: none`, custom segments, `symbolPreset: nerd`, and `hideThinkingBlock: true`.
-- `agent/themes/starship-nord.json` intentionally blanks many `icon.*` values, uses space separators, keeps `boxRound.*` mostly empty/space-only, and sets `nav.cursor` to ``.
-- Fish Starship prompt uses `success_symbol = '[](bold green)'` and `error_symbol = '[](bold red)'` in `starship.toml`.
-
-Reapply patches after any OMP package update/reinstall:
-
-```bash
-node /Users/tim/dev/dotfiles/omp/apply-omp-monkey-patches.mjs
-```
-
-The patch script is intended to be idempotent. It patches installed sources under:
-
-```text
-~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/src
-~/.bun/install/global/node_modules/@oh-my-pi/pi-tui/src
-```
-
-Current patched behavior:
-
-- status-line path renders only the last directory segment, e.g. `dotfiles`
-- git display is Starship-like: `on  master ↑N ↓N [!+?]`; `on` is white/text color, git info is purple
-- model display is Starship-like text only: `via Reasoning Main OMNi`; `via` is white/text color, model is green, provider suffix `OMNi` is dim Nord color, no `⬢` because that is a Node.js/package glyph in the shell prompt
-- status-line group padding is reduced
-- pi-tui `visibleWidth()` is patched to strip ANSI escape sequences before measuring styled status segments; without this, white `on`/`via` splits make the status line overflow/collide
-- status-line segment separator should be Starship-like one space via theme `sep.space: " "`
-- status-line auto-compaction icon `⟲` is intentionally disabled via theme `icon.auto: ""`
-- assistant/user message left padding is reduced
-- default editor is patched to be borderless with `paddingX = 0` and green prompt gutter ` `
-- borderless editor still renders the status/top line; status starts at the left edge like Starship/fish, while only the input line uses the ` ` gutter
-- prompt gutter should match Starship: green ` ` (`U+F105` plus one following space)
-- prompt gutter width reserves 1 cell even if terminal width detection reports `` as width 0
-- `ctrl+k` is bound by OMP keybindings as `app.session.compact` and calls the same manual compact path as `/compact`
-- `omp/agent/keybindings.yml` is the current primary OMP keybindings file; legacy `keybindings.json` was removed
-- `shift+enter` and `ctrl+j` insert a newline via `tui.input.newLine`
-- session persistence is patched so `SessionManager.close()` always drains pending atomic rewrites before exit; otherwise print/smoke sessions can remain as hidden `.tmp` files and `--resume` shows `No sessions found`
-- `Ctrl+Z` suspend is patched to send `SIGTSTP` only to the OMP process (`process.pid`) instead of process group `0`; this preserves normal shell job-control flow so `fg` can resume OMP
-
-## Startup Banner
-
-The large OMP welcome screen is controlled by:
-
-```yaml
-startup:
-  quiet: true
-```
-
-This should stay enabled for the minimal Starship-like setup.
-
-After running the patch script, verify OMP through fish so `OMNIROUTE_OMP_API_KEY` is loaded:
-
-```bash
+# Smoke-test OMP through fish so env vars are loaded
 fish -lc 'timeout 45s omp --no-session -p "Ответь одним словом: ok"'
+
+# Check Backpass integration
+backpass status
+backpass analyze --max-transcripts 1 --jobs 1
+
+# Update Plannotator in the local agent npm tree
+npm --prefix agent/npm install @plannotator/pi-extension@latest
+
+# Update the live OMP plugin install too
+npm --prefix ~/.omp/plugins pkg set 'dependencies.@plannotator/pi-extension=<version>'
+npm --prefix ~/.omp/plugins install
+node apply-omp-monkey-patches.mjs
 ```
 
-Expected output:
+OMP update workflow:
 
-```text
-ok
-```
-
-## OMP Update Workflow
-
-Formalised sequence for `omp update` + patch + verify + commit. Follow exactly in any new session.
-
-### 1. Pre-update
-
-```bash
-cd /Users/tim/dev/dotfiles/omp
-omp --version                          # текущая версия
-```
-
-Note any unstaged changes in `omp/` — они могут конфликтовать с обновлением.
-
-### 2. Update
-
-```bash
-omp update                             # bun-апдейт пакета
-```
-
-### 3. Apply monkey patches
-
-```bash
-node /Users/tim/dev/dotfiles/omp/apply-omp-monkey-patches.mjs
-```
-
-Ожидаемый успех:
-
-```text
-rebuilt OMP bundled CLI
-OMP monkey patches applied.
-```
-
-**При дрифте** — patch script сообщит `expected one of N alternatives, counts [0,…]`.
-
-1. Прочитать upstream source в `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/src/<file>`
-2. Сравнить с anchor-паттернами в `apply-omp-monkey-patches.mjs` (функции `patch*`)
-3. Адаптировать anchors: добавить новую альтернативу в `replaceAny`, НЕ удалять старые
-4. Перезапустить скрипт
-
-### 4. Verify
-
-4a. **Smoke — prompt mode**:
-
-```bash
-omp --version                          # ожидается новая версия
+```fish
+omp --version
+omp update
+node apply-omp-monkey-patches.mjs
+omp --version
 fish -lc 'timeout 45s omp --no-session -p "ok"'
 ```
 
-4b. **Markers in bundled CLI** — проверить что патчи реально в dist/cli.js:
+After source patches, verify bundled markers in `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js` when visual behavior matters.
 
-```js
-dist = read(
-  "~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js",
-);
-check: "Welcome from Oh My Pi" in dist;
-check: "OMNi" in dist;
-check: "path.basename" in dist;
-check: "process.kill(process.pid" in dist;
+## Code Conventions & Common Patterns
+
+- Keep patches small and anchor-based. Prefer adding alternatives to `replaceAny(...)` over loosening validation.
+- Patch helpers should fail loudly on upstream drift; do not silently skip unknown source shapes.
+- Preserve older replacement alternatives when adapting to new OMP versions.
+- Use TypeScript ESM style for commands/extensions: `export default function (...)` returning commands or registering hooks.
+- Keep command output bounded. Example: `agent/commands/backpass/index.ts` trims output to `MAX_OUTPUT` before returning it to the model.
+- Prefer pure helpers for testable logic. Example: `agent/extensions/r.ts` exports `transformTmuxName(...)`, tested by `agent/extensions/r.test.ts`.
+- Event extensions should be cheap and non-blocking; fire-and-forget external status updates should catch errors, e.g. `pi.exec(...).catch(() => {})`.
+- User-facing shell snippets should be Fish-compatible.
+- For new image-processing code, prefer Bun 1.4+ `Bun.Image` / `Bun.file(path).image()` before adding `sharp`.
+- Avoid speculative abstractions. This repo favors direct, boring patch modules and explicit command wrappers.
+
+## Important Files
+
+- `AGENTS.md` — this repository guide.
+- `agent/config.yml` — primary OMP runtime behavior: quiet startup, theme, STT, status line, model/provider order, UI defaults.
+- `agent/models.yml` — OmniRoute/Zen model provider definitions and model aliases.
+- `agent/settings.json` — OMP plugin package list and npm command.
+- `agent/mcp.json` — MCP server configuration.
+- `agent/keybindings.yml` — keybindings such as `ctrl+k` compact and `shift+enter`/`ctrl+j` newline.
+- `agent/themes/starship-nord.json` — intentional Starship-like visual design.
+- `agent/commands/backpass/index.ts` — Backpass slash command wrapper.
+- `agent/extensions/r.ts` and `agent/extensions/r.test.ts` — rename helper and its minimal test.
+- `apply-omp-monkey-patches.mjs` — main OMP patch orchestrator and runtime-state link setup.
+- `patches/routes.mjs` — maps patch functions to installed OMP, TUI, AI, and plugin file targets.
+- `patches/status-line.mjs` — Starship-like status-line path/git/model/session segment patches.
+- `patches/installed-ai-plannotator.mjs` and `patches/plannotator.mjs` — Plannotator/runtime compatibility patches.
+- `apply-backpass-omp-patches.mjs` — installed Backpass compatibility patcher.
+
+## Runtime/Tooling Preferences
+
+- Interactive shell: Fish. Write manual commands in Fish syntax.
+- OMP installed package root: `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent`.
+- OMP bundled CLI: `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js`; source patches must be followed by bundle rebuild via the patch script.
+- Backpass installed package root is discovered from `command -v backpass`; common path is `~/.volta/tools/image/packages/backpass/lib/node_modules/backpass`.
+- `acpx` custom-agent prompt syntax for OMP is subcommand-based:
+
+```fish
+acpx --agent "omp acp" prompt -s <session> --file <prompt-file>
 ```
 
-4c. **PTY visual capture** — главный критерий, prompt-mode НЕ достаточен:
+- Live plugin install is separate from `agent/npm`: `~/.omp/plugins`. Updating `agent/npm` alone does not update the OMP-loaded plugin.
+- OMP runtime state must live outside git. The patch script redirects sessions/blobs/databases to `~/.local/share/omp` and terminal sessions to `~/.local/state/omp`.
+- Web search provider convention: start with `provider: "parallel"`; if it fails, retry `serper`, then `tavily`, then `exa`.
 
-```py
-import os, pty, re, select, signal, subprocess, time
-ansi = re.compile(r'\x1b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-master, slave = pty.openpty()
-env = os.environ | {'TERM': 'xterm-256color', 'COLUMNS': '140', 'LINES': '30'}
-p = subprocess.Popen(['fish', '-lc', 'omp --no-session'],
-    cwd='/Users/tim/dev/dotfiles/omp', stdin=slave, stdout=slave, stderr=slave, env=env, start_new_session=True)
-os.close(slave)
-data = b''
-end = time.time() + 10
-while time.time() < end:
-    r, _, _ = select.select([master], [], [], 0.2)
-    if r:
-        try: data += os.read(master, 65536)
-        except OSError: break
-try: os.kill(p.pid, signal.SIGTERM)
-except ProcessLookupError: pass
-try: p.wait(timeout=2)
-except subprocess.TimeoutExpired:
-    try: os.kill(p.pid, signal.SIGKILL)
-    except ProcessLookupError: pass
-text = ansi.sub('', data.decode('utf-8', 'replace')).replace('\r', '')
-assert 'Welcome from Oh My Pi' in text
-assert 'omp on ' in text
-assert '/Users/tim/dev/dotfiles/omp' not in text  # basename only
-assert ' via ' in text
-assert 'OMNi' in text
-assert ' ' in text
-print('interactive patch ok')
+## Testing & QA
+
+Use the smallest command that covers the change.
+
+- Patch-script syntax:
+
+```fish
+node --check apply-omp-monkey-patches.mjs
+node --check apply-backpass-omp-patches.mjs
 ```
 
-Ожидаемый вывод:
+- Reapply all OMP patches and rebuild bundle:
 
-```text
-Welcome from Oh My Pi
-omp on  master … via … OMNi
- ▏
+```fish
+node apply-omp-monkey-patches.mjs
 ```
 
-### 5. Read changelog
+- OMP prompt smoke:
 
-```bash
-grep -A 30 "^## \[$(omp --version | cut -d/ -f2)\]" \
-  /Users/tim/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/CHANGELOG.md
+```fish
+fish -lc 'timeout 45s omp --no-session -p "Ответь одним словом: ok"'
 ```
 
-Кратко пересказать пользователю что изменилось.
+Expected output includes `ok`.
 
-### 6. Commit
+- Interactive visual verification is required for UI/status-line/editor changes. Capture a PTY startup and check for:
+  - `Welcome from Oh My Pi`
+  - basename path such as `omp`, not `/Users/tim/dev/dotfiles/omp`
+  - Starship-like `on  ... via ... OMNi`
+  - prompt gutter ` `
 
-```bash
-cd /Users/tim/dev/dotfiles
-git diff --stat -- omp/
+- Backpass compatibility smoke:
+
+```fish
+node apply-backpass-omp-patches.mjs
+backpass analyze --max-transcripts 1 --jobs 1
 ```
 
-Добавить и закоммитить изменения, вызванные обновлением (version file, `models.yml`, patch script если менялся):
+Expected result: `0 failed`. Older failed transcript rows in `backpass status` are retried by the next analyze run.
 
-```bash
-git add omp/agent/last-changelog-version omp/agent/models.yml
-# + omp/apply-omp-monkey-patches.mjs если был дрифт
-git commit -m "bump OMP to <new-version>"
+- Extension unit test example:
+
+```fish
+bun test agent/extensions/r.test.ts
 ```
 
-Не включать несвязанные изменения (wakatime, quickmarks, Raycast, NOTES.md и т.д.) если пользователь не попросил.
+- Before committing, inspect only intended paths:
 
-### 7. Если пользователь сказал `cmt` — выполнить шаг 6.
+```fish
+git -C /Users/tim/dev/dotfiles status --short -- omp
+git -C /Users/tim/dev/dotfiles diff --stat -- omp
+```
 
-### Anchor-адаптация: памятка по типовым дрифтам
-
-| Компонент              | Файл                              | Типичный дрифт                                                                       |
-| ---------------------- | --------------------------------- | ------------------------------------------------------------------------------------ |
-| Status-line git        | `segments.ts`                     | Поля кэша gitStatus переименовываются (`gitStatusInFlight` → `gitStatusInFlightCwd`) |
-| Status-line git remote | `segments.ts`                     | `#lookupPr()` → `#lookupPr(effectiveGitCwd?)`                                        |
-| Status-line model      | `segments.ts`                     | Добавляются `compactThinkingLevel`/`modelIcon`, меняется `withIcon(…)` вызов         |
-| Welcome                | `welcome.ts`                      | `render()` рефакторится в cached обёртку, body уходит в `#renderLines()`             |
-| Usage row              | `usage-row.ts`                    | Вынесен из `assistant-message.ts` в отдельный компонент                              |
-| Session manager        | `session-manager.ts`              | `mintSessionId()`, `inferSessionIdFromPath()`, `forcedSessionFile`                   |
-| editor                 | pi-tui `editor.ts`                | padding/стили меняются                                                               |
-| terminal-capabilities  | pi-tui `terminal-capabilities.ts` | Kitty graphics adapter mapping                                                       |
+Do not include unrelated parent-repo changes such as other dotfile areas unless the user explicitly asks.
