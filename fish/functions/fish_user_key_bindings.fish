@@ -41,6 +41,7 @@ function fish_user_key_bindings
         bind -M $mode \cf forward-word
         bind -M $mode alt-backspace backward-kill-word  # Option+Backspace to delete word
         bind -M $mode \ct try-rs-picker # Ctrl+T for try-rs-picker
+        bind -M $mode \cg edit_command_buffer
         bind -M $mode \ep 'commandline -r "rip"; commandline -f execute'
     end
 
