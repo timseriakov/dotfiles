@@ -102,13 +102,81 @@ changed =
   ) || changed;
 
 const invoke = path.join(root, "src/harness-invoke.js");
-changed =
-  replace(
-    invoke,
-    '    if (agent === "opencode") {',
+let invokeSource = fs.readFileSync(invoke, "utf8");
+if (
+  invokeSource.includes('    if (agent === "opencode" || agent === "omp") {')
+) {
+  invokeSource = invokeSource.replace(
     '    if (agent === "opencode" || agent === "omp") {',
-    "allow omp invocation",
-  ) || changed;
+    '    if (agent === "opencode") {',
+  );
+  fs.writeFileSync(invoke, invokeSource);
+  changed = true;
+}
+const ompInsertion = `    if (agent === "omp") {
+      if (requestedEffort) {
+        notes.push("omp does not advertise a reasoning-effort option; ran without effort=" + requestedEffort);
+      }
+      return {
+        env: undefined,
+        acpxModel: requestedModel,
+        setEffortKey: null,
+        acpxAgentCommand: "omp acp",
+        requiredBuiltinAgent: null,
+        notes,
+        dispose,
+      };
+    }
+`;
+if (!invokeSource.includes(ompInsertion)) {
+  const opencodeBranch = '    if (agent === "opencode") {';
+  if (!invokeSource.includes(opencodeBranch))
+    throw new Error("Backpass patch drift: opencode invocation branch");
+  invokeSource = invokeSource.replace(
+    opencodeBranch,
+    ompInsertion + opencodeBranch,
+  );
+  fs.writeFileSync(invoke, invokeSource);
+  changed = true;
+}
+
+const acpx = path.join(root, "src/acpx.js");
+let acpxSource = fs.readFileSync(acpx, "utf8");
+const invocationArgsOld = `function invocationAgentArgs(invocation, agent) {
+  return invocation.acpxAgentCommand ? ["--agent", invocation.acpxAgentCommand] : [acpxAgentName(agent)];
+}`;
+const invocationArgsNew = `function invocationAgentArgs(invocation, agent) {
+  if (invocation.acpxAgentCommand) return ["--agent", invocation.acpxAgentCommand];
+  if (agent === "omp") return ["--agent", "omp acp"];
+  return [acpxAgentName(agent)];
+}`;
+if (!acpxSource.includes(invocationArgsNew)) {
+  if (!acpxSource.includes(invocationArgsOld))
+    throw new Error("Backpass patch drift: invocation agent args");
+  acpxSource = acpxSource.replace(invocationArgsOld, invocationArgsNew);
+  fs.writeFileSync(acpx, acpxSource);
+  changed = true;
+}
+
+const probeOld = `  const acpxAgent = acpxAgentName(agent);
+  const created = await run([acpxAgent, "sessions", "new", "--name", sessionName], { timeoutMs, cwd });`;
+const probeNew = `  const agentArgs = agent === "omp" ? ["--agent", "omp acp"] : [acpxAgentName(agent)];
+  const created = await run([...agentArgs, "sessions", "new", "--name", sessionName], { timeoutMs, cwd });`;
+if (!acpxSource.includes(probeNew)) {
+  if (!acpxSource.includes(probeOld))
+    throw new Error("Backpass patch drift: probe agent args");
+  acpxSource = acpxSource.replace(probeOld, probeNew);
+  acpxSource = acpxSource.replace(
+    `await run(["--format", "json", acpxAgent, "status", "-s", sessionName], { timeoutMs, cwd });`,
+    `await run(["--format", "json", ...agentArgs, "status", "-s", sessionName], { timeoutMs, cwd });`,
+  );
+  acpxSource = acpxSource.replace(
+    `await run([acpxAgent, "sessions", "close", sessionName], { timeoutMs, cwd });`,
+    `await run([...agentArgs, "sessions", "close", sessionName], { timeoutMs, cwd });`,
+  );
+  fs.writeFileSync(acpx, acpxSource);
+  changed = true;
+}
 
 console.log(`${changed ? "patched" : "ok     "} Backpass OMP integration`);
 console.log(root);

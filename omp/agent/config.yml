@@ -1,29 +1,29 @@
-mcp: 
+mcp:
   enableProjectConfig: true
-skills: 
+skills:
   enableClaudeUser: false
   enableClaudeProject: false
-commands: 
+commands:
   enableClaudeUser: false
   enableClaudeProject: false
   enableOpencodeUser: false
   enableOpencodeProject: false
-astGrep: 
+astGrep:
   enabled: true
-startup: 
+startup:
   quiet: true
   setupWizard: false
-theme: 
+theme:
   dark: starship-nord
 colorBlindMode: false
 showHardwareCursor: false
-images: 
+images:
   attachmentPreviewWidth: 24
   attachmentPreviewHeight: 8
-stt: 
+stt:
   enabled: true
   language: ru
-compaction: 
+compaction:
   enabled: true
   thresholdPercent: 60
   keepRecentTokens: 30000
@@ -31,39 +31,39 @@ compaction:
   idleEnabled: true
   idleThresholdTokens: 150000
   idleTimeoutSeconds: 180
-  methodOrder: 
+  methodOrder:
     - remote
     - soft
-statusLine: 
+statusLine:
   preset: custom
   separator: none
   contextLine: "off"
-  leftSegments: 
+  leftSegments:
     - path
     - git
     - mode
     - model
     - context_pct
-  rightSegments: 
+  rightSegments:
     - session_name
-  segmentOptions: 
-    path: 
+  segmentOptions:
+    path:
       abbreviate: false
       maxLength: 32
       stripWorkPrefix: true
       lastSegment: true
-    git: 
+    git:
       showBranch: true
       showStaged: true
       showUnstaged: true
       showUntracked: true
       compactDirty: true
       showAheadBehind: true
-    model: 
+    model:
       showThinkingLevel: true
   sessionAccent: false
   showHookStatus: false
-modelRoles: 
+modelRoles:
   smol: omniroute/openrouter/stealth/ox-alpha:high
   slow: omniroute/cx/gpt-5.5-medium:medium
   plan: omniroute/cx/gpt-5.5-high:high
@@ -73,13 +73,13 @@ modelRoles:
   advisor: omniroute/cx/gpt-5.6-sol:medium
   commit: omniroute/openrouter/~deepseek/deepseek-v4-flash-latest:low
   default: omniroute/cx/gpt-5.6-luna:max
-task: 
-  agentAdvisor: 
+task:
+  agentAdvisor:
     security-reviewer: omniroute/cx/gpt-5.6-sol:medium
-tier: 
+tier:
   openai: none
   subagent: inherit
-disabledProviders: 
+disabledProviders:
   - aimlapi
   - alibaba-coding-plan
   - amazon-bedrock
@@ -152,8 +152,8 @@ disabledProviders:
   - zai
   - zenmux
   - zhipu-coding-plan
-providers: 
-  webSearchOrder: 
+providers:
+  webSearchOrder:
     - parallel
     - perplexity
     - gemini
@@ -177,11 +177,11 @@ providers:
     - google
     - mojeek
     - public
-modelProviderOrder: 
+modelProviderOrder:
   - omniroute
   - zen-free
 symbolPreset: nerd
-extensions: 
+extensions:
   - /Users/tim/.omp/agent/extensions/starship-minimal-editor.ts
   - /Users/tim/.omp/agent/extensions/workmux-status.ts
   - /Users/tim/.omp/agent/extensions/wakatime-heartbeat.ts
@@ -190,14 +190,14 @@ extensions:
   - /Users/tim/.omp/agent/extensions/atuin.ts
 hideThinkingBlock: true
 setupVersion: 2
-dev: 
+dev:
   autoqaConsent: granted
 treeFilterMode: user-only
 defaultThinkingLevel: auto
 autocompleteMaxVisible: 15
-edit: 
+edit:
   enforceSeenLines: true
-browser: 
+browser:
   relay: true
-composer: 
+composer:
   shape: box
