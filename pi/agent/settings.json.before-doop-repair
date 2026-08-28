@@ -1,0 +1,90 @@
+{
+  "autocompleteMaxVisible": 15,
+  "defaultModel": "cx/gpt-5.5",
+  "defaultProvider": "omni",
+  "defaultThinkingLevel": "high",
+  "editorPaddingX": 1,
+  "enableInstallTelemetry": false,
+  "enabledModels": [
+    "omni/cx/gpt-5.5-xhigh:high",
+    "omni/cx/gpt-5.5-high:high",
+    "omni/cx/gpt-5.5-medium:high",
+    "omni/cx/gpt-5.5:high",
+    "omni/cx/gpt-5.5-low:high",
+    "omni/cx/gpt-5.4:high",
+    "omni/cx/gpt-5.4-xhigh:high",
+    "omni/cx/gpt-5.4-high:high",
+    "omni/cx/gpt-5.4-medium:high",
+    "omni/cx/gpt-5.4-low:high",
+    "omni/cx/gpt-5.4-mini:high"
+  ],
+  "lastChangelogVersion": "0.80.3",
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@mise WARN  Plugin node does not have a version set",
+    "--",
+    "npm"
+  ],
+  "packages": [
+    "npm:pi-subagents",
+    "npm:pi-ask-user",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-access",
+    "git:github.com/VandeeFeng/pi-memory-md",
+    "npm:@devkade/pi-plan",
+    "npm:pi-simplify",
+    "npm:pi-add-dir",
+    "npm:pi-prompt-template-model",
+    {
+      "source": "npm:@plannotator/pi-extension@0.26.8",
+      "skills": []
+    },
+    "npm:pi-slopchop",
+    "npm:@juanibiapina/pi-powerbar",
+    "npm:@juanibiapina/pi-extension-settings",
+    "npm:@tmustier/pi-usage-extension",
+    "npm:@tmustier/pi-raw-paste",
+    "git:github.com/tintinweb/pi-manage-todo-list@b75c449aa85ce328e9a8b632f62bf642aed40359",
+    "npm:pi-btw",
+    "npm:pi-interactive-shell",
+    {
+      "source": "npm:pi-themes",
+      "themes": ["themes/nord.json"]
+    },
+    "git:github.com/v2nic/pi-caveman",
+    "npm:context-mode",
+    "npm:pi-wakatime",
+    "npm:@agnishc/edb-session-manager",
+    "npm:gentle-engram@0.1.8",
+    "extensions/workmux-status.ts",
+    "extensions/pi-compact-shortcut/index.ts",
+    "npm:@sherif-fanous/pi-rtk",
+    "git:github.com/DietrichGebert/ponytail",
+    "npm:pi-annotate@0.5.0"
+  ],
+  "showHardwareCursor": false,
+  "subagents": {
+    "agentOverrides": {
+      "context-builder": {
+        "model": ""
+      },
+      "planner": {
+        "model": ""
+      },
+      "researcher": {
+        "model": ""
+      },
+      "reviewer": {
+        "model": ""
+      },
+      "scout": {
+        "model": ""
+      },
+      "worker": {
+        "model": ""
+      }
+    }
+  },
+  "theme": "nord"
+}
