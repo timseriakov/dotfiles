@@ -66,6 +66,7 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `\t\tif (layout !== "plain-left") {\n\t\t\tconst runningBackgroundJobs = this.session.getAsyncJobSnapshot()?.running.length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", \`\${theme.icon.job} \${runningBackgroundJobs}\`));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\trightParts.unshift(subagentBadge);\n\t\t\t}\n\t\t}\n`,
+        `\t\tif (layout !== "plain-left") {\n\t\t\t// Count task jobs only until their AgentRegistry ref appears. Once it is\n\t\t\t// running, the subagent badge represents that same agent; bash and eval\n\t\t\t// jobs always remain independent background work.\n\t\t\tconst runningBackgroundJobs =\n\t\t\t\tthis.session\n\t\t\t\t\t.getAsyncJobSnapshot()\n\t\t\t\t\t?.running.filter(\n\t\t\t\t\t\tjob => job.type !== "task" || job.agentId === undefined || !this.#runningSubagentIds.has(job.agentId),\n\t\t\t\t\t).length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", \`\${theme.icon.job} \${runningBackgroundJobs}\`));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\trightParts.unshift(subagentBadge);\n\t\t\t}\n\t\t}\n`,
         `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
       ],
       `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
