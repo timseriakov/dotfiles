@@ -1,3 +1,2 @@
 # Use bd merge for beads JSONL files
 .beads/issues.jsonl merge=beads
-cliamp/playlists/audio/*.mp3 filter=lfs diff=lfs merge=lfs -text
