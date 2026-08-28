@@ -11,6 +11,11 @@
       ],
       "lifecycle": "lazy",
       "directTools": true
+    },
+    "doop": {
+      "url": "https://doop.design/mcp",
+      "auth": "oauth",
+      "lifecycle": "lazy"
     }
   }
 }
