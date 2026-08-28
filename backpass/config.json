@@ -1,0 +1,19 @@
+{
+  "analysis": { "agent": "omp", "model": null, "effort": null },
+  "synthesis": { "agent": "omp", "model": null, "effort": null },
+  "discovery": {
+    "harnesses": [
+      "omp",
+      "claude",
+      "codex",
+      "pi",
+      "opencode",
+      "grok",
+      "cursor",
+      "hermes"
+    ],
+    "since": "30d",
+    "worktreeGlobs": [],
+    "minUserTurns": 2
+  }
+}
