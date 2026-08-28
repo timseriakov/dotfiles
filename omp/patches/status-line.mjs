@@ -251,6 +251,7 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `import { TERMINAL } from "@oh-my-pi/pi-tui";`,
+        `import { SPINNER_ADVANCE_MS, TERMINAL } from "@oh-my-pi/pi-tui";`,
         `import { TERMINAL, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";`,
       ],
       `import { TERMINAL, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";`,
@@ -310,75 +311,40 @@ export function createStatusLinePatches(ctx) {
 			modelName = \`\${modelName} OMNi\`;
 		}`,
     );
-
+    // OMP 18.x owns the model segment layout; keep the local styling below.
+    // ponytail: keep one guarded compatibility branch until upstream settles.
     if (
-      false && // 17.4.0 retired role/via display from segments.ts; role indicator removed
-      !out.includes(
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
-      )
-    ) {
-      r = replaceAny(
-        out,
-        [
-          `\t\tlet content = withIcon(theme.icon.model, modelName);\n\t\treturn { content: theme.fg("statusLineModel", content), visible: true };`,
-          `\t\tlet content = modelName;\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-          `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\`, visible: true };`,
-          `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(theme.icon.model, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
-          `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses \`success\` to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
-
-          `// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses status colors to stay visibly distinct from the model name color.\n\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));\n\t\t// Advisor "++" badge, colored by the worst status in the roster:\n\t\t// success = all running, warning = quota-exhausted, error = failed,\n\t\t// dim = everything paused/no-model. Per-advisor detail lives in\n\t\t// \`/advisor status\`.\n\t\t// Optional chaining: lightweight session doubles (test mocks) that don't\n\t\t// implement getAdvisorStatusOverview skip the badge instead of crashing.\n\t\tconst advisorStats = ctx.session.getAdvisorStatusOverview?.();\n\t\tif (advisorStats?.configured && advisorStats.advisors.length > 0) {\n\t\t\tconst statuses = advisorStats.advisors.map(a => a.status);\n\t\t\tconst badgeColor = statuses.includes("error")\n\t\t\t\t? "error"\n\t\t\t\t: statuses.includes("quota_exhausted")\n\t\t\t\t\t? "warning"\n\t\t\t\t\t: statuses.includes("running")\n\t\t\t\t\t\t? "success"\n\t\t\t\t\t\t: "dim";\n\t\t\tcontent += theme.fg(badgeColor, "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}\n\n\t\treturn { content, visible: true };`,
-        ],
-        `\t\tlet content = withIcon(modelIcon, modelName);\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}\n\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}\n\t\tconst providerMatch = content.match(/^(.*) (OMNi)(.*)$/);\n\t\tconst modelContent = providerMatch\n\t\t\t? \`\${theme.fg("statusLineModel", providerMatch[1])} \${theme.fg("dim", providerMatch[2] + providerMatch[3])}\`\n\t\t\t: theme.fg("statusLineModel", content);\n\t\tconst roleColors = { smol: "statusLineSpend", default: "success", slow: "warning" } as const;\n\t\tconst roles = (["smol", "default", "slow"] as const).filter(role => {\n\t\t\tconst resolved = resolveModelRoleValue(\n\t\t\t\tctx.session.settings.getModelRole(role),\n\t\t\t\tctx.session.modelRegistry.getAvailable(),\n\t\t\t\t{ settings: ctx.session.settings },\n\t\t\t).model;\n\t\t\treturn resolved?.provider === state.model?.provider && resolved.id === state.model?.id;\n\t\t});\n\t\tconst roleContent = roles.length\n\t\t\t? \` \${roles.map(role => theme.fg(roleColors[role], role)).join("/")}\`\n\t\t\t: "";\n\t\treturn { content: \`\${theme.fg("text", "via ")}\${modelContent}\${roleContent}\`, visible: true };`,
-        "segments model display via",
-      );
-      out = r.content;
-    }
-    if (
-      out.includes(`\t\tlet content = withIcon(modelIcon, modelName);`) &&
+      out.includes(`\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`) &&
       !out.includes(
         `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
       )
     ) {
       r = insertBefore(
         out,
-        `\t\tlet content = withIcon(modelIcon, modelName);`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("statusLineSep", symbol) + (parts.length ? \` \${theme.fg("thinkingText", parts.join(" "))}\` : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += \` \${theme.fg("dim", theme.icon.fast)}\`;\n\t\t\tif (!compact && thinkingDisplay) tail += \`\${theme.sep.dot}\${thinkingDisplay}\`;\n\t\t}\n`,
+        `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
+        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("statusLineSep", symbol) + (parts.length ? " " + theme.fg("thinkingText", parts.join(" ")) : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);\n\t\t\tif (!compact && thinkingDisplay) tail += theme.sep.dot + thinkingDisplay;\n\t\t}\n`,
         "segments thinking label colors",
       );
       out = r.content;
-      r = insertAfter(
-        out,
-        `\t\tif (tail) {\n\t\t\tcontent += tail;\n\t\t}`,
-        `\t\tcontent += providerSuffix;\n`,
-        "segments provider suffix after thinking",
-      );
-      out = r.content;
     }
-
     r = replaceAny(
       out,
       [
-        `\t\tlet content = theme.fg("statusLineModel", withIcon(modelIcon, modelName));`,
-        `\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, modelName))}\`;`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\${providerSuffix ? theme.fg("dim", providerSuffix) : ""}\`;`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tconst modelId = state.model?.id ?? "";\n\t\tconst modelKey = state.model ? state.model.provider + "/" + modelId : "";\n\t\tconst modelRole = modelId\n\t\t\t? Object.entries(ctx.session.settings?.get("modelRoles") ?? {}).find(([, value]) =>\n\t\t\t\ttypeof value === "string" && (value.includes(modelKey) || value.includes(modelId)),\n\t\t\t)?.[0] ?? ""\n\t\t\t: "";\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tconst modelId = state.model?.id ?? "";\n\t\tconst modelKey = state.model ? state.model.provider + "/" + modelId : "";\n\t\tconst modelRoles = ctx.session.settings?.get("modelRoles") ?? {};\n\t\tconst modelRoleEntries = Object.entries(modelRoles).sort(([a], [b]) => (a === "default" ? -1 : b === "default" ? 1 : 0));\n\t\tconst modelRole = modelId\n\t\t\t? modelRoleEntries.find(([, value]) =>\n\t\t\t\ttypeof value === "string" && (value.includes(modelKey) || value.includes(modelId)),\n\t\t\t)?.[0] ?? ""\n\t\t\t: "";\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
-        `\t\t// \`statusLineModel\` is aliased to \`accent\` in many themes, so the badge\n\t\t// uses status colors to stay visibly distinct from the model name color.\n\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}`,
+        `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
+        `\t\tlet content = theme.fg("text", "via ") + accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
       ],
-      `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tconst displayModelName = providerSuffix ? modelName.slice(0, -providerSuffix.length) : modelName;\n\t\tlet content = \`\${theme.fg("text", "via ")}\${theme.fg("statusLineModel", withIcon(modelIcon, displayModelName))}\`;\n\t\tif (ctx.session.isAdvisorActive()) {\n\t\t\tcontent += theme.fg("success", "++");\n\t\t}`,
-      "segments model via prefix and provider setup",
+      `\t\tlet content = theme.fg("text", "via ") + accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
+      "segments model via prefix",
     );
     out = r.content;
-
     r = replaceAny(
       out,
       [
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("statusLineModel", tail);\n\t\t}`,
+        `\t\tif (tail) {\n\t\t\tcontent += accentFg(ctx, "statusLineModel", tail);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("text", tail);\n\t\t}`,
-        `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
-        `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}\n\t\tif (modelRole) {\n\t\t\tcontent += theme.fg("statusLineModel", " " + modelRole);\n\t\t}`,
+        `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
       ],
       `		if (tail) {
 			const tailMatch = tail.match(/^(.*\\s)(\\S+)$/);
@@ -547,9 +513,20 @@ export function createStatusLinePatches(ctx) {
     const limitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: theme.fg("muted", display + " "), visible: true };\n\t},\n};`;
     const paddedLimitedSessionName = `const sessionNameSegment: StatusLineSegment = {\n\tid: "session_name",\n\trender(ctx) {\n\t\tconst sessionName = ctx.session.sessionManager?.getSessionName();\n\t\tconst name = sessionName || ctx.previewTitle;\n\t\tif (!name) return { content: "", visible: false };\n\n\t\tconst maxSessionNameWidth = 48;\n\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > maxSessionNameWidth ? truncateToWidth(cleanName, maxSessionNameWidth) : cleanName;\n\n\t\treturn { content: \`\${theme.fg("muted", display)}  \`, visible: true };\n\t},\n};`;
 
+    const upstreamSessionName18 = `const sessionNameSegment: StatusLineSegment = {
+	id: "session_name",
+	render(ctx) {
+		const sessionManager = ctx.session.sessionManager;
+		const name = sessionManager?.getSessionName() || ctx.previewTitle;
+		if (!name) return { content: "", visible: false };
+
+		return { content: accentFg(ctx, "accent", sanitizeStatusText(name)), visible: true };
+	},
+};`;
     r = replaceAny(
       out,
       [
+        upstreamSessionName18,
         upstreamSessionName15_8,
         upstreamSessionName15_9,
         upstreamSessionName15_12,
