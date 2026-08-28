@@ -300,6 +300,8 @@ abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang
 
 abbr -a who-lock-input "ioreg -l -w 0 | grep -o 'kCGSSessionSecureInputPID\"=[0-9]*' | grep -o '[0-9]*' | head -1 | xargs ps -o pid,comm -p"
 
+abbr -a tb toggle-default-browser
+
 # Disabled OpenCode abbreviations
 # abbr -a oc omo
 # abbr -a oca 'opencode attach http://127.0.0.1:4096 --dir (pwd)'
