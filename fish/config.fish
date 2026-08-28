@@ -2,10 +2,6 @@ if test -f ~/dev/dotfiles/fish/secrets.fish
     source ~/dev/dotfiles/fish/secrets.fish
 end
 
-if set -q OMNIROUTE_OMP_API_KEY
-    set -gx AI_GATEWAY_API_KEY $OMNIROUTE_OMP_API_KEY
-    set -gx FX_GATEWAY_CHAT_URL http://127.0.0.1:58372/v1/ai/language-model
-end
 
 # Start tmux automatically only when allowed
 if status is-interactive

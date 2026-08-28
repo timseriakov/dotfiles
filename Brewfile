@@ -163,8 +163,6 @@ brew "flex"
 brew "fontforge"
 # Monitor a directory for changes and run a shell command
 brew "fswatch"
-# Terminal JSON viewer
-brew "fx"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GNU awk utility
