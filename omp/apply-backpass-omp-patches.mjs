@@ -178,5 +178,24 @@ if (!acpxSource.includes(probeNew)) {
   changed = true;
 }
 
+const promptOld = `      ...acpxAgentArgs,
+      "-s",
+      sessionName,
+      "--file",
+      promptFile,`;
+const promptNew = `      ...acpxAgentArgs,
+      "prompt",
+      "-s",
+      sessionName,
+      "--file",
+      promptFile,`;
+if (!acpxSource.includes(promptNew)) {
+  if (!acpxSource.includes(promptOld))
+    throw new Error("Backpass patch drift: session prompt command");
+  acpxSource = acpxSource.replace(promptOld, promptNew);
+  fs.writeFileSync(acpx, acpxSource);
+  changed = true;
+}
+
 console.log(`${changed ? "patched" : "ok     "} Backpass OMP integration`);
 console.log(root);
