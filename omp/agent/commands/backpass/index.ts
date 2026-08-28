@@ -25,13 +25,11 @@ export default function (api: CustomCommandAPI): CustomCommand[] {
         [result.stdout, result.stderr].filter(Boolean).join("\n"),
       );
       const status =
-        result.exitCode === 0
-          ? "completed"
-          : `failed with exit ${result.exitCode}`;
+        result.code === 0 ? "completed" : `failed with exit ${result.code}`;
 
       ctx.ui.notify(
         `backpass ${backpassArgs.join(" ")} ${status}`,
-        result.exitCode === 0 ? "info" : "error",
+        result.code === 0 ? "info" : "error",
       );
 
       return `Backpass command: backpass ${backpassArgs.join(" ")}\nStatus: ${status}\n\n\`\`\`text\n${output}\n\`\`\`\n\nSummarize this Backpass result and suggest the next safest command. Do not apply edits unless explicitly asked.`;
