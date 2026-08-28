@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "entries": {
+    "[\"npx\",\"playwriter@latest\",\"\"]": {
+      "resolvedBin": "/Users/tim/.npm/_npx/945f35517ce0271a/node_modules/playwriter/bin.js",
+      "resolvedAt": 1787948746861,
+      "packageVersion": "0.4.0",
+      "isJs": true
+    }
+  }
+}
