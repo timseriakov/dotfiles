@@ -2,7 +2,7 @@
 // @name         Hide Reactor Yandex ad
 // @namespace    local
 // @version      1.0
-// @description  Удаляет рекламный блок после пагинации на joy.reactor.cc
+// @description  Удаляет рекламные блоки на joy.reactor.cc
 // @match        https://joy.reactor.cc/*
 // @grant        none
 // @run-at       document-end
@@ -12,11 +12,12 @@
 (function () {
   "use strict";
 
-  const AD_ID = "yandex_rtb_R-A-12631514-1";
-  const removeAd = () => document.getElementById(AD_ID)?.remove();
+  const AD_IDS = ["yandex_rtb_R-A-12631514-1", "yandex_rtb_R-A-12631514-3"];
+  const removeAds = () =>
+    AD_IDS.forEach((id) => document.getElementById(id)?.remove());
 
-  removeAd();
-  new MutationObserver(removeAd).observe(document.body, {
+  removeAds();
+  new MutationObserver(removeAds).observe(document.body, {
     childList: true,
     subtree: true,
   });
