@@ -84,15 +84,27 @@ export function createTuiEditorTerminalPatches(ctx) {
     return out;
   }
   function patchTuiTerminalCapabilities(content) {
-    // Upstream 16.5.2+ moved kitty image transmission to kitty-graphics.ts and
-    // already wraps APC sequences with wrapTmuxPassthroughIfNeeded.
-    return content;
+    return replaceAny(
+      content,
+      [
+        `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+        `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+      ],
+      `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+      "tmux xterm-kitty image protocol fallback",
+    ).content;
   }
 
   function patchTuiKittyGraphics(content) {
-    // Upstream 16.5.2+ moved tmux helpers to ./tmux.ts and already uses
-    // wrapTmuxPassthroughIfNeeded for APC wrapping, so no patch needed.
-    return content;
+    return replaceAny(
+      content,
+      [
+        `\tif (env.TMUX && env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty") return true;`,
+        `\tif (env.TMUX && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
+      ],
+      `\tif (env.TMUX && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
+      "tmux xterm-kitty kitty placeholder support",
+    ).content;
   }
 
   function patchTuiTerminal(content) {
