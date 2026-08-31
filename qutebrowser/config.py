@@ -8,7 +8,8 @@ c = c
 config.load_autoconfig()
 # Upstream QtWebEngine HTTP/2 issue breaks Reddit media/CDN loads.
 # Remove after Qt fixes QTBUG-137535 / qutebrowser#8599.
-c.qt.args = [*c.qt.args, "disable-http2"]
+# Enable QtWebEngine DevTools/CDP for local agent tooling.
+c.qt.args = [*c.qt.args, "disable-http2", "webEngineArgs", "remote-debugging-port=9223"]
 
 
 import importlib
