@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.timhq.qute-tabs-server</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/tim/.bun/bin/bun</string>
+    <string>run</string>
+    <string>/Users/tim/dev/dotfiles/qutebrowser/qute-tabs-server.ts</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+    <key>Crashed</key>
+    <true/>
+  </dict>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/tim/dev/dotfiles/qutebrowser</string>
+
+  <key>StandardOutPath</key>
+  <string>/Users/tim/Library/Logs/qutebrowser/qute-tabs-server.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tim/Library/Logs/qutebrowser/qute-tabs-server.log</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>/Users/tim</string>
+    <key>PATH</key>
+    <string>/Users/tim/.bun/bin:/Users/tim/.pi/agent/bin:/Users/tim/.volta/bin:/Users/tim/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>QUTE_CDP_URL</key>
+    <string>http://127.0.0.1:9223</string>
+    <key>QUTE_TABS_HOST</key>
+    <string>0.0.0.0</string>
+    <key>QUTE_TABS_PORT</key>
+    <string>1932</string>
+    <key>QUTE_TABS_PUBLIC_URL</key>
+    <string>http://100.69.0.50:1932</string>
+  </dict>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

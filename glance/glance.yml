@@ -211,6 +211,43 @@ pages:
               - symbol: XMR-USD
                 name: Monero
 
+  - name: Qutebrowser
+    columns:
+      - size: full
+        widgets:
+          - type: custom-api
+            title: qutebrowser Tabs
+            cache: 10s
+            url: http://127.0.0.1:1932/tabs
+            template: |
+              <style>
+                .qute-window-grid { display: flex; gap: 24px; align-items: flex-start; }
+                .qute-window { flex: 1 1 0; min-width: 0; padding: 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: rgba(255,255,255,.02); }
+                .qute-tab { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: .75rem; align-items: start; }
+                .qute-shot { width: 9rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; background: rgba(255,255,255,.04); }
+                .qute-tab:not(:has(.qute-shot)) { display: block; }
+              </style>
+              <div class="qute-window-grid">
+              {{ range .JSON.Array "windows" }}
+                <section class="qute-window">
+                  <div class="size-h4 color-subdue margin-bottom-10">Window {{ .String "index" }} · {{ .String "count" }} tabs</div>
+                  <ul class="list list-gap-14">
+                  {{ range .Array "tabs" }}
+                    <li class="qute-tab">
+                      {{ if .String "screenshotUrl" }}<img class="qute-shot" src="{{ .String "screenshotUrl" }}" loading="lazy">{{ end }}
+                      <div class="min-width-0">
+                        <a class="size-h4 color-primary block text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
+                        <div class="size-h6 color-subdue text-truncate">{{ .String "url" }}</div>
+                      </div>
+                    </li>
+                  {{ end }}
+                  </ul>
+                </section>
+              {{ else }}
+                <div class="color-subdue">No qutebrowser tabs visible.</div>
+              {{ end }}
+              </div>
+
   # Add more pages here:
   # - name: Your page name
   #   columns:

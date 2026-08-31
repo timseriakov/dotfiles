@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+
+label="com.timhq.qute-tabs-server"
+repo_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+plist_src="$repo_dir/launchd/$label.plist"
+plist_dst="$HOME/Library/LaunchAgents/$label.plist"
+log_dir="$HOME/Library/Logs/qutebrowser"
+uid=$(id -u)
+
+install_service() {
+  mkdir -p "$(dirname -- "$plist_dst")" "$log_dir"
+  ln -sfn "$plist_src" "$plist_dst"
+  launchctl bootout "gui/$uid/$label" >/dev/null 2>&1 || true
+  launchctl bootstrap "gui/$uid" "$plist_dst"
+  launchctl enable "gui/$uid/$label"
+  launchctl kickstart -kp "gui/$uid/$label"
+  echo "installed $label"
+}
+
+uninstall_service() {
+  launchctl bootout "gui/$uid/$label" >/dev/null 2>&1 || true
+  if [ -L "$plist_dst" ] && [ "$(readlink "$plist_dst")" = "$plist_src" ]; then
+    rm "$plist_dst"
+  fi
+  echo "uninstalled $label"
+}
+
+case "${1:-status}" in
+  install) install_service ;;
+  uninstall|remove) uninstall_service ;;
+  restart) install_service ;;
+  status) launchctl print "gui/$uid/$label" ;;
+  *) echo "usage: $0 {install|uninstall|restart|status}" >&2; exit 2 ;;
+esac
