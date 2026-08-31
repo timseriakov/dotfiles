@@ -2,19 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
   "mcpServers": {
     "engram": {
-      "args": [
-        "mcp",
-        "--tools=agent"
-      ],
+      "args": ["mcp", "--tools=agent"],
       "command": "/opt/homebrew/bin/engram",
       "directTools": false,
       "lifecycle": "lazy"
     },
     "dayflow": {
       "command": "/Applications/Dayflow.app/Contents/Helpers/dayflow",
-      "args": [
-        "mcp"
-      ]
+      "args": ["mcp"]
     },
     "doop": {
       "url": "https://doop.design/mcp",
@@ -30,6 +25,11 @@
         "clientId": "thSYlmCoSwwPyJWqcztmYLTjFRmUGeyb",
         "resource": "https://doop.design"
       }
+    },
+    "mcpproxy": {
+      "url": "http://127.0.0.1:8080/mcp/",
+      "type": "http",
+      "lifecycle": "lazy"
     }
   }
 }
