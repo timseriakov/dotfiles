@@ -1,3 +1,6 @@
 title-hidden = true
 frame = 'buttonless'
+system-native-tabs = true
+system-tab-prev-hotkey = "cmd+shift+["
+system-tab-next-hotkey = "cmd+shift+]"
 # frame = "none"
