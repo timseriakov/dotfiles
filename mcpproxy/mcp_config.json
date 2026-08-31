@@ -219,7 +219,7 @@
     "encoding": "cl100k_base"
   },
   "tool_response_limit": 20000,
-  "tools_limit": 15,
+  "tools_limit": 10,
   "toon_min_savings_pct": 15,
   "toon_output": "off"
 }
