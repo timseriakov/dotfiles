@@ -90,8 +90,8 @@ export function createTuiEditorTerminalPatches(ctx) {
         `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
         `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
       ],
-      `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
-      "tmux xterm-kitty image protocol fallback",
+      `\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+      "tmux xterm-kitty image protocol fallback before terminal exclusion",
     ).content;
   }
 
