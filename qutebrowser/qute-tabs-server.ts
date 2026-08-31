@@ -7,6 +7,9 @@ const PUBLIC_URL = process.env.QUTE_TABS_PUBLIC_URL ?? `http://${HOST}:${PORT}`;
 const LIVE_TABS_PATH =
   process.env.QUTE_TABS_JSON ??
   `${process.env.HOME}/Library/Application Support/qutebrowser/glance-tabs.json`;
+const SHOT_DIR =
+  process.env.QUTE_SHOTS_DIR ??
+  `${process.env.HOME}/Library/Application Support/qutebrowser/glance-tab-shots`;
 const PREVIEW_LIMIT = Number(process.env.QUTE_PREVIEW_LIMIT ?? "8");
 const PREVIEW_MAX_AGE_MS = Number(
   process.env.QUTE_PREVIEW_MAX_AGE_MS ?? "120000",
@@ -34,7 +37,12 @@ type CdpTab = {
   faviconUrl?: unknown;
   webSocketDebuggerUrl?: unknown;
 };
-type LiveTab = { title?: unknown; url?: unknown; pinned?: unknown };
+type LiveTab = {
+  title?: unknown;
+  url?: unknown;
+  pinned?: unknown;
+  screenshotId?: unknown;
+};
 type ScreenshotCache = { at: number; bytes: Uint8Array };
 type CdpResult = { data?: unknown };
 type CdpMessage = { id?: unknown; result?: unknown; error?: unknown };
@@ -193,13 +201,20 @@ const readLiveWindows = async (): Promise<WindowGroup[] | undefined> => {
     const source = typeof window === "object" && window !== null ? window : {};
     const tabs =
       "tabs" in source && Array.isArray(source.tabs) ? source.tabs : [];
-    const parsedTabs = tabs.filter(isLiveTab).map((tab) => ({
-      id: "",
-      title: typeof tab.title === "string" && tab.title ? tab.title : tab.url,
-      url: tab.url,
-      faviconUrl: "",
-      pinned: "pinned" in tab && tab.pinned === true,
-    }));
+    const parsedTabs = tabs.filter(isLiveTab).map((tab) => {
+      const screenshotId =
+        typeof tab.screenshotId === "string" ? tab.screenshotId : "";
+      return {
+        id: "",
+        title: typeof tab.title === "string" && tab.title ? tab.title : tab.url,
+        url: tab.url,
+        faviconUrl: "",
+        pinned: "pinned" in tab && tab.pinned === true,
+        screenshotUrl: screenshotId
+          ? `${PUBLIC_URL}/screenshot/${encodeURIComponent(screenshotId)}`
+          : undefined,
+      };
+    });
     return {
       index:
         "index" in source && typeof source.index === "number"
@@ -222,17 +237,27 @@ Bun.serve({
 
     if (pathname === "/health") return json({ ok: true });
     if (pathname.startsWith("/screenshot/")) {
-      const cached = screenshots.get(
-        decodeURIComponent(pathname.slice("/screenshot/".length)),
-      );
-      return cached
-        ? new Response(cached.bytes, {
-            headers: {
-              "content-type": "image/jpeg",
-              "cache-control": "public, max-age=120",
-            },
-          })
-        : new Response("not found", { status: 404 });
+      const key = decodeURIComponent(pathname.slice("/screenshot/".length));
+      const cached = screenshots.get(key);
+      if (cached) {
+        return new Response(cached.bytes, {
+          headers: {
+            "content-type": "image/jpeg",
+            "cache-control": "public, max-age=120",
+          },
+        });
+      }
+
+      if (/^[a-f0-9]{40}\.jpg$/.test(key) && existsSync(`${SHOT_DIR}/${key}`)) {
+        return new Response(Bun.file(`${SHOT_DIR}/${key}`), {
+          headers: {
+            "content-type": "image/jpeg",
+            "cache-control": "public, max-age=10",
+          },
+        });
+      }
+
+      return new Response("not found", { status: 404 });
     }
     if (pathname !== "/tabs") return json({ error: "not found" }, 404);
 
