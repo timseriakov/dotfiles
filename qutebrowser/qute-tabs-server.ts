@@ -40,6 +40,7 @@ type CdpResult = { data?: unknown };
 type CdpMessage = { id?: unknown; result?: unknown; error?: unknown };
 
 const screenshots = new Map<string, ScreenshotCache>();
+const failedScreenshots = new Map<string, number>();
 const pendingScreenshots = new Set<string>();
 let screenshotQueue = Promise.resolve();
 
@@ -122,7 +123,6 @@ const captureScreenshot = async (
   if (cached && Date.now() - cached.at < PREVIEW_MAX_AGE_MS)
     return `${PUBLIC_URL}/screenshot/${encodeURIComponent(tab.url)}`;
 
-  await cdpCall(tab.webSocketDebuggerUrl, "Page.enable");
   const result = await cdpCall(
     tab.webSocketDebuggerUrl,
     "Page.captureScreenshot",
@@ -158,15 +158,21 @@ const addCachedScreenshots = (tabs: Tab[]) => {
 const refreshScreenshots = (
   cdpTabs: (CdpTab & { type: "page"; url: string })[],
 ) => {
-  for (const cdpTab of cdpTabs.slice(0, PREVIEW_LIMIT)) {
+  for (const cdpTab of cdpTabs
+    .filter((tab) => {
+      const failedAt = failedScreenshots.get(tab.url) ?? 0;
+      return Date.now() - failedAt >= PREVIEW_MAX_AGE_MS;
+    })
+    .slice(0, PREVIEW_LIMIT)) {
     if (screenshots.has(cdpTab.url) || pendingScreenshots.has(cdpTab.url))
       continue;
     pendingScreenshots.add(cdpTab.url);
     screenshotQueue = screenshotQueue
       .then(() => captureScreenshot(cdpTab))
-      .catch((error) =>
-        console.error(`screenshot failed for ${cdpTab.url}: ${error}`),
-      )
+      .catch((error) => {
+        failedScreenshots.set(cdpTab.url, Date.now());
+        console.error(`screenshot failed for ${cdpTab.url}: ${error}`);
+      })
       .finally(() => pendingScreenshots.delete(cdpTab.url));
   }
 };
