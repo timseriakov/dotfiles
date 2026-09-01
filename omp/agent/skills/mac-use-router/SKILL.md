@@ -1,6 +1,6 @@
 ---
 name: mac-use-router
-description: Use for mac-use-mcp desktop automation on macOS: screenshots, mouse clicks, typing, scrolling, windows, app focus/opening, menus, clipboard, UI elements, or permission checks. Routes requests to the right mac-use tool with BM25-friendly intent words.
+description: Use for mac-use-mcp desktop automation on macOS: screenshots, mouse clicks, typing, scrolling, windows, app focus/opening, menus, clipboard, UI elements, or permission checks. Also use for Russian requests about экран, скриншот, клик, мышь, клавиатура, напечатай, окно, открыть приложение, меню, буфер обмена, управление Mac. Routes requests to the right mac-use tool with BM25-friendly intent words.
 ---
 
 # mac-use-mcp Router
