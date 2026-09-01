@@ -274,6 +274,16 @@ BINDING_SPECS: list[BindingSpec] = [
         "config-cycle -p session.lazy_restore true false",
         hide_ru_in_keyhint=True,
     ),
+    BindingSpec(
+        "<Cmd-Alt-j>",
+        "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py",
+        wrap_ru_with_en=False,
+    ),
+    BindingSpec(
+        "<Cmd-Alt-k>",
+        "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py",
+        wrap_ru_with_en=False,
+    ),
     BindingSpec("gg", en("scroll-to-perc 0"), wrap_ru_with_en=False),
     BindingSpec("G", en("scroll-to-perc 100"), wrap_ru_with_en=False),
     BindingSpec(
