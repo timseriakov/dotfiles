@@ -12,8 +12,7 @@
 # @raycast.author timseriakov
 # @raycast.authorURL https://raycast.com/timseriakov
 
-DEBUG_URL="http://127.0.0.1:9222/json/version"
-DEBUG_ARGS=(--profile-directory="Default" --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1 --restore-last-session)
+DEBUG_ARGS=(--profile-directory="Default" --restore-last-session)
 
 activate_helium() {
   osascript -e 'tell application id "net.imput.helium" to activate' >/dev/null 2>&1
