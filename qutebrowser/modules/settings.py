@@ -14,7 +14,7 @@ c.window.hide_decoration = True
 
 # Layout
 c.scrolling.bar = "when-searching"
-c.statusbar.show = "in-mode"
+c.statusbar.show = "always"
 c.statusbar.position = "bottom"
 c.tabs.show = "always"  # multiple # never
 c.tabs.last_close = "blank"
