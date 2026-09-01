@@ -40,13 +40,21 @@ Then route by the smallest safe tool.
 | Menu item              | `mac menu click menu bar item path application`           | `click_menu`          |
 | Inspect native UI tree | `mac accessibility ui elements buttons fields text roles` | `get_ui_elements`     |
 
+## Observation strategy
+
+- Use `get_ui_elements` for native macOS labels, buttons, fields, roles, states, and coordinates when a screenshot would add noise.
+- Use `screenshot` for visual layout, pixels, colors, screen/menu-bar targets, or when Accessibility data is missing/incomplete.
+- Use browser tooling for web page DOM/content when available; use mac-use for browser chrome, native dialogs, menus, permissions, windows, and non-browser apps.
+- Treat UI element coordinates as current-state only. After any mutating action, inspect again before the next precise action.
+
 ## Safe sequence
 
-1. Inspect first: `screenshot`, `list_windows`, `get_ui_elements`, or `get_cursor_position`.
-2. Before `click`, `drag`, or `type_text`, call `focus_window` for the target app/window.
-3. Prefer `click_menu` over coordinate clicks for menu commands.
-4. Prefer `clipboard_write` + paste shortcut for long text instead of slow typing.
-5. Ask before destructive or hard-to-undo actions.
+1. Inspect first: `get_ui_elements`, `screenshot`, `list_windows`, or `get_cursor_position`.
+2. Prefer UI/accessibility targets from `get_ui_elements`; use raw coordinates only as the fallback.
+3. Before `click`, `drag`, or `type_text`, call `focus_window` for the target app/window.
+4. Prefer `click_menu` over coordinate clicks for menu commands.
+5. Prefer `clipboard_write` + paste shortcut for long text instead of slow typing.
+6. Ask before destructive or hard-to-undo actions.
 
 ## Examples
 
