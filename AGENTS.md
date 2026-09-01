@@ -65,6 +65,12 @@ Examples:
 **Key Principle**
 Never edit configs in-place inside application directories — always edit inside the dotfiles repo.
 
+## Qutebrowser Browser Automation
+
+Before changing qutebrowser launch, CDP, browser automation, or `Cmd+hjkl` navigation bindings, read [`qutebrowser/AGENT-BROWSER-SPEC.md`](qutebrowser/AGENT-BROWSER-SPEC.md).
+
+Key correction: normal qutebrowser also exposes CDP (`127.0.0.1:9223`); the dev/agent profile uses separate data and CDP `127.0.0.1:9224`.
+
 ## Dual-Yazi tmux Kitty Image Preview
 
 This workstation intentionally uses `jtianling/tap/dual-yazi`, not upstream `yazi`, because the current Kitty + tmux + Yazi image preview path works correctly and is fragile. Do not "simplify" it back to upstream Yazi, Chafa, or default tmux terminal settings.
