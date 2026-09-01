@@ -38,11 +38,11 @@ miscmodels.session = _wide_session_completion
 
 
 # Clicking the statusbar URL edits the current URL, like focusing the address bar
-# in a conventional browser. MainWindow is already imported by qutebrowser.app;
-# patch UrlText just before the first StatusBar creates its URL widget.
+# in a conventional browser. Use an event filter because PyQt/SIP does not
+# reliably redispatch C++ virtual mouse events after monkey-patching a method.
 from qutebrowser.commands import runners
 from qutebrowser.mainwindow import mainwindow
-from qutebrowser.qt.core import Qt
+from qutebrowser.qt.core import QEvent, QObject, Qt
 
 
 _orig_mainwindow_init = getattr(
@@ -53,32 +53,30 @@ _orig_mainwindow_init = getattr(
 mainwindow.MainWindow._dotfiles_orig_init = _orig_mainwindow_init
 
 
-def _edit_url_on_click(self, event):
-    if event.button() == Qt.MouseButton.LeftButton:
-        statusbar = self.parent()
-        runners.CommandRunner(statusbar._win_id).run_safely(
-            "cmd-set-text -s :open {url}"
-        )
-        event.accept()
-        return
-    self.__class__._dotfiles_orig_mousePressEvent(self, event)
+class _StatusUrlClickFilter(QObject):
+    def __init__(self, win_id, parent=None):
+        super().__init__(parent)
+        self._win_id = win_id
 
-
-def _patch_url_click(bar):
-    url_cls = bar.url.UrlText
-    url_cls._dotfiles_orig_mousePressEvent = getattr(
-        url_cls,
-        "_dotfiles_orig_mousePressEvent",
-        url_cls.mousePressEvent,
-    )
-    url_cls.mousePressEvent = _edit_url_on_click
+    def eventFilter(self, watched, event):
+        if (
+            event.type() == QEvent.Type.MouseButtonPress
+            and event.button() == Qt.MouseButton.LeftButton
+        ):
+            runners.CommandRunner(self._win_id).run_safely("cmd-set-text -s :open {url}")
+            event.accept()
+            return True
+        return False
 
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
-    from qutebrowser.mainwindow.statusbar import bar
-
-    _patch_url_click(bar)
     _orig_mainwindow_init(self, *args, **kwargs)
+    old_filter = getattr(self.status.url, "_dotfiles_click_filter", None)
+    if old_filter is not None:
+        self.status.url.removeEventFilter(old_filter)
+    click_filter = _StatusUrlClickFilter(self.win_id, self.status.url)
+    self.status.url.installEventFilter(click_filter)
+    self.status.url._dotfiles_click_filter = click_filter
 
 
 mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
