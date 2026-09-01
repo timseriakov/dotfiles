@@ -43,6 +43,7 @@ miscmodels.session = _wide_session_completion
 from qutebrowser.commands import runners
 from qutebrowser.mainwindow import mainwindow
 from qutebrowser.qt.core import QEvent, QObject, Qt
+from qutebrowser.qt.widgets import QApplication
 
 
 _orig_mainwindow_init = getattr(
@@ -54,32 +55,41 @@ mainwindow.MainWindow._dotfiles_orig_init = _orig_mainwindow_init
 
 
 class _StatusUrlClickFilter(QObject):
-    def __init__(self, win_id, parent=None):
+    def __init__(self, win_id, url_widget, parent=None):
         super().__init__(parent)
         self._win_id = win_id
+        self._url_widget = url_widget
 
     def eventFilter(self, watched, event):
-        if (
+        if not (
             event.type() == QEvent.Type.MouseButtonPress
             and event.button() == Qt.MouseButton.LeftButton
         ):
-            runners.CommandRunner(self._win_id).run_safely(
-                "cmd-set-text -s :open {url}"
-            )
-            event.accept()
-            return True
-        return False
+            return False
+
+        url_widget = self._url_widget
+        if not url_widget.isVisible():
+            return False
+
+        pos = event.globalPosition().toPoint()
+        if not url_widget.rect().contains(url_widget.mapFromGlobal(pos)):
+            return False
+
+        runners.CommandRunner(self._win_id).run_safely("cmd-set-text -s :open {url}")
+        event.accept()
+        return True
 
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
-    for widget in (self.status, self.status.url):
-        old_filter = getattr(widget, "_dotfiles_click_filter", None)
-        if old_filter is not None:
-            widget.removeEventFilter(old_filter)
-        click_filter = _StatusUrlClickFilter(self.win_id, widget)
-        widget.installEventFilter(click_filter)
-        widget._dotfiles_click_filter = click_filter
+    app = QApplication.instance()
+    old_filter = getattr(self.status.url, "_dotfiles_click_filter", None)
+    if old_filter is not None and app is not None:
+        app.removeEventFilter(old_filter)
+    click_filter = _StatusUrlClickFilter(self.win_id, self.status.url, self.status.url)
+    if app is not None:
+        app.installEventFilter(click_filter)
+    self.status.url._dotfiles_click_filter = click_filter
 
 
 mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
