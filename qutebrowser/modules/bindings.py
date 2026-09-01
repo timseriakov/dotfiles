@@ -15,16 +15,8 @@ BINDING_SPECS: list[BindingSpec] = [
         "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py",
         wrap_ru_with_en=False,
     ),
-    BindingSpec(
-        "<Cmd-j>",
-        "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py",
-        wrap_ru_with_en=False,
-    ),
-    BindingSpec(
-        "<Cmd-k>",
-        "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py",
-        wrap_ru_with_en=False,
-    ),
+    BindingSpec("<Cmd-j>", "tab-prev"),
+    BindingSpec("<Cmd-k>", "tab-next"),
     BindingSpec(
         "<Cmd-l>",
         "debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py",
