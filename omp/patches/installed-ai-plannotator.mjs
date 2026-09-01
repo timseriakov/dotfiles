@@ -21,7 +21,17 @@ export function createInstalledAiPlannotatorPatches(ctx) {
       patchedImport,
       "pi-ai openai-completions import schema sanitizer",
     ).content;
-    if (
+    if (out.includes("const rejectRootObjectUnion = compat.rejectRootObjectUnion;")) {
+      out = replaceAny(
+        out,
+        [
+          `\t\tconst baseParameters = rejectRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(toolWireSchema(tool))\n\t\t\t: toolWireSchema(tool);\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+          `\t\tconst baseParameters = rejectRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(sanitizeSchemaForOpenAIResponses(toolWireSchema(tool)))\n\t\t\t: sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+        ],
+        `\t\tconst baseParameters = rejectRootObjectUnion\n\t\t\t? flattenExclusiveRequiredRootUnion(sanitizeSchemaForOpenAIResponses(toolWireSchema(tool)))\n\t\t\t: sanitizeSchemaForOpenAIResponses(toolWireSchema(tool));\n\t\tconst adapted = adaptSchemaForStrict(baseParameters, strict);`,
+        "pi-ai openai-completions global schema sanitizer",
+      ).content;
+    } else if (
       out.includes(
         'const rejectXaiRootObjectUnion = provider === "xai" || provider === "xai-oauth";',
       )
@@ -187,10 +197,12 @@ export function createInstalledAiPlannotatorPatches(ctx) {
       [
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withModelOverrides));\n\t}`,
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderGuardrails));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderGuardrails));\n\t}`,
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withModelOverrides.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       ],
-      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       "drop retired openrouter :free from composed registry",
     );
     out = r.content;

@@ -101,8 +101,10 @@ export function createTuiEditorTerminalPatches(ctx) {
       [
         `\tif (env.TMUX && env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty") return true;`,
         `\tif (env.TMUX && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
+        `\tif (insideMultiplexer && env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty") return true;`,
+        `\tif (insideMultiplexer && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
       ],
-      `\tif (env.TMUX && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
+      `\tif (insideMultiplexer && (env.PI_FORCE_IMAGE_PROTOCOL?.trim().toLowerCase() === "kitty" || env.TERM?.toLowerCase().includes("xterm-kitty"))) return true;`,
       "tmux xterm-kitty kitty placeholder support",
     ).content;
   }
