@@ -35,6 +35,14 @@ Avoid vague queries like `use tool`, `do it`, `open thing`.
 2. If not obvious, ask MCPProxy for the smallest matching tool set by intent.
 3. Do not list all tools unless the user asks for inventory/debugging.
 
+## Browser CDP priority
+
+For browser automation, prefer the dedicated agent qutebrowser profile first:
+
+1. Try qutebrowser-dev CDP on `127.0.0.1:9224`.
+2. If it is not running, fall back to normal qutebrowser CDP on `127.0.0.1:9223`.
+3. Do not use Helium CDP by default.
+
 ## Desktop safety
 
 For `mac-use-mcp` / computer-use tasks:

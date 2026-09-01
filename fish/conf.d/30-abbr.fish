@@ -281,6 +281,7 @@ abbr -a cli cliamp
 # Media and web
 abbr -a ff 'npx -y fast-cli'
 abbr -a he 'open -a "Helium" --args --profile-directory="Default" --restore-last-session'
+abbr -a qdev qutebrowser-dev
 abbr -a hunk-kill 'pkill -f hunk.daemon'
 abbr -a pdf-print plutoprint
 abbr -a rss eilmeldung

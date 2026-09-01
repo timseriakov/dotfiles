@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export QUTE_DEV_PROFILE=1
+DEV_BASE="$HOME/.local/share/qutebrowser-dev"
+DEV_DATA="$DEV_BASE/data"
+NORMAL_DATA="$HOME/.local/share/qutebrowser"
+
+if [[ ! -e "$DEV_DATA" && -d "$NORMAL_DATA" ]]; then
+  mkdir -p "$DEV_BASE"
+  ditto "$NORMAL_DATA" "$DEV_DATA"
+fi
+
+if [[ $# -eq 0 ]]; then
+  set -- about:blank
+fi
+
+exec qutebrowser \
+  --basedir "$DEV_BASE" \
+  --config-py "$HOME/dev/dotfiles/qutebrowser/config.py" \
+  --target window \
+  "$@"
