@@ -280,7 +280,7 @@ abbr -a cli cliamp
 
 # Media and web
 abbr -a ff 'npx -y fast-cli'
-abbr -a he 'open -na "Helium" --args --profile-directory="Default" --remote-debugging-port=9222'
+abbr -a he 'open -a "Helium" --args --profile-directory="Default" --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1 --restore-last-session'
 abbr -a hunk-kill 'pkill -f hunk.daemon'
 abbr -a pdf-print plutoprint
 abbr -a rss eilmeldung

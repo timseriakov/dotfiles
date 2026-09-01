@@ -20,15 +20,9 @@ activate_helium() {
 }
 
 if pgrep -x "Helium" >/dev/null; then
-  # Reuse an existing Helium when it already exposes the Chrome DevTools Protocol.
-  if curl -sf "$DEBUG_URL" >/dev/null 2>&1; then
-    activate_helium
-    exit 0
-  fi
-
-  # CDP can only be enabled at process start, so restart once if Helium is open without it.
-  osascript -e 'tell application id "net.imput.helium" to quit' >/dev/null 2>&1
-  while pgrep -x "Helium" >/dev/null; do sleep 0.1; done
+  activate_helium
+  exit 0
 fi
+
 
 open -a "Helium" --args "${DEBUG_ARGS[@]}"
