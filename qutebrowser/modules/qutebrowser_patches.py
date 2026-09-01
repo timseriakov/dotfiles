@@ -38,8 +38,8 @@ miscmodels.session = _wide_session_completion
 
 
 # Clicking the statusbar URL edits the current URL, like focusing the address bar
-# in a conventional browser. Patch through MainWindow because modules imported
-# only by config.py are removed after config load.
+# in a conventional browser. MainWindow is already imported by qutebrowser.app;
+# patch UrlText just before the first StatusBar creates its URL widget.
 from qutebrowser.commands import runners
 from qutebrowser.mainwindow import mainwindow
 from qutebrowser.qt.core import Qt
@@ -56,18 +56,29 @@ mainwindow.MainWindow._dotfiles_orig_init = _orig_mainwindow_init
 def _edit_url_on_click(self, event):
     if event.button() == Qt.MouseButton.LeftButton:
         statusbar = self.parent()
-        runners.CommandRunner(statusbar._win_id).run_safely("cmd-set-text -s :open {url}")
+        runners.CommandRunner(statusbar._win_id).run_safely(
+            "cmd-set-text -s :open {url}"
+        )
         event.accept()
         return
     self.__class__._dotfiles_orig_mousePressEvent(self, event)
 
 
+def _patch_url_click(bar):
+    url_cls = bar.url.UrlText
+    url_cls._dotfiles_orig_mousePressEvent = getattr(
+        url_cls,
+        "_dotfiles_orig_mousePressEvent",
+        url_cls.mousePressEvent,
+    )
+    url_cls.mousePressEvent = _edit_url_on_click
+
+
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
+    from qutebrowser.mainwindow.statusbar import bar
+
+    _patch_url_click(bar)
     _orig_mainwindow_init(self, *args, **kwargs)
-    url_cls = self.status.url.__class__
-    if not hasattr(url_cls, "_dotfiles_orig_mousePressEvent"):
-        url_cls._dotfiles_orig_mousePressEvent = url_cls.mousePressEvent
-        url_cls.mousePressEvent = _edit_url_on_click
 
 
 mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
