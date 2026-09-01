@@ -2,18 +2,23 @@
 set -euo pipefail
 
 window=${1:-}
-project=/Users/tim/dev/my/urban-prime-mono
 pane_script=${D3K_PANE_SH:-/Users/tim/dev/dotfiles/tmux/d3k-pane.sh}
 
 if [[ -z "$window" || "$window" == '#{'* ]]; then
   window=$(tmux display-message -p '#{window_id}')
 fi
 
-if [[ -n "${D3K_CRM_PORT:-}" ]]; then
-  crm_port=$D3K_CRM_PORT
-else
-  crm_port=$(cd "$project" && node scripts/wt-dev-env status | sed -n 's/^crm_port=//p')
+project_path=$(tmux display-message -p -t "$window" '#{pane_current_path}')
+project=$(git -C "$project_path" rev-parse --show-toplevel 2>/dev/null) || {
+  tmux display-message "d3k:all: cannot find a Git project in ${window}"
+  exit 1
+}
+if [[ ! -f "$project/package.json" || ! -f "$project/scripts/wt-dev-env" ]]; then
+  tmux display-message "d3k:all: no d3k project in ${window}"
+  exit 1
 fi
+
+crm_port=$(cd "$project" && node scripts/wt-dev-env status | sed -n 's/^crm_port=//p')
 
 if [[ -z "$crm_port" ]]; then
   tmux display-message 'd3k:all: cannot determine CRM port'

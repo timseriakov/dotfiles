@@ -7,7 +7,7 @@ window=${3:-}
 
 case "$side" in
   left|right) ;;
-  *) printf 'Usage: %s {left|right} {crm|web} [window_id]\n' "${0##*/}" >&2; exit 2 ;;
+  *) printf 'Usage: %s {left|right} {crm|web} [session:window]\n' "${0##*/}" >&2; exit 2 ;;
 esac
 
 case "$service" in
@@ -19,7 +19,16 @@ if [[ -z "$window" || "$window" == '#{'* ]]; then
   window=$(tmux display-message -p '#{window_id}')
 fi
 
-project=/Users/tim/dev/my/urban-prime-mono
+project_path=$(tmux display-message -p -t "$window" '#{pane_current_path}')
+project=$(git -C "$project_path" rev-parse --show-toplevel 2>/dev/null) || {
+  tmux display-message "d3k:${service}: cannot find a Git project in ${window}"
+  exit 1
+}
+if [[ ! -f "$project/package.json" || ! -f "$project/scripts/wt-dev-env" ]]; then
+  tmux display-message "d3k:${service}: no d3k project in ${window}"
+  exit 1
+fi
+
 if [[ "$(tmux list-panes -t "$window" | wc -l | tr -d ' ')" -lt 2 ]]; then
   if [[ "$side" == left ]]; then
     tmux split-window -h -b -t "$window" -c "$project"
@@ -40,6 +49,8 @@ if [[ -z "$pane" ]]; then
 fi
 
 restart=${D3K_RESTART_SH:-/Users/tim/dev/dotfiles/tmux/d3k-restart.sh}
+printf -v restart_cmd '%q' "$restart"
+printf -v project_cmd '%q' "$project"
 
 wait_for_shell() {
   local command
@@ -57,4 +68,4 @@ wait_for_shell || { tmux send-keys -t "$pane" C-z; wait_for_shell; } || {
   exit 1
 }
 
-tmux send-keys -t "$pane" C-u "jobs -p | xargs kill -TERM 2>/dev/null; $restart $service" C-m
+tmux send-keys -t "$pane" C-u "jobs -p | xargs kill -TERM 2>/dev/null; $restart_cmd $service $project_cmd" C-m

@@ -5,15 +5,18 @@ service=${1:-}
 case "$service" in
   crm|web) ;;
   *)
-    printf 'Usage: %s {crm|web}\n' "${0##*/}" >&2
+    printf 'Usage: %s {crm|web} [project_path]\n' "${0##*/}" >&2
     exit 2
     ;;
 esac
 
-cd /Users/tim/dev/my/urban-prime-mono
+project=${2:-$PWD}
+cd "$project"
 
+project_key=$(printf '%s' "$project" | cksum | cut -d' ' -f1)
 status_file=$(mktemp)
-{ pnpm "d3k:${service}:kill"; printf '%s' $? >"$status_file"; } >"/tmp/d3k-restart-${service}.log" 2>&1 &
+log_file=${D3K_LOG_FILE:-/tmp/d3k-restart-${service}-${project_key}.log}
+{ pnpm "d3k:${service}:kill"; printf '%s' $? >"$status_file"; } >"$log_file" 2>&1 &
 kill_pid=$!
 
 for _ in {1..50}; do
