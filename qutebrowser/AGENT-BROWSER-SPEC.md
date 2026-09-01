@@ -34,7 +34,7 @@ Keep the tmux/kitty muscle-memory split:
 | `Cmd+j` | tabs    | previous tab                |
 | `Cmd+k` | tabs    | next tab                    |
 
-Window cycling is qutebrowser-side and uses qutebrowser/Qt runtime state: `objreg.window_registry` plus `mainwindow.raise_window(...)`. It does not use CDP window IDs and does not require Hammerspoon.
+Window cycling is qutebrowser-side and uses qutebrowser/Qt runtime state: runtime `win_id` values from `objreg.window_registry` plus `mainwindow.raise_window(...)`. Qutebrowser runtime `win_id` and CDP target/window IDs are separate namespaces; never interchange them. The helper does not use CDP IDs and does not require Hammerspoon.
 
 ## Relevant files
 
