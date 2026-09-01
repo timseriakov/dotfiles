@@ -63,7 +63,9 @@ class _StatusUrlClickFilter(QObject):
             event.type() == QEvent.Type.MouseButtonPress
             and event.button() == Qt.MouseButton.LeftButton
         ):
-            runners.CommandRunner(self._win_id).run_safely("cmd-set-text -s :open {url}")
+            runners.CommandRunner(self._win_id).run_safely(
+                "cmd-set-text -s :open {url}"
+            )
             event.accept()
             return True
         return False
@@ -71,12 +73,13 @@ class _StatusUrlClickFilter(QObject):
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
-    old_filter = getattr(self.status.url, "_dotfiles_click_filter", None)
-    if old_filter is not None:
-        self.status.url.removeEventFilter(old_filter)
-    click_filter = _StatusUrlClickFilter(self.win_id, self.status.url)
-    self.status.url.installEventFilter(click_filter)
-    self.status.url._dotfiles_click_filter = click_filter
+    for widget in (self.status, self.status.url):
+        old_filter = getattr(widget, "_dotfiles_click_filter", None)
+        if old_filter is not None:
+            widget.removeEventFilter(old_filter)
+        click_filter = _StatusUrlClickFilter(self.win_id, widget)
+        widget.installEventFilter(click_filter)
+        widget._dotfiles_click_filter = click_filter
 
 
 mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
