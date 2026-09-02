@@ -16,7 +16,7 @@ from qutebrowser.utils import log, objreg
 # Configurable knobs.
 INTERVAL_MINUTES = 40
 DEBOUNCE_SECONDS = 30
-MAX_SNAPSHOTS = 1000
+MAX_SNAPSHOTS = 50
 MAX_NAME_CHARS = 180
 MAX_TITLE_CHARS = 22
 PREFIX = ""
