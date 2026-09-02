@@ -284,6 +284,16 @@ def _below_tab_status_enabled(window):
 
 
 class _BelowTabStatusStyle(tabwidget.TabBarStyle):
+    def drawControl(self, element, opt, p, widget=None):
+        if element == QStyle.ControlElement.CE_TabBarTabShape:
+            layouts = self._tab_layout(opt)
+            if layouts is not None:
+                p.fillRect(opt.rect, opt.palette.window())
+                self._draw_indicator(layouts, opt, p)
+                return
+
+        super().drawControl(element, opt, p, widget)
+
     def subElementRect(self, element, option, widget=None):
         rect = super().subElementRect(element, option, widget)
         if widget is not getattr(self, "_dotfiles_tabwidget", None) or element not in (
