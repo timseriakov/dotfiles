@@ -3,6 +3,7 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope-live-grep-args.nvim",
+    "jonarrien/telescope-cmdline.nvim",
   },
   config = function(_, opts)
     local telescope = require("telescope")
@@ -29,12 +30,25 @@ return {
     opts.defaults.mappings.i["<C-l>"] = actions.send_to_qflist + actions.open_qflist
     opts.defaults.mappings.i["<c-y>"] = require("modules.telescope.actions").copy_selection_to_clipboard
     opts.defaults.mappings.i["<c-r>"] = require("modules.telescope.actions").copy_selection_paths_to_clipboard
-
+    opts.extensions = opts.extensions or {}
+    opts.extensions.cmdline = vim.tbl_deep_extend("force", opts.extensions.cmdline or {}, {
+      picker = {
+        sorting_strategy = "ascending",
+        layout_config = {
+          width = 0.52,
+          height = 0.55,
+          prompt_position = "top",
+          anchor = "S",
+          anchor_padding = 5,
+        },
+      },
+    })
     telescope.setup(opts)
     telescope.load_extension("live_grep_args")
+    telescope.load_extension("cmdline")
 
     vim.opt.timeoutlen = 300
-
+    vim.keymap.set("n", "<leader>p", "<cmd>Telescope cmdline<cr>", { desc = "Command Palette" })
     vim.keymap.set("n", "<leader><leader>", launchers.launch_find_files, { desc = "Find Files with History" })
 
     vim.keymap.set("n", "<leader>sf", function()
