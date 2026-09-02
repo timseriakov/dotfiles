@@ -46,6 +46,7 @@ from qutebrowser.mainwindow import mainwindow, tabwidget
 from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QSizePolicy, QStyle, QTabWidget
+from qutebrowser.utils import usertypes
 from qutebrowser.utils import qtutils
 
 
@@ -106,6 +107,24 @@ def _disable_hover_url_status(window):
     window.status.url._hover_url = None
     window.status.url._update_url()
 
+
+_orig_url_paint_event = getattr(
+    url.UrlText,
+    "_dotfiles_orig_paint_event",
+    url.UrlText.paintEvent,
+)
+url.UrlText._dotfiles_orig_paint_event = _orig_url_paint_event
+
+
+def _paint_url_unless_status_mode(self, event):
+    status = self.parent()
+    if getattr(status, "_color_flags", None) is not None and _status_has_mode_flag(status):
+        event.accept()
+        return
+    _orig_url_paint_event(self, event)
+
+
+url.UrlText.paintEvent = _paint_url_unless_status_mode
 
 _STATUS_URL_SIDE_PAD = 6
 
@@ -182,6 +201,7 @@ def _stretch_status_url(status):
     if hbox is None:
         return
 
+    status.url.show()
     hbox.removeItem(status._stack)
     status.url.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
     status.url.setContentsMargins(0, 0, 0, 0)
@@ -195,12 +215,19 @@ def _stretch_status_url(status):
 def _stretch_status_command(status):
     hbox = getattr(status, "_hbox", None)
     if hbox is not None:
+        status.url.hide()
         if _statusbar_stack_index(status, hbox) == -1:
             hbox.insertLayout(0, status._stack)
         _set_status_stretch(status, _statusbar_stack_index(status, hbox))
 
+
+def _status_has_mode_flag(status):
+    flags = status._color_flags
+    return flags.prompt or flags.insert or flags.command or flags.passthrough or flags.caret is not bar.ColorFlags.CaretMode.off
+
+
 def _stretch_status_current(status):
-    if status._stack.currentWidget() is status.cmd or status.txt.text():
+    if _status_has_mode_flag(status) or status._stack.currentWidget() is status.cmd or status.txt.text():
         _stretch_status_command(status)
     else:
         _stretch_status_url(status)
@@ -261,33 +288,28 @@ def _hide_cmd_widget_with_stretched_url(self):
 
 bar.StatusBar._hide_cmd_widget = _hide_cmd_widget_with_stretched_url
 
-_orig_on_mode_entered = getattr(
+_orig_set_mode_active = getattr(
     bar.StatusBar,
-    "_dotfiles_orig_on_mode_entered",
-    bar.StatusBar.on_mode_entered,
+    "_dotfiles_orig_set_mode_active",
+    bar.StatusBar.set_mode_active,
 )
-bar.StatusBar._dotfiles_orig_on_mode_entered = _orig_on_mode_entered
-def _on_mode_entered_with_current_stretch(self, mode):
-    _orig_on_mode_entered(self, mode)
-    _stretch_status_current(self)
+bar.StatusBar._dotfiles_orig_set_mode_active = _orig_set_mode_active
 
 
-bar.StatusBar.on_mode_entered = _on_mode_entered_with_current_stretch
-
-_orig_on_mode_left = getattr(
-    bar.StatusBar,
-    "_dotfiles_orig_on_mode_left",
-    bar.StatusBar.on_mode_left,
-)
-bar.StatusBar._dotfiles_orig_on_mode_left = _orig_on_mode_left
-
-
-def _on_mode_left_with_current_stretch(self, old_mode, new_mode):
-    _orig_on_mode_left(self, old_mode, new_mode)
-    _stretch_status_current(self)
+def _set_mode_active_with_current_stretch(self, mode, val):
+    _orig_set_mode_active(self, mode, val)
+    if mode in (
+        usertypes.KeyMode.insert,
+        usertypes.KeyMode.command,
+        usertypes.KeyMode.caret,
+        usertypes.KeyMode.prompt,
+        usertypes.KeyMode.yesno,
+        usertypes.KeyMode.passthrough,
+    ):
+        _stretch_status_current(self)
 
 
-bar.StatusBar.on_mode_left = _on_mode_left_with_current_stretch
+bar.StatusBar.set_mode_active = _set_mode_active_with_current_stretch
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
