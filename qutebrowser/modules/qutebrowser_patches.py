@@ -138,18 +138,12 @@ def _stretch_status_url(status):
     status.cmd.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
     _set_status_stretch(status, hbox.indexOf(status.url))
-    stack_index = _statusbar_stack_index(status, hbox)
-    if stack_index != -1:
-        hbox.itemAt(stack_index).changeSize(0, 0)
 
 
 def _stretch_status_command(status):
     hbox = getattr(status, "_hbox", None)
     if hbox is not None:
-        stack_index = _statusbar_stack_index(status, hbox)
-        if stack_index != -1:
-            hbox.itemAt(stack_index).changeSize(status.cmd.sizeHint().width(), 0)
-        _set_status_stretch(status, stack_index)
+        _set_status_stretch(status, _statusbar_stack_index(status, hbox))
 
 def _stretch_status_current(status):
     if status._stack.currentWidget() is status.cmd:

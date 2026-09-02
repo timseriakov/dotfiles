@@ -16,7 +16,6 @@ c.window.hide_decoration = True
 c.scrolling.bar = "when-searching"
 c.statusbar.show = "always"
 c.statusbar.position = "top"
-c.statusbar.widgets = ["url", "scroll", "history", "tabs", "progress"]
 c.tabs.show = "always"  # multiple # never
 c.tabs.last_close = "blank"
 c.tabs.position = "top"
