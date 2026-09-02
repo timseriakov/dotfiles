@@ -105,6 +105,8 @@ def _start():
         setattr(app, _retry_attr, retry)
         return
 
+    QTimer.singleShot(2000, _save)
+
     timer = QTimer(app)
     timer.timeout.connect(_save)
     timer.start(INTERVAL_MINUTES * 60 * 1000)
