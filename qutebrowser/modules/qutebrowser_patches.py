@@ -107,18 +107,22 @@ def _disable_hover_url_status(window):
     window.status.url._update_url()
 
 
-_STATUS_SIDE_PAD = 3
-
+_STATUS_URL_SIDE_PAD = 6
 
 def _collapse_empty_status_prefix_widget(widget):
-    widget.setVisible(bool(widget.text()))
+    empty = not bool(widget.text())
+    widget.setVisible(not empty)
+    widget.setMinimumWidth(0)
+    widget.setMaximumWidth(0 if empty else 16777215)
     widget.updateGeometry()
 
 
 def _collapse_empty_status_prefix(status):
     _collapse_empty_status_prefix_widget(status.keystring)
     _collapse_empty_status_prefix_widget(status.search_match)
-    status._hbox.setContentsMargins(_STATUS_SIDE_PAD, 0, _STATUS_SIDE_PAD, 0)
+    status._hbox.setContentsMargins(_STATUS_URL_SIDE_PAD, 0, _STATUS_URL_SIDE_PAD, 0)
+    status._hbox.setSpacing(0)
+
 
 
 
@@ -178,6 +182,7 @@ def _stretch_status_url(status):
     if hbox is None:
         return
 
+    hbox.removeItem(status._stack)
     status.url.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
     status.url.setContentsMargins(0, 0, 0, 0)
 
@@ -190,6 +195,8 @@ def _stretch_status_url(status):
 def _stretch_status_command(status):
     hbox = getattr(status, "_hbox", None)
     if hbox is not None:
+        if _statusbar_stack_index(status, hbox) == -1:
+            hbox.insertLayout(0, status._stack)
         _set_status_stretch(status, _statusbar_stack_index(status, hbox))
 
 def _stretch_status_current(status):
