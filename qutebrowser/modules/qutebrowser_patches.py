@@ -43,7 +43,7 @@ miscmodels.session = _wide_session_completion
 from qutebrowser.commands import runners
 from qutebrowser.config import config
 from qutebrowser.mainwindow import mainwindow, tabwidget
-from qutebrowser.mainwindow.statusbar import bar
+from qutebrowser.mainwindow.statusbar import bar, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QSizePolicy, QStyle, QTabWidget
 from qutebrowser.utils import qtutils
@@ -81,6 +81,30 @@ class _StatusUrlClickFilter(QObject):
         runners.CommandRunner(self._win_id).run_safely("cmd-set-text -s :open {url}")
         event.accept()
         return True
+
+_orig_set_hover_url = getattr(
+    url.UrlText,
+    "_dotfiles_orig_set_hover_url",
+    url.UrlText.set_hover_url,
+)
+url.UrlText._dotfiles_orig_set_hover_url = _orig_set_hover_url
+
+
+def _ignore_hover_url(self, link):
+    self._hover_url = None
+    self._update_url()
+
+
+url.UrlText.set_hover_url = _ignore_hover_url
+
+
+def _disable_hover_url_status(window):
+    try:
+        window.tabbed_browser.cur_link_hovered.disconnect()
+    except TypeError:
+        pass
+    window.status.url._hover_url = None
+    window.status.url._update_url()
 
 
 def _statusbar_stack_index(status, hbox):
@@ -192,6 +216,7 @@ def _mainwindow_init_with_url_click(self, *args, **kwargs):
     if app is not None:
         app.installEventFilter(click_filter)
     self.status.url._dotfiles_click_filter = click_filter
+    _disable_hover_url_status(self)
     _install_status_stretch_hooks(self.status)
     _stretch_status_url(self.status)
 
@@ -357,6 +382,8 @@ def _align_existing_status_urls():
     for widget in app.allWidgets():
         if getattr(widget, "url", None) is not None and getattr(widget, "_hbox", None) is not None:
             _stretch_status_current(widget)
+        if getattr(widget, "status", None) is not None and getattr(widget, "tabbed_browser", None) is not None:
+            _disable_hover_url_status(widget)
 
 
 _align_existing_status_urls()
