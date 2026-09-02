@@ -107,6 +107,9 @@ def _disable_hover_url_status(window):
     window.status.url._update_url()
 
 
+_STATUS_SIDE_PAD = 3
+
+
 def _collapse_empty_status_prefix_widget(widget):
     widget.setVisible(bool(widget.text()))
     widget.updateGeometry()
@@ -115,6 +118,8 @@ def _collapse_empty_status_prefix_widget(widget):
 def _collapse_empty_status_prefix(status):
     _collapse_empty_status_prefix_widget(status.keystring)
     _collapse_empty_status_prefix_widget(status.search_match)
+    status._hbox.setContentsMargins(_STATUS_SIDE_PAD, 0, _STATUS_SIDE_PAD, 0)
+
 
 
 _orig_keystring_updated = getattr(
@@ -174,6 +179,8 @@ def _stretch_status_url(status):
         return
 
     status.url.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+    status.url.setContentsMargins(0, 0, 0, 0)
+
     status.url.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
     status.cmd.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
