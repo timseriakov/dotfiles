@@ -45,7 +45,7 @@ from qutebrowser.config import config
 from qutebrowser.mainwindow import mainwindow, tabwidget
 from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
-from qutebrowser.qt.widgets import QApplication, QSizePolicy, QStyle, QTabWidget
+from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QTabWidget
 from qutebrowser.utils import usertypes
 from qutebrowser.utils import qtutils
 
@@ -108,23 +108,86 @@ def _disable_hover_url_status(window):
     window.status.url._update_url()
 
 
-_orig_url_paint_event = getattr(
-    url.UrlText,
-    "_dotfiles_orig_paint_event",
-    url.UrlText.paintEvent,
-)
-url.UrlText._dotfiles_orig_paint_event = _orig_url_paint_event
+_bottom_mode_by_status = {}
 
 
-def _paint_url_unless_status_mode(self, event):
-    status = self.parent()
-    if getattr(status, "_color_flags", None) is not None and _status_has_mode_flag(status):
-        event.accept()
+def _bottom_mode_text(mode):
+    if mode == usertypes.KeyMode.insert:
+        return "-- INSERT MODE --"
+    if mode == usertypes.KeyMode.passthrough:
+        return "-- PASSTHROUGH MODE --"
+    if mode == usertypes.KeyMode.caret:
+        return "-- CARET MODE --"
+    return ""
+
+
+def _bottom_mode_style(mode):
+    if mode == usertypes.KeyMode.insert:
+        bg = config.val.colors.statusbar.insert.bg
+        fg = config.val.colors.statusbar.insert.fg
+    elif mode == usertypes.KeyMode.passthrough:
+        bg = config.val.colors.statusbar.passthrough.bg
+        fg = config.val.colors.statusbar.passthrough.fg
+    else:
+        bg = config.val.colors.statusbar.normal.bg
+        fg = config.val.colors.statusbar.normal.fg
+    return f"font: {config.val.fonts.statusbar}; background-color: {bg}; color: {fg}; padding-left: 6px;"
+
+
+def _ensure_bottom_mode_line(window):
+    label = getattr(window, "_dotfiles_bottom_mode_line", None)
+    if label is None:
+        label = QLabel(window)
+        label.setObjectName("DotfilesBottomModeLine")
+        label.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
+        label.setStyleSheet(_bottom_mode_style(None))
+        label.setText("")
+        label.hide()
+        window._dotfiles_bottom_mode_line = label
+    _bottom_mode_by_status[window.status] = label
+    return label
+
+def _install_bottom_mode_line(window):
+    line = _ensure_bottom_mode_line(window)
+    window._vbox.removeWidget(line)
+    line.setParent(window)
+    line.setFixedHeight(_bottom_mode_line_height(window))
+    _place_bottom_mode_line(window)
+    if not line.text():
+        line.hide()
+    return line
+
+
+def _place_bottom_mode_line(window):
+    line = getattr(window, "_dotfiles_bottom_mode_line", None)
+    if line is None:
         return
-    _orig_url_paint_event(self, event)
+    height = _bottom_mode_line_height(window)
+    line.setGeometry(0, max(0, window.height() - height), window.width(), height)
+    line.raise_()
 
 
-url.UrlText.paintEvent = _paint_url_unless_status_mode
+def _bottom_mode_line_height(window):
+    if window.status.parent() is window.tabbed_browser.widget:
+        return _below_tab_status_height(window.tabbed_browser.widget, window.status)
+    return window.status.sizeHint().height()
+
+def _set_bottom_mode_line(status, mode, active):
+    label = _bottom_mode_by_status.get(status)
+    if label is None:
+        return
+    text = _bottom_mode_text(mode)
+    if active and text:
+        label._dotfiles_hide_generation = getattr(label, "_dotfiles_hide_generation", 0) + 1
+        status.txt.setText("")
+        label.setText(text)
+        label.setStyleSheet(_bottom_mode_style(mode))
+        label.setFixedHeight(status.height() or status.sizeHint().height())
+        _place_bottom_mode_line(label.window())
+        label.show()
+    elif label.text() == text:
+        label.hide()
+        label.setText("")
 
 _STATUS_URL_SIDE_PAD = 6
 
@@ -227,7 +290,7 @@ def _status_has_mode_flag(status):
 
 
 def _stretch_status_current(status):
-    if _status_has_mode_flag(status) or status._stack.currentWidget() is status.cmd or status.txt.text():
+    if status._stack.currentWidget() is status.cmd or status.txt.text():
         _stretch_status_command(status)
     else:
         _stretch_status_url(status)
@@ -297,19 +360,34 @@ bar.StatusBar._dotfiles_orig_set_mode_active = _orig_set_mode_active
 
 
 def _set_mode_active_with_current_stretch(self, mode, val):
+    if mode in (usertypes.KeyMode.insert, usertypes.KeyMode.caret, usertypes.KeyMode.passthrough):
+        _set_bottom_mode_line(self, mode, val)
+        self.txt.setText("")
+        _stretch_status_url(self)
+        return
+
     _orig_set_mode_active(self, mode, val)
-    if mode in (
-        usertypes.KeyMode.insert,
-        usertypes.KeyMode.command,
-        usertypes.KeyMode.caret,
-        usertypes.KeyMode.prompt,
-        usertypes.KeyMode.yesno,
-        usertypes.KeyMode.passthrough,
-    ):
+    if mode in (usertypes.KeyMode.command, usertypes.KeyMode.prompt, usertypes.KeyMode.yesno):
         _stretch_status_current(self)
 
-
 bar.StatusBar.set_mode_active = _set_mode_active_with_current_stretch
+
+_orig_caret_selection_toggled = getattr(
+    bar.StatusBar,
+    "_dotfiles_orig_caret_selection_toggled",
+    bar.StatusBar.on_caret_selection_toggled,
+)
+bar.StatusBar._dotfiles_orig_caret_selection_toggled = _orig_caret_selection_toggled
+
+
+def _on_caret_selection_toggled_with_bottom_line(self, selection_state):
+    _orig_caret_selection_toggled(self, selection_state)
+    _set_bottom_mode_line(self, usertypes.KeyMode.caret, True)
+    self.txt.setText("")
+    _stretch_status_url(self)
+
+
+bar.StatusBar.on_caret_selection_toggled = _on_caret_selection_toggled_with_bottom_line
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
@@ -406,6 +484,7 @@ class _BelowTabStatusRelayoutFilter(QObject):
     def _relayout(self):
         self._pending = False
         _place_status_below_tabs(self._window)
+        _place_bottom_mode_line(self._window)
 
 
 def _install_below_tab_relayout_filter(window):
@@ -413,10 +492,12 @@ def _install_below_tab_relayout_filter(window):
     old_filter = getattr(tabwidget, "_dotfiles_below_tab_filter", None)
     if old_filter is not None:
         tabwidget.removeEventFilter(old_filter)
+        window.removeEventFilter(old_filter)
         tabwidget.tabBar().removeEventFilter(old_filter)
 
     relayout_filter = _BelowTabStatusRelayoutFilter(window, tabwidget)
     tabwidget.installEventFilter(relayout_filter)
+    window.installEventFilter(relayout_filter)
     tabwidget.tabBar().installEventFilter(relayout_filter)
     tabwidget._dotfiles_below_tab_filter = relayout_filter
 
@@ -437,6 +518,7 @@ def _add_widgets_with_below_tab_status(self):
         return
 
     _orig_add_widgets(self)
+    _install_bottom_mode_line(self)
     self._vbox.removeWidget(self.status)
     tabwidget = self.tabbed_browser.widget
     self.status.setParent(tabwidget)
@@ -506,6 +588,7 @@ def _align_existing_status_urls():
             _collapse_empty_status_prefix(widget)
         if getattr(widget, "status", None) is not None and getattr(widget, "tabbed_browser", None) is not None:
             _disable_hover_url_status(widget)
+            _install_bottom_mode_line(widget)
 
 
 _align_existing_status_urls()
