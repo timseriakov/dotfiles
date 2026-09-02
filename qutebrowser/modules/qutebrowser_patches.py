@@ -83,18 +83,57 @@ class _StatusUrlClickFilter(QObject):
         return True
 
 
-def _align_status_url(status):
-    status.url.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+def _statusbar_stack_index(status, hbox):
+    for i in range(hbox.count()):
+        item = hbox.itemAt(i)
+        if item is not None and item.layout() is status._stack:
+            return i
+    return -1
+
+
+def _set_status_stretch(status, stretch_index):
+    hbox = getattr(status, "_hbox", None)
+    if hbox is None:
+        return
+    for i in range(hbox.count()):
+        hbox.setStretch(i, 1 if i == stretch_index else 0)
+    hbox.invalidate()
+    hbox.activate()
+    status.url.updateGeometry()
+    status.cmd.updateGeometry()
+    status.updateGeometry()
+
+
+def _stretch_status_url(status):
+    hbox = getattr(status, "_hbox", None)
+    if hbox is None:
+        return
+
+    status.url.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
     status.url.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+    status.cmd.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+    _set_status_stretch(status, hbox.indexOf(status.url))
+
+
+def _stretch_status_command(status):
     hbox = getattr(status, "_hbox", None)
     if hbox is not None:
-        url_index = hbox.indexOf(status.url)
-        for i in range(hbox.count()):
-            hbox.setStretch(i, 1 if i == url_index else 0)
-        hbox.invalidate()
-        hbox.activate()
-    status.url.updateGeometry()
-    status.updateGeometry()
+        _set_status_stretch(status, _statusbar_stack_index(status, hbox))
+
+def _stretch_status_current(status):
+    if status._stack.currentWidget() is status.cmd:
+        _stretch_status_command(status)
+    else:
+        _stretch_status_url(status)
+
+
+def _install_status_stretch_hooks(status):
+    if getattr(status, "_dotfiles_stretch_hooks_installed", False):
+        return
+    status.cmd.show_cmd.connect(lambda: QTimer.singleShot(0, lambda: _stretch_status_command(status)))
+    status.cmd.hide_cmd.connect(lambda: QTimer.singleShot(0, lambda: _stretch_status_url(status)))
+    status._dotfiles_stretch_hooks_installed = True
 
 
 _orig_statusbar_draw_widgets = getattr(
@@ -105,12 +144,43 @@ _orig_statusbar_draw_widgets = getattr(
 bar.StatusBar._dotfiles_orig_draw_widgets = _orig_statusbar_draw_widgets
 
 
-def _draw_widgets_with_right_aligned_url(self):
+def _draw_widgets_with_stretched_url(self):
     _orig_statusbar_draw_widgets(self)
-    _align_status_url(self)
+    _install_status_stretch_hooks(self)
+    _stretch_status_current(self)
 
 
-bar.StatusBar._draw_widgets = _draw_widgets_with_right_aligned_url
+bar.StatusBar._draw_widgets = _draw_widgets_with_stretched_url
+
+_orig_show_cmd_widget = getattr(
+    bar.StatusBar,
+    "_dotfiles_orig_show_cmd_widget",
+    bar.StatusBar._show_cmd_widget,
+)
+bar.StatusBar._dotfiles_orig_show_cmd_widget = _orig_show_cmd_widget
+
+
+def _show_cmd_widget_with_stretched_command(self):
+    _orig_show_cmd_widget(self)
+    QTimer.singleShot(0, lambda: _stretch_status_command(self))
+
+
+bar.StatusBar._show_cmd_widget = _show_cmd_widget_with_stretched_command
+
+_orig_hide_cmd_widget = getattr(
+    bar.StatusBar,
+    "_dotfiles_orig_hide_cmd_widget",
+    bar.StatusBar._hide_cmd_widget,
+)
+bar.StatusBar._dotfiles_orig_hide_cmd_widget = _orig_hide_cmd_widget
+
+
+def _hide_cmd_widget_with_stretched_url(self):
+    _orig_hide_cmd_widget(self)
+    QTimer.singleShot(0, lambda: _stretch_status_url(self))
+
+
+bar.StatusBar._hide_cmd_widget = _hide_cmd_widget_with_stretched_url
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
@@ -122,7 +192,8 @@ def _mainwindow_init_with_url_click(self, *args, **kwargs):
     if app is not None:
         app.installEventFilter(click_filter)
     self.status.url._dotfiles_click_filter = click_filter
-    _align_status_url(self.status)
+    _install_status_stretch_hooks(self.status)
+    _stretch_status_url(self.status)
 
 
 def _below_tab_status_enabled(window):
@@ -285,7 +356,7 @@ def _align_existing_status_urls():
         return
     for widget in app.allWidgets():
         if getattr(widget, "url", None) is not None and getattr(widget, "_hbox", None) is not None:
-            _align_status_url(widget)
+            _stretch_status_current(widget)
 
 
 _align_existing_status_urls()
