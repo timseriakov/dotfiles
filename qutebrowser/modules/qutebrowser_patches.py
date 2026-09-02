@@ -43,7 +43,7 @@ miscmodels.session = _wide_session_completion
 from qutebrowser.commands import runners
 from qutebrowser.config import config
 from qutebrowser.mainwindow import mainwindow, tabwidget
-from qutebrowser.mainwindow.statusbar import bar, url
+from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QSizePolicy, QStyle, QTabWidget
 from qutebrowser.utils import qtutils
@@ -106,6 +106,46 @@ def _disable_hover_url_status(window):
     window.status.url._hover_url = None
     window.status.url._update_url()
 
+
+def _collapse_empty_status_prefix_widget(widget):
+    widget.setVisible(bool(widget.text()))
+    widget.updateGeometry()
+
+
+def _collapse_empty_status_prefix(status):
+    _collapse_empty_status_prefix_widget(status.keystring)
+    _collapse_empty_status_prefix_widget(status.search_match)
+
+
+_orig_keystring_updated = getattr(
+    keystring.KeyString,
+    "_dotfiles_orig_on_keystring_updated",
+    keystring.KeyString.on_keystring_updated,
+)
+keystring.KeyString._dotfiles_orig_on_keystring_updated = _orig_keystring_updated
+
+
+def _on_keystring_updated_with_collapsed_empty(self, mode, keystr):
+    _orig_keystring_updated(self, mode, keystr)
+    _collapse_empty_status_prefix_widget(self)
+
+
+keystring.KeyString.on_keystring_updated = _on_keystring_updated_with_collapsed_empty
+
+_orig_search_match_set_match = getattr(
+    searchmatch.SearchMatch,
+    "_dotfiles_orig_set_match",
+    searchmatch.SearchMatch.set_match,
+)
+searchmatch.SearchMatch._dotfiles_orig_set_match = _orig_search_match_set_match
+
+
+def _set_match_with_collapsed_empty(self, match):
+    _orig_search_match_set_match(self, match)
+    _collapse_empty_status_prefix_widget(self)
+
+
+searchmatch.SearchMatch.set_match = _set_match_with_collapsed_empty
 
 def _statusbar_stack_index(status, hbox):
     for i in range(hbox.count()):
@@ -172,6 +212,7 @@ def _draw_widgets_with_stretched_url(self):
     _orig_statusbar_draw_widgets(self)
     _install_status_stretch_hooks(self)
     _stretch_status_current(self)
+    _collapse_empty_status_prefix(self)
 
 
 bar.StatusBar._draw_widgets = _draw_widgets_with_stretched_url
@@ -243,7 +284,7 @@ class _BelowTabStatusStyle(tabwidget.TabBarStyle):
 
         tabbar = widget.tabBar()
         tab_bottom = tabbar.geometry().bottom() + 1 if tabbar.isVisible() else 0
-        wanted_top = tab_bottom + status.sizeHint().height()
+        wanted_top = tab_bottom + _below_tab_status_height(widget, status)
         if rect.top() < wanted_top:
             rect.setTop(wanted_top)
         return rect
@@ -263,10 +304,16 @@ def _place_status_below_tabs(window):
         return
 
     tabbar = tabwidget.tabBar()
+    status_height = _below_tab_status_height(tabwidget, window.status)
     y = tabbar.geometry().bottom() + 1 if tabbar.isVisible() else 0
-    window.status.setGeometry(0, y, tabwidget.width(), window.status.sizeHint().height())
+    window.status.setGeometry(0, y, tabwidget.width(), status_height)
     window.status.raise_()
     tabwidget.setDocumentMode(tabwidget.documentMode())
+
+
+def _below_tab_status_height(tabwidget, status):
+    tabbar = tabwidget.tabBar()
+    return tabbar.height() if tabbar.isVisible() else status.sizeHint().height()
 
 
 class _BelowTabStatusRelayoutFilter(QObject):
@@ -382,6 +429,7 @@ def _align_existing_status_urls():
     for widget in app.allWidgets():
         if getattr(widget, "url", None) is not None and getattr(widget, "_hbox", None) is not None:
             _stretch_status_current(widget)
+            _collapse_empty_status_prefix(widget)
         if getattr(widget, "status", None) is not None and getattr(widget, "tabbed_browser", None) is not None:
             _disable_hover_url_status(widget)
 
