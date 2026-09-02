@@ -200,7 +200,7 @@ def _stretch_status_command(status):
         _set_status_stretch(status, _statusbar_stack_index(status, hbox))
 
 def _stretch_status_current(status):
-    if status._stack.currentWidget() is status.cmd:
+    if status._stack.currentWidget() is status.cmd or status.txt.text():
         _stretch_status_command(status)
     else:
         _stretch_status_url(status)
@@ -260,6 +260,34 @@ def _hide_cmd_widget_with_stretched_url(self):
 
 
 bar.StatusBar._hide_cmd_widget = _hide_cmd_widget_with_stretched_url
+
+_orig_on_mode_entered = getattr(
+    bar.StatusBar,
+    "_dotfiles_orig_on_mode_entered",
+    bar.StatusBar.on_mode_entered,
+)
+bar.StatusBar._dotfiles_orig_on_mode_entered = _orig_on_mode_entered
+def _on_mode_entered_with_current_stretch(self, mode):
+    _orig_on_mode_entered(self, mode)
+    _stretch_status_current(self)
+
+
+bar.StatusBar.on_mode_entered = _on_mode_entered_with_current_stretch
+
+_orig_on_mode_left = getattr(
+    bar.StatusBar,
+    "_dotfiles_orig_on_mode_left",
+    bar.StatusBar.on_mode_left,
+)
+bar.StatusBar._dotfiles_orig_on_mode_left = _orig_on_mode_left
+
+
+def _on_mode_left_with_current_stretch(self, old_mode, new_mode):
+    _orig_on_mode_left(self, old_mode, new_mode)
+    _stretch_status_current(self)
+
+
+bar.StatusBar.on_mode_left = _on_mode_left_with_current_stretch
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
     _orig_mainwindow_init(self, *args, **kwargs)
