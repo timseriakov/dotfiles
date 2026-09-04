@@ -31,8 +31,10 @@ export function createUiComponentPatches(ctx) {
           "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions)",
           "new Markdown(trimmed, 1, 0, getMarkdownTheme(), mdOptions, 0)",
           "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions, 0)",
+          "new Markdown(trimmed, 1, 0, this.#getProseTheme(), mdOptions, 0)",
+          "new Markdown(trimmed, 0, 0, this.#getProseTheme(), mdOptions, 0)",
         ],
-        "new Markdown(trimmed, 0, 0, getMarkdownTheme(), mdOptions, 0)",
+        "new Markdown(trimmed, 0, 0, this.#getProseTheme(), mdOptions, 0)",
         "assistant text padding",
       ],
       [

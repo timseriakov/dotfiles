@@ -238,17 +238,15 @@ export function createCommandRuntimePatches(ctx) {
   }
 
   function patchSessionTools(content) {
-    return replaceAny(
-      content,
-      [
-        `		this.#host.emitNotice(
+    const alternatives = [
+      `		this.#host.emitNotice(
 			"info",
 			after
 				? \`inspect_image is now available: \${modelName} has no native image input.\`
 				: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
 			"vision",
 		);`,
-        `		const model = this.#host.model();
+      `		const model = this.#host.model();
 		const modelName = model ? formatModelString(model) : "the current model";
 		this.#host.emitNotice(
 			"info",
@@ -257,14 +255,18 @@ export function createCommandRuntimePatches(ctx) {
 				: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
 			"vision",
 		);`,
-        `			this.#host.emitNotice(
+      `			this.#host.emitNotice(
 				"info",
 				after
 					? \`inspect_image is now available: \${modelName} has no native image input.\`
 					: \`inspect_image is now hidden: \${modelName} supports image input natively. Override with /vision on.\`,
 				"vision",
 			);`,
-      ],
+    ];
+    if (!alternatives.some(anchor => content.includes(anchor))) return content;
+    return replaceAny(
+      content,
+      alternatives,
       `		// dotfiles patch: avoid noisy vision flip notices.
 		return;`,
       "suppress inspect_image flip notice",

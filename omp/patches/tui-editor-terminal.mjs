@@ -304,10 +304,15 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 			const dims = this.#imageDims(chip.image);
 			return ["", ...this.#imageInterior(chip.image, dims), ""];
 		} else {`,
-      ],
-      `		if (chip.kind === "image") {
+        `		if (chip.kind !== "paste") {
 			const dims = this.#imageDims(chip.image);
-			return ["", ...this.#imageInterior(chip.image, dims), ""];
+			bottomCaption = dims ? \`\${dims.width}x\${dims.height}\` : "";
+			interior = this.#imageInterior(chip.image, dims, chip.kind);
+		} else {`,
+      ],
+      `		if (chip.kind !== "paste") {
+			const dims = this.#imageDims(chip.image);
+			return ["", ...this.#imageInterior(chip.image, dims, chip.kind), ""];
 		} else {`,
       "attachment image chips without border fallback lines",
     ).content;

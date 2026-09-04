@@ -16,12 +16,11 @@ export function createStatusLinePatches(ctx) {
     const remoteMethod = `\n\t#getGitRemote(effectiveGitCwd?: string): { ahead: number; behind: number } | null {\n\t\tconst gitCwd = effectiveGitCwd ?? this.#resolveActiveRepoCache().effectiveGitCwd;\n\t\tif (this.#gitRemoteInFlight || Date.now() - this.#gitRemoteLastFetch < 5000) {\n\t\t\treturn this.#cachedGitRemote;\n\t\t}\n\n\t\tthis.#gitRemoteInFlight = true;\n\n\t\t(async () => {\n\t\t\ttry {\n\t\t\t\tconst result = await $\`git rev-list --left-right --count @{upstream}...HEAD\`.cwd(gitCwd).quiet().nothrow();\n\t\t\t\tif (result.exitCode !== 0) {\n\t\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tconst [behindText, aheadText] = result.stdout.toString().trim().split(/\\s+/);\n\t\t\t\tconst behind = Number.parseInt(behindText ?? "0", 10);\n\t\t\t\tconst ahead = Number.parseInt(aheadText ?? "0", 10);\n\t\t\t\tthis.#cachedGitRemote = {\n\t\t\t\t\tahead: Number.isFinite(ahead) ? ahead : 0,\n\t\t\t\t\tbehind: Number.isFinite(behind) ? behind : 0,\n\t\t\t\t};\n\t\t\t} catch {\n\t\t\t\tthis.#cachedGitRemote = null;\n\t\t\t} finally {\n\t\t\t\tthis.#gitRemoteLastFetch = Date.now();\n\t\t\t\tthis.#gitRemoteInFlight = false;\n\t\t\t}\n\t\t})();\n\n\t\treturn this.#cachedGitRemote;\n\t}\n`;
     r = insertBefore(
       out,
-      `\n\t#lookupPr(effectiveGitCwd?: string): { number: number; url: string } | null {`,
+      `\n\t#lookupPr(activeRepoCache: ActiveRepoCache = this.#resolveActiveRepoCache()): {\n\t\tnumber: number;\n\t\turl: string;\n\t} | null {`,
       remoteMethod,
       "status-line #getGitRemote method",
     );
     out = r.content;
-
     r = replaceAny(
       out,
       [
@@ -67,6 +66,7 @@ export function createStatusLinePatches(ctx) {
       [
         `\t\tif (layout !== "plain-left") {\n\t\t\tconst runningBackgroundJobs = this.session.getAsyncJobSnapshot()?.running.length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", \`\${theme.icon.job} \${runningBackgroundJobs}\`));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\trightParts.unshift(subagentBadge);\n\t\t\t}\n\t\t}\n`,
         `\t\tif (layout !== "plain-left") {\n\t\t\t// Count task jobs only until their AgentRegistry ref appears. Once it is\n\t\t\t// running, the subagent badge represents that same agent; bash and eval\n\t\t\t// jobs always remain independent background work.\n\t\t\tconst runningBackgroundJobs =\n\t\t\t\tthis.session\n\t\t\t\t\t.getAsyncJobSnapshot()\n\t\t\t\t\t?.running.filter(\n\t\t\t\t\t\tjob => job.type !== "task" || job.agentId === undefined || !this.#runningSubagentIds.has(job.agentId),\n\t\t\t\t\t).length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", \`\${theme.icon.job} \${runningBackgroundJobs}\`));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\trightParts.unshift(subagentBadge);\n\t\t\t}\n\t\t}\n`,
+        `\t\tif (layout !== "plain-left") {\n\t\t\t// Count task jobs only until their AgentRegistry ref appears. Once it is\n\t\t\t// running, the subagent badge represents that same agent; bash and eval\n\t\t\t// jobs always remain independent background work.\n\t\t\tconst runningBackgroundJobs =\n\t\t\t\tthis.session\n\t\t\t\t\t.getAsyncJobSnapshot()\n\t\t\t\t\t?.running.filter(\n\t\t\t\t\t\tjob => job.type !== "task" || job.agentId === undefined || !this.#runningSubagentIds.has(job.agentId),\n\t\t\t\t\t).length ?? 0;\n\t\t\tif (runningBackgroundJobs > 0) {\n\t\t\t\tconst count = placeholders ? "…" : ` + "`${runningBackgroundJobs}`" + `;\n\t\t\t\trightParts.unshift(theme.fg("statusLineSubagents", ` + "`${theme.icon.job} ${count}`" + `));\n\t\t\t}\n\t\t\tif (subagentBadge) {\n\t\t\t\tconst content = placeholders ? [theme.icon.agents, "…"].filter(Boolean).join(" ") : subagentBadge;\n\t\t\t\trightParts.unshift(placeholders ? theme.fg("statusLineSubagents", content) : content);\n\t\t\t}\n\t\t}\n`,
         `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
       ],
       `\t\t// Starship-style status: configured rightSegments only, no injected job/subagent badges.\n`,
@@ -421,55 +421,11 @@ export function createStatusLinePatches(ctx) {
     );
     out = r.content;
 
-    const oldGit = `const gitSegment: StatusLineSegment = {\n\tid: "git",\n\trender(ctx) {\n\t\tconst { branch, status } = ctx.git;\n\t\tif (!branch && !status) return { content: "", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst isDirty = gitStatus && (gitStatus.staged > 0 || gitStatus.unstaged > 0 || gitStatus.untracked > 0);\n\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\t// Add status indicators\n\t\tif (gitStatus) {\n\t\t\tconst indicators: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tindicators.push(theme.fg("statusLineDirty", \`*\${gitStatus.unstaged}\`));\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tindicators.push(theme.fg("statusLineStaged", \`+\${gitStatus.staged}\`));\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tindicators.push(theme.fg("statusLineUntracked", \`?\${gitStatus.untracked}\`));\n\t\t\t}\n\t\t\tif (indicators.length > 0) {\n\t\t\t\tconst indicatorText = indicators.join(" ");\n\t\t\t\tif (!content && showBranch === false) {\n\t\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t\t} else {\n\t\t\t\t\tcontent += content ? \` \${indicatorText}\` : indicatorText;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: "", visible: false };\n\n\t\treturn { content: theme.fg(isDirty ? "statusLineGitDirty" : "statusLineGitClean", content), visible: true };\n\t},\n};`;
-    const upstreamGitWithColorName = `const gitSegment: StatusLineSegment = {
-	id: "git",
-	render(ctx) {
-		const { branch, status } = ctx.git;
-		if (!branch && !status) return { content: "", visible: false };
-
-		const opts = ctx.options.git ?? {};
-		const gitStatus = status;
-		const isDirty = gitStatus && (gitStatus.staged > 0 || gitStatus.unstaged > 0 || gitStatus.untracked > 0);
-
-		const showBranch = opts.showBranch !== false;
-		let content = "";
-		if (showBranch && branch) {
-			content = withIcon(theme.icon.branch, branch);
-		}
-
-		// Add status indicators
-		if (gitStatus) {
-			const indicators: string[] = [];
-			if (opts.showUnstaged !== false && gitStatus.unstaged > 0) {
-				indicators.push(theme.fg("statusLineDirty", \`*\${gitStatus.unstaged}\`));
-			}
-			if (opts.showStaged !== false && gitStatus.staged > 0) {
-				indicators.push(theme.fg("statusLineStaged", \`+\${gitStatus.staged}\`));
-			}
-			if (opts.showUntracked !== false && gitStatus.untracked > 0) {
-				indicators.push(theme.fg("statusLineUntracked", \`?\${gitStatus.untracked}\`));
-			}
-			if (indicators.length > 0) {
-				const indicatorText = indicators.join(" ");
-				if (!content && showBranch === false) {
-					content = withIcon(theme.icon.git, indicatorText);
-				} else {
-					content += content ? \` \${indicatorText}\` : indicatorText;
-				}
-			}
-		}
-
-		if (!content) return { content: "", visible: false };
-
-		const colorName = isDirty ? "statusLineGitDirty" : "statusLineGitClean";
-		return { content: theme.fg(colorName, content), visible: true };
-	},
-};`;
-    const newGit = `const gitSegment: StatusLineSegment = {\n\tid: "git",\n\trender(ctx) {\n\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return { content: "", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\tconst parts: string[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) parts.push(theme.fg("statusLineStaged", \`↑\${remote.ahead}\`));\n\t\t\tif (remote.behind > 0) parts.push(theme.fg("statusLineDirty", \`↓\${remote.behind}\`));\n\t\t}\n\n\t\tif (gitStatus) {\n\t\t\tconst dirtyParts: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "!" : \`*\${gitStatus.unstaged}\`);\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "+" : \`+\${gitStatus.staged}\`);\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "?" : \`?\${gitStatus.untracked}\`);\n\t\t\t}\n\t\t\tif (dirtyParts.length > 0) {\n\t\t\t\tconst dirtyText = opts.compactDirty === true ? \`[\${dirtyParts.join("")}]\` : dirtyParts.join(" ");\n\t\t\t\tparts.push(theme.fg("statusLineDirty", dirtyText));\n\t\t\t}\n\t\t}\n\n\t\tif (parts.length > 0) {\n\t\t\tconst indicatorText = parts.join(" ");\n\t\t\tif (!content && showBranch === false) {\n\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t} else {\n\t\t\t\tcontent += content ? \` \${indicatorText}\` : indicatorText;\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: "", visible: false };\n\n\t\treturn { content: \`\${theme.fg("text", "on ")}\${theme.fg("statusLineGitClean", content)}\`, visible: true };\n\t},\n};`;
+    const upstreamGitWithStatusValue = "const gitSegment: StatusLineSegment = {\n\tid: \"git\",\n\trender(ctx) {\n\t\tconst { branch, status } = ctx.git;\n\t\tif (!branch && !status) return { content: \"\", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst isDirty = gitStatus && (gitStatus.staged > 0 || gitStatus.unstaged > 0 || gitStatus.untracked > 0);\n\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = \"\";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, statusValue(ctx, branch));\n\t\t}\n\n\t\t// Add status indicators\n\t\tif (gitStatus) {\n\t\t\tconst indicators: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tindicators.push(theme.fg(\"statusLineDirty\", `*${statusValue(ctx, `${gitStatus.unstaged}`)}`));\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tindicators.push(theme.fg(\"statusLineStaged\", `+${statusValue(ctx, `${gitStatus.staged}`)}`));\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tindicators.push(theme.fg(\"statusLineUntracked\", `?${statusValue(ctx, `${gitStatus.untracked}`)}`));\n\t\t\t}\n\t\t\tif (indicators.length > 0) {\n\t\t\t\tconst indicatorText = indicators.join(\" \");\n\t\t\t\tif (!content && showBranch === false) {\n\t\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t\t} else {\n\t\t\t\t\tcontent += content ? ` ${indicatorText}` : indicatorText;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: \"\", visible: false };\n\n\t\tconst colorName = isDirty ? \"statusLineGitDirty\" : \"statusLineGitClean\";\n\t\treturn { content: theme.fg(colorName, content), visible: true };\n\t},\n};";
+    const newGit = "const gitSegment: StatusLineSegment = {\n\tid: \"git\",\n\trender(ctx) {\n\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return { content: \"\", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = \"\";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, statusValue(ctx, branch));\n\t\t}\n\n\t\tconst parts: string[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) parts.push(theme.fg(\"statusLineStaged\", `\u2191${statusValue(ctx, `${remote.ahead}`)}`));\n\t\t\tif (remote.behind > 0) parts.push(theme.fg(\"statusLineDirty\", `\u2193${statusValue(ctx, `${remote.behind}`)}`));\n\t\t}\n\n\t\tif (gitStatus) {\n\t\t\tconst dirtyParts: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? \"!\" : `*${statusValue(ctx, `${gitStatus.unstaged}`)}`);\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? \"+\" : `+${statusValue(ctx, `${gitStatus.staged}`)}`);\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? \"?\" : `?${statusValue(ctx, `${gitStatus.untracked}`)}`);\n\t\t\t}\n\t\t\tif (dirtyParts.length > 0) {\n\t\t\t\tconst dirtyText = opts.compactDirty === true ? `[${dirtyParts.join(\"\")}]` : dirtyParts.join(\" \");\n\t\t\t\tparts.push(theme.fg(\"statusLineDirty\", dirtyText));\n\t\t\t}\n\t\t}\n\n\t\tif (parts.length > 0) {\n\t\t\tconst indicatorText = parts.join(\" \");\n\t\t\tif (!content && showBranch === false) {\n\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t} else {\n\t\t\t\tcontent += content ? ` ${indicatorText}` : indicatorText;\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: \"\", visible: false };\n\n\t\treturn { content: `${theme.fg(\"text\", \"on \")}${theme.fg(\"statusLineGitClean\", content)}`, visible: true };\n\t},\n};";
     r = replaceAny(
       out,
-      [oldGit, upstreamGitWithColorName, newGit],
+      [upstreamGitWithStatusValue, newGit],
       newGit,
       "segments compact git renderer",
     );
@@ -523,9 +479,11 @@ export function createStatusLinePatches(ctx) {
 		return { content: accentFg(ctx, "accent", sanitizeStatusText(name)), visible: true };
 	},
 };`;
+    const upstreamSessionName18_1_10 = "const sessionNameSegment: StatusLineSegment = {\n\tid: \"session_name\",\n\trender(ctx) {\n\t\tconst sessionManager = ctx.session.sessionManager;\n\t\tconst name = sessionManager?.getSessionName() || ctx.previewTitle;\n\t\tif (!name) return { content: \"\", visible: false };\n\n\t\tconst content = ctx.startupPlaceholder ? STARTUP_PLACEHOLDER : sanitizeStatusText(name);\n\t\treturn { content: accentFg(ctx, \"accent\", content), visible: true };\n\t},\n};";
     r = replaceAny(
       out,
       [
+        upstreamSessionName18_1_10,
         upstreamSessionName18,
         upstreamSessionName15_8,
         upstreamSessionName15_9,
