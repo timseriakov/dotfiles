@@ -105,6 +105,13 @@ providers:
         supportsTools: true
         contextWindow: 372000
         maxTokens: 128000
+      - id: cx/gpt-6-astra
+        name: Astra
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
       - id: cx/gpt-5.5-medium
         name: 5.5 Medium
         reasoning: true
