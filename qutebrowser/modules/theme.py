@@ -103,25 +103,25 @@ c.tabs.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
 c.statusbar.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
 
 # Tabs
-c.colors.tabs.even.bg = nord0
-c.colors.tabs.odd.bg = nord0
-c.colors.tabs.even.fg = nord5
-c.colors.tabs.odd.fg = nord5
-c.colors.tabs.selected.even.bg = nord8
-c.colors.tabs.selected.even.fg = nord1
-c.colors.tabs.selected.odd.bg = nord8
-c.colors.tabs.selected.odd.fg = nord1
+c.colors.tabs.even.bg = nord3
+c.colors.tabs.odd.bg = nord3
+c.colors.tabs.even.fg = "#8B95A7"
+c.colors.tabs.odd.fg = "#8B95A7"
+c.colors.tabs.selected.even.bg = nord0
+c.colors.tabs.selected.even.fg = nord4
+c.colors.tabs.selected.odd.bg = nord0
+c.colors.tabs.selected.odd.fg = nord4
 c.colors.tabs.pinned.even.bg = nord3
-c.colors.tabs.pinned.even.fg = nord5
+c.colors.tabs.pinned.even.fg = "#8B95A7"
 c.colors.tabs.pinned.odd.bg = nord3
-c.colors.tabs.pinned.odd.fg = nord5
-c.colors.tabs.pinned.selected.even.bg = nord8
-c.colors.tabs.pinned.selected.even.fg = nord1
-c.colors.tabs.pinned.selected.odd.bg = nord8
-c.colors.tabs.pinned.selected.odd.fg = nord1
+c.colors.tabs.pinned.odd.fg = "#8B95A7"
+c.colors.tabs.pinned.selected.even.bg = nord0
+c.colors.tabs.pinned.selected.even.fg = nord4
+c.colors.tabs.pinned.selected.odd.bg = nord0
+c.colors.tabs.pinned.selected.odd.fg = nord4
 
 # Tab loading indicator
-c.tabs.indicator.width = 7  # width in pixels (0 to disable)
+c.tabs.indicator.width = 5  # width in pixels (0 to disable)
 c.colors.tabs.indicator.start = "#F90"  # bright orange - loading in progress
 c.colors.tabs.indicator.stop = "#00A86E"  # bright green - loaded successfully
 c.colors.tabs.indicator.error = "#FF2B3A"  # bright red - loading error
