@@ -284,40 +284,20 @@ function rebuildBundledCli() {
   }
   regenerateStatsClientArchive();
   try {
-    execFileSync(
-      "bun",
-      [
-        "build",
-        "--target=bun",
-        "--outdir=dist",
-        "--minify-whitespace",
-        "--minify-syntax",
-        "--keep-names",
-        "--external=mupdf",
-        "--external=@oh-my-pi/pi-natives",
-        "--external=@huggingface/transformers",
-        "--external=fastembed",
-        "--external=onnxruntime-node",
-        "--external=omp-legacy-pi-modules",
-        "--external=puppeteer-core",
-        "--external=@puppeteer/browsers",
-        "--external=@babel/parser",
-        "--external=@xterm/headless",
-        "--external=turndown",
-        "--external=turndown-plugin-gfm",
-        "--external=@mozilla/readability",
-        "--external=linkedom",
-        "--external=@agentclientprotocol/sdk",
-        '--define=process.env.PI_BUNDLED="true"',
-        "./src/cli.ts",
-      ],
-      { cwd: packageRoot, stdio: "inherit" },
-    );
+    execFileSync("bun", [path.join(scriptDir, "bundle-omp-cli.mjs")], {
+      cwd: packageRoot,
+      stdio: "inherit",
+    });
   } finally {
     resetStatsClientArchive();
   }
   const cliPath = path.join(packageRoot, "dist/cli.js");
   let bundled = read(cliPath);
+  if (!bundled.includes("BUNDLED_PI_MODULE_LOADERS")) {
+    throw new Error(
+      "Rebuilt OMP CLI is missing bundled legacy Pi module loaders; extensions would fail to load.",
+    );
+  }
   if (!bundled.startsWith("#!")) bundled = `#!/usr/bin/env bun\n${bundled}`;
   if (!bundled.includes("path.basename"))
     bundled += "\n/* omp patch marker: path.basename */\n";
