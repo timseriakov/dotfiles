@@ -221,27 +221,30 @@ pages:
             url: http://127.0.0.1:1932/tabs
             template: |
               <style>
-                .qute-window-grid { display: flex; gap: 24px; align-items: flex-start; }
-                .qute-window { flex: 1 1 0; min-width: 0; padding: 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: rgba(255,255,255,.02); }
-                .qute-tab { display: block; }
+                .qute-window-grid { display: flex; flex-wrap: wrap; gap: var(--widget-gap); align-items: flex-start; }
+                .qute-window { flex: 1 1 0; min-width: 260px; }
               </style>
+              {{ if gt ($.JSON.Int "count") 0 }}
               <div class="qute-window-grid">
               {{ range .JSON.Array "windows" }}
-                <section class="qute-window">
+                {{ if gt (.Int "count") 0 }}
+                <div class="qute-window">
                   <div class="size-h4 color-subdue margin-bottom-10">Window {{ .String "index" }} · {{ .String "count" }} tabs</div>
-                  <ul class="list list-gap-14">
+                  <ul class="list list-gap-10">
                   {{ range .Array "tabs" }}
-                    <li class="qute-tab">
-                      <a class="size-h4 color-primary block text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
+                    <li>
+                      <a class="size-h4 color-primary-if-not-visited block text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
                       <div class="size-h6 color-subdue text-truncate">{{ .String "url" }}</div>
                     </li>
                   {{ end }}
                   </ul>
-                </section>
+                </div>
+                {{ end }}
+              {{ end }}
+              </div>
               {{ else }}
                 <div class="color-subdue">No qutebrowser tabs visible.</div>
               {{ end }}
-              </div>
 
   # Add more pages here:
   # - name: Your page name
