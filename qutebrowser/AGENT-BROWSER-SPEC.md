@@ -40,6 +40,10 @@ headless Chrome, and implicit foreground attachment are forbidden.
 The browser worker must not activate the selected page whether `target` was
 implicit or explicit. Main-window tabs and focus must remain unchanged.
 
+Every newly created qutebrowser window is maximized, including the automatic
+OMP agent window. This changes geometry only and must not activate or raise the
+window.
+
 Keep the tmux/kitty muscle-memory split:
 
 | Bind    | Scope   | Action                      |

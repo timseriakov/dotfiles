@@ -707,3 +707,46 @@ def _align_existing_status_urls():
 
 _align_existing_status_urls()
 QTimer.singleShot(0, _align_existing_status_urls)
+
+
+def _apply_agent_maximized_geometry(window):
+    screen = window.screen() or QApplication.primaryScreen()
+    if screen is not None:
+        window.setGeometry(screen.availableGeometry())
+
+
+# Maximize every new window on its first show. Qt ignores a maximized window
+# state set before the window is shown, so hook show() itself. Installing it
+# must be reload-safe: :config-source re-runs this module, so unwrap any
+# previous wrapper first instead of chaining wrappers around each other.
+def _install_show_maximized():
+    current = mainwindow.MainWindow.show
+    wrapper = getattr(current, "_dotfiles_maximize_wrapper", False)
+    if wrapper:
+        mainwindow.MainWindow.show = current._dotfiles_original
+        current = mainwindow.MainWindow.show
+    original = current
+
+    def _show_maximized_on_first_show(self, *args, **kwargs):
+        if getattr(self, "_dotfiles_initial_show_done", False):
+            return original(self, *args, **kwargs)
+        self._dotfiles_initial_show_done = True
+        if self.testAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating):
+            # showMaximized() always activates; the agent window must fill the
+            # screen without stealing focus. Qt sizes a hidden window loosely,
+            # so apply the geometry again once it is actually mapped.
+            _apply_agent_maximized_geometry(self)
+            result = original(self, *args, **kwargs)
+            # macOS can finish its own layout after show(), shrinking the
+            # window by the title-bar height; reapply once it has settled.
+            QTimer.singleShot(0, lambda: _apply_agent_maximized_geometry(self))
+            QTimer.singleShot(250, lambda: _apply_agent_maximized_geometry(self))
+            return result
+        self.showMaximized()
+
+    _show_maximized_on_first_show._dotfiles_maximize_wrapper = True
+    _show_maximized_on_first_show._dotfiles_original = original
+    mainwindow.MainWindow.show = _show_maximized_on_first_show
+
+
+_install_show_maximized()
