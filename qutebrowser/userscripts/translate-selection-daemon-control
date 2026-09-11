@@ -274,6 +274,18 @@ start_daemon() {
     fi
   fi
 
+  # The daemon is normally supervised by launchd; let it own the process so
+  # the daemon survives this script exiting.
+  if [[ -f "$LAUNCHD_PLIST" ]] && ! launchctl list "$LAUNCHD_LABEL" >/dev/null 2>&1; then
+    launchctl load "$LAUNCHD_PLIST"
+    info "loaded launchd job $LAUNCHD_LABEL"
+    if wait_for_health; then
+      info "daemon is healthy on $HOST:$PORT"
+      return 0
+    fi
+    info "launchd job did not become healthy; falling back to a direct start"
+  fi
+
   nohup node "$DAEMON_PATH" >>"$LOG_FILE" 2>&1 &
   local pid=$!
   printf '%s\n' "$pid" >"$PID_FILE"
@@ -292,6 +304,13 @@ start_daemon() {
 
 stop_daemon() {
   ensure_directories
+
+  # Under launchd supervision KeepAlive would immediately restart a killed
+  # process, so a deliberate stop must unload the job first.
+  if [[ -f "$LAUNCHD_PLIST" ]] && launchctl list "$LAUNCHD_LABEL" >/dev/null 2>&1; then
+    launchctl unload "$LAUNCHD_PLIST" 2>/dev/null || true
+    info "unloaded launchd job $LAUNCHD_LABEL"
+  fi
 
   local pid
   pid="$(read_pid_file)"
@@ -398,13 +417,15 @@ install_daemon() {
   <string>$LAUNCHD_LABEL</string>
   <key>ProgramArguments</key>
   <array>
-    <string>$SCRIPT_DIR/translate-selection-daemon-control</string>
-    <string>start</string>
+    <string>$(command -v node)</string>
+    <string>$DAEMON_PATH</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
-  <false/>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
   <key>WorkingDirectory</key>
   <string>$SCRIPT_DIR</string>
   <key>EnvironmentVariables</key>

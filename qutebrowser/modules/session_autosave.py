@@ -11,15 +11,15 @@ from qutebrowser.mainwindow import mainwindow, tabbedbrowser
 from qutebrowser.misc import sessions
 from qutebrowser.qt.core import QTimer
 from qutebrowser.qt.widgets import QApplication
-from qutebrowser.utils import log, objreg
+from qutebrowser.utils import log, objreg, utils
 
-# Configurable knobs.
+# Custom autosaves start with `~` so the existing picker places them after manual sessions.
 INTERVAL_MINUTES = 40
 DEBOUNCE_SECONDS = 30
 MAX_SNAPSHOTS = 50
 MAX_NAME_CHARS = 180
 MAX_TITLE_CHARS = 22
-PREFIX = ""
+PREFIX = "~"
 
 _timer_attr = "_dotfiles_session_autosave_timer"
 _retry_attr = "_dotfiles_session_autosave_retry_timer"
@@ -72,31 +72,76 @@ def _session_name(data):
     return _shorten(_safe_part(name), MAX_NAME_CHARS)
 
 
-def _signature_default(value):
-    if isinstance(value, (bytes, bytearray)):
-        return {"__bytes__": bytes(value).hex()}
-    raise TypeError(f"Unsupported session value: {type(value).__name__}")
+def _tab_signature(tab):
+    history = tab.get("history") or []
+    current = next((entry for entry in history if entry.get("active")), history[-1] if history else {})
+    return [current.get("url", ""), bool(tab.get("pinned"))]
 
 
 def _signature(data):
-    return json.dumps(
-        data.get("windows", []),
-        ensure_ascii=False,
-        sort_keys=True,
-        default=_signature_default,
-    )
+    windows = []
+    for window in data.get("windows", []):
+        windows.append([_tab_signature(tab) for tab in window.get("tabs", [])])
+    return json.dumps(windows, ensure_ascii=False, separators=(",", ":"))
 
 
 def _autosave_names(manager):
     return sorted(
         name
         for name in os.listdir(manager._base_path)
-        if re.match(r"\d{4}-\d{2}-\d{2} \d{2}-\d{2}-\d{2}.*\.yml$", name)
+        if re.match(r"~ .*\.yml$", name)
+        or re.match(r"\d{4}-\d{2}-\d{2} \d{2}-\d{2}-\d{2}.*\.yml$", name)
         or re.match(r"\d{2}-\d{2} \d{2}-\d{2}.*\.yml$", name)
     )
 
 
+def _migrate_legacy_names(manager):
+    for name in os.listdir(manager._base_path):
+        if not (
+            re.match(r"\d{4}-\d{2}-\d{2} \d{2}-\d{2}-\d{2}.*\.yml$", name)
+            or re.match(r"\d{2}-\d{2} \d{2}-\d{2}.*\.yml$", name)
+        ):
+            continue
+        old_path = os.path.join(manager._base_path, name)
+        new_path = os.path.join(manager._base_path, f"~ {name}")
+        try:
+            if os.path.exists(new_path):
+                if _file_signature(manager, name) == _file_signature(manager, f"~ {name}"):
+                    os.remove(old_path)
+            else:
+                os.rename(old_path, new_path)
+        except OSError as exc:
+            log.sessions.debug("Could not migrate session autosave %s: %s", name, exc)
+
+def _file_signature(manager, name):
+    try:
+        with open(os.path.join(manager._base_path, name), encoding="utf-8") as file:
+            return _signature(utils.yaml_load(file))
+    except Exception as exc:
+        log.sessions.debug("Could not inspect session autosave %s: %s", name, exc)
+        return None
+
+
+def _has_signature(manager, signature):
+    return any(
+        _file_signature(manager, name) == signature for name in _autosave_names(manager)
+    )
+
+
 def _prune(manager):
+    seen = set()
+    for name in reversed(_autosave_names(manager)):
+        signature = _file_signature(manager, name)
+        if signature is None or signature not in seen:
+            if signature is not None:
+                seen.add(signature)
+            continue
+        try:
+            os.remove(os.path.join(manager._base_path, name))
+            log.sessions.debug("Removed duplicate session autosave %s", name)
+        except OSError as exc:
+            log.sessions.debug("Could not remove duplicate session autosave %s: %s", name, exc)
+
     for name in _autosave_names(manager)[:-MAX_SNAPSHOTS]:
         try:
             os.remove(os.path.join(manager._base_path, name))
@@ -111,9 +156,14 @@ def _save(*_args):
     if manager is None:
         return
     try:
+        _migrate_legacy_names(manager)
         data = manager._save_all(with_private=False, with_history=False)
         signature = _signature(data)
         if signature == _last_signature:
+            return
+        if _has_signature(manager, signature):
+            _last_signature = signature
+            _prune(manager)
             return
         manager.save(_session_name(data), with_private=False, with_history=True)
         _last_signature = signature
