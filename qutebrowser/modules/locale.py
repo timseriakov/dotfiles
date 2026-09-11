@@ -23,8 +23,13 @@ def en_mode_enter(mode):
 
 
 def en_mode_leave():
-    """Leave mode and switch to English layout"""
-    return "spawn -u switch-to-english ;; mode-leave"
+    """Leave mode and switch to English layout
+
+    mode-leave must come first: spawn already exits insert mode, so running
+    mode-leave afterwards hits normal mode and errors with
+    "mode-leave: This command is only allowed in ... mode, not normal".
+    """
+    return "mode-leave ;; spawn -u switch-to-english"
 
 
 # Override insert mode bindings to preserve layout when entering, switch when leaving
