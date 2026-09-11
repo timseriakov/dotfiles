@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 0 ]]; then
+  printf '%s\n' 'qutebrowser-agent takes no URL.' >&2
+  exit 2
+fi
+
+# qutebrowser's macOS IPC runtime follows QStandardPaths.TempLocation.
+canonical_tmp="$(/usr/bin/getconf DARWIN_USER_TEMP_DIR 2>/dev/null || true)"
+if [[ -z "$canonical_tmp" ]]; then
+  printf '%s\n' 'Cannot determine macOS qutebrowser runtime directory.' >&2
+  exit 1
+fi
+cdp_browser="$(/usr/bin/curl -fsS --max-time 2 http://127.0.0.1:9223/json/version 2>/dev/null | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin).get("Browser", ""))' || true)"
+if [[ "$cdp_browser" != qutebrowser/* ]]; then
+  printf '%s\n' 'Configured CDP endpoint is not owned by qutebrowser; refusing to spawn another instance.' >&2
+  exit 1
+fi
+export TMPDIR="${canonical_tmp%/}"
+
+# The config hook consumes this inert token before the bootstrap tab is created.
+exec /Applications/qutebrowser.app/Contents/MacOS/qutebrowser --target window "about:blank#OMP_AGENT_WINDOW_9f2c_BOOTSTRAP"

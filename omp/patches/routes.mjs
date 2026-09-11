@@ -18,6 +18,14 @@ export function runPatchRoutes(ctx) {
   setupRuntimeStateLinks();
 
   const sourceRoutes = [
+    [
+      "tools/browser.ts",
+      (content) => patches.patchBrowserIsolation(content, { replaceAny }),
+    ],
+    [
+      "tools/browser/attach.ts",
+      (content) => patches.patchBrowserAttach(content, { replaceAny }),
+    ],
     ["modes/composer.ts", patches.patchComposer],
     ["cli.ts", patches.patchCliStartupPrepaint],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],

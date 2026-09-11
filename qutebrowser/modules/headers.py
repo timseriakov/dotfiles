@@ -11,14 +11,16 @@ config.set(
     "Chrome/134.0.6998.208 Safari/537.36",
 )
 
+# Keep the explicit Google workaround: qutebrowser's built-in site quirk is
+# initialized at startup and is not reliably reapplied by :config-source.
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}) Gecko/20100101 Firefox/135.0",
+    "Mozilla/5.0 ({os_info}; rv:145.0) Gecko/20100101 Firefox/145.0",
     "https://accounts.google.com/*",
 )
 config.set(
     "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}) Gecko/20100101 Firefox/135.0",
+    "Mozilla/5.0 ({os_info}; rv:145.0) Gecko/20100101 Firefox/145.0",
     "https://accounts.youtube.com/*",
 )
 # Standard headers for all sites (навигационный профиль)

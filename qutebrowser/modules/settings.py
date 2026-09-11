@@ -36,7 +36,7 @@ c.colors.webpage.preferred_color_scheme = "dark"
 c.colors.webpage.bg = "#ffffff"
 
 c.input.mode_override = None
-c.input.partial_timeout = 0
+c.input.partial_timeout = 1500
 
 c.qt.workarounds.disable_hangouts_extension = True
 

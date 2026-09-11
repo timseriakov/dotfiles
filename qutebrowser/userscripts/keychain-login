@@ -13,6 +13,8 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PAT
 DEBUG_LOG="/tmp/keychain-login.log"
 PICK_MODE=false
 ATTEMPTED_AUTH=false
+APW_TIMEOUT_SECONDS=${APW_TIMEOUT_SECONDS:-10}
+TIMEOUT_BIN=""
 
 # ========== Logging utilities ==========
 log() {
@@ -81,6 +83,22 @@ else
 fi
 
 log "Using apw: $APW_BIN"
+if command -v gtimeout >/dev/null 2>&1; then
+  TIMEOUT_BIN="$(command -v gtimeout)"
+elif command -v timeout >/dev/null 2>&1; then
+  TIMEOUT_BIN="$(command -v timeout)"
+fi
+
+run_apw() {
+  if [[ -n "$TIMEOUT_BIN" ]]; then
+    "$TIMEOUT_BIN" "$APW_TIMEOUT_SECONDS" "$APW_BIN" "$@"
+  else
+    "$APW_BIN" "$@"
+  fi
+}
+
+log "Using apw timeout: ${APW_TIMEOUT_SECONDS}s${TIMEOUT_BIN:+ via $TIMEOUT_BIN}"
+
 
 # Check apw service
 if ! pgrep -x "apw" >/dev/null 2>&1; then
@@ -199,7 +217,7 @@ query_apw_list() {
   log "Request: apw pw list '$domain'"
 
   set +e
-  output=$("$APW_BIN" pw list "$domain" 2>&1)
+  output=$(run_apw pw list "$domain" 2>&1)
   local exit_code=$?
   set -e
 
@@ -273,7 +291,7 @@ query_apw_get() {
   log "Request: ${cmd[*]}"
 
   set +e
-  output=$("${cmd[@]}" 2>&1)
+  output=$(run_apw "${cmd[@]:1}" 2>&1)
   local exit_code=$?
   set -e
 
@@ -344,7 +362,7 @@ query_apw_otp() {
   log "OTP request: ${cmd[*]}"
 
   set +e
-  output=$("${cmd[@]}" 2>&1)
+  output=$(run_apw "${cmd[@]:1}" 2>&1)
   local exit_code=$?
   set -e
 

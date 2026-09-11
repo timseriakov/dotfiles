@@ -4,26 +4,41 @@ Read this before changing qutebrowser launch, CDP, browser automation, or `Cmd+h
 
 ## Profiles and CDP
 
-There are two qutebrowser profiles:
+The primary automation profile is the normal qutebrowser profile:
 
-| Profile   | Launcher          | Basedir                          | CDP              |
-| --------- | ----------------- | -------------------------------- | ---------------- |
-| Normal    | `qutebrowser`     | default qutebrowser basedir      | `127.0.0.1:9223` |
-| Dev/agent | `qutebrowser-dev` | `~/.local/share/qutebrowser-dev` | `127.0.0.1:9224` |
+| Profile | Basedir                     | CDP              |
+| ------- | --------------------------- | ---------------- |
+| Normal  | default qutebrowser basedir | `127.0.0.1:9223` |
 
-Important: normal qutebrowser is **not CDP-free**. Both profiles expose CDP; the difference is profile/data separation and port number. Do not describe the normal profile as isolated from CDP.
+OMP automatically runs `qutebrowser/bin/qutebrowser-agent` when the marked
+normal-profile target is absent. The qutebrowser config hook tags every page
+title in that window with the persistent marker `OMP_AGENT_WINDOW_9f2c`,
+including after cross-origin navigation. OMP matches that marker and never uses
+foreground/first-page fallback selection.
+For CDP `9223`, OMP injects this marker as the effective target automatically.
+Callers may pass the same marker explicitly; any other target is rejected.
 
-`qutebrowser-dev` is seeded once from `~/.local/share/qutebrowser` into `~/.local/share/qutebrowser-dev/data`, then diverges.
+This shares cookies, logins, and authenticated state while keeping agent actions
+out of the user's main window.
+
+The separate `qutebrowser-dev` profile at `~/.local/share/qutebrowser-dev` and
+CDP `127.0.0.1:9224` is optional isolation only. It has separate cookies and
+sessions and requires an explicit user decision; it is not the default.
+
+If automatic marker-target creation fails, automation fails closed. Chrome,
+headless Chrome, and implicit foreground attachment are forbidden.
 
 ## Agent browser automation order
 
-Agents should use:
+1. Use the marked normal-profile qutebrowser window on CDP `9223`.
+2. Use Helium's OMP relay only through explicit `app.relay: true` when a
+   documented qutebrowser-CDP capability gap requires it.
+3. Never use relay as a fallback for a missing marker target.
 
-1. Dev/agent qutebrowser CDP: `127.0.0.1:9224`.
-2. Normal qutebrowser CDP: `127.0.0.1:9223` as fallback.
-3. Do not use Helium CDP by default.
+## Focus and navigation
 
-## Navigation bindings
+The browser worker must not activate the selected page whether `target` was
+implicit or explicit. Main-window tabs and focus must remain unchanged.
 
 Keep the tmux/kitty muscle-memory split:
 
@@ -34,13 +49,16 @@ Keep the tmux/kitty muscle-memory split:
 | `Cmd+j` | tabs    | previous tab                |
 | `Cmd+k` | tabs    | next tab                    |
 
-Window cycling is qutebrowser-side and uses qutebrowser/Qt runtime state: runtime `win_id` values from `objreg.window_registry` plus `mainwindow.raise_window(...)`. Qutebrowser runtime `win_id` and CDP target/window IDs are separate namespaces; never interchange them. The helper does not use CDP IDs and does not require Hammerspoon.
+Window cycling uses qutebrowser runtime `win_id` values and is unrelated to CDP
+target IDs.
+
+## Separate profile policy
+
+`qutebrowser-dev` must not be silently selected: its cookies, logins, and session
+files are separate from the normal profile.
 
 ## Relevant files
 
-- `qutebrowser/config.py` — CDP port selection (`9223` normal, `9224` dev).
-- `qutebrowser/bin/qutebrowser-dev` — dev/agent profile launcher.
-- `qutebrowser/modules/bindings.py` — `Cmd+hjkl` bindings.
-- `qutebrowser/scripts/window-cycle-next.py` — next-window helper.
-- `qutebrowser/scripts/window-cycle-prev.py` — previous-window helper.
-- `omp/agent/skills/mcp-router/SKILL.md` — agent CDP priority notes.
+- `qutebrowser/config.py` — CDP port selection.
+- `qutebrowser/bin/qutebrowser-dev` — optional separate-profile launcher.
+- `omp/agent/skills/qutebrowser-browser-automation/SKILL.md` — active policy.

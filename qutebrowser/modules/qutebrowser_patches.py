@@ -46,8 +46,10 @@ from qutebrowser.mainwindow import mainwindow, tabwidget
 from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QTabWidget
-from qutebrowser.utils import usertypes
-from qutebrowser.utils import qtutils
+from qutebrowser.utils import qtutils, usertypes
+from qutebrowser.qt.webenginecore import QWebEngineScript
+from qutebrowser import app as qute_app
+
 
 
 _orig_mainwindow_init = getattr(
@@ -576,6 +578,118 @@ mainwindow.MainWindow._update_overlay_geometry = _update_overlay_geometry_with_r
 
 
 mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
+
+
+
+
+_AGENT_WINDOW_PROPERTY = "_dotfiles_omp_agent_window"
+_AGENT_TITLE_MARKER = "OMP_AGENT_WINDOW_9f2c"
+_AGENT_BOOTSTRAP_TOKEN = "OMP_AGENT_WINDOW_9f2c_BOOTSTRAP"
+_AGENT_TITLE_JS = """(() => {
+  const marker = 'OMP_AGENT_WINDOW_9f2c';
+  const apply = () => {
+    if (!document.title.includes(marker)) document.title = `${marker} ${document.title}`.trim();
+  };
+  apply();
+  const root = document.documentElement || document;
+  if (root && typeof MutationObserver === 'function') {
+    new MutationObserver(apply).observe(root, {childList: true, subtree: true, characterData: true});
+  }
+})();"""
+
+
+def _tag_agent_tab(tab):
+    if getattr(tab, "_dotfiles_omp_agent_tagged", False):
+        return
+    scripts = getattr(tab, "_scripts", None)
+    if scripts is None:
+        return
+    scripts._inject_js(
+        "omp-agent-window",
+        _AGENT_TITLE_JS,
+        world=QWebEngineScript.ScriptWorldId.MainWorld,
+        injection_point=QWebEngineScript.InjectionPoint.DocumentCreation,
+    )
+    tab._dotfiles_omp_agent_tagged = True
+    try:
+        tab.run_js_async(_AGENT_TITLE_JS)
+    except RuntimeError:
+        pass
+
+
+def _watch_agent_tab(window, tab):
+    if getattr(tab, "_dotfiles_omp_agent_watched", False):
+        return
+    tab._dotfiles_omp_agent_watched = True
+
+    def inspect(*_args):
+        if bool(window.property(_AGENT_WINDOW_PROPERTY)):
+            _tag_agent_tab(tab)
+
+    tab.url_changed.connect(inspect)
+    tab.title_changed.connect(inspect)
+    tab.load_finished.connect(inspect)
+    QTimer.singleShot(0, inspect)
+
+
+def _mark_agent_window(window):
+    window.setProperty(_AGENT_WINDOW_PROPERTY, True)
+    window.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+    if not getattr(window, "_dotfiles_omp_agent_hook", False):
+        window.tabbed_browser.new_tab.connect(
+            lambda tab, _index: _watch_agent_tab(window, tab)
+        )
+        window._dotfiles_omp_agent_hook = True
+    for tab in window.tabbed_browser.widgets():
+        _watch_agent_tab(window, tab)
+
+
+def _install_agent_window_detection(window):
+    if not getattr(window, "_dotfiles_omp_detection_hook", False):
+        window.tabbed_browser.new_tab.connect(
+            lambda tab, _index: _watch_agent_tab(window, tab)
+        )
+        window._dotfiles_omp_detection_hook = True
+    for tab in window.tabbed_browser.widgets():
+        _watch_agent_tab(window, tab)
+
+
+_agent_mainwindow_init = getattr(
+    mainwindow.MainWindow,
+    "_dotfiles_orig_agent_detection_init",
+    mainwindow.MainWindow.__init__,
+)
+mainwindow.MainWindow._dotfiles_orig_agent_detection_init = _agent_mainwindow_init
+
+
+def _mainwindow_init_with_agent_detection(self, *args, **kwargs):
+    _agent_mainwindow_init(self, *args, **kwargs)
+    _install_agent_window_detection(self)
+
+
+mainwindow.MainWindow.__init__ = _mainwindow_init_with_agent_detection
+
+
+_agent_open_url = getattr(qute_app, "_dotfiles_orig_open_url_for_agent", qute_app.open_url)
+qute_app._dotfiles_orig_open_url_for_agent = _agent_open_url
+
+
+def _open_url_without_agent_raise(url_value, target=None, no_raise=False, via_ipc=True):
+    if _AGENT_BOOTSTRAP_TOKEN not in url_value.toString():
+        return _agent_open_url(url_value, target=target, no_raise=no_raise, via_ipc=via_ipc)
+
+    target = target or config.val.new_instance_open_target
+    background = target in {"tab-bg", "tab-bg-silent"}
+    window = mainwindow.get_window(via_ipc=via_ipc, target=target, no_raise=True)
+    _mark_agent_window(window)
+    window.tabbed_browser.tabopen(url_value, background=background, related=False)
+    window.show()
+    return window
+
+
+qute_app.open_url = _open_url_without_agent_raise
+
+
 
 
 def _align_existing_status_urls():

@@ -45,6 +45,10 @@ import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
+import {
+  patchBrowserAttach,
+  patchBrowserIsolation,
+} from "./patches/browser-isolation.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
 import {
   patchPiSideChatIndex,
@@ -374,6 +378,8 @@ const patches = {
   ...createInputSessionPatches(patchHelpers),
   ...createTuiEditorTerminalPatches(patchHelpers),
   ...createCommandRuntimePatches(patchHelpers),
+  patchBrowserIsolation,
+  patchBrowserAttach,
   ...createGitTuiPatches(patchHelpers),
 };
 try {

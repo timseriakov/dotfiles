@@ -2,14 +2,10 @@
 set -euo pipefail
 
 export QUTE_DEV_PROFILE=1
+export QUTE_AGENT_BROWSER=1
 DEV_BASE="$HOME/.local/share/qutebrowser-dev"
-DEV_DATA="$DEV_BASE/data"
-NORMAL_DATA="$HOME/.local/share/qutebrowser"
 
-if [[ ! -e "$DEV_DATA" && -d "$NORMAL_DATA" ]]; then
-  mkdir -p "$DEV_BASE"
-  ditto "$NORMAL_DATA" "$DEV_DATA"
-fi
+mkdir -p "$DEV_BASE"
 
 if [[ $# -eq 0 ]]; then
   set -- about:blank
