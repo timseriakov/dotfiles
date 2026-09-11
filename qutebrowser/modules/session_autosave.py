@@ -72,8 +72,19 @@ def _session_name(data):
     return _shorten(_safe_part(name), MAX_NAME_CHARS)
 
 
+def _signature_default(value):
+    if isinstance(value, (bytes, bytearray)):
+        return {"__bytes__": bytes(value).hex()}
+    raise TypeError(f"Unsupported session value: {type(value).__name__}")
+
+
 def _signature(data):
-    return json.dumps(data.get("windows", []), ensure_ascii=False, sort_keys=True)
+    return json.dumps(
+        data.get("windows", []),
+        ensure_ascii=False,
+        sort_keys=True,
+        default=_signature_default,
+    )
 
 
 def _autosave_names(manager):
