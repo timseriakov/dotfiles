@@ -18,175 +18,182 @@ providers:
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 272000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.5-low
         name: "5.5 Low"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 272000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.5-medium
         name: "5.5 Medium"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 272000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.5-high
         name: "5.5 High"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 272000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.5-xhigh
         name: "5.5 Xhigh"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 272000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna
         name: "5.6 Luna"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna-low
         name: "5.6 Luna Low"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna-medium
         name: "5.6 Luna Medium"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna-high
         name: "5.6 Luna High"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna-xhigh
         name: "5.6 Luna Xhigh"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-luna-max
         name: "5.6 Luna Max"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol
         name: "5.6 Sol"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-low
         name: "5.6 Sol Low"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-medium
         name: "5.6 Sol Medium"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-high
         name: "5.6 Sol High"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-xhigh
         name: "5.6 Sol Xhigh"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-max
         name: "5.6 Sol Max"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-sol-ultra
         name: "5.6 Sol Ultra"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-astra
+        name: Astra
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra
         name: "5.6 Terra"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-low
         name: "5.6 Terra Low"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-medium
         name: "5.6 Terra Medium"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-high
         name: "5.6 Terra High"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-xhigh
         name: "5.6 Terra Xhigh"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-max
         name: "5.6 Terra Max"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-5.6-terra-ultra
         name: "5.6 Terra Ultra"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 872000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: openrouter/~deepseek/deepseek-v4-flash-latest
         name: "V4 Flash Latest"
@@ -195,6 +202,62 @@ providers:
         supportsTools: true
         contextWindow: 1310720
         maxTokens: 384000
+
+  opencode-go:
+    baseUrl: https://router.hwqtpa.easypanel.host/v1
+    apiKey: OMNIROUTE_OPENCODE_API_KEY
+    api: openai-completions
+    authHeader: true
+    compat:
+      supportsStore: false
+      supportsDeveloperRole: true
+      supportsReasoningEffort: true
+      maxTokensField: max_tokens
+      supportsUsageInStreaming: true
+      supportsToolChoice: true
+    models:
+      - id: deepseek-v4-flash
+        name: V4 Flash
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 1000000
+        maxTokens: 384000
+      - id: glm-5.3-flash
+        name: GLM-5.3 Flash
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 202752
+        maxTokens: 128000
+      - id: glm-5.3
+        name: GLM-5.3
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 202752
+        maxTokens: 128000
+      - id: deepseek-v4.1-flash
+        name: V4.1 Flash
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 1000000
+        maxTokens: 384000
+      - id: deepseek-v4-flash-vision-exp
+        name: V4 Flash Vision
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1000000
+        maxTokens: 384000
+      - id: grok-4.6
+        name: Grok 4.6
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 272000
+        maxTokens: 128000
 
   zen-free:
     baseUrl: https://opencode.ai/zen/v1

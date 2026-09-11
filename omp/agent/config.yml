@@ -67,7 +67,7 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  smol: omniroute/openrouter/~deepseek/deepseek-v4-flash-latest:max
+  smol: opencode-go/deepseek-v4.1-flash:max
   plan: omniroute/cx/gpt-5.6-sol:medium
   task: omniroute/cx/gpt-5.6-luna:max
   vision: omniroute/cx/gpt-5.6-luna:max
@@ -131,8 +131,6 @@ disabledProviders:
   - openai
   - openai-codex
   - opencode
-  - opencode-go
-  - opencode-zen
   - openrouter
   - qianfan
   - qwen-portal
@@ -182,6 +180,7 @@ providers:
     - public
 modelProviderOrder:
   - omniroute
+  - opencode-go
   - zen-free
 symbolPreset: nerd
 extensions:
