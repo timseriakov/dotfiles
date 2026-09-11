@@ -388,6 +388,245 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     return out;
   }
 
+  /**
+   * Russian (ЙЦУКЕН) layout support for the Vim state machine: map Cyrillic input to the Latin
+   * key at the same physical keyboard position, so motions/operators work while the host layout
+   * is Russian. Anything the state machine declines (or Insert-mode typing) is untouched.
+   */
+  function patchVimRuLayout(content) {
+    let out = content;
+    let r;
+
+    const translitTable = `const RU_LAYOUT_TO_LATIN: Record<string, string> = {
+	"й": "q", "ц": "w", "у": "e", "к": "r", "е": "t", "н": "y", "г": "u", "ш": "i", "щ": "o", "з": "p", "х": "[", "ъ": "]",
+	"ф": "a", "ы": "s", "в": "d", "а": "f", "п": "g", "р": "h", "о": "j", "л": "k", "д": "l", "ж": ";", "э": "'",
+	"я": "z", "ч": "x", "с": "c", "м": "v", "и": "b", "т": "n", "ь": "m", "б": ",", "ю": ".",
+	"Й": "Q", "Ц": "W", "У": "E", "К": "R", "Е": "T", "Н": "Y", "Г": "U", "Ш": "I", "Щ": "O", "З": "P", "Х": "{", "Ъ": "}",
+	"Ф": "A", "Ы": "S", "В": "D", "А": "F", "П": "G", "Р": "H", "О": "J", "Л": "K", "Д": "L", "Ж": ":", "Э": "\\"",
+	"Я": "Z", "Ч": "X", "С": "C", "М": "V", "И": "B", "Т": "N", "Ь": "M", "Б": "<", "Ю": ">",
+	"ё": "\`", "Ё": "~",
+};`;
+
+    r = replaceOnce(
+      out,
+      `export class VimState {`,
+      `${translitTable}\nexport class VimState {`,
+      "vim RU layout translation table",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `\thandleKey(key: string, buf: VimBuffer): VimCommand[] | null {\n\t\tif (key === "escape") return this.#handleEscape(buf);\n\t\tif (this.mode === "insert") return null;`,
+      `\thandleKey(key: string, buf: VimBuffer): VimCommand[] | null {\n\t\tif (key === "escape") return this.#handleEscape(buf);\n\t\tif (this.mode === "insert") return null;\n\n\t\t// Russian (ЙЦУКЕН) layout: map the key to the Latin one at the same physical position\n\t\t// (р→h, о→j, в→d, …) so the motions/operators below keep working while the host layout\n\t\t// is Russian. Insert mode returned above, so typing real Russian text is never rewritten.\n\t\tkey = RU_LAYOUT_TO_LATIN[key] ?? key;`,
+      "vim handleKey RU layout translation",
+    );
+    out = r.content;
+
+    return out;
+  }
+
+  /**
+   * User's Neovim register scheme: plain deletes (`x X c C dd d D`) go to the black hole (`"_` —
+   * no copy into the paste register), while `m`/`mm`/`M` are the explicit cut (delete AND store,
+   * like stock `c`), and `p` pastes only what was yanked/cut. Adds a `yank` flag to the delete
+   * command and a new `m` operator (change with yank).
+   */
+  function patchVimCutRegisters(content) {
+    let out = content;
+    let r;
+
+    r = replaceOnce(
+      out,
+      `export type VimOperator = "d" | "y" | "c";`,
+      `export type VimOperator = "d" | "y" | "c" | "m";`,
+      "vim operator type + m",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `	| { kind: "delete"; from: VimPosition; to: VimPosition; linewise: boolean; insert: boolean }`,
+      `	| { kind: "delete"; from: VimPosition; to: VimPosition; linewise: boolean; insert: boolean; yank: boolean }`,
+      "vim delete command yank field",
+    );
+    out = r.content;
+
+    // Normal-mode `x`: black-hole delete.
+    r = replaceOnce(
+      out,
+      `				return [
+					{
+						kind: "delete",
+						from: { line: buf.cursorLine, col: buf.cursorCol },
+						to: { line: buf.cursorLine, col },
+						linewise: false,
+						insert: false,
+					},
+				];`,
+      `				return [
+					{
+						kind: "delete",
+						from: { line: buf.cursorLine, col: buf.cursorCol },
+						to: { line: buf.cursorLine, col },
+						linewise: false,
+						insert: false,
+						yank: false,
+					},
+				];`,
+      "vim x black-hole delete",
+    );
+    out = r.content;
+
+    // `M` = cut to end of line (like `C` but with yank).
+    r = replaceOnce(
+      out,
+      `			case "D":
+			case "C": {
+				// Like Vim, \`D\`/\`C\` take a count: \`2D\` deletes to the end of the next line, not just
+				// this one (\`:h D\` — "and [count]-1 more lines").
+				const span = this.#takeCount();
+				const last = Math.min(buf.cursorLine + span - 1, buf.lines.length - 1);
+				return this.#operate(
+					key === "C" ? "c" : "d",`,
+      `			case "D":
+			case "C":
+			case "M": {
+				// Like Vim, \`D\`/\`C\` take a count: \`2D\` deletes to the end of the next line, not just
+				// this one (\`:h D\` — "and [count]-1 more lines").
+				const span = this.#takeCount();
+				const last = Math.min(buf.cursorLine + span - 1, buf.lines.length - 1);
+				return this.#operate(
+					key === "C" ? "c" : key === "M" ? "m" : "d",`,
+      "vim M cut to end of line",
+    );
+    out = r.content;
+
+    // Add `m` as a motion-waiting operator (doubled `mm` = linewise cut).
+    r = replaceOnce(
+      out,
+      `			case "d":
+			case "y":
+			case "c":
+				// A doubled operator (\`dd\`, \`yy\`, \`cc\`) is linewise over \`count\` lines.`,
+      `			case "d":
+			case "y":
+			case "c":
+			case "m":
+				// A doubled operator (\`dd\`, \`yy\`, \`cc\`, \`mm\`) is linewise over \`count\` lines.`,
+      "vim m operator",
+    );
+    out = r.content;
+
+    // `#operate`: d → delete without yank, c → change without yank, m → change WITH yank.
+    r = replaceOnce(
+      out,
+      `		if (operator !== "c") {
+			return [{ kind: "delete", from, to, linewise, insert: false }];
+		}
+		// \`c\` always lands in Insert mode. The leading move matters when the range is empty
+		// (\`ci"\` between bare quotes): the delete is a no-op, so nothing else would park the cursor.
+		// \`cc\`/\`cj\` clear the lines but keep them, so a linewise change stays linewise-shaped.
+		this.mode = "insert";
+		return [
+			{ kind: "move", to: from },
+			{ kind: "delete", from, to, linewise: false, insert: true },
+			{ kind: "mode", mode: "insert" },
+		];`,
+      `		if (operator !== "c" && operator !== "m") {
+			return [{ kind: "delete", from, to, linewise, insert: false, yank: false }];
+		}
+		// \`c\`/\`m\` always land in Insert mode. The leading move matters when the range is empty
+		// (\`ci"\` between bare quotes): the delete is a no-op, so nothing else would park the cursor.
+		// \`cc\`/\`cj\` clear the lines but keep them, so a linewise change stays linewise-shaped.
+		// \`m\` is the user's explicit cut: unlike \`c\` it also stores the deleted text for \`p\`.
+		this.mode = "insert";
+		return [
+			{ kind: "move", to: from },
+			{ kind: "delete", from, to, linewise: false, insert: true, yank: operator === "m" },
+			{ kind: "mode", mode: "insert" },
+		];`,
+      "vim operate yank flag",
+    );
+    out = r.content;
+
+    // Visual mode: `d`/`x` black-hole, `m` cut.
+    r = replaceOnce(
+      out,
+      `			case "y":
+			case "d":
+			case "x":
+			case "c":
+			case "s": {
+				const operator: VimOperator = key === "y" ? "y" : key === "c" || key === "s" ? "c" : "d";`,
+      `			case "y":
+			case "d":
+			case "x":
+			case "c":
+			case "s":
+			case "m": {
+				// \`d\`/\`x\` black-hole delete; \`c\`/\`s\`/\`m\` all yank the selection (stock \`c\` stores,
+				// \`m\` is the explicit cut — same engine path), matching the user's Neovim config.
+				const operator: VimOperator =
+					key === "y" ? "y" : key === "d" || key === "x" ? "d" : "m";`,
+      "vim visual m operator",
+    );
+    out = r.content;
+
+    return out;
+  }
+
+  /**
+   * Keep the editor's delete handler in sync with the `yank` flag: only store into the kill ring
+   * (the paste register behind `p`) when the delete asked to — black-hole deletes must not clobber it.
+   */
+  function patchEditorVimKillRing(content) {
+    let out = content;
+    let r;
+
+    r = replaceOnce(
+      out,
+      `				case "delete":
+					this.#deleteVimRange(command.from, command.to, command.linewise);
+					break;`,
+      `				case "delete":
+					this.#deleteVimRange(command.from, command.to, command.linewise, command.yank);
+					break;`,
+      "editor pass yank to deleteVimRange",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `	#deleteVimRange(from: VimPosition, to: VimPosition, linewise: boolean): void {`,
+      `	#deleteVimRange(from: VimPosition, to: VimPosition, linewise: boolean, yank = true): void {`,
+      "editor deleteVimRange yank param",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `			this.#recordUndoState();
+			this.#killRing.push(\`\${removed}\\n\`, { prepend: false });`,
+      `			this.#recordUndoState();
+			if (yank) this.#killRing.push(\`\${removed}\\n\`, { prepend: false });`,
+      "editor linewise kill ring condition",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `		this.#recordUndoState();
+		this.#killRing.push(removed, { prepend: false });`,
+      `		this.#recordUndoState();
+		if (yank) this.#killRing.push(removed, { prepend: false });`,
+      "editor kill ring condition",
+    );
+    out = r.content;
+
+    return out;
+  }
+
   return {
     patchEditorGutterWidth,
     patchTuiTerminalCapabilities,
@@ -396,5 +635,8 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     patchCustomEditor,
     patchSettingsSchemaAttachmentPreview,
     patchAttachmentChips,
+    patchVimRuLayout,
+    patchVimCutRegisters,
+    patchEditorVimKillRing,
   };
 }
