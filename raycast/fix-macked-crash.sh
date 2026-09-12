@@ -27,28 +27,42 @@ build() {
 	codesign -f -s - "$BUILD/macked.app.dylib"
 }
 
+isShim() { /usr/bin/grep -aqE "NILGUARD-SHIM-1|\[nilguard\] armed" "$1"; }
+
 apply() {
 	if [ ! -f "$FW/macked.app.dylib" ]; then
 		echo "$FW/macked.app.dylib is missing — not a Macked repack any more, nothing to patch" >&2
 		exit 1
 	fi
+	if isShim "$FW/macked.app.dylib" && { [ ! -f "$FW/macked-orig.dylib" ] || isShim "$FW/macked-orig.dylib"; }; then
+		echo "installed shim but no usable crack at $FW/macked-orig.dylib — restore it from $BACKUP/macked.app.dylib.orig first" >&2
+		exit 1
+	fi
 	mkdir -p "$BACKUP"
 	build
-	if ! /usr/bin/grep -aq "\[nilguard\] armed" "$FW/macked.app.dylib"; then
-		# What is installed is the real crack (fresh update, or the untouched original), so it
-		# becomes the crack we load — otherwise a stale macked-orig.dylib would be reused.
+	if ! isShim "$BUILD/macked.app.dylib"; then
+		echo "build produced no shim marker in $BUILD/macked.app.dylib, aborting before touching $FW" >&2
+		exit 1
+	fi
+	if ! isShim "$FW/macked.app.dylib"; then
+		# A real crack is installed (fresh repack, or the untouched original), so it becomes the
+		# crack we load — otherwise a stale macked-orig.dylib would be reused.
 		cp -p "$FW/macked.app.dylib" "$FW/macked-orig.dylib"
 		cp -p "$FW/macked.app.dylib" "$BACKUP/macked.app.dylib.orig"
 		echo "rotated the installed crack -> $FW/macked-orig.dylib and $BACKUP/macked.app.dylib.orig"
 	fi
-	if [ ! -f "$FW/macked-orig.dylib" ]; then
-		echo "no crack to load (macked-orig.dylib missing), aborting" >&2
+	if [ ! -f "$FW/macked-orig.dylib" ] || isShim "$FW/macked-orig.dylib"; then
+		echo "no crack to load at $FW/macked-orig.dylib, aborting" >&2
 		exit 1
 	fi
 	cp "$BUILD/macked.app.dylib" "$FW/macked.app.dylib"
 	codesign -f -s - "$FW/macked.app.dylib"
+	if ! isShim "$FW/macked.app.dylib"; then
+		echo "install verification failed: no shim marker in $FW/macked.app.dylib" >&2
+		exit 1
+	fi
 	echo "installed nilguard shim; restart Raycast (pkill -x Raycast; open -a Raycast)"
-	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard"
+	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard — expect 'armed (swizzle=ok, macked=ok)' and at least one 'nil JSON object -> substituting {}'"
 }
 
 restore() {

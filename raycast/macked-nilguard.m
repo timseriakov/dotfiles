@@ -20,6 +20,9 @@
 #define MACKED_ORIG "/Applications/Raycast.app/Contents/Frameworks/macked-orig.dylib"
 #endif
 
+// Dedicated marker so raycast/fix-macked-crash.sh can tell this shim from the real crack.
+static const char kNilguardMarker[] __attribute__((used)) = "NILGUARD-SHIM-1";
+
 @interface NSJSONSerialization (NilGuard)
 + (NSData *)ng_dataWithJSONObject:(id)obj options:(NSJSONWritingOptions)opt error:(NSError **)error;
 @end
