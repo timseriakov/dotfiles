@@ -290,13 +290,13 @@ abbr -a web2telegram-gif-with-audio 'ffmpeg -i w.webm \
 -c:v libx264 \
 -c:a aac \
 -movflags +faststart \
-output1.mp4'
+o.mp4'
 abbr -a webm2telegram-gif 'ffmpeg -i w.webm \
 -movflags +faststart \
 -pix_fmt yuv420p \
 -vf "fps=30,scale=512:-2:flags=lanczos" \
 -c:v libx264 -profile:v baseline -level 3.0 \
--an -loop 0 output.mp4'
+-an -loop 0 o.mp4'
 abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang ru --convert-subs srt
 
 abbr -a who-lock-input "ioreg -l -w 0 | grep -o 'kCGSSessionSecureInputPID\"=[0-9]*' | grep -o '[0-9]*' | head -1 | xargs ps -o pid,comm -p"

@@ -67,9 +67,8 @@ Never edit configs in-place inside application directories — always edit insid
 
 ## Qutebrowser Browser Automation
 
-Before changing qutebrowser launch, CDP, browser automation, or `Cmd+hjkl` navigation bindings, read [`qutebrowser/AGENT-BROWSER-SPEC.md`](qutebrowser/AGENT-BROWSER-SPEC.md).
-
-Key correction: normal qutebrowser also exposes CDP (`127.0.0.1:9223`); the dev/agent profile uses separate data and CDP `127.0.0.1:9224`.
+Before using or changing qutebrowser, CDP, browser automation, agent windows,
+or Helium relay, load the `qutebrowser-browser-automation` skill.
 
 ## Dual-Yazi tmux Kitty Image Preview
 
