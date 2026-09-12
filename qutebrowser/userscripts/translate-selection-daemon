@@ -326,18 +326,51 @@ const runOpencode = (prompt, state, timeoutMs = TIMEOUT_MS) => {
   );
 };
 
+const isTranslationPair = (value) =>
+  Array.isArray(value) &&
+  value.length > 0 &&
+  value.every((item) => Array.isArray(item) && typeof item[0] === "string");
+
+// clients5 dict-chrome-ex answers with [[translation, sourceLang], ...]; the older
+// translate_a/single answered with [[[translation, source, ...], ...], ...]. Both are
+// handled so the endpoint can be swapped back once it stops answering with the block page.
+const parseGoogleTranslation = (body) => {
+  let pieces = null;
+  if (isTranslationPair(body)) {
+    pieces = body.map((item) => item[0]);
+  } else if (Array.isArray(body) && isTranslationPair(body[0])) {
+    pieces = body[0].map((item) => item[0]);
+  }
+
+  if (!pieces) {
+    const err = new Error("invalid translate api response");
+    err.code = "parse_error";
+    err.httpStatus = 502;
+    throw err;
+  }
+
+  const merged = pieces.join("\n").trim();
+  if (!merged) {
+    const err = new Error("empty translation");
+    err.code = "empty_translation";
+    err.httpStatus = 502;
+    throw err;
+  }
+
+  return merged;
+};
+
 const translateViaGoogle = async ({
   text,
   timeoutMs = FAST_PATH_TIMEOUT_MS,
 }) => {
   const search = new URLSearchParams({
-    client: "gtx",
+    client: "dict-chrome-ex",
     sl: "auto",
     tl: "ru",
-    dt: "t",
     q: text,
   });
-  const url = `https://translate.googleapis.com/translate_a/single?${search.toString()}`;
+  const url = `https://clients5.google.com/translate_a/t?${search.toString()}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -352,27 +385,7 @@ const translateViaGoogle = async ({
       err.httpStatus = 502;
       throw err;
     }
-    const body = await res.json();
-    const segments =
-      Array.isArray(body) && Array.isArray(body[0]) ? body[0] : null;
-    if (!segments) {
-      const err = new Error("invalid translate api response");
-      err.code = "parse_error";
-      err.httpStatus = 502;
-      throw err;
-    }
-    const merged = segments
-      .map((entry) =>
-        Array.isArray(entry) && typeof entry[0] === "string" ? entry[0] : "",
-      )
-      .join("")
-      .trim();
-    if (!merged) {
-      const err = new Error("empty translation");
-      err.code = "empty_translation";
-      err.httpStatus = 502;
-      throw err;
-    }
+    const merged = parseGoogleTranslation(await res.json());
     return merged;
   } catch (err) {
     if (err?.name === "AbortError") {
@@ -836,6 +849,7 @@ if (IS_MAIN) {
 export {
   createDaemon,
   extractTranslation,
+  parseGoogleTranslation,
   stripAnsi,
   TokenBucket,
   buildPrompt,

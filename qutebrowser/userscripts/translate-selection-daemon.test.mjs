@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   createDaemon,
   extractTranslation,
+  parseGoogleTranslation,
   TokenBucket,
   MAX_TEXT_CHARS,
 } from "./translate-selection-daemon";
@@ -34,6 +35,36 @@ test("extractTranslation falls back to plain translation text", () => {
 
 test("extractTranslation throws on empty output", () => {
   assert.throws(() => extractTranslation("   \n\t  "), {
+    code: "empty_translation",
+  });
+});
+
+test("parseGoogleTranslation reads the dict-chrome-ex pairs", () => {
+  assert.equal(parseGoogleTranslation([["Привет, мир", "en"]]), "Привет, мир");
+  assert.equal(
+    parseGoogleTranslation([
+      ["Раз", "en"],
+      ["Два", "en"],
+    ]),
+    "Раз\nДва",
+  );
+});
+
+test("parseGoogleTranslation still reads the older single shape", () => {
+  assert.equal(
+    parseGoogleTranslation([
+      [["Привет, мир", "hello world", null, null, 10]],
+      null,
+      "en",
+    ]),
+    "Привет, мир",
+  );
+});
+
+test("parseGoogleTranslation rejects unusable bodies", () => {
+  assert.throws(() => parseGoogleTranslation(null), { code: "parse_error" });
+  assert.throws(() => parseGoogleTranslation([[]]), { code: "parse_error" });
+  assert.throws(() => parseGoogleTranslation([["", "en"]]), {
     code: "empty_translation",
   });
 });
