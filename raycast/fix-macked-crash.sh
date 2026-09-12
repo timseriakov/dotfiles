@@ -62,7 +62,7 @@ apply() {
 		echo "install verification failed: no shim marker in $FW/macked.app.dylib" >&2
 		exit 1
 	fi
-	echo "installed nilguard shim; restart Raycast: killall Raycast; open -a Raycast"
+	echo "installed nilguard shim; restart Raycast: /usr/bin/killall Raycast || true; open -a Raycast"
 	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard — expect 'armed (swizzle=ok, macked=ok)', and 'nil JSON object -> substituting {}' once the crack hits its bad response again"
 }
 
