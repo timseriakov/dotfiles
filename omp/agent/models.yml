@@ -205,7 +205,7 @@ providers:
 
   opencode-go:
     baseUrl: https://router.hwqtpa.easypanel.host/v1
-    apiKey: OMNIROUTE_OPENCODE_API_KEY
+    apiKey: OMNIROUTE_OMP_API_KEY
     api: openai-completions
     authHeader: true
     compat:
@@ -216,49 +216,34 @@ providers:
       supportsUsageInStreaming: true
       supportsToolChoice: true
     models:
-      - id: deepseek-v4-flash
-        name: V4 Flash
-        reasoning: true
-        input: [text]
-        supportsTools: true
-        contextWindow: 1000000
-        maxTokens: 384000
-      - id: glm-5.3-flash
+      - id: opencode-go/glm-5.3-flash
         name: GLM-5.3 Flash
         reasoning: true
         input: [text]
         supportsTools: true
         contextWindow: 202752
         maxTokens: 128000
-      - id: glm-5.3
+      - id: opencode-go/glm-5.3
         name: GLM-5.3
         reasoning: true
         input: [text]
         supportsTools: true
         contextWindow: 202752
         maxTokens: 128000
-      - id: deepseek-v4.1-flash
+      - id: opencode-go/deepseek-v4.1-flash
         name: V4.1 Flash
         reasoning: true
         input: [text]
         supportsTools: true
         contextWindow: 1000000
         maxTokens: 384000
-      - id: deepseek-v4-flash-vision-exp
+      - id: opencode-go/deepseek-v4-flash-vision-exp
         name: V4 Flash Vision
         reasoning: true
         input: [text, image]
         supportsTools: true
         contextWindow: 1000000
         maxTokens: 384000
-      - id: grok-4.6
-        name: Grok 4.6
-        reasoning: true
-        input: [text]
-        supportsTools: true
-        contextWindow: 272000
-        maxTokens: 128000
-
   zen-free:
     baseUrl: https://opencode.ai/zen/v1
     apiKey: OPENCODE_ZEN_FREE

@@ -67,7 +67,7 @@ statusLine:
   sessionAccent: false
   showHookStatus: false
 modelRoles:
-  smol: opencode-go/deepseek-v4.1-flash:max
+  smol: opencode-go/opencode-go/deepseek-v4.1-flash:max
   plan: omniroute/cx/gpt-5.6-sol:medium
   task: omniroute/cx/gpt-5.6-luna:max
   vision: omniroute/cx/gpt-5.6-luna:max
