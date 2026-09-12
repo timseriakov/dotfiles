@@ -196,6 +196,8 @@ The prefilled qutebrowser form comes from commit `92742e8c2ed52f0abf57ed28a16994
 
 Keep the lifecycle fix from `/Users/tim/dev/pet-old/raycast-raindrop-io-ext`: `add.tsx` must await the animated toast hide, call `closeMainWindow({ clearRootSearch: true, popToRootType: PopToRootType.Immediate })`, then show the success toast. `BookmarkForm` must type `onSaved` as `void | Promise<void>`, await it, and skip its local reset when an external `onSaved` callback is supplied. Otherwise `Add Bookmarks` remains open after a successful save.
 
+When `Add Bookmarks` is launched from qutebrowser with a `launchContext.url`, activate qutebrowser after closing Raycast with `runAppleScript('tell application id "org.qutebrowser.qutebrowser" to activate')`. This explicitly restores focus to qutebrowser; manual adds without a launch context keep the normal behavior.
+
 ## Tailscale on pre-Tahoe Raycast
 
 The current Store version requires Raycast `v1.104.5`. Use commit `e1c17d0c953fd1c883f3dad19c97cf56992ecb97`, which uses `@raycast/api ^1.77.3` and `@raycast/utils ^1.9.0`, and builds on Raycast `v1.93.2`. The February 2026 revision is where the API requirement was raised to `^1.104.5`.
