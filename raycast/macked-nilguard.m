@@ -5,9 +5,10 @@
 // responses). That raises NSInvalidArgumentException -> uncaught exception -> the whole app
 // terminates in a loop.
 //
-// This shim takes the crack's place in Contents/Frameworks, swizzles that one class method to
-// substitute an empty dictionary for nil, then dlopen()s the real crack from macked-orig.dylib
-// so every other crack behaviour (Nord theme, Pro unlocks, ...) keeps working.
+// This shim takes the crack's place in Contents/Frameworks, swizzles that one class method (it stays
+// process-wide, so callers are checked at runtime) and substitutes an empty dictionary for nil only
+// when the caller lives in the crack itself, then dlopen()s the real crack from macked-orig.dylib so
+// every other crack behaviour (Nord theme, Pro unlocks, ...) keeps working.
 //
 // Install/restore: raycast/fix-macked-crash.sh
 
@@ -15,7 +16,9 @@
 #import <objc/runtime.h>
 #import <dlfcn.h>
 
+#ifndef MACKED_ORIG
 #define MACKED_ORIG "/Applications/Raycast.app/Contents/Frameworks/macked-orig.dylib"
+#endif
 
 @interface NSJSONSerialization (NilGuard)
 + (NSData *)ng_dataWithJSONObject:(id)obj options:(NSJSONWritingOptions)opt error:(NSError **)error;
@@ -23,8 +26,18 @@
 
 @implementation NSJSONSerialization (NilGuard)
 
+// Raycast and its frameworks keep stock behaviour: only the crack's own bug gets papered over.
+// The address must be captured in the method itself — a helper would report its own caller.
+static BOOL addressIsCrack(void *addr) {
+	Dl_info info;
+	if (!dladdr(addr, &info) || !info.dli_fname) {
+		return NO;
+	}
+	return strstr(info.dli_fname, "macked-orig.dylib") != NULL;
+}
+
 + (NSData *)ng_dataWithJSONObject:(id)obj options:(NSJSONWritingOptions)opt error:(NSError **)error {
-	if (obj == nil) {
+	if (obj == nil && addressIsCrack(__builtin_return_address(0))) {
 		NSLog(@"[nilguard] nil JSON object -> substituting {}");
 		obj = @{};
 	}

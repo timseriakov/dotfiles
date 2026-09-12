@@ -10,18 +10,21 @@
 #
 # Usage: raycast/fix-macked-crash.sh [apply|restore]
 # Re-run `apply` after any Raycast update — the updater replaces the bundle.
+# APP/FW/BACKUP/BUILD are overridable so the logic can be exercised on temp copies.
 set -euo pipefail
 
-APP=/Applications/Raycast.app
-FW=$APP/Contents/Frameworks
-BACKUP=$HOME/raycast-macked-backup
+APP=${APP:-/Applications/Raycast.app}
+FW=${FW:-$APP/Contents/Frameworks}
+BACKUP=${BACKUP:-$HOME/raycast-macked-backup}
+BUILD=${BUILD:-/tmp/macked-nilguard}
 SRC=$(cd "$(dirname "$0")" && pwd)/macked-nilguard.m
 
 build() {
-	rm -rf /tmp/macked-nilguard && mkdir -p /tmp/macked-nilguard
+	mkdir -p "$BUILD"
 	xcrun clang -dynamiclib -fobjc-arc -O2 -arch arm64 -arch x86_64 -framework Foundation \
-		-Wl,-install_name,@rpath/macked.app.dylib -o /tmp/macked-nilguard/macked.app.dylib "$SRC"
-	codesign -f -s - /tmp/macked-nilguard/macked.app.dylib
+		-Wl,-install_name,@rpath/macked.app.dylib -DMACKED_ORIG="\"$FW/macked-orig.dylib\"" \
+		-o "$BUILD/macked.app.dylib" "$SRC"
+	codesign -f -s - "$BUILD/macked.app.dylib"
 }
 
 apply() {
@@ -42,7 +45,7 @@ apply() {
 		echo "no crack to load (macked-orig.dylib missing), aborting" >&2
 		exit 1
 	fi
-	cp /tmp/macked-nilguard/macked.app.dylib "$FW/macked.app.dylib"
+	cp "$BUILD/macked.app.dylib" "$FW/macked.app.dylib"
 	codesign -f -s - "$FW/macked.app.dylib"
 	echo "installed nilguard shim; restart Raycast (pkill -x Raycast; open -a Raycast)"
 	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard"
