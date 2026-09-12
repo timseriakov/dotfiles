@@ -25,13 +25,23 @@ build() {
 }
 
 apply() {
-	if [ ! -f "$FW/macked-orig.dylib" ]; then
-		mkdir -p "$BACKUP"
+	if [ ! -f "$FW/macked.app.dylib" ]; then
+		echo "$FW/macked.app.dylib is missing — not a Macked repack any more, nothing to patch" >&2
+		exit 1
+	fi
+	mkdir -p "$BACKUP"
+	build
+	if ! /usr/bin/grep -aq "\[nilguard\] armed" "$FW/macked.app.dylib"; then
+		# What is installed is the real crack (fresh update, or the untouched original), so it
+		# becomes the crack we load — otherwise a stale macked-orig.dylib would be reused.
 		cp -p "$FW/macked.app.dylib" "$FW/macked-orig.dylib"
 		cp -p "$FW/macked.app.dylib" "$BACKUP/macked.app.dylib.orig"
-		echo "backed up original crack -> $FW/macked-orig.dylib and $BACKUP/macked.app.dylib.orig"
+		echo "rotated the installed crack -> $FW/macked-orig.dylib and $BACKUP/macked.app.dylib.orig"
 	fi
-	build
+	if [ ! -f "$FW/macked-orig.dylib" ]; then
+		echo "no crack to load (macked-orig.dylib missing), aborting" >&2
+		exit 1
+	fi
 	cp /tmp/macked-nilguard/macked.app.dylib "$FW/macked.app.dylib"
 	codesign -f -s - "$FW/macked.app.dylib"
 	echo "installed nilguard shim; restart Raycast (pkill -x Raycast; open -a Raycast)"
