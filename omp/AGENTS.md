@@ -76,8 +76,8 @@ fish -lc 'timeout 45s omp --no-session -p "Ответь одним словом:
 backpass status
 backpass analyze --max-transcripts 1 --jobs 1
 
-# Update Plannotator in the local agent npm tree
-npm --prefix agent/npm install @plannotator/pi-extension@latest
+# Update Plannotator in the local agent npm tree (same dir as omp/agent/npm, via the ~/.omp/agent symlink)
+npm --prefix ~/.omp/agent/npm install @plannotator/pi-extension@latest
 
 # Update the live OMP plugin install too
 npm --prefix ~/.omp/plugins pkg set 'dependencies.@plannotator/pi-extension=<version>'
