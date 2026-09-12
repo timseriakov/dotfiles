@@ -5,8 +5,9 @@
 # SoulverCore.framework) serialises a nil object whenever one of its HTTP requests returns a
 # non-JSON body (seen with 403s) and dies with
 #   +[NSJSONSerialization dataWithJSONObject:options:error:]: value parameter is nil
-# taking the whole app with it. macked-nilguard.m guards that single call site, then loads the
-# original crack from macked-orig.dylib, so the crack itself keeps working.
+# taking the whole app with it. macked-nilguard.m swizzles that class method process-wide and
+# substitutes for nil only when the caller is the crack, then loads the original crack from
+# macked-orig.dylib, so the crack itself keeps working.
 #
 # Usage: raycast/fix-macked-crash.sh [apply|restore]
 # Re-run `apply` after any Raycast update — the updater replaces the bundle.
@@ -61,8 +62,8 @@ apply() {
 		echo "install verification failed: no shim marker in $FW/macked.app.dylib" >&2
 		exit 1
 	fi
-	echo "installed nilguard shim; restart Raycast (pkill -x Raycast; open -a Raycast)"
-	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard — expect 'armed (swizzle=ok, macked=ok)' and at least one 'nil JSON object -> substituting {}'"
+	echo "installed nilguard shim; restart Raycast: killall Raycast; open -a Raycast"
+	echo "verify: log show --last 3m --predicate 'process == \"Raycast\"' | grep nilguard — expect 'armed (swizzle=ok, macked=ok)', and 'nil JSON object -> substituting {}' once the crack hits its bad response again"
 }
 
 restore() {
