@@ -326,7 +326,7 @@ const runOpencode = (prompt, state, timeoutMs = TIMEOUT_MS) => {
   );
 };
 
-const isTranslationPair = (value) =>
+const isTranslationPairList = (value) =>
   Array.isArray(value) &&
   value.length > 0 &&
   value.every((item) => Array.isArray(item) && typeof item[0] === "string");
@@ -336,10 +336,14 @@ const isTranslationPair = (value) =>
 // handled so the endpoint can be swapped back once it stops answering with the block page.
 const parseGoogleTranslation = (body) => {
   let pieces = null;
-  if (isTranslationPair(body)) {
+  let separator = "\n";
+  if (isTranslationPairList(body)) {
+    // one pair per input line
     pieces = body.map((item) => item[0]);
-  } else if (Array.isArray(body) && isTranslationPair(body[0])) {
+  } else if (Array.isArray(body) && isTranslationPairList(body[0])) {
+    // sentence fragments that must be concatenated without a separator
     pieces = body[0].map((item) => item[0]);
+    separator = "";
   }
 
   if (!pieces) {
@@ -349,7 +353,7 @@ const parseGoogleTranslation = (body) => {
     throw err;
   }
 
-  const merged = pieces.join("\n").trim();
+  const merged = pieces.join(separator).trim();
   if (!merged) {
     const err = new Error("empty translation");
     err.code = "empty_translation";

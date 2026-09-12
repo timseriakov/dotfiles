@@ -53,7 +53,10 @@ test("parseGoogleTranslation reads the dict-chrome-ex pairs", () => {
 test("parseGoogleTranslation still reads the older single shape", () => {
   assert.equal(
     parseGoogleTranslation([
-      [["Привет, мир", "hello world", null, null, 10]],
+      [
+        ["Привет, ", "Hello ", null, null, 10],
+        ["мир", "world", null, null, 10],
+      ],
       null,
       "en",
     ]),
