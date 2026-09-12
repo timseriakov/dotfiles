@@ -3,6 +3,7 @@
 const PORT = 58371;
 const UPSTREAM = "https://router.hwqtpa.easypanel.host/v1/chat/completions";
 const PATH = "/v1/chat/completions";
+const OPENCODE_SESSION = crypto.randomUUID();
 
 const server = Bun.serve({
   hostname: "127.0.0.1",
@@ -22,6 +23,12 @@ const server = Bun.serve({
       };
       const authorization = request.headers.get("authorization");
       if (authorization) headers.authorization = authorization;
+      if (
+        typeof body.model === "string" &&
+        body.model.startsWith("opencode-go/")
+      ) {
+        headers["x-opencode-session"] = OPENCODE_SESSION;
+      }
 
       const response = await fetch(UPSTREAM, {
         method: "POST",
@@ -32,7 +39,8 @@ const server = Bun.serve({
       return new Response(response.body, {
         status: response.status,
         headers: {
-          "content-type": response.headers.get("content-type") ?? "application/json",
+          "content-type":
+            response.headers.get("content-type") ?? "application/json",
         },
       });
     } catch (error) {
