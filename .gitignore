@@ -141,4 +141,6 @@ handy/settings_store.json
 /omp/agent/config.yml.lock
 /omp/agent/tmp/extensions/npm/f35b2129
 
+/agent/
+
 cliamp/playlists/audio/*.mp3
