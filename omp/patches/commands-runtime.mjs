@@ -263,31 +263,14 @@ export function createCommandRuntimePatches(ctx) {
 				"vision",
 			);`,
     ];
-    if (!alternatives.some(anchor => content.includes(anchor))) return content;
+    if (!alternatives.some((anchor) => content.includes(anchor)))
+      return content;
     return replaceAny(
       content,
       alternatives,
       `		// dotfiles patch: avoid noisy vision flip notices.
 		return;`,
       "suppress inspect_image flip notice",
-    ).content;
-  }
-  function patchCodexWebSearchModels(content) {
-    return replaceAny(
-      content,
-      [
-        `const DEFAULT_MODEL_PREFERENCES = [
-	"gpt-5.6-luna",
-	"gpt-5.6-terra",
-	"gpt-5.6-sol",`,
-        `const DEFAULT_MODEL_PREFERENCES = [
-	"gpt-5.6-luna",
-	"gpt-5.6-sol",`,
-      ],
-      `const DEFAULT_MODEL_PREFERENCES = [
-	"gpt-5.6-luna",
-	"gpt-5.6-sol",`,
-      "Codex web search never falls back to Terra",
     ).content;
   }
 
