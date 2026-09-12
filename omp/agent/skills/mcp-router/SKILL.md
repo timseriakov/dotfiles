@@ -35,13 +35,19 @@ Avoid vague queries like `use tool`, `do it`, `open thing`.
 2. If not obvious, ask MCPProxy for the smallest matching tool set by intent.
 3. Do not list all tools unless the user asks for inventory/debugging.
 
-## Browser CDP priority
+## Browser CDP isolation
 
-For browser automation, prefer the dedicated agent qutebrowser profile first:
+Browser automation MUST use a separately identified dedicated qutebrowser agent window.
 
-1. Try qutebrowser-dev CDP on `127.0.0.1:9224`.
-2. If it is not running, fall back to normal qutebrowser CDP on `127.0.0.1:9223`.
-3. Do not use Helium CDP by default.
+Preferred model:
+
+1. Use a dedicated agent window in the normal qutebrowser profile so cookies and logins remain available.
+2. Address only that window's explicit CDP target/endpoint; never select the currently focused tab/window implicitly.
+3. If the dedicated target is unavailable, stop and report the failure.
+
+The separate `qutebrowser-dev` profile on `127.0.0.1:9224` is an optional isolation fallback, not the default: it has separate cookies and sessions and requires an explicit user decision.
+
+NEVER fall back to the user's main window, generic Chrome/headless Chrome, browser relay, normal `9223` without a dedicated target, or Helium CDP.
 
 ## Desktop safety
 
