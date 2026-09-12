@@ -77,7 +77,6 @@ export function runPatchRoutes(ctx) {
     ["extensibility/extensions/loader.ts", patches.patchExtensionLoader],
     ["discovery/helpers.ts", patches.patchDiscoveryHelpers],
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
-    ["web/search/providers/codex.ts", patches.patchCodexWebSearchModels],
     ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
     ["cli/git-tui/colors.ts", patches.patchGitTuiColors],
     [

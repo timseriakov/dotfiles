@@ -385,7 +385,6 @@ export function createCommandRuntimePatches(ctx) {
     patchDiscoveryHelpers,
     patchLegacyModelRuntime,
     patchSessionTools,
-    patchCodexWebSearchModels,
     patchExtensionUiController,
     patchTuiOverlayFocus,
     patchCliStartupPrepaint,
