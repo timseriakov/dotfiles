@@ -5,32 +5,49 @@
   "debug_search": false,
   "mcpServers": [
     {
+      "quarantined": false,
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": ["-y", "@morph-llm/morph-fast-apply"],
+      "args": [
+        "-y",
+        "@morph-llm/morph-fast-apply"
+      ],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
       },
       "oauth": null,
       "enabled": false,
-      "quarantined": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
       "updated": "2026-07-18T15:09:31.307185+03:00"
     },
     {
+      "quarantined": false,
       "name": "shoogle",
       "url": "https://mcp.shoogle.dev/mcp",
       "protocol": "http",
       "oauth": null,
       "enabled": true,
-      "quarantined": false,
       "created": "2026-03-16T13:45:57.221182+03:00",
       "updated": "2026-07-18T15:09:31.315198+03:00"
+    },
+    {
+      "quarantined": false,
+      "name": "mac-use-mcp",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mac-use-mcp@0.63.0"
+      ],
+      "oauth": null,
+      "enabled": true,
+      "created": "2026-09-01T00:00:00+03:00",
+      "updated": "2026-09-01T00:00:00+03:00"
     }
   ],
-  "tools_limit": 15,
+  "tools_limit": 10,
   "tool_response_limit": 20000,
   "call_tool_timeout": "2m0s",
   "max_result_size_chars": 500000,
@@ -97,6 +114,7 @@
   "allow_server_add": true,
   "allow_server_remove": true,
   "enable_prompts": true,
+  "aggregate_upstream_prompts": false,
   "check_server_repo": true,
   "docker_isolation": {
     "enabled": false,
@@ -137,7 +155,9 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": ["verified"],
+      "tags": [
+        "verified"
+      ],
       "protocol": "custom/docker",
       "provenance": "official"
     }
@@ -174,6 +194,7 @@
   "enable_code_execution": false,
   "code_execution_timeout_ms": 120000,
   "code_execution_pool_size": 10,
+  "code_execution_max_parallel": 8,
   "activity_retention_days": 90,
   "activity_max_records": 100000,
   "activity_max_size_mb": 256,
@@ -207,7 +228,12 @@
   },
   "output_sanitisation": {
     "response_action": "spotlight",
-    "strip_classes": ["ansi", "c0c1", "bidi", "zero_width"],
+    "strip_classes": [
+      "ansi",
+      "c0c1",
+      "bidi",
+      "zero_width"
+    ],
     "max_redactions": 100
   },
   "telemetry": {
