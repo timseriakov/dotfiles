@@ -223,3 +223,13 @@ npm run dev
 ```
 
 After Raycast reports the extension as ready/it appears in Raycast, `Ctrl+C` may stop `npm run dev`; the local extension remains installed. Do not run `npm update` or `npm audit fix`, because changing the locked dependency versions can reintroduce the incompatibility.
+
+## Cracked Raycast (Macked) crash-loops on non-JSON responses
+
+`/Applications/Raycast.app` is a Macked repack: the bundle is re-signed (`Authority=https://macked.app`, `TeamIdentifier=not set`) and `Contents/Frameworks/macked.app.dylib` is pulled in through a load command added to `SoulverCore.framework`. It exists only so the custom Nord theme can be enabled.
+
+Since 2026-09-12 that crack kills Raycast in a loop: when one of its requests answers with a non-JSON body (observed with HTTP 403) it calls `+[NSJSONSerialization dataWithJSONObject:options:error:]` with nil, raising `NSInvalidArgumentException` ("value parameter is nil") and terminating the process. `log show --last 12h --predicate 'process == "Raycast"'` shows the crash with `macked.app.dylib` frames.
+
+Run `raycast/fix-macked-crash.sh apply`: it builds `raycast/macked-nilguard.m` and installs it as `macked.app.dylib`. The shim swizzles that one class method to substitute `{}` for nil and then `dlopen()`s the untouched crack kept at `macked-orig.dylib` (also copied to `~/raycast-macked-backup/`), so the crack and the Nord theme keep working. `restore` puts the original back. Re-run `apply` after every Raycast update, since the updater replaces the bundle.
+
+Verified 2026-09-12: the crash loop stopped and the log shows `[nilguard] armed (swizzle=ok, macked=ok)` plus `[nilguard] nil JSON object -> substituting {}` in the place where the app used to die.
