@@ -9,8 +9,10 @@ export function createCommandRuntimePatches(ctx) {
         `\t\tname: "btw",\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
         `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
         `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+        `\t\tname: "btw",\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
+        `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
       ],
-      `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
+      `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
       "btw aliases /b /и",
     ).content;
   }
