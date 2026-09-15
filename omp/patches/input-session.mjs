@@ -3,9 +3,15 @@ export function createInputSessionPatches(ctx) {
 
   function patchKeybindingsConfig(content) {
     let out = content;
-    let r;
+    const duplicateInterface = `\t"app.session.observe": true;\n\t"app.session.compact": true;\n\t"app.git.open": true;\n\t"app.session.compact": true;\n`;
+    if (out.includes(duplicateInterface)) {
+      out = out.replace(
+        duplicateInterface,
+        `\t"app.session.observe": true;\n\t"app.session.compact": true;\n\t"app.git.open": true;\n`,
+      );
+    }
 
-    r = insertAfter(
+    let r = insertAfter(
       out,
       `\t"app.session.observe": true;\n`,
       `\t"app.session.compact": true;\n`,
@@ -15,9 +21,34 @@ export function createInputSessionPatches(ctx) {
 
     r = insertAfter(
       out,
+      `\t"app.session.compact": true;\n`,
+      `\t"app.git.open": true;\n`,
+      "keybindings app.git.open interface",
+    );
+    out = r.content;
+
+    const compactDefinition = `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`;
+    const gitDefinition = `\t"app.git.open": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Open git UI",\n\t},\n`;
+    const duplicateDefinitions = `${compactDefinition}${gitDefinition}${compactDefinition}`;
+    if (out.includes(duplicateDefinitions))
+      out = out.replace(
+        duplicateDefinitions,
+        `${compactDefinition}${gitDefinition}`,
+      );
+
+    r = insertAfter(
+      out,
       `\t"app.session.observe": {\n\t\tdefaultKeys: "ctrl+s",\n\t\tdescription: "Open the agent hub",\n\t},\n`,
-      `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`,
+      compactDefinition,
       "keybindings app.session.compact definition",
+    );
+    out = r.content;
+
+    r = insertAfter(
+      out,
+      compactDefinition,
+      gitDefinition,
+      "keybindings app.git.open definition",
     );
     return r.content;
   }
@@ -69,17 +100,9 @@ export function createInputSessionPatches(ctx) {
     let out = patchInputControllerBase(content);
     const r = insertAfter(
       out,
-      `		const planModeKeys = this.ctx.keybindings.getKeys("app.plan.toggle");
-		for (const key of planModeKeys) {
-			this.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handlePlanModeCommand());
-		}
-`,
-      `
-		for (const key of this.ctx.keybindings.getKeys("app.session.compact")) {
-			this.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());
-		}
-`,
-      "input-controller app.session.compact handler",
+      `\t\tfor (const key of this.ctx.keybindings.getKeys("app.session.compact")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());\n\t\t}\n`,
+      `\n\t\tfor (const key of this.ctx.keybindings.getKeys("app.git.open")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => this.ctx.showGitUi());\n\t\t}\n`,
+      "input-controller app.git.open handler",
     );
     return r.content;
   }
