@@ -41,9 +41,23 @@ export function createCommandRuntimePatches(ctx) {
 \t\tbeginStartupComposer({ version: VERSION });
 \t\tstopStartupComposer = stopPendingStartupComposer;
 \t}`;
+    const blockWithSafeFlags = `\tlet stopStartupComposer: (() => void) | undefined;
+\tif (
+\t\t!process.env.PI_TIMING &&
+\t\tprocess.stdin.isTTY === true &&
+\t\tprocess.stdout.isTTY === true &&
+\t\tresolvedArgv.every(arg => PREPAINT_SAFE_FLAGS[arg] === true)
+\t) {
+\t\t// Intentional exception to the static-import convention: this latency boundary
+\t\t// keeps the TUI graph out of worker, subcommand, help, and version launches.
+\t\t// Loading it statically would erase the measured cold-start improvement.
+\t\tconst { beginStartupComposer, stopPendingStartupComposer } = await import("./modes/startup-composer");
+\t\tbeginStartupComposer({ version: VERSION });
+\t\tstopStartupComposer = stopPendingStartupComposer;
+\t}`;
     return replaceAny(
       content,
-      [block],
+      [block, blockWithSafeFlags],
       patched,
       "disable startup prepaint composer",
     ).content;
