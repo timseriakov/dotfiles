@@ -22,6 +22,13 @@ This repository has automated formatting hooks:
 - End files with empty lines to satisfy POSIX standards
 - Single logical commits are better than multiple incremental ones
 
+### Commit Message Convention
+
+Use `<scope>: <short action>` for commit messages. Keep the scope lowercase and
+specific to the affected area, such as `omp`, `qutebrowser`, or `fish`; keep
+each commit focused on one logical change. Examples: `omp: double attachment
+preview size`, `fish: drop HOMEBREW_NO_REQUIRE_TAP_TRUST`.
+
 ## Implementation
 
 All AI tools (Claude, Gemini, ChatGPT, Copilot, etc.) should follow this pattern when working with this repository.
