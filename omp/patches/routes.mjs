@@ -79,6 +79,7 @@ export function runPatchRoutes(ctx) {
     ["modes/components/custom-editor.ts", patches.patchCustomEditor],
     ["modes/components/attachment-chips.ts", patches.patchAttachmentChips],
     ["cli/git-tui/colors.ts", patches.patchGitTuiColors],
+    ["cli/git-tui/index.ts", patches.patchGitTuiLayout],
     [
       "extensibility/legacy-pi-coding-agent-shim.ts",
       patches.patchLegacyModelRuntime,
