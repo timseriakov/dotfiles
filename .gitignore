@@ -128,6 +128,7 @@ cliamp/*_ocr.png
 /omp/agent/terminal-sessions
 /omp/agent/blobs
 /omp/agent/cache
+/omp/agent/custom-session-files
 /pi/agent/cache/pi-usage
 /pi/exa-usage.json
 /omp/agent/autoqa.db
