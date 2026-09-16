@@ -188,6 +188,13 @@ providers:
         supportsTools: true
         contextWindow: 1000000
         maxTokens: 384000
+      - id: opencode-go/deepseek-v4-flash
+        name: V4 Flash
+        reasoning: true
+        input: [text]
+        supportsTools: true
+        contextWindow: 1000000
+        maxTokens: 384000
       - id: opencode-go/deepseek-v4-flash-vision-exp
         name: V4 Flash Vision
         reasoning: true
