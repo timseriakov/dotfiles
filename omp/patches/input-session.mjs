@@ -98,13 +98,25 @@ export function createInputSessionPatches(ctx) {
 
   function patchInputController(content) {
     let out = patchInputControllerBase(content);
-    const r = insertAfter(
-      out,
-      `\t\tfor (const key of this.ctx.keybindings.getKeys("app.session.compact")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());\n\t\t}\n`,
-      `\n\t\tfor (const key of this.ctx.keybindings.getKeys("app.git.open")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => this.ctx.showGitUi());\n\t\t}\n`,
-      "input-controller app.git.open handler",
+    const gitHandler = `\n\t\tfor (const key of this.ctx.keybindings.getKeys("app.git.open")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => this.ctx.showGitUi());\n\t\t}\n`;
+    if (out.includes(gitHandler)) return out;
+
+    const compactHandler = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.session.compact")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());\n\t\t}\n`;
+    const planHandler = `\t\tconst planModeKeys = this.ctx.keybindings.getKeys("app.plan.toggle");\n\t\tfor (const key of planModeKeys) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handlePlanModeCommand());\n\t\t}\n`;
+
+    if (out.includes(compactHandler)) {
+      return out.replace(compactHandler, compactHandler + gitHandler);
+    }
+
+    if (!out.includes(planHandler)) {
+      throw new Error(
+        "Patch 'input-controller app.git.open handler' could not find plan or compact handler. Upstream source changed.",
+      );
+    }
+    return out.replace(
+      planHandler,
+      planHandler + "\n" + compactHandler + gitHandler,
     );
-    return r.content;
   }
 
   function patchSessionManager(content) {
@@ -126,6 +138,7 @@ export function createInputSessionPatches(ctx) {
         `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
         `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = mintSessionId();`,
         `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
+        `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#expectedDiskSize = null;\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = mintSessionId();`,
       ],
       `\t#resetToNewSession(options?: NewSessionOptions, forcedSessionFile?: string): string | undefined {\n\t\tthis.#diskTail = Promise.resolve();\n\t\tthis.#clearDiskError();\n\t\tthis.#reconcileSessionDirForFallback();\n\t\tthis.#sessionId = forcedSessionFile ? inferSessionIdFromPath(forcedSessionFile) ?? mintSessionId() : mintSessionId();`,
       "session-manager recovery keeps path id",
@@ -167,6 +180,7 @@ export function createInputSessionPatches(ctx) {
         `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\t// A materialized target resumes normally; a missing target is honored only\n\t\t// for a fresh \`/new\` boundary (never-written lazy session).\n\t\tif (exists || fresh) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
         `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\t// A materialized target resumes normally; a missing target is honored only\n\t\t// for a never-written lazy fresh-session boundary.\n\t\tif (exists || fresh) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
         `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\tconst breadcrumbStat = fs.statSync(breadcrumbFile, { throwIfNoEntry: false });\n\t\tconst freshIsRecent =\n\t\t\tfresh && breadcrumbStat?.isFile() === true && Date.now() - breadcrumbStat.mtimeMs < 5 * 60_000;\n\t\t// A materialized target resumes normally; a missing fresh target is honored\n\t\t// only briefly, so stale fresh breadcrumbs cannot hide older sessions forever.\n\t\tif (exists || freshIsRecent) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
+        `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\t// A materialized target resumes normally; a missing target is honored only\n\t\t// for a never-written lazy fresh-session boundary.\n\t\tif (exists || fresh) return { cwd: breadcrumbCwd, sessionFile, exists, fresh, cwdIdentity };`,
       ],
       `\t\tconst stat = fs.statSync(sessionFile, { throwIfNoEntry: false });\n\t\tconst exists = stat?.isFile() === true;\n\t\tconst breadcrumbStat = fs.statSync(breadcrumbFile, { throwIfNoEntry: false });\n\t\tconst freshIsRecent =\n\t\t\tfresh && breadcrumbStat?.isFile() === true && Date.now() - breadcrumbStat.mtimeMs < 5 * 60_000;\n\t\t// A materialized target resumes normally; a missing fresh target is honored\n\t\t// only briefly, so stale fresh breadcrumbs cannot hide older sessions forever.\n\t\tif (exists || freshIsRecent) return { cwd: breadcrumbCwd, sessionFile, exists, fresh };`,
       "session-paths stale fresh breadcrumb expiry",
