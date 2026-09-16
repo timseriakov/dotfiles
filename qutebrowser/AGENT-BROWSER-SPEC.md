@@ -28,6 +28,21 @@ sessions and requires an explicit user decision; it is not the default.
 If automatic marker-target creation fails, automation fails closed. Chrome,
 headless Chrome, and implicit foreground attachment are forbidden.
 
+### Missing marker recovery
+
+Marker creation gets at most one total attempt. OMP already invokes
+`qutebrowser-agent` automatically; after `Could not create the marked
+qutebrowser agent window`, do not invoke it manually or retry browser attach.
+Diagnose CDP ownership and the active instance IPC runtime instead.
+
+The launcher must reuse the `TMPDIR` of the qutebrowser process that owns CDP
+`9223`, serialize concurrent calls, and bound both lock and child waits. It must
+never substitute `DARWIN_USER_TEMP_DIR`, start another profile, or leave a
+spawned child running after timeout. Cleanup is limited to the exact child
+spawned by that launcher invocation; the CDP-owning process and user tabs are
+never terminated or navigated. A page `webSocketDebuggerUrl` is not a browser
+CDP endpoint.
+
 ## Agent browser automation order
 
 1. Use the marked normal-profile qutebrowser window on CDP `9223`.

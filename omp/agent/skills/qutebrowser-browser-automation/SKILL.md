@@ -20,6 +20,19 @@ that same marker explicitly; any other target is rejected. Never select the
 foreground, first, or last available page. If automatic creation fails, fail
 closed.
 
+## Missing marker recovery
+
+Marker creation gets at most one total attempt. OMP already invokes the
+launcher automatically, so after `Could not create the marked qutebrowser
+agent window` do not call the launcher manually and do not retry browser
+attach. Diagnose CDP ownership and the active qutebrowser IPC runtime instead.
+
+The launcher must reuse the `TMPDIR` of the process owning CDP `9223`, serialize
+concurrent calls, and use bounded waits. Never substitute a canonical temp
+directory, open another profile, connect through a page `webSocketDebuggerUrl`,
+or terminate the CDP-owning process. On timeout, cleanup may target only the
+exact child created by that launcher invocation.
+
 OMP browser relay is disabled by default. It is allowed only with an explicit
 `app.relay: true` request for a named capability that qutebrowser CDP cannot
 provide. A missing agent marker is not such a capability gap and must fail.

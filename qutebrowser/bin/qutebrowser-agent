@@ -1,23 +1,93 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+"""Open the marked agent window through the qutebrowser instance owning CDP 9223."""
 
-if [[ $# -ne 0 ]]; then
-  printf '%s\n' 'qutebrowser-agent takes no URL.' >&2
-  exit 2
-fi
+import fcntl
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+import urllib.request
+from pathlib import Path
 
-# qutebrowser's macOS IPC runtime follows QStandardPaths.TempLocation.
-canonical_tmp="$(/usr/bin/getconf DARWIN_USER_TEMP_DIR 2>/dev/null || true)"
-if [[ -z "$canonical_tmp" ]]; then
-  printf '%s\n' 'Cannot determine macOS qutebrowser runtime directory.' >&2
-  exit 1
-fi
-cdp_browser="$(/usr/bin/curl -fsS --max-time 2 http://127.0.0.1:9223/json/version 2>/dev/null | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin).get("Browser", ""))' || true)"
-if [[ "$cdp_browser" != qutebrowser/* ]]; then
-  printf '%s\n' 'Configured CDP endpoint is not owned by qutebrowser; refusing to spawn another instance.' >&2
-  exit 1
-fi
-export TMPDIR="${canonical_tmp%/}"
+CDP = "http://127.0.0.1:9223"
+MARKER = "OMP_AGENT_WINDOW_9f2c"
+QUTE = "/Applications/qutebrowser.app/Contents/MacOS/qutebrowser"
 
-# The config hook consumes this inert token before the bootstrap tab is created.
-exec /Applications/qutebrowser.app/Contents/MacOS/qutebrowser --target window "about:blank#OMP_AGENT_WINDOW_9f2c_BOOTSTRAP"
+
+def get_json(path):
+    with urllib.request.urlopen(CDP + path, timeout=2) as response:
+        return json.load(response)
+
+
+def has_marker():
+    return any(MARKER in page.get("title", "") for page in get_json("/json/list") if page.get("type") == "page")
+
+
+def active_runtime():
+    if not get_json("/json/version").get("Browser", "").startswith("qutebrowser/"):
+        raise RuntimeError("CDP 9223 is not qutebrowser")
+    listeners = subprocess.check_output(
+        ["/usr/sbin/lsof", "-nP", "-t", "-iTCP@127.0.0.1:9223", "-sTCP:LISTEN"], text=True
+    ).splitlines()
+    if len(listeners) != 1 or not listeners[0].isdigit():
+        raise RuntimeError("CDP 9223 has no unique listening process")
+    pid = listeners[0]
+    uid = subprocess.check_output(["/bin/ps", "-p", pid, "-o", "uid="], text=True).strip()
+    command = subprocess.check_output(["/bin/ps", "-ww", "-p", pid, "-o", "command="], text=True)
+    if uid != str(os.getuid()) or not command.startswith(QUTE):
+        raise RuntimeError("CDP 9223 is not owned by this user's normal qutebrowser")
+    environ = subprocess.check_output(["/bin/ps", "eww", "-p", pid, "-o", "command="], text=True)
+    match = re.search(r"(?:^|\s)TMPDIR=(\S+)", environ)
+    if not match or not Path(match.group(1)).is_dir():
+        raise RuntimeError("Cannot identify the active qutebrowser IPC runtime")
+    return match.group(1)
+
+
+def main():
+    if len(sys.argv) != 1:
+        raise RuntimeError("qutebrowser-agent takes no URL")
+    runtime = active_runtime()
+    lock_path = Path.home() / ".qutebrowser-agent.lock"
+    fd = os.open(lock_path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, "w") as lock:
+        deadline = time.monotonic() + 5
+        while True:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise RuntimeError("Timed out waiting for another agent-window bootstrap")
+                time.sleep(0.1)
+        if has_marker():
+            return
+        env = dict(os.environ, TMPDIR=runtime)
+        child = subprocess.Popen([QUTE, "--target", "window", f"about:blank#{MARKER}_BOOTSTRAP"], env=env)
+        try:
+            child.wait(timeout=4)
+        except subprocess.TimeoutExpired:
+            child.terminate()
+            try:
+                child.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                child.kill()
+                child.wait()
+            raise RuntimeError("IPC bootstrap timed out; terminated only the spawned process")
+        if child.returncode:
+            raise RuntimeError(f"IPC bootstrap failed ({child.returncode})")
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            if has_marker():
+                return
+            time.sleep(0.1)
+        raise RuntimeError("IPC bootstrap returned but the marked target did not appear")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, ValueError, RuntimeError) as error:
+        print(f"qutebrowser-agent: {error}", file=sys.stderr)
+        sys.exit(1)
