@@ -36,6 +36,7 @@ abbr -a trc 'nvim ~/.tmux.conf'
 abbr -a wrc 'nvim ~/dev/dotfiles/workmux/config.yaml'
 abbr -a wmrc 'nvim ./.workmux.yaml'
 abbr -a yrc 'nvim ~/dev/dotfiles/yazi'
+abbr -a orc 'nvim ~/dev/dotfiles/omp/agent/config.yml'
 
 # JavaScript package managers
 ## npm
