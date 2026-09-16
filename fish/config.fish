@@ -3,6 +3,14 @@ if test -f ~/dev/dotfiles/fish/secrets.fish
 end
 
 
+# Start the dedicated Alacritty tmux session even when Alacritty was opened from tmux.
+if test "$TMUX_AUTO_SESSION" = alacritty
+    set -l current_tmux_session (tmux display-message -p '#S' 2>/dev/null)
+    if test "$current_tmux_session" != alacritty
+        set -e TMUX TMUX_PANE TERM_PROGRAM
+    end
+end
+
 # Start tmux automatically only when allowed
 if status is-interactive
     if test -t 0; and not set -q TMUX; and test "$TMUX_AUTO" != 0; and not set -q NO_TMUX; and not set -q IN_NEOVIDE; and not set -q NVIM; and not set -q VSCODE_PID; and not set -q TERM_PROGRAM; and not set -q ANTIGRAVITY_AGENT; and not set -q CODEX_SHELL
