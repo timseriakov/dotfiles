@@ -5,8 +5,6 @@ local qutebrowserTemporarySplit = require("qutebrowser_temporary_split")
 qutebrowserTemporarySplit.init()
 local tmuxSeshLauncher = require("tmux_sesh_launcher")
 tmuxSeshLauncher.init()
-local focusTrace = require("focus_trace")
-focusTrace.init()
 
 -- Auto-reload Hammerspoon config on change
 local function reloadConfig(files)
