@@ -49,6 +49,7 @@ from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QT
 from qutebrowser.utils import qtutils, usertypes
 from qutebrowser.qt.webenginecore import QWebEngineScript
 from qutebrowser import app as qute_app
+from qutebrowser.keyinput import modeman
 
 
 
@@ -750,3 +751,16 @@ def _install_show_maximized():
 
 
 _install_show_maximized()
+
+
+_orig_mode_leave = getattr(modeman.ModeManager, "_dotfiles_orig_leave", modeman.ModeManager.leave)
+modeman.ModeManager._dotfiles_orig_leave = _orig_mode_leave
+
+
+def _trace_insert_mode_leave(self, mode, reason=None, maybe=False):
+    if mode == usertypes.KeyMode.insert and self.mode == mode:
+        log.modes.warning("DOTFILES_INSERT_LEAVE win=%s reason=%s", self._win_id, reason)
+    return _orig_mode_leave(self, mode, reason, maybe)
+
+
+modeman.ModeManager.leave = _trace_insert_mode_leave
