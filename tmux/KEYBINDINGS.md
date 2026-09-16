@@ -10,23 +10,23 @@
 
 ## Windows and panes
 
-| Key                | Action                                                         |
-| ------------------ | -------------------------------------------------------------- |
-| `Ctrl-a c`         | новое окно в текущей директории                                |
-| `Ctrl-a Enter`     | split horizontal                                               |
-| `Ctrl-a =`         | split vertical                                                 |
-| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`                                  |
-| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`                                  |
-| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`                                  |
-| `alacritty: cmd+a` | убить окно через alacritty → `F3`                              |
-| `cmd+enter`        | horizontal split через kitty → `F4`                            |
+| Key                | Action                                                                                                          |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `Ctrl-a c`         | новое окно в текущей директории                                                                                 |
+| `Ctrl-a Enter`     | split horizontal                                                                                                |
+| `Ctrl-a =`         | split vertical                                                                                                  |
+| `cmd+t` / `cmd+е`  | новое окно через kitty → `F1`                                                                                   |
+| `cmd+a` / `cmd+ф`  | новое окно через kitty → `F1`                                                                                   |
+| `cmd+q` / `cmd+й`  | убить pane через kitty → `F2`                                                                                   |
+| `alacritty: cmd+a` | убить окно через alacritty → `F3`                                                                               |
+| `cmd+enter`        | horizontal split через kitty → `F4`                                                                             |
 | `cmd+z` / `cmd+я`  | zoom/unzoom pane через kitty → `F5`; zoomed pane получает фокус, при unzoom фокус возвращается на соседнюю pane |
-| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`                               |
-| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s`                        |
-| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`                             |
-| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`                             |
-| `cmd+h` / `cmd+р`  | предыдущая session, кроме popup/alacritty/monitor → `Ctrl-a (` |
-| `cmd+l` / `cmd+д`  | следующая session, кроме popup/alacritty/monitor → `Ctrl-a )`  |
+| `cmd+r` / `cmd+к`  | rename window через kitty → `F6`                                                                                |
+| `cmd+s` / `cmd+ы`  | session picker через kitty → `Ctrl-a s`                                                                         |
+| `cmd+j` / `cmd+о`  | предыдущее окно через kitty → `F9`                                                                              |
+| `cmd+k` / `cmd+л`  | следующее окно через kitty → `F10`                                                                              |
+| `cmd+h` / `cmd+р`  | предыдущая session, кроме popup/alacritty/monitor → `Ctrl-a (`                                                  |
+| `cmd+l` / `cmd+д`  | следующая session, кроме popup/alacritty/monitor → `Ctrl-a )`                                                   |
 
 ## Layout and moving things
 
@@ -121,7 +121,7 @@
   - `0` / `$`: начало / конец строки
   - `x`: удалить символ
   - `dw` / `db` / `D`: удалить слово / назад по слову / до конца строки
-- `Alt+Backspace` в tmux prompt'ах удаляет слово влево; для надёжности это также принудительно мапится на `Ctrl-W` на уровне терминала.
+- `Alt+Backspace` в tmux prompt'ах удаляет слово влево; для надёжности это также принудительно мапится на `Ctrl-W` на уровне терминала (kitty/tmux/alacritty). Контракт: этот маппинг не трогать, а `Ctrl-W` нигде не занимать — на уровне байтов это та же клавиша, что `Alt+Backspace`. В OMP git TUI поэтому на `alt+g`.
 - Часть сценариев copy-mode использует `pbcopy`.
 - Popup shell бывает двух типов: persistent и ephemeral.
 - Setup глубоко интегрирован с `workmux`.

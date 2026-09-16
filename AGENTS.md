@@ -140,6 +140,22 @@ yazi --debug
 
 If an agent needs to edit terminal, tmux, Fish path, Kitty, Chafa, or Yazi config, it must preserve this contract first.
 
+## Alt+Backspace Contract — Ctrl+W Must Stay Free
+
+`Alt+Backspace` is deliberately remapped to the `Ctrl+W` byte (`\x17`) in every terminal, so
+word deletion works **everywhere** — including canonical-mode prompts and tmux prompts
+(`rename-window`, `command-prompt`), where the native `ESC DEL` means nothing. This took
+several sessions to get right and is load-bearing: do not "fix" it back to `ESC DEL`.
+
+- `kitty/kitty.conf`: `map alt+backspace send_text all \x17`
+- `.tmux.conf`: `bind-key -n M-BSpace send-keys C-w` (panes) + `bind-key -T vi-edit M-BSpace send-keys -X delete-word` (prompt)
+- `alacritty/alacritty.toml`: `Option+Back` → `\u0017`, `option_as_alt = "Both"`
+
+Consequence: `Ctrl+W` is **not** a free key — it delivers the same byte as `Alt+Backspace`,
+so any app binding on `Ctrl+W` also hijacks Alt+Backspace. That is why the OMP git TUI opens on
+`alt+g` (`omp/agent/keybindings.yml` → `app.git.open`), not `ctrl+w`. Pick another key instead
+of touching the remap.
+
 ## Hunk — live diff review with agents
 
 Hunk (`hunk diff` / `hunk show`) — интерактивный просмотрщик diff'ов в терминале.
