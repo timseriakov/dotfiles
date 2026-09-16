@@ -71,6 +71,7 @@ export function runPatchRoutes(ctx) {
     ["config/model-registry.ts", patches.patchModelRegistryCatalog],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
     ["slash-commands/builtin-lifecycle.ts", patches.patchBtwAliases],
+    ["slash-commands/builtin-collaboration.ts", patches.patchAdvisorAliases],
     ["modes/ultrathink.ts", patches.patchUltrathink],
     ["modes/magic-keywords.ts", patches.patchMagicKeywords],
     ["modes/orchestrate.ts", patches.patchOrchestrate],

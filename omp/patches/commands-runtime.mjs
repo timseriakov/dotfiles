@@ -16,6 +16,17 @@ export function createCommandRuntimePatches(ctx) {
       "btw aliases /b /и",
     ).content;
   }
+  function patchAdvisorAliases(content) {
+    return replaceAny(
+      content,
+      [
+        `\t\tname: "advisor",\n\t\ticon: "advisor",\n\t\tdescription: "Toggle the advisor (a second model that reviews each turn and injects notes)",`,
+        `\t\tname: "advisor",\n\t\taliases: ["a", "ф"],\n\t\ticon: "advisor",\n\t\tdescription: "Toggle the advisor (a second model that reviews each turn and injects notes)",`,
+      ],
+      `\t\tname: "advisor",\n\t\taliases: ["a", "ф"],\n\t\ticon: "advisor",\n\t\tdescription: "Toggle the advisor (a second model that reviews each turn and injects notes)",`,
+      "advisor aliases /a /ф",
+    ).content;
+  }
 
   function patchCliStartupPrepaint(content) {
     const block = `\tlet stopStartupComposer: (() => void) | undefined;
@@ -393,6 +404,8 @@ export function createCommandRuntimePatches(ctx) {
 
   return {
     patchBtwAliases,
+    patchAdvisorAliases,
+
     patchGoalTool,
     patchUltrathink,
     patchOrchestrate,
