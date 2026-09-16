@@ -4,6 +4,8 @@ local focusTrace = {}
 local logPath = os.getenv("HOME") .. "/Library/Logs/hammerspoon-focus.log"
 local windowFilter = nil
 local keyTap = nil
+local axPollTimer = nil
+local lastAxFocus = nil
 local eventNames = {
 	[hs.application.watcher.activated] = "activated",
 	[hs.application.watcher.deactivated] = "deactivated",
@@ -61,6 +63,38 @@ local function writeKey(event)
 		app
 	)
 end
+local function axFocusInfo()
+	local app = hs.application.frontmostApplication()
+	if not (app and browserBundles[app:bundleID()]) then
+		return nil, app
+	end
+	local ok, element = pcall(function()
+		return hs.axuielement.systemWideElement():attributeValue("AXFocusedUIElement")
+	end)
+	if not ok or not element then
+		return "element=nil", app
+	end
+	local function attr(name)
+		local success, value = pcall(function()
+			return element:attributeValue(name)
+		end)
+		return success and tostring(value) or "nil"
+	end
+	return string.format("role=%s subrole=%s", attr("AXRole"), attr("AXSubrole")), app
+end
+
+local function pollAxFocus()
+	local info, app = axFocusInfo()
+	if not info then
+		lastAxFocus = nil
+		return
+	end
+	if info ~= lastAxFocus then
+		lastAxFocus = info
+		write("ax-focus " .. info, app:name(), app)
+	end
+end
+
 
 function focusTrace.init()
 	focusTrace.watcher = hs.application.watcher.new(function(appName, event, app)
@@ -77,6 +111,8 @@ function focusTrace.init()
 		writeKey(event)
 		return false
 	end):start()
+	axPollTimer = hs.timer.doEvery(0.25, pollAxFocus)
+	pollAxFocus()
 	local app = hs.application.frontmostApplication()
 	write("started", app and app:name(), app)
 end
