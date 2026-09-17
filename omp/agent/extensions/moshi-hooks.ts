@@ -4,8 +4,8 @@
 // daemon socket (a named pipe on Windows) — no per-event helper spawn. When
 // the daemon is absent the connect fails silently and the turn is never
 // interrupted. Debug replay: pipe a normalized payload JSON into the CLI
-// adapter, "moshi-hook pi-hook".
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+// adapter, "moshi-hook omp-hook".
+import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 import { createConnection } from "node:net";
 import { homedir } from "node:os";
 import { join as pathJoin } from "node:path";
@@ -15,8 +15,8 @@ import { spawnSync } from "node:child_process";
 // Kept for debugging / manual replay through the CLI adapter above.
 const helperBinary = "/opt/homebrew/opt/moshi-hook/bin/moshi-hook";
 
-const agentSource = "pi";
-const agentDisplayName = "Pi";
+const agentSource = "omp";
+const agentDisplayName = "OMP";
 
 // Mirrors internal/config.SocketPath. The MOSHI_SOCKET_PATH override wins
 // over the per-platform default so tests and dev daemons can point us at a
@@ -45,7 +45,7 @@ function resolveSocketPath(): string {
 // One-message-per-connection wire protocol (see internal/socket/server.go):
 // dial, write one envelope as a JSON line, half-close, drain the daemon ack
 // (so the daemon does not log broken pipes), close. Every failure resolves
-// silently — hooks must never interrupt the user's Pi turn when
+// silently — hooks must never interrupt the user's OMP turn when
 // Moshi is absent.
 function sendEnvelope(envelope: Record<string, unknown>): void {
   try {
@@ -239,7 +239,7 @@ function sessionID(
     managerID,
     event.session_id as string,
     event.sessionId as string,
-    "pi",
+    "omp",
   );
 }
 
@@ -578,7 +578,7 @@ function handleEvent(payload: HookPayload): void {
     case "AgentStart":
       return;
     case "PermissionRequest": {
-      // Pi owns the approval prompt and decision. Moshi mirrors
+      // OMP owns the approval prompt and decision. Moshi mirrors
       // the waiting state; with a verified terminal target the daemon's TUI
       // bridge can send the user's remote decision into the native prompt.
       const toolName = firstString(payload.tool_name);
@@ -666,44 +666,50 @@ function send(
   try {
     handleEvent(payload);
   } catch {
-    // Hooks should never interrupt the user's Pi turn.
+    // Hooks should never interrupt the user's OMP turn.
   }
 }
 
-export default function moshiPiHook(pi: ExtensionAPI): void {
-  pi.on("session_start", (event, ctx) => {
+export default function moshiOMPHook(omp: ExtensionAPI): void {
+  omp.on("session_start", (event, ctx) => {
     send("SessionStart", event, ctx);
   });
 
-  pi.on("before_agent_start", (event, ctx) => {
+  omp.on("session_switch", (event, ctx) => {
+    send("SessionStart", event, ctx);
+  });
+
+  omp.on("before_agent_start", (event, ctx) => {
     send("UserPromptSubmit", event, ctx, { prompt: event.prompt });
   });
 
-  pi.on("agent_start", (event, ctx) => {
+  omp.on("agent_start", (event, ctx) => {
     send("AgentStart", event, ctx);
   });
 
-  let lastAssistantMessage = "";
-
-  pi.on("agent_end", (event) => {
-    const messages = Array.isArray(event.messages) ? event.messages : [];
-    for (let index = messages.length - 1; index >= 0; index -= 1) {
-      const message = messages[index] as Record<string, unknown>;
-      if (message?.role === "assistant") {
-        lastAssistantMessage = textFromMessage(message);
-        break;
-      }
-    }
-  });
-
-  pi.on("agent_settled", (event, ctx) => {
+  omp.on("session_stop", (event, ctx) => {
     send("AgentEnd", event, ctx, {
-      last_assistant_message: lastAssistantMessage,
+      last_assistant_message: textFromMessage(event.last_assistant_message),
     });
-    lastAssistantMessage = "";
   });
 
-  pi.on("session_shutdown", (event, ctx) => {
+  omp.on("tool_approval_requested", (event, ctx) => {
+    send("PermissionRequest", event, ctx, {
+      tool_name: event.toolName,
+      tool_use_id: event.toolCallId,
+      reason: event.reason,
+    });
+  });
+
+  omp.on("tool_approval_resolved", (event, ctx) => {
+    send("PermissionResolved", event, ctx, {
+      tool_name: event.toolName,
+      tool_use_id: event.toolCallId,
+      approved: event.approved,
+    });
+  });
+
+  omp.on("session_shutdown", (event, ctx) => {
     send("SessionEnd", event, ctx);
   });
 }
