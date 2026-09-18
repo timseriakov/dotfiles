@@ -206,19 +206,31 @@ done
 
 
 # Session list helpers used by fzf reload bindings.
-list_all() {
-    for file in *.yml; do
-        [ -e "\$file" ] || return
-        printf '%s\n' "\${file%.yml}"
-    done
+is_autosave() {
+    case "\$1" in
+        _autosave|~\ *|[0-9][0-9]-[0-9][0-9]' '[0-9][0-9]-[0-9][0-9]*|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]' '[0-9][0-9]-[0-9][0-9]-[0-9][0-9]*|'[A] '*) return 0 ;;
+    esac
+    return 1
 }
 
 list_autosaves() {
-    list_all | while IFS= read -r name; do
-        case "\$name" in
-            _autosave|[0-9][0-9]-[0-9][0-9]' '[0-9][0-9]-[0-9][0-9]*|'[A] '*) printf '%s\n' "\$name" ;;
-        esac
+    for file in *.yml; do
+        [ -e "\$file" ] || return
+        name="\${file%.yml}"
+        if is_autosave "\$name"; then
+            printf '%s\n' "\$name"
+        fi
     done
+}
+
+list_all() {
+    for file in *.yml; do
+        [ -e "\$file" ] || return
+        name="\${file%.yml}"
+        is_autosave "\$name" && continue
+        printf '%s\n' "\$name"
+    done
+    list_autosaves
 }
 
 delete_session() {
@@ -226,7 +238,7 @@ delete_session() {
 }
 
 export SHELL=/bin/bash
-export -f list_all list_autosaves delete_session
+export -f is_autosave list_all list_autosaves delete_session
 
 # Sesh-style fzf UI
 export FZF_DEFAULT_OPTS="
