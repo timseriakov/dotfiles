@@ -3,6 +3,38 @@ export function createInputSessionPatches(ctx) {
 
   function patchKeybindingsConfig(content) {
     let out = content;
+    if (out.includes("APP_KEYBINDINGS")) {
+      // 18.2.6 moved app keybindings into pi-tui app-keybindings.ts; upstream
+      // dropped app.session.compact and app.git.open from it while the coding
+      // agent still wires getKeys("app.git.open") / "app.session.compact".
+      const compactDefinition = `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`;
+      const gitDefinition = `\t"app.git.open": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Open git UI",\n\t},\n`;
+      let r = insertAfter(
+        out,
+        `\t"app.session.observe": true;\n`,
+        `\t"app.session.compact": true;\n`,
+        "keybindings app.session.compact interface",
+      );
+      out = r.content;
+      r = insertAfter(
+        out,
+        `\t"app.session.compact": true;\n`,
+        `\t"app.git.open": true;\n`,
+        "keybindings app.git.open interface",
+      );
+      out = r.content;
+      r = insertAfter(
+        out,
+        `\t"app.session.observe": {
+		defaultKeys: "ctrl+s",
+		description: "Open the agent hub",
+	},
+`,
+        compactDefinition + gitDefinition,
+        "keybindings app.* definitions",
+      );
+      return r.content;
+    }
     const duplicateInterface = `\t"app.session.observe": true;\n\t"app.session.compact": true;\n\t"app.git.open": true;\n\t"app.session.compact": true;\n`;
     if (out.includes(duplicateInterface)) {
       out = out.replace(

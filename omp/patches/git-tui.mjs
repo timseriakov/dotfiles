@@ -35,6 +35,65 @@ export function createGitTuiPatches({ replaceAny }) {
   }
 
   function patchGitTuiLayout(content) {
+    if (!content.includes("this.#split.locate("))
+      return patchGitTuiLayoutLegacy(content);
+    let out = content;
+    // 18.2.6 rewrote the git TUI around a left/right SplitPane; port the
+    // left-sidebar layout to the new architecture.
+    out = replaceAny(
+      out,
+      [
+        `		this.#split = new SplitPane({
+			left: (width, height) => this.#pane.render(width, height ?? this.#contentHeight),
+			right: (width, height) => this.#sidebar.render(width, height ?? this.#contentHeight),`,
+      ],
+      `		this.#split = new SplitPane({
+			left: (width, height) => this.#sidebar.render(width, height ?? this.#contentHeight),
+			right: (width, height) => this.#pane.render(width, height ?? this.#contentHeight),`,
+      "git TUI sidebar binds left pane",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `		this.#split.setLeftSize({ fixed: this.#centerWidth });
+		this.#split.setRightMinWidth(sidebarWidth);`,
+      ],
+      `		this.#split.setLeftSize({ fixed: sidebarWidth });
+		this.#split.setRightMinWidth(this.#centerWidth);`,
+      "git TUI sidebar sizing swapped",
+    ).content;
+    out = replaceAny(
+      out,
+      [`				if (hit.pane === "right") this.#sidebar.handleWheel(event.wheel);`],
+      `				if (hit.pane === "left") this.#sidebar.handleWheel(event.wheel);`,
+      "git TUI sidebar wheel region left",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `				if (hit.pane === "right") {
+					if (this.#focus !== "sidebar") this.#setFocus("sidebar");
+					this.#sidebar.handleClick(hit.line, hit.col);
+				} else {
+					if (this.#focus !== "diff") this.#setFocus("diff");
+					const click = this.#pane.clickAt(hit.col, hit.line, (event.button & 4) !== 0);
+					if (click?.type === "hunk-action") void this.#hunkAction(click.hunk, click.action);
+				}`,
+      ],
+      `				if (hit.pane === "left") {
+					if (this.#focus !== "sidebar") this.#setFocus("sidebar");
+					this.#sidebar.handleClick(hit.line, hit.col);
+				} else {
+					if (this.#focus !== "diff") this.#setFocus("diff");
+					const click = this.#pane.clickAt(hit.col, hit.line, (event.button & 4) !== 0);
+					if (click?.type === "hunk-action") void this.#hunkAction(click.hunk, click.action);
+				}`,
+      "git TUI sidebar click region left",
+    ).content;
+    return out;
+  }
+
+  function patchGitTuiLayoutLegacy(content) {
     let out = replaceAny(
       content,
       ["\t#centerWidth = 0;"],

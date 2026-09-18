@@ -215,6 +215,15 @@ export function createTuiEditorTerminalPatches(ctx) {
 
   function patchAttachmentChips(content) {
     let out = content;
+    const legacyImportAnchors = [
+      `import { convertImageToPng } from "../../utils/image-loading";`,
+      `import { settings } from "../../config/settings";
+import { convertImageToPng } from "../../utils/image-loading";`,
+    ];
+    // 18.2.6 rewrote attachments around composer-attachments (static 12x4
+    // geometry, no settings hook); keep the configurable-preview fix for
+    // older shapes.
+    if (!legacyImportAnchors.some((a) => content.includes(a))) return content;
     out = replaceAny(
       out,
       [

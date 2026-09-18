@@ -77,16 +77,20 @@ export function createUiComponentPatches(ctx) {
   }
 
   function patchUsageRow(content) {
+    const alternatives = [
+      'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
+      'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 1, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 1, 0)',
+      'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 0, 0)',
+    ];
+    // 18.2.6 rewrote the usage row on top of the metric component (no Text
+    // padding to strip); keep the legacy fix for older shapes.
+    if (!alternatives.some((a) => content.includes(a))) return content;
     return replaceAny(
       content,
-      [
-        'new Text(theme.fg("dim", parts.join("  ")), 1, 0)',
-        'new Text(theme.fg("dim", parts.join("  ")), 0, 0)',
-        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 1, 0)',
-        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp)), 0, 0)',
-        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 1, 0)',
-        'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 0, 0)',
-      ],
+      alternatives,
       'new Text(theme.fg("dim", formatUsageRow(usage, durationMs, ttftMs, timestamp, turnElapsedMs)), 0, 0)',
       "assistant usage padding",
     ).content;

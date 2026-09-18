@@ -254,11 +254,12 @@ export function createStatusLinePatches(ctx) {
     r = replaceAny(
       out,
       [
+        `import { SPINNER_ADVANCE_MS, TERMINAL } from "../index";`,
         `import { TERMINAL } from "@oh-my-pi/pi-tui";`,
         `import { SPINNER_ADVANCE_MS, TERMINAL } from "@oh-my-pi/pi-tui";`,
         `import { TERMINAL, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";`,
       ],
-      `import { TERMINAL, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";`,
+      `import { SPINNER_ADVANCE_MS, TERMINAL } from "../index";`,
       "segments width helpers import",
     );
     out = r.content;
