@@ -40,6 +40,7 @@ export function runPatchRoutes(ctx) {
     ["session/turn-recovery.ts", patches.patchTurnRecovery],
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
     ["config/settings-schema.ts", patches.patchSettingsSchemaAttachmentPreview],
+    ["modes/interactive-mode.ts", patches.patchAttachmentChipsGeometry],
     ["config/model-registry.ts", patches.patchModelRegistryCatalog],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
     ["slash-commands/builtin-lifecycle.ts", patches.patchBtwAliases],

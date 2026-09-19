@@ -213,6 +213,77 @@ export function createTuiEditorTerminalPatches(ctx) {
     ).content;
   }
 
+  /**
+   * 18.2.5+ shape: attachment-chips.ts lives in @oh-my-pi/pi-tui without
+   * settings access; the host passes the preview size at construction.
+   */
+  function patchAttachmentChipsTui(content, replaceAny) {
+    let out = content;
+    out = replaceAny(
+      out,
+      [
+        `/** Chip card geometry (mirrors omp2): a 12x4 content area inside a 1-cell rounded border. */
+const INNER_COLS = 12;
+const INNER_ROWS = 4;
+const CARD_COLS = INNER_COLS + 2;
+const CARD_GAP = 2;`,
+      ],
+      `/** Chip card geometry (mirrors omp2): a 12x4 content area inside a 1-cell rounded border. */
+let INNER_COLS = 12;
+let INNER_ROWS = 4;
+let CARD_COLS = INNER_COLS + 2;
+const CARD_GAP = 2;
+
+function clampPreviewSize(value: number | undefined, fallback: number, min: number, max: number): number {
+	if (!Number.isFinite(value)) return fallback;
+	return Math.max(min, Math.min(max, Math.floor(value!)));
+}`,
+      "attachment preview geometry tui configurable",
+    ).content;
+    return replaceAny(
+      out,
+      [
+        `export class AttachmentChipsBand implements Component {
+	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+	) {}`,
+      ],
+      `export class AttachmentChipsBand implements Component {
+	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+		previewSize?: { cols: number; rows: number },
+	) {
+		const cols = clampPreviewSize(previewSize?.cols, 12, 4, 80);
+		const rows = clampPreviewSize(previewSize?.rows, 4, 1, 30);
+		INNER_COLS = cols;
+		INNER_ROWS = rows;
+		CARD_COLS = cols + 2;
+	}`,
+      "attachment preview geometry tui reads host size",
+    ).content;
+  }
+
+  function patchAttachmentChipsGeometry(content) {
+    return replaceOnce(
+      content,
+      `			new AttachmentChipsBand(this.editor, this.ui.imageBudget, () => this.ui.requestRender()),`,
+      `			new AttachmentChipsBand(
+				this.editor,
+				this.ui.imageBudget,
+				() => this.ui.requestRender(),
+				{
+					cols: settings.get("images.attachmentPreviewWidth"),
+					rows: settings.get("images.attachmentPreviewHeight"),
+				},
+			),`,
+      "attachment chips host passes preview size settings",
+    ).content;
+  }
+
   function patchAttachmentChips(content) {
     let out = content;
     const legacyImportAnchors = [
@@ -220,10 +291,11 @@ export function createTuiEditorTerminalPatches(ctx) {
       `import { settings } from "../../config/settings";
 import { convertImageToPng } from "../../utils/image-loading";`,
     ];
-    // 18.2.6 rewrote attachments around composer-attachments (static 12x4
-    // geometry, no settings hook); keep the configurable-preview fix for
-    // older shapes.
-    if (!legacyImportAnchors.some((a) => content.includes(a))) return content;
+    // 18.2.5 moved attachment-chips into @oh-my-pi/pi-tui (no settings access);
+    // sizes now come from the host (interactive-mode.ts, see patchAttachmentChipsGeometry).
+    if (!legacyImportAnchors.some((a) => content.includes(a))) {
+      return patchAttachmentChipsTui(out, replaceAny);
+    }
     out = replaceAny(
       out,
       [
@@ -644,6 +716,7 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     patchCustomEditor,
     patchSettingsSchemaAttachmentPreview,
     patchAttachmentChips,
+    patchAttachmentChipsGeometry,
     patchVimRuLayout,
     patchVimCutRegisters,
     patchEditorVimKillRing,
