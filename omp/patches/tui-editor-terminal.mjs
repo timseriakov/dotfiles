@@ -240,30 +240,58 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 }`,
       "attachment preview geometry tui configurable",
     ).content;
+    out = replaceAny(
+      out,
+      [`		const rows = ["", "", "", "", "", ""];`],
+      [`		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");`],
+      "attachment chip band height follows preview size",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");
+		const gap = " ".repeat(CARD_GAP);
+		let x = 0;
+		for (const chip of chips) {
+			if (x + CARD_COLS > width) break;
+			const card = this.#card(chip);
+			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + card[r];
+			x += (x > 0 ? CARD_GAP : 0) + CARD_COLS;
+		}
+		return rows;`,
+      ],
+      `		const cardHeight = INNER_ROWS + 2;
+		const rows: string[] = [];
+		const gap = " ".repeat(CARD_GAP);
+		let x = 0;
+		let y = 0;
+		for (const chip of chips) {
+			if (x > 0 && x + CARD_COLS > width) {
+				x = 0;
+				y += cardHeight;
+			}
+			const card = this.#card(chip);
+			for (let r = 0; r < cardHeight; r++) {
+				const row = y + r;
+				rows[row] ??= "";
+				rows[row] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));
+			}
+			x += (x > 0 ? CARD_GAP : 0) + CARD_COLS;
+		}
+		return rows;`,
+      "attachment chips wrap onto rows",
+    ).content;
     return replaceAny(
       out,
       [
-        `export class AttachmentChipsBand implements Component {
-	constructor(
-		private readonly editor: CustomEditor,
-		private readonly budget: ImageBudget,
-		private readonly requestRender: () => void,
-	) {}`,
+        `		return [" ".repeat(INNER_COLS), iconRow, " ".repeat(INNER_COLS), " ".repeat(INNER_COLS)];`,
       ],
-      `export class AttachmentChipsBand implements Component {
-	constructor(
-		private readonly editor: CustomEditor,
-		private readonly budget: ImageBudget,
-		private readonly requestRender: () => void,
-		previewSize?: { cols: number; rows: number },
-	) {
-		const cols = clampPreviewSize(previewSize?.cols, 12, 4, 80);
-		const rows = clampPreviewSize(previewSize?.rows, 4, 1, 30);
-		INNER_COLS = cols;
-		INNER_ROWS = rows;
-		CARD_COLS = cols + 2;
-	}`,
-      "attachment preview geometry tui reads host size",
+      [
+        `		const rows = Array.from({ length: INNER_ROWS }, () => " ".repeat(INNER_COLS));
+		rows[Math.floor(INNER_ROWS / 2)] = iconRow;
+		return rows;`,
+      ],
+      "attachment chip fallback height follows preview size",
     ).content;
   }
 
@@ -376,35 +404,37 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     out = replaceAny(
       out,
       [
-        `		if (chip.kind === "image") {
-			const dims = this.#imageDims(chip.image);
-			bottomCaption = dims ? \`\${dims.width}x\${dims.height}\` : "";
-			interior = this.#imageInterior(chip.image, dims);
-		} else {`,
-        `		if (chip.kind === "image") {
-			const dims = this.#imageDims(chip.image);
-			return ["", ...this.#imageInterior(chip.image, dims), ""];
-		} else {`,
-        `		if (chip.kind !== "paste") {
-			const dims = this.#imageDims(chip.image);
-			bottomCaption = dims ? \`\${dims.width}x\${dims.height}\` : "";
-			interior = this.#imageInterior(chip.image, dims, chip.kind);
-		} else {`,
+        `		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");
+		const gap = " ".repeat(CARD_GAP);
+		let x = 0;
+		for (const chip of chips) {
+			if (x + CARD_COLS > width) break;
+			const card = this.#card(chip);
+			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));
+			x += (x > 0 ? CARD_GAP : 0) + CARD_COLS;
+		}
+		return rows;`,
       ],
-      `		if (chip.kind !== "paste") {
-			const dims = this.#imageDims(chip.image);
-			return ["", ...this.#imageInterior(chip.image, dims, chip.kind), ""];
-		} else {`,
-      "attachment image chips without border fallback lines",
-    ).content;
-    out = replaceAny(
-      out,
-      [
-        `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + card[r];`,
-        `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));`,
-      ],
-      `			for (let r = 0; r < rows.length; r++) rows[r] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));`,
-      "attachment chip render pads missing rows",
+      `		const cardHeight = INNER_ROWS + 2;
+		const rows: string[] = [];
+		const gap = " ".repeat(CARD_GAP);
+		let x = 0;
+		let y = 0;
+		for (const chip of chips) {
+			if (x > 0 && x + CARD_COLS > width) {
+				x = 0;
+				y += cardHeight;
+			}
+			const card = this.#card(chip);
+			for (let r = 0; r < cardHeight; r++) {
+				const row = y + r;
+				rows[row] ??= "";
+				rows[row] += (x > 0 ? gap : "") + (card[r] ?? " ".repeat(CARD_COLS));
+			}
+			x += (x > 0 ? CARD_GAP : 0) + CARD_COLS;
+		}
+		return rows;`,
+      "legacy attachment chips wrap onto rows",
     ).content;
     out = replaceAny(
       out,

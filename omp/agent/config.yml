@@ -18,8 +18,8 @@ theme:
 colorBlindMode: false
 showHardwareCursor: false
 images:
-  attachmentPreviewWidth: 48
-  attachmentPreviewHeight: 16
+  attachmentPreviewWidth: 64
+  attachmentPreviewHeight: 20
 stt:
   enabled: true
   language: ru
