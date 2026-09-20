@@ -240,12 +240,14 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 }`,
       "attachment preview geometry tui configurable",
     ).content;
-    out = replaceAny(
-      out,
-      [`		const rows = ["", "", "", "", "", ""];`],
-      [`		const rows = Array.from({ length: INNER_ROWS + 2 }, () => "");`],
-      "attachment chip band height follows preview size",
-    ).content;
+    if (!out.includes(`\t\tconst cardHeight = INNER_ROWS + 2;`)) {
+      out = replaceAny(
+        out,
+        [`\t\tconst rows = ["", "", "", "", "", ""];`],
+        [`\t\tconst rows = Array.from({ length: INNER_ROWS + 2 }, () => "");`],
+        "attachment chip band height follows preview size",
+      ).content;
+    }
     out = replaceAny(
       out,
       [

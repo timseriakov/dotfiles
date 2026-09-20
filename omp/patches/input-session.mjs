@@ -3,12 +3,11 @@ export function createInputSessionPatches(ctx) {
 
   function patchKeybindingsConfig(content) {
     let out = content;
+    const compactDefinition = `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`;
+    const gitDefinition = `\t"app.git.open": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Open git UI",\n\t},\n`;
+    const smolDefinition = `\t"app.smol.cycle": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Cycle smol models",\n\t},\n`;
+
     if (out.includes("APP_KEYBINDINGS")) {
-      // 18.2.6 moved app keybindings into pi-tui app-keybindings.ts; upstream
-      // dropped app.session.compact and app.git.open from it while the coding
-      // agent still wires getKeys("app.git.open") / "app.session.compact".
-      const compactDefinition = `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`;
-      const gitDefinition = `\t"app.git.open": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Open git UI",\n\t},\n`;
       let r = insertAfter(
         out,
         `\t"app.session.observe": true;\n`,
@@ -25,22 +24,17 @@ export function createInputSessionPatches(ctx) {
       out = r.content;
       r = insertAfter(
         out,
-        `\t"app.session.observe": {
-		defaultKeys: "ctrl+s",
-		description: "Open the agent hub",
-	},
-`,
-        compactDefinition + gitDefinition,
+        `\t"app.git.open": true;\n`,
+        `\t"app.smol.cycle": true;\n`,
+        "keybindings app.smol.cycle interface",
+      );
+      out = r.content;
+      return insertAfter(
+        out,
+        `\t"app.session.observe": {\n\t\tdefaultKeys: "ctrl+s",\n\t\tdescription: "Open the agent hub",\n\t},\n`,
+        compactDefinition + gitDefinition + smolDefinition,
         "keybindings app.* definitions",
-      );
-      return r.content;
-    }
-    const duplicateInterface = `\t"app.session.observe": true;\n\t"app.session.compact": true;\n\t"app.git.open": true;\n\t"app.session.compact": true;\n`;
-    if (out.includes(duplicateInterface)) {
-      out = out.replace(
-        duplicateInterface,
-        `\t"app.session.observe": true;\n\t"app.session.compact": true;\n\t"app.git.open": true;\n`,
-      );
+      ).content;
     }
 
     let r = insertAfter(
@@ -50,7 +44,6 @@ export function createInputSessionPatches(ctx) {
       "keybindings app.session.compact interface",
     );
     out = r.content;
-
     r = insertAfter(
       out,
       `\t"app.session.compact": true;\n`,
@@ -58,16 +51,13 @@ export function createInputSessionPatches(ctx) {
       "keybindings app.git.open interface",
     );
     out = r.content;
-
-    const compactDefinition = `\t"app.session.compact": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Compact current session",\n\t},\n`;
-    const gitDefinition = `\t"app.git.open": {\n\t\tdefaultKeys: [],\n\t\tdescription: "Open git UI",\n\t},\n`;
-    const duplicateDefinitions = `${compactDefinition}${gitDefinition}${compactDefinition}`;
-    if (out.includes(duplicateDefinitions))
-      out = out.replace(
-        duplicateDefinitions,
-        `${compactDefinition}${gitDefinition}`,
-      );
-
+    r = insertAfter(
+      out,
+      `\t"app.git.open": true;\n`,
+      `\t"app.smol.cycle": true;\n`,
+      "keybindings app.smol.cycle interface",
+    );
+    out = r.content;
     r = insertAfter(
       out,
       `\t"app.session.observe": {\n\t\tdefaultKeys: "ctrl+s",\n\t\tdescription: "Open the agent hub",\n\t},\n`,
@@ -75,14 +65,19 @@ export function createInputSessionPatches(ctx) {
       "keybindings app.session.compact definition",
     );
     out = r.content;
-
     r = insertAfter(
       out,
       compactDefinition,
       gitDefinition,
       "keybindings app.git.open definition",
     );
-    return r.content;
+    out = r.content;
+    return insertAfter(
+      out,
+      gitDefinition,
+      smolDefinition,
+      "keybindings app.smol.cycle definition",
+    ).content;
   }
 
   function patchInputControllerBase(content) {
@@ -130,16 +125,65 @@ export function createInputSessionPatches(ctx) {
 
   function patchInputController(content) {
     let out = patchInputControllerBase(content);
+    const smolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.cycleSmolModel());\n\t\t}\n`;
+    const smolHandler = `\tasync cycleSmolModel(): Promise<void> {
+\t\tif (this.ctx.focusedAgentId) {
+\t\t\tthis.ctx.showStatus("Model changes apply to the main session — press ←← to return first");
+\t\t\treturn;
+\t\t}
+\t\tconst ids = [
+\t\t\t"opencode-go/deepseek-v4-flash",
+\t\t\t"opencode-go/deepseek-v4.1-flash",
+\t\t\t"opencode-go/deepseek-v4-flash-vision-exp",
+\t\t\t"opencode-go/glm-5.3-flash",
+\t\t];
+\t\tconst available = this.ctx.session.modelRegistry.getAvailable();
+\t\tconst models = ids.map(id => available.find(model => model.id === id)).filter(Boolean);
+\t\tif (models.length < 2) {
+\t\t\tthis.ctx.showStatus("Smol model cycle is unavailable");
+\t\t\treturn;
+\t\t}
+\t\tconst current = this.ctx.session.model;
+\t\tconst index = models.findIndex(model => model!.provider === current?.provider && model!.id === current.id);
+\t\tconst next = models[(index + 1) % models.length]!;
+\t\ttry {
+\t\t\tawait this.ctx.session.setModelTemporary(next);
+\t\t\tthis.ctx.statusLine.invalidate();
+\t\t\tthis.ctx.updateEditorBorderColor();
+\t\t\tthis.ctx.showStatus(\`Smol model: \${next.name}\`);
+\t\t} catch (error) {
+\t\t\tthis.ctx.showError(error instanceof Error ? error.message : String(error));
+\t\t}
+\t}
+
+`;
+    out = out.split(smolRegistration).join("");
+    const smolStart = out.indexOf("\tasync cycleSmolModel(): Promise<void> {");
+    const thinkingStart = out.indexOf(
+      "\tcycleThinkingLevel(): void {",
+      smolStart,
+    );
+    if (smolStart !== -1 && thinkingStart !== -1)
+      out = out.slice(0, smolStart) + out.slice(thinkingStart);
+    out = insertAfter(
+      out,
+      `\t\tthis.ctx.editor.clearCustomKeyHandlers();\n`,
+      smolRegistration,
+      "input-controller smol cycle key handler",
+    ).content;
+    out = insertBefore(
+      out,
+      `\tcycleThinkingLevel(): void {\n`,
+      smolHandler,
+      "input-controller smol model cycle",
+    ).content;
+
     const gitHandler = `\n\t\tfor (const key of this.ctx.keybindings.getKeys("app.git.open")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => this.ctx.showGitUi());\n\t\t}\n`;
     if (out.includes(gitHandler)) return out;
-
     const compactHandler = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.session.compact")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());\n\t\t}\n`;
     const planHandler = `\t\tconst planModeKeys = this.ctx.keybindings.getKeys("app.plan.toggle");\n\t\tfor (const key of planModeKeys) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handlePlanModeCommand());\n\t\t}\n`;
-
-    if (out.includes(compactHandler)) {
+    if (out.includes(compactHandler))
       return out.replace(compactHandler, compactHandler + gitHandler);
-    }
-
     if (!out.includes(planHandler)) {
       throw new Error(
         "Patch 'input-controller app.git.open handler' could not find plan or compact handler. Upstream source changed.",

@@ -5,10 +5,10 @@ tui.editor.deleteToLineEnd: []
 app.stt.toggle: alt+v
 app.session.compact: ctrl+k
 app.git.open: alt+g
+app.smol.cycle: ctrl+t
 app.model.cycleForward:
   - ctrl+p
   - tab
 app.thinking.cycle:
   - shift+tab
-  - ctrl+t
 app.thinking.toggle: []
