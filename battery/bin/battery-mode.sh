@@ -107,8 +107,8 @@ do_mobile() {
   log_info "switching to mobile mode (hours=$hours, charge=${charge})"
   battery maintain stop
   if (( charge )); then
-    log_info "charging to 100%"
-    battery charge 100
+    log_info "maintaining charge at 100% until server mode resumes"
+    battery maintain 100
   fi
 
   local expires_at
