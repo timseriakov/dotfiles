@@ -9,10 +9,7 @@
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@morph-llm/morph-fast-apply"
-      ],
+      "args": ["-y", "@morph-llm/morph-fast-apply"],
       "env": {
         "ENABLED_TOOLS": "edit_file,warpgrep_codebase_search",
         "MORPH_API_KEY": "${keyring:morph_api_key}"
@@ -37,10 +34,7 @@
       "name": "mac-use-mcp",
       "protocol": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "mac-use-mcp@0.63.0"
-      ],
+      "args": ["-y", "mac-use-mcp@0.63.0"],
       "oauth": null,
       "enabled": true,
       "created": "2026-09-01T00:00:00+03:00",
@@ -155,9 +149,7 @@
       "description": "A collection of secure, high-quality MCP servers as docker images",
       "url": "https://hub.docker.com/catalogs/mcp",
       "servers_url": "https://hub.docker.com/v2/repositories/mcp/",
-      "tags": [
-        "verified"
-      ],
+      "tags": ["verified"],
       "protocol": "custom/docker",
       "provenance": "official"
     }
@@ -228,12 +220,7 @@
   },
   "output_sanitisation": {
     "response_action": "spotlight",
-    "strip_classes": [
-      "ansi",
-      "c0c1",
-      "bidi",
-      "zero_width"
-    ],
+    "strip_classes": ["ansi", "c0c1", "bidi", "zero_width"],
     "max_redactions": 100
   },
   "telemetry": {
