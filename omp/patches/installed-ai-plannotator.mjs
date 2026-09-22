@@ -21,7 +21,11 @@ export function createInstalledAiPlannotatorPatches(ctx) {
       patchedImport,
       "pi-ai openai-completions import schema sanitizer",
     ).content;
-    if (out.includes("const rejectRootObjectUnion = compat.rejectRootObjectUnion;")) {
+    if (
+      out.includes(
+        "const rejectRootObjectUnion = compat.rejectRootObjectUnion;",
+      )
+    ) {
       out = replaceAny(
         out,
         [
@@ -202,8 +206,10 @@ export function createInstalledAiPlannotatorPatches(ctx) {
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderBedrock));\n\t}`,
         `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(withProviderBedrock));\n\t}`,
+        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderBedrock.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       ],
-      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderBedrock.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
+      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderBedrock.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
       "drop retired openrouter :free from composed registry",
     );
     out = r.content;

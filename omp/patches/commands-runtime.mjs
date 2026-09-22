@@ -105,71 +105,18 @@ export function createCommandRuntimePatches(ctx) {
     ).content;
   }
 
-  function patchUltrathink(content) {
-    let out = content;
-    let r;
-
-    r = replaceAny(
-      out,
-      [
-        `const ULTRATHINK_WORD = magicKeywordRegex("ultrathink");`,
-        `const ULTRATHINK_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
-      ],
-      `const ULTRATHINK_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
-      "ultrathink ulw alias detection",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [
-        `\tprobe: /ultrathink/,\n\thighlight: magicKeywordRegex("ultrathink", "g"),`,
-        `\tprobe: /ultrathink|ulw/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
-      ],
-      `\tprobe: /ultrathink|ulw/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:ultrathink|ulw)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
-      "ultrathink ulw alias highlight",
-    );
-    out = r.content;
-    return out;
-  }
-
-  function patchOrchestrate(content) {
-    let out = content;
-    let r;
-
-    r = replaceAny(
-      out,
-      [
-        `const ORCHESTRATE_WORD = magicKeywordRegex("orchestrate");`,
-        `const ORCHESTRATE_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
-      ],
-      `const ORCHESTRATE_WORD = /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/u;`,
-      "orchestrate orch alias detection",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [
-        `\tprobe: /orchestrate/,\n\thighlight: magicKeywordRegex("orchestrate", "g"),`,
-        `\tprobe: /orchestrate|orch/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
-      ],
-      `\tprobe: /orchestrate|orch/,\n\thighlight: /(?<![\\p{L}\\p{N}_./\\\\-])(?<!::)(?:orchestrate|orch)(?![\\p{L}\\p{N}_/\\\\-])(?!\\.[\\p{L}\\p{N}_-])(?!\\()/gu,`,
-      "orchestrate orch alias highlight",
-    );
-    out = r.content;
-    return out;
-  }
-
   function patchMagicKeywords(content) {
+    // 18.2.8 rewrote the engine: keywords are now declarative entries in the
+    // host list (pi-coding-agent modes/magic-keywords.ts); aliases become
+    // first-class entries reusing the parent keyword's hue and notice.
+    const orchestrateEntry = `\t{\n\t\tid: "orchestrate",\n\t\tword: "orchestrate",\n\t\thue: [150, 280],\n\t\tlabel: "Orchestrate Keyword",\n\t\tdescription: "Let standalone orchestrate append its hidden multi-agent orchestration notice",\n\t\t// The contract is entirely about \`task\` subagent dispatch.\n\t\trequires: ["task"],\n\t\tnotice: renderOrchestrateNotice,\n\t},\n`;
+    const aliasEntries = `\t{\n\t\tid: "ulw",\n\t\tword: "ulw",\n\t\thue: [0, 330],\n\t\tlabel: "ULW Keyword",\n\t\tdescription: "Let standalone ulw act as a short ultrathink alias and append its hidden notice",\n\t\trequires: [],\n\t\tnotice: () => ULTRATHINK_NOTICE,\n\t},\n\t{\n\t\tid: "orch",\n\t\tword: "orch",\n\t\thue: [150, 280],\n\t\tlabel: "ORCH Keyword",\n\t\tdescription: "Let standalone orch act as a short orchestrate alias and append its hidden orchestration notice",\n\t\trequires: ["task"],\n\t\tnotice: renderOrchestrateNotice,\n\t},\n`;
+    if (content.includes(aliasEntries)) return content;
     return replaceAny(
       content,
-      [
-        `\tif (!text.includes("ultrathink") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
-        `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("workflowz")) {`,
-      ],
-      `\tif (!text.includes("ultrathink") && !text.includes("ulw") && !text.includes("orchestrate") && !text.includes("orch") && !text.includes("workflowz")) {`,
-      "magic keyword ulw fast probe",
+      [orchestrateEntry],
+      orchestrateEntry + aliasEntries,
+      "magic keyword ulw/orch aliases (18.2.8)",
     ).content;
   }
 
@@ -407,8 +354,6 @@ export function createCommandRuntimePatches(ctx) {
     patchAdvisorAliases,
 
     patchGoalTool,
-    patchUltrathink,
-    patchOrchestrate,
     patchMagicKeywords,
     patchExtensionLoader,
     patchDiscoveryHelpers,

@@ -12,13 +12,25 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     "qutebrowser agent constants",
   ).content;
 
+  const downloadsLine = `\tconst downloadsPath = params.downloads === undefined ? undefined : resolveToCwd(params.downloads, session.cwd);\n`;
   const unpatchedGuard = `\tconst kind = resolveBrowserKind(params, session);\n\tdetails.browser = kind.kind;`;
+  const upstream1828Guard = `\tconst kind = resolveBrowserKind(params, session);\n${downloadsLine}\tdetails.browser = kind.kind;`;
   const manualGuard = `\tconst kind = resolveBrowserKind(params, session);\n\tconst explicitRelay = params.app?.relay === true;\n\tconst validQutebrowser = kind.kind === "connected" && kind.cdpUrl === QUTE_BROWSER_CDP;\n\tconst validRelay = explicitRelay && kind.kind === "relay";\n\tif (!validQutebrowser && !validRelay) {\n\t\tthrow new ToolError(\n\t\t\t"Browser automation requires qutebrowser CDP 9223; Chrome/headless/cmux and implicit relay are disabled.",\n\t\t);\n\t}\n\tif (validQutebrowser && params.app?.target !== AGENT_TARGET) {\n\t\tthrow new ToolError(\n\t\t\t"Missing qutebrowser agent target. Open qutebrowser/bin/qutebrowser-agent and use app.target=OMP_AGENT_WINDOW_9f2c.",\n\t\t);\n\t}\n\tdetails.browser = kind.kind;`;
   const finalGuard = `\tconst kind = resolveBrowserKind(params, session);\n\tconst explicitRelay = params.app?.relay === true;\n\tconst validQutebrowser = kind.kind === "connected" && kind.cdpUrl === QUTE_BROWSER_CDP;\n\tconst validRelay = explicitRelay && kind.kind === "relay";\n\tif (!validQutebrowser && !validRelay) {\n\t\tthrow new ToolError(\n\t\t\t"Browser automation requires qutebrowser CDP 9223; Chrome/headless/cmux and implicit relay are disabled.",\n\t\t);\n\t}\n\tif (validQutebrowser && params.app?.target && params.app.target !== AGENT_TARGET) {\n\t\tthrow new ToolError(\n\t\t\t"qutebrowser automation only permits target=OMP_AGENT_WINDOW_9f2c.",\n\t\t);\n\t}\n\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n\tdetails.browser = kind.kind;`;
+  const finalGuard1828 = finalGuard.replace(
+    `\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n\tdetails.browser = kind.kind;`,
+    `\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n${downloadsLine}\tdetails.browser = kind.kind;`,
+  );
   out = replaceAny(
     out,
-    [unpatchedGuard, manualGuard, finalGuard],
-    finalGuard,
+    [
+      upstream1828Guard,
+      unpatchedGuard,
+      manualGuard,
+      finalGuard,
+      finalGuard1828,
+    ],
+    finalGuard1828,
     "qutebrowser backend and implicit agent target",
   ).content;
   out = replaceAny(
