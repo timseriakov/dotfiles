@@ -283,7 +283,7 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 		return rows;`,
       "attachment chips wrap onto rows",
     ).content;
-    return replaceAny(
+    out = replaceAny(
       out,
       [
         `		return [" ".repeat(INNER_COLS), iconRow, " ".repeat(INNER_COLS), " ".repeat(INNER_COLS)];`,
@@ -294,6 +294,33 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 		return rows;`,
       ],
       "attachment chip fallback height follows preview size",
+    ).content;
+    // 18.3.0 dropped the previewSize constructor param again ("wrap" port rewrote
+    // the band); re-accept the host-provided size like the fd455ba3 restore did.
+    return replaceAny(
+      out,
+      [
+        `export class AttachmentChipsBand implements Component {
+	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+	) {}`,
+      ],
+      `export class AttachmentChipsBand implements Component {
+	constructor(
+		private readonly editor: CustomEditor,
+		private readonly budget: ImageBudget,
+		private readonly requestRender: () => void,
+		previewSize?: { cols: number; rows: number },
+	) {
+		const cols = clampPreviewSize(previewSize?.cols, 12, 4, 80);
+		const rows = clampPreviewSize(previewSize?.rows, 4, 1, 30);
+		INNER_COLS = cols;
+		INNER_ROWS = rows;
+		CARD_COLS = cols + 2;
+	}`,
+      "attachment preview geometry tui reads host size (18.3.0 dropped the param)",
     ).content;
   }
 
