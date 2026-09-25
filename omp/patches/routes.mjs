@@ -39,7 +39,7 @@ export function runPatchRoutes(ctx) {
     ["session/session-tools.ts", patches.patchSessionTools],
     ["session/turn-recovery.ts", patches.patchTurnRecovery],
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
-    ["config/settings-schema.ts", patches.patchSettingsSchemaAttachmentPreview],
+    ["modes/settings.ts", patches.patchSettingsSchemaAttachmentPreview],
     ["modes/interactive-mode.ts", patches.patchAttachmentChipsGeometry],
     ["config/model-registry.ts", patches.patchModelRegistryCatalog],
     ["modes/magic-keywords.ts", patches.patchMagicKeywords],

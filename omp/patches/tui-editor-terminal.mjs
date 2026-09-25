@@ -131,92 +131,97 @@ export function createTuiEditorTerminalPatches(ctx) {
   }
 
   function patchSettingsSchemaAttachmentPreview(content) {
+    // 18.3.1 moved settings into the register() registry (config/settings-schema.ts deleted);
+    // re-declare preview-size settings so config.yml images.attachmentPreviewWidth/Height are honored.
     return replaceAny(
       content,
       [
-        `	"images.blockImages": {
-		type: "boolean",
-		default: false,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Block Images",
-			description: "Prevent images from being sent to LLM providers",
-		},
-	},`,
-        `	"images.attachmentPreviewWidth": {
-		type: "number",
-		default: 12,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Attachment Preview Width",
-			description: "Maximum inline attachment thumbnail width in terminal cells",
-		},
+        `export const cfgImagesBlockImages = register({
+	id: "images.blockImages",
+	type: "boolean",
+	default: false,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Block Images",
+		description: "Prevent images from being sent to LLM providers",
 	},
-
-	"images.attachmentPreviewHeight": {
-		type: "number",
-		default: 4,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Attachment Preview Height",
-			description: "Maximum inline attachment thumbnail height in terminal rows",
-		},
+});`,
+        `export const cfgImagesBlockImages = register({
+	id: "images.blockImages",
+	type: "boolean",
+	default: false,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Block Images",
+		description: "Prevent images from being sent to LLM providers",
 	},
+});
 
-	"images.blockImages": {
-		type: "boolean",
-		default: false,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Block Images",
-			description: "Prevent images from being sent to LLM providers",
-		},
-	},`,
+export const cfgImagesAttachmentPreviewWidth = register({
+	id: "images.attachmentPreviewWidth",
+	type: "number",
+	default: 12,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Attachment Preview Width",
+		description: "Maximum inline attachment thumbnail width in terminal cells",
+	},
+});
+
+export const cfgImagesAttachmentPreviewHeight = register({
+	id: "images.attachmentPreviewHeight",
+	type: "number",
+	default: 4,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Attachment Preview Height",
+		description: "Maximum inline attachment thumbnail height in terminal rows",
+	},
+});`,
       ],
-      `	"images.attachmentPreviewWidth": {
-		type: "number",
-		default: 12,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Attachment Preview Width",
-			description: "Maximum inline attachment thumbnail width in terminal cells",
-		},
+      `export const cfgImagesBlockImages = register({
+	id: "images.blockImages",
+	type: "boolean",
+	default: false,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Block Images",
+		description: "Prevent images from being sent to LLM providers",
 	},
+});
 
-	"images.attachmentPreviewHeight": {
-		type: "number",
-		default: 4,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Attachment Preview Height",
-			description: "Maximum inline attachment thumbnail height in terminal rows",
-		},
+export const cfgImagesAttachmentPreviewWidth = register({
+	id: "images.attachmentPreviewWidth",
+	type: "number",
+	default: 12,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Attachment Preview Width",
+		description: "Maximum inline attachment thumbnail width in terminal cells",
 	},
+});
 
-	"images.blockImages": {
-		type: "boolean",
-		default: false,
-		ui: {
-			tab: "appearance",
-			group: "Images",
-			label: "Block Images",
-			description: "Prevent images from being sent to LLM providers",
-		},
-	},`,
-      "attachment preview size settings schema",
+export const cfgImagesAttachmentPreviewHeight = register({
+	id: "images.attachmentPreviewHeight",
+	type: "number",
+	default: 4,
+	ui: {
+		tab: "appearance",
+		group: "Images",
+		label: "Attachment Preview Height",
+		description: "Maximum inline attachment thumbnail height in terminal rows",
+	},
+});`,
+      "settings attachment preview registers",
     ).content;
   }
 
-  /**
-   * 18.2.5+ shape: attachment-chips.ts lives in @oh-my-pi/pi-tui without
-   * settings access; the host passes the preview size at construction.
-   */
   function patchAttachmentChipsTui(content, replaceAny) {
     let out = content;
     out = replaceAny(
@@ -325,16 +330,52 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
   }
 
   function patchAttachmentChipsGeometry(content) {
-    return replaceOnce(
-      content,
-      `			new AttachmentChipsBand(this.editor, this.ui.imageBudget, () => this.ui.requestRender()),`,
-      `			new AttachmentChipsBand(
+    let out = content;
+    // 18.3.1 removed settings.get() from the settings object; cfg accessors are
+    // exported from ./settings (modes/settings.ts registers, see patchSettingsSchemaAttachmentPreview).
+    out = replaceAny(
+      out,
+      [
+        `	cfgStartupQuiet,`,
+        `	cfgImagesAttachmentPreviewHeight,
+	cfgImagesAttachmentPreviewWidth,
+	cfgStartupQuiet,`,
+      ],
+      `	cfgImagesAttachmentPreviewHeight,
+	cfgImagesAttachmentPreviewWidth,
+	cfgStartupQuiet,`,
+      "attachment chips import preview size settings",
+    ).content;
+    return replaceAny(
+      out,
+      [
+        `			new AttachmentChipsBand(this.editor, this.ui.imageBudget, () => this.ui.requestRender()),`,
+        `			new AttachmentChipsBand(
 				this.editor,
 				this.ui.imageBudget,
 				() => this.ui.requestRender(),
 				{
 					cols: settings.get("images.attachmentPreviewWidth"),
 					rows: settings.get("images.attachmentPreviewHeight"),
+				},
+			),`,
+        `			new AttachmentChipsBand(
+				this.editor,
+				this.ui.imageBudget,
+				() => this.ui.requestRender(),
+				{
+					cols: cfgImagesAttachmentPreviewWidth.get(this.settings),
+					rows: cfgImagesAttachmentPreviewHeight.get(this.settings),
+				},
+			),`,
+      ],
+      `			new AttachmentChipsBand(
+				this.editor,
+				this.ui.imageBudget,
+				() => this.ui.requestRender(),
+				{
+					cols: cfgImagesAttachmentPreviewWidth.get(this.settings),
+					rows: cfgImagesAttachmentPreviewHeight.get(this.settings),
 				},
 			),`,
       "attachment chips host passes preview size settings",
