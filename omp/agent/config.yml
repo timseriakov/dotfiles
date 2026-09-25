@@ -75,7 +75,8 @@ modelRoles:
   advisor: omniroute/cx/gpt-5.6-sol:medium
   commit: opencode-go/opencode-go/deepseek-v4.1-flash:max
   default: omniroute/cx/gpt-5.6-luna:max
-  slow: omniroute/cx/gpt-5.6-sol-low:low
+  slow: omniroute/cx/gpt-5.5-high:high
+  web: web/parallel
 task:
   agentAdvisor:
     security-reviewer: omniroute/cx/gpt-5.5:medium
@@ -153,31 +154,6 @@ disabledProviders:
   - zai
   - zenmux
   - zhipu-coding-plan
-providers:
-  webSearchOrder:
-    - parallel
-    - perplexity
-    - gemini
-    - anthropic
-    - codex
-    - xai
-    - zai
-    - exa
-    - tinyfish
-    - jina
-    - kagi
-    - tavily
-    - firecrawl
-    - brave
-    - kimi
-    - synthetic
-    - searxng
-    - startpage
-    - duckduckgo
-    - ecosia
-    - google
-    - mojeek
-    - public
 modelProviderOrder:
   - omniroute
   - opencode-go
@@ -205,3 +181,33 @@ browser:
   cmux: false
 composer:
   shape: box
+retry:
+  fallbackChains:
+    web:
+      - web/perplexity
+      - google/gemini-2.5-flash
+      - anthropic/claude-haiku-4-5
+      - openai-codex/gpt-5.6-luna
+      - xai/grok-4.5
+      - web/zai
+      - web/exa
+      - web/tinyfish
+      - web/jina
+      - web/kagi
+      - web/tavily
+      - web/firecrawl
+      - web/brave
+      - web/kimi
+      - web/synthetic
+      - web/searxng
+      - web/startpage
+      - web/duckduckgo
+      - web/ecosia
+      - web/google
+      - web/mojeek
+      - web/public
+      - google-antigravity/gemini-2.5-flash
+      - openai-codex/gpt-5.6
+      - openai-codex/gpt-5.5
+      - xai-oauth/grok-4.5
+      - web/ollama
