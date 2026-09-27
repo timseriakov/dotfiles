@@ -62,6 +62,7 @@ git:
       useConfigOnly: true
 
 gui:
+  mouseEvents: false
   theme:
     activeBorderColor:
       - "#88c0d0"
