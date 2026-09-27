@@ -134,6 +134,10 @@ cliamp/*_ocr.png
 /omp/agent/autoqa.db
 /omp/agent/autoqa.db-shm
 /omp/agent/autoqa.db-wal
+/omp/agent/skill-descriptions.db
+/omp/agent/skill-descriptions.db-shm
+/omp/agent/skill-descriptions.db-wal
+/omp/agent/predict/
 /pi/context-mode/content
 /omp/.omo/run-continuation
 /.antigravitycli
