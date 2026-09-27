@@ -61,9 +61,7 @@ export function patchBrowserAttach(content, { replaceAny }) {
 async function ensureQutebrowserAgentTarget(browser: Browser, matcher?: string): Promise<void> {
 	if (matcher?.toLowerCase() !== "omp_agent_window_9f2c") return;
 	if (!qutebrowserAgentTargetOpen) {
-		qutebrowserAgentTargetOpen = ensureQutebrowserAgentTargetOnce(browser).finally(() => {
-			qutebrowserAgentTargetOpen = undefined;
-		});
+		qutebrowserAgentTargetOpen = ensureQutebrowserAgentTargetOnce(browser);
 	}
 	await qutebrowserAgentTargetOpen;
 }
@@ -80,19 +78,51 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser): Promise<void>
 	if (await hasTarget()) return;
 	const child = Bun.spawn(["/Users/tim/dev/dotfiles/qutebrowser/bin/qutebrowser-agent"], {
 		stdout: "ignore",
-		stderr: "ignore",
+		stderr: "pipe",
 	});
 	child.unref();
+	let exitCode: number | undefined;
+	let exitError: unknown;
+	const stderrPromise = new Response(child.stderr).text().catch(() => "");
+	child.exited.then(
+		code => { exitCode = code; },
+		error => { exitError = error; exitCode = -1; },
+	);
 	const deadline = Date.now() + 5_000;
 	while (Date.now() < deadline) {
 		if (await hasTarget()) return;
+		if (exitCode !== undefined && exitCode !== 0) break;
 		await Bun.sleep(100);
 	}
-	throw new ToolError("Could not create the marked qutebrowser agent window");
+	if (await hasTarget()) return;
+	if (exitCode === undefined) {
+		child.kill("SIGTERM");
+		let exited = await Promise.race([child.exited.then(() => true, () => true), Bun.sleep(2_000).then(() => false)]);
+		if (!exited) {
+			child.kill("SIGKILL");
+			exited = await Promise.race([child.exited.then(() => true, () => true), Bun.sleep(1_000).then(() => false)]);
+		}
+		const stderr = await Promise.race([stderrPromise, Bun.sleep(200).then(() => "")]);
+		const reason = String(stderr || (exited ? "" : "child did not exit after SIGKILL")).trim();
+		throw new ToolError("Could not create the marked qutebrowser agent window: qutebrowser-agent timed out" + (reason ? ": " + reason : ""));
+	}
+	const stderr = (await stderrPromise).trim();
+	const reason = exitError instanceof Error ? exitError.message : stderr;
+	if (exitCode === 0) {
+		throw new ToolError("Could not create the marked qutebrowser agent window: qutebrowser-agent exited 0 but marker target did not appear" + (reason ? ": " + reason : ""));
+	}
+	throw new ToolError("Could not create the marked qutebrowser agent window: qutebrowser-agent exited " + String(exitCode) + (reason ? ": " + reason : ""));
 }
 
 `;
-  if (!out.includes("async function ensureQutebrowserAgentTarget")) {
+  const helperPattern =
+    /let qutebrowserAgentTargetOpen: Promise<void> \| undefined;\n\nasync function ensureQutebrowserAgentTarget[\s\S]*?\n\nexport async function pickElectronTarget\(/;
+  if (helperPattern.test(out)) {
+    out = out.replace(
+      helperPattern,
+      helper + "export async function pickElectronTarget(",
+    );
+  } else {
     out = out.replace(
       "export async function pickElectronTarget(",
       helper + "export async function pickElectronTarget(",
