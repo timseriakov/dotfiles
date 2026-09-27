@@ -48,6 +48,7 @@ import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
 import {
   patchBrowserAttach,
   patchBrowserIsolation,
+  patchBrowserTabSupervisor,
 } from "./patches/browser-isolation.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
 import {
@@ -380,6 +381,7 @@ const patches = {
   ...createCommandRuntimePatches(patchHelpers),
   patchBrowserIsolation,
   patchBrowserAttach,
+  patchBrowserTabSupervisor,
   ...createGitTuiPatches(patchHelpers),
 };
 try {

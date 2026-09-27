@@ -101,6 +101,44 @@ class LauncherTest(unittest.TestCase):
         self.assertTrue(child.terminated)
         self.assertFalse(child.killed)
 
+    def test_token_argument_uses_hashed_marker_and_bootstrap_url(self):
+        token = "abcDEF_123456"
+        self.assertEqual(agent.parse_token([str(SCRIPT), "--token", token]), token)
+        self.assertEqual(agent.token_marker(token), f"{agent.MARKER}_TOKEN_{token}")
+        self.assertEqual(agent.bootstrap_url(token), f"about:blank#{agent.MARKER}_BOOTSTRAP_{token}")
+
+        pages = [
+            {"type": "page", "title": agent.MARKER},
+            {"type": "page", "title": f"prefix{agent.MARKER}_TOKEN_{token}"},
+            {"type": "page", "title": f"{agent.MARKER}_TOKEN_{token}x"},
+        ]
+        with mock.patch.object(agent, "get_json", return_value=pages):
+            self.assertFalse(agent.has_marker(token))
+
+        pages.append({"type": "page", "title": f"{agent.MARKER} {agent.MARKER}_TOKEN_{token}"})
+        with mock.patch.object(agent, "get_json", return_value=pages):
+            self.assertTrue(agent.has_marker(token))
+            self.assertFalse(agent.has_marker("missing12"))
+
+    def test_base_marker_matching_is_exact_and_string_only(self):
+        pages = [
+            {"type": "page", "title": f"prefix{agent.MARKER}"},
+            {"type": "page", "title": None},
+            {"type": "page", "title": 123},
+        ]
+        with mock.patch.object(agent, "get_json", return_value=pages):
+            self.assertFalse(agent.has_marker())
+
+        pages.append({"type": "page", "title": f"{agent.MARKER} real"})
+        with mock.patch.object(agent, "get_json", return_value=pages):
+            self.assertTrue(agent.has_marker())
+
+    def test_invalid_token_is_rejected_fail_closed(self):
+        for token in ["short", "raw/session/id", "has space", "semi;colon"]:
+            with self.subTest(token=token):
+                with self.assertRaisesRegex(RuntimeError, "usage: qutebrowser-agent"):
+                    agent.parse_token([str(SCRIPT), "--token", token])
+
 
 if __name__ == "__main__":
     unittest.main()

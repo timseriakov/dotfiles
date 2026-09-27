@@ -26,6 +26,10 @@ export function runPatchRoutes(ctx) {
       "tools/browser/attach.ts",
       (content) => patches.patchBrowserAttach(content, { replaceAny }),
     ],
+    [
+      "tools/browser/tab-supervisor.ts",
+      (content) => patches.patchBrowserTabSupervisor(content, { replaceAny }),
+    ],
     ["cli.ts", patches.patchCliStartupPrepaint],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],
     [
