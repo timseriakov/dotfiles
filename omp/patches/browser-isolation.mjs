@@ -360,8 +360,11 @@ export function patchBrowserTabSupervisor(content, { replaceAny }) {
   ).content;
   out = replaceAny(
     out,
-    [`\t\t\tname: tab.name,`, `\t\t\tname: tab.displayName ?? tab.name,`],
-    `\t\t\tname: tab.displayName ?? tab.name,`,
+    [
+      `\t\t\tname: tab.name,\n\t\t\turl: tab.info.url,`,
+      `\t\t\tname: tab.displayName ?? tab.name,\n\t\t\turl: tab.info.url,`,
+    ],
+    `\t\t\tname: tab.displayName ?? tab.name,\n\t\t\turl: tab.info.url,`,
     "tab list display name",
   ).content;
   out = replaceAny(
