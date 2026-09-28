@@ -211,3 +211,5 @@ retry:
       - openai-codex/gpt-5.5
       - xai-oauth/grok-4.5
       - web/ollama
+spelling:
+  autocomplete: smollm
