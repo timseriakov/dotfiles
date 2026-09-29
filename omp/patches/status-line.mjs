@@ -5,10 +5,13 @@ export function createStatusLinePatches(ctx) {
     let out = content;
     let r;
 
-    r = insertAfter(
+    r = replaceAny(
       out,
-      `\t#gitStatusLastFetch = 0;\n\t#gitStatusInFlightCwd: string | undefined = undefined;`,
-      `\n\t#cachedGitRemote: { ahead: number; behind: number } | null = null;\n\t#gitRemoteLastFetch = 0;\n\t#gitRemoteInFlight = false;`,
+      [
+        `\t#gitStatusLastFetch = 0;\n\t#gitStatusInFlightCwd: string | undefined = undefined;`,
+        `\t#gitStatusLastFetch = 0;\n\t#gitStatusGeneration = 0;\n\t#gitStatusInFlightCwd: string | undefined = undefined;`,
+      ],
+      `\t#gitStatusLastFetch = 0;\n\t#gitStatusGeneration = 0;\n\t#gitStatusInFlightCwd: string | undefined = undefined;\n\t#cachedGitRemote: { ahead: number; behind: number } | null = null;\n\t#gitRemoteLastFetch = 0;\n\t#gitRemoteInFlight = false;`,
       "status-line git remote cache fields",
     );
     out = r.content;
@@ -32,10 +35,13 @@ export function createStatusLinePatches(ctx) {
     );
     out = r.content;
 
-    r = replaceOnce(
+    r = replaceAny(
       out,
-      `\t\t\tconst sepTotal = Math.max(0, parts.length - 1) * (sepWidth + 2);\n\t\t\treturn partsWidth + sepTotal + 2 + capWidth;`,
-      `\t\t\tconst sepTotal = Math.max(0, parts.length - 1) * sepWidth;\n\t\t\treturn partsWidth + sepTotal + capWidth;`,
+      [
+        `\t\t\tconst sepTotal = Math.max(0, parts.length - 1) * (sepWidth + 2);\n\t\t\treturn partsWidth + sepTotal + 2 + capWidth;`,
+        `\t\t\tconst sepTotal = (widths.length - 1) * (sepWidth + 2);\n\t\t\treturn partsWidth + sepTotal + 2 + capWidth;`,
+      ],
+      `\t\t\tconst sepTotal = (widths.length - 1) * sepWidth;\n\t\t\treturn partsWidth + sepTotal + capWidth;`,
       "status-line group width no outer padding",
     );
     out = r.content;

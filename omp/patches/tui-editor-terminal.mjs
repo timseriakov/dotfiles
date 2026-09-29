@@ -27,17 +27,32 @@ export function createTuiEditorTerminalPatches(ctx) {
     );
     out = r.content;
 
-    r = replaceAny(
-      out,
-      [
-        `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(this.#promptGutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
-        `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
-        `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(gutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
-      ],
-      `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
-      "editor prompt gutter green style",
+    const gutterCachedAsNext = out.includes(
+      "\t\tconst next = {\n\t\t\tsource: gutter,",
     );
-    out = r.content;
+    if (gutterCachedAsNext) {
+      r = replaceAny(
+        out,
+        [
+          `\t\tconst next = {\n\t\t\tsource: gutter,\n\t\t\tfirstLine: sliceByColumn(gutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+        ],
+        `\t\tconst firstLine = sliceByColumn(gutter, 0, gutterWidth, true);\n\t\tconst next = {\n\t\t\tsource: gutter,\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+        "editor prompt gutter green style cached next",
+      );
+      out = r.content;
+    } else {
+      r = replaceAny(
+        out,
+        [
+          `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(this.#promptGutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+          `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+          `\t\treturn {\n\t\t\tfirstLine: sliceByColumn(gutter, 0, gutterWidth, true),\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+        ],
+        `\t\tconst firstLine = sliceByColumn(this.#promptGutter, 0, gutterWidth, true);\n\t\treturn {\n\t\t\tfirstLine: this.#promptGutterColor ? this.#promptGutterColor(firstLine) : firstLine,\n\t\t\tcontinuation: padding(gutterWidth),\n\t\t\twidth: gutterWidth,\n\t\t};`,
+        "editor prompt gutter green style",
+      );
+      out = r.content;
+    }
 
     r = replaceAny(
       out,
