@@ -30,3 +30,42 @@ export function patchPlannotatorVersionWarning(content, { replaceAny }) {
   out = r.content;
   return out;
 }
+
+export function patchPlannotatorBrowserNotification(content, { replaceAny }) {
+  const r = replaceAny(
+    content,
+    [
+      `\tif (ctx.mode === "rpc" || isRemoteSession()) {
+\t\tctx.ui.notify(\`[Plannotator] \${serverUrl}\`, "info");
+\t} else if (!browserResult.opened) {
+\t\tctx.ui.notify(\`Open this URL to review: \${serverUrl}\`, "info");
+\t}`,
+    ],
+    `\tif (isRemoteSession()) {
+\t\tctx.ui.notify(\`[Plannotator] \${serverUrl}\`, "info");
+\t} else if (!browserResult.opened) {
+\t\tctx.ui.notify(\`Open this URL to review: \${serverUrl}\`, "info");
+\t}`,
+    "open Plannotator in local RPC sessions",
+  );
+  return r.content;
+}
+
+export function patchPlannotatorFeedbackDelivery(content) {
+  const oldText = `{ deliverAs: "followUp" }`;
+  const newText = `{ deliverAs: "aside" }`;
+  const followUpCount = content.split(oldText).length - 1;
+  if (followUpCount === 0) {
+    const asideCount = content.split(newText).length - 1;
+    if (asideCount === 4) return content;
+    throw new Error(
+      `Patch 'start Plannotator feedback turns' expected four followUp callsites or an already patched source, found ${asideCount} aside callsites.`,
+    );
+  }
+  if (followUpCount !== 4) {
+    throw new Error(
+      `Patch 'start Plannotator feedback turns' expected four followUp callsites, found ${followUpCount}. Upstream source changed.`,
+    );
+  }
+  return content.split(oldText).join(newText);
+}

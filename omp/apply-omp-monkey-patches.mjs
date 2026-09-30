@@ -44,7 +44,11 @@ import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mj
 import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
-import { patchPlannotatorVersionWarning } from "./patches/plannotator.mjs";
+import {
+  patchPlannotatorBrowserNotification,
+  patchPlannotatorFeedbackDelivery,
+  patchPlannotatorVersionWarning,
+} from "./patches/plannotator.mjs";
 import {
   patchBrowserAttach,
   patchBrowserIsolation,
@@ -400,6 +404,8 @@ try {
     SIDE_CHAT_CONFIG,
     patches: {
       ...patches,
+      patchPlannotatorBrowserNotification,
+      patchPlannotatorFeedbackDelivery,
       patchPlannotatorVersionWarning,
       patchPiSideChatOverlay,
       patchPiSideChatIndex,

@@ -111,6 +111,23 @@ export function runPatchRoutes(ctx) {
     [
       path.join(
         home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
+      ),
+      "open Plannotator in local RPC sessions",
+      (content) =>
+        patches.patchPlannotatorBrowserNotification(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
+      ),
+      "start Plannotator feedback turns",
+      (content) => patches.patchPlannotatorFeedbackDelivery(content),
+    ],
+    [
+      path.join(
+        home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
       ),
       "suppress Plannotator version warning",
