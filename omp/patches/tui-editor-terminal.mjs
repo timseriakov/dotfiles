@@ -146,6 +146,9 @@ export function createTuiEditorTerminalPatches(ctx) {
   }
 
   function patchSettingsSchemaAttachmentPreview(content) {
+    // 18.4.4 dropped the attachment chips band; skip when the preview-size
+    // settings are already gone (no chips to size).
+    if (!content.includes("cfgImagesAttachmentPreviewWidth")) return content;
     // 18.3.1 moved settings into the register() registry (config/settings-schema.ts deleted);
     // re-declare preview-size settings so config.yml images.attachmentPreviewWidth/Height are honored.
     return replaceAny(
@@ -346,25 +349,32 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 
   function patchAttachmentChipsGeometry(content) {
     let out = content;
+    // 18.4.4 rewrote attachment chips into a native-describe component without
+    // AttachmentChipsBand; skip when the class is gone.
+    if (!content.includes("AttachmentChipsBand")) return content;
     // 18.3.1 removed settings.get() from the settings object; cfg accessors are
     // exported from ./settings (modes/settings.ts registers, see patchSettingsSchemaAttachmentPreview).
-    out = replaceAny(
-      out,
-      [
-        `	cfgStartupQuiet,`,
+    if (out.includes("cfgImagesAttachmentPreviewWidth")) {
+      out = replaceAny(
+        out,
+        [
+          `	cfgStartupQuiet,`,
+          `	cfgImagesAttachmentPreviewHeight,
+	cfgImagesAttachmentPreviewWidth,
+	cfgStartupQuiet,`,
+        ],
         `	cfgImagesAttachmentPreviewHeight,
 	cfgImagesAttachmentPreviewWidth,
 	cfgStartupQuiet,`,
-      ],
-      `	cfgImagesAttachmentPreviewHeight,
-	cfgImagesAttachmentPreviewWidth,
-	cfgStartupQuiet,`,
-      "attachment chips import preview size settings",
-    ).content;
+        "attachment chips import preview size settings",
+      ).content;
+    }
+    if (!out.includes("cfgImagesAttachmentPreviewWidth")) return out;
     return replaceAny(
       out,
       [
         `			new AttachmentChipsBand(this.editor, this.ui.imageBudget, () => this.ui.requestRender()),`,
+        `\t\tconst attachmentChips = new AttachmentChipsBand(this.editor, this.ui.imageBudget, () => this.ui.requestRender());`,
         `			new AttachmentChipsBand(
 				this.editor,
 				this.ui.imageBudget,
@@ -399,6 +409,9 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
 
   function patchAttachmentChips(content) {
     let out = content;
+    // 18.4.4 rewrote attachment chips into a native-describe component (see
+    // patches/routes.mjs); skip when the legacy class is gone.
+    if (!content.includes("AttachmentChipsBand")) return content;
     const legacyImportAnchors = [
       `import { convertImageToPng } from "../../utils/image-loading";`,
       `import { settings } from "../../config/settings";

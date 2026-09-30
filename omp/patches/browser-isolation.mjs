@@ -18,18 +18,29 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     `\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n\tdetails.browser = kind.kind;`,
     `\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n${downloadsLine}\tdetails.browser = kind.kind;`,
   );
-  out = replaceAny(
-    out,
-    [
-      upstream1828Guard,
-      unpatchedGuard,
-      manualGuard,
-      finalGuard,
+  const guardOpenOnKindShape = `\tconst downloadsPath = params.downloads === undefined ? undefined : resolveToCwd(params.downloads, session.cwd);\n\tdetails.browser = kind.kind;`;
+  const guardOpenOnKind = `\tconst explicitRelay = params.app?.relay === true;\n\tconst validQutebrowser = kind.kind === "connected" && kind.cdpUrl === QUTE_BROWSER_CDP;\n\tconst validRelay = explicitRelay && kind.kind === "relay";\n\tif (!validQutebrowser && !validRelay) {\n\t\tthrow new ToolError(\n\t\t\t"Browser automation requires qutebrowser CDP 9223; Chrome/headless/cmux and implicit relay are disabled.",\n\t\t);\n\t}\n\tif (validQutebrowser && params.app?.target && params.app.target !== AGENT_TARGET) {\n\t\tthrow new ToolError(\n\t\t\t"qutebrowser automation only permits target=OMP_AGENT_WINDOW_9f2c.",\n\t\t);\n\t}\n\tconst browserTarget = validQutebrowser ? AGENT_TARGET : params.app?.target;\n${guardOpenOnKindShape}`;
+  if (out.includes(guardOpenOnKindShape) && !out.includes(guardOpenOnKind)) {
+    out = replaceAny(
+      out,
+      [guardOpenOnKindShape],
+      guardOpenOnKind,
+      "qutebrowser backend and implicit agent target (openOnKind)",
+    ).content;
+  } else if (!out.includes(guardOpenOnKind) && !out.includes(finalGuard1828)) {
+    out = replaceAny(
+      out,
+      [
+        upstream1828Guard,
+        unpatchedGuard,
+        manualGuard,
+        finalGuard,
+        finalGuard1828,
+      ],
       finalGuard1828,
-    ],
-    finalGuard1828,
-    "qutebrowser backend and implicit agent target",
-  ).content;
+      "qutebrowser backend and implicit agent target",
+    ).content;
+  }
   out = replaceAny(
     out,
     [
@@ -75,91 +86,97 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     `\t\tconst displayName = parsed.name ?? DEFAULT_TAB_NAME;\n\t\tconst ownerSessionId = session.getSessionId?.();\n\t\tif (!ownerSessionId) throw new ToolError("Browser automation requires a session id for tab isolation.");\n\t\tconst name = scopedBrowserTabName(ownerSessionId, displayName);\n\t\tconst details: BrowserPreludeDetails = { action: parsed.action, name: displayName };`,
     "browser session-scoped default tab name",
   ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, name, parsed, details, timeoutMs, context.signal);`,
-      `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, name, displayName, parsed, details, timeoutMs, context.signal);`,
+  if (
+    out.includes(
+      "async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,",
+    )
+  ) {
+    out = replaceAny(
+      out,
+      [
+        `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, name, parsed, details, timeoutMs, context.signal);`,
+        `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, name, displayName, parsed, details, timeoutMs, context.signal);`,
+        `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);`,
+      ],
       `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);`,
-    ],
-    `\t\t\tcase "open":\n\t\t\t\treturn await openBrowser(session, ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);`,
-    "browser open display name call",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\tcase "close":\n\t\t\t\treturn await closeBrowser(name, parsed, details, timeoutMs, context.signal);\n\t\t\tcase "tabs":\n\t\t\t\tdetails.value = listTabs();`,
+      "browser open display name call",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\t\t\tcase "close":\n\t\t\t\treturn await closeBrowser(name, parsed, details, timeoutMs, context.signal);\n\t\t\tcase "tabs":\n\t\t\t\tdetails.value = listTabs();`,
+        `\t\t\tcase "close":\n\t\t\t\treturn await closeBrowser(ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);\n\t\t\tcase "tabs":\n\t\t\t\tdetails.value = listTabs(ownerSessionId);`,
+      ],
       `\t\t\tcase "close":\n\t\t\t\treturn await closeBrowser(ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);\n\t\t\tcase "tabs":\n\t\t\t\tdetails.value = listTabs(ownerSessionId);`,
-    ],
-    `\t\t\tcase "close":\n\t\t\t\treturn await closeBrowser(ownerSessionId, name, displayName, parsed, details, timeoutMs, context.signal);\n\t\t\tcase "tabs":\n\t\t\t\tdetails.value = listTabs(ownerSessionId);`,
-    "browser session-filtered close/tabs",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `async function openBrowser(\n\tsession: ToolSession,\n\tname: string,\n\tparams: BrowserParams,`,
-      `async function openBrowser(\n\tsession: ToolSession,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
+      "browser session-filtered close/tabs",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `async function openBrowser(\n\tsession: ToolSession,\n\tname: string,\n\tparams: BrowserParams,`,
+        `async function openBrowser(\n\tsession: ToolSession,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
+        `async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
+      ],
       `async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
-    ],
-    `async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
-    "browser open display name parameter",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,`,
-      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName,`,
-      `\t\t\t\t\townerSessionId,`,
+      "browser open display name parameter",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,`,
+        `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName,`,
+        `\t\t\t\t\townerSessionId,`,
+        `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
+      ],
       `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
-    ],
-    `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
-    "browser display name to tab supervisor",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\t\`\${verb} tab \${JSON.stringify(name)} on \${describeBrowser(browser)}\`,`,
+      "browser display name to tab supervisor",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\t\t\t\`\${verb} tab \${JSON.stringify(name)} on \${describeBrowser(browser)}\`,`,
+        `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
+      ],
       `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
-    ],
-    `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
-    "browser open text display name",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `async function closeBrowser(\n\tname: string,\n\tparams: BrowserParams,`,
+      "browser open text display name",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `async function closeBrowser(\n\tname: string,\n\tparams: BrowserParams,`,
+        `async function closeBrowser(\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
+      ],
       `async function closeBrowser(\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
-    ],
-    `async function closeBrowser(\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,\n\tparams: BrowserParams,`,
-    "browser close display name parameters",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseAllTabs({ kill, timeoutMs }));`,
+      "browser close display name parameters",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseAllTabs({ kill, timeoutMs }));`,
+        `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseTabsForOwner(ownerSessionId, { kill, timeoutMs }));`,
+      ],
       `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseTabsForOwner(ownerSessionId, { kill, timeoutMs }));`,
-    ],
-    `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseTabsForOwner(ownerSessionId, { kill, timeoutMs }));`,
-    "browser close all session scoped",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\tconst text = closed ? \`Released managed tab \${JSON.stringify(name)}\` : \`No tab named \${JSON.stringify(name)}\`;`,
+      "browser close all session scoped",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\tconst text = closed ? \`Released managed tab \${JSON.stringify(name)}\` : \`No tab named \${JSON.stringify(name)}\`;`,
+        `\tconst text = closed ? \`Released managed tab \${JSON.stringify(displayName)}\` : \`No tab named \${JSON.stringify(displayName)}\`;`,
+      ],
       `\tconst text = closed ? \`Released managed tab \${JSON.stringify(displayName)}\` : \`No tab named \${JSON.stringify(displayName)}\`;`,
-    ],
-    `\tconst text = closed ? \`Released managed tab \${JSON.stringify(displayName)}\` : \`No tab named \${JSON.stringify(displayName)}\`;`,
-    "browser close text display name",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\tconst tab = getTab(name);\n\tif (tab) {`,
+      "browser close text display name",
+    ).content;
+    out = replaceAny(
+      out,
+      [
+        `\tconst tab = getTab(name);\n\tif (tab) {`,
+        `\tconst tab = getTab(name);\n\tif (!tab) throw new ToolError(\`Tab \${JSON.stringify(details.name)} is not alive. Open it first with action:\"open\".\`);\n\tif (tab) {`,
+      ],
       `\tconst tab = getTab(name);\n\tif (!tab) throw new ToolError(\`Tab \${JSON.stringify(details.name)} is not alive. Open it first with action:\"open\".\`);\n\tif (tab) {`,
-    ],
-    `\tconst tab = getTab(name);\n\tif (!tab) throw new ToolError(\`Tab \${JSON.stringify(details.name)} is not alive. Open it first with action:\"open\".\`);\n\tif (tab) {`,
-    "browser run missing display name",
-  ).content;
+      "browser run missing display name",
+    ).content;
+  }
   return out;
 }
 
@@ -379,11 +396,20 @@ export function patchBrowserTabSupervisor(content, { replaceAny }) {
   out = replaceAny(
     out,
     [
-      `\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tpersist: opts.persist ?? false,`,
-      `\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
+      `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tpersist: opts.persist ?? false,`,
+      `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
     ],
-    `\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
+    `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
     "cmux tab display name",
+  ).content;
+  out = replaceAny(
+    out,
+    [
+      `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tpersist: opts.persist ?? false,`,
+      `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
+    ],
+    `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
+    "tern tab display name",
   ).content;
   return out;
 }
