@@ -285,11 +285,24 @@ export function createInputSessionPatches(ctx) {
     return out;
   }
 
+  function patchPredictClientSuffix(content) {
+    return replaceAny(
+      content,
+      [
+        `\t\t\t\t\treturn (await this.complete(resolved, before, prefix)).suggestion?.suffix ?? null;`,
+        `\t\t\t\t\treturn (await this.complete(resolved, before, prefix)).suggestion?.suffix?.trimStart() ?? null;`,
+      ],
+      `\t\t\t\t\treturn (await this.complete(resolved, before, prefix)).suggestion?.suffix?.trimStart() ?? null;`,
+      "text prediction ghost suffix no leading space",
+    ).content;
+  }
+
   return {
     patchKeybindingsConfig,
     patchInputControllerBase,
     patchInputController,
     patchSessionManager,
+    patchPredictClientSuffix,
     patchSessionPaths,
     patchSessionListing,
   };

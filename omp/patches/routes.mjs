@@ -37,6 +37,7 @@ export function runPatchRoutes(ctx) {
       patches.patchExtensionUiController,
     ],
     ["modes/controllers/input-controller.ts", patches.patchInputController],
+    ["predict/client.ts", patches.patchPredictClientSuffix],
     ["session/session-manager.ts", patches.patchSessionManager],
     ["session/session-paths.ts", patches.patchSessionPaths],
     ["session/session-listing.ts", patches.patchSessionListing],
