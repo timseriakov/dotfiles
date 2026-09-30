@@ -227,7 +227,6 @@ chars = "\u001b[24~" # F12
 
 [window]
 decorations = "Buttonless" # Без кнопок, но с тенью
-startup_mode = "Maximized"
 option_as_alt = "Both" # macOS Option key as Alt for keybindings
 
 # Внутренний паддинг (отступы от краев окна)
