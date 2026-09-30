@@ -86,6 +86,15 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     `\t\tconst displayName = parsed.name ?? DEFAULT_TAB_NAME;\n\t\tconst ownerSessionId = session.getSessionId?.();\n\t\tif (!ownerSessionId) throw new ToolError("Browser automation requires a session id for tab isolation.");\n\t\tconst name = scopedBrowserTabName(ownerSessionId, displayName);\n\t\tconst details: BrowserPreludeDetails = { action: parsed.action, name: displayName };`,
     "browser session-scoped default tab name",
   ).content;
+  out = replaceAny(
+    out,
+    [
+      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
+      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
+    ],
+    `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
+    "browser display name to tab supervisor",
+  ).content;
   if (
     out.includes(
       "async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,",
@@ -331,6 +340,15 @@ export function patchBrowserTabSupervisor(content, { replaceAny }) {
   let out = replaceAny(
     content,
     [
+      `\t\ttabName: opts.displayName ?? name,`,
+      `\t\ttabName: opts.displayName ?? "main",`,
+    ],
+    `\t\ttabName: opts.displayName ?? "main",`,
+    "browser relay attach tab name fallback",
+  ).content;
+  out = replaceAny(
+    out,
+    [
       `\tif (existing) {\n\t\tif (existing.browser === browser && existing.state === "alive") {`,
       `\tif (existing) {\n\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\tthrow new ToolError(\n\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t);\n\t\t}\n\t\tif (existing.browser === browser && existing.state === "alive") {`,
       `\tif (existing) {\n\t\tif (existing.browser === browser && existing.state === "alive") {\n\t\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\t\tthrow new ToolError(\n\t\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t\t);\n\t\t\t}`,
@@ -343,9 +361,9 @@ export function patchBrowserTabSupervisor(content, { replaceAny }) {
     [
       `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t});`,
       `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t});`,
-      `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? name,\n\t});`,
+      `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? "main",\n\t});`,
     ],
-    `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? name,\n\t});`,
+    `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? "main",\n\t});`,
     "browser physical target owner token",
   ).content;
   out = replaceAny(
