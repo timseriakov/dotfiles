@@ -185,7 +185,7 @@ function resolveTerminalContext(): TerminalContext {
   };
 }
 
-const terminalContext = resolveTerminalContext();
+let terminalContext = resolveTerminalContext();
 
 function projectNameForCwd(cwd: string | undefined): string {
   return (
@@ -1047,7 +1047,11 @@ const server: Plugin = async ({ directory, client, serverUrl }) => {
         formatted,
       );
     },
-    event: async ({ event }) => {
+    event: async ({
+      event,
+    }: {
+      event: { type: string; properties?: unknown };
+    }) => {
       const props = eventRecord(event);
       rememberSessionOrigin(props);
       switch (event.type) {
@@ -1222,7 +1226,314 @@ const server: Plugin = async ({ directory, client, serverUrl }) => {
   };
 };
 
-export default {
-  id: "moshi-hooks",
-  server,
-};
+// OpenCode 2.0.5 uses a separate plugin and event API. Keep the V1 server
+// entrypoint above: both loaders accept this definition and select their API.
+import type { Plugin as PluginV2 } from "@opencode/plugin";
+
+async function setup(ctx: PluginV2.Context) {
+  // V1 also loads definitions in its registration-only V2 host.
+  if (!ctx.session || !ctx.event) return;
+  // A serve process (the shared background service, or a server TUIs attach
+  // to) inherits the environment of whichever terminal started it, not of the
+  // TUIs showing its sessions. The TUI half (moshi-hooks-tui) binds panes.
+  if (process.argv.includes("serve")) {
+    terminalContext = {
+      ...terminalContext,
+      terminalKind: "",
+      tmuxSession: "",
+      tmuxWindow: "",
+      tmuxPane: "",
+      tmuxSocket: "",
+      zellijSession: "",
+      zellijPane: "",
+      herdrSession: "",
+      herdrPane: "",
+      herdrWorkspaceId: "",
+      herdrTabId: "",
+    };
+  }
+  const directory = ctx.location.directory;
+  const controller = new AbortController();
+  const streams = new Set<ReadableStreamDefaultController<Uint8Array>>();
+  const encoder = new TextEncoder();
+  const owned = new Set<string>();
+  const running = new Set<string>();
+  const pendingPermissions = new Map<string, string>();
+  const sequence = new Map<string, number>();
+
+  // Expose the existing Moshi transcript protocol using the public V2 API.
+  // The plugin API exposes session.context, not the client's message/export
+  // APIs. Every request re-reads native state; after compaction this is the
+  // context retained by OpenCode rather than the full archived history.
+  const relay = Bun.serve({
+    hostname: "127.0.0.1",
+    port: 0,
+    idleTimeout: 0,
+    async fetch(req: Request) {
+      const url = new URL(req.url);
+      if (req.method !== "GET")
+        return new Response("forbidden", { status: 403 });
+      if (url.pathname === "/global/health")
+        return Response.json({ healthy: true });
+      if (url.pathname === "/event") {
+        let subscriber: ReadableStreamDefaultController<Uint8Array>;
+        return new Response(
+          new ReadableStream<Uint8Array>({
+            start(stream) {
+              subscriber = stream;
+              streams.add(stream);
+              stream.enqueue(encoder.encode(": connected\n\n"));
+            },
+            cancel() {
+              streams.delete(subscriber);
+            },
+          }),
+          { headers: { "Content-Type": "text/event-stream" } },
+        );
+      }
+      const match = /^\/session\/([^/]+)\/message(?:\/([^/]+))?$/.exec(
+        url.pathname,
+      );
+      if (!match || !owned.has(match[1]))
+        return new Response("not found", { status: 404 });
+      try {
+        const messages = await ctx.session.context({ sessionID: match[1] });
+        const rows = messages
+          .map((message) => openCodeV2Message(message, match[1]))
+          .filter(Boolean);
+        if (!match[2]) return Response.json(rows);
+        const row = rows.find((row) => row?.info.id === match[2]);
+        return row
+          ? Response.json(row)
+          : new Response("not found", { status: 404 });
+      } catch {
+        return new Response("OpenCode transcript unavailable", { status: 502 });
+      }
+    },
+  });
+  moshiServerUrl = "http://127.0.0.1:" + relay.port;
+
+  function publishChange(sessionID: string, messageID: string) {
+    if (!messageID) return;
+    const data = encoder.encode(
+      "data: " +
+        JSON.stringify({
+          type: "message.updated",
+          properties: { sessionID, messageID },
+        }) +
+        "\n\n",
+    );
+    for (const stream of streams) {
+      try {
+        stream.enqueue(data);
+      } catch {
+        streams.delete(stream);
+      }
+    }
+  }
+
+  function finish(sessionID: string, eventName: string, title: string) {
+    for (const [id, owner] of pendingPermissions) {
+      if (owner === sessionID) pendingPermissions.delete(id);
+    }
+    if (!running.delete(sessionID)) return;
+    sendSessionUpdate(
+      eventName,
+      sessionID,
+      directory,
+      undefined,
+      "task_complete",
+      title,
+      lastUserPrompts.get(sessionID) || "",
+    );
+  }
+
+  async function consume() {
+    for await (const event of ctx.event.subscribe({
+      signal: controller.signal,
+    })) {
+      if (controller.signal.aborted) break;
+      const data = event.data as Record<string, any>;
+      const sessionID = data.sessionID;
+      if (typeof sessionID !== "string") continue;
+      // Subscribe is server-wide; a location plugin must not claim another
+      // project's sessions or let child sessions replace the pane owner.
+      if (!owned.has(sessionID)) {
+        const info = await ctx.session.get({ sessionID }).catch(() => null);
+        if (!info || info.parentID || info.location.directory !== directory)
+          continue;
+        owned.add(sessionID);
+      }
+      if ("durable" in event && event.durable) {
+        const previous = sequence.get(sessionID) ?? -1;
+        if (event.durable.seq <= previous) continue;
+        sequence.set(sessionID, event.durable.seq);
+      }
+      switch (event.type) {
+        case "session.created":
+          sendSessionUpdate(
+            event.type,
+            sessionID,
+            directory,
+            undefined,
+            "",
+            "OpenCode started",
+          );
+          break;
+        // Prompt hooks run BEFORE admission and can fail or run twice. Only
+        // durable inbox admission is evidence that a real prompt was sent.
+        case "session.inbox.enqueued":
+          if (data.item.type === "user") {
+            const prompt = rememberUserPrompt(
+              sessionID,
+              directory,
+              data.item.payload.text || "",
+            );
+            running.add(sessionID);
+            sendSessionUpdate(
+              "chat.message",
+              sessionID,
+              directory,
+              undefined,
+              "session_started",
+              "OpenCode started",
+              prompt,
+            );
+          }
+          break;
+        case "session.execution.interrupted":
+          finish(sessionID, event.type, "OpenCode interrupted");
+          break;
+        case "session.execution.succeeded":
+          finish(sessionID, event.type, "OpenCode complete");
+          break;
+        case "session.execution.failed":
+          finish(sessionID, event.type, "OpenCode failed");
+          break;
+        case "permission.asked": {
+          const requestID = data.id as string;
+          pendingPermissions.set(requestID, sessionID);
+          // Do not await a human decision in the event reader: cancellation
+          // and terminal-side replies must continue to be processed.
+          void requestMoshiApproval(
+            { ...data, permission: data.action, patterns: data.resources },
+            directory,
+            event.type,
+          )
+            ?.then(async (result) => {
+              const reply = openCodeReplyForDecision(result?.decision);
+              if (
+                reply &&
+                pendingPermissions.delete(requestID) &&
+                !controller.signal.aborted
+              ) {
+                await ctx.permission.reply({
+                  sessionID,
+                  requestID,
+                  decision: reply,
+                });
+              }
+            })
+            .catch(() => {});
+          break;
+        }
+        case "permission.replied":
+          pendingPermissions.delete(data.requestID);
+          sendSessionUpdate(event.type, sessionID, directory);
+          break;
+        case "session.deleted":
+          owned.delete(sessionID);
+          running.delete(sessionID);
+          sendSessionClosed(event.type, sessionID, directory);
+          break;
+      }
+      publishChange(
+        sessionID,
+        data.assistantMessageID || data.messageID || data.inboxID || "",
+      );
+    }
+  }
+  void consume().catch((error) => {
+    if (!controller.signal.aborted)
+      console.error("moshi-hooks: OpenCode event subscription failed", error);
+  });
+  return () => {
+    controller.abort();
+    for (const stream of streams) {
+      try {
+        stream.close();
+      } catch {}
+    }
+    streams.clear();
+    relay.stop(true);
+  };
+}
+
+// Normalize V2 native messages at the plugin boundary so existing Moshi
+// clients retain their OpenCode text, reasoning, tool and attachment renderer.
+function openCodeV2Message(message: any, sessionID: string) {
+  const role = message.type;
+  if (role !== "user" && role !== "assistant") return null;
+  const parts: any[] = [];
+  if (role === "user") {
+    if (message.text) parts.push({ type: "text", text: message.text });
+    for (const file of message.files || [])
+      parts.push({
+        type: "file",
+        mime: file.mime,
+        filename: file.name,
+        url: "data:" + file.mime + ";base64," + file.data,
+      });
+  } else {
+    for (const part of message.content || []) {
+      if (part.type !== "tool") {
+        parts.push(part);
+        continue;
+      }
+      const state = part.state;
+      parts.push({
+        type: "tool",
+        callID: part.id,
+        tool: part.name,
+        state: {
+          ...state,
+          status: state.status === "streaming" ? "pending" : state.status,
+          output: (state.content || [])
+            .filter((item: any) => item.type === "text")
+            .map((item: any) => item.text)
+            .join("\n"),
+          attachments: (state.content || [])
+            .filter((item: any) => item.type === "file")
+            .map((item: any) => ({
+              type: "file",
+              mime: item.mime,
+              filename: item.name,
+              url: item.uri,
+            })),
+          error:
+            typeof state.error === "string"
+              ? state.error
+              : state.error
+                ? JSON.stringify(state.error)
+                : undefined,
+          time: part.time,
+        },
+      });
+    }
+  }
+  // Content lives in parts only: duplicating it in info bypasses the client's
+  // normal part redaction and doubles large tool results on the wire.
+  const { content, text, files, ...info } = message;
+  return {
+    info: {
+      ...info,
+      role,
+      sessionID,
+      modelID: message.model?.id,
+      providerID: message.model?.providerID,
+    },
+    parts,
+  };
+}
+
+export default { id: "moshi-hooks", server, setup };
