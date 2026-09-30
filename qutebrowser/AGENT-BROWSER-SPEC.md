@@ -43,6 +43,77 @@ spawned by that launcher invocation; the CDP-owning process and user tabs are
 never terminated or navigated. A page `webSocketDebuggerUrl` is not a browser
 CDP endpoint.
 
+## Playwright compatibility shim
+
+QtWebEngine rejects Playwright's `Browser.setDownloadBehavior` request even
+when no download is needed. Clients that use Playwright or
+`d3k agent-browser` must therefore connect through the local compatibility
+shim instead of connecting directly to qutebrowser.
+
+| Component                  | Address                 | Requirement                                      |
+| -------------------------- | ----------------------- | ------------------------------------------------ |
+| Normal-profile qutebrowser | `http://127.0.0.1:9223` | Must be running for proxied requests to succeed. |
+| CDP compatibility shim     | `http://127.0.0.1:9225` | Used by Playwright and `d3k agent-browser`.      |
+
+The shim rewrites the browser WebSocket URL to port `9225`, answers
+`Browser.setDownloadBehavior` locally, and forwards all other HTTP and
+WebSocket traffic to port `9223`. It does not start qutebrowser and does not
+provide a fallback browser.
+
+### Automatic startup
+
+The macOS LaunchAgent definition is stored in the repository:
+
+```text
+qutebrowser/launchd/com.timhq.qutebrowser-cdp-shim.plist
+```
+
+Install it once by linking it into the per-user LaunchAgents directory and
+bootstrapping it:
+
+```fish
+mkdir -p ~/Library/Logs/qutebrowser
+ln -sfn /Users/tim/dev/dotfiles/qutebrowser/launchd/com.timhq.qutebrowser-cdp-shim.plist \
+  ~/Library/LaunchAgents/com.timhq.qutebrowser-cdp-shim.plist
+launchctl bootstrap gui/(id -u) \
+  ~/Library/LaunchAgents/com.timhq.qutebrowser-cdp-shim.plist
+```
+
+After installation, `launchd` starts the shim at login and restarts it after
+an unexpected exit. The service uses `/Users/tim/.volta/bin/node`, runs
+`qutebrowser/bin/qutebrowser-cdp-shim.mjs`, listens only on `127.0.0.1:9225`,
+and proxies to `http://127.0.0.1:9223`.
+
+If the job is already loaded after changing the plist, reload it explicitly:
+
+```fish
+launchctl bootout gui/(id -u)/com.timhq.qutebrowser-cdp-shim
+launchctl bootstrap gui/(id -u) \
+  ~/Library/LaunchAgents/com.timhq.qutebrowser-cdp-shim.plist
+```
+
+### Verification and diagnostics
+
+```fish
+launchctl print gui/(id -u)/com.timhq.qutebrowser-cdp-shim
+lsof -nP -iTCP:9225 -sTCP:LISTEN
+curl -fsS http://127.0.0.1:9225/json/version
+```
+
+The returned `webSocketDebuggerUrl` must begin with
+`ws://127.0.0.1:9225/`. Logs are written to:
+
+```text
+~/Library/Logs/qutebrowser/cdp-shim.log
+```
+
+If port `9225` is listening but `/json/version` fails, first verify that the
+normal qutebrowser process owns port `9223`. Do not start another browser or
+profile to compensate for a missing upstream. The implementation supports
+`QUTEBROWSER_CDP_UPSTREAM`, `QUTEBROWSER_CDP_SHIM_HOST`, and
+`QUTEBROWSER_CDP_SHIM_PORT` overrides, but the LaunchAgent intentionally pins
+the normal production addresses above.
+
 ## Agent browser automation order
 
 1. Use the marked normal-profile qutebrowser window on CDP `9223`.
@@ -81,3 +152,6 @@ files are separate from the normal profile.
 - `qutebrowser/config.py` — CDP port selection.
 - `qutebrowser/bin/qutebrowser-dev` — optional separate-profile launcher.
 - `omp/agent/skills/qutebrowser-browser-automation/SKILL.md` — active policy.
+- `qutebrowser/bin/qutebrowser-cdp-shim.mjs` — Playwright compatibility proxy.
+- `qutebrowser/bin/qutebrowser-cdp-shim.test.mjs` — unit and live proxy coverage.
+- `qutebrowser/launchd/com.timhq.qutebrowser-cdp-shim.plist` — automatic shim startup.
