@@ -144,7 +144,35 @@ providers:
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 1050000
+        contextWindow: 400000
+        maxTokens: 128000
+      - id: cx/gpt-6-astra-low
+        name: "Astra Low"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 400000
+        maxTokens: 128000
+      - id: cx/gpt-6-astra-medium
+        name: "Astra Medium"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 400000
+        maxTokens: 128000
+      - id: cx/gpt-6-astra-high
+        name: "Astra High"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 400000
+        maxTokens: 128000
+      - id: cx/gpt-6-astra-xhigh
+        name: "Astra Xhigh"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 400000
         maxTokens: 128000
       - id: openrouter/~deepseek/deepseek-v4-flash-latest
         name: "V4 Flash Latest"
