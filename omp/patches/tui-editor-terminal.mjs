@@ -1,6 +1,19 @@
 export function createTuiEditorTerminalPatches(ctx) {
   const { replaceOnce, replaceAny, insertAfter, insertBefore } = ctx;
 
+  function patchEditorGhostCursorGap(content) {
+    return replaceAny(
+      content,
+      [
+        `\t\t\t\t\t\tconst tail = hintTail(Math.max(0, lineContentWidth - displayWidth - cursorWidth));\n\t\t\t\t\t\tdisplayText = before + marker + cursor + (tail?.text ?? "");\n\t\t\t\t\t\tdisplayWidth += cursorWidth + (tail?.width ?? 0);`,
+        `\t\t\t\t\t\tconst ghostTail = inlineHint ? hintTail(Math.max(0, lineContentWidth - displayWidth)) : undefined;\n\t\t\t\t\t\tconst cursorVisible = ghostTail === undefined || ghostTail.width >= lineContentWidth - displayWidth;\n\t\t\t\t\t\tconst tail = cursorVisible ? hintTail(Math.max(0, lineContentWidth - displayWidth - cursorWidth)) : ghostTail;\n\t\t\t\t\t\tdisplayText = before + marker + (cursorVisible ? cursor : "") + (tail?.text ?? "");\n\t\t\t\t\t\tdisplayWidth += (cursorVisible ? cursorWidth : 0) + (tail?.width ?? 0);`,
+        `\t\t\t\t\t\tconst ghostFits = inlineHint !== null && visibleWidth(inlineHint) <= lineContentWidth - displayWidth;\n\t\t\t\t\t\tconst cursorVisible = !ghostFits;\n\t\t\t\t\t\tconst tail = ghostFits ? hintTail(Math.max(0, lineContentWidth - displayWidth)) : hintTail(Math.max(0, lineContentWidth - displayWidth - cursorWidth));\n\t\t\t\t\t\tdisplayText = before + marker + (cursorVisible ? cursor : "") + (tail?.text ?? "");\n\t\t\t\t\t\tdisplayWidth += (cursorVisible ? cursorWidth : 0) + (tail?.width ?? 0);`,
+      ],
+      `\t\t\t\t\t\tconst ghostFits = inlineHint !== null && visibleWidth(inlineHint) <= lineContentWidth - displayWidth;\n\t\t\t\t\t\tconst cursorVisible = !ghostFits;\n\t\t\t\t\t\tconst tail = ghostFits ? hintTail(Math.max(0, lineContentWidth - displayWidth)) : hintTail(Math.max(0, lineContentWidth - displayWidth - cursorWidth));\n\t\t\t\t\t\tdisplayText = before + marker + (cursorVisible ? cursor : "") + (tail?.text ?? "");\n\t\t\t\t\t\tdisplayWidth += (cursorVisible ? cursorWidth : 0) + (tail?.width ?? 0);`,
+      "editor ghost text does not reserve software cursor cell",
+    ).content;
+  }
+
   function patchEditorGutterWidth(content) {
     let out = content;
     let r;
@@ -837,6 +850,7 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
   }
 
   return {
+    patchEditorGhostCursorGap,
     patchEditorGutterWidth,
     patchTuiTerminalCapabilities,
     patchTuiKittyGraphics,

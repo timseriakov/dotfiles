@@ -81,6 +81,7 @@ export function runPatchRoutes(ctx) {
     ["apps/git/colors.ts", patches.patchGitTuiColors],
     ["apps/git/git-tui.ts", patches.patchGitTuiLayout],
     ["utils.ts", patches.patchTuiVisibleWidth],
+    ["components/editor.ts", patches.patchEditorGhostCursorGap],
     ["components/editor.ts", patches.patchEditorGutterWidth],
     ["components/editor.ts", patches.patchEditorVimKillRing],
     ["vim.ts", patches.patchVimRuLayout],
