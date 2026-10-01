@@ -116,6 +116,10 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser): Promise<void>
 function assertCanonicalAttach(patched) {
   assert.match(patched, /import \{ createHash \} from "node:crypto";/);
   assert.match(patched, /new Map<string, Promise<void>>/);
+  assert.match(
+    patched,
+    /await qutebrowserAgentTargetOpen\.get\(marker\);\n\tqutebrowserAgentTargetOpen\.delete\(marker\);/,
+  );
   assert.match(patched, /createHash\("sha256"\)/);
   assert.match(patched, /titleHasExactMarker\(await page\.title/);
   assert.match(patched, /titleHasExactMarker\(p\.title, targetMarker\)/);
@@ -237,6 +241,7 @@ export function listTabs(): ManagedTabInfo[] {
 		.filter(tab => tab.state === "alive")
 		.map(tab => ({
 			name: tab.name,
+			url: tab.info.url,
 		}));
 	if (existing) {
 		if (existing.browser === browser && existing.state === "alive") {
@@ -245,6 +250,12 @@ export function listTabs(): ManagedTabInfo[] {
 	}
 		ownerSessionId: opts.ownerSessionId,
 		persist: opts.persist ?? false,
+		tabName: opts.displayName ?? name,
+			kindTag: browser.kind.kind,
+			cmuxAttachedSurface: attachedSurface,
+			ownerSessionId: opts.ownerSessionId,
+			persist: opts.persist ?? false,
+			kindTag: browser.kind.kind,
 			ownerSessionId: opts.ownerSessionId,
 			persist: opts.persist ?? false,
 	const page = await pickElectronTarget(browser.browser, {
@@ -260,7 +271,7 @@ export function listTabs(): ManagedTabInfo[] {
   );
   assert.match(patched, /belongs to another browser session/);
   assert.match(patched, /ownerSessionId: opts\.ownerSessionId/);
-  assert.match(patched, /tabName: opts\.displayName \?\? name/);
+  assert.match(patched, /tabName: opts\.displayName \?\? "main"/);
   assert.equal(patchBrowserTabSupervisor(patched, { replaceAny }), patched);
 });
 
@@ -308,6 +319,7 @@ async function openBrowser(
 		name,
 		options: {
 					ownerSessionId: session.getSessionId?.() ?? undefined,
+					// Omitted stays undefined: creation defaults it to false
 			persist: params.persist,
 		},
 	});
@@ -357,11 +369,11 @@ test("patchBrowserIsolation upgrades fresh upstream open/acquire path", () => {
     once,
     /async function openBrowser\(\n\tsession: ToolSession,\n\townerSessionId: string,\n\tname: string,\n\tdisplayName: string,/,
   );
-  assert.match(once, /ownerSessionId,\n\s+displayName,/);
-  assert.doesNotMatch(
+  assert.match(
     once,
-    /ownerSessionId: session\.getSessionId\?\.\(\) \?\? undefined/,
+    /ownerSessionId: session\.getSessionId\?\.\(\) \?\? undefined,\n\s+displayName: details\.name,/,
   );
+  assert.doesNotMatch(once, /\n\s+ownerSessionId,\n\s+displayName,/);
   assert.equal(patchBrowserIsolation(once, { replaceAny }), once);
 });
 
@@ -373,6 +385,16 @@ test("patchBrowserIsolation is idempotent after session-scoped browser patch is 
 
 test("session-scoped browser open passes displayName before params", () => {
   const source = readInstalledBrowserSource();
+  assert.match(
+    source,
+    /ownerSessionId: session\.getSessionId\?\.\(\) \?\? undefined,\n\s+displayName: details\.name,/,
+  );
+  assert.doesNotMatch(source, /\n\s+ownerSessionId,\n\s+displayName,/);
+  assert.doesNotMatch(source, /displayName: details\.name,\n\s+displayName,/);
+  assert.match(
+    source,
+    /\$\{verb\} tab \$\{JSON\.stringify\(details\.name\)\} on/,
+  );
   assert.match(
     source,
     /const displayName = parsed\.name \?\? DEFAULT_TAB_NAME;/,

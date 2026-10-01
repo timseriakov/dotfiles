@@ -86,20 +86,11 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     `\t\tconst displayName = parsed.name ?? DEFAULT_TAB_NAME;\n\t\tconst ownerSessionId = session.getSessionId?.();\n\t\tif (!ownerSessionId) throw new ToolError("Browser automation requires a session id for tab isolation.");\n\t\tconst name = scopedBrowserTabName(ownerSessionId, displayName);\n\t\tconst details: BrowserPreludeDetails = { action: parsed.action, name: displayName };`,
     "browser session-scoped default tab name",
   ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
-      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
-    ],
-    `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,\n\t\t\t\t\t// Omitted stays undefined: creation defaults it to false`,
-    "browser display name to tab supervisor",
-  ).content;
-  if (
-    out.includes(
-      "async function openBrowser(\n\tsession: ToolSession,\n\townerSessionId: string,",
-    )
-  ) {
+  if (out.includes("async function openBrowser(\n\tsession: ToolSession,")) {
+    out = out.replace(
+      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,\n\t\t\t\t\tdisplayName,`,
+      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,`,
+    );
     out = replaceAny(
       out,
       [
@@ -132,12 +123,13 @@ export function patchBrowserIsolation(content, { replaceAny }) {
     out = replaceAny(
       out,
       [
+        `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
+        `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,`,
         `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,`,
         `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName,`,
-        `\t\t\t\t\townerSessionId,`,
-        `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
+        `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,`,
       ],
-      `\t\t\t\t\townerSessionId,\n\t\t\t\t\tdisplayName,`,
+      `\t\t\t\t\townerSessionId: session.getSessionId?.() ?? undefined,\n\t\t\t\t\tdisplayName: details.name,`,
       "browser display name to tab supervisor",
     ).content;
     out = replaceAny(
@@ -145,8 +137,9 @@ export function patchBrowserIsolation(content, { replaceAny }) {
       [
         `\t\t\t\`\${verb} tab \${JSON.stringify(name)} on \${describeBrowser(browser)}\`,`,
         `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
+        `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(browser)}\`,`,
       ],
-      `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
+      `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(browser)}\`,`,
       "browser open text display name",
     ).content;
     out = replaceAny(
@@ -167,6 +160,7 @@ export function patchBrowserIsolation(content, { replaceAny }) {
       `\tif (params.all) {\n\t\tconst count = await untilAborted(signal, () => releaseTabsForOwner(ownerSessionId, { kill, timeoutMs }));`,
       "browser close all session scoped",
     ).content;
+    out = out.replace("\treleaseAllTabs,\n", "");
     out = replaceAny(
       out,
       [
@@ -245,6 +239,7 @@ async function ensureQutebrowserAgentTarget(browser: Browser, matcher?: string, 
 		qutebrowserAgentTargetOpen.set(marker, ensureQutebrowserAgentTargetOnce(browser, marker, ownerSessionId, tabName));
 	}
 	await qutebrowserAgentTargetOpen.get(marker);
+	qutebrowserAgentTargetOpen.delete(marker);
 }
 
 async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string, ownerSessionId?: string, tabName?: string): Promise<void> {
