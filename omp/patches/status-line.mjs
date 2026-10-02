@@ -328,10 +328,31 @@ export function createStatusLinePatches(ctx) {
     r = replaceAny(
       out,
       [
+        `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);`,
+      ],
+      `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += "";`,
+      "segments remove fast-mode icon from ANSI model tail",
+    );
+    out = r.content;
+    const fastTailBlock = [
+      "\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) {",
+      "\t\t\ttail += ` ${theme.icon.fast}`;",
+      "\t\t}",
+    ].join("\n");
+    r = replaceAny(
+      out,
+      [fastTailBlock],
+      "\t\t// Fast-mode icon intentionally omitted to preserve context width.",
+      "segments remove upstream fast-mode icon",
+    );
+    out = r.content;
+    r = replaceAny(
+      out,
+      [
         `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
         `\t\tlet content = theme.fg("text", "via ") + accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
       ],
-      `\t\tlet content = theme.fg("text", "via ") + accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
+      `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));\n\t\tif (ctx.width > 80) content = theme.fg("text", "via ") + content;`,
       "segments model via prefix",
     );
     out = r.content;
@@ -405,11 +426,71 @@ export function createStatusLinePatches(ctx) {
     r = replaceAny(
       out,
       [
+        `\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span(\` \${theme.icon.fast}\`, token));`,
+      ],
+      `\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span("", token));`,
+      "segments remove fast-mode icon from native model spans",
+    );
+    out = r.content;
+    r = replaceAny(
+      out,
+      [
         `\t\tconst color = getContextUsageThemeColor(getContextUsageLevel(pct ?? 0, window));`,
         `\t\tconst color = (pct ?? 0) >= 80 ? "error" : (pct ?? 0) >= 50 ? "warning" : "statusLineContext";`,
       ],
       `\t\tconst color = (pct ?? 0) >= 80 ? "error" : (pct ?? 0) >= 50 ? "warning" : "statusLineContext";`,
       "segments context percentage colors",
+    );
+    out = r.content;
+    const autoCompactIconBlock = [
+      '\t\tlet autoIcon = "";',
+      "\t\tif (ctx.autoCompactEnabled && theme.icon.auto) {",
+      "\t\t\tconst speculation = ctx.compactionSpeculation;",
+      '\t\t\tconst accentIcon = accentFg(ctx, "accent", theme.icon.auto);',
+      "\t\t\tautoIcon = ` ${",
+      '\t\t\t\tspeculation === "running"',
+      "\t\t\t\t\t? ctx.speculationBlinkOn",
+      "\t\t\t\t\t\t? accentIcon",
+      '\t\t\t\t\t\t: theme.fg("muted", theme.icon.auto)',
+      '\t\t\t\t\t: speculation === "armed"',
+      "\t\t\t\t\t\t? accentIcon",
+      "\t\t\t\t\t\t: theme.fg(color, theme.icon.auto)",
+      "\t\t\t}`;",
+      "\t\t}",
+    ].join("\n");
+    r = replaceAny(
+      out,
+      [autoCompactIconBlock, `\t\tconst autoIcon = "";`],
+      `\t\tconst autoIcon = "";`,
+      "segments remove auto-compaction icon",
+    );
+    out = r.content;
+    r = replaceAny(
+      out,
+      [
+        `\t\tconst content = withIcon(theme.icon.context, \`\${text}\${autoIcon}\`);`,
+      ],
+      `\t\tconst content = \`\${text}\${autoIcon}\`;`,
+      "segments remove context icon",
+    );
+    out = r.content;
+    const autoCompactDescribeBlock = [
+      "\t\tif (ctx.autoCompactEnabled && theme.icon.auto) {",
+      "\t\t\t// Async-compaction indicator: the terminal pulses the auto icon while a",
+      "\t\t\t// background speculation runs; an armed result holds it in accent.",
+      "\t\t\tconst speculation = ctx.compactionSpeculation;",
+      '\t\t\tif (speculation === "running") {',
+      '\t\t\t\tspans.push(span(` ${theme.icon.auto}`, accentToken(ctx, "accent"), { fx: "pulse" }));',
+      "\t\t\t} else {",
+      '\t\t\t\tspans.push(span(` ${theme.icon.auto}`, speculation === "armed" ? accentToken(ctx, "accent") : color));',
+      "\t\t\t}",
+      "\t\t}",
+    ].join("\n");
+    r = replaceAny(
+      out,
+      [autoCompactDescribeBlock],
+      "\t\t// Keep context numbers visible without an auto-compaction icon.",
+      "segments remove described auto-compaction icon",
     );
     out = r.content;
 
@@ -422,45 +503,70 @@ export function createStatusLinePatches(ctx) {
     const newGit =
       'const gitSegment: StatusLineSegment = {\n\tid: "git",\n\trender(ctx) {\n\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return { content: "", visible: false };\n\n\t\tconst opts = ctx.options.git ?? {};\n\t\tconst gitStatus = status;\n\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\tconst parts: string[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) parts.push(theme.fg("statusLineStaged", `\u2191${`${remote.ahead}`}`));\n\t\t\tif (remote.behind > 0) parts.push(theme.fg("statusLineDirty", `\u2193${`${remote.behind}`}`));\n\t\t}\n\n\t\tif (gitStatus) {\n\t\t\tconst dirtyParts: string[] = [];\n\t\t\tif (opts.showUnstaged !== false && gitStatus.unstaged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "!" : `*${gitStatus.unstaged}`);\n\t\t\t}\n\t\t\tif (opts.showStaged !== false && gitStatus.staged > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "+" : `+${gitStatus.staged}`);\n\t\t\t}\n\t\t\tif (opts.showUntracked !== false && gitStatus.untracked > 0) {\n\t\t\t\tdirtyParts.push(opts.compactDirty === true ? "?" : `?${gitStatus.untracked}`);\n\t\t\t}\n\t\t\tif (dirtyParts.length > 0) {\n\t\t\t\tconst dirtyText = opts.compactDirty === true ? `[${dirtyParts.join("")}]` : dirtyParts.join(" ");\n\t\t\t\tparts.push(theme.fg("statusLineDirty", dirtyText));\n\t\t\t}\n\t\t}\n\n\t\tif (parts.length > 0) {\n\t\t\tconst indicatorText = parts.join(" ");\n\t\t\tif (!content && showBranch === false) {\n\t\t\t\tcontent = withIcon(theme.icon.git, indicatorText);\n\t\t\t} else {\n\t\t\t\tcontent += content ? ` ${indicatorText}` : indicatorText;\n\t\t\t}\n\t\t}\n\n\t\tif (!content) return { content: "", visible: false };\n\n\t\treturn { content: `${theme.fg("text", "on ")}${theme.fg("statusLineGitClean", content)}`, visible: true };\n\t},\n};';
     const upstreamGit1844Render = `\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\t// Add status indicators\n\t\tif (gitStatus) {\n\t\t\tconst indicators: string[] = [];`;
-    if (
-      out.includes(upstreamGit1844Render) ||
-      out.includes("\t\tconst remoteParts: string[] = [];")
-    ) {
+    if (out.includes(upstreamGit1844Render)) {
       r = replaceAny(
         out,
         [
-          `\t\tconst { branch, status } = ctx.git;\n\t\tif (!branch && !status) return { content: "", visible: false };`,
+          `\t\tconst { branch, status } = ctx.git;
+\t\tif (!branch && !status) return { content: "", visible: false };`,
         ],
-        `\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return { content: "", visible: false };`,
+        `\t\tconst { branch, status, remote } = ctx.git;
+\t\tif (!branch && !status && !remote) return { content: "", visible: false };`,
         "segments 18.4.4 git render remote guard",
       );
       out = r.content;
       r = replaceAny(
         out,
         [upstreamGit1844Render],
-        `\t\tconst showBranch = opts.showBranch !== false;\n\t\tlet content = "";\n\t\tif (showBranch && branch) {\n\t\t\tcontent = withIcon(theme.icon.branch, branch);\n\t\t}\n\n\t\tconst remoteParts: string[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) remoteParts.push(theme.fg("statusLineStaged", \`\u2191\${remote.ahead}\`));\n\t\t\tif (remote.behind > 0) remoteParts.push(theme.fg("statusLineDirty", \`\u2193\${remote.behind}\`));\n\t\t}\n\n\t\t// Add status indicators\n\t\tif (gitStatus) {\n\t\t\tconst indicators: string[] = [];`,
+        `\t\tconst showBranch = opts.showBranch !== false;
+\t\tlet content = "";
+\t\tif (showBranch && branch) {
+\t\t\tcontent = withIcon(theme.icon.branch, branch);
+\t\t}
+
+\t\tconst remoteParts: string[] = [];
+\t\tif (remote && opts.showAheadBehind !== false) {
+\t\t\tif (remote.ahead > 0) remoteParts.push(theme.fg("statusLineStaged", \`↑\${remote.ahead}\`));
+\t\t\tif (remote.behind > 0) remoteParts.push(theme.fg("statusLineDirty", \`↓\${remote.behind}\`));
+\t\t}
+
+\t\t// Add status indicators
+\t\tif (gitStatus) {
+\t\t\tconst indicators: string[] = [];`,
         "segments 18.4.4 git render remote parts",
       );
       out = r.content;
       r = replaceAny(
         out,
         [
-          `\t\tif (showBranch && branch) spans.push(span(branch, colorName));\n\t\tconst indicators: TspSpan[] = [];\n\t\tif (status) {`,
+          `\t\tif (showBranch && branch) spans.push(span(branch, colorName));
+\t\tconst indicators: TspSpan[] = [];
+\t\tif (status) {`,
         ],
-        `\t\tif (showBranch && branch) spans.push(span(branch, colorName));\n\t\tconst indicators: TspSpan[] = [];\n\t\tif (remote && opts.showAheadBehind !== false) {\n\t\t\tif (remote.ahead > 0) indicators.push(span(\`\u2191\${remote.ahead}\`, "statusLineStaged"));\n\t\t\tif (remote.behind > 0) indicators.push(span(\`\u2193\${remote.behind}\`, "statusLineDirty"));\n\t\t}\n\t\tif (status) {`,
+        `\t\tif (showBranch && branch) spans.push(span(branch, colorName));
+\t\tconst indicators: TspSpan[] = [];
+\t\tif (remote && opts.showAheadBehind !== false) {
+\t\t\tif (remote.ahead > 0) indicators.push(span(\`↑\${remote.ahead}\`, "statusLineStaged"));
+\t\t\tif (remote.behind > 0) indicators.push(span(\`↓\${remote.behind}\`, "statusLineDirty"));
+\t\t}
+\t\tif (status) {`,
         "segments 18.4.4 git describe remote parts",
       );
       out = r.content;
       r = replaceAny(
         out,
         [
-          `\t\tconst { branch, status } = ctx.git;\n\t\tif (!branch && !status) return null;`,
+          `\t\tconst { branch, status } = ctx.git;
+\t\tif (!branch && !status) return null;`,
         ],
-        `\t\tconst { branch, status, remote } = ctx.git;\n\t\tif (!branch && !status && !remote) return null;`,
+        `\t\tconst { branch, status, remote } = ctx.git;
+\t\tif (!branch && !status && !remote) return null;`,
         "segments 18.4.4 git describe remote guard",
       );
       out = r.content;
-    } else {
+    } else if (
+      !out.includes("ctx.width > 80 ? withIcon(theme.icon.branch, branch)")
+    ) {
       r = replaceAny(
         out,
         [
@@ -471,6 +577,32 @@ export function createStatusLinePatches(ctx) {
         ],
         newGit,
         "segments compact git renderer",
+      );
+      out = r.content;
+    }
+    const plainBranch = `\t\t\tcontent = withIcon(theme.icon.branch, branch);`;
+    const compactPlainBranch = `\t\t\tcontent = ctx.width > 80 ? withIcon(theme.icon.branch, branch) : branch;`;
+    if (out.includes(plainBranch) || out.includes(compactPlainBranch)) {
+      r = replaceAny(
+        out,
+        [plainBranch],
+        compactPlainBranch,
+        "segments hide git branch icon on narrow status lines",
+      );
+      out = r.content;
+    }
+
+    const statusValueBranch = `\t\t\tcontent = withIcon(theme.icon.branch, statusValue(ctx, branch));`;
+    const compactStatusValueBranch = `\t\t\tcontent = ctx.width > 80 ? withIcon(theme.icon.branch, statusValue(ctx, branch)) : statusValue(ctx, branch);`;
+    if (
+      out.includes(statusValueBranch) ||
+      out.includes(compactStatusValueBranch)
+    ) {
+      r = replaceAny(
+        out,
+        [statusValueBranch],
+        compactStatusValueBranch,
+        "segments hide styled git branch icon on narrow status lines",
       );
       out = r.content;
     }
