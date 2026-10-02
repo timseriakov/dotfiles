@@ -171,7 +171,7 @@ Expected output includes `ok`.
 - Interactive visual verification is required for UI/status-line/editor changes. Capture a PTY startup and check for:
   - `Welcome from Oh My Pi`
   - basename path such as `omp`, not `/Users/tim/dev/dotfiles/omp`
-  - Starship-like `on  ... via ... OMNi`
+  - Starship-like `on  ... via ...` with `context_pct` after the model segment
   - prompt gutter ` `
 
 - Backpass compatibility smoke:

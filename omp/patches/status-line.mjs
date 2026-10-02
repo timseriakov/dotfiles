@@ -298,70 +298,29 @@ export function createStatusLinePatches(ctx) {
 	const modelName = state.model?.name || state.model?.id || "no-model";
 	return modelName.startsWith("Claude ") ? modelName.slice(7) : modelName;
 }`;
-    const modelDisplayNameOmni = modelDisplayNameFn.replace(
-      '\tconst modelName = state.model?.name || state.model?.id || "no-model";\n\treturn modelName.startsWith("Claude ") ? modelName.slice(7) : modelName;',
-      '\tlet modelName = state.model?.name || state.model?.id || "no-model";\n\tif (modelName.startsWith("Claude ")) modelName = modelName.slice(7);\n\tif (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {\n\t\tmodelName = `${modelName} OMNi`;\n\t}\n\treturn modelName;',
-    );
-    if (out.includes(modelDisplayNameFn)) {
-      r = replaceAny(
-        out,
-        [modelDisplayNameFn],
-        modelDisplayNameOmni,
-        "segments omniroute suffix modelDisplayName",
-      );
-      out = r.content;
-    } else {
-      const omniPatchedBlock = `\tlet modelName = state.model?.name || state.model?.id || "no-model";\n\tif (modelName.startsWith("Claude ")) modelName = modelName.slice(7);\n\tif (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {\n\t\tmodelName = \`\${modelName} OMNi\`;\n\t}`;
+    if (!out.includes(modelDisplayNameFn)) {
       r = replaceAny(
         out,
         [
-          omniPatchedBlock,
-          `		if (modelName.startsWith("Claude ")) {
-			modelName = modelName.slice(7);
-		}`,
-          `		if (modelName.startsWith("Claude ")) {
-			modelName = modelName.slice(7);
-		}
-		if (state.model?.provider === "omniroute/cx" && !/\\bOMNi\\b/.test(modelName)) {
-			modelName = \`\${modelName} OMNi\`;
-		}`,
-          `		if (modelName.startsWith("Claude ")) {
-			modelName = modelName.slice(7);
-		}
-		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
-			modelName = \`\${modelName} OMNi\`;
-		}`,
+          /function modelDisplayName\(ctx: SegmentContext\): string \{[\s\S]*?\n\}/,
         ],
-        omniPatchedBlock,
-        "segments omniroute suffix",
+        modelDisplayNameFn,
+        "segments canonical model display name",
       );
+      out = r.content;
     }
-    out = r.content;
-    out = out.replace(
-      `		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
-			modelName = \`\${modelName} OMNi\`;
-		}
-		if (state.model?.provider === "omniroute/cx" && !/\\bOMNi\\b/.test(modelName)) {
-			modelName = \`\${modelName} OMNi\`;
-		}`,
-      `		if (((state.model?.provider === "omniroute/cx") || (state.model?.provider === "omniroute" && state.model?.id?.startsWith("cx/"))) && !/\\bOMNi\\b/.test(modelName)) {
-			modelName = \`\${modelName} OMNi\`;
-		}`,
-    );
     // OMP 18.x owns the model segment layout; keep the local styling below.
     // ponytail: keep one guarded compatibility branch until upstream settles.
     if (
       out.includes(
         `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
       ) &&
-      !out.includes(
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";`,
-      )
+      !out.includes(`\t\tif (thinkingDisplay) {`)
     ) {
       r = insertBefore(
         out,
         `\t\tlet content = accentFg(ctx, "statusLineModel", withIcon(modelIcon, modelName));`,
-        `\t\tconst providerSuffix = modelName.endsWith(" OMNi") ? " OMNi" : "";\n\t\tif (providerSuffix) modelName = modelName.slice(0, -providerSuffix.length);\n\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("statusLineSep", symbol) + (parts.length ? " " + theme.fg("thinkingText", parts.join(" ")) : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);\n\t\t\tif (!compact && thinkingDisplay) tail += theme.sep.dot + thinkingDisplay;\n\t\t}\n`,
+        `\t\tif (thinkingDisplay) {\n\t\t\tconst parts = thinkingDisplay.trim().split(/\\s+/);\n\t\t\tconst symbol = parts.shift() ?? "";\n\t\t\tthinkingDisplay = theme.fg("statusLineSep", symbol) + (parts.length ? " " + theme.fg("thinkingText", parts.join(" ")) : "");\n\t\t}\n\t\tif (tail) {\n\t\t\ttail = "";\n\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);\n\t\t\tif (!compact && thinkingDisplay) tail += theme.sep.dot + thinkingDisplay;\n\t\t}\n`,
         "segments thinking label colors",
       );
       out = r.content;
@@ -383,30 +342,13 @@ export function createStatusLinePatches(ctx) {
         `\t\tif (tail) {\n\t\t\tcontent += accentFg(ctx, "statusLineModel", tail);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("dim", tail);\n\t\t}`,
         `\t\tif (tail) {\n\t\t\tcontent += theme.fg("text", tail);\n\t\t}`,
-        `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t\t}\n\t\tif (providerSuffix) {\n\t\t\tcontent += theme.fg("dim", providerSuffix);\n\t\t}`,
+        `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("dim", tail);\n\t\t}`,
       ],
-      `		if (tail) {
-			const tailMatch = tail.match(/^(.*\\s)(\\S+)$/);
-			content += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("text", tail);
-		}
-		if (providerSuffix) {
-			content += theme.fg("dim", providerSuffix);
-		}`,
+      `\t\tif (tail) {\n\t\t\tconst tailMatch = tail.match(/^(.*\\s)(\\S+)$/);\n\t\t\tcontent += tailMatch ? theme.fg("dim", tailMatch[1]) + theme.fg("text", tailMatch[2]) : theme.fg("text", tail);\n\t\t}`,
       "segments dim full model tail",
     );
     out = r.content;
 
-    out = out.replace(
-      `		if (providerSuffix) {
-			content += theme.fg("dim", providerSuffix);
-		}
-		if (providerSuffix) {
-			content += theme.fg("dim", providerSuffix);
-		}`,
-      `		if (providerSuffix) {
-			content += theme.fg("dim", providerSuffix);
-		}`,
-    );
     r = replaceAny(
       out,
       [
