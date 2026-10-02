@@ -341,6 +341,8 @@ export function createCommandRuntimePatches(ctx) {
 				? currentFocus
 				: topVisibleOverlay.component;
 		}`;
+    if (!content.includes(current) && !content.includes(patched))
+      return content;
     return replaceAny(
       content,
       [current, patched],

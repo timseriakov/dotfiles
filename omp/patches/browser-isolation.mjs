@@ -332,15 +332,7 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string
 }
 
 export function patchBrowserTabSupervisor(content, { replaceAny }) {
-  let out = replaceAny(
-    content,
-    [
-      `\t\ttabName: opts.displayName ?? name,`,
-      `\t\ttabName: opts.displayName ?? "main",`,
-    ],
-    `\t\ttabName: opts.displayName ?? "main",`,
-    "browser relay attach tab name fallback",
-  ).content;
+  let out = content;
   out = replaceAny(
     out,
     [
