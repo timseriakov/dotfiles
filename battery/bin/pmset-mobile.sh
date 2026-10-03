@@ -38,6 +38,12 @@ restore_from_backup() {
     b_value="${!b_var:-}"
     c_value="${!c_var:-}"
 
+    # stale snapshots must not disable display sleep; Raycast Coffee may still assert on top
+    if [[ "$key" == "displaysleep" ]]; then
+      b_value=5
+      c_value=5
+    fi
+
     if [[ -n "$b_value" ]]; then
       sudo pmset -b "$key" "$b_value"
     fi
