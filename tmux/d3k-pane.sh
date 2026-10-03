@@ -62,10 +62,10 @@ wait_for_shell() {
   return 1
 }
 
-tmux send-keys -t "$pane" C-c C-c
+tmux send-keys -t "$pane" C-c
 wait_for_shell || { tmux send-keys -t "$pane" C-z; wait_for_shell; } || {
   tmux display-message "d3k:${service}: target pane did not return to shell"
   exit 1
 }
 
-tmux send-keys -t "$pane" C-u "jobs -p | xargs kill -TERM 2>/dev/null; $restart_cmd $service $project_cmd" C-m
+tmux send-keys -t "$pane" C-u "$restart_cmd $service $project_cmd" C-m

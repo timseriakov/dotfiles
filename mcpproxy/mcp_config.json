@@ -6,6 +6,17 @@
   "mcpServers": [
     {
       "quarantined": false,
+      "name": "mac-use-mcp",
+      "protocol": "stdio",
+      "command": "npx",
+      "args": ["-y", "mac-use-mcp@1.1.1"],
+      "oauth": null,
+      "enabled": true,
+      "created": "2026-09-01T00:00:00+03:00",
+      "updated": "2026-10-03T12:10:57.816649+03:00"
+    },
+    {
+      "quarantined": false,
       "name": "morphllm-fast-apply",
       "protocol": "stdio",
       "command": "npx",
@@ -17,7 +28,7 @@
       "oauth": null,
       "enabled": false,
       "created": "2025-10-19T12:18:48.499107+03:00",
-      "updated": "2026-07-18T15:09:31.307185+03:00"
+      "updated": "2026-09-20T16:19:16.76318+03:00"
     },
     {
       "quarantined": false,
@@ -27,18 +38,7 @@
       "oauth": null,
       "enabled": true,
       "created": "2026-03-16T13:45:57.221182+03:00",
-      "updated": "2026-07-18T15:09:31.315198+03:00"
-    },
-    {
-      "quarantined": false,
-      "name": "mac-use-mcp",
-      "protocol": "stdio",
-      "command": "npx",
-      "args": ["-y", "mac-use-mcp@0.63.0"],
-      "oauth": null,
-      "enabled": true,
-      "created": "2026-09-01T00:00:00+03:00",
-      "updated": "2026-09-01T00:00:00+03:00"
+      "updated": "2026-09-20T16:19:16.773235+03:00"
     }
   ],
   "tools_limit": 10,
