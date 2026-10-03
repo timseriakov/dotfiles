@@ -77,6 +77,7 @@ export function runPatchRoutes(ctx) {
     ["chrome/dynamic-border.ts", patches.patchDynamicBorder],
     ["app-keybindings.ts", patches.patchKeybindingsConfig],
     ["prompt/custom-editor.ts", patches.patchCustomEditor],
+    ["prompt/macos-spelling.ts", patches.patchSpellingUnderline],
     ["prompt/attachment-chips.ts", patches.patchAttachmentChips],
     ["apps/git/colors.ts", patches.patchGitTuiColors],
     ["apps/git/git-tui.ts", patches.patchGitTuiLayout],

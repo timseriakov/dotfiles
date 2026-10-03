@@ -448,6 +448,8 @@ export function createStatusLinePatches(ctx) {
     r = replaceAny(
       out,
       [
+        `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tpct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = withIcon(theme.icon.context, \`\${text}\${autoIcon}\`);`,
+        `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = withIcon(theme.icon.context, \`\${text}\${autoIcon}\`);`,
         `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tpct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = \`\${text}\${autoIcon}\`;`,
         `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = \`\${text}\${autoIcon}\`;`,
       ],

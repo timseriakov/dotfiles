@@ -365,6 +365,23 @@ export function createUiComponentPatches(ctx) {
     return content;
   }
 
+  // Spelling typo underline color. Styled mode hardcodes red (4:3 + 58); flat
+  // mode (multiplexed terminals) inherits the text color — too dim to notice.
+  // Give the flat mark its own soft blue-gray so it stays visible.
+  const flatTypoMarkColored =
+    'const FLAT_TYPO_MARKS = { start: "\\x1b[4m\\x1b[58:2::135:160:190m", end: "\\x1b[24m\\x1b[59m" } as const;';
+  function patchSpellingUnderline(content) {
+    return replaceAny(
+      content,
+      [
+        'const FLAT_TYPO_MARKS = { start: "\\x1b[4m", end: "\\x1b[24m" } as const;',
+        flatTypoMarkColored,
+      ],
+      flatTypoMarkColored,
+      "spelling flat underline color",
+    ).content;
+  }
+
   return {
     patchWelcome,
     patchAssistantMessage,
@@ -374,5 +391,6 @@ export function createUiComponentPatches(ctx) {
     patchDynamicBorder,
     patchInteractiveMode,
     patchTuiVisibleWidth,
+    patchSpellingUnderline,
   };
 }

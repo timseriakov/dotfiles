@@ -197,21 +197,24 @@ export function patchBrowserAttach(content, { replaceAny }) {
   out = replaceAny(
     out,
     [
+      `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tif (options.relayJson) {`,
+      `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tif (options.relayJson) {`,
       `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean } = {},\n): Promise<Page> {\n\tconst discoveredPages`,
       `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean } = {},\n): Promise<Page> {\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tconst discoveredPages`,
       `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean; ownerSessionId?: string; tabName?: string } = {},\n): Promise<Page> {\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher, options.ownerSessionId, options.tabName);\n\tconst discoveredPages`,
     ],
-    `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean; ownerSessionId?: string; tabName?: string } = {},\n): Promise<Page> {\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher, options.ownerSessionId, options.tabName);\n\tconst discoveredPages`,
+    `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tif (options.relayJson) {`,
     "automatic qutebrowser agent window creation",
   ).content;
 
   out = replaceAny(
     out,
     [
+      `async function pickPageFromList(pages: Page[], options: PickTargetOptions): Promise<Page> {`,
       `async function pickPageFromList(pages: Page[], options: { matcher?: string; preferVisible?: boolean }): Promise<Page> {`,
       `async function pickPageFromList(pages: Page[], options: { matcher?: string; preferVisible?: boolean; ownerSessionId?: string; tabName?: string }): Promise<Page> {`,
     ],
-    `async function pickPageFromList(pages: Page[], options: { matcher?: string; preferVisible?: boolean; ownerSessionId?: string; tabName?: string }): Promise<Page> {`,
+    `async function pickPageFromList(pages: Page[], options: PickTargetOptions): Promise<Page> {`,
     "qutebrowser page picker option type",
   ).content;
 
@@ -312,11 +315,11 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string
     [
       `\t\tconst hit = enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
       `\t\tconst hit = needle === "omp_agent_window_9f2c"\n\t\t\t? enriched.find(p => p.title.toLowerCase().includes(needle))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
-      `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => p.title.toLowerCase().includes(targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
+      `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
       `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
       `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
     ],
-    `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
+    `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
     "qutebrowser persistent title marker matcher",
   ).content;
   out = replaceAny(
@@ -346,75 +349,11 @@ export function patchBrowserTabSupervisor(content, { replaceAny }) {
   out = replaceAny(
     out,
     [
-      `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t});`,
-      `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t});`,
-      `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? "main",\n\t});`,
-    ],
-    `\tconst page = await pickElectronTarget(browser.browser, {\n\t\tmatcher: opts.target,\n\t\tpreferVisible: !activateForScreenshot,\n\t\townerSessionId: opts.ownerSessionId,\n\t\ttabName: opts.displayName ?? "main",\n\t});`,
-    "browser physical target owner token",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\townerSessionId?: string;\n\t/**\n\t * Opt out of settle-freeze`,
-      `\townerSessionId?: string;\n\t/** User-facing tab name; module map key may be session-scoped. */\n\tdisplayName?: string;\n\t/**\n\t * Opt out of settle-freeze`,
-    ],
-    `\townerSessionId?: string;\n\t/** User-facing tab name; module map key may be session-scoped. */\n\tdisplayName?: string;\n\t/**\n\t * Opt out of settle-freeze`,
-    "tab display name session field",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\townerSessionId?: string;\n\t/**\n\t * Keep the tab live`,
-      `\townerSessionId?: string;\n\t/** User-facing tab name; module map key may be session-scoped. */\n\tdisplayName?: string;\n\t/**\n\t * Keep the tab live`,
-    ],
-    `\townerSessionId?: string;\n\t/** User-facing tab name; module map key may be session-scoped. */\n\tdisplayName?: string;\n\t/**\n\t * Keep the tab live`,
-    "tab display name option field",
-  ).content;
-  out = replaceAny(
-    out,
-    [
       `export function listTabs(): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive")`,
       `export function listTabs(ownerSessionId?: string): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive" && (ownerSessionId === undefined || tab.ownerSessionId === ownerSessionId))`,
     ],
     `export function listTabs(ownerSessionId?: string): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive" && (ownerSessionId === undefined || tab.ownerSessionId === ownerSessionId))`,
     "tab list owner filter",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\tname: tab.name,\n\t\t\turl: tab.info.url,`,
-      `\t\t\tname: tab.displayName ?? tab.name,\n\t\t\turl: tab.info.url,`,
-    ],
-    `\t\t\tname: tab.displayName ?? tab.name,\n\t\t\turl: tab.info.url,`,
-    "tab list display name",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\townerSessionId: opts.ownerSessionId,\n\t\tpersist: opts.persist ?? false,`,
-      `\t\townerSessionId: opts.ownerSessionId,\n\t\tdisplayName: opts.displayName,\n\t\tpersist: opts.persist ?? false,`,
-    ],
-    `\t\townerSessionId: opts.ownerSessionId,\n\t\tdisplayName: opts.displayName,\n\t\tpersist: opts.persist ?? false,`,
-    "worker tab display name",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tpersist: opts.persist ?? false,`,
-      `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
-    ],
-    `\t\t\tkindTag: browser.kind.kind,\n\t\t\tcmuxAttachedSurface: attachedSurface,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
-    "cmux tab display name",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tpersist: opts.persist ?? false,`,
-      `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
-    ],
-    `\t\t\tkindTag: browser.kind.kind,\n\t\t\townerSessionId: opts.ownerSessionId,\n\t\t\tdisplayName: opts.displayName,\n\t\t\tpersist: opts.persist ?? false,`,
-    "tern tab display name",
   ).content;
   return out;
 }
