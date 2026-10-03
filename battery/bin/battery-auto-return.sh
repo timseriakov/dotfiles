@@ -8,7 +8,7 @@ CONFIG_FILE="$HOME/dev/dotfiles/battery/config/config.env"
 MODE_SCRIPT="$HOME/dev/dotfiles/battery/bin/battery-mode.sh"
 
 LOG_PREFIX="[autoreturn]"
-SLEEP_INTERVAL=120
+SLEEP_INTERVAL="${SLEEP_INTERVAL:-120}"
 
 log_info() {
   echo "${LOG_PREFIX} $*"
@@ -90,6 +90,15 @@ while true; do
   if [[ -f "$STATE_FILE" ]]; then
     # shellcheck disable=SC1090
     source "$STATE_FILE"
+  fi
+
+  if [[ "${MODE:-}" == "server" ]]; then
+    if ! pgrep -f '/battery maintain_synchronous 75([[:space:]]|$)' >/dev/null; then
+      log_err "75% maintenance process missing; restoring server mode"
+      "$MODE_SCRIPT" server || log_err "failed to restore server mode"
+    fi
+    sleep "$SLEEP_INTERVAL"
+    continue
   fi
 
   if [[ "${MODE:-}" != "mobile" ]]; then
