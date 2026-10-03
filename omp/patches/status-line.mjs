@@ -329,9 +329,11 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);`,
+        `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += "";`,
+        `\t\t\tif (ctx.width <= 80) {\n\t\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += "";\n\t\t\t} else if (ctx.session.isFastModeActive() && theme.icon.fast) tail += " " + theme.fg("dim", theme.icon.fast);`,
       ],
-      `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += "";`,
-      "segments remove fast-mode icon from ANSI model tail",
+      `\t\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) tail += ctx.width > 80 ? " " + theme.fg("dim", theme.icon.fast) : "";`,
+      "segments adaptive fast-mode icon in ANSI model tail",
     );
     out = r.content;
     const fastTailBlock = [
@@ -339,11 +341,20 @@ export function createStatusLinePatches(ctx) {
       "\t\t\ttail += ` ${theme.icon.fast}`;",
       "\t\t}",
     ].join("\n");
+    const adaptiveFastTailBlock = [
+      "\t\tif (ctx.session.isFastModeActive() && theme.icon.fast && ctx.width > 80) {",
+      "\t\t\ttail += ` ${theme.icon.fast}`;",
+      "\t\t}",
+    ].join("\n");
     r = replaceAny(
       out,
-      [fastTailBlock],
-      "\t\t// Fast-mode icon intentionally omitted to preserve context width.",
-      "segments remove upstream fast-mode icon",
+      [
+        fastTailBlock,
+        adaptiveFastTailBlock,
+        "\t\t// Fast-mode icon intentionally omitted to preserve context width.",
+      ],
+      adaptiveFastTailBlock,
+      "segments adaptive upstream fast-mode icon",
     );
     out = r.content;
     r = replaceAny(
@@ -427,9 +438,31 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span(\` \${theme.icon.fast}\`, token));`,
+        `\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span("", token));`,
+        `\t\tif (ctx.width > 80 && ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span(\` \${theme.icon.fast}\`, token));`,
       ],
-      `\t\tif (ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span("", token));`,
-      "segments remove fast-mode icon from native model spans",
+      `\t\tif (ctx.width > 80 && ctx.session.isFastModeActive() && theme.icon.fast) spans.push(span(\` \${theme.icon.fast}\`, token));`,
+      "segments adaptive fast-mode icon in native model spans",
+    );
+    out = r.content;
+    r = replaceAny(
+      out,
+      [
+        `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tpct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = \`\${text}\${autoIcon}\`;`,
+        `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = \`\${text}\${autoIcon}\`;`,
+      ],
+      `\t\tconst text = theme.fg(\n\t\t\tcolor,\n\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t);\n\t\tconst content = \`\${text}\${autoIcon}\`;`,
+      "segments narrow context percent only",
+    );
+    out = r.content;
+    r = replaceAny(
+      out,
+      [
+        `\t\tconst spans: TspSpan[] = [\n\t\t\tspan(\n\t\t\t\tpct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t\t\tcolor,\n\t\t\t),\n\t\t];`,
+        `\t\tconst spans: TspSpan[] = [\n\t\t\tspan(\n\t\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t\t\tcolor,\n\t\t\t),\n\t\t];`,
+      ],
+      `\t\tconst spans: TspSpan[] = [\n\t\t\tspan(\n\t\t\t\tctx.width <= 80 && pct !== null ? \`\${(pct ?? 0).toFixed(1)}%\` : pct === null && window > 0 ? formatNumber(window) : formatContextUsage(pct, window, ctx.contextTokens),\n\t\t\t\tcolor,\n\t\t\t),\n\t\t];`,
+      "segments narrow context percent only describe",
     );
     out = r.content;
     r = replaceAny(

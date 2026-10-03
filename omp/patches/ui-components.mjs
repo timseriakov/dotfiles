@@ -2,21 +2,36 @@ export function createUiComponentPatches(ctx) {
   const { replaceOnce, replaceAny, insertAfter, insertBefore } = ctx;
 
   function patchWelcome(content) {
-    const alreadyPatched = `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
-    const alreadyPatchedOld = `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`;
-    return replaceAny(
+    const alreadyPatched = `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Content keeps a column clear on each side; everything centers in the full width.`;
+    let out = replaceAny(
       content,
       [
         `\t#renderLines(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+        `\t#renderLines(termWidth: number): string[] {\n\t\t// Content keeps a column clear on each side; everything centers in the full width.`,
         alreadyPatched,
         `\trender(termWidth: number): string[] {\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
-        alreadyPatchedOld,
+        `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+        `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
         `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
         `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
       ],
       alreadyPatched,
       "welcome minimal text only",
     ).content;
+    // 18.5.0 added a native describe path for TSP terminals; keep it minimal
+    // the same way so native renders match the ANSI ones.
+    const nativeMinimal = `\t\tconst cardNode = text([span("Welcome from Oh My Pi", "strong")], { wrap: "none", role: "omp.welcome.wordmark" });\n\t\tthis.#native = { tip, node: cardNode };\n\t\treturn cardNode;`;
+    const describePatched = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n${nativeMinimal}\n\t\t// Brand lines are short and fixed; never wrap or truncate them.`;
+    out = replaceAny(
+      out,
+      [
+        `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\t// Brand lines are short and fixed; never wrap or truncate them.`,
+        describePatched,
+      ],
+      describePatched,
+      "welcome native minimal text only",
+    ).content;
+    return out;
   }
   function patchAssistantMessage(content) {
     let out = content;
