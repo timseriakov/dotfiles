@@ -51,6 +51,25 @@ export function createUiComponentPatches(ctx) {
         ],
         "new Markdown(trimmed, 0, 0, this.#getProseTheme(), mdOptions, 0)",
         "assistant text padding",
+        true,
+      ],
+      [
+        [
+          "\t\t\t? new Markdown(\n\t\t\t\t\ttext,\n\t\t\t\t\t1,\n\t\t\t\t\t0,\n\t\t\t\t\tthis.#getProseTheme(),\n\t\t\t\t\tthis.#textColorTransform ? { color: this.#textColorTransform } : undefined,\n\t\t\t\t\t0,\n\t\t\t\t)",
+          "\t\t\t? new Markdown(\n\t\t\t\t\ttext,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\tthis.#getProseTheme(),\n\t\t\t\t\tthis.#textColorTransform ? { color: this.#textColorTransform } : undefined,\n\t\t\t\t\t0,\n\t\t\t\t)",
+        ],
+        "\t\t\t? new Markdown(\n\t\t\t\t\ttext,\n\t\t\t\t\t0,\n\t\t\t\t\t0,\n\t\t\t\t\tthis.#getProseTheme(),\n\t\t\t\t\tthis.#textColorTransform ? { color: this.#textColorTransform } : undefined,\n\t\t\t\t\t0,\n\t\t\t\t)",
+        "assistant text padding (helper)",
+        true,
+      ],
+      [
+        [
+          "new Markdown(text, 1, 0, getMarkdownTheme(), {",
+          "new Markdown(text, 0, 0, getMarkdownTheme(), {",
+        ],
+        "new Markdown(text, 0, 0, getMarkdownTheme(), {",
+        "assistant thinking block padding",
+        true,
       ],
       [
         [
@@ -59,7 +78,16 @@ export function createUiComponentPatches(ctx) {
         ],
         'new Text(theme.italic(theme.fg("thinkingText", "Thinking...")), 0, 0)',
         "assistant thinking label padding",
-        true, // skipIfMissing
+        true,
+      ],
+      [
+        [
+          "new Text(this.#thinkingDotsLabel(), 1, 0)",
+          "new Text(this.#thinkingDotsLabel(), 0, 0)",
+        ],
+        "new Text(this.#thinkingDotsLabel(), 0, 0)",
+        "assistant thinking dots padding",
+        true,
       ],
       [
         [
@@ -67,7 +95,8 @@ export function createUiComponentPatches(ctx) {
           "new Markdown(thinkingText, 0, 0, getMarkdownTheme(), {",
         ],
         "new Markdown(thinkingText, 0, 0, getMarkdownTheme(), {",
-        "assistant thinking block padding",
+        "assistant thinking block padding (legacy)",
+        true,
       ],
       [
         [
@@ -81,11 +110,7 @@ export function createUiComponentPatches(ctx) {
       ],
     ];
     for (const [alternatives, newText, label, skipIfMissing] of replacements) {
-      if (
-        skipIfMissing &&
-        !alternatives.some((a) => out.includes(a.replace(/, 1, 0/, ", 0, 0")))
-      )
-        continue;
+      if (skipIfMissing && !alternatives.some((a) => out.includes(a))) continue;
       out = replaceAny(out, alternatives, newText, label).content;
     }
     return out;

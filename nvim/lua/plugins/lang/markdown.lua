@@ -1,8 +1,7 @@
 return {
   "iamcco/markdown-preview.nvim",
   build = function()
-    -- Use frozen lockfile to avoid modifying yarn.lock
-    vim.fn.system("cd app && rm -rf yarn.lock && yarn install --frozen-lockfile")
+    vim.fn.system("cd app && npm exec --yes --package=yarn@1.22.22 -- yarn install --frozen-lockfile")
   end,
   ft = { "markdown" },
   cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
