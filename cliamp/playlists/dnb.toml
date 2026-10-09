@@ -29,3 +29,11 @@ title = "Radio Caprice: Future Garage / Chillstep / Deep / Post Dubstep"
 [[track]]
 path = "http://ice.drumfunk.ru:8050/on.mp3"
 title = "drumfunk.ru"
+
+[[track]]
+path = "https://stream.breakz.fm/?ref=radiobrowser-remix-partybreaks-radio"
+title = "# REMIX & PARTYBREAKS - Your House - EDM - HipHop - RnB - Techno - TechHouse - Top 40 Charts - Latin - DJ Mixtape RADIO"
+
+[[track]]
+path = "https://radio.bbz.ru/listen/bbz/192.mp3"
+title = "BBZ BREAKBEATZONE"
