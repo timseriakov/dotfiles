@@ -10,6 +10,8 @@ commands:
   enableOpencodeProject: false
 astGrep:
   enabled: true
+bash:
+  gitGuard: true
 startup:
   quiet: true
   setupWizard: false

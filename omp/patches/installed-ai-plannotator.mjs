@@ -182,6 +182,19 @@ export function createInstalledAiPlannotatorPatches(ctx) {
     let out = content;
     let r;
 
+    // OMP 18.8.7 removed the older catalog/composition helpers. Its resolved-model
+    // merge helper is the remaining stable choke point for cached and discovered rows.
+    const currentMerge = `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\treturn mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst contextWindow = replacementModel.contextWindow ?? existing.contextWindow;\n\t\t\tconst maxTokens = replacementModel.maxTokens ?? existing.maxTokens;\n\t\t\tconst omitMaxOutputTokens = replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\tif (\n\t\t\t\tcontextWindow === replacementModel.contextWindow &&\n\t\t\t\tmaxTokens === replacementModel.maxTokens &&\n\t\t\t\tomitMaxOutputTokens === replacementModel.omitMaxOutputTokens &&\n\t\t\t\tsupportsTools === replacementModel.supportsTools\n\t\t\t) {\n\t\t\t\treturn replacementModel;\n\t\t\t}\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow,\n\t\t\t\tmaxTokens,\n\t\t\t\tomitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t}`;
+    const patchedMerge = `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\tconst merged = mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst contextWindow = replacementModel.contextWindow ?? existing.contextWindow;\n\t\t\tconst maxTokens = replacementModel.maxTokens ?? existing.maxTokens;\n\t\t\tconst omitMaxOutputTokens = replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\tif (\n\t\t\t\tcontextWindow === replacementModel.contextWindow &&\n\t\t\t\tmaxTokens === replacementModel.maxTokens &&\n\t\t\t\tomitMaxOutputTokens === replacementModel.omitMaxOutputTokens &&\n\t\t\t\tsupportsTools === replacementModel.supportsTools\n\t\t\t) {\n\t\t\t\treturn replacementModel;\n\t\t\t}\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow,\n\t\t\t\tmaxTokens,\n\t\t\t\tomitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t\treturn merged.filter(model => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"));\n\t}`;
+    if (out.includes(currentMerge) || out.includes(patchedMerge)) {
+      return replaceAny(
+        out,
+        [currentMerge, patchedMerge],
+        patchedMerge,
+        "drop retired openrouter :free from current model merge",
+      ).content;
+    }
+
     // OpenRouter retired its free DeepSeek tier: the bundled catalog still lists
     // `deepseek/deepseek-v4-flash:free`, which 404s on every call. Filter it at
     // the catalog-load boundary (bundled models) AND at the final registry
