@@ -138,8 +138,11 @@ export function patchBrowserIsolation(content, { replaceAny }) {
         `\t\t\t\`\${verb} tab \${JSON.stringify(name)} on \${describeBrowser(browser)}\`,`,
         `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(browser)}\`,`,
         `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(browser)}\`,`,
+        `\t\t\t\`\${verb} tab \${JSON.stringify(name)} on \${describeBrowser(tab)}\`,`,
+        `\t\t\t\`\${verb} tab \${JSON.stringify(displayName)} on \${describeBrowser(tab)}\`,`,
+        `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(tab)}\`,`,
       ],
-      `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(browser)}\`,`,
+      `\t\t\t\`\${verb} tab \${JSON.stringify(details.name)} on \${describeBrowser(tab)}\`,`,
       "browser open text display name",
     ).content;
     out = replaceAny(
