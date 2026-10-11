@@ -4,8 +4,8 @@
 // daemon socket (a named pipe on Windows) — no per-event helper spawn. When
 // the daemon is absent the connect fails silently and the turn is never
 // interrupted. Debug replay: pipe a normalized payload JSON into the CLI
-// adapter, "moshi-hook omp-hook".
-import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent"
+// adapter, "moshi-hook pi-hook".
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import { createConnection } from "node:net"
 import { homedir } from "node:os"
 import { join as pathJoin } from "node:path"
@@ -13,10 +13,10 @@ import { closeSync, openSync, readSync } from "node:fs"
 import { spawnSync } from "node:child_process"
 
 // Kept for debugging / manual replay through the CLI adapter above.
-const helperBinary = "/opt/homebrew/opt/moshi-hook/bin/moshi-hook"
+const helperBinary = "/Users/tim/.local/bin/moshi-hook"
 
-const agentSource = "omp"
-const agentDisplayName = "OMP"
+const agentSource = "pi"
+const agentDisplayName = "Pi"
 
 // Mirrors internal/config.SocketPath. The MOSHI_SOCKET_PATH override wins
 // over the per-platform default so tests and dev daemons can point us at a
@@ -39,11 +39,16 @@ function resolveSocketPath(): string {
 // One-message-per-connection wire protocol (see internal/socket/server.go):
 // dial, write one envelope as a JSON line, half-close, drain the daemon ack
 // (so the daemon does not log broken pipes), close. Every failure resolves
-// silently — hooks must never interrupt the user's OMP turn when
+// silently — hooks must never interrupt the user's Pi turn when
 // Moshi is absent.
+const inFlightSends = new Set<Promise<void>>()
+
 function sendEnvelope(envelope: Record<string, unknown>): void {
   try {
     const sock = createConnection({ path: resolveSocketPath() })
+    const done = new Promise<void>((resolve) => sock.once("close", () => resolve()))
+    inFlightSends.add(done)
+    done.then(() => inFlightSends.delete(done))
     sock.setNoDelay(true)
     sock.on("error", () => {
       try {
@@ -56,6 +61,21 @@ function sendEnvelope(envelope: Record<string, unknown>): void {
     })
     sock.on("data", () => {})
   } catch {}
+}
+
+// flushSends resolves once every queued envelope has reached the daemon (or
+// failed), capped at timeoutMs. Returned from session_shutdown, which the host
+// awaits before exiting — without it the process exits before the socket even
+// connects and the session never ends in Moshi.
+function flushSends(timeoutMs: number): Promise<void> {
+  if (inFlightSends.size === 0) return Promise.resolve()
+  return new Promise<void>((resolve) => {
+    const timer = setTimeout(resolve, timeoutMs)
+    Promise.all([...inFlightSends]).then(() => {
+      clearTimeout(timer)
+      resolve()
+    })
+  })
 }
 
 interface TerminalContext {
@@ -210,7 +230,7 @@ function sessionID(event: Record<string, unknown>, ctx: Record<string, unknown>)
     managerID,
     event.session_id as string,
     event.sessionId as string,
-    "omp",
+    "pi",
   )
 }
 
@@ -376,15 +396,20 @@ function recordTaskCompletion(state: SessionState, signature: string, now: numbe
   return true
 }
 
-// Pi's versioned SessionHeader writes parentSession(-Id) when a session was
+// Pi's (and OmO's senpi fork's) versioned SessionHeader writes parentSession(-Id) when a session was
 // created by fork/clone/newSession with lineage; child sessions stay out of
 // the inbox. Lineage cannot change for a live transcript, so a successful
 // read is cached per path; an unreadable or half-written header is retried
 // on the next event.
 const transcriptChildCache = new Map<string, boolean>()
 
+// OMP's header is no such signal (its main-session handoffs carry a parent
+// too), but since 18.3.2 ctx.agent.kind names subagent sessions directly.
+// They never fire session_stop, so a forwarded prompt would stay in flight
+// forever.
 function sessionIsChild(state: SessionState, payload: HookPayload): boolean {
-  if (agentSource !== "pi") return false
+  if (agentSource === "omp") return payload.agent_kind === "sub"
+  if (agentSource !== "pi" && agentSource !== "omo") return false
   const path = payload.transcript_path || state.transcriptPath
   if (!path) return false
   const cached = transcriptChildCache.get(path)
@@ -425,6 +450,7 @@ interface HookPayload {
   cwd: string
   model: string
   context_remaining: number | undefined
+  agent_kind: string
   [key: string]: unknown
 }
 
@@ -467,6 +493,11 @@ function handleEvent(payload: HookPayload): void {
   const isChild = sessionIsChild(state, payload)
   switch (payload.hook_event_name) {
     case "SessionStart": {
+      // OMP subagents run in the parent process and inherit its pane; their
+      // start would repoint the pane at a session whose transcript the
+      // daemon cannot serve. Pi/OmO lineage children are user-driven forks
+      // that do take over the pane, so they still announce themselves.
+      if (isChild && agentSource === "omp") return
       if (payload.model) state.model = payload.model
       if (payload.transcript_path) state.transcriptPath = payload.transcript_path
       state.sessionStartTime = nowSeconds()
@@ -507,7 +538,7 @@ function handleEvent(payload: HookPayload): void {
     case "AgentStart":
       return
     case "PermissionRequest": {
-      // OMP owns the approval prompt and decision. Moshi mirrors
+      // Pi owns the approval prompt and decision. Moshi mirrors
       // the waiting state; with a verified terminal target the daemon's TUI
       // bridge can send the user's remote decision into the native prompt.
       const toolName = firstString(payload.tool_name)
@@ -555,6 +586,11 @@ function handleEvent(payload: HookPayload): void {
   }
 }
 
+function agentKind(ctx: Record<string, unknown>): string {
+  const agent = ctx.agent && typeof ctx.agent === "object" ? ctx.agent as Record<string, unknown> : {}
+  return firstString(agent.kind)
+}
+
 function send(eventName: string, event: unknown, ctx: unknown, extra: Record<string, unknown> = {}) {
   const eventObj = event && typeof event === "object" ? event as Record<string, unknown> : {}
   const ctxObj = ctx && typeof ctx === "object" ? ctx as Record<string, unknown> : {}
@@ -565,56 +601,50 @@ function send(eventName: string, event: unknown, ctx: unknown, extra: Record<str
     cwd: firstString(ctxObj.cwd as string, process.cwd()),
     model: modelLabel(ctxObj.model),
     context_remaining: contextRemaining(ctxObj),
+    agent_kind: agentKind(ctxObj),
     ...extra,
   }
 
   try {
     handleEvent(payload)
   } catch {
-    // Hooks should never interrupt the user's OMP turn.
+    // Hooks should never interrupt the user's Pi turn.
   }
 }
 
-export default function moshiOMPHook(omp: ExtensionAPI): void {
-  omp.on("session_start", (event, ctx) => {
+export default function moshiPiHook(pi: ExtensionAPI): void {
+  pi.on("session_start", (event, ctx) => {
     send("SessionStart", event, ctx)
   })
 
-  omp.on("session_switch", (event, ctx) => {
-    send("SessionStart", event, ctx)
-  })
-
-  omp.on("before_agent_start", (event, ctx) => {
+  pi.on("before_agent_start", (event, ctx) => {
     send("UserPromptSubmit", event, ctx, { prompt: event.prompt })
   })
 
-  omp.on("agent_start", (event, ctx) => {
+  pi.on("agent_start", (event, ctx) => {
     send("AgentStart", event, ctx)
   })
 
-  omp.on("session_stop", (event, ctx) => {
-    send("AgentEnd", event, ctx, {
-      last_assistant_message: textFromMessage(event.last_assistant_message),
-    })
+  let lastAssistantMessage = ""
+
+  pi.on("agent_end", (event) => {
+    const messages = Array.isArray(event.messages) ? event.messages : []
+    for (let index = messages.length - 1; index >= 0; index -= 1) {
+      const message = messages[index] as Record<string, unknown>
+      if (message?.role === "assistant") {
+        lastAssistantMessage = textFromMessage(message)
+        break
+      }
+    }
   })
 
-  omp.on("tool_approval_requested", (event, ctx) => {
-    send("PermissionRequest", event, ctx, {
-      tool_name: event.toolName,
-      tool_use_id: event.toolCallId,
-      reason: event.reason,
-    })
+  pi.on("agent_settled", (event, ctx) => {
+    send("AgentEnd", event, ctx, { last_assistant_message: lastAssistantMessage })
+    lastAssistantMessage = ""
   })
 
-  omp.on("tool_approval_resolved", (event, ctx) => {
-    send("PermissionResolved", event, ctx, {
-      tool_name: event.toolName,
-      tool_use_id: event.toolCallId,
-      approved: event.approved,
-    })
-  })
-
-  omp.on("session_shutdown", (event, ctx) => {
+  pi.on("session_shutdown", (event, ctx) => {
     send("SessionEnd", event, ctx)
+    return flushSends(1000)
   })
 }

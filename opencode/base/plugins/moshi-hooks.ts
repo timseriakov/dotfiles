@@ -9,7 +9,7 @@ import type { Plugin } from "@opencode-ai/plugin"
 
 // Kept for debug / manual invocation. Routine events go straight to the
 // daemon's Unix socket (see resolveSocketPath) — no subprocess spawn.
-const helperBinary = "/opt/homebrew/opt/moshi-hook/bin/moshi-hook"
+const helperBinary = "/Users/tim/.local/bin/moshi-hook"
 
 // Mirrors internal/config.SocketPath. The MOSHI_SOCKET_PATH override wins
 // over the per-platform default so tests and dev daemons can point us at a
@@ -93,8 +93,8 @@ function sendEnvelope(
 
 function projectNameFromCwd(cwd: string | undefined): string {
   if (!cwd) return ""
-  const trimmed = cwd.replace(/\/+$/, "")
-  const idx = trimmed.lastIndexOf("/")
+  const trimmed = cwd.replace(/[\/\\]+$/, "")
+  const idx = Math.max(trimmed.lastIndexOf("/"), trimmed.lastIndexOf("\\"))
   return idx >= 0 ? trimmed.slice(idx + 1) : trimmed
 }
 
@@ -980,6 +980,14 @@ async function setup(ctx: PluginV2.Context) {
           cancel() { streams.delete(subscriber) },
         }), { headers: { "Content-Type": "text/event-stream" } })
       }
+      // Session info carries OpenCode's own generated (or renamed) title,
+      // which the daemon reads for the workspace tree.
+      const info = /^\/session\/([^/]+)$/.exec(url.pathname)
+      if (info) {
+        if (!owned.has(info[1])) return new Response("not found", { status: 404 })
+        const session = await ctx.session.get({ sessionID: info[1] }).catch(() => null)
+        return session ? Response.json({ id: info[1], title: session.title || "" }) : new Response("not found", { status: 404 })
+      }
       const match = /^\/session\/([^/]+)\/message(?:\/([^/]+))?$/.exec(url.pathname)
       if (!match || !owned.has(match[1])) return new Response("not found", { status: 404 })
       try {
@@ -1064,6 +1072,16 @@ async function setup(ctx: PluginV2.Context) {
           }).catch(() => {})
           break
         }
+        // V2 asks questions through forms. The plugin API cannot answer
+        // them, so surface them like V1's question.asked: a terminal-input
+        // notice the phone answers through the pane.
+        case "form.created":
+          sendTerminalInputRequired(event.type, { ...data, question: formQuestionText(data) }, directory, "OpenCode needs input", "Input requested")
+          break
+        case "form.replied":
+        case "form.cancelled":
+          sendSessionUpdate(event.type, sessionID, directory)
+          break
         case "permission.replied":
           pendingPermissions.delete(data.requestID)
           sendSessionUpdate(event.type, sessionID, directory)
@@ -1086,6 +1104,13 @@ async function setup(ctx: PluginV2.Context) {
     streams.clear()
     relay.stop(true)
   }
+}
+
+// formQuestionText picks the human-facing prompt out of a V2 form: its first
+// field's title or description, else the form title.
+function formQuestionText(form: Record<string, any>): string {
+  const field = Array.isArray(form.fields) ? form.fields[0] : undefined
+  return (field?.title || field?.description || form.title || "").trim()
 }
 
 // Normalize V2 native messages at the plugin boundary so existing Moshi
