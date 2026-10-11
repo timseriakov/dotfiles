@@ -577,6 +577,8 @@ export function createStatusLinePatches(ctx) {
           `\t\tif (showBranch && branch) spans.push(span(branch, colorName));
 \t\tconst indicators: TspSpan[] = [];
 \t\tif (status) {`,
+          `\t\tif (showBranch && branch) spans.push(span(branch, colorName));
+\t\tif (status) {`,
         ],
         `\t\tif (showBranch && branch) spans.push(span(branch, colorName));
 \t\tconst indicators: TspSpan[] = [];
@@ -774,6 +776,7 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `const VIM_MODE_LABELS: Record<NonNullable<SegmentContext["vim"]>["mode"], string> = {\n\tinsert: "INSERT",\n\tnormal: "NORMAL",\n\tvisual: "VISUAL",\n\t"visual-line": "V-LINE",\n};`,
+        `const VIM_MODE_LABELS: Record<NonNullable<SegmentContext["vim"]>["mode"], string> = {\n\tinsert: "INSERT",\n\tnormal: "NORMAL",\n\tvisual: "VISUAL",\n\t"visual-line": "V-LINE",\n\treplace: "REPLACE",\n};`,
       ],
       `const VIM_MODE_LABELS: Record<NonNullable<SegmentContext["vim"]>["mode"], string> = {\n\tinsert: "I",\n\tnormal: "N",\n\tvisual: "V",\n\t"visual-line": "VL",\n};`,
       "segments compact vim mode labels",

@@ -615,10 +615,13 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     let out = content;
     let r;
 
-    r = replaceOnce(
+    r = replaceAny(
       out,
-      `export type VimOperator = "d" | "y" | "c";`,
-      `export type VimOperator = "d" | "y" | "c" | "m";`,
+      [
+        `export type VimOperator = "d" | "y" | "c";`,
+        `export type VimOperator = "d" | "y" | "c" | ">" | "<";`,
+      ],
+      `export type VimOperator = "d" | "y" | "c" | "m" | ">" | "<";`,
       "vim operator type + m",
     );
     out = r.content;
