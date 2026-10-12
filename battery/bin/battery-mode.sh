@@ -70,7 +70,9 @@ write_state() {
 do_server() {
   LOG_PREFIX="[servermode]"
   acquire_lock
-  log_info "applying server mode (maintain 75%)"
+  log_info "applying server mode (reset charging, then maintain 75%)"
+  battery maintain stop
+  sleep 5
   battery maintain 75
   write_state "server" ""
   log_info "state updated: MODE=server EXPIRES_AT="

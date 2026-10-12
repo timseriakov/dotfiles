@@ -17,7 +17,7 @@ sed -i '' "s|PATH=.*|PATH=\"$tmp/bin:/usr/bin:/bin\"|" "$tmp/bin/battery-mode.sh
 
 "$tmp/bin/battery-mode.sh" server >/dev/null
 "$tmp/bin/battery-mode.sh" mobile 6 --charge >/dev/null
-expected=$'maintain 75\nmaintain stop\nmaintain 100'
+expected=$'maintain stop\nmaintain 75\nmaintain stop\nmaintain 100'
 [[ $(cat "$BATTERY_CALLS") == "$expected" ]]
 grep -qx 'MODE=mobile' "$tmp/home/dev/dotfiles/battery/config/state.env"
 
