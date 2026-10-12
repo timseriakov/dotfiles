@@ -163,8 +163,8 @@ keymap = [
 	# Copy
 	{ on = [ "c", "c" ], run = "copy path",             desc = "Copy the file path" },
 	{ on = [ "с", "с" ], run = [ "plugin abc", "copy path" ], desc = "Copy the file path" },
-	{ on = [ "c", "d" ], run = "copy dirname",          desc = "Copy the directory path" },
-	{ on = [ "с", "в" ], run = [ "plugin abc", "copy dirname" ], desc = "Copy the directory path" },
+	{ on = [ "c", "d" ], run = "copy dirpath",          desc = "Copy the directory path" },
+	{ on = [ "с", "в" ], run = [ "plugin abc", "copy dirpath" ], desc = "Copy the directory path" },
 	{ on = [ "c", "f" ], run = "copy filename",         desc = "Copy the filename" },
 	{ on = [ "с", "а" ], run = [ "plugin abc", "copy filename" ], desc = "Copy the filename" },
 	{ on = [ "c", "n" ], run = "copy name_without_ext", desc = "Copy the filename without extension" },
