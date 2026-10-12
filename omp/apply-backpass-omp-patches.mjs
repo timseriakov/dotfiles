@@ -50,6 +50,15 @@ function replace(file, from, to, label) {
   return true;
 }
 
+function replaceAny(file, alternatives, to, label) {
+  const old = fs.readFileSync(file, "utf8");
+  if (old.includes(to)) return false;
+  const from = alternatives.find((candidate) => old.includes(candidate));
+  if (!from) throw new Error(`Backpass patch drift: ${label}`);
+  fs.writeFileSync(file, old.replace(from, to));
+  return true;
+}
+
 const root = packageRoot();
 let changed = false;
 
@@ -80,9 +89,12 @@ changed =
     "known omp harness",
   ) || changed;
 changed =
-  replace(
+  replaceAny(
     config,
-    '{ model: "gpt-5.6-luna", agents: ["pi", "opencode", "codex"] }',
+    [
+      '{ model: "gpt-5.6-luna", agents: ["pi", "opencode", "codex"] }',
+      '{ model: "gpt-6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
+    ],
     '{ model: "gpt-5.6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
     "analysis omp ladder",
   ) || changed;

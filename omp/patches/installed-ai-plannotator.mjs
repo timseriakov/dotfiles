@@ -152,13 +152,17 @@ export function createInstalledAiPlannotatorPatches(ctx) {
 	if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "openai";
 	const provider = model.provider;
 	if (provider === "openrouter") {`;
+    const previousPatched = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
+	if (model.provider === "omniroute") return model.id === "cx/gpt-6-luna" ? "openai" : undefined;
+	const provider = model.provider;
+	if (provider === "openrouter") {`;
     const patched = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
 	if (model.provider === "omniroute") return model.id === "cx/gpt-5.6-luna" ? "openai" : undefined;
 	const provider = model.provider;
 	if (provider === "openrouter") {`;
     return replaceAny(
       content,
-      [current, previousLunaOnly, patched],
+      [current, previousLunaOnly, previousPatched, patched],
       patched,
       "pi-ai Luna-only service tier family",
     ).content;
@@ -167,12 +171,15 @@ export function createInstalledAiPlannotatorPatches(ctx) {
   function patchModelControlsLunaPriority(content) {
     const current = `		if (!model) return undefined;
 		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+    const previousPatched = `		if (!model) return undefined;
+		if (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
+		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
     const patched = `		if (!model) return undefined;
 		if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
 		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
     return replaceAny(
       content,
-      [current, patched],
+      [current, previousPatched, patched],
       patched,
       "Luna always uses priority service tier",
     ).content;

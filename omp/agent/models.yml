@@ -90,6 +90,48 @@ providers:
         supportsTools: true
         contextWindow: 1050000
         maxTokens: 128000
+      - id: cx/gpt-6-luna
+        name: "6 Luna"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-luna-low
+        name: "6 Luna Low"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-luna-medium
+        name: "6 Luna Medium"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-luna-high
+        name: "6 Luna High"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-luna-xhigh
+        name: "6 Luna Xhigh"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6-luna-max
+        name: "6 Luna Max"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 1050000
+        maxTokens: 128000
       - id: cx/gpt-5.6-sol
         name: "5.6 Sol"
         reasoning: true
@@ -144,35 +186,35 @@ providers:
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 400000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-6-astra-low
         name: "Astra Low"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 400000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-6-astra-medium
         name: "Astra Medium"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 400000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-6-astra-high
         name: "Astra High"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 400000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: cx/gpt-6-astra-xhigh
         name: "Astra Xhigh"
         reasoning: true
         input: [text, image]
         supportsTools: true
-        contextWindow: 400000
+        contextWindow: 1050000
         maxTokens: 128000
       - id: openrouter/~deepseek/deepseek-v4-flash-latest
         name: "V4 Flash Latest"
