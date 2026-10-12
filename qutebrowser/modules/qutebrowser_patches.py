@@ -44,11 +44,12 @@ from qutebrowser.commands import runners
 from qutebrowser.config import config
 from qutebrowser.mainwindow import mainwindow, tabwidget
 from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
-from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, Qt, QTimer
+from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, QUrl, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QTabWidget
 from qutebrowser.utils import objreg, qtutils, usertypes
 from qutebrowser.qt.webenginecore import QWebEngineScript
 from qutebrowser import app as qute_app
+from qutebrowser.browser.webengine import webview
 from qutebrowser.keyinput import modeman
 
 
@@ -714,6 +715,7 @@ mainwindow.MainWindow._dotfiles_orig_init_for_agent_window = _agent_mainwindow_i
 
 
 def _mainwindow_init_with_agent_detection(self, *args, **kwargs):
+    _install_google_search_view_patch()
     _agent_mainwindow_init(self, *args, **kwargs)
     _install_agent_window_detection(self)
 
@@ -812,3 +814,91 @@ def _trace_insert_mode_leave(self, mode, reason=None, maybe=False):
 
 
 modeman.ModeManager.leave = _trace_insert_mode_leave
+
+
+def _google_search_url(text):
+    from urllib.parse import quote_plus
+    return "https://www.google.com/search?q=" + quote_plus(text)
+
+
+def _open_google_search(win_id, text):
+    tabbed_browser = objreg.get("tabbed-browser", scope="window", window=win_id)
+    tabbed_browser.tabopen(
+        QUrl(_google_search_url(text)), background=False, related=True
+    )
+
+
+def _augment_context_menu(menu, request, win_id):
+    """Append "Search Google" when the request has selected text.
+
+    The request already carries the full context (link/page/selection/
+    editable), so the standard menu keeps all of its per-context entries.
+    Returns True if the menu was extended.
+    """
+    selected_text = request.selectedText().strip() if request is not None else ""
+    if not selected_text:
+        return False
+    menu.addSeparator()
+    action = menu.addAction("Search Google")
+    action.triggered.connect(
+        lambda checked=False, win_id=win_id, text=selected_text:
+            _open_google_search(win_id, text)
+    )
+    return True
+
+
+def _google_context_menu(view):
+    """Extended standard context menu, or None to keep the default one."""
+    if config.val.input.mouse.rocker_gestures:
+        return None
+    request = view.lastContextMenuRequest()
+    if request is not None:
+        log.misc.debug(
+            "DOTFILES_CTM sel=%r link=%r editable=%s media=%s",
+            request.selectedText(), request.linkUrl(),
+            request.isContentEditable(), request.mediaType(),
+        )
+    menu = view.createStandardContextMenu()
+    if menu is None:
+        return None
+    _augment_context_menu(menu, request, view._win_id)
+    return menu
+
+
+# QWebEngineView assembles and exec()s its context menu entirely inside the
+# C++ contextMenuEvent, from per-context data the renderer supplies (link/
+# page/selection/editable). Overriding contextMenuEvent on a subclass is the
+# documented way to extend that menu (Qt's own Simple Browser example); an
+# app-level event filter cannot do it: exec'ing createStandardContextMenu()
+# there runs outside the menu machinery and yields a bare Copy-only menu.
+
+
+def _install_google_search_view_patch():
+    """Swap in a WebEngineView subclass extending the context menu.
+
+    Runs at MainWindow construction, NOT at config load: qutebrowser deletes
+    from sys.modules every module imported while config.py executes
+    (configfiles._sys_modules_cleanup, cleanup_after_config), and the later
+    re-import during app init would silently resurrect stock classes.
+    """
+    from qutebrowser.browser.webengine import webview as _fresh_webview
+
+    base = _fresh_webview.WebEngineView
+    if getattr(base, "_dotfiles_google_search", False):
+        return
+
+    class _GoogleSearchWebEngineView(base):
+        def contextMenuEvent(self, ev):
+            if config.val.input.mouse.rocker_gestures:
+                super().contextMenuEvent(ev)
+                return
+            menu = self.createStandardContextMenu()
+            if menu is None:
+                super().contextMenuEvent(ev)
+                return
+            request = self.lastContextMenuRequest()
+            _augment_context_menu(menu, request, self._win_id)
+            menu.exec(ev.globalPos())
+
+    _GoogleSearchWebEngineView._dotfiles_google_search = True
+    _fresh_webview.WebEngineView = _GoogleSearchWebEngineView
