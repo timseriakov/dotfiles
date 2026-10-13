@@ -102,3 +102,12 @@ bitrate = 128
 codec = "MP3"
 tags = "goa,non-stop music,psyndora,psytrance,trance"
 homepage = "https://www.psyndora.com/"
+
+[[station]]
+name = "Classic Vinyl HD"
+url = "https://icecast.walmradio.com:8443/classic"
+country = "The United States Of America"
+bitrate = 320
+codec = "MP3"
+tags = "1930,1940,1950,1960,beautiful music,big band,classic hits,crooners,easy,easy listening,hd,jazz,light orchestral,lounge,oldies,orchestral,otr,relaxation,strings,swing,unwind,walm"
+homepage = "https://walmradio.com/classic"

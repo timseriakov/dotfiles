@@ -287,8 +287,9 @@ export function createStatusLinePatches(ctx) {
       out,
       [
         `\t\tif (opts.abbreviate !== false) {\n\t\t\tpwd = shortenPath(pwd);\n\t\t}`,
+        `\t\t// Starship-style minimal path: always show only the last directory segment.\n\t\t// This keeps the display stable even if custom statusLine.segmentOptions are not loaded.\n\t\tpwd = path.basename(pwd) || pwd;`,
       ],
-      `\t\t// Starship-style minimal path: always show only the last directory segment.\n\t\t// This keeps the display stable even if custom statusLine.segmentOptions are not loaded.\n\t\tpwd = path.basename(pwd) || pwd;`,
+      `\t\t// Starship-style minimal path: always show only the last directory segment.\n\t\t// This keeps the display stable even if custom statusLine.segmentOptions are not loaded.\n\t\tpwd = path.basename(pwd) || pwd;\n\t\t// Short alias for the main project so narrow SSH terminals show more info.\n\t\tif (pwd === "urban-prime-mono") pwd = "upm";`,
       "segments path basename only",
     );
     out = r.content;
