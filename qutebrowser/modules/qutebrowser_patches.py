@@ -816,6 +816,19 @@ def _trace_insert_mode_leave(self, mode, reason=None, maybe=False):
 modeman.ModeManager.leave = _trace_insert_mode_leave
 
 
+def _current_site_search_url(text, host):
+    from urllib.parse import quote_plus
+    host = host.removeprefix("www.")
+    return "https://www.google.com/search?q=" + quote_plus(f"site:{host} {text}")
+
+
+def _open_current_site_search(win_id, text, host):
+    tabbed_browser = objreg.get("tabbed-browser", scope="window", window=win_id)
+    tabbed_browser.tabopen(
+        QUrl(_current_site_search_url(text, host)), background=False, related=True
+    )
+
+
 def _duckduckgo_search_url(text):
     from urllib.parse import quote_plus
     return "https://duckduckgo.com/?q=" + quote_plus(text)
@@ -840,7 +853,7 @@ def _open_google_search(win_id, text):
     )
 
 
-def _augment_context_menu(menu, request, win_id):
+def _augment_context_menu(menu, request, win_id, host=""):
     """Append search actions when the request has selected text.
 
     The request already carries the full context (link/page/selection/
@@ -851,6 +864,12 @@ def _augment_context_menu(menu, request, win_id):
     if not selected_text:
         return False
     menu.addSeparator()
+    current_site_action = menu.addAction("Search Current Site")
+    current_site_action.setEnabled(bool(host))
+    current_site_action.triggered.connect(
+        lambda checked=False, win_id=win_id, text=selected_text, host=host:
+            _open_current_site_search(win_id, text, host)
+    )
     duckduckgo_action = menu.addAction("Search DuckDuckGo")
     duckduckgo_action.triggered.connect(
         lambda checked=False, win_id=win_id, text=selected_text:
@@ -878,9 +897,8 @@ def _google_context_menu(view):
     menu = view.createStandardContextMenu()
     if menu is None:
         return None
-    _augment_context_menu(menu, request, view._win_id)
+    _augment_context_menu(menu, request, view._win_id, view.url().host())
     return menu
-
 
 # QWebEngineView assembles and exec()s its context menu entirely inside the
 # C++ contextMenuEvent, from per-context data the renderer supplies (link/
@@ -914,7 +932,7 @@ def _install_google_search_view_patch():
                 super().contextMenuEvent(ev)
                 return
             request = self.lastContextMenuRequest()
-            _augment_context_menu(menu, request, self._win_id)
+            _augment_context_menu(menu, request, self._win_id, self.url().host())
             menu.exec(ev.globalPos())
 
     _GoogleSearchWebEngineView._dotfiles_google_search = True

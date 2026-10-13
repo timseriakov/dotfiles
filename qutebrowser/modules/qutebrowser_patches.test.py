@@ -14,6 +14,7 @@ HELPERS = {
     "_agent_bootstrap_prefix",
     "_agent_token_from_url",
     "_is_agent_bootstrap_url",
+    "_current_site_search_url",
     "_duckduckgo_search_url",
     "_google_search_url",
     "_augment_context_menu",
@@ -66,6 +67,10 @@ class SearchUrlTest(unittest.TestCase):
     def test_search_text_is_encoded_as_query(self):
         helpers = load_helpers()
         self.assertEqual(
+            helpers["_current_site_search_url"]("cats & dogs", "www.example.com"),
+            "https://www.google.com/search?q=site%3Aexample.com+cats+%26+dogs",
+        )
+        self.assertEqual(
             helpers["_duckduckgo_search_url"]("cats & dogs"),
             "https://duckduckgo.com/?q=cats+%26+dogs",
         )
@@ -83,8 +88,7 @@ class _FakeRequest:
         return self._selected_text
 
     def linkUrl(self):
-        from urllib.parse import urlparse
-        return urlparse("")
+        return ""
 
     def isContentEditable(self):
         return False
@@ -93,14 +97,26 @@ class _FakeRequest:
         return None
 
 
+class _FakeUrl:
+    def __init__(self, host):
+        self._host = host
+
+    def host(self):
+        return self._host
+
+
 class _FakeAction:
     def __init__(self):
         self.text = None
         self.connected = None
         self.triggered = self
+        self.enabled = True
 
     def connect(self, fn):
         self.connected = fn
+
+    def setEnabled(self, enabled):
+        self.enabled = enabled
 
 
 class _FakeMenu:
@@ -125,6 +141,9 @@ class _FakeView:
     def lastContextMenuRequest(self):
         return self._request
 
+    def url(self):
+        return _FakeUrl("www.example.com")
+
     def createStandardContextMenu(self):
         return _FakeMenu()
 
@@ -136,6 +155,9 @@ class GoogleContextMenuTest(unittest.TestCase):
             misc=types.SimpleNamespace(debug=lambda *args, **kwargs: None)
         )
         self.opened = []
+        self.helpers["_open_current_site_search"] = (
+            lambda win_id, text, host: self.opened.append(("Current Site", win_id, text, host))
+        )
         self.helpers["_open_duckduckgo_search"] = (
             lambda win_id, text: self.opened.append(("DuckDuckGo", win_id, text))
         )
@@ -153,10 +175,18 @@ class GoogleContextMenuTest(unittest.TestCase):
     def test_selected_text_gets_search_engines_in_order(self):
         menu = self.helpers["_google_context_menu"](_FakeView(_FakeRequest("  cats  ")))
         texts = [entry if isinstance(entry, str) else entry.text for entry in menu.entries]
-        self.assertEqual(texts, ["---", "Search DuckDuckGo", "Search Google"])
+        self.assertEqual(texts, ["---", "Search Current Site", "Search DuckDuckGo", "Search Google"])
+        menu.entries[-3].connected()
         menu.entries[-2].connected()
         menu.entries[-1].connected()
-        self.assertEqual(self.opened, [("DuckDuckGo", 7, "cats"), ("Google", 7, "cats")])
+        self.assertEqual(
+            self.opened,
+            [
+                ("Current Site", 7, "cats", "www.example.com"),
+                ("DuckDuckGo", 7, "cats"),
+                ("Google", 7, "cats"),
+            ],
+        )
 
     def test_no_selection_keeps_standard_menu_only(self):
         for request in (None, _FakeRequest(""), _FakeRequest("   ")):
@@ -171,6 +201,7 @@ class GoogleContextMenuTest(unittest.TestCase):
         view = _FakeView(_FakeRequest("cats"))
         self.assertIsNone(self.helpers["_google_context_menu"](view))
         self.assertEqual(self.opened, [])
+
 
 if __name__ == "__main__":
     unittest.main()
