@@ -45,6 +45,11 @@ c.colors.completion.item.selected.match.fg = nord13
 c.colors.completion.match.fg = nord13
 c.colors.completion.scrollbar.bg = nord2
 c.colors.completion.scrollbar.fg = nord8
+# Context menu
+c.colors.contextmenu.menu.bg = nord1
+c.colors.contextmenu.menu.fg = nord6
+c.colors.contextmenu.selected.bg = nord3
+c.colors.contextmenu.selected.fg = nord6
 
 # Prompts
 c.colors.prompts.bg = nord1
