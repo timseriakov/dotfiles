@@ -14,6 +14,7 @@ HELPERS = {
     "_agent_bootstrap_prefix",
     "_agent_token_from_url",
     "_is_agent_bootstrap_url",
+    "_duckduckgo_search_url",
     "_google_search_url",
     "_augment_context_menu",
     "_google_context_menu",
@@ -61,10 +62,13 @@ class AgentHookHelpersTest(unittest.TestCase):
         self.assertFalse(is_bootstrap(f"about:blank#OMP_AGENT_WINDOW_9f2c_BOOTSTRAP_{token}?x"))
 
 
-
-class GoogleSearchUrlTest(unittest.TestCase):
+class SearchUrlTest(unittest.TestCase):
     def test_search_text_is_encoded_as_query(self):
         helpers = load_helpers()
+        self.assertEqual(
+            helpers["_duckduckgo_search_url"]("cats & dogs"),
+            "https://duckduckgo.com/?q=cats+%26+dogs",
+        )
         self.assertEqual(
             helpers["_google_search_url"]("cats & dogs"),
             "https://www.google.com/search?q=cats+%26+dogs",
@@ -132,8 +136,11 @@ class GoogleContextMenuTest(unittest.TestCase):
             misc=types.SimpleNamespace(debug=lambda *args, **kwargs: None)
         )
         self.opened = []
+        self.helpers["_open_duckduckgo_search"] = (
+            lambda win_id, text: self.opened.append(("DuckDuckGo", win_id, text))
+        )
         self.helpers["_open_google_search"] = (
-            lambda win_id, text: self.opened.append((win_id, text))
+            lambda win_id, text: self.opened.append(("Google", win_id, text))
         )
         self.helpers["config"] = types.SimpleNamespace(
             val=types.SimpleNamespace(
@@ -143,12 +150,13 @@ class GoogleContextMenuTest(unittest.TestCase):
             )
         )
 
-    def test_selected_text_gets_search_google(self):
+    def test_selected_text_gets_search_engines_in_order(self):
         menu = self.helpers["_google_context_menu"](_FakeView(_FakeRequest("  cats  ")))
         texts = [entry if isinstance(entry, str) else entry.text for entry in menu.entries]
-        self.assertEqual(texts, ["---", "Search Google"])
+        self.assertEqual(texts, ["---", "Search DuckDuckGo", "Search Google"])
+        menu.entries[-2].connected()
         menu.entries[-1].connected()
-        self.assertEqual(self.opened, [(7, "cats")])
+        self.assertEqual(self.opened, [("DuckDuckGo", 7, "cats"), ("Google", 7, "cats")])
 
     def test_no_selection_keeps_standard_menu_only(self):
         for request in (None, _FakeRequest(""), _FakeRequest("   ")):

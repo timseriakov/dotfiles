@@ -816,6 +816,18 @@ def _trace_insert_mode_leave(self, mode, reason=None, maybe=False):
 modeman.ModeManager.leave = _trace_insert_mode_leave
 
 
+def _duckduckgo_search_url(text):
+    from urllib.parse import quote_plus
+    return "https://duckduckgo.com/?q=" + quote_plus(text)
+
+
+def _open_duckduckgo_search(win_id, text):
+    tabbed_browser = objreg.get("tabbed-browser", scope="window", window=win_id)
+    tabbed_browser.tabopen(
+        QUrl(_duckduckgo_search_url(text)), background=False, related=True
+    )
+
+
 def _google_search_url(text):
     from urllib.parse import quote_plus
     return "https://www.google.com/search?q=" + quote_plus(text)
@@ -829,7 +841,7 @@ def _open_google_search(win_id, text):
 
 
 def _augment_context_menu(menu, request, win_id):
-    """Append "Search Google" when the request has selected text.
+    """Append search actions when the request has selected text.
 
     The request already carries the full context (link/page/selection/
     editable), so the standard menu keeps all of its per-context entries.
@@ -839,8 +851,13 @@ def _augment_context_menu(menu, request, win_id):
     if not selected_text:
         return False
     menu.addSeparator()
-    action = menu.addAction("Search Google")
-    action.triggered.connect(
+    duckduckgo_action = menu.addAction("Search DuckDuckGo")
+    duckduckgo_action.triggered.connect(
+        lambda checked=False, win_id=win_id, text=selected_text:
+            _open_duckduckgo_search(win_id, text)
+    )
+    google_action = menu.addAction("Search Google")
+    google_action.triggered.connect(
         lambda checked=False, win_id=win_id, text=selected_text:
             _open_google_search(win_id, text)
     )
