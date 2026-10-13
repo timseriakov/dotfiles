@@ -132,13 +132,13 @@ export function createInputSessionPatches(ctx) {
 \t\t\treturn;
 \t\t}
 \t\tconst ids = [
-\t\t\t"opencode-go/deepseek-v4-flash",
-\t\t\t"opencode-go/deepseek-v4.1-flash",
-\t\t\t"opencode-go/deepseek-v4-flash-vision-exp",
-\t\t\t"opencode-go/glm-5.3-flash",
+\t\t\t"omniroute/opencode-go/deepseek-v4-flash",
+\t\t\t"omniroute/opencode-go/deepseek-v4.1-flash",
+\t\t\t"omniroute/opencode-go/deepseek-v4-flash-vision-exp",
+\t\t\t"omniroute/opencode-go/glm-5.3-flash",
 \t\t];
 \t\tconst available = this.ctx.session.modelRegistry.getAvailable();
-\t\tconst models = ids.map(id => available.find(model => model.id === id)).filter(Boolean);
+\t\tconst models = ids.map(id => available.find(model => \`\${model.provider}/\${model.id}\` === id)).filter(Boolean);
 \t\tif (models.length < 2) {
 \t\t\tthis.ctx.showStatus("Smol model cycle is unavailable");
 \t\t\treturn;
