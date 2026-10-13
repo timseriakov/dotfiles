@@ -17,6 +17,9 @@ HELPERS = {
     "_current_site_search_url",
     "_duckduckgo_search_url",
     "_google_search_url",
+    "_menu_action_text",
+    "_connect_current_site_action",
+    "_insert_current_site_action",
     "_augment_context_menu",
     "_google_context_menu",
 }
@@ -120,9 +123,13 @@ class _FakeAction:
 
 
 class _FakeMenu:
-    def __init__(self):
+    def __init__(self, labels=("Back", "Forward", "Reload", "---", "Save page", "View page source")):
         self.entries = []
-
+        for label in labels:
+            if label == "---":
+                self.addSeparator()
+            else:
+                self.addAction(label)
     def addSeparator(self):
         self.entries.append("---")
 
@@ -132,11 +139,24 @@ class _FakeMenu:
         self.entries.append(action)
         return action
 
+    def removeAction(self, action):
+        self.entries.remove(action)
+
+    def insertAction(self, before_action, action):
+        self.entries.insert(self.entries.index(before_action), action)
+
+    def insertSeparator(self, before_action):
+        self.entries.insert(self.entries.index(before_action), "---")
+
+    def actions(self):
+        return [entry for entry in self.entries if entry != "---"]
+
 
 class _FakeView:
-    def __init__(self, request=None, win_id=7):
+    def __init__(self, request=None, win_id=7, labels=None):
         self._request = request
         self._win_id = win_id
+        self._labels = labels
 
     def lastContextMenuRequest(self):
         return self._request
@@ -145,7 +165,7 @@ class _FakeView:
         return _FakeUrl("www.example.com")
 
     def createStandardContextMenu(self):
-        return _FakeMenu()
+        return _FakeMenu() if self._labels is None else _FakeMenu(self._labels)
 
 
 class GoogleContextMenuTest(unittest.TestCase):
@@ -175,7 +195,13 @@ class GoogleContextMenuTest(unittest.TestCase):
     def test_selected_text_gets_search_engines_in_order(self):
         menu = self.helpers["_google_context_menu"](_FakeView(_FakeRequest("  cats  ")))
         texts = [entry if isinstance(entry, str) else entry.text for entry in menu.entries]
-        self.assertEqual(texts, ["---", "Search Current Site", "Search DuckDuckGo", "Search Google"])
+        self.assertEqual(
+            texts,
+            [
+                "Back", "Forward", "Reload", "---", "Save page", "View page source",
+                "---", "Search Current Site", "Search DuckDuckGo", "Search Google",
+            ],
+        )
         menu.entries[-3].connected()
         menu.entries[-2].connected()
         menu.entries[-1].connected()
@@ -188,13 +214,41 @@ class GoogleContextMenuTest(unittest.TestCase):
             ],
         )
 
-    def test_no_selection_keeps_standard_menu_only(self):
-        for request in (None, _FakeRequest(""), _FakeRequest("   ")):
+    def test_no_selection_inserts_current_site_between_save_and_source(self):
+        menu = self.helpers["_google_context_menu"](_FakeView(None))
+        texts = [entry if isinstance(entry, str) else entry.text for entry in menu.entries]
+        self.assertEqual(
+            texts,
+            [
+                "Back", "Forward", "Reload", "---", "Save page", "---",
+                "Search Current Site", "---", "View page source",
+            ],
+        )
+        current_site_action = next(
+            entry for entry in menu.entries
+            if not isinstance(entry, str) and entry.text == "Search Current Site"
+        )
+        self.assertTrue(current_site_action.enabled)
+        current_site_action.connected()
+        self.assertEqual(self.opened, [("Current Site", 7, "", "www.example.com")])
+
+    def test_empty_selection_keeps_ordinary_menu(self):
+        for request in (_FakeRequest(""), _FakeRequest("   ")):
             with self.subTest(request=request):
                 self.opened.clear()
                 menu = self.helpers["_google_context_menu"](_FakeView(request))
-                self.assertEqual(menu.entries, [])
+                self.assertEqual(menu.entries[6].text, "Search Current Site")
                 self.assertEqual(self.opened, [])
+
+    def test_current_site_action_disables_without_host(self):
+        view = _FakeView(None)
+        view.url = lambda: _FakeUrl("")
+        menu = self.helpers["_google_context_menu"](view)
+        current_site_action = next(
+            entry for entry in menu.entries
+            if not isinstance(entry, str) and entry.text == "Search Current Site"
+        )
+        self.assertFalse(current_site_action.enabled)
 
     def test_rocker_gestures_disable_custom_menu(self):
         self.helpers["config"].val.input.mouse.rocker_gestures = True

@@ -819,7 +819,10 @@ modeman.ModeManager.leave = _trace_insert_mode_leave
 def _current_site_search_url(text, host):
     from urllib.parse import quote_plus
     host = host.removeprefix("www.")
-    return "https://www.google.com/search?q=" + quote_plus(f"site:{host} {text}")
+    query = f"site:{host}"
+    if text:
+        query += f" {text}"
+    return "https://www.google.com/search?q=" + quote_plus(query)
 
 
 def _open_current_site_search(win_id, text, host):
@@ -853,33 +856,55 @@ def _open_google_search(win_id, text):
     )
 
 
-def _augment_context_menu(menu, request, win_id, host=""):
-    """Append search actions when the request has selected text.
+def _menu_action_text(action):
+    text = action.text
+    return text() if callable(text) else text
 
-    The request already carries the full context (link/page/selection/
-    editable), so the standard menu keeps all of its per-context entries.
-    Returns True if the menu was extended.
-    """
-    selected_text = request.selectedText().strip() if request is not None else ""
-    if not selected_text:
-        return False
-    menu.addSeparator()
-    current_site_action = menu.addAction("Search Current Site")
-    current_site_action.setEnabled(bool(host))
-    current_site_action.triggered.connect(
-        lambda checked=False, win_id=win_id, text=selected_text, host=host:
+
+def _connect_current_site_action(action, win_id, host, text):
+    action.setEnabled(bool(host))
+    action.triggered.connect(
+        lambda checked=False, win_id=win_id, text=text, host=host:
             _open_current_site_search(win_id, text, host)
     )
-    duckduckgo_action = menu.addAction("Search DuckDuckGo")
-    duckduckgo_action.triggered.connect(
-        lambda checked=False, win_id=win_id, text=selected_text:
-            _open_duckduckgo_search(win_id, text)
+
+
+def _insert_current_site_action(menu, before_action, win_id, host):
+    action = menu.addAction("Search Current Site")
+    menu.removeAction(action)
+    menu.insertAction(before_action, action)
+    menu.insertSeparator(action)
+    menu.insertSeparator(before_action)
+    _connect_current_site_action(action, win_id, host, "")
+
+
+def _augment_context_menu(menu, request, win_id, host=""):
+    """Extend the standard context menu without replacing its built-ins."""
+    selected_text = request.selectedText().strip() if request is not None else ""
+    if selected_text:
+        menu.addSeparator()
+        current_site_action = menu.addAction("Search Current Site")
+        _connect_current_site_action(current_site_action, win_id, host, selected_text)
+        duckduckgo_action = menu.addAction("Search DuckDuckGo")
+        duckduckgo_action.triggered.connect(
+            lambda checked=False, win_id=win_id, text=selected_text:
+                _open_duckduckgo_search(win_id, text)
+        )
+        google_action = menu.addAction("Search Google")
+        google_action.triggered.connect(
+            lambda checked=False, win_id=win_id, text=selected_text:
+                _open_google_search(win_id, text)
+        )
+        return True
+
+    view_source_action = next(
+        (action for action in menu.actions()
+         if _menu_action_text(action) == "View page source"),
+        None,
     )
-    google_action = menu.addAction("Search Google")
-    google_action.triggered.connect(
-        lambda checked=False, win_id=win_id, text=selected_text:
-            _open_google_search(win_id, text)
-    )
+    if view_source_action is None:
+        return False
+    _insert_current_site_action(menu, view_source_action, win_id, host)
     return True
 
 
