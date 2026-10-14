@@ -111,3 +111,11 @@ bitrate = 320
 codec = "MP3"
 tags = "1930,1940,1950,1960,beautiful music,big band,classic hits,crooners,easy,easy listening,hd,jazz,light orchestral,lounge,oldies,orchestral,otr,relaxation,strings,swing,unwind,walm"
 homepage = "https://walmradio.com/classic"
+
+[[station]]
+name = "Sub FM"
+url = "https://subfm.radioca.st/"
+bitrate = 192
+codec = "MP3"
+tags = "bass,deep house,drum and bass,dubstep,electronic,garage,house,juke,jungle,techno,uk garage"
+homepage = "https://www.sub.fm/"
