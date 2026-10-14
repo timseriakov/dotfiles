@@ -1,0 +1,4696 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Qutebrowser · Шпаргалка клавиш</title>
+    <style>
+      :root {
+        --nord0: #2e3440;
+        --nord1: #3b4252;
+        --nord2: #434c5e;
+        --nord3: #4c566a;
+        --nord4: #d8dee9;
+        --nord5: #e5e9f0;
+        --nord6: #eceff4;
+        --nord7: #8fbcbb;
+        --nord8: #88c0d0;
+        --nord9: #81a1c1;
+        --nord10: #5e81ac;
+        --nord11: #bf616a;
+        --nord13: #ebcb8b;
+        --nord14: #a3be8c;
+        --nord15: #b48ead;
+        --shadow: 0 24px 70px rgba(15, 18, 25, 0.35);
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--nord5);
+        background:
+          radial-gradient(
+            circle at 8% 0%,
+            rgba(136, 192, 208, 0.15),
+            transparent 30rem
+          ),
+          radial-gradient(
+            circle at 90% 10%,
+            rgba(180, 142, 173, 0.12),
+            transparent 28rem
+          ),
+          linear-gradient(135deg, var(--nord0) 0%, #242933 52%, #20242d 100%);
+        font:
+          16px/1.55 Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      ::selection {
+        color: var(--nord0);
+        background: var(--nord8);
+      }
+      a {
+        color: inherit;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1440px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+      .hero {
+        padding: 76px 0 38px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        gap: 9px;
+        align-items: center;
+        margin: 0 0 18px;
+        color: var(--nord8);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before {
+        width: 30px;
+        height: 2px;
+        content: "";
+        background: var(--nord8);
+        box-shadow: 0 0 18px var(--nord8);
+      }
+      h1 {
+        max-width: 900px;
+        margin: 0;
+        color: var(--nord6);
+        font-size: clamp(42px, 7vw, 82px);
+        line-height: 0.98;
+        letter-spacing: -0.065em;
+      }
+      .hero-copy {
+        max-width: 720px;
+        margin: 24px 0 0;
+        color: var(--nord4);
+        font-size: clamp(17px, 2vw, 21px);
+      }
+      .hero-copy strong {
+        color: var(--nord6);
+      }
+
+      .topbar {
+        position: sticky;
+        z-index: 10;
+        top: 14px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin: 20px 0 26px;
+        padding: 12px;
+        border: 1px solid rgba(216, 222, 233, 0.12);
+        border-radius: 16px;
+        background: rgba(46, 52, 64, 0.78);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+      .search-wrap {
+        position: relative;
+        flex: 1;
+      }
+      .search-wrap::before {
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        color: var(--nord8);
+        content: "⌕";
+        font-size: 25px;
+        line-height: 1;
+        transform: translateY(-54%);
+      }
+      #search {
+        width: 100%;
+        padding: 13px 18px 13px 48px;
+        border: 1px solid var(--nord3);
+        border-radius: 11px;
+        outline: 0;
+        color: var(--nord6);
+        background: rgba(59, 66, 82, 0.72);
+      }
+      #search::placeholder {
+        color: #9da8bb;
+      }
+      #search:focus {
+        border-color: var(--nord8);
+        box-shadow: 0 0 0 3px rgba(136, 192, 208, 0.15);
+      }
+      .filter {
+        display: flex;
+        gap: 6px;
+        padding: 4px;
+        border-radius: 12px;
+        background: rgba(35, 40, 50, 0.75);
+      }
+      .filter button {
+        padding: 9px 13px;
+        border: 0;
+        border-radius: 8px;
+        color: var(--nord4);
+        background: transparent;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 750;
+      }
+      .filter button:hover,
+      .filter button.active {
+        color: var(--nord0);
+        background: var(--nord8);
+      }
+      .count {
+        min-width: 92px;
+        padding: 0 9px;
+        color: var(--nord4);
+        font-size: 13px;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .intro-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr 0.8fr;
+        gap: 14px;
+        margin-bottom: 44px;
+      }
+      .info-card {
+        min-height: 142px;
+        padding: 22px;
+        border: 1px solid rgba(216, 222, 233, 0.1);
+        border-radius: var(--radius);
+        background: linear-gradient(
+          145deg,
+          rgba(67, 76, 94, 0.75),
+          rgba(59, 66, 82, 0.55)
+        );
+        box-shadow: 0 16px 36px rgba(20, 24, 31, 0.18);
+      }
+      .info-card:first-child {
+        background: linear-gradient(
+          145deg,
+          rgba(94, 129, 172, 0.55),
+          rgba(59, 66, 82, 0.68)
+        );
+      }
+      .info-card h2 {
+        margin: 0 0 8px;
+        color: var(--nord6);
+        font-size: 18px;
+      }
+      .info-card p {
+        margin: 0;
+        color: var(--nord4);
+        font-size: 14px;
+      }
+      .stat {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--nord8);
+        font-size: 34px;
+        font-weight: 850;
+        letter-spacing: -0.05em;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .section {
+        scroll-margin-top: 96px;
+        margin: 0 0 52px;
+      }
+      .section-head {
+        display: flex;
+        gap: 18px;
+        align-items: end;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      .section-title {
+        margin: 0;
+        color: var(--nord6);
+        font-size: clamp(24px, 3vw, 36px);
+        letter-spacing: -0.04em;
+      }
+      .section-note {
+        margin: 0;
+        color: #aeb8c9;
+        font-size: 13px;
+        text-align: right;
+      }
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid rgba(216, 222, 233, 0.1);
+        border-radius: var(--radius);
+        background: rgba(46, 52, 64, 0.55);
+        box-shadow: 0 18px 48px rgba(15, 18, 25, 0.2);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+      th {
+        padding: 13px 18px;
+        color: #aeb8c9;
+        background: rgba(35, 40, 50, 0.58);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-align: left;
+        text-transform: uppercase;
+      }
+      td {
+        padding: 15px 18px;
+        border-top: 1px solid rgba(216, 222, 233, 0.075);
+        vertical-align: top;
+      }
+      tr:hover td {
+        background: rgba(136, 192, 208, 0.045);
+      }
+      .key {
+        display: inline-flex;
+        align-items: center;
+        min-height: 29px;
+        padding: 4px 9px;
+        border: 1px solid rgba(136, 192, 208, 0.36);
+        border-bottom-width: 2px;
+        border-radius: 7px;
+        color: var(--nord6);
+        background: rgba(46, 52, 64, 0.75);
+        font:
+          700 13px/1.2 "SFMono-Regular",
+          Consolas,
+          monospace;
+        white-space: pre;
+      }
+      .key-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .description {
+        max-width: 610px;
+        color: var(--nord5);
+      }
+      .description small {
+        display: block;
+        margin-top: 4px;
+        color: #9da8bb;
+        font-size: 12px;
+      }
+      code {
+        padding: 2px 5px;
+        border-radius: 4px;
+        color: var(--nord8);
+        background: rgba(35, 40, 50, 0.76);
+        font:
+          12px/1.35 "SFMono-Regular",
+          Consolas,
+          monospace;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: var(--nord0);
+        background: var(--nord8);
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .tag.mode {
+        color: var(--nord6);
+        background: var(--nord3);
+      }
+      .tag.special {
+        color: var(--nord0);
+        background: var(--nord13);
+      }
+      .empty {
+        display: none;
+        padding: 44px;
+        color: var(--nord4);
+        text-align: center;
+      }
+      .empty.visible {
+        display: block;
+      }
+      .section.hidden {
+        display: none;
+      }
+
+      footer {
+        padding: 20px 0 64px;
+        color: #8f9bad;
+        font-size: 13px;
+      }
+      footer a {
+        color: var(--nord8);
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+      .mono {
+        font-family: "SFMono-Regular", Consolas, monospace;
+      }
+
+      .registry-table table {
+        min-width: 980px;
+      }
+      .registry-table .description {
+        min-width: 340px;
+      }
+      .registry-table .key-stack {
+        min-width: 180px;
+      }
+      .registry-table .command {
+        margin-top: 8px;
+        color: #aeb8c9;
+        font-size: 12px;
+      }
+      .registry-table .command summary {
+        cursor: pointer;
+        color: var(--nord8);
+        font-size: 11px;
+      }
+      .registry-table .command code {
+        display: block;
+        max-width: 520px;
+        margin-top: 6px;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+      .alias-note {
+        display: block;
+        max-width: 200px;
+        margin-top: 7px;
+        color: #c7a9c0;
+        font-size: 11px;
+      }
+      .tag.category {
+        color: var(--nord0);
+        background: var(--nord7);
+      }
+
+      @media (max-width: 900px) {
+        .intro-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .info-card:first-child {
+          grid-column: 1 / -1;
+        }
+        .topbar {
+          align-items: stretch;
+          flex-wrap: wrap;
+        }
+        .search-wrap {
+          flex-basis: 100%;
+        }
+        .count {
+          margin-left: auto;
+        }
+      }
+      @media (max-width: 560px) {
+        .shell {
+          width: min(100% - 24px, 1440px);
+        }
+        .hero {
+          padding-top: 46px;
+        }
+        .intro-grid {
+          grid-template-columns: 1fr;
+        }
+        .info-card:first-child {
+          grid-column: auto;
+        }
+        .topbar {
+          top: 8px;
+        }
+        .filter {
+          overflow: auto;
+          width: 100%;
+        }
+        .filter button {
+          flex: 1;
+          white-space: nowrap;
+        }
+        .section-head {
+          display: block;
+        }
+        .section-note {
+          margin-top: 5px;
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">qutebrowser / personal setup</p>
+        <h1>Клавиши, которые держат браузер в руках.</h1>
+        <p class="hero-copy">
+          Русская шпаргалка по биндам qutebrowser: навигация, вкладки, переводы,
+          сессии, разработка и ваши локальные инструменты.
+          <strong>Нажмите <span class="mono">Space</span> перед командой</strong
+          >, если видите значок лидера.
+        </p>
+      </header>
+
+      <nav class="topbar" aria-label="Фильтр биндов">
+        <div class="search-wrap">
+          <input
+            id="search"
+            type="search"
+            placeholder="Найти команду, клавишу или описание…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="filter" role="group" aria-label="Режимы биндов">
+          <button class="active" data-filter="all" type="button">Все</button>
+          <button data-filter="normal" type="button">Обычный</button>
+          <button data-filter="passthrough" type="button">Passthrough</button>
+          <button data-filter="insert" type="button">Insert</button>
+          <button data-filter="command" type="button">Command</button>
+        </div>
+        <div class="count" id="count" aria-live="polite">Показано — строк</div>
+      </nav>
+
+      <section class="intro-grid" aria-label="О странице">
+        <article class="info-card">
+          <h2>Как читать эту страницу</h2>
+          <p>
+            Каждая строка показывает основную клавишу и понятное русское
+            описание. <span class="tag">Space</span> — лидер для команд вроде
+            <span class="mono">Space&nbsp;f&nbsp;f</span>.
+          </p>
+          <div class="legend">
+            <span class="tag">EN</span><span class="tag mode">режим</span>
+          </div>
+        </article>
+        <article class="info-card">
+          <span class="stat" id="base-count">142</span>
+          <h2>основных команд</h2>
+          <p>Настроены в <code>modules/bindings.py</code>.</p>
+        </article>
+        <article class="info-card">
+          <span class="stat" id="all-count">142</span>
+          <h2>команд в справочнике</h2>
+          <p>Полный список настроенных биндов.</p>
+        </article>
+      </section>
+
+      <div id="content">
+        <section class="section" data-section="core">
+          <div class="section-head">
+            <h2 class="section-title">Быстрый старт и навигация</h2>
+            <p class="section-note">То, что нужно каждый день</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="e">
+                  <td>
+                    <div class="key-stack"><kbd class="key">E</kbd></div>
+                  </td>
+                  <td class="description">
+                    Перезагрузить текущую страницу<small
+                      ><code>reload</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="w r k j">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">W / R</kbd><kbd class="key">K / J</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Переключаться между вкладками: предыдущая / следующая<small
+                      ><code>tab-prev</code> · <code>tab-next</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="cmd-h cmd-j cmd-k cmd-l">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">⌘ H / J / K / L</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Циклически переключать окна qutebrowser<small
+                      >H и L запускают локальные скрипты, J и K переключают
+                      вкладки.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="z q">
+                  <td>
+                    <div class="key-stack"><kbd class="key">Z / Q</kbd></div>
+                  </td>
+                  <td class="description">
+                    Отменить последнее действие<small><code>undo</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="d u">
+                  <td>
+                    <div class="key-stack"><kbd class="key">D / U</kbd></div>
+                  </td>
+                  <td class="description">
+                    Прокрутить страницу примерно на половину экрана вниз /
+                    вверх<small
+                      ><code>scroll-page 0 0.5</code> ·
+                      <code>scroll-page 0 -0.5</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="h l cmd-left cmd-right">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">H / L</kbd
+                      ><kbd class="key">⌘ ← / ⌘ →</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Перейти назад / вперёд по истории<small
+                      ><code>back</code> · <code>forward</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="f F">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">F</kbd><kbd class="key">Shift F</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Показать подсказки на ссылках: открыть в текущей вкладке или
+                    фоне<small
+                      ><code>hint links</code> ·
+                      <code>hint links tab-bg</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="gi">
+                  <td><kbd class="key">G I</kbd></td>
+                  <td class="description">
+                    Перейти к первому полю ввода<small
+                      ><code>hint inputs --first</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="v">
+                  <td>
+                    <div class="key-stack"><kbd class="key">V</kbd></div>
+                  </td>
+                  <td class="description">
+                    Войти в режим выделения текстового курсора<small
+                      ><code>mode-enter caret</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="ctrl-v ctrl-a">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Ctrl V</kbd><kbd class="key">Ctrl A</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Войти в passthrough-режим. Повторное нажатие в этом режиме —
+                    выйти.<small
+                      >Перед входом раскладка переключается на
+                      английскую.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный / passthrough</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="clipboard">
+          <div class="section-head">
+            <h2 class="section-title">Ссылки, буфер и закладки</h2>
+            <p class="section-note">Открыть, скопировать, сохранить</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="yy yl">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Y Y</kbd><kbd class="key">Y L</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Скопировать текущую страницу или выбрать ссылку и
+                    скопировать её адрес<small
+                      ><code>yank</code> · <code>hint links yank</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="p P">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">P</kbd><kbd class="key">Shift P</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Открыть URL из буфера в текущей вкладке или в новой фоновой
+                    вкладке<small
+                      ><code>open {clipboard}</code> ·
+                      <code>open --tab {clipboard}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="ctrl-b">
+                  <td><kbd class="key">Ctrl B</kbd></td>
+                  <td class="description">
+                    Добавить текущую страницу в закладки<small
+                      ><code>bookmark-add</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="m">
+                  <td>
+                    <div class="key-stack"><kbd class="key">M</kbd></div>
+                  </td>
+                  <td class="description">
+                    Сохранить текущую страницу как quickmark<small
+                      ><code>quickmark-save</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="sr">
+                  <td><kbd class="key">S R</kbd></td>
+                  <td class="description">
+                    Нажать кнопку копирования README на GitHub, если она есть на
+                    странице<small
+                      ><code>jseval … data-readme-copy-button</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="leader">
+          <div class="section-head">
+            <h2 class="section-title">Команды с лидером</h2>
+            <p class="section-note">
+              Во всех строках ниже сначала нажмите Space
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="space m">
+                  <td><kbd class="key">Space M</kbd></td>
+                  <td class="description">
+                    Открыть текущий URL в mpv<small
+                      ><code>spawn … mpv {url}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space i">
+                  <td><kbd class="key">Space I</kbd></td>
+                  <td class="description">
+                    Открыть текущий URL в IINA<small
+                      ><code>spawn open -a IINA {url}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space h">
+                  <td><kbd class="key">Space H</kbd></td>
+                  <td class="description">
+                    Открыть историю через fzf<small
+                      ><code>fzfhistory-userscript</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space shift-h">
+                  <td><kbd class="key">Space Shift H</kbd></td>
+                  <td class="description">
+                    Открыть историю закрытых вкладок<small
+                      ><code>fzfhistory-userscript closed-tabs</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space b">
+                  <td><kbd class="key">Space B</kbd></td>
+                  <td class="description">
+                    Сохранить страницу в Braindrop<small
+                      ><code>braindrop</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space r">
+                  <td><kbd class="key">Space R</kbd></td>
+                  <td class="description">
+                    Сохранить URL и заголовок в Raindrop<small
+                      ><code>raindrop {url} {title}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space os space ox space oi space oo">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space O S</kbd
+                      ><kbd class="key">Space O X</kbd
+                      ><kbd class="key">Space O I</kbd
+                      ><kbd class="key">Space O O</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Управлять Tor: запустить, остановить, показать статус или
+                    переключить<small
+                      ><code>tor-start</code> · <code>tor-stop</code> ·
+                      <code>tor-status</code> · <code>tor-toggle</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space p space shift-p">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space P</kbd
+                      ><kbd class="key">Space Shift P</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Открыть keychain-login: обычный режим или выбор записи<small
+                      ><code>keychain-login</code> ·
+                      <code>keychain-login --pick</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space l space shift-l">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space L</kbd
+                      ><kbd class="key">Space Shift L</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Запустить qpw: обычный режим или выбор<small
+                      ><code>qpw</code> · <code>qpw --pick</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="translate">
+          <div class="section-head">
+            <h2 class="section-title">Перевод и язык</h2>
+            <p class="section-note">Перевести страницу или выделение</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="space tr">
+                  <td><kbd class="key">Space T R</kbd></td>
+                  <td class="description">
+                    Открыть или закрыть перевод Google Translate для текущей
+                    страницы<small
+                      >Если страница уже переведена, возвращает исходный
+                      URL.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space te">
+                  <td><kbd class="key">Space T E</kbd></td>
+                  <td class="description">
+                    Открыть или закрыть перевод через Яндекс Переводчик<small
+                      >Язык результата — русский.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ty">
+                  <td><kbd class="key">Space T Y</kbd></td>
+                  <td class="description">
+                    Альтернативный биндинг для перевода через Яндекс<small
+                      >Использует тот же механизм, что и Space T E.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ts">
+                  <td><kbd class="key">Space T S</kbd></td>
+                  <td class="description">
+                    Запустить daemon перевода выделения<small
+                      ><code
+                        >translate-selection-daemon-control start</code
+                      ></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tx">
+                  <td><kbd class="key">Space T X</kbd></td>
+                  <td class="description">
+                    Остановить daemon перевода выделения<small
+                      ><code>… control stop</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tt">
+                  <td><kbd class="key">Space T T</kbd></td>
+                  <td class="description">
+                    Показать статус daemon перевода<small
+                      ><code>… control status</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="cc">
+                  <td><kbd class="key">C C</kbd></td>
+                  <td class="description">
+                    Перевести текущую страницу через локальный
+                    qute-translate<small><code>qute-translate</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space cc">
+                  <td><kbd class="key">Space C C</kbd></td>
+                  <td class="description">
+                    Перечитать конфигурацию qutebrowser и показать
+                    подтверждение<small><code>config-source</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="config">
+          <div class="section-head">
+            <h2 class="section-title">Конфигурация и интерфейс</h2>
+            <p class="section-note">Настроить браузер на лету</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="space ce">
+                  <td><kbd class="key">Space C E</kbd></td>
+                  <td class="description">
+                    Открыть файл конфигурации в редакторе<small
+                      ><code>config-edit</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ch">
+                  <td><kbd class="key">Space C H</kbd></td>
+                  <td class="description">
+                    Открыть справку qutebrowser<small><code>help</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space cs">
+                  <td><kbd class="key">Space C S</kbd></td>
+                  <td class="description">
+                    Открыть команду настройки через <code>:set</code
+                    ><small><code>cmd-set-text -s :set -t</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space uy">
+                  <td><kbd class="key">Space U Y</kbd></td>
+                  <td class="description">
+                    Переключить отображение вкладок: всегда / только при
+                    нескольких вкладках / никогда<small
+                      ><code>tabs.show multiple never</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space uu">
+                  <td><kbd class="key">Space U U</kbd></td>
+                  <td class="description">
+                    Переключить статусбар: всегда или только в режиме
+                    команд<small
+                      ><code>statusbar.show always in-mode</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space uh">
+                  <td><kbd class="key">Space U H</kbd></td>
+                  <td class="description">
+                    Переключить компактный статус вкладок<small
+                      ><code>toggle-tabs-status</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ua">
+                  <td><kbd class="key">Space U A</kbd></td>
+                  <td class="description">
+                    Включить автовоспроизведение<small
+                      ><code>content.autoplay true</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space uf">
+                  <td><kbd class="key">Space U F</kbd></td>
+                  <td class="description">
+                    Выключить автовоспроизведение<small
+                      ><code>content.autoplay false</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="d space un space ui">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">D</kbd
+                      ><kbd class="key">Space U N / U I</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Переключить тёмный режим страницы<small
+                      ><code>toggle-darkmode</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="developer">
+          <div class="section-head">
+            <h2 class="section-title">Разработка и диагностика</h2>
+            <p class="section-note">Инструменты для работы с сайтом</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="space dd">
+                  <td><kbd class="key">Space D D</kbd></td>
+                  <td class="description">
+                    Открыть DevTools<small><code>devtools</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space de">
+                  <td><kbd class="key">Space D E</kbd></td>
+                  <td class="description">
+                    Редактировать текстовое поле через внешний редактор<small
+                      ><code>edit-text</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space dc">
+                  <td><kbd class="key">Space D C</kbd></td>
+                  <td class="description">
+                    Открыть команду редактирования<small
+                      ><code>cmd-edit</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space df">
+                  <td><kbd class="key">Space D F</kbd></td>
+                  <td class="description">
+                    Переключить фокус на DevTools<small
+                      ><code>devtools-focus</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space dp">
+                  <td><kbd class="key">Space D P</kbd></td>
+                  <td class="description">
+                    Сделать timestamp-скриншот в папку Screenshots<small
+                      ><code
+                        >screenshot … qute-YYYY-MM-DD-HH-MM-SS.png</code
+                      ></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space dy">
+                  <td><kbd class="key">Space D Y</kbd></td>
+                  <td class="description">
+                    Сделать скриншот viewport и скопировать его в буфер<small
+                      ><code>copy-png-to-clipboard</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space dY">
+                  <td><kbd class="key">Space D Shift Y</kbd></td>
+                  <td class="description">
+                    Запустить захват полной страницы в буфер<small
+                      ><code>fullpage-to-clipboard</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ds">
+                  <td><kbd class="key">Space D S</kbd></td>
+                  <td class="description">
+                    Открыть исходник страницы для редактирования<small
+                      ><code>view-source --edit</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space dz">
+                  <td><kbd class="key">Space D Z</kbd></td>
+                  <td class="description">
+                    Открыть исходник страницы<small
+                      ><code>view-source</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fc space ff space fb space fi space fo">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space F C</kbd
+                      ><kbd class="key">Space F F</kbd
+                      ><kbd class="key">Space F B</kbd
+                      ><kbd class="key">Space F I</kbd
+                      ><kbd class="key">Space F O</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Быстрые подсказки: скопировать ссылку, открыть в новой
+                    вкладке, фоне, поле ввода или окне<small
+                      ><code>hint … --rapid</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fp space fv space fi space fy space fx">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space F P</kbd
+                      ><kbd class="key">Space F V</kbd
+                      ><kbd class="key">Space F I</kbd
+                      ><kbd class="key">Space F Y</kbd
+                      ><kbd class="key">Space F X</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Открыть выбранную ссылку в приватном окне, mpv, IINA,
+                    скопировать или открыть в Helium<small
+                      ><code>hint links …</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fd space fD">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space F D</kbd
+                      ><kbd class="key">Space F Shift D</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Отправить выбранную ссылку в Surge или запустить
+                    принудительное добавление<small
+                      ><code>surge-add</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="tabs">
+          <div class="section-head">
+            <h2 class="section-title">Вкладки, окна и сессии</h2>
+            <p class="section-note">Жизненный цикл браузера</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="x cmd-q cmd-shift-w space qd">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">X</kbd><kbd class="key">⌘ Q</kbd
+                      ><kbd class="key">⌘ Shift W</kbd
+                      ><kbd class="key">Space Q D</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Закрыть текущую вкладку<small><code>tab-close</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space qq">
+                  <td><kbd class="key">Space Q Q</kbd></td>
+                  <td class="description">
+                    Сохранить сессию и полностью завершить qutebrowser<small
+                      ><code>quit --save</code></small
+                    >
+                  </td>
+                  <td><span class="tag special">важное</span></td>
+                </tr>
+                <tr data-keys="space ww">
+                  <td><kbd class="key">Space W W</kbd></td>
+                  <td class="description">
+                    Закрыть только текущее окно<small><code>close</code></small>
+                  </td>
+                  <td><span class="tag special">важное</span></td>
+                </tr>
+                <tr data-keys="space qr">
+                  <td><kbd class="key">Space Q R</kbd></td>
+                  <td class="description">
+                    Перезапустить qutebrowser<small><code>restart</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space qt">
+                  <td><kbd class="key">Space Q T</kbd></td>
+                  <td class="description">
+                    Оставить только текущую вкладку<small
+                      ><code>tab-only</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space qw">
+                  <td><kbd class="key">Space Q W</kbd></td>
+                  <td class="description">
+                    Оставить только текущее окно<small
+                      ><code>window-only</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ts">
+                  <td><kbd class="key">Space T S</kbd></td>
+                  <td class="description">
+                    Сохранить текущую страницу как закладку<small
+                      ><code>bookmark-add</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tq">
+                  <td><kbd class="key">Space T Q</kbd></td>
+                  <td class="description">
+                    Показать список quickmarks<small
+                      ><code>bookmark-list</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tc">
+                  <td><kbd class="key">Space T C</kbd></td>
+                  <td class="description">
+                    Клонировать текущую вкладку<small
+                      ><code>tab-clone</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space td">
+                  <td><kbd class="key">Space T D</kbd></td>
+                  <td class="description">
+                    Клонировать вкладку в новое окно<small
+                      ><code>tab-clone -w</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tn">
+                  <td><kbd class="key">Space T N</kbd></td>
+                  <td class="description">
+                    Передать вкладку в другое окно<small
+                      ><code>tab-give</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space th">
+                  <td><kbd class="key">Space T H</kbd></td>
+                  <td class="description">
+                    Открыть историю посещений<small><code>history</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tp space tt">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space T P</kbd
+                      ><kbd class="key">Space T T</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Закрепить или открепить текущую вкладку<small
+                      ><code>tab-pin</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space n cmd-n">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space N</kbd><kbd class="key">⌘ N</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Открыть домашнюю страницу в новом окне<small
+                      ><code>open -w http://localhost:1931</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space ss space sq space sw space sd">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space S S</kbd
+                      ><kbd class="key">Space S Q</kbd
+                      ><kbd class="key">Space S W</kbd
+                      ><kbd class="key">Space S D</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Суммаризировать текущую страницу: обычный, quality, быстрый
+                    или глубокий анализ<small><code>summarize-url</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space sc">
+                  <td><kbd class="key">Space S C</kbd></td>
+                  <td class="description">
+                    Очистить сохранённые сессии<small
+                      ><code>session-clean</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space sz">
+                  <td><kbd class="key">Space S Z</kbd></td>
+                  <td class="description">
+                    Переключить ленивое восстановление сессии<small
+                      ><code>session.lazy_restore</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr
+                  data-keys="space sa space ss space sw space sl space sd space sr space sS"
+                >
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space S A</kbd
+                      ><kbd class="key">Space S S</kbd
+                      ><kbd class="key">Space S W</kbd
+                      ><kbd class="key">Space S L</kbd
+                      ><kbd class="key">Space S D</kbd
+                      ><kbd class="key">Space S R</kbd
+                      ><kbd class="key">Space S Shift S</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Сохранить, добавить, сохранить только текущее окно, удалить,
+                    переименовать сессию или открыть команды
+                    <code>:spawn</code> / <code>:set</code
+                    ><small
+                      >Эти команды являются прямыми qutebrowser-командами и
+                      могут открыть строку ввода.</small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="misc">
+          <div class="section-head">
+            <h2 class="section-title">Остальное</h2>
+            <p class="section-note">Прокрутка, поиск и служебные команды</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="gg">
+                  <td><kbd class="key">G G</kbd></td>
+                  <td class="description">
+                    Перейти в начало страницы<small
+                      ><code>scroll-to-perc 0</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="g">
+                  <td><kbd class="key">G</kbd></td>
+                  <td class="description">
+                    Перейти в конец страницы<small
+                      ><code>scroll-to-perc 100</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space space cmd-s">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Space Space</kbd
+                      ><kbd class="key">⌘ S</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Открыть выбор вкладки<small
+                      ><code>cmd-set-text -s :tab-select</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="ge">
+                  <td><kbd class="key">G E</kbd></td>
+                  <td class="description">
+                    Открыть текущий URL через строку <code>:open</code
+                    ><small><code>cmd-set-text -s :open {url}</code></small>
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tm">
+                  <td><kbd class="key">Space T M</kbd></td>
+                  <td class="description">
+                    Открыть команду перемещения вкладки<small
+                      ><code>:tab-move</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space tw">
+                  <td><kbd class="key">Space T W</kbd></td>
+                  <td class="description">
+                    Открыть команду передачи вкладки<small
+                      ><code>:tab-take</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="slash question">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">/</kbd><kbd class="key">?</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Начать поиск по странице вперёд или назад<small
+                      ><code>cmd-set-text /</code> ·
+                      <code>cmd-set-text ?</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="gu">
+                  <td>
+                    <div class="key-stack"><kbd class="key">G U</kbd></div>
+                  </td>
+                  <td class="description">
+                    Подняться на один уровень URL<small
+                      ><code>navigate up</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="cmd-comma">
+                  <td><kbd class="key">⌘ ,</kbd></td>
+                  <td class="description">
+                    Открыть настройки qutebrowser<small
+                      ><code>open qute://settings</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+
+        <section class="section" data-section="modes">
+          <div class="section-head">
+            <h2 class="section-title">Специальные режимы</h2>
+            <p class="section-note">Бинды, активные не в обычном режиме</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Клавиша</th>
+                  <th>Что делает</th>
+                  <th>Режим</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-keys="ctrl-v ctrl-a">
+                  <td>
+                    <div class="key-stack">
+                      <kbd class="key">Ctrl V</kbd><kbd class="key">Ctrl A</kbd>
+                    </div>
+                  </td>
+                  <td class="description">
+                    Выйти из passthrough-режима<small
+                      ><code>mode-leave</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">passthrough</span></td>
+                </tr>
+                <tr data-keys="ctrl-shift-k">
+                  <td><kbd class="key">Ctrl Shift K</kbd></td>
+                  <td class="description">
+                    Запустить keychain-login из поля ввода<small
+                      ><code>spawn -u keychain-login</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">insert</span></td>
+                </tr>
+                <tr data-keys="cmd-s">
+                  <td><kbd class="key">⌘ S</kbd></td>
+                  <td class="description">
+                    Выйти из командного режима<small
+                      ><code>mode-leave</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">command</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="empty">Ничего не найдено в этом разделе.</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="section" data-section="registry">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Полный реестр · 142 команды</h2>
+            <p class="section-note" style="text-align: left">
+              Источник истины: все BindingSpec и поздняя привязка
+              <span class="mono">sS</span>. Здесь показаны только основные
+              сочетания клавиш.
+            </p>
+          </div>
+          <span class="tag special">полный список</span>
+        </div>
+        <div class="table-wrap registry-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Клавиша</th>
+                <th>Описание</th>
+                <th>Раздел</th>
+                <th>Режим</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                data-registry="true"
+                data-keys="e E reload страницу."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">E</kbd></div>
+                </td>
+                <td class="description">
+                  Перезагрузить текущую страницу.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>reload</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="w W tab-prev вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">W</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к предыдущей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-prev</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="r R tab-next вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">R</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к следующей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-next</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="K Shift K Shift tab-next вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift K</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к следующей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-next</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="J Shift J Shift tab-prev вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift J</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к предыдущей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-prev</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-h&gt; &lt;Cmd-р&gt; ⌘ H ⌘ debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ H</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить фокус на предыдущее окно qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >debug-pyeval --quiet --file
+                      ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-j&gt; &lt;Cmd-о&gt; ⌘ J ⌘ tab-prev вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ J</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к предыдущей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-prev</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-k&gt; &lt;Cmd-л&gt; ⌘ K ⌘ tab-next вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ K</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к следующей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-next</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-l&gt; &lt;Cmd-д&gt; ⌘ L ⌘ debug-pyeval --quiet --file ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ L</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить фокус на следующее окно qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >debug-pyeval --quiet --file
+                      ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="z Z undo действие."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Z</kbd></div>
+                </td>
+                <td class="description">
+                  Отменить последнее действие.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>undo</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="q Q undo действие."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Q</kbd></div>
+                </td>
+                <td class="description">
+                  Отменить последнее действие.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>undo</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="d D scroll-page 0 0.5 вниз."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">D</kbd></div>
+                </td>
+                <td class="description">
+                  Прокрутить страницу примерно на половину экрана вниз.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>scroll-page 0 0.5</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="u U scroll-page 0 -0.5 вверх."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">U</kbd></div>
+                </td>
+                <td class="description">
+                  Прокрутить страницу примерно на половину экрана вверх.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>scroll-page 0 -0.5</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="v V mode-enter caret курсором."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">V</kbd></div>
+                </td>
+                <td class="description">
+                  Войти в режим выделения текстовым курсором.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>mode-enter caret</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-v&gt; &lt;Ctrl-м&gt; Ctrl V Ctrl spawn -u switch-to-english ;; mode-enter passthrough passthrough-режим странице."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Ctrl V</kbd></div>
+                </td>
+                <td class="description">
+                  Войти в passthrough-режим и передать ввод странице.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; mode-enter
+                      passthrough</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-v&gt; &lt;Ctrl-м&gt; Ctrl V Ctrl mode-leave режима."
+                data-mode="passthrough"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Ctrl V</kbd></div>
+                </td>
+                <td class="description">
+                  Выйти из текущего специального режима.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>mode-leave</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="passthrough"
+                    >passthrough</span
+                  >
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-a&gt; &lt;Ctrl-ф&gt; Ctrl A Ctrl spawn -u switch-to-english ;; mode-enter passthrough passthrough-режим странице."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Ctrl A</kbd></div>
+                </td>
+                <td class="description">
+                  Войти в passthrough-режим и передать ввод странице.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; mode-enter
+                      passthrough</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-a&gt; &lt;Ctrl-ф&gt; Ctrl A Ctrl mode-leave режима."
+                data-mode="passthrough"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Ctrl A</kbd></div>
+                </td>
+                <td class="description">
+                  Выйти из текущего специального режима.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>mode-leave</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="passthrough"
+                    >passthrough</span
+                  >
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="H Shift H Shift back браузера."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift H</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти назад по истории браузера.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>back</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="L Shift L Shift forward браузера."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift L</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти вперёд по истории браузера.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>forward</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-Left&gt; &lt;Cmd-Left&gt; ⌘ Left back браузера."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Left</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти назад по истории браузера.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>back</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-Right&gt; &lt;Cmd-Right&gt; ⌘ Right forward браузера."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Right</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти вперёд по истории браузера.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>forward</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="f F hint links ссылку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">F</kbd></div>
+                </td>
+                <td class="description">
+                  Показать подсказки на ссылках и открыть выбранную ссылку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="F Shift F Shift hint links tab-bg вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift F</kbd></div>
+                </td>
+                <td class="description">
+                  Показать подсказки и открыть ссылку в фоновой вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links tab-bg</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="gi G I hint inputs --first ввода."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">G I</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти к первому полю ввода.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint inputs --first</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="yy Y Y yank URL страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Y Y</kbd></div>
+                </td>
+                <td class="description">
+                  Скопировать URL текущей страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>yank</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='sr S R jseval -q document.querySelector("[data-readme-copy-button]")?.click() README GitHub, есть.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S R</kbd></div>
+                </td>
+                <td class="description">
+                  Нажать кнопку копирования README на GitHub, если она есть.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval -q
+                      document.querySelector(&quot;[data-readme-copy-button]&quot;)?.click()</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="yl Y L hint links yank адрес."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Y L</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и скопировать её адрес.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links yank</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="p P open {clipboard} URL вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">P</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть URL из буфера в текущей вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>open {clipboard}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="P Shift P Shift open --tab {clipboard} URL вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift P</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть URL из буфера в новой вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>open --tab {clipboard}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="x X tab-close вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">X</kbd></div>
+                </td>
+                <td class="description">
+                  Закрыть текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-close</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-Shift-w&gt; &lt;Cmd-Shift-ц&gt; ⌘ Shift W ⌘ Shift tab-close вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Shift W</kbd></div>
+                </td>
+                <td class="description">
+                  Закрыть текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-close</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-q&gt; &lt;Cmd-й&gt; ⌘ Q ⌘ tab-close вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Q</kbd></div>
+                </td>
+                <td class="description">
+                  Закрыть текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-close</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt; &lt; &lt; tab-move - влево."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">&lt;</kbd></div>
+                </td>
+                <td class="description">
+                  Переместить текущую вкладку влево.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-move -</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&gt; &gt; &gt; tab-move + вправо."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">&gt;</kbd></div>
+                </td>
+                <td class="description">
+                  Переместить текущую вкладку вправо.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-move +</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="/ . / . cmd-set-text / странице."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">/</kbd></div>
+                </td>
+                <td class="description">
+                  Начать поиск вперёд по странице.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text /</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="? ? ? cmd-set-text ? странице."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">?</kbd></div>
+                </td>
+                <td class="description">
+                  Начать поиск назад по странице.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text ?</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-b&gt; &lt;Ctrl-и&gt; Ctrl B Ctrl bookmark-add закладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Ctrl B</kbd></div>
+                </td>
+                <td class="description">
+                  Добавить текущую страницу в закладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>bookmark-add</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="M Shift M Shift quickmark-save quickmark."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift M</kbd></div>
+                </td>
+                <td class="description">
+                  Сохранить текущую страницу как quickmark.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>quickmark-save</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-,&gt; &lt;Cmd-,&gt; ⌘ , open qute://settings qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ ,</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть настройки qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>open qute://settings</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="gu G U navigate up URL."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">G U</kbd></div>
+                </td>
+                <td class="description">
+                  Подняться на один уровень URL.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>navigate up</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="m Space M Space spawn /opt/homebrew/bin/mpv {url} mpv."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space M</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть текущую страницу или медиафайл в mpv.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn /opt/homebrew/bin/mpv {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Медиа</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="i Space I Space spawn open -a IINA {url} IINA."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space I</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть текущую страницу или медиафайл в IINA.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn open -a IINA {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Медиа</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="h Space H Space spawn -u fzfhistory-userscript fzf."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space H</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть историю браузера через fzf.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u fzfhistory-userscript</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="H Space Shift H Space Shift spawn -u fzfhistory-userscript closed-tabs fzf."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space Shift H</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Открыть историю закрытых вкладок через fzf.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u fzfhistory-userscript closed-tabs</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="b Space B Space spawn -u braindrop Braindrop."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space B</kbd></div>
+                </td>
+                <td class="description">
+                  Сохранить текущую страницу в Braindrop.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u braindrop</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="r Space R Space spawn -u raindrop {url} {title} URL Raindrop."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space R</kbd></div>
+                </td>
+                <td class="description">
+                  Сохранить URL и заголовок страницы в Raindrop.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u raindrop {url} {title}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="os Space O S Space tor-start Tor."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space O S</kbd></div>
+                </td>
+                <td class="description">
+                  Запустить Tor.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tor-start</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ox Space O X Space tor-stop Tor."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space O X</kbd></div>
+                </td>
+                <td class="description">
+                  Остановить Tor.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tor-stop</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="oi Space O I Space tor-status Tor."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space O I</kbd></div>
+                </td>
+                <td class="description">
+                  Показать статус Tor.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tor-status</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="oo Space O O Space tor-toggle Tor."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space O O</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить состояние Tor.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tor-toggle</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-Shift-k&gt; &lt;Ctrl-Shift-л&gt; Ctrl Shift K Ctrl Shift spawn -u keychain-login keychain-login."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Ctrl Shift K</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Запустить keychain-login.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u keychain-login</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Ctrl-Shift-k&gt; &lt;Ctrl-Shift-л&gt; Ctrl Shift K Ctrl Shift spawn -u keychain-login keychain-login."
+                data-mode="insert"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Ctrl Shift K</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Запустить keychain-login.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u keychain-login</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td><span class="tag mode" data-mode="insert">insert</span></td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="p Space P Space spawn -u keychain-login keychain-login."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space P</kbd></div>
+                </td>
+                <td class="description">
+                  Запустить keychain-login.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u keychain-login</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="P Space Shift P Space Shift spawn -u keychain-login --pick keychain-login записи."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space Shift P</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Открыть keychain-login с выбором записи.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u keychain-login --pick</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="l Space L Space spawn --userscript qpw qpw."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space L</kbd></div>
+                </td>
+                <td class="description">
+                  Запустить qpw.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript qpw</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="L Space Shift L Space Shift spawn --userscript qpw --pick qpw записи."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space Shift L</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Запустить qpw с выбором записи.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript qpw --pick</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сервисы</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='tR Space T Shift R Space Shift jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113})) F2.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space T Shift R</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Отправить странице клавишу F2.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval --quiet document.dispatchEvent(new
+                      KeyboardEvent(&quot;keydown&quot;, {key: &quot;F2&quot;,
+                      keyCode: 113}))</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='tf Space T F Space jseval --quiet document.dispatchEvent(new KeyboardEvent("keydown", {key: "F2", keyCode: 113})) F2.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T F</kbd></div>
+                </td>
+                <td class="description">
+                  Отправить странице клавишу F2.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval --quiet document.dispatchEvent(new
+                      KeyboardEvent(&quot;keydown&quot;, {key: &quot;F2&quot;,
+                      keyCode: 113}))</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='tr Space T R Space jseval -q (function(){const t="translate.google.com";if(window.location.hostname.includes(t)){const e=new URLSearchParams(window.location.search).get("u");e&amp;&amp;(window.location.href=e)}else{const e="ru",o=`https://translate.google.com/translate?sl=auto&amp;tl=${e}&amp;u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})(); Google Translate оригинал.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T R</kbd></div>
+                </td>
+                <td class="description">
+                  Перевести страницу через Google Translate или вернуть
+                  оригинал.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval -q (function(){const
+                      t=&quot;translate.google.com&quot;;if(window.location.hostname.includes(t)){const
+                      e=new
+                      URLSearchParams(window.location.search).get(&quot;u&quot;);e&amp;&amp;(window.location.href=e)}else{const
+                      e=&quot;ru&quot;,o=`https://translate.google.com/translate?sl=auto&amp;tl=${e}&amp;u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='te Space T E Space jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&amp;&amp;(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})(); оригинал.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T E</kbd></div>
+                </td>
+                <td class="description">
+                  Перевести страницу через Яндекс Переводчик или вернуть
+                  оригинал.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval -q (function(){const
+                      t=&quot;translate.yandex.ru&quot;;if(window.location.hostname.includes(t)){const
+                      u=new
+                      URLSearchParams(window.location.search).get(&quot;url&quot;);u&amp;&amp;(window.location.href=u)}else{const
+                      u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})();</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys='ty Space T Y Space jseval -q (function(){const t="translate.yandex.ru";if(window.location.hostname.includes(t)){const u=new URLSearchParams(window.location.search).get("url");u&amp;&amp;(window.location.href=u)}else{const u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})(); оригинал.'
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T Y</kbd></div>
+                </td>
+                <td class="description">
+                  Перевести страницу через Яндекс Переводчик или вернуть
+                  оригинал.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >jseval -q (function(){const
+                      t=&quot;translate.yandex.ru&quot;;if(window.location.hostname.includes(t)){const
+                      u=new
+                      URLSearchParams(window.location.search).get(&quot;url&quot;);u&amp;&amp;(window.location.href=u)}else{const
+                      u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})();</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tS Space T Shift S Space Shift spawn --userscript translate-selection-daemon-control start daemon выделения."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space T Shift S</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Запустить daemon перевода выделения.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn --userscript translate-selection-daemon-control
+                      start</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tX Space T Shift X Space Shift spawn --userscript translate-selection-daemon-control stop daemon выделения."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space T Shift X</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Остановить daemon перевода выделения.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn --userscript translate-selection-daemon-control
+                      stop</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tT Space T Shift T Space Shift spawn --userscript translate-selection-daemon-control status daemon выделения."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space T Shift T</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Показать статус daemon перевода выделения.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn --userscript translate-selection-daemon-control
+                      status</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ce Space C E Space config-edit редакторе."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space C E</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть конфигурацию в редакторе.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>config-edit</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ch Space C H Space help qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space C H</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть справку qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>help</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="cc Space C C Space config-source ;; message-info &#x27;Config reloaded&#x27; qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space C C</kbd></div>
+                </td>
+                <td class="description">
+                  Перечитать конфигурацию qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >config-source ;; message-info &#x27;Config
+                      reloaded&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="uy Space U Y Space config-cycle tabs.show multiple never вкладок."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U Y</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить режим отображения вкладок.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>config-cycle tabs.show multiple never</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="uu Space U U Space config-cycle statusbar.show always in-mode статусбара."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U U</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить режим отображения статусбара.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>config-cycle statusbar.show always in-mode</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="uh Space U H Space spawn --userscript toggle-tabs-status вкладок."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U H</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить компактный вид вкладок.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript toggle-tabs-status</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ua Space U A Space :set content.autoplay true ;; message-info &#x27;Autoplay enabled&#x27; автовоспроизведение."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U A</kbd></div>
+                </td>
+                <td class="description">
+                  Включить автовоспроизведение.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >:set content.autoplay true ;; message-info &#x27;Autoplay
+                      enabled&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="uf Space U F Space :set content.autoplay false ;; message-info &#x27;Autoplay disabled&#x27; автовоспроизведение."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U F</kbd></div>
+                </td>
+                <td class="description">
+                  Выключить автовоспроизведение.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >:set content.autoplay false ;; message-info
+                      &#x27;Autoplay disabled&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="D Shift D Shift spawn --userscript toggle-darkmode страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift D</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить тёмный режим страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript toggle-darkmode</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="un Space U N Space spawn --userscript toggle-darkmode страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U N</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить тёмный режим страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript toggle-darkmode</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ui Space U I Space spawn --userscript toggle-darkmode страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space U I</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить тёмный режим страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript toggle-darkmode</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dd Space D D Space devtools DevTools."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D D</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть DevTools.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>devtools</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="de Space D E Space edit-text редакторе."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D E</kbd></div>
+                </td>
+                <td class="description">
+                  Редактировать текстовое поле во внешнем редакторе.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>edit-text</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dc Space D C Space cmd-edit команды."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D C</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть редактирование команды.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-edit</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="df Space D F Space devtools-focus DevTools."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D F</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить фокус на DevTools.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>devtools-focus</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dp Space D P Space screenshot ~/Documents/screenshotsqute-YYYY-MM-DD-HH-MM-SS.png timestamp-скриншот."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D P</kbd></div>
+                </td>
+                <td class="description">
+                  Сделать timestamp-скриншот.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >screenshot
+                      ~/Documents/screenshotsqute-YYYY-MM-DD-HH-MM-SS.png</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dy Space D Y Space screenshot --force /tmp/qute-clipboard.png ;; spawn --userscript copy-png-to-clipboard /tmp/qute-clipboard.png ;; message-info &#x27;Screenshot copied to clipboard&#x27; viewport буфер."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D Y</kbd></div>
+                </td>
+                <td class="description">
+                  Сделать скриншот viewport и скопировать его в буфер.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >screenshot --force /tmp/qute-clipboard.png ;; spawn
+                      --userscript copy-png-to-clipboard /tmp/qute-clipboard.png
+                      ;; message-info &#x27;Screenshot copied to
+                      clipboard&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dY Space D Shift Y Space Shift spawn --userscript fullpage-to-clipboard ;; message-info &#x27;Full-page capture started&#x27; буфер."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space D Shift Y</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Запустить захват полной страницы в буфер.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn --userscript fullpage-to-clipboard ;; message-info
+                      &#x27;Full-page capture started&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ds Space D S Space view-source --edit редактирования."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D S</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть исходник страницы для редактирования.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>view-source --edit</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="dz Space D Z Space view-source страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space D Z</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть исходник страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>view-source</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fc Space F C Space hint links yank --rapid адрес."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F C</kbd></div>
+                </td>
+                <td class="description">
+                  Быстро выбрать ссылку и скопировать её адрес.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links yank --rapid</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ff Space F F Space hint links tab --rapid вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F F</kbd></div>
+                </td>
+                <td class="description">
+                  Быстро открыть ссылку в новой вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links tab --rapid</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fb Space F B Space hint links tab-bg --rapid вкладке."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F B</kbd></div>
+                </td>
+                <td class="description">
+                  Быстро открыть ссылку в фоновой вкладке.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links tab-bg --rapid</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fi Space F I Space hint inputs ввода."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F I</kbd></div>
+                </td>
+                <td class="description">
+                  Показать подсказки на полях ввода.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint inputs</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fo Space F O Space hint links window окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F O</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и открыть её в новом окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links window</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fp Space F P Space hint links run :open -p {hint-url} окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F P</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и открыть её в приватном окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links run :open -p {hint-url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fv Space F V Space hint links spawn mpv {hint-url} mpv."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F V</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и открыть её в mpv.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links spawn mpv {hint-url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fI Space F Shift I Space Shift hint links spawn open -a IINA {hint-url} IINA."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space F Shift I</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и открыть её в IINA.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links spawn open -a IINA {hint-url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fy Space F Y Space hint links yank адрес."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F Y</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и скопировать её адрес.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links yank</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fx Space F X Space hint links spawn --detach /usr/bin/open -a &#x27;Helium&#x27; {hint-url} Helium."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F X</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и открыть её в Helium.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >hint links spawn --detach /usr/bin/open -a
+                      &#x27;Helium&#x27; {hint-url}</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fd Space F D Space hint links userscript surge-add Surge."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space F D</kbd></div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и отправить её в Surge.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>hint links userscript surge-add</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="fD Space F Shift D Space Shift spawn -u surge-add --force Surge."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space F Shift D</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Выбрать ссылку и отправить её в Surge.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u surge-add --force</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Разработка</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="qd Space Q D Space tab-close вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space Q D</kbd></div>
+                </td>
+                <td class="description">
+                  Закрыть текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-close</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="qq Space Q Q Space quit --save qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space Q Q</kbd></div>
+                </td>
+                <td class="description">
+                  Сохранить сессию и полностью завершить qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>quit --save</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ww Space W W Space close окно."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space W W</kbd></div>
+                </td>
+                <td class="description">
+                  Закрыть только текущее окно.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>close</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="qr Space Q R Space restart qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space Q R</kbd></div>
+                </td>
+                <td class="description">
+                  Перезапустить qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>restart</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="qt Space Q T Space tab-only вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space Q T</kbd></div>
+                </td>
+                <td class="description">
+                  Оставить только текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-only</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="qw Space Q W Space window-only окно."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space Q W</kbd></div>
+                </td>
+                <td class="description">
+                  Оставить только текущее окно.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>window-only</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="x Space X Space quit --save qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space X</kbd></div>
+                </td>
+                <td class="description">
+                  Сохранить сессию и полностью завершить qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>quit --save</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ts Space T S Space bookmark-add закладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T S</kbd></div>
+                </td>
+                <td class="description">
+                  Добавить текущую страницу в закладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>bookmark-add</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tq Space T Q Space bookmark-list quickmarks."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T Q</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть список quickmarks.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>bookmark-list</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Ссылки и закладки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tc Space T C Space tab-clone вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T C</kbd></div>
+                </td>
+                <td class="description">
+                  Клонировать текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-clone</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="td Space T D Space tab-clone -w окно."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T D</kbd></div>
+                </td>
+                <td class="description">
+                  Клонировать вкладку в новое окно.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-clone -w</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tn Space T N Space tab-give окно."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T N</kbd></div>
+                </td>
+                <td class="description">
+                  Передать вкладку в другое окно.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-give</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="th Space T H Space history посещений."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T H</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть историю посещений.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>history</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tp Space T P Space tab-pin вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T P</kbd></div>
+                </td>
+                <td class="description">
+                  Закрепить или открепить текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-pin</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tt Space T T Space tab-pin вкладку."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T T</kbd></div>
+                </td>
+                <td class="description">
+                  Закрепить или открепить текущую вкладку.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>tab-pin</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="n Space N Space spawn -u switch-to-english ;; open -w http://localhost:1931 окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space N</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть домашнюю страницу в новом окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; open -w
+                      http://localhost:1931</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-n&gt; &lt;Cmd-т&gt; ⌘ N ⌘ spawn -u switch-to-english ;; open -w http://localhost:1931 окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ N</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть домашнюю страницу в новом окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; open -w
+                      http://localhost:1931</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-Return&gt; &lt;Cmd-Return&gt; ⌘ Return spawn --userscript qute-temporary-split split."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Return</kbd></div>
+                </td>
+                <td class="description">
+                  Создать временный split.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript qute-temporary-split</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tg Space T G Space spawn -u helium-toggle Helium."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T G</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить окно Helium.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u helium-toggle</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tG Space T Shift G Space Shift spawn --detach /usr/bin/open -a &#x27;Helium&#x27; {url} Helium."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space T Shift G</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Открыть текущую страницу в Helium.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --detach /usr/bin/open -a 'Helium' {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Медиа</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ti Space T I Space open -p URL окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T I</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть URL в приватном окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>open -p</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-Shift-N&gt; &lt;Cmd-Shift-Т&gt; ⌘ Shift N ⌘ Shift open -p URL окне."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ Shift N</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть URL в приватном окне.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>open -p</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sc Space S C Space session-clean ;; message-info &#x27;Sessions cleaned&#x27; сессии."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S C</kbd></div>
+                </td>
+                <td class="description">
+                  Очистить сохранённые сессии.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >session-clean ;; message-info &#x27;Sessions
+                      cleaned&#x27;</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sz Space S Z Space config-cycle -p session.lazy_restore true false сессии."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S Z</kbd></div>
+                </td>
+                <td class="description">
+                  Переключить ленивое восстановление сессии.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>config-cycle -p session.lazy_restore true false</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="gg G G spawn -u switch-to-english ;; scroll-to-perc 0 страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">G G</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти в начало страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u switch-to-english ;; scroll-to-perc 0</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="G Shift G Shift spawn -u switch-to-english ;; scroll-to-perc 100 страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Shift G</kbd></div>
+                </td>
+                <td class="description">
+                  Перейти в конец страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; scroll-to-perc 100</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="Space Space spawn -u switch-to-english ;; cmd-set-text -s :tab-select вкладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack">
+                    <kbd class="key">Space Space</kbd>
+                  </div>
+                </td>
+                <td class="description">
+                  Открыть выбор вкладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s
+                      :tab-select</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-s&gt; &lt;Cmd-ы&gt; ⌘ S ⌘ spawn -u switch-to-english ;; cmd-set-text -s :tab-select вкладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ S</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть выбор вкладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s
+                      :tab-select</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="&lt;Cmd-s&gt; &lt;Cmd-ы&gt; ⌘ S ⌘ mode-leave режима."
+                data-mode="command"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">⌘ S</kbd></div>
+                </td>
+                <td class="description">
+                  Выйти из текущего специального режима.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>mode-leave</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="command">command</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ge G E spawn -u switch-to-english ;; cmd-set-text -s :open {url} URL qutebrowser."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">G E</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть текущий URL через командную строку qutebrowser.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s :open
+                      {url}</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Навигация</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ss Space S S Space spawn -u summarize-url {url} страницу."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S S</kbd></div>
+                </td>
+                <td class="description">
+                  Суммаризировать текущую страницу.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u summarize-url {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сессии и AI</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sq Space S Q Space spawn -u summarize-url --quality {url} quality."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S Q</kbd></div>
+                </td>
+                <td class="description">
+                  Суммаризировать страницу в режиме quality.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u summarize-url --quality {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сессии и AI</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sw Space S W Space spawn -u summarize-url --analyze-quick {url} страницу."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S W</kbd></div>
+                </td>
+                <td class="description">
+                  Быстро проанализировать и суммаризировать страницу.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u summarize-url --analyze-quick {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сессии и AI</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sd Space S D Space spawn -u summarize-url --analyze-deep {url} страницу."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space S D</kbd></div>
+                </td>
+                <td class="description">
+                  Глубоко проанализировать и суммаризировать страницу.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn -u summarize-url --analyze-deep {url}</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Сессии и AI</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tm Space T M Space spawn -u switch-to-english ;; cmd-set-text -s :tab-move вкладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T M</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть команду перемещения вкладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s
+                      :tab-move</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="tw Space T W Space spawn -u switch-to-english ;; cmd-set-text -s :tab-take вкладки."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">Space T W</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть команду передачи вкладки.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s
+                      :tab-take</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="cS C Shift S Shift spawn -u switch-to-english ;; cmd-set-text -s :set -t режиме."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">C Shift S</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть команду настройки параметров в табличном режиме.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >spawn -u switch-to-english ;; cmd-set-text -s :set
+                      -t</code
+                    >
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="cc C C spawn --userscript qute-translate страницы."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">C C</kbd></div>
+                </td>
+                <td class="description">
+                  Запустить локальный переводчик страницы.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript qute-translate</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Перевод</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sa S A cmd-set-text -s :session-save сессии."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S A</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть сохранение сессии.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text -s :session-save </code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="ss S S spawn --userscript session-add сессию."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S S</kbd></div>
+                </td>
+                <td class="description">
+                  Добавить текущую страницу в сессию.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>spawn --userscript session-add</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sw S W cmd-set-text -s :session-save --only-active-window окна."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S W</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть сохранение сессии только текущего окна.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >cmd-set-text -s :session-save --only-active-window
+                    </code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sL S Shift L Shift cmd-set-text -s :spawn --userscript session-add сессию."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S Shift L</kbd></div>
+                </td>
+                <td class="description">
+                  Добавить текущую страницу в сессию.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code
+                      >cmd-set-text -s :spawn --userscript session-add
+                    </code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sd S D cmd-set-text -s :session-delete сессии."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S D</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть удаление сессии.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text -s :session-delete </code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sr S R cmd-set-text -s :session-rename сессии."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S R</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть переименование сессии.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text -s :session-rename </code>
+                  </details>
+                </td>
+                <td><span class="tag category">Вкладки и окна</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+              <tr
+                data-registry="true"
+                data-keys="sS S Shift S Shift cmd-set-text -s :set параметров."
+                data-mode="normal"
+              >
+                <td>
+                  <div class="key-stack"><kbd class="key">S Shift S</kbd></div>
+                </td>
+                <td class="description">
+                  Открыть строку настройки параметров.
+                  <details class="command">
+                    <summary>Команда</summary>
+                    <code>cmd-set-text -s :set</code>
+                  </details>
+                </td>
+                <td><span class="tag category">Настройки</span></td>
+                <td>
+                  <span class="tag mode" data-mode="normal">обычный</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="empty">Ничего не найдено в полном реестре.</div>
+        </div>
+      </section>
+
+      <footer>
+        <p>
+          Источник:
+          <a href="../modules/bindings.py"><code>modules/bindings.py</code></a>
+          · описания и команды отражают текущую конфигурацию.
+        </p>
+        <p>
+          Страница автономная: стили и интерактивный поиск встроены, внешние
+          библиотеки не нужны.
+        </p>
+      </footer>
+    </main>
+    <script>
+      (() => {
+        const search = document.querySelector("#search");
+        const count = document.querySelector("#count");
+        const buttons = [...document.querySelectorAll("[data-filter]")];
+        const sections = [...document.querySelectorAll(".section")];
+        const rows = sections.flatMap((section) =>
+          [...section.querySelectorAll("tbody tr")].map((row) => ({
+            row,
+            section,
+          })),
+        );
+        let mode = "all";
+
+        const normalize = (value) =>
+          value.toLocaleLowerCase("ru-RU").replace(/ё/g, "е");
+        const update = () => {
+          const query = normalize(search.value.trim());
+          let visible = 0;
+          rows.forEach(({ row, section }) => {
+            const haystack = normalize(
+              `${row.dataset.keys} ${row.textContent}`,
+            );
+            const label = normalize(
+              row.querySelector(".tag.mode")?.textContent || "normal",
+            );
+            const rowMode =
+              row.dataset.mode ||
+              {
+                обычный: "normal",
+                passthrough: "passthrough",
+                insert: "insert",
+                command: "command",
+              }[label] ||
+              label;
+            const modeMatch = mode === "all" || rowMode === mode;
+            const match = modeMatch && (!query || haystack.includes(query));
+            row.hidden = !match;
+            if (match) visible += 1;
+            section
+              .querySelector(".empty")
+              .classList.toggle(
+                "visible",
+                !section.querySelectorAll("tbody tr:not([hidden])").length,
+              );
+            section.classList.toggle(
+              "hidden",
+              !section.querySelectorAll("tbody tr:not([hidden])").length,
+            );
+          });
+          count.textContent = `Показано ${visible} строк`;
+        };
+        buttons.forEach((button) =>
+          button.addEventListener("click", () => {
+            buttons.forEach((item) => item.classList.remove("active"));
+            button.classList.add("active");
+            mode = button.dataset.filter;
+            update();
+          }),
+        );
+        search.addEventListener("input", update);
+        update();
+      })();
+    </script>
+  </body>
+</html>
