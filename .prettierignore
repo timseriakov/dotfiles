@@ -4,3 +4,6 @@ yazi/keymap.toml
 omp/agent/config.yml
 cliamp/resume.json
 omp/agent/SYSTEM.md
+omp/agent/extensions/moshi-hooks.ts
+opencode/base/plugins/moshi-hooks.ts
+opencode/base/plugins/moshi-hooks-tui/tui.js
