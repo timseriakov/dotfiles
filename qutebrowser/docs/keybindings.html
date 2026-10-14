@@ -344,15 +344,10 @@
         color: #aeb8c9;
         font-size: 12px;
       }
-      .registry-table .command summary {
-        cursor: pointer;
-        color: var(--nord8);
-        font-size: 11px;
-      }
       .registry-table .command code {
         display: block;
         max-width: 520px;
-        margin-top: 6px;
+        margin-top: 0;
         overflow-wrap: anywhere;
         white-space: pre-wrap;
       }
@@ -411,7 +406,7 @@
         <p class="eyebrow">qutebrowser / personal setup</p>
         <h1>Мышь? Не сегодня.</h1>
         <p class="hero-copy">
-          Личная конфигурация qutebrowser: 142 команды для тех, кто любит
+          Личная конфигурация qutebrowser: 141 команда для тех, кто любит
           управлять браузером с клавиатуры.
         </p>
       </header>
@@ -453,7 +448,7 @@
               <tbody>
                 <tr data-keys="e">
                   <td>
-                    <div class="key-stack"><kbd class="key">E</kbd></div>
+                    <div class="key-stack"><kbd class="key">e</kbd></div>
                   </td>
                   <td class="description">
                     Перезагрузить текущую страницу<small
@@ -465,7 +460,7 @@
                 <tr data-keys="w r k j">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">W / R</kbd><kbd class="key">K / J</kbd>
+                      <kbd class="key">w / r</kbd><kbd class="key">k / j</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -478,7 +473,7 @@
                 <tr data-keys="cmd-h cmd-j cmd-k cmd-l">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">⌘ H / J / K / L</kbd>
+                      <kbd class="key">⌘ h / j / k / l</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -491,7 +486,7 @@
                 </tr>
                 <tr data-keys="z q">
                   <td>
-                    <div class="key-stack"><kbd class="key">Z / Q</kbd></div>
+                    <div class="key-stack"><kbd class="key">z / q</kbd></div>
                   </td>
                   <td class="description">
                     Отменить последнее действие<small><code>undo</code></small>
@@ -500,7 +495,7 @@
                 </tr>
                 <tr data-keys="d u">
                   <td>
-                    <div class="key-stack"><kbd class="key">D / U</kbd></div>
+                    <div class="key-stack"><kbd class="key">d / u</kbd></div>
                   </td>
                   <td class="description">
                     Прокрутить страницу примерно на половину экрана вниз /
@@ -528,7 +523,7 @@
                 <tr data-keys="f F">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">F</kbd><kbd class="key">Shift F</kbd>
+                      <kbd class="key">f</kbd><kbd class="key">Shift F</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -541,7 +536,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="gi">
-                  <td><kbd class="key">G I</kbd></td>
+                  <td><kbd class="key">g i</kbd></td>
                   <td class="description">
                     Перейти к первому полю ввода<small
                       ><code>hint inputs --first</code></small
@@ -551,7 +546,7 @@
                 </tr>
                 <tr data-keys="v">
                   <td>
-                    <div class="key-stack"><kbd class="key">V</kbd></div>
+                    <div class="key-stack"><kbd class="key">v</kbd></div>
                   </td>
                   <td class="description">
                     Войти в режим выделения текстового курсора<small
@@ -563,7 +558,7 @@
                 <tr data-keys="ctrl-v ctrl-a">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">Ctrl V</kbd><kbd class="key">Ctrl A</kbd>
+                      <kbd class="key">Ctrl v</kbd><kbd class="key">Ctrl a</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -599,7 +594,7 @@
                 <tr data-keys="yy yl">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">Y Y</kbd><kbd class="key">Y L</kbd>
+                      <kbd class="key">y y</kbd><kbd class="key">y l</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -613,7 +608,7 @@
                 <tr data-keys="p P">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">P</kbd><kbd class="key">Shift P</kbd>
+                      <kbd class="key">p</kbd><kbd class="key">Shift P</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -626,7 +621,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="ctrl-b">
-                  <td><kbd class="key">Ctrl B</kbd></td>
+                  <td><kbd class="key">Ctrl b</kbd></td>
                   <td class="description">
                     Добавить текущую страницу в закладки<small
                       ><code>bookmark-add</code></small
@@ -636,21 +631,11 @@
                 </tr>
                 <tr data-keys="m">
                   <td>
-                    <div class="key-stack"><kbd class="key">M</kbd></div>
+                    <div class="key-stack"><kbd class="key">m</kbd></div>
                   </td>
                   <td class="description">
                     Сохранить текущую страницу как quickmark<small
                       ><code>quickmark-save</code></small
-                    >
-                  </td>
-                  <td><span class="tag mode">обычный</span></td>
-                </tr>
-                <tr data-keys="sr">
-                  <td><kbd class="key">S R</kbd></td>
-                  <td class="description">
-                    Нажать кнопку копирования README на GitHub, если она есть на
-                    странице<small
-                      ><code>jseval … data-readme-copy-button</code></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -679,7 +664,7 @@
               </thead>
               <tbody>
                 <tr data-keys="space m">
-                  <td><kbd class="key">Space M</kbd></td>
+                  <td><kbd class="key">Space m</kbd></td>
                   <td class="description">
                     Открыть текущий URL в mpv<small
                       ><code>spawn … mpv {url}</code></small
@@ -688,7 +673,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space i">
-                  <td><kbd class="key">Space I</kbd></td>
+                  <td><kbd class="key">Space i</kbd></td>
                   <td class="description">
                     Открыть текущий URL в IINA<small
                       ><code>spawn open -a IINA {url}</code></small
@@ -697,7 +682,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space h">
-                  <td><kbd class="key">Space H</kbd></td>
+                  <td><kbd class="key">Space h</kbd></td>
                   <td class="description">
                     Открыть историю через fzf<small
                       ><code>fzfhistory-userscript</code></small
@@ -715,7 +700,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space b">
-                  <td><kbd class="key">Space B</kbd></td>
+                  <td><kbd class="key">Space b</kbd></td>
                   <td class="description">
                     Сохранить страницу в Braindrop<small
                       ><code>braindrop</code></small
@@ -724,7 +709,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space r">
-                  <td><kbd class="key">Space R</kbd></td>
+                  <td><kbd class="key">Space r</kbd></td>
                   <td class="description">
                     Сохранить URL и заголовок в Raindrop<small
                       ><code>raindrop {url} {title}</code></small
@@ -738,7 +723,7 @@
                       <kbd class="key">Space O S</kbd
                       ><kbd class="key">Space O X</kbd
                       ><kbd class="key">Space O I</kbd
-                      ><kbd class="key">Space O O</kbd>
+                      ><kbd class="key">Space o o</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -801,7 +786,7 @@
               </thead>
               <tbody>
                 <tr data-keys="space tr">
-                  <td><kbd class="key">Space T R</kbd></td>
+                  <td><kbd class="key">Space t r</kbd></td>
                   <td class="description">
                     Перевести текущую страницу через Google Translate. Если
                     перевод уже открыт — вернуться к оригиналу<small
@@ -811,7 +796,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space te">
-                  <td><kbd class="key">Space T E</kbd></td>
+                  <td><kbd class="key">Space t e</kbd></td>
                   <td class="description">
                     Перевести текущую страницу через Яндекс Переводчик. Если
                     перевод уже открыт — вернуться к оригиналу<small
@@ -821,7 +806,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ty">
-                  <td><kbd class="key">Space T Y</kbd></td>
+                  <td><kbd class="key">Space t y</kbd></td>
                   <td class="description">
                     То же действие, что Space T E: перевод через Яндекс на
                     русский язык<small
@@ -831,7 +816,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ts">
-                  <td><kbd class="key">Space T S</kbd></td>
+                  <td><kbd class="key">Space t s</kbd></td>
                   <td class="description">
                     Запустить фоновый сервис перевода выделенного текста<small
                       ><code
@@ -842,7 +827,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tx">
-                  <td><kbd class="key">Space T X</kbd></td>
+                  <td><kbd class="key">Space t x</kbd></td>
                   <td class="description">
                     Остановить сервис перевода выделенного текста<small
                       ><code
@@ -853,7 +838,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tt">
-                  <td><kbd class="key">Space T T</kbd></td>
+                  <td><kbd class="key">Space t t</kbd></td>
                   <td class="description">
                     Показать состояние сервиса перевода выделенного текста<small
                       ><code
@@ -864,7 +849,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="cc">
-                  <td><kbd class="key">C C</kbd></td>
+                  <td><kbd class="key">c c</kbd></td>
                   <td class="description">
                     Перевести текущую страницу через локальный
                     qute-translate<small><code>qute-translate</code></small>
@@ -872,7 +857,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space cc">
-                  <td><kbd class="key">Space C C</kbd></td>
+                  <td><kbd class="key">Space c c</kbd></td>
                   <td class="description">
                     Перечитать конфигурацию qutebrowser и показать
                     подтверждение<small><code>config-source</code></small>
@@ -901,7 +886,7 @@
               </thead>
               <tbody>
                 <tr data-keys="space ce">
-                  <td><kbd class="key">Space C E</kbd></td>
+                  <td><kbd class="key">Space c e</kbd></td>
                   <td class="description">
                     Открыть файл конфигурации в редакторе<small
                       ><code>config-edit</code></small
@@ -910,14 +895,14 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ch">
-                  <td><kbd class="key">Space C H</kbd></td>
+                  <td><kbd class="key">Space c h</kbd></td>
                   <td class="description">
                     Открыть справку qutebrowser<small><code>help</code></small>
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space cs">
-                  <td><kbd class="key">Space C S</kbd></td>
+                  <td><kbd class="key">Space c s</kbd></td>
                   <td class="description">
                     Открыть строку команд qutebrowser для изменения
                     настроек<small><code>cmd-set-text -s :set -t</code></small>
@@ -925,7 +910,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space uy">
-                  <td><kbd class="key">Space U Y</kbd></td>
+                  <td><kbd class="key">Space u y</kbd></td>
                   <td class="description">
                     Переключать видимость вкладок: всегда, только если их
                     несколько или скрыть<small
@@ -935,7 +920,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space uu">
-                  <td><kbd class="key">Space U U</kbd></td>
+                  <td><kbd class="key">Space u u</kbd></td>
                   <td class="description">
                     Переключать видимость статусбара: всегда или только при
                     вводе команды<small
@@ -945,7 +930,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space uh">
-                  <td><kbd class="key">Space U H</kbd></td>
+                  <td><kbd class="key">Space u h</kbd></td>
                   <td class="description">
                     Переключить компактный режим панели вкладок<small
                       ><code>toggle-tabs-status</code></small
@@ -954,7 +939,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ua">
-                  <td><kbd class="key">Space U A</kbd></td>
+                  <td><kbd class="key">Space u a</kbd></td>
                   <td class="description">
                     Включить автовоспроизведение<small
                       ><code>content.autoplay true</code></small
@@ -963,7 +948,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space uf">
-                  <td><kbd class="key">Space U F</kbd></td>
+                  <td><kbd class="key">Space u f</kbd></td>
                   <td class="description">
                     Выключить автовоспроизведение<small
                       ><code>content.autoplay false</code></small
@@ -975,7 +960,7 @@
                   <td>
                     <div class="key-stack">
                       <kbd class="key">D</kbd
-                      ><kbd class="key">Space U N / U I</kbd>
+                      ><kbd class="key">Space u n / u i</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1007,14 +992,14 @@
               </thead>
               <tbody>
                 <tr data-keys="space dd">
-                  <td><kbd class="key">Space D D</kbd></td>
+                  <td><kbd class="key">Space d d</kbd></td>
                   <td class="description">
                     Открыть DevTools<small><code>devtools</code></small>
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space de">
-                  <td><kbd class="key">Space D E</kbd></td>
+                  <td><kbd class="key">Space d e</kbd></td>
                   <td class="description">
                     Редактировать текстовое поле через внешний редактор<small
                       ><code>edit-text</code></small
@@ -1023,7 +1008,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space dc">
-                  <td><kbd class="key">Space D C</kbd></td>
+                  <td><kbd class="key">Space d c</kbd></td>
                   <td class="description">
                     Открыть команду редактирования<small
                       ><code>cmd-edit</code></small
@@ -1032,7 +1017,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space df">
-                  <td><kbd class="key">Space D F</kbd></td>
+                  <td><kbd class="key">Space d f</kbd></td>
                   <td class="description">
                     Переключить фокус на DevTools<small
                       ><code>devtools-focus</code></small
@@ -1041,7 +1026,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space dp">
-                  <td><kbd class="key">Space D P</kbd></td>
+                  <td><kbd class="key">Space d p</kbd></td>
                   <td class="description">
                     Сделать timestamp-скриншот в папку Screenshots<small
                       ><code
@@ -1052,7 +1037,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space dy">
-                  <td><kbd class="key">Space D Y</kbd></td>
+                  <td><kbd class="key">Space d y</kbd></td>
                   <td class="description">
                     Сделать скриншот viewport и скопировать его в буфер<small
                       ><code>copy-png-to-clipboard</code></small
@@ -1061,7 +1046,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space dY">
-                  <td><kbd class="key">Space D Shift Y</kbd></td>
+                  <td><kbd class="key">Space d Shift Y</kbd></td>
                   <td class="description">
                     Запустить захват полной страницы в буфер<small
                       ><code>fullpage-to-clipboard</code></small
@@ -1070,7 +1055,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ds">
-                  <td><kbd class="key">Space D S</kbd></td>
+                  <td><kbd class="key">Space d s</kbd></td>
                   <td class="description">
                     Открыть исходник страницы для редактирования<small
                       ><code>view-source --edit</code></small
@@ -1079,7 +1064,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space dz">
-                  <td><kbd class="key">Space D Z</kbd></td>
+                  <td><kbd class="key">Space d z</kbd></td>
                   <td class="description">
                     Открыть исходник страницы<small
                       ><code>view-source</code></small
@@ -1088,7 +1073,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fc">
-                  <td><kbd class="key">Space F C</kbd></td>
+                  <td><kbd class="key">Space f c</kbd></td>
                   <td class="description">
                     Выбрать ссылку и скопировать её адрес<small
                       ><code>hint links yank --rapid</code></small
@@ -1097,7 +1082,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ff">
-                  <td><kbd class="key">Space F F</kbd></td>
+                  <td><kbd class="key">Space f f</kbd></td>
                   <td class="description">
                     Быстро открыть ссылку в новой вкладке<small
                       ><code>hint links tab --rapid</code></small
@@ -1106,7 +1091,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fb">
-                  <td><kbd class="key">Space F B</kbd></td>
+                  <td><kbd class="key">Space f b</kbd></td>
                   <td class="description">
                     Быстро открыть ссылку в фоновой вкладке<small
                       ><code>hint links tab-bg --rapid</code></small
@@ -1115,7 +1100,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fi">
-                  <td><kbd class="key">Space F I</kbd></td>
+                  <td><kbd class="key">Space f i</kbd></td>
                   <td class="description">
                     Показать подсказки на полях ввода<small
                       ><code>hint inputs</code></small
@@ -1124,7 +1109,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fo">
-                  <td><kbd class="key">Space F O</kbd></td>
+                  <td><kbd class="key">Space f o</kbd></td>
                   <td class="description">
                     Выбрать ссылку и открыть её в новом окне<small
                       ><code>hint links window</code></small
@@ -1133,7 +1118,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fp">
-                  <td><kbd class="key">Space F P</kbd></td>
+                  <td><kbd class="key">Space f p</kbd></td>
                   <td class="description">
                     Открыть выбранную ссылку в приватном окне<small
                       ><code>hint links run :open -p {hint-url}</code></small
@@ -1142,7 +1127,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fv">
-                  <td><kbd class="key">Space F V</kbd></td>
+                  <td><kbd class="key">Space f v</kbd></td>
                   <td class="description">
                     Открыть выбранную ссылку в mpv<small
                       ><code>hint links spawn mpv {hint-url}</code></small
@@ -1151,7 +1136,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fI">
-                  <td><kbd class="key">Space F Shift I</kbd></td>
+                  <td><kbd class="key">Space f Shift I</kbd></td>
                   <td class="description">
                     Открыть выбранную ссылку в IINA<small
                       ><code
@@ -1162,7 +1147,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fy">
-                  <td><kbd class="key">Space F Y</kbd></td>
+                  <td><kbd class="key">Space f y</kbd></td>
                   <td class="description">
                     Скопировать адрес выбранной ссылки<small
                       ><code>hint links yank</code></small
@@ -1171,7 +1156,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fx">
-                  <td><kbd class="key">Space F X</kbd></td>
+                  <td><kbd class="key">Space f x</kbd></td>
                   <td class="description">
                     Открыть выбранную ссылку в Helium<small
                       ><code
@@ -1182,7 +1167,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fd">
-                  <td><kbd class="key">Space F D</kbd></td>
+                  <td><kbd class="key">Space f d</kbd></td>
                   <td class="description">
                     Отправить выбранную ссылку в Surge<small
                       ><code>hint links userscript surge-add</code></small
@@ -1191,7 +1176,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space fD">
-                  <td><kbd class="key">Space F Shift D</kbd></td>
+                  <td><kbd class="key">Space f Shift D</kbd></td>
                   <td class="description">
                     Запустить принудительное добавление в Surge<small
                       ><code>spawn -u surge-add --force</code></small
@@ -1223,9 +1208,9 @@
                 <tr data-keys="x cmd-q cmd-shift-w space qd">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">X</kbd><kbd class="key">⌘ Q</kbd
+                      <kbd class="key">x</kbd><kbd class="key">⌘ Q</kbd
                       ><kbd class="key">⌘ Shift W</kbd
-                      ><kbd class="key">Space Q D</kbd>
+                      ><kbd class="key">Space q d</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1234,7 +1219,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space qq">
-                  <td><kbd class="key">Space Q Q</kbd></td>
+                  <td><kbd class="key">Space q q</kbd></td>
                   <td class="description">
                     Сохранить сессию и полностью завершить qutebrowser<small
                       ><code>quit --save</code></small
@@ -1243,21 +1228,21 @@
                   <td><span class="tag special">важное</span></td>
                 </tr>
                 <tr data-keys="space ww">
-                  <td><kbd class="key">Space W W</kbd></td>
+                  <td><kbd class="key">Space w w</kbd></td>
                   <td class="description">
                     Закрыть только текущее окно<small><code>close</code></small>
                   </td>
                   <td><span class="tag special">важное</span></td>
                 </tr>
                 <tr data-keys="space qr">
-                  <td><kbd class="key">Space Q R</kbd></td>
+                  <td><kbd class="key">Space q r</kbd></td>
                   <td class="description">
                     Перезапустить qutebrowser<small><code>restart</code></small>
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space qt">
-                  <td><kbd class="key">Space Q T</kbd></td>
+                  <td><kbd class="key">Space q t</kbd></td>
                   <td class="description">
                     Оставить только текущую вкладку<small
                       ><code>tab-only</code></small
@@ -1266,7 +1251,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space qw">
-                  <td><kbd class="key">Space Q W</kbd></td>
+                  <td><kbd class="key">Space q w</kbd></td>
                   <td class="description">
                     Оставить только текущее окно<small
                       ><code>window-only</code></small
@@ -1275,7 +1260,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space ts">
-                  <td><kbd class="key">Space T S</kbd></td>
+                  <td><kbd class="key">Space t s</kbd></td>
                   <td class="description">
                     Сохранить текущую страницу как закладку<small
                       ><code>bookmark-add</code></small
@@ -1284,7 +1269,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tq">
-                  <td><kbd class="key">Space T Q</kbd></td>
+                  <td><kbd class="key">Space t q</kbd></td>
                   <td class="description">
                     Показать список quickmarks<small
                       ><code>bookmark-list</code></small
@@ -1293,7 +1278,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tc">
-                  <td><kbd class="key">Space T C</kbd></td>
+                  <td><kbd class="key">Space t c</kbd></td>
                   <td class="description">
                     Клонировать текущую вкладку<small
                       ><code>tab-clone</code></small
@@ -1302,7 +1287,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space td">
-                  <td><kbd class="key">Space T D</kbd></td>
+                  <td><kbd class="key">Space t d</kbd></td>
                   <td class="description">
                     Клонировать вкладку в новое окно<small
                       ><code>tab-clone -w</code></small
@@ -1311,7 +1296,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tn">
-                  <td><kbd class="key">Space T N</kbd></td>
+                  <td><kbd class="key">Space t n</kbd></td>
                   <td class="description">
                     Передать вкладку в другое окно<small
                       ><code>tab-give</code></small
@@ -1320,7 +1305,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space th">
-                  <td><kbd class="key">Space T H</kbd></td>
+                  <td><kbd class="key">Space t h</kbd></td>
                   <td class="description">
                     Открыть историю посещений<small><code>history</code></small>
                   </td>
@@ -1330,7 +1315,7 @@
                   <td>
                     <div class="key-stack">
                       <kbd class="key">Space T P</kbd
-                      ><kbd class="key">Space T T</kbd>
+                      ><kbd class="key">Space t t</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1343,7 +1328,7 @@
                 <tr data-keys="space n cmd-n">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">Space N</kbd><kbd class="key">⌘ N</kbd>
+                      <kbd class="key">Space n</kbd><kbd class="key">⌘ n</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1359,7 +1344,7 @@
                       <kbd class="key">Space S S</kbd
                       ><kbd class="key">Space S Q</kbd
                       ><kbd class="key">Space S W</kbd
-                      ><kbd class="key">Space S D</kbd>
+                      ><kbd class="key">Space s d</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1369,7 +1354,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space sc">
-                  <td><kbd class="key">Space S C</kbd></td>
+                  <td><kbd class="key">Space s c</kbd></td>
                   <td class="description">
                     Очистить сохранённые сессии<small
                       ><code>session-clean</code></small
@@ -1378,7 +1363,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space sz">
-                  <td><kbd class="key">Space S Z</kbd></td>
+                  <td><kbd class="key">Space s z</kbd></td>
                   <td class="description">
                     Переключить ленивое восстановление сессии<small
                       ><code>session.lazy_restore</code></small
@@ -1397,7 +1382,7 @@
                       ><kbd class="key">Space S L</kbd
                       ><kbd class="key">Space S D</kbd
                       ><kbd class="key">Space S R</kbd
-                      ><kbd class="key">Space S Shift S</kbd>
+                      ><kbd class="key">Space s Shift S</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1433,7 +1418,7 @@
               </thead>
               <tbody>
                 <tr data-keys="gg">
-                  <td><kbd class="key">G G</kbd></td>
+                  <td><kbd class="key">g g</kbd></td>
                   <td class="description">
                     Перейти в начало страницы<small
                       ><code>scroll-to-perc 0</code></small
@@ -1442,7 +1427,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="g">
-                  <td><kbd class="key">G</kbd></td>
+                  <td><kbd class="key">g</kbd></td>
                   <td class="description">
                     Перейти в конец страницы<small
                       ><code>scroll-to-perc 100</code></small
@@ -1454,7 +1439,7 @@
                   <td>
                     <div class="key-stack">
                       <kbd class="key">Space Space</kbd
-                      ><kbd class="key">⌘ S</kbd>
+                      ><kbd class="key">⌘ s</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1465,7 +1450,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="ge">
-                  <td><kbd class="key">G E</kbd></td>
+                  <td><kbd class="key">g e</kbd></td>
                   <td class="description">
                     Открыть текущий URL через строку <code>:open</code
                     ><small><code>cmd-set-text -s :open {url}</code></small>
@@ -1473,7 +1458,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tm">
-                  <td><kbd class="key">Space T M</kbd></td>
+                  <td><kbd class="key">Space t m</kbd></td>
                   <td class="description">
                     Открыть команду перемещения вкладки<small
                       ><code>:tab-move</code></small
@@ -1482,7 +1467,7 @@
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space tw">
-                  <td><kbd class="key">Space T W</kbd></td>
+                  <td><kbd class="key">Space t w</kbd></td>
                   <td class="description">
                     Открыть команду передачи вкладки<small
                       ><code>:tab-take</code></small
@@ -1506,7 +1491,7 @@
                 </tr>
                 <tr data-keys="gu">
                   <td>
-                    <div class="key-stack"><kbd class="key">G U</kbd></div>
+                    <div class="key-stack"><kbd class="key">g u</kbd></div>
                   </td>
                   <td class="description">
                     Подняться на один уровень URL<small
@@ -1548,7 +1533,7 @@
                 <tr data-keys="ctrl-v ctrl-a">
                   <td>
                     <div class="key-stack">
-                      <kbd class="key">Ctrl V</kbd><kbd class="key">Ctrl A</kbd>
+                      <kbd class="key">Ctrl v</kbd><kbd class="key">Ctrl a</kbd>
                     </div>
                   </td>
                   <td class="description">
@@ -1568,7 +1553,7 @@
                   <td><span class="tag mode">insert</span></td>
                 </tr>
                 <tr data-keys="cmd-s">
-                  <td><kbd class="key">⌘ S</kbd></td>
+                  <td><kbd class="key">⌘ s</kbd></td>
                   <td class="description">
                     Выйти из командного режима<small
                       ><code>mode-leave</code></small
@@ -1586,7 +1571,7 @@
       <section class="section" data-section="registry">
         <div class="section-head">
           <div>
-            <h2 class="section-title">Полный реестр · 142 команды</h2>
+            <h2 class="section-title">Полный реестр · 141 команда</h2>
             <p class="section-note" style="text-align: left">
               Источник истины: все BindingSpec и поздняя привязка
               <span class="mono">sS</span>. Здесь показаны только основные
@@ -1612,14 +1597,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">E</kbd></div>
+                  <div class="key-stack"><kbd class="key">e</kbd></div>
                 </td>
                 <td class="description">
                   Перезагрузить текущую страницу.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>reload</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1632,14 +1616,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">W</kbd></div>
+                  <div class="key-stack"><kbd class="key">w</kbd></div>
                 </td>
                 <td class="description">
                   Перейти к предыдущей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-prev</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1652,14 +1635,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">R</kbd></div>
+                  <div class="key-stack"><kbd class="key">r</kbd></div>
                 </td>
                 <td class="description">
                   Перейти к следующей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-next</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1676,10 +1658,9 @@
                 </td>
                 <td class="description">
                   Перейти к следующей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-next</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1696,10 +1677,9 @@
                 </td>
                 <td class="description">
                   Перейти к предыдущей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-prev</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1712,17 +1692,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ H</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ h</kbd></div>
                 </td>
                 <td class="description">
                   Переключить фокус на предыдущее окно qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >debug-pyeval --quiet --file
                       ~/dev/dotfiles/qutebrowser/scripts/window-cycle-prev.py</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1735,14 +1714,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ J</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ j</kbd></div>
                 </td>
                 <td class="description">
                   Перейти к предыдущей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-prev</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1755,14 +1733,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ K</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ k</kbd></div>
                 </td>
                 <td class="description">
                   Перейти к следующей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-next</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -1775,17 +1752,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ L</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ l</kbd></div>
                 </td>
                 <td class="description">
                   Переключить фокус на следующее окно qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >debug-pyeval --quiet --file
                       ~/dev/dotfiles/qutebrowser/scripts/window-cycle-next.py</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1798,14 +1774,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Z</kbd></div>
+                  <div class="key-stack"><kbd class="key">z</kbd></div>
                 </td>
                 <td class="description">
                   Отменить последнее действие.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>undo</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1818,14 +1793,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Q</kbd></div>
+                  <div class="key-stack"><kbd class="key">q</kbd></div>
                 </td>
                 <td class="description">
                   Отменить последнее действие.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>undo</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1838,14 +1812,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">D</kbd></div>
+                  <div class="key-stack"><kbd class="key">d</kbd></div>
                 </td>
                 <td class="description">
                   Прокрутить страницу примерно на половину экрана вниз.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>scroll-page 0 0.5</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1858,14 +1831,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">U</kbd></div>
+                  <div class="key-stack"><kbd class="key">u</kbd></div>
                 </td>
                 <td class="description">
                   Прокрутить страницу примерно на половину экрана вверх.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>scroll-page 0 -0.5</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1878,14 +1850,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">V</kbd></div>
+                  <div class="key-stack"><kbd class="key">v</kbd></div>
                 </td>
                 <td class="description">
                   Войти в режим выделения текстовым курсором.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>mode-enter caret</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1898,17 +1869,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Ctrl V</kbd></div>
+                  <div class="key-stack"><kbd class="key">Ctrl v</kbd></div>
                 </td>
                 <td class="description">
                   Войти в passthrough-режим и передать ввод странице.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; mode-enter
                       passthrough</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1921,14 +1891,13 @@
                 data-mode="passthrough"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Ctrl V</kbd></div>
+                  <div class="key-stack"><kbd class="key">Ctrl v</kbd></div>
                 </td>
                 <td class="description">
                   Выйти из текущего специального режима.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>mode-leave</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1943,17 +1912,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Ctrl A</kbd></div>
+                  <div class="key-stack"><kbd class="key">Ctrl a</kbd></div>
                 </td>
                 <td class="description">
                   Войти в passthrough-режим и передать ввод странице.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; mode-enter
                       passthrough</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1966,14 +1934,13 @@
                 data-mode="passthrough"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Ctrl A</kbd></div>
+                  <div class="key-stack"><kbd class="key">Ctrl a</kbd></div>
                 </td>
                 <td class="description">
                   Выйти из текущего специального режима.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>mode-leave</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -1992,10 +1959,9 @@
                 </td>
                 <td class="description">
                   Перейти назад по истории браузера.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>back</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2012,10 +1978,9 @@
                 </td>
                 <td class="description">
                   Перейти вперёд по истории браузера.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>forward</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2032,10 +1997,9 @@
                 </td>
                 <td class="description">
                   Перейти назад по истории браузера.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>back</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2052,10 +2016,9 @@
                 </td>
                 <td class="description">
                   Перейти вперёд по истории браузера.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>forward</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2068,14 +2031,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">F</kbd></div>
+                  <div class="key-stack"><kbd class="key">f</kbd></div>
                 </td>
                 <td class="description">
                   Показать подсказки на ссылках и открыть выбранную ссылку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2092,10 +2054,9 @@
                 </td>
                 <td class="description">
                   Показать подсказки и открыть ссылку в фоновой вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links tab-bg</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2108,14 +2069,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">G I</kbd></div>
+                  <div class="key-stack"><kbd class="key">g i</kbd></div>
                 </td>
                 <td class="description">
                   Перейти к первому полю ввода.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint inputs --first</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2128,39 +2088,15 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Y Y</kbd></div>
+                  <div class="key-stack"><kbd class="key">y y</kbd></div>
                 </td>
                 <td class="description">
                   Скопировать URL текущей страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>yank</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
-                <td>
-                  <span class="tag mode" data-mode="normal">обычный</span>
-                </td>
-              </tr>
-              <tr
-                data-registry="true"
-                data-keys='sr S R jseval -q document.querySelector("[data-readme-copy-button]")?.click() README GitHub, есть.'
-                data-mode="normal"
-              >
-                <td>
-                  <div class="key-stack"><kbd class="key">S R</kbd></div>
-                </td>
-                <td class="description">
-                  Нажать кнопку копирования README на GitHub, если она есть.
-                  <details class="command">
-                    <summary>Команда</summary>
-                    <code
-                      >jseval -q
-                      document.querySelector(&quot;[data-readme-copy-button]&quot;)?.click()</code
-                    >
-                  </details>
-                </td>
-                <td><span class="tag category">Навигация</span></td>
                 <td>
                   <span class="tag mode" data-mode="normal">обычный</span>
                 </td>
@@ -2171,14 +2107,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Y L</kbd></div>
+                  <div class="key-stack"><kbd class="key">y l</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и скопировать её адрес.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links yank</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2191,14 +2126,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">P</kbd></div>
+                  <div class="key-stack"><kbd class="key">p</kbd></div>
                 </td>
                 <td class="description">
                   Открыть URL из буфера в текущей вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>open {clipboard}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2215,10 +2149,9 @@
                 </td>
                 <td class="description">
                   Открыть URL из буфера в новой вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>open --tab {clipboard}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2231,14 +2164,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">X</kbd></div>
+                  <div class="key-stack"><kbd class="key">x</kbd></div>
                 </td>
                 <td class="description">
                   Закрыть текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-close</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2255,10 +2187,9 @@
                 </td>
                 <td class="description">
                   Закрыть текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-close</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2271,14 +2202,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ Q</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ q</kbd></div>
                 </td>
                 <td class="description">
                   Закрыть текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-close</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2295,10 +2225,9 @@
                 </td>
                 <td class="description">
                   Переместить текущую вкладку влево.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-move -</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2315,10 +2244,9 @@
                 </td>
                 <td class="description">
                   Переместить текущую вкладку вправо.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-move +</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2335,10 +2263,9 @@
                 </td>
                 <td class="description">
                   Начать поиск вперёд по странице.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text /</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2355,10 +2282,9 @@
                 </td>
                 <td class="description">
                   Начать поиск назад по странице.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text ?</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2371,14 +2297,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Ctrl B</kbd></div>
+                  <div class="key-stack"><kbd class="key">Ctrl b</kbd></div>
                 </td>
                 <td class="description">
                   Добавить текущую страницу в закладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>bookmark-add</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2395,10 +2320,9 @@
                 </td>
                 <td class="description">
                   Сохранить текущую страницу как quickmark.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>quickmark-save</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2415,10 +2339,9 @@
                 </td>
                 <td class="description">
                   Открыть настройки qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>open qute://settings</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2431,14 +2354,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">G U</kbd></div>
+                  <div class="key-stack"><kbd class="key">g u</kbd></div>
                 </td>
                 <td class="description">
                   Подняться на один уровень URL.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>navigate up</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -2451,14 +2373,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space M</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space m</kbd></div>
                 </td>
                 <td class="description">
                   Открыть текущую страницу или медиафайл в mpv.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn /opt/homebrew/bin/mpv {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Медиа</span></td>
                 <td>
@@ -2471,14 +2392,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space I</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space i</kbd></div>
                 </td>
                 <td class="description">
                   Открыть текущую страницу или медиафайл в IINA.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn open -a IINA {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Медиа</span></td>
                 <td>
@@ -2491,14 +2411,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space H</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space h</kbd></div>
                 </td>
                 <td class="description">
                   Открыть историю браузера через fzf.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u fzfhistory-userscript</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2517,10 +2436,9 @@
                 </td>
                 <td class="description">
                   Открыть историю закрытых вкладок через fzf.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u fzfhistory-userscript closed-tabs</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -2533,14 +2451,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space B</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space b</kbd></div>
                 </td>
                 <td class="description">
                   Сохранить текущую страницу в Braindrop.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u braindrop</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2553,14 +2470,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space R</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space r</kbd></div>
                 </td>
                 <td class="description">
                   Сохранить URL и заголовок страницы в Raindrop.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u raindrop {url} {title}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2573,14 +2489,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space O S</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space o s</kbd></div>
                 </td>
                 <td class="description">
                   Запустить Tor.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tor-start</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2593,14 +2508,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space O X</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space o x</kbd></div>
                 </td>
                 <td class="description">
                   Остановить Tor.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tor-stop</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2613,14 +2527,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space O I</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space o i</kbd></div>
                 </td>
                 <td class="description">
                   Показать статус Tor.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tor-status</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2633,14 +2546,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space O O</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space o o</kbd></div>
                 </td>
                 <td class="description">
                   Переключить состояние Tor.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tor-toggle</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2659,10 +2571,9 @@
                 </td>
                 <td class="description">
                   Запустить keychain-login.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u keychain-login</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2681,10 +2592,9 @@
                 </td>
                 <td class="description">
                   Запустить keychain-login.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u keychain-login</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td><span class="tag mode" data-mode="insert">insert</span></td>
@@ -2695,14 +2605,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space P</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space p</kbd></div>
                 </td>
                 <td class="description">
                   Запустить keychain-login.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u keychain-login</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2721,10 +2630,9 @@
                 </td>
                 <td class="description">
                   Открыть keychain-login с выбором записи.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u keychain-login --pick</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2737,14 +2645,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space L</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space l</kbd></div>
                 </td>
                 <td class="description">
                   Запустить qpw.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript qpw</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2763,10 +2670,9 @@
                 </td>
                 <td class="description">
                   Запустить qpw с выбором записи.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript qpw --pick</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сервисы</span></td>
                 <td>
@@ -2780,19 +2686,18 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space T Shift R</kbd>
+                    <kbd class="key">Space t Shift R</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Отправить странице клавишу F2.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >jseval --quiet document.dispatchEvent(new
                       KeyboardEvent(&quot;keydown&quot;, {key: &quot;F2&quot;,
                       keyCode: 113}))</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2805,18 +2710,17 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T F</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t f</kbd></div>
                 </td>
                 <td class="description">
                   Отправить странице клавишу F2.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >jseval --quiet document.dispatchEvent(new
                       KeyboardEvent(&quot;keydown&quot;, {key: &quot;F2&quot;,
                       keyCode: 113}))</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -2829,13 +2733,12 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T R</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t r</kbd></div>
                 </td>
                 <td class="description">
                   Перевести страницу через Google Translate или вернуть
                   оригинал.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >jseval -q (function(){const
                       t=&quot;translate.google.com&quot;;if(window.location.hostname.includes(t)){const
@@ -2843,7 +2746,7 @@
                       URLSearchParams(window.location.search).get(&quot;u&quot;);e&amp;&amp;(window.location.href=e)}else{const
                       e=&quot;ru&quot;,o=`https://translate.google.com/translate?sl=auto&amp;tl=${e}&amp;u=${encodeURIComponent(window.location.href)}`;window.location.href=o}})();</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2856,13 +2759,12 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T E</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t e</kbd></div>
                 </td>
                 <td class="description">
                   Перевести страницу через Яндекс Переводчик или вернуть
                   оригинал.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >jseval -q (function(){const
                       t=&quot;translate.yandex.ru&quot;;if(window.location.hostname.includes(t)){const
@@ -2870,7 +2772,7 @@
                       URLSearchParams(window.location.search).get(&quot;url&quot;);u&amp;&amp;(window.location.href=u)}else{const
                       u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})();</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2883,13 +2785,12 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T Y</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t y</kbd></div>
                 </td>
                 <td class="description">
                   Перевести страницу через Яндекс Переводчик или вернуть
                   оригинал.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >jseval -q (function(){const
                       t=&quot;translate.yandex.ru&quot;;if(window.location.hostname.includes(t)){const
@@ -2897,7 +2798,7 @@
                       URLSearchParams(window.location.search).get(&quot;url&quot;);u&amp;&amp;(window.location.href=u)}else{const
                       u=encodeURIComponent(window.location.href);window.location.href=`https://translate.yandex.ru/translate?url=${u}&amp;lang=auto-ru`}})();</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2911,18 +2812,17 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space T Shift S</kbd>
+                    <kbd class="key">Space t Shift S</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Запустить daemon перевода выделения.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn --userscript translate-selection-daemon-control
                       start</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2936,18 +2836,17 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space T Shift X</kbd>
+                    <kbd class="key">Space t Shift X</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Остановить daemon перевода выделения.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn --userscript translate-selection-daemon-control
                       stop</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2961,18 +2860,17 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space T Shift T</kbd>
+                    <kbd class="key">Space t Shift T</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Показать статус daemon перевода выделения.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn --userscript translate-selection-daemon-control
                       status</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -2985,14 +2883,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space C E</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space c e</kbd></div>
                 </td>
                 <td class="description">
                   Открыть конфигурацию в редакторе.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>config-edit</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3005,14 +2902,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space C H</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space c h</kbd></div>
                 </td>
                 <td class="description">
                   Открыть справку qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>help</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -3025,17 +2921,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space C C</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space c c</kbd></div>
                 </td>
                 <td class="description">
                   Перечитать конфигурацию qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >config-source ;; message-info &#x27;Config
                       reloaded&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3048,14 +2943,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U Y</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u y</kbd></div>
                 </td>
                 <td class="description">
                   Переключить режим отображения вкладок.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>config-cycle tabs.show multiple never</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3068,14 +2962,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U U</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u u</kbd></div>
                 </td>
                 <td class="description">
                   Переключить режим отображения статусбара.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>config-cycle statusbar.show always in-mode</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3088,14 +2981,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U H</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u h</kbd></div>
                 </td>
                 <td class="description">
                   Переключить компактный вид вкладок.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript toggle-tabs-status</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3108,17 +3000,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U A</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u a</kbd></div>
                 </td>
                 <td class="description">
                   Включить автовоспроизведение.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >:set content.autoplay true ;; message-info &#x27;Autoplay
                       enabled&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3131,17 +3022,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U F</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u f</kbd></div>
                 </td>
                 <td class="description">
                   Выключить автовоспроизведение.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >:set content.autoplay false ;; message-info
                       &#x27;Autoplay disabled&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3158,10 +3048,9 @@
                 </td>
                 <td class="description">
                   Переключить тёмный режим страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript toggle-darkmode</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3174,14 +3063,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U N</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u n</kbd></div>
                 </td>
                 <td class="description">
                   Переключить тёмный режим страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript toggle-darkmode</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3194,14 +3082,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space U I</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space u i</kbd></div>
                 </td>
                 <td class="description">
                   Переключить тёмный режим страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript toggle-darkmode</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -3214,14 +3101,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D D</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d d</kbd></div>
                 </td>
                 <td class="description">
                   Открыть DevTools.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>devtools</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3234,14 +3120,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D E</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d e</kbd></div>
                 </td>
                 <td class="description">
                   Редактировать текстовое поле во внешнем редакторе.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>edit-text</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3254,14 +3139,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D C</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d c</kbd></div>
                 </td>
                 <td class="description">
                   Открыть редактирование команды.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-edit</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3274,14 +3158,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D F</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d f</kbd></div>
                 </td>
                 <td class="description">
                   Переключить фокус на DevTools.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>devtools-focus</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3294,17 +3177,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D P</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d p</kbd></div>
                 </td>
                 <td class="description">
                   Сделать timestamp-скриншот.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >screenshot
                       ~/Documents/screenshotsqute-YYYY-MM-DD-HH-MM-SS.png</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3317,19 +3199,18 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D Y</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d y</kbd></div>
                 </td>
                 <td class="description">
                   Сделать скриншот viewport и скопировать его в буфер.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >screenshot --force /tmp/qute-clipboard.png ;; spawn
                       --userscript copy-png-to-clipboard /tmp/qute-clipboard.png
                       ;; message-info &#x27;Screenshot copied to
                       clipboard&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3343,18 +3224,17 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space D Shift Y</kbd>
+                    <kbd class="key">Space d Shift Y</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Запустить захват полной страницы в буфер.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn --userscript fullpage-to-clipboard ;; message-info
                       &#x27;Full-page capture started&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3367,14 +3247,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D S</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d s</kbd></div>
                 </td>
                 <td class="description">
                   Открыть исходник страницы для редактирования.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>view-source --edit</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3387,14 +3266,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space D Z</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space d z</kbd></div>
                 </td>
                 <td class="description">
                   Открыть исходник страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>view-source</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3407,14 +3285,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F C</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f c</kbd></div>
                 </td>
                 <td class="description">
                   Быстро выбрать ссылку и скопировать её адрес.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links yank --rapid</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3427,14 +3304,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F F</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f f</kbd></div>
                 </td>
                 <td class="description">
                   Быстро открыть ссылку в новой вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links tab --rapid</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3447,14 +3323,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F B</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f b</kbd></div>
                 </td>
                 <td class="description">
                   Быстро открыть ссылку в фоновой вкладке.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links tab-bg --rapid</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3467,14 +3342,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F I</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f i</kbd></div>
                 </td>
                 <td class="description">
                   Показать подсказки на полях ввода.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint inputs</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3487,14 +3361,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F O</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f o</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и открыть её в новом окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links window</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3507,14 +3380,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F P</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f p</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и открыть её в приватном окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links run :open -p {hint-url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3527,14 +3399,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F V</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f v</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и открыть её в mpv.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links spawn mpv {hint-url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3548,15 +3419,14 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space F Shift I</kbd>
+                    <kbd class="key">Space f Shift I</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и открыть её в IINA.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links spawn open -a IINA {hint-url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3569,14 +3439,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F Y</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f y</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и скопировать её адрес.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links yank</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3589,17 +3458,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F X</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f x</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и открыть её в Helium.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >hint links spawn --detach /usr/bin/open -a
                       &#x27;Helium&#x27; {hint-url}</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3612,14 +3480,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space F D</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space f d</kbd></div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и отправить её в Surge.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>hint links userscript surge-add</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3633,15 +3500,14 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space F Shift D</kbd>
+                    <kbd class="key">Space f Shift D</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Выбрать ссылку и отправить её в Surge.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u surge-add --force</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Разработка</span></td>
                 <td>
@@ -3654,14 +3520,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space Q D</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space q d</kbd></div>
                 </td>
                 <td class="description">
                   Закрыть текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-close</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3674,14 +3539,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space Q Q</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space q q</kbd></div>
                 </td>
                 <td class="description">
                   Сохранить сессию и полностью завершить qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>quit --save</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3694,14 +3558,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space W W</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space w w</kbd></div>
                 </td>
                 <td class="description">
                   Закрыть только текущее окно.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>close</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3714,14 +3577,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space Q R</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space q r</kbd></div>
                 </td>
                 <td class="description">
                   Перезапустить qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>restart</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3734,14 +3596,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space Q T</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space q t</kbd></div>
                 </td>
                 <td class="description">
                   Оставить только текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-only</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3754,14 +3615,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space Q W</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space q w</kbd></div>
                 </td>
                 <td class="description">
                   Оставить только текущее окно.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>window-only</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3774,14 +3634,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space X</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space x</kbd></div>
                 </td>
                 <td class="description">
                   Сохранить сессию и полностью завершить qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>quit --save</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3794,14 +3653,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T S</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t s</kbd></div>
                 </td>
                 <td class="description">
                   Добавить текущую страницу в закладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>bookmark-add</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3814,14 +3672,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T Q</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t q</kbd></div>
                 </td>
                 <td class="description">
                   Открыть список quickmarks.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>bookmark-list</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Ссылки и закладки</span></td>
                 <td>
@@ -3834,14 +3691,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T C</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t c</kbd></div>
                 </td>
                 <td class="description">
                   Клонировать текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-clone</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3854,14 +3710,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T D</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t d</kbd></div>
                 </td>
                 <td class="description">
                   Клонировать вкладку в новое окно.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-clone -w</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3874,14 +3729,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T N</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t n</kbd></div>
                 </td>
                 <td class="description">
                   Передать вкладку в другое окно.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-give</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3894,14 +3748,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T H</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t h</kbd></div>
                 </td>
                 <td class="description">
                   Открыть историю посещений.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>history</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3914,14 +3767,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T P</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t p</kbd></div>
                 </td>
                 <td class="description">
                   Закрепить или открепить текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-pin</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3934,14 +3786,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T T</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t t</kbd></div>
                 </td>
                 <td class="description">
                   Закрепить или открепить текущую вкладку.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>tab-pin</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3954,17 +3805,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space N</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space n</kbd></div>
                 </td>
                 <td class="description">
                   Открыть домашнюю страницу в новом окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; open -w
                       http://localhost:1931</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -3977,17 +3827,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ N</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ n</kbd></div>
                 </td>
                 <td class="description">
                   Открыть домашнюю страницу в новом окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; open -w
                       http://localhost:1931</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4004,10 +3853,9 @@
                 </td>
                 <td class="description">
                   Создать временный split.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript qute-temporary-split</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4020,14 +3868,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T G</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t g</kbd></div>
                 </td>
                 <td class="description">
                   Переключить окно Helium.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u helium-toggle</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4041,15 +3888,14 @@
               >
                 <td>
                   <div class="key-stack">
-                    <kbd class="key">Space T Shift G</kbd>
+                    <kbd class="key">Space t Shift G</kbd>
                   </div>
                 </td>
                 <td class="description">
                   Открыть текущую страницу в Helium.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --detach /usr/bin/open -a 'Helium' {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Медиа</span></td>
                 <td>
@@ -4062,14 +3908,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T I</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t i</kbd></div>
                 </td>
                 <td class="description">
                   Открыть URL в приватном окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>open -p</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4086,10 +3931,9 @@
                 </td>
                 <td class="description">
                   Открыть URL в приватном окне.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>open -p</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4102,17 +3946,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S C</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s c</kbd></div>
                 </td>
                 <td class="description">
                   Очистить сохранённые сессии.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >session-clean ;; message-info &#x27;Sessions
                       cleaned&#x27;</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4125,14 +3968,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S Z</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s z</kbd></div>
                 </td>
                 <td class="description">
                   Переключить ленивое восстановление сессии.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>config-cycle -p session.lazy_restore true false</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -4145,14 +3987,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">G G</kbd></div>
+                  <div class="key-stack"><kbd class="key">g g</kbd></div>
                 </td>
                 <td class="description">
                   Перейти в начало страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u switch-to-english ;; scroll-to-perc 0</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4169,12 +4010,11 @@
                 </td>
                 <td class="description">
                   Перейти в конец страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; scroll-to-perc 100</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4193,13 +4033,12 @@
                 </td>
                 <td class="description">
                   Открыть выбор вкладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s
                       :tab-select</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4212,17 +4051,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ S</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ s</kbd></div>
                 </td>
                 <td class="description">
                   Открыть выбор вкладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s
                       :tab-select</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4235,14 +4073,13 @@
                 data-mode="command"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">⌘ S</kbd></div>
+                  <div class="key-stack"><kbd class="key">⌘ s</kbd></div>
                 </td>
                 <td class="description">
                   Выйти из текущего специального режима.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>mode-leave</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4255,17 +4092,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">G E</kbd></div>
+                  <div class="key-stack"><kbd class="key">g e</kbd></div>
                 </td>
                 <td class="description">
                   Открыть текущий URL через командную строку qutebrowser.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s :open
                       {url}</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Навигация</span></td>
                 <td>
@@ -4278,14 +4114,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S S</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s s</kbd></div>
                 </td>
                 <td class="description">
                   Суммаризировать текущую страницу.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u summarize-url {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сессии и AI</span></td>
                 <td>
@@ -4298,14 +4133,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S Q</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s q</kbd></div>
                 </td>
                 <td class="description">
                   Суммаризировать страницу в режиме quality.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u summarize-url --quality {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сессии и AI</span></td>
                 <td>
@@ -4318,14 +4152,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S W</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s w</kbd></div>
                 </td>
                 <td class="description">
                   Быстро проанализировать и суммаризировать страницу.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u summarize-url --analyze-quick {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сессии и AI</span></td>
                 <td>
@@ -4338,14 +4171,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space S D</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space s d</kbd></div>
                 </td>
                 <td class="description">
                   Глубоко проанализировать и суммаризировать страницу.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn -u summarize-url --analyze-deep {url}</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Сессии и AI</span></td>
                 <td>
@@ -4358,17 +4190,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T M</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t m</kbd></div>
                 </td>
                 <td class="description">
                   Открыть команду перемещения вкладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s
                       :tab-move</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4381,17 +4212,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">Space T W</kbd></div>
+                  <div class="key-stack"><kbd class="key">Space t w</kbd></div>
                 </td>
                 <td class="description">
                   Открыть команду передачи вкладки.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s
                       :tab-take</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4404,17 +4234,16 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">C Shift S</kbd></div>
+                  <div class="key-stack"><kbd class="key">c Shift S</kbd></div>
                 </td>
                 <td class="description">
                   Открыть команду настройки параметров в табличном режиме.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >spawn -u switch-to-english ;; cmd-set-text -s :set
                       -t</code
                     >
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
@@ -4427,14 +4256,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">C C</kbd></div>
+                  <div class="key-stack"><kbd class="key">c c</kbd></div>
                 </td>
                 <td class="description">
                   Запустить локальный переводчик страницы.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>spawn --userscript qute-translate</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Перевод</span></td>
                 <td>
@@ -4447,14 +4275,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S A</kbd></div>
+                  <div class="key-stack"><kbd class="key">s a</kbd></div>
                 </td>
                 <td class="description">
                   Открыть сохранение сессии.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text -s :session-save </code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4467,14 +4294,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S S</kbd></div>
+                  <div class="key-stack"><kbd class="key">s s</kbd></div>
                 </td>
                 <td class="description">
-                  Добавить текущую страницу в сессию.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  Открыть выбранную сессию в новых окнах.
+                  <div class="command">
                     <code>spawn --userscript session-add</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4487,16 +4313,15 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S W</kbd></div>
+                  <div class="key-stack"><kbd class="key">s w</kbd></div>
                 </td>
                 <td class="description">
                   Открыть сохранение сессии только текущего окна.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code
                       >cmd-set-text -s :session-save --only-active-window
                     </code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4509,16 +4334,15 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S Shift L</kbd></div>
+                  <div class="key-stack"><kbd class="key">s Shift L</kbd></div>
                 </td>
                 <td class="description">
-                  Добавить текущую страницу в сессию.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  Открыть строку команды для загрузки сессии по имени.
+                  <div class="command">
                     <code
                       >cmd-set-text -s :spawn --userscript session-add
                     </code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4531,14 +4355,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S D</kbd></div>
+                  <div class="key-stack"><kbd class="key">s d</kbd></div>
                 </td>
                 <td class="description">
                   Открыть удаление сессии.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text -s :session-delete </code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4551,14 +4374,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S R</kbd></div>
+                  <div class="key-stack"><kbd class="key">s r</kbd></div>
                 </td>
                 <td class="description">
                   Открыть переименование сессии.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text -s :session-rename </code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Вкладки и окна</span></td>
                 <td>
@@ -4571,14 +4393,13 @@
                 data-mode="normal"
               >
                 <td>
-                  <div class="key-stack"><kbd class="key">S Shift S</kbd></div>
+                  <div class="key-stack"><kbd class="key">s Shift S</kbd></div>
                 </td>
                 <td class="description">
                   Открыть строку настройки параметров.
-                  <details class="command">
-                    <summary>Команда</summary>
+                  <div class="command">
                     <code>cmd-set-text -s :set</code>
-                  </details>
+                  </div>
                 </td>
                 <td><span class="tag category">Настройки</span></td>
                 <td>
