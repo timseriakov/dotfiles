@@ -119,3 +119,22 @@ bitrate = 192
 codec = "MP3"
 tags = "bass,deep house,drum and bass,dubstep,electronic,garage,house,juke,jungle,techno,uk garage"
 homepage = "https://www.sub.fm/"
+
+[[station]]
+name = "Jungle Planet Radio"
+url = "https://phoebe.streamerr.co:3650/;?type=http&nocache=1739137731"
+country = "Italy"
+state = "Bologna"
+bitrate = 320
+codec = "MP3"
+tags = "drum and bass,jungle,uk garage"
+homepage = "https://jungleplanetradio.com/"
+
+[[station]]
+name = "DNB FM"
+url = "https://air.dnbfm.ru/listen/player/qplay"
+country = "The Russian Federation"
+bitrate = 320
+codec = "MP3"
+tags = "breaks,dnb,drum and bass,liquid"
+homepage = "https://dnbfm.ru/"
