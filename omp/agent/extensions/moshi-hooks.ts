@@ -8,8 +8,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import { createConnection } from "node:net"
 import { homedir } from "node:os"
-import { join as pathJoin } from "node:path"
-import { closeSync, openSync, readSync } from "node:fs"
+import { isAbsolute, join as pathJoin } from "node:path"
+import { closeSync, openSync, readFileSync, readSync } from "node:fs"
 import { spawnSync } from "node:child_process"
 
 // Kept for debugging / manual replay through the CLI adapter above.
@@ -92,7 +92,12 @@ interface TerminalContext {
   herdrWorkspace: string
   herdrTabId: string
   herdrTab: string
+  muxEnv: Record<string, string>
 }
+
+// Variables the daemon's mux drivers detect panes from; rendered by the
+// installer from internal/mux's registry.
+const muxEnvKeys: string[] = ["TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
 
 function runForOutput(command: string, args: string[], timeout: number): string {
   try {
@@ -142,7 +147,15 @@ function resolveTerminalContext(): TerminalContext {
   if (tmuxSession) terminalKind = "tmux"
   else if (process.env.HERDR_ENV === "1") terminalKind = "herdr"
   else if (process.env.ZELLIJ || zellijSession || zellijPane) terminalKind = "zellij"
+  // Mux-driver panes (tern, TUIOS, …) are detected daemon-side from these
+  // variables (internal/mux), so a new driver needs no change here.
+  const muxEnv: Record<string, string> = {}
+  for (const key of muxEnvKeys) {
+    const value = process.env[key]
+    if (value) muxEnv[key] = value
+  }
   return {
+    muxEnv,
     terminalKind,
     tmuxSession,
     tmuxWindow,
@@ -403,6 +416,7 @@ function recordTaskCompletion(state: SessionState, signature: string, now: numbe
 // on the next event.
 const transcriptChildCache = new Map<string, boolean>()
 
+//
 // OMP's header is no such signal (its main-session handoffs carry a parent
 // too), but since 18.3.2 ctx.agent.kind names subagent sessions directly.
 // They never fire session_stop, so a forwarded prompt would stay in flight
@@ -463,6 +477,7 @@ function baseEnvelope(payload: HookPayload, sessionId: string, eventName: string
     cwd: payload.cwd,
     projectName: projectNameForCwd(payload.cwd),
     terminalKind: terminalContext.terminalKind,
+    muxEnv: terminalContext.muxEnv,
     tmuxSession: terminalContext.tmuxSession,
     tmuxWindow: terminalContext.tmuxWindow,
     tmuxPane: terminalContext.tmuxPane,
@@ -556,6 +571,34 @@ function handleEvent(payload: HookPayload): void {
       sendEnvelope(envelope)
       return
     }
+    case "PlanReview": {
+      // The native plan review is open. The plan rides along as the Chat
+      // View card; without an action id no approval bar opens.
+      if (isChild) return
+      const plan = firstString(payload.plan)
+      if (!plan) return
+      const title = "Review " + agentDisplayName + "'s plan"
+      const prompt: Record<string, unknown> = { kind: "plan", plan }
+      const toolUseId = firstString(payload.tool_use_id)
+      if (toolUseId) prompt.toolUseId = toolUseId
+      const planFilePath = firstString(payload.plan_file_path)
+      if (planFilePath) prompt.planFilePath = planFilePath
+      const envelope = baseEnvelope(payload, sessionId, "PlanReview")
+      envelope.category = "approval_required"
+      envelope.toolName = "exit_plan_mode"
+      envelope.title = title
+      envelope.subtitle = "Answer in terminal"
+      envelope.message = plainTextClip(planSummary(plan), 256)
+      envelope.interactivePrompt = prompt
+      state.lastToolName = "exit_plan_mode"
+      state.lastEventTitle = title
+      sendEnvelope(envelope)
+      return
+    }
+    case "PlanResolved":
+      // Category-less: the daemon retires the plan card and publishes nothing.
+      sendEnvelope(baseEnvelope(payload, sessionId, "PlanResolved"))
+      return
     case "PermissionResolved": {
       const title = agentDisplayName + " resumed"
       const envelope = baseEnvelope(payload, sessionId, "PermissionResolved")
@@ -584,6 +627,39 @@ function handleEvent(payload: HookPayload): void {
     default:
       sendEnvelope(baseEnvelope(payload, sessionId, payload.hook_event_name))
   }
+}
+
+// planFileOnDisk resolves OMP's plan path: local:// lives under the session's
+// artifacts directory (the transcript path without .jsonl); anything else is
+// relative to the session cwd.
+function planFileOnDisk(planFilePath: string, ctx: Record<string, unknown>): string {
+  if (!planFilePath) return ""
+  const localPrefix = "local://"
+  if (!planFilePath.startsWith(localPrefix)) {
+    return isAbsolute(planFilePath) ? planFilePath : pathJoin(firstString(ctx.cwd as string, process.cwd()), planFilePath)
+  }
+  const sessionManager = ctx.sessionManager as Record<string, unknown> | undefined
+  let artifactsDir = ""
+  const getArtifactsDir = sessionManager?.getArtifactsDir
+  if (typeof getArtifactsDir === "function") {
+    try {
+      artifactsDir = String(getArtifactsDir.call(sessionManager) ?? "")
+    } catch {}
+  }
+  if (!artifactsDir) {
+    const transcript = transcriptPath(ctx)
+    if (transcript.endsWith(".jsonl")) artifactsDir = transcript.slice(0, -".jsonl".length)
+  }
+  return artifactsDir ? pathJoin(artifactsDir, "local", planFilePath.slice(localPrefix.length)) : ""
+}
+
+// planSummary is the plan's first prose line, for the inbox row.
+function planSummary(plan: string): string {
+  for (const line of plan.split("\n")) {
+    const text = line.replace(/^[#>*\-\s]+/, "").trim()
+    if (text) return text
+  }
+  return ""
 }
 
 function agentKind(ctx: Record<string, unknown>): string {
@@ -617,6 +693,8 @@ export default function moshiPiHook(pi: ExtensionAPI): void {
     send("SessionStart", event, ctx)
   })
 
+
+
   pi.on("before_agent_start", (event, ctx) => {
     send("UserPromptSubmit", event, ctx, { prompt: event.prompt })
   })
@@ -642,6 +720,10 @@ export default function moshiPiHook(pi: ExtensionAPI): void {
     send("AgentEnd", event, ctx, { last_assistant_message: lastAssistantMessage })
     lastAssistantMessage = ""
   })
+
+
+
+
 
   pi.on("session_shutdown", (event, ctx) => {
     send("SessionEnd", event, ctx)
