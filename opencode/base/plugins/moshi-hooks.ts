@@ -11,6 +11,10 @@ import type { Plugin } from "@opencode-ai/plugin"
 // daemon's Unix socket (see resolveSocketPath) — no subprocess spawn.
 const helperBinary = "/Users/tim/.local/bin/moshi-hook"
 
+// Variables the daemon's mux drivers detect panes from; rendered by the
+// installer from internal/mux's registry.
+const muxEnvKeys: string[] = ["TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
+
 // Mirrors internal/config.SocketPath. The MOSHI_SOCKET_PATH override wins
 // over the per-platform default so tests and dev daemons can point us at a
 // throwaway socket.
@@ -112,6 +116,7 @@ interface TerminalContext {
   herdrWorkspace: string
   herdrTabId: string
   herdrTab: string
+  muxEnv: Record<string, string>
 }
 
 function tmuxSocketFromEnv(value: string | undefined): string {
@@ -154,7 +159,14 @@ function resolveTerminalContext(): TerminalContext {
   if (tmuxSession) terminalKind = "tmux"
   else if (process.env.HERDR_ENV === "1") terminalKind = "herdr"
   else if (process.env.ZELLIJ || zellijSession || zellijPane) terminalKind = "zellij"
-  return { terminalKind, tmuxSession, tmuxWindow, tmuxPane, tmuxSocket, zellijSession, zellijPane, herdrSession, herdrPane, herdrWorkspaceId, herdrWorkspace, herdrTabId, herdrTab }
+  // Mux-driver panes (tern, TUIOS, …) are detected daemon-side from these
+  // variables (internal/mux), so a new driver needs no change here.
+  const muxEnv: Record<string, string> = {}
+  for (const key of muxEnvKeys) {
+    const value = process.env[key]
+    if (value) muxEnv[key] = value
+  }
+  return { terminalKind, tmuxSession, tmuxWindow, tmuxPane, tmuxSocket, zellijSession, zellijPane, herdrSession, herdrPane, herdrWorkspaceId, herdrWorkspace, herdrTabId, herdrTab, muxEnv }
 }
 
 let terminalContext = resolveTerminalContext()
@@ -468,6 +480,7 @@ function sendSessionUpdate(
       cwd: directory,
       projectName: projectNameForCwd(directory),
       terminalKind: terminalContext.terminalKind,
+      muxEnv: terminalContext.muxEnv,
       tmuxSession: terminalContext.tmuxSession,
       tmuxWindow: terminalContext.tmuxWindow,
       tmuxPane: terminalContext.tmuxPane,
@@ -503,6 +516,7 @@ function sendSessionClosed(eventName: string, sessionID: string | undefined, dir
         cwd: directory,
         projectName: projectNameForCwd(directory),
         terminalKind: terminalContext.terminalKind,
+        muxEnv: terminalContext.muxEnv,
         tmuxSession: terminalContext.tmuxSession,
         tmuxWindow: terminalContext.tmuxWindow,
         tmuxPane: terminalContext.tmuxPane,
@@ -703,6 +717,7 @@ function sendTerminalInputRequired(eventName: string, props: Record<string, unkn
         cwd,
         projectName: projectNameForCwd(cwd),
         terminalKind: terminalContext.terminalKind,
+        muxEnv: terminalContext.muxEnv,
         tmuxSession: terminalContext.tmuxSession,
         tmuxWindow: terminalContext.tmuxWindow,
         tmuxPane: terminalContext.tmuxPane,
@@ -769,6 +784,7 @@ function requestMoshiApproval(
       cwd: directory,
       projectName: projectNameForCwd(directory),
       terminalKind: terminalContext.terminalKind,
+      muxEnv: terminalContext.muxEnv,
       tmuxSession: terminalContext.tmuxSession,
       tmuxWindow: terminalContext.tmuxWindow,
       tmuxPane: terminalContext.tmuxPane,
@@ -950,7 +966,7 @@ async function setup(ctx: PluginV2.Context) {
   // to) inherits the environment of whichever terminal started it, not of the
   // TUIs showing its sessions. The TUI half (moshi-hooks-tui) binds panes.
   if (process.argv.includes("serve")) {
-    terminalContext = { ...terminalContext, terminalKind: "", tmuxSession: "", tmuxWindow: "", tmuxPane: "", tmuxSocket: "", zellijSession: "", zellijPane: "", herdrSession: "", herdrPane: "", herdrWorkspaceId: "", herdrTabId: "" }
+    terminalContext = { ...terminalContext, terminalKind: "", tmuxSession: "", tmuxWindow: "", tmuxPane: "", tmuxSocket: "", zellijSession: "", zellijPane: "", herdrSession: "", herdrPane: "", herdrWorkspaceId: "", herdrTabId: "", muxEnv: {} }
   }
   const directory = ctx.location.directory
   const controller = new AbortController()

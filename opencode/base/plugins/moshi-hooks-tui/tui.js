@@ -51,10 +51,19 @@ function send(envelope) {
   })
 }
 
+// Variables the daemon's mux drivers detect panes from (internal/mux).
+const MUX_ENV_KEYS = ["TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
+
 // Same detection order as the server plugin's resolveTerminalContext.
+// Mux-driver panes (tern, TUIOS, …) travel as muxEnv and are detected by the
+// daemon, so a new driver needs no change here.
 function terminalContext() {
   const env = process.env
-  const context = { terminalKind: "" }
+  const muxEnv = {}
+  for (const key of MUX_ENV_KEYS) {
+    if (env[key]) muxEnv[key] = env[key]
+  }
+  const context = { terminalKind: "", muxEnv }
   if (env.TMUX && env.TMUX_PANE) {
     const args = ["display-message", "-p", "-t", env.TMUX_PANE, "#S\t#I"]
     try {
@@ -86,7 +95,7 @@ async function setup(api) {
   const terminal = terminalContext()
   // Without a pane there is nothing to bind; the daemon falls back to
   // session-only tracking exactly as before.
-  if (!terminal.terminalKind) return
+  if (!terminal.terminalKind && Object.keys(terminal.muxEnv).length === 0) return
 
   let disposed = false
   let reported // session id last acknowledged for this pane ("" = none)
