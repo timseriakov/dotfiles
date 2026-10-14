@@ -71,7 +71,7 @@
       }
 
       .shell {
-        width: min(1440px, calc(100% - 40px));
+        width: min(1320px, calc(100% - 56px));
         margin: 0 auto;
       }
       .hero {
@@ -189,56 +189,6 @@
         white-space: nowrap;
       }
 
-      .intro-grid {
-        display: grid;
-        grid-template-columns: 1.4fr 0.8fr 0.8fr;
-        gap: 14px;
-        margin-bottom: 44px;
-      }
-      .info-card {
-        min-height: 142px;
-        padding: 22px;
-        border: 1px solid rgba(216, 222, 233, 0.1);
-        border-radius: var(--radius);
-        background: linear-gradient(
-          145deg,
-          rgba(67, 76, 94, 0.75),
-          rgba(59, 66, 82, 0.55)
-        );
-        box-shadow: 0 16px 36px rgba(20, 24, 31, 0.18);
-      }
-      .info-card:first-child {
-        background: linear-gradient(
-          145deg,
-          rgba(94, 129, 172, 0.55),
-          rgba(59, 66, 82, 0.68)
-        );
-      }
-      .info-card h2 {
-        margin: 0 0 8px;
-        color: var(--nord6);
-        font-size: 18px;
-      }
-      .info-card p {
-        margin: 0;
-        color: var(--nord4);
-        font-size: 14px;
-      }
-      .stat {
-        display: block;
-        margin-bottom: 5px;
-        color: var(--nord8);
-        font-size: 34px;
-        font-weight: 850;
-        letter-spacing: -0.05em;
-      }
-      .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
       .section {
         scroll-margin-top: 96px;
         margin: 0 0 52px;
@@ -284,7 +234,7 @@
         text-transform: uppercase;
       }
       td {
-        padding: 15px 18px;
+        padding: 12px 16px;
         border-top: 1px solid rgba(216, 222, 233, 0.075);
         vertical-align: top;
       }
@@ -419,12 +369,6 @@
       }
 
       @media (max-width: 900px) {
-        .intro-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .info-card:first-child {
-          grid-column: 1 / -1;
-        }
         .topbar {
           align-items: stretch;
           flex-wrap: wrap;
@@ -439,15 +383,6 @@
       @media (max-width: 560px) {
         .shell {
           width: min(100% - 24px, 1440px);
-        }
-        .hero {
-          padding-top: 46px;
-        }
-        .intro-grid {
-          grid-template-columns: 1fr;
-        }
-        .info-card:first-child {
-          grid-column: auto;
         }
         .topbar {
           top: 8px;
@@ -476,8 +411,8 @@
         <p class="eyebrow">qutebrowser / personal setup</p>
         <h1>Клавиши, которые держат браузер в руках.</h1>
         <p class="hero-copy">
-          Русская шпаргалка по биндам qutebrowser: навигация, вкладки, переводы,
-          сессии, разработка и ваши локальные инструменты.
+          Русская шпаргалка по биндам qutebrowser: 142 команды для навигации,
+          вкладок, переводов, сессий, разработки и ваших локальных инструментов.
           <strong>Нажмите <span class="mono">Space</span> перед командой</strong
           >, если видите значок лидера.
         </p>
@@ -501,30 +436,6 @@
         </div>
         <div class="count" id="count" aria-live="polite">Показано — строк</div>
       </nav>
-
-      <section class="intro-grid" aria-label="О странице">
-        <article class="info-card">
-          <h2>Как читать эту страницу</h2>
-          <p>
-            Каждая строка показывает основную клавишу и понятное русское
-            описание. <span class="tag">Space</span> — лидер для команд вроде
-            <span class="mono">Space&nbsp;f&nbsp;f</span>.
-          </p>
-          <div class="legend">
-            <span class="tag">EN</span><span class="tag mode">режим</span>
-          </div>
-        </article>
-        <article class="info-card">
-          <span class="stat" id="base-count">142</span>
-          <h2>основных команд</h2>
-          <p>Настроены в <code>modules/bindings.py</code>.</p>
-        </article>
-        <article class="info-card">
-          <span class="stat" id="all-count">142</span>
-          <h2>команд в справочнике</h2>
-          <p>Полный список настроенных биндов.</p>
-        </article>
-      </section>
 
       <div id="content">
         <section class="section" data-section="core">
@@ -894,10 +805,9 @@
                 <tr data-keys="space tr">
                   <td><kbd class="key">Space T R</kbd></td>
                   <td class="description">
-                    Открыть или закрыть перевод Google Translate для текущей
-                    страницы<small
-                      >Если страница уже переведена, возвращает исходный
-                      URL.</small
+                    Перевести текущую страницу через Google Translate. Если
+                    перевод уже открыт — вернуться к оригиналу<small
+                      >Результат переводится на русский язык.</small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -905,8 +815,9 @@
                 <tr data-keys="space te">
                   <td><kbd class="key">Space T E</kbd></td>
                   <td class="description">
-                    Открыть или закрыть перевод через Яндекс Переводчик<small
-                      >Язык результата — русский.</small
+                    Перевести текущую страницу через Яндекс Переводчик. Если
+                    перевод уже открыт — вернуться к оригиналу<small
+                      >Результат переводится на русский язык.</small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -914,8 +825,9 @@
                 <tr data-keys="space ty">
                   <td><kbd class="key">Space T Y</kbd></td>
                   <td class="description">
-                    Альтернативный биндинг для перевода через Яндекс<small
-                      >Использует тот же механизм, что и Space T E.</small
+                    То же действие, что Space T E: перевод через Яндекс на
+                    русский язык<small
+                      >Это альтернативный короткий биндинг.</small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -923,7 +835,7 @@
                 <tr data-keys="space ts">
                   <td><kbd class="key">Space T S</kbd></td>
                   <td class="description">
-                    Запустить daemon перевода выделения<small
+                    Запустить фоновый сервис перевода выделенного текста<small
                       ><code
                         >translate-selection-daemon-control start</code
                       ></small
@@ -934,8 +846,10 @@
                 <tr data-keys="space tx">
                   <td><kbd class="key">Space T X</kbd></td>
                   <td class="description">
-                    Остановить daemon перевода выделения<small
-                      ><code>… control stop</code></small
+                    Остановить сервис перевода выделенного текста<small
+                      ><code
+                        >translate-selection-daemon-control stop</code
+                      ></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -943,8 +857,10 @@
                 <tr data-keys="space tt">
                   <td><kbd class="key">Space T T</kbd></td>
                   <td class="description">
-                    Показать статус daemon перевода<small
-                      ><code>… control status</code></small
+                    Показать состояние сервиса перевода выделенного текста<small
+                      ><code
+                        >translate-selection-daemon-control status</code
+                      ></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
@@ -1005,16 +921,16 @@
                 <tr data-keys="space cs">
                   <td><kbd class="key">Space C S</kbd></td>
                   <td class="description">
-                    Открыть команду настройки через <code>:set</code
-                    ><small><code>cmd-set-text -s :set -t</code></small>
+                    Открыть строку команд qutebrowser для изменения
+                    настроек<small><code>cmd-set-text -s :set -t</code></small>
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
                 <tr data-keys="space uy">
                   <td><kbd class="key">Space U Y</kbd></td>
                   <td class="description">
-                    Переключить отображение вкладок: всегда / только при
-                    нескольких вкладках / никогда<small
+                    Переключать видимость вкладок: всегда, только если их
+                    несколько или скрыть<small
                       ><code>tabs.show multiple never</code></small
                     >
                   </td>
@@ -1023,8 +939,8 @@
                 <tr data-keys="space uu">
                   <td><kbd class="key">Space U U</kbd></td>
                   <td class="description">
-                    Переключить статусбар: всегда или только в режиме
-                    команд<small
+                    Переключать видимость статусбара: всегда или только при
+                    вводе команды<small
                       ><code>statusbar.show always in-mode</code></small
                     >
                   </td>
@@ -1033,7 +949,7 @@
                 <tr data-keys="space uh">
                   <td><kbd class="key">Space U H</kbd></td>
                   <td class="description">
-                    Переключить компактный статус вкладок<small
+                    Переключить компактный режим панели вкладок<small
                       ><code>toggle-tabs-status</code></small
                     >
                   </td>
@@ -1173,53 +1089,114 @@
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
-                <tr data-keys="space fc space ff space fb space fi space fo">
-                  <td>
-                    <div class="key-stack">
-                      <kbd class="key">Space F C</kbd
-                      ><kbd class="key">Space F F</kbd
-                      ><kbd class="key">Space F B</kbd
-                      ><kbd class="key">Space F I</kbd
-                      ><kbd class="key">Space F O</kbd>
-                    </div>
-                  </td>
+                <tr data-keys="space fc">
+                  <td><kbd class="key">Space F C</kbd></td>
                   <td class="description">
-                    Быстрые подсказки: скопировать ссылку, открыть в новой
-                    вкладке, фоне, поле ввода или окне<small
-                      ><code>hint … --rapid</code></small
+                    Выбрать ссылку и скопировать её адрес<small
+                      ><code>hint links yank --rapid</code></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
-                <tr data-keys="space fp space fv space fi space fy space fx">
-                  <td>
-                    <div class="key-stack">
-                      <kbd class="key">Space F P</kbd
-                      ><kbd class="key">Space F V</kbd
-                      ><kbd class="key">Space F I</kbd
-                      ><kbd class="key">Space F Y</kbd
-                      ><kbd class="key">Space F X</kbd>
-                    </div>
-                  </td>
+                <tr data-keys="space ff">
+                  <td><kbd class="key">Space F F</kbd></td>
                   <td class="description">
-                    Открыть выбранную ссылку в приватном окне, mpv, IINA,
-                    скопировать или открыть в Helium<small
-                      ><code>hint links …</code></small
+                    Быстро открыть ссылку в новой вкладке<small
+                      ><code>hint links tab --rapid</code></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>
                 </tr>
-                <tr data-keys="space fd space fD">
-                  <td>
-                    <div class="key-stack">
-                      <kbd class="key">Space F D</kbd
-                      ><kbd class="key">Space F Shift D</kbd>
-                    </div>
-                  </td>
+                <tr data-keys="space fb">
+                  <td><kbd class="key">Space F B</kbd></td>
                   <td class="description">
-                    Отправить выбранную ссылку в Surge или запустить
-                    принудительное добавление<small
-                      ><code>surge-add</code></small
+                    Быстро открыть ссылку в фоновой вкладке<small
+                      ><code>hint links tab-bg --rapid</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fi">
+                  <td><kbd class="key">Space F I</kbd></td>
+                  <td class="description">
+                    Показать подсказки на полях ввода<small
+                      ><code>hint inputs</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fo">
+                  <td><kbd class="key">Space F O</kbd></td>
+                  <td class="description">
+                    Выбрать ссылку и открыть её в новом окне<small
+                      ><code>hint links window</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fp">
+                  <td><kbd class="key">Space F P</kbd></td>
+                  <td class="description">
+                    Открыть выбранную ссылку в приватном окне<small
+                      ><code>hint links run :open -p {hint-url}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fv">
+                  <td><kbd class="key">Space F V</kbd></td>
+                  <td class="description">
+                    Открыть выбранную ссылку в mpv<small
+                      ><code>hint links spawn mpv {hint-url}</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fI">
+                  <td><kbd class="key">Space F Shift I</kbd></td>
+                  <td class="description">
+                    Открыть выбранную ссылку в IINA<small
+                      ><code
+                        >hint links spawn open -a IINA {hint-url}</code
+                      ></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fy">
+                  <td><kbd class="key">Space F Y</kbd></td>
+                  <td class="description">
+                    Скопировать адрес выбранной ссылки<small
+                      ><code>hint links yank</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fx">
+                  <td><kbd class="key">Space F X</kbd></td>
+                  <td class="description">
+                    Открыть выбранную ссылку в Helium<small
+                      ><code
+                        >hint links spawn --detach … Helium {hint-url}</code
+                      ></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fd">
+                  <td><kbd class="key">Space F D</kbd></td>
+                  <td class="description">
+                    Отправить выбранную ссылку в Surge<small
+                      ><code>hint links userscript surge-add</code></small
+                    >
+                  </td>
+                  <td><span class="tag mode">обычный</span></td>
+                </tr>
+                <tr data-keys="space fD">
+                  <td><kbd class="key">Space F Shift D</kbd></td>
+                  <td class="description">
+                    Запустить принудительное добавление в Surge<small
+                      ><code>spawn -u surge-add --force</code></small
                     >
                   </td>
                   <td><span class="tag mode">обычный</span></td>

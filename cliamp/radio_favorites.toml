@@ -138,3 +138,39 @@ bitrate = 320
 codec = "MP3"
 tags = "breaks,dnb,drum and bass,liquid"
 homepage = "https://dnbfm.ru/"
+
+[[station]]
+name = "Distinct Energy"
+url = "http://solid33.streamupsolutions.com:8144/stream"
+country = "The United Kingdom Of Great Britain And Northern Ireland"
+bitrate = 320
+codec = "MP3"
+tags = "downtempo,drum and bass,dub,dubstep,hard house,hardcore,techno,trance"
+homepage = "http://distinctenergy.net/"
+
+[[station]]
+name = "Underground Bass"
+url = "https://listen.undergroundbass.com:8804/stream"
+country = "The United Kingdom Of Great Britain And Northern Ireland"
+bitrate = 256
+codec = "MP3"
+tags = "breakbeat,drum and bass,hardcore,jungle,oldskool"
+homepage = "https://www.undergroundbass.uk/"
+
+[[station]]
+name = "ГУСЬ.Драм"
+url = "https://stream3.radiogoose.ru/listen/dnb/play"
+country = "The Russian Federation"
+bitrate = 192
+codec = "MP3"
+tags = "dnb,drum and bass"
+homepage = "https://radiogoose.ru/"
+
+[[station]]
+name = "DnBRadio.com - Darkstep Channel (DE Mirror)"
+url = "http://trace.dnbradio.com:8000/dnbradio_darkstep.mp3"
+country = "Germany"
+bitrate = 128
+codec = "AAC+"
+tags = "dnb,drum & bass,drum 'n' bass,drum and bass,drum n bass,drum&bass,drum'n'bass,drumn bass"
+homepage = "https://dnbradio.com/"
