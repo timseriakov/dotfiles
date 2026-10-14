@@ -110,6 +110,7 @@ pi/agent/sessions/
 # Cliamp local state/artifacts
 cliamp/*.log
 cliamp/*.pid
+cliamp/*.lock
 cliamp/history.toml
 cliamp/spotify_credentials.json
 cliamp/*_ocr.png
