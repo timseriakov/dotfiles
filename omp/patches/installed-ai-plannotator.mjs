@@ -169,17 +169,31 @@ export function createInstalledAiPlannotatorPatches(ctx) {
   }
 
   function patchModelControlsLunaPriority(content) {
-    const current = `		if (!model) return undefined;
-		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
-    const previousPatched = `		if (!model) return undefined;
-		if (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
-		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
-    const patched = `		if (!model) return undefined;
-		if (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
-		return resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+    const current = `\t\tif (!model) return undefined;
+\t\treturn resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+    const currentV18_11 = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+\t\tif (model.provider === "fireworks") {
+\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t\t? "priority"
+\t\t\t\t: undefined;
+\t\t}
+\t\treturn resolveModelServiceTier(tiers, model);
+\t}`;
+    const previousPatched = `\t\tif (!model) return undefined;
+\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
+\t\treturn resolveModelServiceTier(this.#serviceTierByFamily, model);`;
+    const patched = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+\t\tif (model.provider === "fireworks") {
+\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t\t? "priority"
+\t\t\t\t: undefined;
+\t\t}
+\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
+\t\treturn resolveModelServiceTier(tiers, model);
+\t}`;
     return replaceAny(
       content,
-      [current, previousPatched, patched],
+      [current, currentV18_11, previousPatched, patched],
       patched,
       "Luna always uses priority service tier",
     ).content;

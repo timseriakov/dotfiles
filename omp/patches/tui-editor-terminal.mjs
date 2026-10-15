@@ -116,9 +116,10 @@ export function createTuiEditorTerminalPatches(ctx) {
       content,
       [
         `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
-        `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+        `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tif (env.TMUX && env.TERM?.toLowerCase().includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+        `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\t// tmux TERM names the pane, not the attached client's graphics support.\n\t// Leave unknown clients unselected so the runtime SIXEL probe can run.\n\tif (env.TMUX || term.includes("tmux")) return null;\n\tif (term.includes("screen") || term.includes("ghostty")) return ImageProtocol.Kitty;\n\treturn null;`,
       ],
-      `\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (env.TMUX && term.includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
+      `\tif (terminalId === "vscode" || terminalId === "alacritty") return null;\n\tif (env.TMUX && env.TERM?.toLowerCase().includes("xterm-kitty")) return ImageProtocol.Kitty;\n\tconst term = env.TERM?.toLowerCase() ?? "";\n\tif (term.includes("screen") || term.includes("tmux") || term.includes("ghostty")) {\n\t\treturn ImageProtocol.Kitty;\n\t}\n\treturn null;`,
       "tmux xterm-kitty image protocol fallback before terminal exclusion",
     ).content;
   }
