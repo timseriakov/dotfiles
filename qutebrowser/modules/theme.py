@@ -67,6 +67,12 @@ c.colors.downloads.stop.bg = green
 c.colors.hints.bg = nord3  # darker grey for better contrast
 c.colors.hints.fg = nord6  # bright white text
 c.colors.hints.match.fg = accent
+
+# Key sequence hints
+c.colors.keyhint.bg = nord0
+c.colors.keyhint.fg = nord4
+c.colors.keyhint.suffix.fg = nord8
+c.keyhint.radius = 12
 c.hints.border = f"1px solid {accent}"
 c.hints.chars = "asdfghjklwertyuio"
 c.hints.min_chars = 1
@@ -139,6 +145,7 @@ c.fonts.default_size = font_size
 c.fonts.default_family = font_family
 c.fonts.completion.entry = f"{font_size} {font_family}"
 c.fonts.hints = f"15pt {font_family}"
+c.fonts.keyhint = f"18pt {font_family}"
 c.fonts.debug_console = f"{font_size} {font_family}"
 c.fonts.prompts = f"{font_size} {font_family}"
 c.fonts.contextmenu = f"{font_size} {font_family}"
