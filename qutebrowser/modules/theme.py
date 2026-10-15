@@ -69,7 +69,7 @@ c.colors.hints.fg = nord6  # bright white text
 c.colors.hints.match.fg = accent
 
 # Key sequence hints
-c.colors.keyhint.bg = "rgba(46, 52, 64, 80%)"
+c.colors.keyhint.bg = nord0
 c.colors.keyhint.fg = nord4
 c.colors.keyhint.suffix.fg = nord7
 c.keyhint.radius = 0
