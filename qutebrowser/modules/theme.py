@@ -71,7 +71,7 @@ c.colors.hints.match.fg = accent
 # Key sequence hints
 c.colors.keyhint.bg = nord0
 c.colors.keyhint.fg = nord4
-c.colors.keyhint.suffix.fg = nord7
+c.colors.keyhint.suffix.fg = nord13
 c.keyhint.radius = 0
 c.hints.border = f"1px solid {accent}"
 c.hints.chars = "asdfghjklwertyuio"
