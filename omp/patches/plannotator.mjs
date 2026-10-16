@@ -51,6 +51,17 @@ export function patchPlannotatorBrowserNotification(content, { replaceAny }) {
   return r.content;
 }
 
+export function patchPlannotatorBrowserZoom(content, { replaceAny }) {
+  const current = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "open";\n\t\t\targs = [url];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
+  const patched = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "qutebrowser";\n\t\t\targs = [url, ":zoom 115% --quiet"];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
+  return replaceAny(
+    content,
+    [current, patched],
+    patched,
+    "open Plannotator at 115% in qutebrowser",
+  ).content;
+}
+
 export function patchPlannotatorFeedbackDelivery(content) {
   const oldText = `{ deliverAs: "followUp" }`;
   const newText = `{ deliverAs: "aside" }`;

@@ -104,6 +104,14 @@ export function runPatchRoutes(ctx) {
     [
       path.join(
         home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",
+      ),
+      "open Plannotator at 115% in qutebrowser",
+      (content) => patches.patchPlannotatorBrowserZoom(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser-runtime.ts",
       ),
       "plannotator browser asset fallback",

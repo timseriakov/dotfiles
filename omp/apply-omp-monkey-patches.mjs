@@ -46,6 +46,7 @@ import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import {
   patchPlannotatorBrowserNotification,
+  patchPlannotatorBrowserZoom,
   patchPlannotatorFeedbackDelivery,
   patchPlannotatorVersionWarning,
 } from "./patches/plannotator.mjs";
@@ -401,10 +402,10 @@ try {
     patchAbsoluteFile,
     setupRuntimeStateLinks,
     rebuildBundledCli,
-    SIDE_CHAT_CONFIG,
     patches: {
       ...patches,
       patchPlannotatorBrowserNotification,
+      patchPlannotatorBrowserZoom,
       patchPlannotatorFeedbackDelivery,
       patchPlannotatorVersionWarning,
       patchPiSideChatOverlay,
