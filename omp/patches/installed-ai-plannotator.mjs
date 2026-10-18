@@ -153,36 +153,27 @@ export function createInstalledAiPlannotatorPatches(ctx) {
 	const provider = model.provider;
 	if (provider === "openrouter") {`;
     const previousPatched = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
-	if (model.provider === "omniroute") return model.id === "cx/gpt-6-luna" ? "openai" : undefined;
-	const provider = model.provider;
-	if (provider === "openrouter") {`;
+\tif (model.provider === "omniroute") return model.id === "cx/gpt-5.6-luna" ? "openai" : undefined;
+\tconst provider = model.provider;
+\tif (provider === "openrouter") {`;
+    const previousPatchedV6 = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
+\tif (model.provider === "omniroute") return model.id === "cx/gpt-6-luna" ? "openai" : undefined;
+\tconst provider = model.provider;
+\tif (provider === "openrouter") {`;
     const patched = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
-	if (model.provider === "omniroute") return model.id === "cx/gpt-5.6-luna" ? "openai" : undefined;
+	if (model.provider === "omniroute") return model.id === "cx/gpt-6-luna" ? "openai" : undefined;
 	const provider = model.provider;
 	if (provider === "openrouter") {`;
     return replaceAny(
       content,
-      [current, previousLunaOnly, previousPatched, patched],
+      [current, previousLunaOnly, previousPatched, previousPatchedV6, patched],
       patched,
       "pi-ai Luna-only service tier family",
     ).content;
   }
 
   function patchModelControlsLunaPriority(content) {
-    const current = `\t\tif (!model) return undefined;
-\t\treturn resolveModelServiceTier(this.#serviceTierByFamily, model);`;
-    const currentV18_11 = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
-\t\tif (model.provider === "fireworks") {
-\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
-\t\t\t\t? "priority"
-\t\t\t\t: undefined;
-\t\t}
-\t\treturn resolveModelServiceTier(tiers, model);
-\t}`;
-    const previousPatched = `\t\tif (!model) return undefined;
-\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
-\t\treturn resolveModelServiceTier(this.#serviceTierByFamily, model);`;
-    const patched = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+    const current = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
 \t\tif (model.provider === "fireworks") {
 \t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
 \t\t\t\t? "priority"
@@ -191,9 +182,27 @@ export function createInstalledAiPlannotatorPatches(ctx) {
 \t\tif (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
 \t\treturn resolveModelServiceTier(tiers, model);
 \t}`;
+    const previous = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+\t\tif (model.provider === "fireworks") {
+\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t\t? "priority"
+\t\t\t\t: undefined;
+\t\t}
+\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
+\t\treturn resolveModelServiceTier(tiers, model);
+\t}`;
+    const patched = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+\t\tif (model.provider === "fireworks") {
+\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t\t? "priority"
+\t\t\t\t: undefined;
+\t\t}
+\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
+\t\treturn resolveModelServiceTier(tiers, model);
+\t}`;
     return replaceAny(
       content,
-      [current, currentV18_11, previousPatched, patched],
+      [current, previous],
       patched,
       "Luna always uses priority service tier",
     ).content;

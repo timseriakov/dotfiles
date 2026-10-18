@@ -2,7 +2,7 @@
   "defaults": {
     "model": {
       "provider": "omniroute",
-      "id": "cx/gpt-5.6-sol"
+      "id": "cx/gpt-6.1-sol"
     },
     "thinking": "high"
   },
@@ -10,21 +10,21 @@
     "planning": {
       "model": {
         "provider": "omniroute",
-        "id": "cx/gpt-5.6-sol"
+        "id": "cx/gpt-6.1-sol"
       },
       "thinking": "high"
     },
     "executing": {
       "model": {
         "provider": "omniroute",
-        "id": "cx/gpt-5.6-sol"
+        "id": "cx/gpt-6.1-sol"
       },
       "thinking": "high"
     },
     "reviewing": {
       "model": {
         "provider": "omniroute",
-        "id": "cx/gpt-5.6-sol"
+        "id": "cx/gpt-6.1-sol"
       },
       "thinking": "high"
     }

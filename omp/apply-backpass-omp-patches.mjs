@@ -93,16 +93,22 @@ changed =
     config,
     [
       '{ model: "gpt-5.6-luna", agents: ["pi", "opencode", "codex"] }',
+      '{ model: "gpt-5.6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
       '{ model: "gpt-6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
+      '{ model: "gpt-6-luna", agents: ["pi", "opencode", "codex"] }',
     ],
-    '{ model: "gpt-5.6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
+    '{ model: "gpt-6-luna", agents: ["omp", "pi", "opencode", "codex"] }',
     "analysis omp ladder",
   ) || changed;
 changed =
-  replace(
+  replaceAny(
     config,
-    '{ model: "gpt-5.6-sol", agents: ["pi", "opencode", "codex"] }',
-    '{ model: "gpt-5.6-sol", agents: ["omp", "pi", "opencode", "codex"] }',
+    [
+      '{ model: "gpt-5.6-sol", agents: ["pi", "opencode", "codex"] }',
+      '{ model: "gpt-5.6-sol", agents: ["omp", "pi", "opencode", "codex"] }',
+      '{ model: "gpt-6.1-sol", agents: ["omp", "pi", "opencode", "codex"] }',
+    ],
+    '{ model: "gpt-6.1-sol", agents: ["omp", "pi", "opencode", "codex"] }',
     "synthesis omp ladder",
   ) || changed;
 changed =
