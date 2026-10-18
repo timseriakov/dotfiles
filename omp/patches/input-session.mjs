@@ -267,24 +267,6 @@ export function createInputSessionPatches(ctx) {
     return out;
   }
 
-  function patchSessionListing(content) {
-    let out = content;
-    let r;
-
-    r = replaceAny(
-      out,
-      [
-        `\t\tconst files = await Array.fromAsync(new Bun.Glob("*/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
-        `\t\tconst files = await Array.fromAsync(new Bun.Glob("**/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
-      ],
-      `\t\tconst files = await Array.fromAsync(new Bun.Glob("**/*.jsonl").scan(sessionsRoot), name =>\n\t\t\tpath.join(sessionsRoot, name),\n\t\t);`,
-      "session-listing recursive all sessions",
-    );
-    out = r.content;
-
-    return out;
-  }
-
   function patchPredictClientSuffix(content) {
     return replaceAny(
       content,
@@ -304,6 +286,5 @@ export function createInputSessionPatches(ctx) {
     patchSessionManager,
     patchPredictClientSuffix,
     patchSessionPaths,
-    patchSessionListing,
   };
 }

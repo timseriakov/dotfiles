@@ -40,7 +40,6 @@ export function runPatchRoutes(ctx) {
     ["predict/client.ts", patches.patchPredictClientSuffix],
     ["session/session-manager.ts", patches.patchSessionManager],
     ["session/session-paths.ts", patches.patchSessionPaths],
-    ["session/session-listing.ts", patches.patchSessionListing],
     ["session/session-tools.ts", patches.patchSessionTools],
     ["session/turn-recovery.ts", patches.patchTurnRecovery],
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
