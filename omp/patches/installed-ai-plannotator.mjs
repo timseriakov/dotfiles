@@ -200,9 +200,17 @@ export function createInstalledAiPlannotatorPatches(ctx) {
 \t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
 \t\treturn resolveModelServiceTier(tiers, model);
 \t}`;
+    const currentV18_12_2 = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
+\t\tif (model.provider === "fireworks") {
+\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t\t? "priority"
+\t\t\t\t: undefined;
+\t\t}
+\t\treturn resolveModelServiceTier(tiers, model);
+\t}`;
     return replaceAny(
       content,
-      [current, previous],
+      [current, previous, currentV18_12_2],
       patched,
       "Luna always uses priority service tier",
     ).content;
