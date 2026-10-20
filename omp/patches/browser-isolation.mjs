@@ -197,18 +197,47 @@ export function patchBrowserAttach(content, { replaceAny }) {
     "browser attach sha256 import",
   ).content;
 
-  out = replaceAny(
-    out,
-    [
-      `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tif (options.relayJson) {`,
-      `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tif (options.relayJson) {`,
-      `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean } = {},\n): Promise<Page> {\n\tconst discoveredPages`,
-      `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean } = {},\n): Promise<Page> {\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tconst discoveredPages`,
-      `export async function pickElectronTarget(\n\tbrowser: Browser,\n\toptions: { matcher?: string; preferVisible?: boolean; ownerSessionId?: string; tabName?: string } = {},\n): Promise<Page> {\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher, options.ownerSessionId, options.tabName);\n\tconst discoveredPages`,
-    ],
-    `export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {\n\tthrowIfAborted(options.signal);\n\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n\tif (options.relayJson) {`,
-    "automatic qutebrowser agent window creation",
-  ).content;
+  if (out.includes("export interface PickTargetOptions {")) {
+    const optionAnchor = `export interface PickTargetOptions {\n\tmatcher?: string;\n\tpreferVisible?: boolean;`;
+    const optionsStart = out.indexOf("export interface PickTargetOptions {");
+    const optionsEnd = out.indexOf("\n}", optionsStart);
+    const options = out.slice(optionsStart, optionsEnd);
+    if (
+      !options.includes("ownerSessionId?: string;") ||
+      !options.includes("tabName?: string;")
+    ) {
+      out = out.replace(
+        optionAnchor,
+        `${optionAnchor}\n\townerSessionId?: string;\n\ttabName?: string;`,
+      );
+    }
+  }
+
+  const pickerStart =
+    /export async function pickElectronTarget\(browser: Browser, options: PickTargetOptions = \{\}\): Promise<Page> \{\n\tthrowIfAborted\(options.signal\);\n(?:\tawait ensureQutebrowserAgentTarget\(browser, options.matcher(?:, options.ownerSessionId, options.tabName)?\);\n)?/;
+  const pickerMatch = out.match(pickerStart);
+  if (!pickerMatch)
+    throw new Error(
+      "Patch 'automatic qutebrowser agent window creation' expected pickElectronTarget with PickTargetOptions.",
+    );
+  const currentEnsure =
+    "await ensureQutebrowserAgentTarget(browser, options.matcher);";
+  const identityEnsure =
+    "await ensureQutebrowserAgentTarget(browser, options.matcher, options.ownerSessionId, options.tabName);";
+  if (pickerMatch[0].includes(currentEnsure)) {
+    out = out.replace(
+      pickerStart,
+      pickerMatch[0].replace(currentEnsure, identityEnsure),
+    );
+  } else if (!pickerMatch[0].includes(identityEnsure)) {
+    out = out.replace(
+      pickerStart,
+      pickerMatch[0].replace(
+        "throwIfAborted(options.signal);",
+        `throwIfAborted(options.signal);\n\t${identityEnsure}`,
+      ),
+    );
+  }
 
   out = replaceAny(
     out,
@@ -301,7 +330,7 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string
 
 `;
   const helperPattern =
-    /(?:let qutebrowserAgentTargetOpen: Promise<void> \| undefined;|const qutebrowserAgentTargetOpen = new Map<string, Promise<void>>\(\);)\n\n(?:function qutebrowserAgentToken[\s\S]*?\n\n)?(?:function titleHasExactMarker[\s\S]*?\n\n)?(?:function qutebrowserTargetMarker[\s\S]*?\n\n)?async function ensureQutebrowserAgentTarget[\s\S]*?\n\nexport async function pickElectronTarget\(/;
+    /(?:let qutebrowserAgentTargetOpen: Promise<void> \| undefined;|const qutebrowserAgentTargetOpen = new Map<string, Promise<void>>\(\);)\n+(?:function qutebrowserAgentToken[\s\S]*?\n\n)?(?:function titleHasExactMarker[\s\S]*?\n\n)?(?:function qutebrowserTargetMarker[\s\S]*?\n\n)?async function ensureQutebrowserAgentTarget[\s\S]*?\n+export async function pickElectronTarget\(/;
   if (helperPattern.test(out)) {
     out = out.replace(
       helperPattern,
@@ -313,6 +342,26 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string
       helper + "export async function pickElectronTarget(",
     );
   }
+  if (
+    out.includes(
+      "function selectRelayEntry(entries: RelayJsonEntry[], options: PickTargetOptions): RelayJsonEntry | null {",
+    )
+  ) {
+    const oldRelay = `\tconst needle = options.matcher?.toLowerCase();\n\tif (needle) {\n\t\tconst hits = entries.filter(e => relayEntryMatches(e, needle));`;
+    const ownerRelay = `\tconst needle = options.matcher?.toLowerCase();\n\tconst marker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\tif (marker) {\n\t\tconst target = entries.find(entry => titleHasExactMarker(entry.title, marker) && entry.discarded !== "true");\n\t\treturn target ?? null;\n\t}\n\tif (needle) {\n\t\tconst hits = entries.filter(e => relayEntryMatches(e, needle));`;
+    const relayMiss = `\t\tconst selected = pageEntries.length > 0 ? selectRelayEntry(pageEntries, options) : null;`;
+    const relayFailClosed = `\t\tconst selected = pageEntries.length > 0 ? selectRelayEntry(pageEntries, options) : null;\n\t\tif (qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName) && !selected) throw new ToolError(\`No page target matched the qutebrowser owner marker\`);`;
+    if (out.includes(relayMiss) && !out.includes(relayFailClosed))
+      out = out.replace(relayMiss, relayFailClosed);
+
+    out = replaceAny(
+      out,
+      [oldRelay, ownerRelay],
+      ownerRelay,
+      "qutebrowser relay owner-token target selection",
+    ).content;
+  }
+
   out = replaceAny(
     out,
     [
@@ -321,42 +370,79 @@ async function ensureQutebrowserAgentTargetOnce(browser: Browser, marker: string
       `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
       `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
       `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
+      `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
+      `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
     ],
-    `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
+    `\t\tconst targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);\n\t\tconst hit = targetMarker\n\t\t\t? enriched.find(p => titleHasExactMarker(p.title, targetMarker))\n\t\t\t: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));`,
     "qutebrowser persistent title marker matcher",
   ).content;
-  out = replaceAny(
-    out,
-    [
-      `return !target;`,
+  if (
+    !out.includes(
+      "function selectRelayEntry(entries: RelayJsonEntry[], options: PickTargetOptions): RelayJsonEntry | null {",
+    )
+  ) {
+    out = replaceAny(
+      out,
+      [
+        `return !target;`,
+        `return !target || target === "OMP_AGENT_WINDOW_9f2c";`,
+      ],
       `return !target || target === "OMP_AGENT_WINDOW_9f2c";`,
-    ],
-    `return !target || target === "OMP_AGENT_WINDOW_9f2c";`,
-    "preserve qutebrowser agent focus",
-  ).content;
+      "preserve qutebrowser agent focus",
+    ).content;
+  }
   return out;
 }
 
 export function patchBrowserTabSupervisor(content, { replaceAny }) {
   let out = content;
-  out = replaceAny(
-    out,
-    [
-      `\tif (existing) {\n\t\tif (existing.browser === browser && existing.state === "alive") {`,
-      `\tif (existing) {\n\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\tthrow new ToolError(\n\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t);\n\t\t}\n\t\tif (existing.browser === browser && existing.state === "alive") {`,
-      `\tif (existing) {\n\t\tif (existing.browser === browser && existing.state === "alive") {\n\t\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\t\tthrow new ToolError(\n\t\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t\t);\n\t\t\t}`,
-    ],
-    `\tif (existing) {\n\t\tif (existing.browser === browser && existing.state === "alive") {\n\t\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\t\tthrow new ToolError(\n\t\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t\t);\n\t\t\t}`,
-    "browser tab owner-session reuse guard",
-  ).content;
-  out = replaceAny(
-    out,
-    [
-      `export function listTabs(): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive")`,
-      `export function listTabs(ownerSessionId?: string): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive" && (ownerSessionId === undefined || tab.ownerSessionId === ownerSessionId))`,
-    ],
-    `export function listTabs(ownerSessionId?: string): ManagedTabInfo[] {\n\treturn [...tabs.values()]\n\t\t.filter(tab => tab.state === "alive" && (ownerSessionId === undefined || tab.ownerSessionId === ownerSessionId))`,
-    "tab list owner filter",
-  ).content;
+  const optionsStart = out.indexOf("export interface AcquireTabOptions {");
+  const optionsEnd = out.indexOf("\n}", optionsStart);
+  if (optionsStart >= 0 && optionsEnd > optionsStart) {
+    const options = out.slice(optionsStart, optionsEnd);
+    if (!options.includes("displayName?: string;")) {
+      const ownerOption = "\townerSessionId?: string;";
+      if (!options.includes(ownerOption))
+        throw new Error(
+          "Patch 'browser tab displayName option' expected ownerSessionId in AcquireTabOptions.",
+        );
+      out =
+        out.slice(0, optionsStart) +
+        options.replace(
+          ownerOption,
+          ownerOption + "\n\tdisplayName?: string;",
+        ) +
+        out.slice(optionsEnd);
+    }
+  }
+  const guardStart = out.indexOf("if (existing) {");
+  const guardEnd = out.indexOf(
+    '\n\t\tif (existing.browser === browser && existing.state === "alive") {',
+    guardStart,
+  );
+  if (
+    guardStart >= 0 &&
+    guardEnd >= 0 &&
+    !out
+      .slice(guardStart, guardEnd)
+      .includes("existing.ownerSessionId !== opts.ownerSessionId")
+  ) {
+    const guard = `if (existing) {\n\t\tif (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {\n\t\t\tthrow new ToolError(\n\t\t\t\t\`Tab \${JSON.stringify(name)} belongs to another browser session. Use a unique browser name or close it first.\`,\n\t\t\t);\n\t\t}`;
+    out =
+      out.slice(0, guardStart) +
+      out.slice(guardStart, guardEnd).replace("if (existing) {", guard) +
+      out.slice(guardEnd);
+  }
+  const pickerOptions =
+    /const picked = await pickElectronTarget\(browser\.browser, \{\n(\s*)matcher: opts\.target,\n\s*preferVisible: userDriven && !opts\.target,\n\s*relayJson: browser\.kind\.kind === "relay" \? browser\.kind\.cdpUrl : undefined,\n\s*signal: opts\.signal,\n\s*\}\);/;
+  const match = out.match(pickerOptions);
+  if (match && !match[0].includes("ownerSessionId: opts.ownerSessionId")) {
+    const indent = match[1];
+    const updated = match[0].replace(
+      /\n\s*\}\);$/,
+      `\n${indent}ownerSessionId: opts.ownerSessionId,\n${indent}tabName: opts.displayName ?? "main",\n${indent.slice(1)}});`,
+    );
+    out = out.replace(pickerOptions, updated);
+  }
   return out;
 }

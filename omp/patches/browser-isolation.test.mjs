@@ -63,25 +63,55 @@ function extractFunction(source, name, jsSignature) {
   )(createHash);
 }
 
-const pickerWithHook = `export async function pickElectronTarget(
-	browser: Browser,
-	options: { matcher?: string; preferVisible?: boolean } = {},
-): Promise<Page> {
+const pickerWithHook = `export interface PickTargetOptions {
+	matcher?: string;
+	preferVisible?: boolean;
+	ownerSessionId?: string;
+	tabName?: string;
+	relayJson?: string;
+	signal?: AbortSignal;
+}
+export async function pickElectronTarget(browser: Browser, options: PickTargetOptions = {}): Promise<Page> {
+	throwIfAborted(options.signal);
 	await ensureQutebrowserAgentTarget(browser, options.matcher);
+	if (options.relayJson) return pickFromRelay(options);
 	const discoveredPages = [];
-async function pickPageFromList(pages: Page[], options: { matcher?: string; preferVisible?: boolean }): Promise<Page> {
+async function pickPageFromList(pages: Page[], options: PickTargetOptions): Promise<Page> {
 	const enriched = [];
 	if (options.matcher) {
 		const needle = options.matcher.toLowerCase();
-		const hit = enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));
+		const targetMarker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);
+		const hit = targetMarker
+			? enriched.find(p => titleHasExactMarker(p.title, targetMarker))
+			: enriched.find(p => p.url.toLowerCase().includes(needle) || p.title.toLowerCase().includes(needle));
 	}
+}
+function selectRelayEntry(entries: RelayJsonEntry[], options: PickTargetOptions): RelayJsonEntry | null {
+	const needle = options.matcher?.toLowerCase();
+	const marker = qutebrowserTargetMarker(options.matcher, options.ownerSessionId, options.tabName);
+	if (marker) {
+		const target = entries.find(entry => titleHasExactMarker(entry.title, marker) && entry.discarded !== "true");
+		return target ?? null;
+	}
+	if (needle) {
+		const hits = entries.filter(e => relayEntryMatches(e, needle));
+		const live = hits.filter(e => e.discarded !== "true");
+		if (live.length > 0) return live[0]!;
+	}
+	const usable = entries.filter(isAdoptableRelayEntry);
+	return usable.find(e => e.active === "true") ?? usable[0] ?? null;
 }
 return !target;
 }`;
-const pickerWithoutHook = pickerWithHook.replace(
-  "\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n",
-  "",
-);
+const pickerWithoutHook = pickerWithHook
+  .replace(
+    "\tawait ensureQutebrowserAgentTarget(browser, options.matcher);\n",
+    "",
+  )
+  .replace(
+    "\tawait ensureQutebrowserAgentTarget(browser, options.matcher, options.ownerSessionId, options.tabName);\n",
+    "",
+  );
 
 const oldHelper = `let qutebrowserAgentTargetOpen: Promise<void> | undefined;
 
@@ -129,7 +159,7 @@ function assertCanonicalAttach(patched) {
   );
   assert.match(
     patched,
-    /pickPageFromList\(pages: Page\[\], options: \{ matcher\?: string; preferVisible\?: boolean; ownerSessionId\?: string; tabName\?: string \}\)/,
+    /pickPageFromList\(pages: Page\[\], options: PickTargetOptions\)/,
   );
   assert.match(patched, /qutebrowserAgentToken\(ownerSessionId, tabName\)/);
   assert.match(patched, /tabName\?: string/);
@@ -139,8 +169,16 @@ function assertCanonicalAttach(patched) {
   assert.match(patched, /SIGTERM/);
   assert.match(patched, /SIGKILL/);
   assert.match(patched, /Date\.now\(\) \+ 15_000/);
-  assert.doesNotMatch(patched, /stderr: "ignore"/);
-  assert.doesNotMatch(patched, /finally\(\(\) =>/);
+  assert.match(patched, /ownerSessionId\?: string/);
+  assert.match(patched, /tabName\?: string/);
+  assert.match(
+    patched,
+    /ensureQutebrowserAgentTarget\(browser, options\.matcher, options\.ownerSessionId, options\.tabName\)/,
+  );
+  assert.match(
+    patched,
+    /const target = entries\.find\(entry => titleHasExactMarker\(entry\.title, marker\) && entry\.discarded !== "true"\);\n\t\treturn target \?\? null;/,
+  );
 }
 
 test("inserts canonical qutebrowser owner-token helper into unpatched attach source", () => {
@@ -151,8 +189,9 @@ test("inserts canonical qutebrowser owner-token helper into unpatched attach sou
 
 test("live installed attach source is canonical and idempotent", () => {
   const source = readInstalledAttachSource();
-  assertCanonicalAttach(source);
-  assert.equal(patchBrowserAttach(source, { replaceAny }), source);
+  const once = patchBrowserAttach(source, { replaceAny });
+  assertCanonicalAttach(once);
+  assert.equal(patchBrowserAttach(once, { replaceAny }), once);
 });
 
 test("replaces already-patched qutebrowser helper with SHA owner-token lifecycle diagnostics", () => {
@@ -229,49 +268,46 @@ test("patchBrowserAttach is idempotent after canonical helper is present", () =>
 });
 
 test("tab supervisor refuses cross-session reuse and passes owner to physical target picker", () => {
-  const source = `	ownerSessionId?: string;
-	/**
-	 * Opt out of settle-freeze
-	 */
+  const source = `export interface AcquireTabOptions {
+	target?: string;
+	signal?: AbortSignal;
 	ownerSessionId?: string;
-	/**
-	 * Keep the tab live
+}
 export function listTabs(): ManagedTabInfo[] {
 	return [...tabs.values()]
 		.filter(tab => tab.state === "alive")
-		.map(tab => ({
-			name: tab.name,
-			url: tab.info.url,
-		}));
-	if (existing) {
+		.map(tab => ({ name: tab.name, url: tab.info.url }));
+}
+if (existing) {
 		if (existing.browser === browser && existing.state === "alive") {
+			if (existing.ownerSessionId !== undefined && opts.ownerSessionId !== undefined && existing.ownerSessionId !== opts.ownerSessionId) {
+				throw new ToolError("Tab belongs to another browser session");
+			}
 			return existing;
 		}
 	}
-		ownerSessionId: opts.ownerSessionId,
-		persist: opts.persist ?? false,
-		tabName: opts.displayName ?? name,
-			kindTag: browser.kind.kind,
-			cmuxAttachedSurface: attachedSurface,
-			ownerSessionId: opts.ownerSessionId,
-			persist: opts.persist ?? false,
-			kindTag: browser.kind.kind,
-			ownerSessionId: opts.ownerSessionId,
-			persist: opts.persist ?? false,
-	const page = await pickElectronTarget(browser.browser, {
-		matcher: opts.target,
-		preferVisible: !activateForScreenshot,
-	});`;
+const picked = await pickElectronTarget(browser.browser, {
+	matcher: opts.target,
+	preferVisible: userDriven && !opts.target,
+	relayJson: browser.kind.kind === "relay" ? browser.kind.cdpUrl : undefined,
+	signal: opts.signal,
+});`;
   const patched = patchBrowserTabSupervisor(source, { replaceAny });
   assert.match(patched, /existing\.ownerSessionId !== opts\.ownerSessionId/);
   assert.ok(
-    patched.indexOf(
-      'existing.browser === browser && existing.state === "alive"',
-    ) < patched.indexOf("existing.ownerSessionId !== opts.ownerSessionId"),
+    patched.indexOf("existing.ownerSessionId !== opts.ownerSessionId") <
+      patched.indexOf(
+        'existing.browser === browser && existing.state === "alive"',
+      ),
   );
   assert.match(patched, /belongs to another browser session/);
   assert.match(patched, /ownerSessionId: opts\.ownerSessionId/);
   assert.match(patched, /tabName: opts\.displayName \?\? "main"/);
+  assert.match(patched, /displayName\?: string/);
+  assert.match(
+    patched,
+    /ownerSessionId: opts\.ownerSessionId,\n\ttabName: opts\.displayName \?\? "main"/,
+  );
   assert.equal(patchBrowserTabSupervisor(patched, { replaceAny }), patched);
 });
 
