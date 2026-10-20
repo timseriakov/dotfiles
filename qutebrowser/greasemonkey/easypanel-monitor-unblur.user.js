@@ -49,7 +49,7 @@
         .filter(
           (element) =>
             !notices.some(
-              (other) => element !== other && element.contains(other),
+              (other) => element !== other && other.contains(element),
             ),
         )
         .forEach((notice) =>
