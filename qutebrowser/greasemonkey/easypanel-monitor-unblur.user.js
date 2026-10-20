@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Easypanel Hide License Upsells
 // @namespace    qutebrowser
-// @version      2.0.0
-// @description  Скрывает баннер мониторинга и кнопку покупки лицензии Easypanel.
+// @version      2.1.0
+// @description  Убирает блюр на странице мониторинга и скрывает upsell лицензии Easypanel.
 // @author       tim
 // @match        https://easypanel.host/*
 // @match        https://*.easypanel.host/*
@@ -17,6 +17,22 @@
   function start() {
     const root = document.documentElement;
     if (!root) return;
+    if (location.pathname.startsWith("/monitor")) {
+      const monitorStyle = document.createElement("style");
+      monitorStyle.textContent = `
+        html body [style*="blur" i],
+        html body [class*="blur" i] {
+          filter: none !important;
+          -webkit-filter: none !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          pointer-events: auto !important;
+          user-select: auto !important;
+          -webkit-user-select: auto !important;
+        }
+      `;
+      root.append(monitorStyle);
+    }
 
     const style = document.createElement("style");
     style.textContent = 'a[href*="/buy-license"] { display: none !important; }';
