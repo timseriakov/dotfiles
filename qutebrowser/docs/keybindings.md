@@ -17,20 +17,21 @@
 
 ## Config Bindings
 
-| Shortcut                        | Action                        |
-| ------------------------------- | ----------------------------- |
-| <kbd>e</kbd>                    | reload                        |
-| <kbd>Leader</kbd> <kbd>ce</kbd> | config-edit                   |
-| <kbd>Leader</kbd> <kbd>ch</kbd> | help                          |
-| <kbd>Leader</kbd> <kbd>cc</kbd> | config-source (reload config) |
-| <kbd>Leader</kbd> <kbd>cS</kbd> | cmd-set-text -s :set -t       |
+| Shortcut                        | Action                               |
+| ------------------------------- | ------------------------------------ |
+| <kbd>e</kbd>                    | reload                               |
+| <kbd>Leader</kbd> <kbd>ce</kbd> | config-edit                          |
+| <kbd>Leader</kbd> <kbd>ch</kbd> | help                                 |
+| <kbd>Leader</kbd> <kbd>cc</kbd> | config-source (reload config)        |
+| <kbd>Leader</kbd> <kbd>?</kbd>  | Open the local keybindings reference |
+| <kbd>Leader</kbd> <kbd>cS</kbd> | cmd-set-text -s :set -t              |
 
 ## Developer Bindings
 
 | Shortcut                        | Action                             |
 | ------------------------------- | ---------------------------------- |
 | <kbd>Leader</kbd> <kbd>dd</kbd> | devtools                           |
-| <kbd>Leader</kbd> <kbd>de</kbd> | edit-text                          |
+| <kbd>Leader</kbd> <kbd>e</kbd>  | edit-text                          |
 | <kbd>Leader</kbd> <kbd>dc</kbd> | cmd-edit                           |
 | <kbd>Leader</kbd> <kbd>df</kbd> | devtools-focus                     |
 | <kbd>Leader</kbd> <kbd>dp</kbd> | screenshot (timestamped)           |
