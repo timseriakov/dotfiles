@@ -2,6 +2,18 @@
 
 # Ensure Homebrew and system binaries are available inside Alacritty
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+PYTHON=
+for candidate in /opt/homebrew/bin/python3.14 /opt/homebrew/opt/python@3.14/bin/python3.14 /opt/local/bin/python3 /opt/homebrew/bin/python3 "$(command -v python3 2>/dev/null)"; do
+  if [[ -x "$candidate" ]] && "$candidate" -c 'import yaml' >/dev/null 2>&1; then
+    PYTHON="$candidate"
+    break
+  fi
+done
+export PYTHON
+if [[ -z "$PYTHON" ]]; then
+  echo "session-add: PyYAML is required to read qutebrowser sessions" >&2
+  exit 1
+fi
 
 # Пути
 SESSION_DIR="$HOME/Library/Application Support/qutebrowser/sessions"
@@ -31,7 +43,7 @@ if [ "$1" == "--preview" ] && [ -n "$2" ]; then
   fi
 
   # Python скрипт для генерации красивого превью
-  python3 -c "
+  "$PYTHON" -c "
 import sys, yaml, shutil
 
 RESET = '\033[0m'
@@ -122,7 +134,7 @@ if [ "$1" == "--preview" ] && [ -n "$2" ]; then
   fi
 
   # Python скрипт для генерации красивого превью
-  python3 -c "
+  "$PYTHON" -c "
 import sys, yaml
 
 try:
@@ -302,7 +314,7 @@ fi
 
 # Используем Python для парсинга YAML и извлечения URL
 # Пишем команды прямо в QUTE_FIFO
-python3 -c "
+"$PYTHON" -c "
 import sys, yaml, os
 
 try:
