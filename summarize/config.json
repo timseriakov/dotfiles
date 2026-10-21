@@ -2,10 +2,10 @@
   "model": "fast",
   "models": {
     "fast": {
-      "id": "openai/cx/gpt-5.4-mini"
+      "id": "openai/opencode-go/deepseek-v4.1-flash"
     },
     "quality": {
-      "id": "openai/cx/gpt-5.5"
+      "id": "openai/cx/gpt-6-luna-max"
     }
   },
   "output": {
