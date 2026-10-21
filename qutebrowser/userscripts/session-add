@@ -232,7 +232,7 @@ list_autosaves() {
         if is_autosave "\$name"; then
             printf '%s\n' "\$name"
         fi
-    done
+    done | sort -r
 }
 
 list_all() {
