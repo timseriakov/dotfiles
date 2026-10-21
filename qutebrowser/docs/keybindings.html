@@ -75,44 +75,6 @@
         width: min(1320px, calc(100% - 56px));
         margin: 0 auto;
       }
-      .hero {
-        padding: 76px 0 38px;
-      }
-      .eyebrow {
-        display: inline-flex;
-        gap: 9px;
-        align-items: center;
-        margin: 0 0 18px;
-        color: var(--nord8);
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-      .eyebrow::before {
-        width: 30px;
-        height: 2px;
-        content: "";
-        background: var(--nord8);
-        box-shadow: 0 0 18px var(--nord8);
-      }
-      h1 {
-        max-width: 900px;
-        margin: 0;
-        color: var(--nord6);
-        font-size: clamp(42px, 7vw, 82px);
-        line-height: 0.98;
-        letter-spacing: -0.065em;
-      }
-      .hero-copy {
-        max-width: 720px;
-        margin: 24px 0 0;
-        color: var(--nord4);
-        font-size: clamp(17px, 2vw, 21px);
-      }
-      .hero-copy strong {
-        color: var(--nord6);
-      }
 
       .topbar {
         position: sticky;
@@ -403,15 +365,6 @@
   </head>
   <body>
     <main class="shell">
-      <header class="hero">
-        <p class="eyebrow">qutebrowser / personal setup</p>
-        <h1>Мышь? Не сегодня.</h1>
-        <p class="hero-copy">
-          Личная конфигурация qutebrowser: 141 команда для тех, кто любит
-          управлять браузером с клавиатуры.
-        </p>
-      </header>
-
       <nav class="topbar" aria-label="Фильтр биндов">
         <div class="search-wrap">
           <input
