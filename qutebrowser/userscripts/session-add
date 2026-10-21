@@ -274,6 +274,8 @@ list_all | $FZF \
     --bind "ctrl-s:reload(list_autosaves)" \
     --bind "ctrl-n:execute-silent(printf '%s\n' {} > '$SELECT_FILE')+abort" \
     --bind "ctrl-x:execute-silent(delete_session {})+reload(list_all)" \
+    --bind 'ctrl-d:half-page-down' \
+    --bind 'ctrl-u:half-page-up' \
     > "$SELECT_FILE"
 
 EOF
