@@ -189,7 +189,7 @@ BINDING_SPECS: list[BindingSpec] = [
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(leader + "dd", "devtools", hide_ru_in_keyhint=True),
-    BindingSpec(leader + "de", "edit-text", hide_ru_in_keyhint=True),
+    BindingSpec(leader + "e", "edit-text", hide_ru_in_keyhint=True),
     BindingSpec(leader + "dc", "cmd-edit", hide_ru_in_keyhint=True),
     BindingSpec(leader + "df", "devtools-focus", hide_ru_in_keyhint=True),
     BindingSpec(
