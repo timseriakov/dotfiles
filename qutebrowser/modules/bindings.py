@@ -144,7 +144,7 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec(leader + "ch", "help", hide_ru_in_keyhint=True),
     BindingSpec(
         leader + "?",
-        "open file:///Users/tim/dev/dotfiles/qutebrowser/docs/keybindings.html",
+        "open file:///Users/tim/dev/dotfiles/qutebrowser/docs/bindings.html",
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
