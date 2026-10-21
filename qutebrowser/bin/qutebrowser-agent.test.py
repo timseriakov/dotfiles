@@ -140,5 +140,21 @@ class LauncherTest(unittest.TestCase):
                     agent.parse_token([str(SCRIPT), "--token", token])
 
 
+    def test_open_mode_execs_qutebrowser_in_owner_runtime(self):
+        argv = [str(SCRIPT), "--open", "http://localhost:58145", ":zoom 115% --quiet"]
+        with mock.patch.object(agent, "active_runtime", return_value="/active/runtime"), mock.patch.object(
+            agent.os, "execve"
+        ) as execve, mock.patch.object(agent.sys, "argv", argv):
+            agent.main()
+        execve.assert_called_once()
+        path, child_argv, env = execve.call_args.args
+        self.assertEqual(path, agent.QUTE)
+        self.assertEqual(child_argv, [agent.QUTE, *argv[2:]])
+        self.assertEqual(env["TMPDIR"], "/active/runtime")
+
+    def test_open_mode_requires_a_url(self):
+        with self.assertRaisesRegex(RuntimeError, "usage: qutebrowser-agent --open"):
+            agent.parse_open([str(SCRIPT), "--open"])
+
 if __name__ == "__main__":
     unittest.main()
