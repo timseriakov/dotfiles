@@ -32,23 +32,14 @@ export function patchPlannotatorVersionWarning(content, { replaceAny }) {
 }
 
 export function patchPlannotatorBrowserNotification(content, { replaceAny }) {
-  const r = replaceAny(
+  const current = `\tconst failedLocally = !notOpening && !isRemoteSession() && !browserResult.opened;\n\tif (!announcedInTurn) {\n\t\tconst suffix = notOpening\n\t\t\t? \` — \${notOpening}\`\n\t\t\t: failedLocally ? " (could not open a browser automatically; open this URL)" : "";\n\t\tctx.ui.notify(\`Plannotator session ready: \${serverUrl}\${suffix}\`, "info");\n\t} else if (failedLocally) {\n\t\tctx.ui.notify(\`Could not open a browser automatically. Open \${serverUrl} to review.\`, "info");\n\t}`;
+  const patched = `\tconst failedLocally = !notOpening && !isRemoteSession() && !browserResult.opened;\n\tif (!announcedInTurn || isRemoteSession()) {\n\t\tconst suffix = notOpening\n\t\t\t? \` — \${notOpening}\`\n\t\t\t: failedLocally ? " (could not open a browser automatically; open this URL)" : "";\n\t\tctx.ui.notify(\`Plannotator session ready: \${serverUrl}\${suffix}\`, "info");\n\t} else if (failedLocally) {\n\t\tctx.ui.notify(\`Could not open a browser automatically. Open \${serverUrl} to review.\`, "info");\n\t}`;
+  return replaceAny(
     content,
-    [
-      `\tif (ctx.mode === "rpc" || isRemoteSession()) {
-\t\tctx.ui.notify(\`[Plannotator] \${serverUrl}\`, "info");
-\t} else if (!browserResult.opened) {
-\t\tctx.ui.notify(\`Open this URL to review: \${serverUrl}\`, "info");
-\t}`,
-    ],
-    `\tif (isRemoteSession()) {
-\t\tctx.ui.notify(\`[Plannotator] \${serverUrl}\`, "info");
-\t} else if (!browserResult.opened) {
-\t\tctx.ui.notify(\`Open this URL to review: \${serverUrl}\`, "info");
-\t}`,
+    [current, patched],
+    patched,
     "open Plannotator in local RPC sessions",
-  );
-  return r.content;
+  ).content;
 }
 
 export function patchPlannotatorBrowserZoom(content, { replaceAny }) {
