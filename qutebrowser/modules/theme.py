@@ -109,7 +109,7 @@ c.colors.statusbar.url.success.https.fg = nord4
 c.colors.statusbar.url.warn.fg = yellow
 
 # Tabs
-c.colors.tabs.bar.bg = black
+c.colors.tabs.bar.bg = nord3
 c.tabs.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
 c.statusbar.padding = {"top": 4, "bottom": 4, "left": 3, "right": 3}
 
