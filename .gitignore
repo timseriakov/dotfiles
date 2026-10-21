@@ -112,6 +112,7 @@ cliamp/*.log
 cliamp/*.pid
 cliamp/*.lock
 cliamp/history.toml
+cliamp/resume.json
 cliamp/spotify_credentials.json
 cliamp/*_ocr.png
 /omp/agent/agent.db
