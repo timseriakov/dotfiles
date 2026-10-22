@@ -49,12 +49,13 @@ export function patchPlannotatorBrowserZoom(content, { replaceAny }) {
   // the CDP owner uses a different temp dir. Keep it as an alternative so
   // reapplying patches migrates an already-patched install.
   const previous = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "qutebrowser";\n\t\t\targs = [url, ":zoom 115% --quiet"];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
-  const patched = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "/Users/tim/dev/dotfiles/qutebrowser/bin/qutebrowser-agent";\n\t\t\targs = ["--open", url, ":zoom 115% --quiet"];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
+  const agent115 = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "/Users/tim/dev/dotfiles/qutebrowser/bin/qutebrowser-agent";\n\t\t\targs = ["--open", url, ":zoom 115% --quiet"];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
+  const patched = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "/Users/tim/dev/dotfiles/qutebrowser/bin/qutebrowser-agent";\n\t\t\targs = ["--open", url, ":zoom 120% --quiet"];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
   return replaceAny(
     content,
-    [current, previous],
+    [current, previous, agent115],
     patched,
-    "open Plannotator at 115% through the CDP owner IPC runtime",
+    "open Plannotator at 120% through the CDP owner IPC runtime",
   ).content;
 }
 

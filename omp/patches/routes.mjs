@@ -105,7 +105,7 @@ export function runPatchRoutes(ctx) {
         home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",
       ),
-      "open Plannotator at 115% in qutebrowser",
+      "open Plannotator at 120% in qutebrowser",
       (content) => patches.patchPlannotatorBrowserZoom(content, { replaceAny }),
     ],
     [
