@@ -47,7 +47,7 @@ abbr -a n-explore forage
 abbr -a ni 'npm install'
 abbr -a nid 'npm install -D'
 abbr -a npm-explore forage
-abbr -a npk 'npx npkill'
+abbr -a npk 'npx -y npkill'
 abbr -a npxy 'npx -y'
 abbr -a nr 'npm run'
 abbr -a nrm 'npm uninstall'

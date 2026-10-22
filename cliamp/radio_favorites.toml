@@ -1,13 +1,4 @@
 [[station]]
-name = "Brokenbeats"
-url = "https://brokenbeats.net/stream/aac"
-country = "Ukraine"
-bitrate = 320
-codec = "AAC"
-tags = "drum & bass,drum 'n' bass,drum and bass"
-homepage = "https://brokenbeats.net/"
-
-[[station]]
 name = "drumfunk.ru"
 url = "https://ice.drumfunk.ru:8050/on.mp3"
 country = "The Russian Federation"
@@ -174,3 +165,12 @@ state = "England"
 bitrate = 192
 codec = "MP3"
 homepage = "https://www.sub.fm/"
+
+[[station]]
+name = "Brokenbeats"
+url = "https://brokenbeats.net/stream/aac"
+country = "Ukraine"
+bitrate = 320
+codec = "AAC"
+tags = "drum & bass,drum 'n' bass,drum and bass"
+homepage = "https://brokenbeats.net/"
