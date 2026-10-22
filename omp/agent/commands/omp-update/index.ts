@@ -4,7 +4,7 @@ import type {
 } from "@oh-my-pi/pi-coding-agent/extensibility/custom-commands";
 import type { HookCommandContext } from "@oh-my-pi/pi-coding-agent/extensibility/hooks/types";
 
-const PROMPT = `нужно сделать omp update;
+const PROMPT = `Снова нужно сделать omp update;
 и проследить что встал патч;
 и дать краткое понятное саммари что поменялось в новом релизе;
 так же проверь Plannotator и обнови если нужно.`;
