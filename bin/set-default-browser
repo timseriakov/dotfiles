@@ -1,37 +1,44 @@
 #!/usr/bin/env python3
-"""
-Set system default browser on macOS via Launch Services.
-Usage: set-default-browser <bundle-id>
-"""
-import plistlib, subprocess, sys
+"""Set the macOS default browser and verify both URL scheme handlers."""
+import os
+import plistlib
+import subprocess
+import sys
+import time
 
-LS_PATH = "/Users/tim/Library/Preferences/com.apple.LaunchServices/" \
-          "com.apple.launchservices.secure.plist"
+DOMAIN = "com.apple.LaunchServices/com.apple.launchservices.secure"
 SCHEMES = ("http", "https")
+
 
 def main():
     if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <bundle-id>", file=sys.stderr)
-        sys.exit(1)
+        sys.exit(f"Usage: {sys.argv[0]} <bundle-id>")
     bundle_id = sys.argv[1]
-
-    with open(LS_PATH, "rb") as f:
-        data = plistlib.load(f)
-
+    data = plistlib.loads(subprocess.check_output(["defaults", "export", DOMAIN, "-"]))
     handlers = [
         h for h in data.get("LSHandlers", [])
         if h.get("LSHandlerURLScheme") not in SCHEMES
     ]
-    for scheme in SCHEMES:
-        handlers.append({"LSHandlerURLScheme": scheme, "LSHandlerRoleAll": bundle_id})
+    handlers.extend(
+        {"LSHandlerURLScheme": scheme, "LSHandlerRoleAll": bundle_id}
+        for scheme in SCHEMES
+    )
     data["LSHandlers"] = handlers
-
-    with open(LS_PATH, "wb") as f:
-        plistlib.dump(data, f)
-
-    subprocess.run(["killall", "lsd"], capture_output=True)
-
-    print(f"Default browser → {bundle_id}")
+    # Go through cfprefsd so its cached preferences cannot overwrite our change.
+    subprocess.run(
+        ["defaults", "import", DOMAIN, "-"], input=plistlib.dumps(data), check=True
+    )
+    subprocess.run(["killall", "-u", str(os.getuid()), "lsd"], capture_output=True)
+    for _ in range(30):
+        if all(
+            subprocess.check_output(["duti", "-d", scheme], text=True).strip().lower()
+            == bundle_id.lower()
+            for scheme in SCHEMES
+        ):
+            print(f"Default browser → {bundle_id}")
+            return
+        time.sleep(0.1)
+    sys.exit(f"Failed to apply default browser: {bundle_id}")
 
 
 if __name__ == "__main__":
