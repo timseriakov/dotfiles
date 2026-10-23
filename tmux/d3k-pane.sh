@@ -62,10 +62,44 @@ wait_for_shell() {
   return 1
 }
 
+is_shell() {
+  case "$(tmux display-message -p -t "$pane" '#{pane_current_command}')" in
+    fish|bash|zsh|sh) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+submit_restart() {
+  local command="$restart_cmd $service $project_cmd"
+  local last line
+
+  # Raw Ctrl-U/CR instead of C-u/C-m: with extended keys (kitty client) C-m
+  # can be encoded as Ctrl-Enter, which fish/TUIs do not treat as submit.
+  tmux send-keys -t "$pane" -H 15
+  tmux send-keys -t "$pane" -l "$command"
+  # Give the shell's line editor time to ingest the whole line before Enter;
+  # a fast text+Enter burst right after a job stops can drop the submission.
+  sleep 0.2
+  tmux send-keys -t "$pane" -H 0d
+
+  # If the command is still sitting at the prompt, the Enter was lost in the
+  # shell/job handoff. Verify and submit once more instead of leaving a
+  # silently pending line.
+  for _ in {1..5}; do
+    is_shell || return 0
+    sleep 0.1
+  done
+  last=$(tmux capture-pane -p -J -t "$pane" | awk 'NF { line = $0 } END { print line }')
+  if [[ "$last" == *"$command" ]]; then
+    tmux send-keys -t "$pane" -H 0d
+  fi
+}
+
 tmux send-keys -t "$pane" C-c
 wait_for_shell || { tmux send-keys -t "$pane" C-z; wait_for_shell; } || {
   tmux display-message "d3k:${service}: target pane did not return to shell"
   exit 1
 }
 
-tmux send-keys -t "$pane" C-u "$restart_cmd $service $project_cmd" C-m
+sleep 0.2
+submit_restart

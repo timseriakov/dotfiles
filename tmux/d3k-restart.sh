@@ -30,5 +30,5 @@ fi
 wait "$kill_pid" 2>/dev/null || true
 rm -f "$status_file"
 
-exec pnpm "d3k:${service}"
+exec node "$project/scripts/d3k-foreground.mjs" "$service"
 
