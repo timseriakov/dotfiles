@@ -1,8 +1,7 @@
 {
   "reviewers": [
-    "omniroute/cx/gpt-5.6-sol-low@low",
-    "omniroute/cx/gpt-5.6-luna@xhigh",
-    "omniroute/opencode-go/deepseek-v4-flash@xhigh",
+    "omniroute/cx/gpt-6.1-sol@low",
+    "omniroute/cx/gpt-6-luna@xhigh",
     "omniroute/opencode-go/deepseek-v4.1-flash@xhigh",
     "omniroute/opencode-go/glm-5.3-flash@xhigh"
   ],
