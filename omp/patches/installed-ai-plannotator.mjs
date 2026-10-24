@@ -283,31 +283,33 @@ export function createInstalledAiPlannotatorPatches(ctx) {
 
   function patchPlannotatorBrowserRuntime(content) {
     let out = content;
-    let r;
 
     if (!out.includes(`import { homedir } from "node:os";`)) {
-      r = replaceOnce(
+      out = replaceOnce(
         out,
         `import { fileURLToPath } from "node:url";`,
         `import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";`,
         "plannotator browser homedir import",
-      );
-      out = r.content;
+      ).content;
     }
 
-    r = replaceAny(
+    // Already patched: the asset directory constant is the marker.
+    if (out.includes(`const pluginAssetDirectory`)) return out;
+
+    const reviewHtmlPathLine = `const reviewHtmlPath = resolve(moduleDirectory, "review-editor.html");`;
+    out = replaceOnce(
+      out,
+      reviewHtmlPathLine,
+      `${reviewHtmlPathLine}
+const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");`,
+      "plannotator browser asset directory",
+    ).content;
+
+    out = replaceAny(
       out,
       [
-        `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
-const planHtmlPath = resolve(moduleDirectory, "plannotator.html");
-const reviewHtmlPath = resolve(moduleDirectory, "review-editor.html");
-
-let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
-let planHtmlContent: string | undefined;
-let reviewHtmlContent: string | undefined;
-
-function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
+        `function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
 	if (cachedContent) return true;
 	try {
 		const stats = statSync(path);
@@ -324,103 +326,17 @@ function readBrowserAsset(path: string, cachedContent: string | undefined): stri
 	} catch {
 		return "";
 	}
-}
-
-/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
-export function hasPlanBrowserHtml(): boolean {
-	return hasReadableAsset(planHtmlPath, planHtmlContent);
-}
-
-/** Return whether the built code-review UI is available without reading it into memory. */
-export function hasReviewBrowserHtml(): boolean {
-	return hasReadableAsset(reviewHtmlPath, reviewHtmlContent);
-}
-
-/** Read and cache the built plan/annotation/archive UI on first use. */
-export function getPlanBrowserHtml(): string {
-	const content = readBrowserAsset(planHtmlPath, planHtmlContent);
-	if (content) planHtmlContent = content;
-	return content;
-}
-
-/** Read and cache the built code-review UI on first use. */
-export function getReviewBrowserHtml(): string {
-	const content = readBrowserAsset(reviewHtmlPath, reviewHtmlContent);
-	if (content) reviewHtmlContent = content;
-	return content;
-}`,
-        `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
-const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
-const planHtmlPaths = [resolve(moduleDirectory, "plannotator.html"), resolve(pluginAssetDirectory, "plannotator.html")];
-const reviewHtmlPaths = [resolve(moduleDirectory, "review-editor.html"), resolve(pluginAssetDirectory, "review-editor.html")];
-
-let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
-let planHtmlContent: string | undefined;
-let reviewHtmlContent: string | undefined;
-
-function hasReadableAsset(paths: string[], cachedContent: string | undefined): boolean {
-	if (cachedContent) return true;
-	for (const path of paths) {
-		try {
-			const stats = statSync(path);
-			if (stats.isFile() && stats.size > 0) return true;
-		} catch {
-			// try the next candidate
-		}
-	}
-	return false;
-}
-
-function readBrowserAsset(paths: string[], cachedContent: string | undefined): string {
-	if (cachedContent !== undefined) return cachedContent;
-	for (const path of paths) {
-		try {
-			return readFileSync(path, "utf-8");
-		} catch {
-			// try the next candidate
-		}
-	}
-	return "";
-}
-
-/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
-export function hasPlanBrowserHtml(): boolean {
-	return hasReadableAsset(planHtmlPaths, planHtmlContent);
-}
-
-/** Return whether the built code-review UI is available without reading it into memory. */
-export function hasReviewBrowserHtml(): boolean {
-	return hasReadableAsset(reviewHtmlPaths, reviewHtmlContent);
-}
-
-/** Read and cache the built plan/annotation/archive UI on first use. */
-export function getPlanBrowserHtml(): string {
-	const content = readBrowserAsset(planHtmlPaths, planHtmlContent);
-	if (content) planHtmlContent = content;
-	return content;
-}
-
-/** Read and cache the built code-review UI on first use. */
-export function getReviewBrowserHtml(): string {
-	const content = readBrowserAsset(reviewHtmlPaths, reviewHtmlContent);
-	if (content) reviewHtmlContent = content;
-	return content;
 }`,
       ],
-      `const moduleDirectory = dirname(fileURLToPath(import.meta.url));
-const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");
-const planHtmlPaths = [resolve(moduleDirectory, "plannotator.html"), resolve(pluginAssetDirectory, "plannotator.html")];
-const reviewHtmlPaths = [resolve(moduleDirectory, "review-editor.html"), resolve(pluginAssetDirectory, "review-editor.html")];
+      `function assetCandidates(path: string): string[] {
+	return [path, resolve(pluginAssetDirectory, path.slice(moduleDirectory.length + 1))];
+}
 
-let browserModulePromise: Promise<PlannotatorBrowserModule> | undefined;
-let planHtmlContent: string | undefined;
-let reviewHtmlContent: string | undefined;
-
-function hasReadableAsset(paths: string[], cachedContent: string | undefined): boolean {
+function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
 	if (cachedContent) return true;
-	for (const path of paths) {
+	for (const candidate of assetCandidates(path)) {
 		try {
-			const stats = statSync(path);
+			const stats = statSync(candidate);
 			if (stats.isFile() && stats.size > 0) return true;
 		} catch {
 			// try the next candidate
@@ -429,44 +345,19 @@ function hasReadableAsset(paths: string[], cachedContent: string | undefined): b
 	return false;
 }
 
-function readBrowserAsset(paths: string[], cachedContent: string | undefined): string {
+function readBrowserAsset(path: string, cachedContent: string | undefined): string {
 	if (cachedContent !== undefined) return cachedContent;
-	for (const path of paths) {
+	for (const candidate of assetCandidates(path)) {
 		try {
-			return readFileSync(path, "utf-8");
+			return readFileSync(candidate, "utf-8");
 		} catch {
 			// try the next candidate
 		}
 	}
 	return "";
-}
-
-/** Return whether the built plan/annotation/archive UI is available without reading it into memory. */
-export function hasPlanBrowserHtml(): boolean {
-	return hasReadableAsset(planHtmlPaths, planHtmlContent);
-}
-
-/** Return whether the built code-review UI is available without reading it into memory. */
-export function hasReviewBrowserHtml(): boolean {
-	return hasReadableAsset(reviewHtmlPaths, reviewHtmlContent);
-}
-
-/** Read and cache the built plan/annotation/archive UI on first use. */
-export function getPlanBrowserHtml(): string {
-	const content = readBrowserAsset(planHtmlPaths, planHtmlContent);
-	if (content) planHtmlContent = content;
-	return content;
-}
-
-/** Read and cache the built code-review UI on first use. */
-export function getReviewBrowserHtml(): string {
-	const content = readBrowserAsset(reviewHtmlPaths, reviewHtmlContent);
-	if (content) reviewHtmlContent = content;
-	return content;
 }`,
       "plannotator browser asset fallback",
-    );
-    out = r.content;
+    ).content;
 
     return out;
   }
