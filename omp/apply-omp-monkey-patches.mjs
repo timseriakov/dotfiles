@@ -384,6 +384,7 @@ const patches = {
   ...createCommandRuntimePatches(patchHelpers),
   patchBrowserRelayOnly,
   ...createGitTuiPatches(patchHelpers),
+  patchRejudgeAgentIds,
 };
 try {
   runPatchRoutes({
@@ -405,6 +406,7 @@ try {
       patchPlannotatorVersionWarning,
       patchPlannotatorEgoViewer,
       patchPiSideChatOverlay,
+      patchPiSideChatIndex,
     },
   });
   console.log("OMP monkey patches applied.");
