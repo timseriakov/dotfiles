@@ -72,8 +72,7 @@ statusLine:
 modelRoles:
   smol: omniroute/opencode-go/deepseek-v4-flash:max
   plan: omniroute/cx/gpt-6.1-sol:medium
-  task: omniroute/opencode-go/deepseek-v4-flash:max
-  # task: opencode-go/opencode-go/deepseek-v4.1-flash:max
+  task: omniroute/cx/gpt-6-luna:max
   vision: omniroute/cx/gpt-6-luna:max
   tiny: opencode-go/opencode-go/deepseek-v4.1-flash:off
   advisor: omniroute/cx/gpt-6.1-sol:low
