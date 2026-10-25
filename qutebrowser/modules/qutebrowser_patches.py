@@ -46,10 +46,8 @@ from qutebrowser.mainwindow import mainwindow, tabwidget
 from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, QUrl, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QTabWidget
-from qutebrowser.utils import objreg, qtutils, usertypes
-from qutebrowser.qt.webenginecore import QWebEngineScript
-from qutebrowser import app as qute_app
 from qutebrowser.browser.webengine import webview
+from qutebrowser.utils import objreg
 from qutebrowser.keyinput import modeman
 
 
@@ -394,6 +392,7 @@ def _on_caret_selection_toggled_with_bottom_line(self, selection_state):
 bar.StatusBar.on_caret_selection_toggled = _on_caret_selection_toggled_with_bottom_line
 
 def _mainwindow_init_with_url_click(self, *args, **kwargs):
+    _install_google_search_view_patch()
     _orig_mainwindow_init(self, *args, **kwargs)
     app = QApplication.instance()
     old_filter = getattr(self.status.url, "_dotfiles_click_filter", None)
@@ -584,161 +583,6 @@ mainwindow.MainWindow.__init__ = _mainwindow_init_with_url_click
 
 
 
-_AGENT_WINDOW_PROPERTY = "_dotfiles_omp_agent_window"
-_AGENT_TITLE_MARKER = "OMP_AGENT_WINDOW_9f2c"
-_AGENT_BOOTSTRAP_TOKEN = "OMP_AGENT_WINDOW_9f2c_BOOTSTRAP"
-_AGENT_TOKEN_PREFIX = f"{_AGENT_TITLE_MARKER}_TOKEN_"
-
-
-def _agent_title_js(marker):
-    return f"""(() => {{
-  const marker = {marker!r};
-  const apply = () => {{
-    if (!document.title.includes(marker)) document.title = `${{marker}} ${{document.title}}`.trim();
-  }};
-  apply();
-  const root = document.documentElement || document;
-  if (root && typeof MutationObserver === 'function') {{
-    new MutationObserver(apply).observe(root, {{childList: true, subtree: true, characterData: true}});
-  }}
-}})();"""
-
-
-def _safe_agent_token(token):
-    return 8 <= len(token) <= 64 and all(
-        char.isascii() and (char.isalnum() or char in {"_", "-"}) for char in token
-    )
-
-
-def _agent_bootstrap_prefix():
-    return f"about:blank#{_AGENT_BOOTSTRAP_TOKEN}"
-
-
-def _agent_token_from_url(url_text):
-    prefix = f"{_agent_bootstrap_prefix()}_"
-    if not url_text.startswith(prefix):
-        return None
-    token = url_text[len(prefix) :]
-    if _safe_agent_token(token):
-        return token
-    return None
-
-
-def _is_agent_bootstrap_url(url_text):
-    return url_text == _agent_bootstrap_prefix() or _agent_token_from_url(url_text) is not None
-
-
-def _agent_tab_markers(tab):
-    markers = [_AGENT_TITLE_MARKER]
-    try:
-        token = _agent_token_from_url(tab.url().toString())
-    except RuntimeError:
-        token = None
-    if token:
-        markers.append(f"{_AGENT_TOKEN_PREFIX}{token}")
-    return markers
-
-
-def _tag_agent_tab(tab):
-    scripts = getattr(tab, "_scripts", None)
-    if scripts is None:
-        return
-    tagged = getattr(tab, "_dotfiles_omp_agent_markers", set())
-    for marker in _agent_tab_markers(tab):
-        if marker in tagged:
-            continue
-        scripts._inject_js(
-            f"omp-agent-window-{marker}",
-            _agent_title_js(marker),
-            world=QWebEngineScript.ScriptWorldId.MainWorld,
-            injection_point=QWebEngineScript.InjectionPoint.DocumentCreation,
-        )
-        try:
-            tab.run_js_async(_agent_title_js(marker))
-        except RuntimeError:
-            pass
-        tagged.add(marker)
-    tab._dotfiles_omp_agent_markers = tagged
-
-
-def _watch_agent_tab(window, tab):
-    if getattr(tab, "_dotfiles_omp_agent_watched", False):
-        return
-    tab._dotfiles_omp_agent_watched = True
-
-    def inspect(*_args):
-        if bool(window.property(_AGENT_WINDOW_PROPERTY)):
-            _tag_agent_tab(tab)
-
-    tab.url_changed.connect(inspect)
-    tab.title_changed.connect(inspect)
-    tab.load_finished.connect(inspect)
-    QTimer.singleShot(0, inspect)
-
-
-def _mark_agent_window(window):
-    window.setProperty(_AGENT_WINDOW_PROPERTY, True)
-    window.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
-    if not getattr(window, "_dotfiles_omp_agent_hook", False):
-        window.tabbed_browser.new_tab.connect(
-            lambda tab, _index: _watch_agent_tab(window, tab)
-        )
-        window._dotfiles_omp_agent_hook = True
-    for tab in window.tabbed_browser.widgets():
-        _watch_agent_tab(window, tab)
-
-
-def _find_agent_window():
-    for win_id in sorted(objreg.window_registry):
-        window = objreg.get("main-window", scope="window", window=win_id)
-        if bool(window.property(_AGENT_WINDOW_PROPERTY)):
-            return window
-    return None
-
-
-def _install_agent_window_detection(window):
-    if not getattr(window, "_dotfiles_omp_detection_hook", False):
-        window.tabbed_browser.new_tab.connect(
-            lambda tab, _index: _watch_agent_tab(window, tab)
-        )
-        window._dotfiles_omp_detection_hook = True
-    for tab in window.tabbed_browser.widgets():
-        _watch_agent_tab(window, tab)
-
-
-_agent_mainwindow_init = getattr(
-    mainwindow.MainWindow,
-    "_dotfiles_orig_init_for_agent_window",
-    mainwindow.MainWindow.__init__,
-)
-mainwindow.MainWindow._dotfiles_orig_init_for_agent_window = _agent_mainwindow_init
-
-
-def _mainwindow_init_with_agent_detection(self, *args, **kwargs):
-    _install_google_search_view_patch()
-    _agent_mainwindow_init(self, *args, **kwargs)
-    _install_agent_window_detection(self)
-
-
-mainwindow.MainWindow.__init__ = _mainwindow_init_with_agent_detection
-_agent_open_url = getattr(qute_app, "_dotfiles_orig_open_url_for_agent", qute_app.open_url)
-qute_app._dotfiles_orig_open_url_for_agent = _agent_open_url
-
-
-def _open_url_without_agent_raise(url_value, target=None, no_raise=False, via_ipc=True):
-    if not _is_agent_bootstrap_url(url_value.toString()):
-        return _agent_open_url(url_value, target=target, no_raise=no_raise, via_ipc=via_ipc)
-
-    target = target or config.val.new_instance_open_target
-    background = target in {"tab-bg", "tab-bg-silent"}
-    window = _find_agent_window() or mainwindow.get_window(via_ipc=via_ipc, target=target, no_raise=True)
-    _mark_agent_window(window)
-    window.tabbed_browser.tabopen(url_value, background=background, related=False)
-    window.show()
-    return window
-
-
-qute_app.open_url = _open_url_without_agent_raise
 
 
 
@@ -760,16 +604,6 @@ _align_existing_status_urls()
 QTimer.singleShot(0, _align_existing_status_urls)
 
 
-def _apply_agent_maximized_geometry(window):
-    screen = window.screen() or QApplication.primaryScreen()
-    if screen is not None:
-        window.setGeometry(screen.availableGeometry())
-
-
-# Maximize every new window on its first show. Qt ignores a maximized window
-# state set before the window is shown, so hook show() itself. Installing it
-# must be reload-safe: :config-source re-runs this module, so unwrap any
-# previous wrapper first instead of chaining wrappers around each other.
 def _install_show_maximized():
     current = mainwindow.MainWindow.show
     wrapper = getattr(current, "_dotfiles_maximize_wrapper", False)
@@ -782,17 +616,6 @@ def _install_show_maximized():
         if getattr(self, "_dotfiles_initial_show_done", False):
             return original(self, *args, **kwargs)
         self._dotfiles_initial_show_done = True
-        if self.testAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating):
-            # showMaximized() always activates; the agent window must fill the
-            # screen without stealing focus. Qt sizes a hidden window loosely,
-            # so apply the geometry again once it is actually mapped.
-            _apply_agent_maximized_geometry(self)
-            result = original(self, *args, **kwargs)
-            # macOS can finish its own layout after show(), shrinking the
-            # window by the title-bar height; reapply once it has settled.
-            QTimer.singleShot(0, lambda: _apply_agent_maximized_geometry(self))
-            QTimer.singleShot(250, lambda: _apply_agent_maximized_geometry(self))
-            return result
         self.showMaximized()
 
     _show_maximized_on_first_show._dotfiles_maximize_wrapper = True

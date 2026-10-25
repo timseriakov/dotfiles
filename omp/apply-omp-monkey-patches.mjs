@@ -46,15 +46,13 @@ import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import {
   patchPlannotatorBrowserNotification,
-  patchPlannotatorBrowserZoom,
   patchPlannotatorFeedbackDelivery,
   patchPlannotatorVersionWarning,
 } from "./patches/plannotator.mjs";
 import {
-  patchBrowserAttach,
-  patchBrowserIsolation,
-  patchBrowserTabSupervisor,
-} from "./patches/browser-isolation.mjs";
+  patchBrowserRelayOnly,
+  patchPlannotatorEgoViewer,
+} from "./patches/browser-policy.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
 import {
   patchPiSideChatIndex,
@@ -384,9 +382,7 @@ const patches = {
   ...createInputSessionPatches(patchHelpers),
   ...createTuiEditorTerminalPatches(patchHelpers),
   ...createCommandRuntimePatches(patchHelpers),
-  patchBrowserIsolation,
-  patchBrowserAttach,
-  patchBrowserTabSupervisor,
+  patchBrowserRelayOnly,
   ...createGitTuiPatches(patchHelpers),
 };
 try {
@@ -405,12 +401,10 @@ try {
     patches: {
       ...patches,
       patchPlannotatorBrowserNotification,
-      patchPlannotatorBrowserZoom,
       patchPlannotatorFeedbackDelivery,
       patchPlannotatorVersionWarning,
+      patchPlannotatorEgoViewer,
       patchPiSideChatOverlay,
-      patchPiSideChatIndex,
-      patchRejudgeAgentIds,
     },
   });
   console.log("OMP monkey patches applied.");

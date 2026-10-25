@@ -72,10 +72,9 @@ Examples:
 **Key Principle**
 Never edit configs in-place inside application directories — always edit inside the dotfiles repo.
 
-## Qutebrowser Browser Automation
+## Browser automation
 
-Before using or changing qutebrowser, CDP, browser automation, agent windows,
-or Helium relay, load the `qutebrowser-browser-automation` skill.
+Use `ego-browser` for browser eyes and hands. Before browser work, run `ego-browser skill` and follow the complete installed guide; it is authoritative for the installed ego version. Do not use qutebrowser/CDP automation or another browser-launching integration. OMP Browser Relay is an explicit fallback only: require a task-specific reason, `app.relay=true`, and an explicit `app.target`.
 
 ## Dual-Yazi tmux Kitty Image Preview
 

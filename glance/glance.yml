@@ -211,41 +211,6 @@ pages:
               - symbol: XMR-USD
                 name: Monero
 
-  - name: Qutebrowser
-    columns:
-      - size: full
-        widgets:
-          - type: custom-api
-            title: qutebrowser Tabs
-            cache: 10s
-            url: http://127.0.0.1:1932/tabs
-            template: |
-              <style>
-                .qute-window-grid { display: flex; flex-wrap: wrap; gap: var(--widget-gap); align-items: flex-start; }
-                .qute-window { flex: 1 1 0; min-width: 260px; }
-              </style>
-              {{ if gt ($.JSON.Int "count") 0 }}
-              <div class="qute-window-grid">
-              {{ range .JSON.Array "windows" }}
-                {{ if gt (.Int "count") 0 }}
-                <div class="qute-window">
-                  <div class="size-h4 color-subdue margin-bottom-10">Window {{ .String "index" }} · {{ .String "count" }} tabs</div>
-                  <ul class="list list-gap-10">
-                  {{ range .Array "tabs" }}
-                    <li>
-                      <a class="size-h4 color-primary-if-not-visited block text-truncate" href="{{ .String "url" }}" target="_blank" rel="noreferrer">{{ .String "title" }}</a>
-                      <div class="size-h6 color-subdue text-truncate">{{ .String "url" }}</div>
-                    </li>
-                  {{ end }}
-                  </ul>
-                </div>
-                {{ end }}
-              {{ end }}
-              </div>
-              {{ else }}
-                <div class="color-subdue">No qutebrowser tabs visible.</div>
-              {{ end }}
-
   # Add more pages here:
   # - name: Your page name
   #   columns:

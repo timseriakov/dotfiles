@@ -20,15 +20,7 @@ export function runPatchRoutes(ctx) {
   const sourceRoutes = [
     [
       "tools/browser.ts",
-      (content) => patches.patchBrowserIsolation(content, { replaceAny }),
-    ],
-    [
-      "tools/browser/attach.ts",
-      (content) => patches.patchBrowserAttach(content, { replaceAny }),
-    ],
-    [
-      "tools/browser/tab-supervisor.ts",
-      (content) => patches.patchBrowserTabSupervisor(content, { replaceAny }),
+      (content) => patches.patchBrowserRelayOnly(content, { replaceAny }),
     ],
     ["cli.ts", patches.patchCliStartupPrepaint],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],
@@ -105,16 +97,8 @@ export function runPatchRoutes(ctx) {
         home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",
       ),
-      "open Plannotator at 120% in qutebrowser",
-      (content) => patches.patchPlannotatorBrowserZoom(content, { replaceAny }),
-    ],
-    [
-      path.join(
-        home,
-        ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser-runtime.ts",
-      ),
-      "plannotator browser asset fallback",
-      patches.patchPlannotatorBrowserRuntime,
+      "open Plannotator human review in ego lite",
+      (content) => patches.patchPlannotatorEgoViewer(content, { replaceAny }),
     ],
     [
       path.join(
@@ -124,23 +108,6 @@ export function runPatchRoutes(ctx) {
       "open Plannotator in local RPC sessions",
       (content) =>
         patches.patchPlannotatorBrowserNotification(content, { replaceAny }),
-    ],
-    [
-      path.join(
-        home,
-        ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
-      ),
-      "start Plannotator feedback turns",
-      (content) => patches.patchPlannotatorFeedbackDelivery(content),
-    ],
-    [
-      path.join(
-        home,
-        ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
-      ),
-      "suppress Plannotator version warning",
-      (content) =>
-        patches.patchPlannotatorVersionWarning(content, { replaceAny }),
     ],
     [
       path.join(

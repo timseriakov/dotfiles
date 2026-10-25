@@ -180,7 +180,6 @@ autocompleteMaxVisible: 15
 edit:
   enforceSeenLines: true
 browser:
-  cdpUrl: http://127.0.0.1:9223
   relay: false
   cmux: false
 composer:
