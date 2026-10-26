@@ -601,14 +601,13 @@ export FZF_DEFAULT_OPTS="
 --ansi
 --height=100%
 --layout=reverse
---border=rounded
---border-label=' Apple Passwords - Select Record '
---border-label-pos=3
---prompt=' ❯ '
+--border=none
+--prompt=''
+--no-separator
 --pointer='▶'
 --marker='✓'
---info=inline
---color=fg:#e5e9f0,bg:#2e3440,hl:#88c0d0
+--info=hidden
+--color=fg:#e5e9f0,bg:#2e3440,gutter:#2e3440,hl:#88c0d0
 --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#88c0d0
 --color=info:#81a1c1,prompt:#81a1c1,pointer:#88c0d0
 --color=marker:#a3be8c,spinner:#81a1c1,header:#88c0d0
