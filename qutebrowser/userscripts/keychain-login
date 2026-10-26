@@ -762,121 +762,134 @@ OSASCRIPT
 
 # ========== Main logic ==========
 
-# Query password list
-LIST_JSON=$(query_apw_list "$DOMAIN_LOWER")
-LIST_STATUS=$?
-
-if [[ $LIST_STATUS -eq 3 ]]; then
-  send_message error "No Apple Passwords records for $DOMAIN"
-  log "Exit: no records"
-  exit 0
-fi
-
-if [[ $LIST_STATUS -ne 0 ]]; then
-  die "apw pw list exited with code $LIST_STATUS"
-fi
-
-# Parse results
-RESULTS=()
-while IFS=$'\t' read -r username service label uuid; do
-  [[ -z "$username" && -z "$service" ]] && continue
-  printf -v entry '%s\t%s\t%s\t%s' "$username" "${service:-$DOMAIN_LOWER}" "$label" "$uuid"
-  RESULTS+=("$entry")
-done < <(printf '%s' "$LIST_JSON" | jq -r --arg domain "$DOMAIN_LOWER" '
-    .results[]? |
-    [
-        (.username // .user // .account // .email // ""),
-        (.domain // .service // .website // .url // .title // $domain),
-        (.name // .title // .label // .displayName // ""),
-        (.uuid // .id // .identifier // "")
-    ] | @tsv
-')
-
-log "Found records: ${#RESULTS[@]}"
-
-if [[ ${#RESULTS[@]} -eq 0 ]]; then
-  send_message error "No Apple Passwords records for $DOMAIN"
-  log "Exit: empty result array after parsing"
-  exit 0
-fi
-
-# Select record
-SELECTED=""
-if [[ ${#RESULTS[@]} -eq 1 && $PICK_MODE == false ]]; then
-  SELECTED="${RESULTS[0]}"
-  log "Automatically selected single record"
+# Query password list while preserving status 3 for no-record handling.
+if LIST_JSON=$(query_apw_list "$DOMAIN_LOWER"); then
+  LIST_STATUS=0
 else
-  # Use fzf with fallback to osascript
-  SELECTED=$(select_entry_fzf "$DOMAIN" "${RESULTS[@]}")
-  if [[ "$SELECTED" == "__CANCELLED__" ]]; then
-    send_message info "Apple Passwords record selection cancelled"
-    log "Exit: user cancelled selection"
-    exit 0
-  fi
+  LIST_STATUS=$?
 fi
 
-IFS=$'\t' read -r USERNAME SERVICE LABEL _uuid <<<"$SELECTED"
-log "Selected record: username=$USERNAME, service=$SERVICE, label=$LABEL"
-
-# ========== Form type detection ==========
-detect_form_type
-
-# Variable initialization
+NO_RECORDS=false
+NOTIFICATION_MESSAGE=""
+USERNAME=""
+SERVICE="$DOMAIN"
+LABEL=""
 PASSWORD=""
 OTP=""
 
-# ========== Conditional password fetch ==========
-if [[ "$HAS_PASSWORD" == "true" ]]; then  # pragma: allowlist secret
-  log "Form contains password field, requesting password for $SERVICE"
-  GET_JSON=$(query_apw_get "$SERVICE" "$USERNAME")
-  PASSWORD=$(printf '%s' "$GET_JSON" | jq -r '.results[0].password // empty' 2>/dev/null)
-
-  if [[ -z "$PASSWORD" ]]; then
-    die "apw returned no password (empty value)"
-  fi
-
-  log "Password successfully retrieved, length: ${#PASSWORD} chars"
-
-  # If username not specified, try to extract from result
-  if [[ -z "$USERNAME" ]]; then
-    USERNAME=$(printf '%s' "$GET_JSON" | jq -r '.results[0].username // empty' 2>/dev/null)
-    log "Username extracted from apw pw get result: $USERNAME"
-  fi
-else
-  log "Form does NOT contain password field, skipping password request"
+if [[ $LIST_STATUS -eq 3 ]]; then
+  NO_RECORDS=true
+  NOTIFICATION_MESSAGE="❌ No Apple Passwords records for $DOMAIN"
+  log "No records for $DOMAIN"
+elif [[ $LIST_STATUS -ne 0 ]]; then
+  die "apw pw list exited with code $LIST_STATUS"
 fi
 
-# ========== Conditional OTP fetch ==========
-if [[ "$HAS_OTP" == "true" ]]; then
-  log "Form contains OTP field, requesting OTP for $SERVICE"
+if [[ "$NO_RECORDS" == false ]]; then
+  # Parse results
+  RESULTS=()
+  while IFS=$'\t' read -r username service label uuid; do
+    [[ -z "$username" && -z "$service" ]] && continue
+    printf -v entry '%s\t%s\t%s\t%s' "$username" "${service:-$DOMAIN_LOWER}" "$label" "$uuid"
+    RESULTS+=("$entry")
+  done < <(printf '%s' "$LIST_JSON" | jq -r --arg domain "$DOMAIN_LOWER" '
+      .results[]? |
+      [
+          (.username // .user // .account // .email // ""),
+          (.domain // .service // .website // .url // .title // $domain),
+          (.name // .title // .label // .displayName // ""),
+          (.uuid // .id // .identifier // "")
+      ] | @tsv
+  ')
 
-  set +e
-  OTP_JSON=$(query_apw_otp "$SERVICE")
-  OTP_STATUS=$?
-  set -e
+  log "Found records: ${#RESULTS[@]}"
 
-  if [[ $OTP_STATUS -eq 0 ]]; then
-    # OTP successfully retrieved
-    OTP=$(printf '%s' "$OTP_JSON" | jq -r '.results[0].code // empty' 2>/dev/null)
-    if [[ -n "$OTP" ]]; then
-      log "OTP successfully retrieved: $OTP"
-    else
-      log "OTP JSON retrieved but code is empty"
-    fi
-  elif [[ $OTP_STATUS -eq 3 ]]; then
-    # No OTP for this record (normal)
-    log "No OTP for this record (status=3)"
+  if [[ ${#RESULTS[@]} -eq 0 ]]; then
+    NO_RECORDS=true
+    NOTIFICATION_MESSAGE="❌ No Apple Passwords records for $DOMAIN"
+    log "No records for $DOMAIN (empty result array after parsing)"
   else
-    # Error getting OTP (not critical, continuing without OTP)
-    log "Error getting OTP (status=$OTP_STATUS), continuing without OTP"
+    # Select record
+    SELECTED=""
+    if [[ ${#RESULTS[@]} -eq 1 && $PICK_MODE == false ]]; then
+      SELECTED="${RESULTS[0]}"
+      log "Automatically selected single record"
+    else
+      # Use fzf with fallback to osascript
+      SELECTED=$(select_entry_fzf "$DOMAIN" "${RESULTS[@]}")
+      if [[ "$SELECTED" == "__CANCELLED__" ]]; then
+        send_message info "Apple Passwords record selection cancelled"
+        log "Exit: user cancelled selection"
+        exit 0
+      fi
+    fi
+
+    IFS=$'\t' read -r USERNAME SERVICE LABEL _uuid <<<"$SELECTED"
+    log "Selected record: username=$USERNAME, service=$SERVICE, label=$LABEL"
   fi
-else
-  log "Form does NOT contain OTP field, skipping OTP request"
 fi
 
-# ========== Check that we got something ==========
-if [[ -z "$PASSWORD" && -z "$OTP" ]]; then
-  die "Failed to get password or OTP for $SERVICE (hasPassword=$HAS_PASSWORD, hasOTP=$HAS_OTP)"
+if [[ "$NO_RECORDS" == false ]]; then
+  # ========== Form type detection ==========
+  detect_form_type
+
+  # Variable initialization
+  PASSWORD=""
+  OTP=""
+
+  # ========== Conditional password fetch ==========
+  if [[ "$HAS_PASSWORD" == "true" ]]; then  # pragma: allowlist secret
+    log "Form contains password field, requesting password for $SERVICE"
+    GET_JSON=$(query_apw_get "$SERVICE" "$USERNAME")
+    PASSWORD=$(printf '%s' "$GET_JSON" | jq -r '.results[0].password // empty' 2>/dev/null)
+
+    if [[ -z "$PASSWORD" ]]; then
+      die "apw returned no password (empty value)"
+    fi
+
+    log "Password successfully retrieved, length: ${#PASSWORD} chars"
+
+    # If username not specified, try to extract from result
+    if [[ -z "$USERNAME" ]]; then
+      USERNAME=$(printf '%s' "$GET_JSON" | jq -r '.results[0].username // empty' 2>/dev/null)
+      log "Username extracted from apw pw get result: $USERNAME"
+    fi
+  else
+    log "Form does NOT contain password field, skipping password request"
+  fi
+
+  # ========== Conditional OTP fetch ==========
+  if [[ "$HAS_OTP" == "true" ]]; then
+    log "Form contains OTP field, requesting OTP for $SERVICE"
+
+    set +e
+    OTP_JSON=$(query_apw_otp "$SERVICE")
+    OTP_STATUS=$?
+    set -e
+
+    if [[ $OTP_STATUS -eq 0 ]]; then
+      # OTP successfully retrieved
+      OTP=$(printf '%s' "$OTP_JSON" | jq -r '.results[0].code // empty' 2>/dev/null)
+      if [[ -n "$OTP" ]]; then
+        log "OTP successfully retrieved: $OTP"
+      else
+        log "OTP JSON retrieved but code is empty"
+      fi
+    elif [[ $OTP_STATUS -eq 3 ]]; then
+      # No OTP for this record (normal)
+      log "No OTP for this record (status=3)"
+    else
+      # Error getting OTP (not critical, continuing without OTP)
+      log "Error getting OTP (status=$OTP_STATUS), continuing without OTP"
+    fi
+  else
+    log "Form does NOT contain OTP field, skipping OTP request"
+  fi
+
+  # ========== Check that we got something ==========
+  if [[ -z "$PASSWORD" && -z "$OTP" ]]; then
+    die "Failed to get password or OTP for $SERVICE (hasPassword=$HAS_PASSWORD, hasOTP=$HAS_OTP)"
+  fi
 fi
 
 # ========== Generate and inject JavaScript ==========
@@ -890,6 +903,7 @@ QUTE_USERNAME="$USERNAME" \
   QUTE_OTP="$OTP" \
   QUTE_SERVICE="$SERVICE" \
   QUTE_LABEL="$LABEL" \
+  QUTE_NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE" \
   python3 - <<'PYSCRIPT' >"$TMP_JS"
 import os, json
 from string import Template
@@ -899,6 +913,7 @@ password = os.environ.get('QUTE_PASSWORD', '')
 otp = os.environ.get('QUTE_OTP', '')
 service = os.environ.get('QUTE_SERVICE', '')
 label = os.environ.get('QUTE_LABEL', '')
+error_message = os.environ.get('QUTE_NOTIFICATION_MESSAGE', '')
 
 template = Template('''
 (function() {
@@ -909,6 +924,7 @@ template = Template('''
   const hasOtp = otp.length > 0;
   const service = $service;
   const label = $label;
+  const errorMessage = $errorMessage;
 
   const usernameSelectors = [
     'input[type="email"]',
@@ -1057,8 +1073,84 @@ template = Template('''
     }
 
     // Page notification
+    for (const existingHost of document.querySelectorAll('[data-qute-keychain-login-notification="1"]')) {
+      existingHost.remove();
+    }
+
+    const notificationHost = document.createElement('div');
+    notificationHost.setAttribute('data-qute-keychain-login-notification', '1');
+    notificationHost.style.position = 'fixed';
+    notificationHost.style.left = '0';
+    notificationHost.style.top = '0';
+    notificationHost.style.width = '0';
+    notificationHost.style.height = '0';
+    notificationHost.style.zIndex = '2147483646';
+
+    const notificationShadow = notificationHost.attachShadow({ mode: 'open' });
+    const notificationStyle = document.createElement('style');
+    notificationStyle.textContent = `
+      :host { all: initial; }
+      .Bubble {
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        font-weight: 450;
+        line-height: 1.2;
+        color: var(--qute-hb-fg);
+        background: var(--qute-hb-bg);
+        border: 1px solid var(--qute-hb-border);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 120ms ease, transform 120ms ease;
+        z-index: 2147483646;
+      }
+      .Bubble.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .Bubble[data-theme="light"] {
+        --qute-hb-fg: #374151;
+        --qute-hb-bg: #ffffff;
+        --qute-hb-border: rgba(0, 0, 0, 0.08);
+      }
+      .Bubble[data-theme="dark"] {
+        --qute-hb-fg: rgba(255, 255, 255, 0.75);
+        --qute-hb-bg: #1c1c1c;
+        --qute-hb-border: rgba(255, 255, 255, 0.1);
+      }
+    `;
+
     const notification = document.createElement('div');
-    notification.style.cssText = 'position:fixed;top:20px;right:20px;padding:15px 20px;border-radius:8px;z-index:10000;font-family:-apple-system,system-ui,sans-serif;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3);max-width:360px;';
+    notification.className = 'Bubble';
+
+    const styleTarget = document.documentElement || document.body;
+    let notificationTheme = null;
+    if (styleTarget && typeof window.getComputedStyle === 'function') {
+      try {
+        const rootStyle = window.getComputedStyle(styleTarget);
+        const bg = rootStyle.backgroundColor;
+        const match = bg.match(/^rgba?\s*\(\s*(\d+),\s*(\d+),\s*(\d+)/);
+        if (match) {
+          const luminance =
+            (0.2126 * parseInt(match[1]) +
+              0.7152 * parseInt(match[2]) +
+              0.0722 * parseInt(match[3])) /
+            255;
+          notificationTheme = luminance < 0.5 ? 'dark' : 'light';
+        }
+      } catch {}
+    }
+    if (!notificationTheme) {
+      notificationTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    notification.dataset.theme = notificationTheme;
 
     let infoLine = service || '';
     if (label && label !== service) {
@@ -1071,10 +1163,10 @@ template = Template('''
     if (password.length > 0) expectedFields++;
     if (hasOtp) expectedFields++;
 
-    if (filled === expectedFields && filled > 0) {
+    if (errorMessage) {
+      notification.textContent = errorMessage;
+    } else if (filled === expectedFields && filled > 0) {
       // All filled successfully
-      notification.style.background = '#4CAF50';
-      notification.style.color = 'white';
       let heading = '🔐 Apple Passwords';
       if (hasUsername && hasOtp) {
         heading += ': ' + username + ' + OTP';
@@ -1095,21 +1187,20 @@ template = Template('''
       }
     } else if (filled > 0) {
       // Partial fill
-      notification.style.background = '#FF9800';
-      notification.style.color = 'white';
       notification.textContent = '⚠️ Filled fields: ' + filled + ' of ' + expectedFields;
     } else {
       // Nothing filled
-      notification.style.background = '#f44336';
-      notification.style.color = 'white';
       notification.textContent = '❌ Input fields not found on page';
     }
 
-    document.body.appendChild(notification);
+    notification.classList.add('show');
+    notificationShadow.appendChild(notificationStyle);
+    notificationShadow.appendChild(notification);
+    document.documentElement.appendChild(notificationHost);
 
     setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
+      if (notificationHost.parentNode) {
+        notificationHost.parentNode.removeChild(notificationHost);
       }
     }, 6000);
 
@@ -1133,6 +1224,7 @@ js = template.substitute(
     otp=json.dumps(otp),
     service=json.dumps(service),
     label=json.dumps(label),
+    errorMessage=json.dumps(error_message),
 )
 
 print(js)
@@ -1144,16 +1236,20 @@ log "JavaScript generated, size: $(wc -c <"$TMP_JS") bytes"
 echo "jseval --quiet --file $TMP_JS" >>"$QUTE_FIFO"
 
 # Final notification
-INFO_LINE=""
-if [[ -n "$USERNAME" ]]; then
-  INFO_LINE="$USERNAME"
-  [[ -n "$SERVICE" ]] && INFO_LINE+=" • $SERVICE"
-  [[ -n "$LABEL" && "$LABEL" != "$SERVICE" ]] && INFO_LINE+=" • $LABEL"
+if [[ "$NO_RECORDS" == true ]]; then
+  log "Exit: no records"
 else
-  INFO_LINE="${SERVICE:-$DOMAIN}"
-  [[ -n "$LABEL" && "$LABEL" != "$SERVICE" ]] && INFO_LINE+=" • $LABEL"
-fi
+  INFO_LINE=""
+  if [[ -n "$USERNAME" ]]; then
+    INFO_LINE="$USERNAME"
+    [[ -n "$SERVICE" ]] && INFO_LINE+=" • $SERVICE"
+    [[ -n "$LABEL" && "$LABEL" != "$SERVICE" ]] && INFO_LINE+=" • $LABEL"
+  else
+    INFO_LINE="${SERVICE:-$DOMAIN}"
+    [[ -n "$LABEL" && "$LABEL" != "$SERVICE" ]] && INFO_LINE+=" • $LABEL"
+  fi
 
-send_message info "Apple Passwords: $INFO_LINE"
-log "Successful completion: $INFO_LINE"
+  send_message info "Apple Passwords: $INFO_LINE"
+  log "Successful completion: $INFO_LINE"
+fi
 log "========== End session =========="
