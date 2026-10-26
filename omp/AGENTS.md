@@ -104,7 +104,7 @@ After source patches, verify bundled markers in `~/.bun/install/global/node_modu
 - Preserve older replacement alternatives when adapting to new OMP versions.
 - Use TypeScript ESM style for commands/extensions: `export default function (...)` returning commands or registering hooks.
 - Keep command output bounded. Example: `agent/commands/backpass/index.ts` trims output to `MAX_OUTPUT` before returning it to the model.
-- Prefer pure helpers for testable logic. Example: `agent/extensions/r.ts` exports `transformTmuxName(...)`, tested by `agent/extensions/r.test.ts`.
+- Prefer pure helpers for testable logic. Example: `agent/extensions/r.ts` exports `transformTmuxName(...)`, tested by `tests/r.test.ts`.
 - Event extensions should be cheap and non-blocking; fire-and-forget external status updates should catch errors, e.g. `pi.exec(...).catch(() => {})`.
 - User-facing shell snippets should be Fish-compatible.
 - For new image-processing code, prefer Bun 1.4+ `Bun.Image` / `Bun.file(path).image()` before adding `sharp`.
@@ -120,7 +120,7 @@ After source patches, verify bundled markers in `~/.bun/install/global/node_modu
 - `agent/keybindings.yml` — keybindings such as `ctrl+k` compact and `shift+enter`/`ctrl+j` newline.
 - `agent/themes/starship-nord.json` — intentional Starship-like visual design.
 - `agent/commands/backpass/index.ts` — Backpass slash command wrapper.
-- `agent/extensions/r.ts` and `agent/extensions/r.test.ts` — rename helper and its minimal test.
+- `agent/extensions/r.ts` and `tests/r.test.ts` — rename helper and its minimal test.
 - `apply-omp-monkey-patches.mjs` — main OMP patch orchestrator and runtime-state link setup.
 - `patches/routes.mjs` — maps patch functions to installed OMP, TUI, AI, and plugin file targets.
 - `patches/status-line.mjs` — Starship-like status-line path/git/model/session segment patches.
@@ -186,7 +186,7 @@ Expected result: `0 failed`. Older failed transcript rows in `backpass status` a
 - Extension unit test example:
 
 ```fish
-bun test agent/extensions/r.test.ts
+bun test tests/r.test.ts
 ```
 
 - Before committing, inspect only intended paths:

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import rExtension, { transformTmuxName } from "./r.ts";
+import rExtension, { transformTmuxName } from "../agent/extensions/r.ts";
 
 describe("/r transformTmuxName", () => {
   it("регистрирует /к и очищает кавычки в имени", async () => {
