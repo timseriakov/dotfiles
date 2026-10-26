@@ -125,7 +125,7 @@ export function createInputSessionPatches(ctx) {
 
   function patchInputController(content) {
     let out = patchInputControllerBase(content);
-    const smolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.cycleSmolModel());\n\t\t}\n`;
+    const smolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => {\n\t\t\t\tconst role = this.ctx.viewSession.sessionManager.getLastModelChangeRole();\n\t\t\t\tconst model = this.ctx.viewSession.model;\n\t\t\t\tconst legacySmolModel = role === "temporary" && model && model.provider === "opencode-go" && ["deepseek-v4-flash", "deepseek-v4.1-flash", "glm-5.3-flash"].includes(model.id);\n\t\t\t\tif ((role === "smol" && model?.id !== "cx/gpt-6-luna") || legacySmolModel) void this.cycleSmolModel();\n\t\t\t\telse this.cycleThinkingLevel();\n\t\t\t});\n\t\t}\n`;
     const smolHandler = `\tasync cycleSmolModel(): Promise<void> {
 \t\tif (this.ctx.focusedAgentId) {
 \t\t\tthis.ctx.showStatus("Model changes apply to the main session — press ←← to return first");
@@ -134,7 +134,6 @@ export function createInputSessionPatches(ctx) {
 \t\tconst ids = [
 \t\t\t"omniroute/opencode-go/deepseek-v4-flash",
 \t\t\t"omniroute/opencode-go/deepseek-v4.1-flash",
-\t\t\t"omniroute/opencode-go/deepseek-v4-flash-vision-exp",
 \t\t\t"omniroute/opencode-go/glm-5.3-flash",
 \t\t];
 \t\tconst available = this.ctx.session.modelRegistry.getAvailable();
@@ -147,7 +146,7 @@ export function createInputSessionPatches(ctx) {
 \t\tconst index = models.findIndex(model => model!.provider === current?.provider && model!.id === current.id);
 \t\tconst next = models[(index + 1) % models.length]!;
 \t\ttry {
-\t\t\tawait this.ctx.session.setModelTemporary(next);
+\t\t\tawait this.ctx.session.setModel(next, "smol");
 \t\t\tthis.ctx.statusLine.invalidate();
 \t\t\tthis.ctx.updateEditorBorderColor();
 \t\t\tthis.ctx.showStatus(\`Smol model: \${next.name}\`);
@@ -157,6 +156,10 @@ export function createInputSessionPatches(ctx) {
 \t}
 
 `;
+    if (!out.includes(smolRegistration)) {
+      const legacySmolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.cycleSmolModel());\n\t\t}\n`;
+      out = out.split(legacySmolRegistration).join("");
+    }
     out = out.split(smolRegistration).join("");
     const smolStart = out.indexOf("\tasync cycleSmolModel(): Promise<void> {");
     const thinkingStart = out.indexOf(
