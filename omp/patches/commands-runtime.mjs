@@ -2,8 +2,18 @@ export function createCommandRuntimePatches(ctx) {
   const { replaceOnce, replaceAny, insertAfter, insertBefore } = ctx;
 
   function patchBtwAliases(content) {
+    const mistaken = `\t\tname: "btw",\n\t\taliases: ["b", "и", "s", "ы"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`;
+    const corrected = `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`;
+    const migrated = content.includes(mistaken)
+      ? replaceOnce(
+          content,
+          mistaken,
+          corrected,
+          "remove mistaken BTW aliases /s /ы",
+        ).content
+      : content;
     return replaceAny(
-      content,
+      migrated,
       [
         `\t\tname: "btw",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
         `\t\tname: "btw",\n\t\ticon: "question",\n\t\tdescription: "Ask an ephemeral side question using the current session context",`,
@@ -12,10 +22,59 @@ export function createCommandRuntimePatches(ctx) {
         `\t\tname: "btw",\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
         `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
       ],
-      `\t\tname: "btw",\n\t\taliases: ["b", "и"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`,
+      corrected,
       "btw aliases /b /и",
     ).content;
   }
+
+  function patchExpandedBtwDispatch(content) {
+    const importAnchor = `import { parseSlashCommand, parseSubcommand } from "../../slash-commands/helpers/parse";`;
+    let out = insertAfter(
+      content,
+      importAnchor,
+      `\nimport { expandSlashCommand } from "../../extensibility/slash-commands";`,
+      "import markdown slash-command expander for BTW dispatch",
+    ).content;
+    const methodAnchor = `\t/** Whether \`text\` invokes a registered extension command, which runs locally instead of prompting the model. */`;
+    const method = `\t#expandBtwPromptCommand(text: string): string {
+\t\tconst parsed = parseSlashCommand(text);
+\t\tif (
+\t\t\t!parsed ||
+\t\t\tlookupBuiltinSlashCommand(parsed.name) ||
+\t\t\tthis.ctx.session.extensionRunner?.getCommand(parsed.name) ||
+\t\t\tthis.ctx.session.customCommands.some(loaded => loaded.command.name === parsed.name) ||
+\t\t\tisKnownSkillCommand(this.ctx, text)
+\t\t) return text;
+\t\tconst command = this.ctx.session.slashCommands.find(candidate => candidate.name === parsed.name);
+\t\tif (!command || !/^\\/btw(?:\\s|:|$)/.test(command.content.trimStart())) return text;
+\t\tconst expanded = expandSlashCommand(text, [command]);
+\t\treturn /^\\/btw(?:\\s|:|$)/.test(expanded) ? expanded : text;
+\t}
+
+`;
+    out = insertBefore(
+      out,
+      methodAnchor,
+      method,
+      "expand prompt command before builtin dispatch",
+    ).content;
+    const enterAnchor = `\t\t\tif (bareSlashCommand) text = bareSlashCommand.command;`;
+    out = insertAfter(
+      out,
+      enterAnchor,
+      `\n\t\t\ttext = this.#expandBtwPromptCommand(text);`,
+      "expand prompt command before Enter builtin dispatch",
+    ).content;
+    const followUpAnchor = `\t\t\t\tconst slashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached: true });`;
+    out = replaceOnce(
+      out,
+      followUpAnchor,
+      `\t\t\t\ttext = this.#expandBtwPromptCommand(text);\n${followUpAnchor}`,
+      "expand prompt command before Ctrl+Enter builtin dispatch",
+    ).content;
+    return out;
+  }
+
   function patchAdvisorAliases(content) {
     return replaceAny(
       content,
@@ -353,6 +412,7 @@ export function createCommandRuntimePatches(ctx) {
 
   return {
     patchBtwAliases,
+    patchExpandedBtwDispatch,
     patchAdvisorAliases,
 
     patchGoalTool,

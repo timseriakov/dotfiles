@@ -28,7 +28,11 @@ export function runPatchRoutes(ctx) {
       "modes/controllers/extension-ui-controller.ts",
       patches.patchExtensionUiController,
     ],
-    ["modes/controllers/input-controller.ts", patches.patchInputController],
+    [
+      "modes/controllers/input-controller.ts",
+      (content) =>
+        patches.patchExpandedBtwDispatch(patches.patchInputController(content)),
+    ],
     ["predict/client.ts", patches.patchPredictClientSuffix],
     ["session/session-manager.ts", patches.patchSessionManager],
     ["session/session-paths.ts", patches.patchSessionPaths],
