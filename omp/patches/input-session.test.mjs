@@ -118,12 +118,12 @@ test("smol cycling restores the three-model order and keeps the smol role", () =
   assert.doesNotMatch(patched, /deepseek-v4-flash-vision-exp/);
 });
 
-test("smol config uses Luna low", () => {
+test("smol config uses Luna max", () => {
   const config = readFileSync(
     new URL("../agent/config.yml", import.meta.url),
     "utf8",
   );
-  assert.match(config, /^  smol: omniroute\/cx\/gpt-6-luna:low$/m);
+  assert.match(config, /^  smol: omniroute\/cx\/gpt-6-luna:max$/m);
 });
 
 test("input controller patch remains idempotent", () => {
