@@ -47,7 +47,7 @@ from qutebrowser.mainwindow.statusbar import bar, keystring, searchmatch, url
 from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, QUrl, Qt, QTimer
 from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QTabWidget
 from qutebrowser.browser.webengine import webview
-from qutebrowser.utils import objreg
+from qutebrowser.utils import objreg, qtutils, usertypes
 from qutebrowser.keyinput import modeman
 
 
