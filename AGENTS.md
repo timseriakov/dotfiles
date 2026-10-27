@@ -74,7 +74,7 @@ Never edit configs in-place inside application directories — always edit insid
 
 ## Browser automation
 
-Use `ego-browser` for browser eyes and hands. Before browser work, run `ego-browser skill` and follow the complete installed guide; it is authoritative for the installed ego version. Do not use qutebrowser/CDP automation or another browser-launching integration. OMP Browser Relay is an explicit fallback only: require a task-specific reason, `app.relay=true`, and an explicit `app.target`.
+Use either `ego-browser` (first read `skill://ego-browser`, then run `ego-browser skill` and follow its complete installed guide) or Helium through OMP Browser Relay for browser eyes and hands; choose the route that fits the task. Relay requires per-call `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally.
 
 ## Dual-Yazi tmux Kitty Image Preview
 

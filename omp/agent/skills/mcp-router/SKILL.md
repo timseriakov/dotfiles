@@ -37,7 +37,7 @@ Avoid vague queries like `use tool`, `do it`, `open thing`.
 
 ## Browser automation
 
-Use the installed `ego-browser` skill for browser eyes and hands: run `ego-browser skill` before browser work and follow that version's complete guide. Do not substitute another browser-launching integration. OMP Browser Relay is an explicit fallback only when appropriate for the task; require `app.relay=true` and an explicit `app.target`.
+Use either the installed `ego-browser` skill (run `ego-browser skill` and follow that version's complete guide) or Helium through OMP Browser Relay for browser eyes and hands; choose the route that fits the task. Relay requires per-call `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally.
 
 ## Desktop safety
 

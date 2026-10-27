@@ -143,6 +143,15 @@ acpx --agent "omp acp" prompt -s <session> --file <prompt-file>
 - OMP runtime state must live outside git. The patch script redirects sessions/blobs/databases to `~/.local/share/omp` and terminal sessions to `~/.local/state/omp`.
 - Web search provider convention: start with `provider: "parallel"`; if it fails, retry `serper`, then `tavily`, then `exa`.
 
+### OmniRoute Luna fast/priority (verified 2026-10-27)
+
+- `modelRoles.<role>` selects the model and thinking level; `:max` is reasoning effort, not a service tier.
+- Our local `patchModelControlsLunaPriority` in `patches/installed-ai-plannotator.mjs` forces `priority` for `omniroute/cx/gpt-6-luna`, even with `tier.openai: none`. The installed `session/model-controls.ts` implements this in `#serviceTierFor`.
+- This override is model-specific, not role-specific: `smol` on Luna `:max` already requests priority, as do other roles using the same Luna model.
+- Our patched `serviceTierFamily` in installed `pi-ai/src/types.ts` classifies only `cx/gpt-6-luna` as OpenAI-family for the `omniroute` provider. OmniRoute `cx/gpt-6.1-terra` and `cx/gpt-6.1-sol` return no family, so `tier.openai` and the Luna override do not enable priority for them.
+- Do not claim that enabling Luna fast also enables it for Terra/default or Sol/slow. Recheck these local patches after upstream changes; this behavior is not a general OMP guarantee.
+- Verified at the installed-source level. Whether OmniRoute and its upstream actually honor priority was not independently verified.
+
 ## Testing & QA
 
 Use the smallest command that covers the change.
