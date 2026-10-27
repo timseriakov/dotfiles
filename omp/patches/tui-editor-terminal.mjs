@@ -595,10 +595,14 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     );
     out = r.content;
 
-    r = replaceOnce(
+    r = insertAfter(
       out,
-      `\thandleKey(key: string, buf: VimBuffer): VimCommand[] | null {\n\t\tif (key === "escape") return this.#handleEscape(buf);\n\t\tif (this.mode === "insert") return null;`,
-      `\thandleKey(key: string, buf: VimBuffer): VimCommand[] | null {\n\t\tif (key === "escape") return this.#handleEscape(buf);\n\t\tif (this.mode === "insert") return null;\n\n\t\t// Russian (ЙЦУКЕН) layout: map the key to the Latin one at the same physical position\n\t\t// (р→h, о→j, в→d, …) so the motions/operators below keep working while the host layout\n\t\t// is Russian. Insert mode returned above, so typing real Russian text is never rewritten.\n\t\tkey = RU_LAYOUT_TO_LATIN[key] ?? key;`,
+      `		if (this.mode === "insert") return null;`,
+      `
+		// Russian (ЙЦУКЕН) layout: map the key to the Latin one at the same physical position
+		// (р→h, о→j, в→d, …) so the motions/operators below keep working while the host layout
+		// is Russian. Insert mode returned above, so typing real Russian text is never rewritten.
+		key = RU_LAYOUT_TO_LATIN[key] ?? key;`,
       "vim handleKey RU layout translation",
     );
     out = r.content;
@@ -733,26 +737,23 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     );
     out = r.content;
 
-    // Visual mode: `d`/`x` black-hole, `m` cut.
+    // Keep Visual `m` as the recorded key so dot-repeat uses the same cut path.
     r = replaceOnce(
       out,
-      `			case "y":
-			case "d":
-			case "x":
-			case "c":
-			case "s": {
-				const operator: VimOperator = key === "y" ? "y" : key === "c" || key === "s" ? "c" : "d";`,
-      `			case "y":
-			case "d":
-			case "x":
-			case "c":
-			case "s":
-			case "m": {
-				// \`d\`/\`x\` black-hole delete; \`c\`/\`s\`/\`m\` all yank the selection (stock \`c\` stores,
-				// \`m\` is the explicit cut — same engine path), matching the user's Neovim config.
-				const operator: VimOperator =
-					key === "y" ? "y" : key === "d" || key === "x" ? "d" : "m";`,
-      "vim visual m operator",
+      `			case "s":
+			case ">":`,
+      `			case "s":
+			case "m":
+			case ">":`,
+      "vim visual m operator key",
+    );
+    out = r.content;
+
+    r = replaceOnce(
+      out,
+      `\t\tconst operator: VimOperator = key === "y" ? "y" : key === "c" || key === "s" ? "c" : "d";`,
+      `\t\tconst operator: VimOperator = key === "y" ? "y" : key === "c" || key === "s" ? "c" : key === "m" ? "m" : "d";`,
+      "vim visual m operator in #visualEdit",
     );
     out = r.content;
 

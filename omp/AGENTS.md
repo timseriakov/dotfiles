@@ -97,6 +97,8 @@ fish -lc 'timeout 45s omp --no-session -p "ok"'
 
 After source patches, verify bundled markers in `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js` when visual behavior matters.
 
+- On each OMP/Plannotator update, check release notes, docs, and implementation for native equivalents to every relevant local monkey-patch. Migrate only with evidence of behavioral equivalence; remove obsolete patches, routes, and markers and update checks. Keep protective patches when equivalence is unclear, and report replacements, remaining patches with reasons, and any patches with no native equivalent.
+
 ## Code Conventions & Common Patterns
 
 - Keep patches small and anchor-based. Prefer adding alternatives to `replaceAny(...)` over loosening validation.
