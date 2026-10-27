@@ -8,14 +8,3 @@ export function patchBrowserRelayOnly(content, { replaceAny }) {
     "require explicit OMP browser relay fallback",
   ).content;
 }
-
-export function patchPlannotatorEgoViewer(content, { replaceAny }) {
-  const systemOpen = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "open";\n\t\t\targs = [url];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
-  const egoOpen = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "open";\n\t\t\targs = ["-a", "/Applications/ego lite.app", url];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
-  return replaceAny(
-    content,
-    [systemOpen, egoOpen],
-    egoOpen,
-    "open Plannotator human review in ego lite",
-  ).content;
-}

@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
-  patchBrowserRelayOnly,
-  patchPlannotatorEgoViewer,
-} from "./browser-policy.mjs";
+import { patchBrowserRelayOnly } from "./browser-policy.mjs";
 
 function replaceAny(content, alternatives, newText, label) {
   if (content.includes(newText))
@@ -39,15 +36,4 @@ test("requires an explicit relay and target before any browser action", () => {
 test("is idempotent when the explicit-relay guard is already present", () => {
   const once = patchBrowserRelayOnly(source, { replaceAny });
   assert.equal(patchBrowserRelayOnly(once, { replaceAny }), once);
-});
-
-test("opens Plannotator's human review URL in ego lite rather than the system browser", () => {
-  const systemOpen = `\t\t} else if (platform === "darwin") {\n\t\t\tcmd = "open";\n\t\t\targs = [url];\n\t\t} else {\n\t\t\tcmd = "xdg-open";\n\t\t\targs = [url];\n\t\t}`;
-  const egoOpen = systemOpen.replace(
-    "args = [url];",
-    'args = ["-a", "/Applications/ego lite.app", url];',
-  );
-  const once = patchPlannotatorEgoViewer(systemOpen, { replaceAny });
-  assert.equal(once, egoOpen);
-  assert.equal(patchPlannotatorEgoViewer(once, { replaceAny }), once);
 });

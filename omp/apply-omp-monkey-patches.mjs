@@ -49,10 +49,7 @@ import {
   patchPlannotatorFeedbackDelivery,
   patchPlannotatorVersionWarning,
 } from "./patches/plannotator.mjs";
-import {
-  patchBrowserRelayOnly,
-  patchPlannotatorEgoViewer,
-} from "./patches/browser-policy.mjs";
+import { patchBrowserRelayOnly } from "./patches/browser-policy.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
 import {
   patchPiSideChatIndex,
@@ -301,7 +298,11 @@ function rebuildBundledCli() {
   }
   const cliPath = path.join(packageRoot, "dist/cli.js");
   let bundled = read(cliPath);
-  if (!bundled.includes("BUNDLED_PI_MODULE_LOADERS")) {
+  if (
+    !bundled.includes(
+      '"@oh-my-pi/pi-coding-agent/extensibility/plugins/legacy-pi-compat"',
+    )
+  ) {
     throw new Error(
       "Rebuilt OMP CLI is missing bundled legacy Pi module loaders; extensions would fail to load.",
     );
@@ -404,7 +405,6 @@ try {
       patchPlannotatorBrowserNotification,
       patchPlannotatorFeedbackDelivery,
       patchPlannotatorVersionWarning,
-      patchPlannotatorEgoViewer,
       patchPiSideChatOverlay,
       patchPiSideChatIndex,
     },

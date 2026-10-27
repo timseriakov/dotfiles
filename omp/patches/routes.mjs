@@ -99,14 +99,6 @@ export function runPatchRoutes(ctx) {
     [
       path.join(
         home,
-        ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",
-      ),
-      "open Plannotator human review in ego lite",
-      (content) => patches.patchPlannotatorEgoViewer(content, { replaceAny }),
-    ],
-    [
-      path.join(
-        home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
       ),
       "open Plannotator in local RPC sessions",
