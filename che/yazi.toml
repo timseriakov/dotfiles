@@ -160,6 +160,8 @@ prepend_preloaders = [
 ]
 
 prepend_previewers = [
+  # Che's archive previewer supplies a second -p for DMGs.
+  { url = "*.dmg", run = 'faster-piper -- 7zz l -ba -sccUTF-8 -p- -xr!__MACOSX "$1"' },
   { mime = "application/openxmlformats-officedocument.*", run = "office" },
   { mime = "application/oasis.opendocument.*", run = "office" },
   { mime = "application/ms-*", run = "office" },
