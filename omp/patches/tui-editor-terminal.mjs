@@ -138,11 +138,6 @@ export function createTuiEditorTerminalPatches(ctx) {
     ).content;
   }
 
-  function patchTuiTerminal(content) {
-    // OMP 17.0.1 avoids OSC 99 capability probes in terminal multiplexers.
-    return content;
-  }
-
   function patchCustomEditor(content) {
     let out = content;
     let r;
@@ -816,7 +811,6 @@ function clampPreviewSize(value: number | undefined, fallback: number, min: numb
     patchEditorGutterWidth,
     patchTuiTerminalCapabilities,
     patchTuiKittyGraphics,
-    patchTuiTerminal,
     patchCustomEditor,
     patchSettingsSchemaAttachmentPreview,
     patchAttachmentChips,

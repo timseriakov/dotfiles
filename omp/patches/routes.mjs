@@ -78,13 +78,11 @@ export function runPatchRoutes(ctx) {
     ["prompt/attachment-chips.ts", patches.patchAttachmentChips],
     ["apps/git/colors.ts", patches.patchGitTuiColors],
     ["apps/git/git-tui.ts", patches.patchGitTuiLayout],
-    ["utils.ts", patches.patchTuiVisibleWidth],
     ["components/editor.ts", patches.patchEditorGhostCursorGap],
     ["components/editor.ts", patches.patchEditorGutterWidth],
     ["components/editor.ts", patches.patchEditorVimKillRing],
     ["vim.ts", patches.patchVimRuLayout],
     ["vim.ts", patches.patchVimCutRegisters],
-    ["terminal.ts", patches.patchTuiTerminal],
     ["kitty-graphics.ts", patches.patchTuiKittyGraphics],
     ["terminal-capabilities.ts", patches.patchTuiTerminalCapabilities],
   ];

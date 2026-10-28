@@ -385,12 +385,6 @@ export function createUiComponentPatches(ctx) {
     ).content;
   }
 
-  function patchTuiVisibleWidth(content) {
-    // Upstream 15.10+ handles ANSI natively via Bun.stringWidth and its own
-    // escape scanner — the old ANSI-strip workaround is no longer needed.
-    return content;
-  }
-
   // Spelling typo underline color. Styled mode hardcodes red (4:3 + 58); flat
   // mode (multiplexed terminals) inherits the text color — too dim to notice.
   // Give the flat mark its own soft blue-gray so it stays visible.
@@ -416,7 +410,6 @@ export function createUiComponentPatches(ctx) {
     patchComposer,
     patchDynamicBorder,
     patchInteractiveMode,
-    patchTuiVisibleWidth,
     patchSpellingUnderline,
   };
 }
