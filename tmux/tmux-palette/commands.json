@@ -1,5 +1,13 @@
 [
   {
+    "icon": "󰊢",
+    "title": "Lazygit",
+    "category": "Git",
+    "action": {
+      "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' lazygit"
+    }
+  },
+  {
     "icon": "󰙨",
     "title": "Review Changes",
     "category": "Review",
@@ -21,14 +29,6 @@
     "category": "Review",
     "action": {
       "palette": "hunk-commits"
-    }
-  },
-  {
-    "icon": "󰊢",
-    "title": "Lazygit",
-    "category": "Git",
-    "action": {
-      "shell": "/Users/tim/dev/dotfiles/tmux/hunk-popup.sh '#{pane_current_path}' lazygit"
     }
   },
   {
