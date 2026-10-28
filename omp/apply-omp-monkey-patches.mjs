@@ -45,8 +45,15 @@ import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import {
+  patchPlannotatorAnnouncement,
   patchPlannotatorBrowserNotification,
+  patchPlannotatorBrowserOpen,
   patchPlannotatorFeedbackDelivery,
+  patchPlannotatorGuard,
+  patchPlannotatorLoopbackPort,
+  patchPlannotatorNotifications,
+  patchPlannotatorPlanTailnet,
+  patchPlannotatorReviewTailnet,
   patchPlannotatorVersionWarning,
 } from "./patches/plannotator.mjs";
 import { patchBrowserRelayOnly } from "./patches/browser-policy.mjs";
@@ -405,6 +412,13 @@ try {
       patchPlannotatorBrowserNotification,
       patchPlannotatorFeedbackDelivery,
       patchPlannotatorVersionWarning,
+      patchPlannotatorAnnouncement,
+      patchPlannotatorBrowserOpen,
+      patchPlannotatorGuard,
+      patchPlannotatorLoopbackPort,
+      patchPlannotatorNotifications,
+      patchPlannotatorPlanTailnet,
+      patchPlannotatorReviewTailnet,
       patchPiSideChatOverlay,
       patchPiSideChatIndex,
     },

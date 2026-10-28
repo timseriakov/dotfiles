@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 export function runPatchRoutes(ctx) {
   const {
     home,
@@ -95,15 +97,32 @@ export function runPatchRoutes(ctx) {
   ];
   for (const [target, patch] of piAiRoutes) patchPiAiFile(target, patch);
 
+  for (const file of [
+    "plannotator-tailnet-runtime.mjs",
+    "plannotator-tailnet.ts",
+  ]) {
+    write(
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension",
+        file,
+      ),
+      readFileSync(new URL(file, import.meta.url), "utf8"),
+    );
+  }
+
   const pluginRoutes = [
     [
       path.join(
         home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
       ),
-      "open Plannotator in local RPC sessions",
+      "open Plannotator in system browser and retain access metadata",
       (content) =>
-        patches.patchPlannotatorBrowserNotification(content, { replaceAny }),
+        patches.patchPlannotatorBrowserOpen(
+          patches.patchPlannotatorBrowserNotification(content, { replaceAny }),
+          { replaceAny },
+        ),
     ],
     [
       path.join(
@@ -135,6 +154,66 @@ export function runPatchRoutes(ctx) {
       ),
       "suppress Ponytail startup loaded notification",
       (content) => patches.patchPonytailStartupNotify(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",
+      ),
+      "bind Plannotator Tailscale servers on loopback",
+      (content) =>
+        patches.patchPlannotatorLoopbackPort(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/request-host-guard.ts",
+      ),
+      "allow exact Plannotator Tailscale hostname",
+      (content) => patches.patchPlannotatorGuard(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/serverPlan.ts",
+      ),
+      "publish Plannotator plan over verified Tailscale HTTPS",
+      (content) => patches.patchPlannotatorPlanTailnet(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/serverReview.ts",
+      ),
+      "publish Plannotator review over verified Tailscale HTTPS",
+      (content) =>
+        patches.patchPlannotatorReviewTailnet(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/server/serverAnnotate.ts",
+      ),
+      "publish Plannotator annotate over verified Tailscale HTTPS",
+      (content) => patches.patchPlannotatorPlanTailnet(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/session-opened.ts",
+      ),
+      "announce verified Plannotator HTTPS or local fallback",
+      (content) =>
+        patches.patchPlannotatorAnnouncement(content, { replaceAny }),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
+      ),
+      "include Plannotator HTTPS status in opened notifications",
+      (content) =>
+        patches.patchPlannotatorNotifications(content, { replaceAny }),
     ],
   ];
   for (const [target, label, patch] of pluginRoutes)
