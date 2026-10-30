@@ -119,12 +119,27 @@ function patchTailnetServer(content, { replaceAny }) {
 
 export function patchPlannotatorPlanTailnet(content, context) {
   let out = patchTailnetServer(content, context);
-  out = context.replaceAny(
-    out,
-    ["url: buildAdvertisedUrl(port),"],
-    "url: tailnet.url ?? localUrl,\n\t\tlocalUrl,\n\ttailnetDiagnostic: tailnet.diagnostic,",
-    "announce verified session URL",
-  ).content;
+  const patchedUrl = "tailnetDiagnostic: tailnet.diagnostic,";
+  if (!out.includes(patchedUrl)) {
+    const currentUrl = "url: buildAdvertisedUrl(port),";
+    if (out.includes(currentUrl)) {
+      out = context.replaceAny(
+        out,
+        [currentUrl],
+        "url: tailnet.url ?? localUrl,\n\t\tlocalUrl,\n\t\ttailnetDiagnostic: tailnet.diagnostic,",
+        "announce verified session URL",
+      ).content;
+    } else {
+      out = context.replaceAny(
+        out,
+        [
+          "url: options.liveApp ? `http://localhost:${port}` : buildAdvertisedUrl(port),",
+        ],
+        "url: options.liveApp ? `http://localhost:${port}` : tailnet.url ?? localUrl,\n\t\tlocalUrl,\n\t\ttailnetDiagnostic: tailnet.diagnostic,",
+        "announce verified session URL",
+      ).content;
+    }
+  }
   if (out.includes("supportsAnnotateAgentTerminalMode")) {
     out = context.replaceAny(
       out,
@@ -229,25 +244,35 @@ export function patchPlannotatorBrowserOpen(content, { replaceAny }) {
 }
 
 export function patchPlannotatorAnnouncement(content, { replaceAny }) {
-  let out = replaceAny(
-    content,
-    [
-      'import { isRemoteSession, isUrlHostOverridden } from "./server/network.ts";',
-    ],
-    'import { isRemoteSession, isUrlHostOverridden } from "./server/network.ts";\nimport { plannotatorTailnetAnnouncement } from "./plannotator-tailnet-runtime.mjs";',
-    "import verified access announcement",
-  ).content;
+  const announcementImport =
+    'import { plannotatorTailnetAnnouncement } from "./plannotator-tailnet-runtime.mjs";';
+  let out = content.includes(announcementImport)
+    ? content
+    : replaceAny(
+        content,
+        [
+          'import { isRemoteSession, isUrlHostOverridden } from "./server/network.ts";',
+          'import { isRemoteSession } from "./server/network.ts";',
+          'import { isRemoteSession } from "./server/network.ts";\nimport { isLocalOnlyAdvertisedUrl } from "./generated/advertised-url.ts";',
+        ],
+        `import { plannotatorTailnetAnnouncement } from "./plannotator-tailnet-runtime.mjs";\nimport { isRemoteSession } from "./server/network.ts";`,
+        "import verified access announcement",
+      ).content;
   out = replaceAny(
     out,
     [
       "export function sessionOpenedMessage(label: string, url: string): string {",
+      "export function sessionOpenedMessage(label: string, url: string, access?: { localUrl?: string; tailnetDiagnostic?: string }): string {",
     ],
     "export function sessionOpenedMessage(label: string, url: string, access?: { localUrl?: string; tailnetDiagnostic?: string }): string {",
     "include session access result",
   ).content;
   return replaceAny(
     out,
-    ["if (!isRemoteSession()) return `${label} at ${url}.${tail}`;"],
+    [
+      "if (!isRemoteSession()) return `${label} at ${url}.${tail}`;",
+      "if (!isRemoteSession() || access?.localUrl) return `${label} at ${url}.${plannotatorTailnetAnnouncement(access)}${tail}`;",
+    ],
     "if (!isRemoteSession() || access?.localUrl) return `${label} at ${url}.${plannotatorTailnetAnnouncement(access)}${tail}`;",
     "show verified HTTPS or explicit fallback",
   ).content;

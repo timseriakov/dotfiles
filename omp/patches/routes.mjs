@@ -136,24 +136,6 @@ export function runPatchRoutes(ctx) {
       (content) => patches.patchPiSideChatIndex(content, { replaceAny }),
     ],
     [
-      path.join(home, ".omp/plugins/node_modules/rejudge/dist/extension.js"),
-      "rejudge extension unique inner agent ids",
-      (content) => patches.patchRejudgeAgentIds(content, { replaceAny }),
-    ],
-    [
-      path.join(home, ".omp/plugins/node_modules/rejudge/bin/rejudge.js"),
-      "rejudge CLI unique inner agent ids",
-      (content) => patches.patchRejudgeAgentIds(content, { replaceAny }),
-    ],
-    [
-      path.join(
-        home,
-        ".omp/plugins/node_modules/ponytail/pi-extension/index.js",
-      ),
-      "suppress Ponytail startup loaded notification",
-      (content) => patches.patchPonytailStartupNotify(content, { replaceAny }),
-    ],
-    [
       path.join(
         home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/server/network.ts",

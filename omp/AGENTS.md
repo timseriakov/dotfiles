@@ -50,7 +50,7 @@ backpass analyze
 - `agent/extensions/` — local OMP hooks: Atuin integration, rename helper, DCG guard, Wakatime heartbeat, Workmux status.
 - `agent/themes/` — `starship-nord.json`, the minimal Nord/Starship-like OMP theme.
 - `agent/npm/` — local npm dependency install for OMP extension packages; package files are ignored unless force-added intentionally.
-- `patches/` — version-sensitive patch modules grouped by subsystem: status line, UI components, input/session, TUI/editor/terminal, commands runtime, Plannotator, Rejudge, side-chat, routes.
+- `patches/` — version-sensitive patch modules grouped by subsystem: status line, UI components, input/session, TUI/editor/terminal, commands runtime, Plannotator, side-chat, and routes.
 - `agent/tmp/`, `agent/agent.db*`, `agent/history.db*`, `agent/sessions`, `agent/blobs` — runtime state paths; preserve/move via symlinks, never delete as cleanup.
 
 ## Development Commands

@@ -64,6 +64,10 @@ function collectEntries() {
       .filter(Boolean)
       .map((part) =>
         part
+          .replace(
+            /\.(?:ts|tsx|mts|cts|js|mjs|cjs|jsx)$/,
+            (extension) => `-${extension.slice(1)}`,
+          )
           .split(/[-_]/)
           .filter(Boolean)
           .map((piece) => piece.charAt(0).toUpperCase() + piece.slice(1))
@@ -97,6 +101,10 @@ function collectEntries() {
       )
         continue;
       const subpath = exportKey.slice(2);
+      if (
+        /\.(?:json|txt|md|html|css|svg|wasm|png|jpg|jpeg|webp)$/i.test(subpath)
+      )
+        continue;
       add(
         `${name}/${subpath}`,
         bindingFor(identifier, subpath),
@@ -121,7 +129,13 @@ function collectEntries() {
       const exportPrefix = exportKey.slice(2, exportStar);
       const exportSuffix = exportKey.slice(exportStar + 1);
       if (exportPrefix === "" || exportPrefix === "/") continue;
-      if (!/\.(ts|tsx|mts|cts|js|mjs|cjs|jsx)$/.test(sourceSuffix)) continue;
+      if (
+        !/\.(ts|tsx|mts|cts|js|mjs|cjs|jsx)$/.test(sourceSuffix) ||
+        /\.(?:json|txt|md|html|css|svg|wasm|png|jpg|jpeg|webp)$/i.test(
+          sourceSuffix,
+        )
+      )
+        continue;
       const sourceDir = path.join(dir, sourcePrefix);
 
       for (const file of walkFiles(sourceDir).sort()) {
@@ -138,6 +152,12 @@ function collectEntries() {
           )
         )
           continue;
+        // Multiple export patterns can expose the same source module through
+        // extensionless and `.js` specifiers; register only the canonical alias.
+        const hasTypeScriptSource =
+          sourceSuffix !== ".ts" &&
+          fs.existsSync(path.join(sourceDir, `${basename}.ts`));
+        if (hasTypeScriptSource) continue;
         if (!safeBasename(segments.at(-1))) continue;
         const subpath = `${exportPrefix}${basename}${exportSuffix}`;
         add(

@@ -43,7 +43,6 @@ import { createInputSessionPatches } from "./patches/input-session.mjs";
 import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mjs";
 import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
-import { patchRejudgeAgentIds } from "./patches/rejudge.mjs";
 import {
   patchPlannotatorAnnouncement,
   patchPlannotatorBrowserNotification,
@@ -392,7 +391,6 @@ const patches = {
   ...createCommandRuntimePatches(patchHelpers),
   patchBrowserRelayOnly,
   ...createGitTuiPatches(patchHelpers),
-  patchRejudgeAgentIds,
 };
 try {
   runPatchRoutes({

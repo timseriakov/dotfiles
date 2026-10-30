@@ -18,14 +18,14 @@ export function createUiComponentPatches(ctx) {
       alreadyPatched,
       "welcome minimal text only",
     ).content;
-    // 18.5.0 added a native describe path for TSP terminals; keep it minimal
-    // the same way so native renders match the ANSI ones.
+    const describeCurrent = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\tconst body: NativeChild[] = [lockupNode(this.version)];\n\t\tif (tip) {\n\t\t\tconst isNew = NEW_TIP_MARKER.test(tip);\n\t\t\tconst tipText = compactText(tipSpans(expandTipKeys(isNew ? tip.replace(NEW_TIP_MARKER, "") : tip)));\n\t\t\tconst tipRow: NativeChild[] = [\n\t\t\t\tnode("icon", { name: "lightbulb", role: "omp.welcome.tip-icon" }),\n\t\t\t\ttext(tipText, { wrap: "word", role: "omp.welcome.tip-text" }),\n\t\t\t];\n\t\t\tif (isNew) tipRow.push(node("shimmer", { text: "New", role: "omp.welcome.new" }));\n\t\t\tbody.push(node("row", { gap: "sm", align: "start", role: "omp.welcome.tip" }, tipRow, "tip"));\n\t\t}\n\t\t// No head row or chevron: the card is the hero; the version sits under the wordmark.\n\t\tconst described = card({ role: "omp.welcome" }, body);\n\t\tthis.#native = { tip, node: described };\n\t\treturn described;\n\t}`;
     const nativeMinimal = `\t\tconst cardNode = text([span("Welcome from Oh My Pi", "strong")], { wrap: "none", role: "omp.welcome.wordmark" });\n\t\tthis.#native = { tip, node: cardNode };\n\t\treturn cardNode;`;
-    const describePatched = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n${nativeMinimal}\n\t\t// Brand lines are short and fixed; never wrap or truncate them.`;
+    const describePatched = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n${nativeMinimal}\n\t}`;
     out = replaceAny(
       out,
       [
-        `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\t// Brand lines are short and fixed; never wrap or truncate them.`,
+        `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\t// Brand lines are short and fixed; never wrap or truncate them.\n\t\tconst cardNode = text([span("Welcome from Oh My Pi", "strong")], { wrap: "none", role: "omp.welcome.wordmark" });\n\t\tthis.#native = { tip, node: cardNode };\n\t\treturn cardNode;\n\t}`,
+        describeCurrent,
         describePatched,
       ],
       describePatched,
