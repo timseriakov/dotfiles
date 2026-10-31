@@ -1,24 +1,10 @@
-<!-- Adapted verbatim from vercel-labs/agent-desktop v1.0.2; Apache-2.0. Full license: LICENSE; upstream: https://github.com/vercel-labs/agent-desktop/tree/v1.0.2/skills/agent-desktop. -->
-
 ---
-
 name: agent-desktop
-tags: computer-use, desktop-automation, accessibility, ai-agent, gui-automation, cli
-requirements:
-
-- agent-desktop
-  description: >
-  Operate desktop applications on macOS, Windows and Linux through native accessibility trees,
-  using the agent-desktop CLI. Use when an AI agent must see or act on a desktop GUI:
-  click buttons, fill forms, read UI state, navigate menus, toggle checkboxes, scroll,
-  drag, type text, press shortcuts, take screenshots, manage windows, use the clipboard,
-  launch or close apps, read notifications.
-  Triggers on: "click button", "fill form", "open app", "read UI", "computer use",
-  "operate desktop", "accessibility tree", "snapshot app", "type into field", "navigate menu",
-  "toggle checkbox", "take screenshot", "desktop automation", "agent-desktop",
-  or any desktop GUI task on macOS, Windows or Linux.
-
+description: Use the agent-desktop CLI to observe and operate native desktop applications through OS accessibility trees. Read this guide before using agent-desktop; it defines the observe-act-verify loop, safe ref use, and command workflows for macOS, Windows, and Linux. Use for native desktop UI tasks, not webpage automation.
+license: Apache-2.0
 ---
+
+<!-- Adapted from vercel-labs/agent-desktop v1.0.2; upstream: https://github.com/vercel-labs/agent-desktop/tree/v1.0.2/skills/agent-desktop. -->
 
 # agent-desktop
 

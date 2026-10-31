@@ -4,7 +4,8 @@ Never pass `auto` or status labels such as `parallel-env/parallel`; they are not
 
 ## Desktop and browser routing
 
-- Native macOS desktop accessibility and UI actions: default to `agent-desktop` and follow `skill://agent-desktop` plus `skill://agent-desktop-macos`; use `mac-use-mcp` only through MCPProxy when Agent Desktop lacks the required capability. Never use the fallback to bypass a permission denial; do not operate both desktop paths for one task or claim isolation from the live user session.
+Native macOS desktop accessibility and UI actions default to Agent Desktop. Read its OMP skills `~/.omp/agent/skills/agent-desktop/SKILL.md` and `~/.omp/agent/skills/agent-desktop-macos/SKILL.md` (or their project-owned source paths). If the active session says `Unknown skill`, read these files directly; OMP holds a per-session skill snapshot, and CLI `agent-desktop skills get ...` prints bundled guides but does not load a missing OMP skill. For exact CLI command syntax, consult the loaded skill, bundled guide, or `<command> --help`. Never silently restart the user's session.
+
 - Web pages and browser automation: default to `ego-browser` (`ego-browser skill` for its current guide). Agent Desktop is not a webpage tool. Use Helium through OMP Browser Relay only when the task needs an existing Helium tab or ego-browser is unsuitable, and only with per-call `app.relay=true` plus an explicit intended `app.target`; never target a random/foreground tab or enable Relay globally.
 - Check permissions read-only when unknown. Do not request/grant permissions or open System Settings unless the user explicitly asks. MCP calls go through MCPProxy only.
 

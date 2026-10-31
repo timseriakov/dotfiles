@@ -9,8 +9,10 @@ Use this before any native macOS desktop/computer-use action. For native app acc
 
 ## Routing policy
 
-- Default: `agent-desktop` for supported native macOS app/window observation and actions. Follow `skill://agent-desktop` first and `skill://agent-desktop-macos` for macOS specifics; call `agent-desktop permissions` when permission state is unknown, then `agent-desktop status` as needed. Check `agent-desktop <command> --help` for exact syntax.
-- Fallback: route to `mac-use-mcp` through MCPProxy when Agent Desktop lacks the needed capability or macOS surface. If permissions block the requested Agent Desktop operation, stop and explain the permission requirement; never retry through mac-use-mcp to bypass a denial. Respect permissions for either tool.
+Read `~/.omp/agent/skills/agent-desktop/SKILL.md` and `~/.omp/agent/skills/agent-desktop-macos/SKILL.md` before native desktop actions whenever the active session exposes them as `skill://` skills.
+If either `skill://` lookup returns `Unknown skill`, do not retry it and do not mistake that for a CLI failure. OMP keeps the skill catalog in a per-session snapshot; read the installed files above directly by filesystem path instead. Use `agent-desktop skills get desktop` and `agent-desktop skills get platform` only as version-matched bundled CLI-reference fallback, not as OMP skill-loading commands. Never silently restart a user session.
+Then check `agent-desktop status` and `agent-desktop permissions` read-only as needed, and use one observe-act-verify sequence. `agent-desktop snapshot --app "OpenMTP" --skeleton -i --compact` observes a live app; run it only when the task calls for it.
+
 - Do not use both desktop tools in the same task unless an explicit technical constraint requires comparison; never claim that either tool is isolated from the user's live macOS session.
 - For browser pages, DOM, website content, forms, or web app automation, use `ego-browser` by default. Agent Desktop is for native desktop UI, not webpage automation. Use Helium through OMP Browser Relay only when the task specifically needs an existing Helium tab or ego-browser is unsuitable; every Relay call must set `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never target a random/foreground tab or enable Relay globally.
 

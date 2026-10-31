@@ -1,21 +1,10 @@
-<!-- Adapted verbatim from vercel-labs/agent-desktop v1.0.2; Apache-2.0, see LICENSE at https://github.com/vercel-labs/agent-desktop/blob/v1.0.2/LICENSE. -->
-
 ---
-
 name: agent-desktop-macos
-tags: macos-automation, accessibility, ax, tcc, ai-agent, gui-automation, cli
-requirements:
-
-- agent-desktop
-  description: >
-  macOS platform guide for the agent-desktop CLI. Use for desktop automation
-  on macOS: granting Accessibility and Screen Recording permission (TCC),
-  what headed mode does on macOS (physical-first click, type and scroll),
-  surfaces (menu, menubar, sheet, popover, alert), Notification Center,
-  Chromium and Electron apps including launch --cdp, and fixing PERM_DENIED,
-  empty accessibility trees, ACTION_FAILED and APP_UNRESPONSIVE.
-
+description: macOS-specific guidance for the agent-desktop CLI, including accessibility permissions, screenshots, headed input, native UI surfaces, Chromium/Electron apps, and troubleshooting common permission and action failures. Read alongside the agent-desktop core skill when automating native macOS UI.
+license: Apache-2.0
 ---
+
+<!-- Adapted from vercel-labs/agent-desktop v1.0.2; upstream: https://github.com/vercel-labs/agent-desktop/blob/v1.0.2/skills/agent-desktop-macos. -->
 
 # agent-desktop on macOS
 
