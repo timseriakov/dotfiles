@@ -107,5 +107,6 @@
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "wtf.nvim": { "branch": "main", "commit": "010c779f84a151477f74398c8ead71e42d70b816" },
   "yanky.nvim": { "branch": "main", "commit": "4b4ddd196526fd3d6fd091d931810f9743e936d3" },
-  "yazi.nvim": { "branch": "main", "commit": "4bc1d0ad67abe536b7944bf374bbdd806442a4ee" }
+  "yazi.nvim": { "branch": "main", "commit": "4bc1d0ad67abe536b7944bf374bbdd806442a4ee" },
+  "showkeys": { "branch": "main", "commit": "cb0a50296f11f1e585acffba8c253b9e8afc1f84" }
 }
