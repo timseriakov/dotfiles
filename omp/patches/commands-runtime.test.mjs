@@ -36,6 +36,7 @@ const patches = createCommandRuntimePatches({
 const expandedBtw = "/btw доложи статус и прогресс";
 const btwSource = `\t\tname: "btw",\n\t\taliases: ["b", "и", "s", "ы"],\n\t\ticon: "question",\n\t\tdescription: "Ask a side question, or browse this session's BTW history",`;
 const dispatchSource = `import { parseSlashCommand, parseSubcommand } from "../../slash-commands/helpers/parse";\n\t\t\tif (bareSlashCommand) text = bareSlashCommand.command;\n\t\t\t\tconst slashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached: true });\n\t/** Whether \`text\` invokes a registered extension command, which runs locally instead of prompting the model. */\n\t#isLocalExtensionCommand(text: string): boolean {\n\t\treturn false;\n\t}`;
+const currentDispatchSource = `import { parseSlashCommand, parseSubcommand } from "../../slash-commands/helpers/parse";\n\t\t\tif (bareSlashCommand) text = bareSlashCommand.command;\n\t\t\t\tlet slashResult: string | boolean;\n\t\t\t\ttry {\n\t\t\t\t\tslashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached });\n\t/** Whether \`text\` invokes a registered extension command, which runs locally instead of prompting the model. */\n\t#isLocalExtensionCommand(text: string): boolean {\n\t\treturn false;\n\t}`;
 
 function expandMethodFrom(patchedSource) {
   const body = patchedSource.match(
@@ -146,4 +147,12 @@ test("expanded BTW dispatch patch is idempotent and ordered before builtin dispa
     once.indexOf("text = this.#expandBtwPromptCommand(text);") <
       once.indexOf("const slashResult = await executeBuiltinSlashCommand"),
   );
+});
+test("expanded BTW dispatch patch supports OMP try/catch builtin dispatch", () => {
+  const patched = patches.patchExpandedBtwDispatch(currentDispatchSource);
+  assert.match(
+    patched,
+    /text = this\.#expandBtwPromptCommand\(text\);\n\t\t\t\tlet slashResult: string \| boolean;/,
+  );
+  assert.equal(patches.patchExpandedBtwDispatch(patched), patched);
 });

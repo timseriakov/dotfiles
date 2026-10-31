@@ -65,7 +65,18 @@ export function createCommandRuntimePatches(ctx) {
       `\n\t\t\ttext = this.#expandBtwPromptCommand(text);`,
       "expand prompt command before Enter builtin dispatch",
     ).content;
-    const followUpAnchor = `\t\t\t\tconst slashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached: true });`;
+    const followUpAnchors = [
+      `\t\t\t\tconst slashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached: true });`,
+      `\t\t\t\tlet slashResult: string | boolean;\n\t\t\t\ttry {\n\t\t\t\t\tslashResult = await executeBuiltinSlashCommand(text, { ctx: this.ctx, input, draftDetached });`,
+    ];
+    const followUpAnchor = followUpAnchors.find(
+      (anchor) => out.split(anchor).length - 1 === 1,
+    );
+    if (!followUpAnchor) {
+      throw new Error(
+        "Patch 'expand prompt command before Ctrl+Enter builtin dispatch' did not find a unique builtin dispatch.",
+      );
+    }
     out = replaceOnce(
       out,
       followUpAnchor,

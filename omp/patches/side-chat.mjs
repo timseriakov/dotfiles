@@ -169,6 +169,7 @@ export function patchPiSideChatOverlay(content, { replaceAny }) {
       oldBorderConstants,
       currentBorderConstants,
       whitespaceHorizontalBorderConstants,
+      String.raw`    const borderColor = this._focused ? "border" : "borderMuted";`,
       newBorderConstants,
     ],
     newBorderConstants,
@@ -330,19 +331,28 @@ export function patchPiSideChatOverlay(content, { replaceAny }) {
     '    while (lines.length < targetHeight - 1) lines.push(this.frameLine("", innerWidth, theme, borderColor));',
     "    lines.push(theme.fg(borderColor, bottomLeft + horizontal.repeat(Math.max(0, width - 2)) + bottomRight));",
   ].join("\n");
-  r = replaceAny(
-    out,
-    [
+  if (
+    out.includes(
+      "const maxLines = Math.max(3, Math.floor(this.options.tui.terminal.rows * 0.81) - 12);",
+    ) &&
+    out.includes('const borderColor = "statusLineContext";')
+  ) {
+    r = { content: out, changed: false, already: true };
+  } else {
+    r = replaceAny(
+      out,
+      [
+        currentPopupBody,
+        currentClosePopupBody,
+        previousCurrentPopupBody,
+        previousCurrentClosePopupBody,
+        previousTmuxPopupBody,
+        tmuxPopupBody,
+      ],
       currentPopupBody,
-      currentClosePopupBody,
-      previousCurrentPopupBody,
-      previousCurrentClosePopupBody,
-      previousTmuxPopupBody,
-      tmuxPopupBody,
-    ],
-    currentPopupBody,
-    "pi-side-chat tmux popup body",
-  );
+      "pi-side-chat tmux popup body",
+    );
+  }
   out = r.content;
   r = replaceAny(
     out,
