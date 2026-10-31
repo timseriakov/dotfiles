@@ -725,7 +725,11 @@ export function createStatusLinePatches(ctx) {
 		return content ? segView([span(content)]) : null;
 	},
 };`;
-    const accentPatchedSessionName18_4_4 = upstreamSessionName18_4_4
+    const patchedSessionName18_4_4 = upstreamSessionName18_4_4.replace(
+      `\t\tconst content = sanitizeStatusText(name);\n\t\treturn { content: accentFg(ctx, "accent", content), visible: true };`,
+      `\t\tconst content = sanitizeStatusText(name);\n\t\treturn { content: theme.fg("muted", content), visible: true };`,
+    );
+    const fixedWidthSessionName18_4_4 = upstreamSessionName18_4_4
       .replace(
         `\t\tconst content = sanitizeStatusText(name);\n\t\treturn { content: accentFg(ctx, "accent", content), visible: true };`,
         `\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > 24 ? truncateToWidth(cleanName, 24) : cleanName;\n\t\treturn { content: accentFg(ctx, "accent", display), visible: true };`,
@@ -734,22 +738,26 @@ export function createStatusLinePatches(ctx) {
         `\t\tconst content = name ? sanitizeStatusText(name) : "";`,
         `\t\tconst cleanName = name ? sanitizeStatusText(name) : "";\n\t\tconst content = visibleWidth(cleanName) > 24 ? truncateToWidth(cleanName, 24) : cleanName;`,
       );
-    const patchedSessionName18_4_4 = accentPatchedSessionName18_4_4.replace(
-      `\t\treturn { content: accentFg(ctx, "accent", display), visible: true };`,
-      `\t\treturn { content: theme.fg("muted", display), visible: true };`,
-    );
+    const legacyFixedWidthSessionName18_4_4 =
+      fixedWidthSessionName18_4_4.replace(
+        `\t\treturn { content: accentFg(ctx, "accent", display), visible: true };`,
+        `\t\treturn { content: theme.fg("muted", display), visible: true };`,
+      );
     if (
       out.includes(upstreamSessionName18_4_4) ||
-      out.includes(accentPatchedSessionName18_4_4) ||
-      out.includes(
-        "\t\tconst cleanName = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(cleanName) > 24 ? truncateToWidth(cleanName, 24) : cleanName;",
-      )
+      out.includes(fixedWidthSessionName18_4_4) ||
+      out.includes(legacyFixedWidthSessionName18_4_4) ||
+      out.includes(patchedSessionName18_4_4)
     ) {
       r = replaceAny(
         out,
-        [upstreamSessionName18_4_4, accentPatchedSessionName18_4_4],
+        [
+          upstreamSessionName18_4_4,
+          fixedWidthSessionName18_4_4,
+          legacyFixedWidthSessionName18_4_4,
+        ],
         patchedSessionName18_4_4,
-        "segments session name max width 18.4.4",
+        "segments session name uses available status-line width",
       );
       out = r.content;
     } else {

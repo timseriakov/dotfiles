@@ -1,3 +1,6 @@
+import { initThemeSync } from "../../../../.bun/install/global/node_modules/@oh-my-pi/pi-tui/src/theme/theme.ts";
+import { createStartupStatusLine } from "../../../../.bun/install/global/node_modules/@oh-my-pi/pi-tui/src/status-line/startup.ts";
+import { visibleWidth } from "../../../../.bun/install/global/node_modules/@oh-my-pi/pi-tui/src/index.ts";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createStatusLinePatches } from "./status-line.mjs";
@@ -58,4 +61,52 @@ test("migrates the existing upm-only patch and stays idempotent", () => {
   const patched = patchSegments(source(oldUpmAlias));
   assert.ok(patched.includes(aliases));
   assert.equal(patchSegments(patched), patched);
+});
+test("session title expands with available width and never overlaps left segments", () => {
+  initThemeSync();
+  const title =
+    "An exceptionally long session title that should use spare space";
+  const statusLine = createStartupStatusLine({
+    settings: {
+      preset: "custom",
+      leftSegments: ["mode"],
+      rightSegments: ["session_name"],
+      separator: "none",
+      contextLine: "off",
+      showHookStatus: false,
+      sessionAccent: false,
+      transparent: false,
+    },
+    gitEnabled: false,
+    autoThinking: false,
+    fastMode: false,
+    usingSubscription: false,
+    autoCompactEnabled: false,
+    compactionBoundaries: null,
+  });
+  statusLine.setPlanModeStatus({ enabled: true, paused: false });
+
+  try {
+    const narrow = statusLine.renderBottomBar(20, "full", title);
+    const wide = statusLine.renderBottomBar(80, "full", title);
+    assert.ok(
+      visibleWidth(narrow) <= 20,
+      "narrow line must not overflow or overlap",
+    );
+    assert.ok(
+      narrow.includes("Plan"),
+      "left mode segment remains visible at narrow width",
+    );
+    assert.ok(
+      !narrow.includes(title),
+      "narrow width clips a title that cannot fit",
+    );
+    assert.ok(visibleWidth(wide) <= 80, "wide line must fit without overlap");
+    assert.ok(
+      wide.includes(title),
+      "wide width shows the full title beyond the old 24-cell cap",
+    );
+  } finally {
+    statusLine.dispose();
+  }
 });
