@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      "@plannotator/dsh":
+        specifier: ^0.28.38
+        version: 0.28.38
       dsh-better-sidebar:
         specifier: ^0.28.0
         version: 0.28.0
@@ -314,6 +317,13 @@ packages:
       {
         integrity: sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw==,
       }
+
+  "@plannotator/dsh@0.28.38":
+    resolution:
+      {
+        integrity: sha512-Bm6kkVEI5FocNHl++iyprMd+LmWu9uEm3dxzgRJt5abFX9ZGmjtRX5wRSOyqgYKklL5z6Ylvl0J6v31NOgbKuw==,
+      }
+    engines: { dsh: ">=0.2.1-rc.2 <0.3.0-0" }
 
   "@standard-schema/spec@1.1.0":
     resolution:
@@ -1450,6 +1460,8 @@ snapshots:
   "@mermaid-js/parser@1.2.1":
     dependencies:
       "@chevrotain/types": 11.1.2
+
+  "@plannotator/dsh@0.28.38": {}
 
   "@standard-schema/spec@1.1.0": {}
 

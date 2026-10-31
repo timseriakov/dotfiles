@@ -2,6 +2,7 @@
   "name": "dsh-profile-web",
   "private": true,
   "dependencies": {
+    "@plannotator/dsh": "^0.28.38",
     "dsh-better-sidebar": "^0.28.0",
     "dshmarket": "^1.66.35"
   },
@@ -11,7 +12,8 @@
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
         "dshmarket",
-        "dsh-better-sidebar"
+        "dsh-better-sidebar",
+        "@plannotator/dsh"
       ]
     }
   }

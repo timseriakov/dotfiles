@@ -3,3 +3,5 @@ packages:
 
 nodeLinker: hoisted
 autoInstallPeers: false
+minimumReleaseAgeExclude:
+  - "@plannotator/dsh@0.28.38"

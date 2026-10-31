@@ -1,0 +1,23 @@
+lockfileVersion: "9.0"
+
+settings:
+  autoInstallPeers: false
+  excludeLinksFromLockfile: false
+
+importers:
+  .:
+    dependencies:
+      "@plannotator/dsh":
+        specifier: 0.28.38
+        version: 0.28.38
+
+packages:
+  "@plannotator/dsh@0.28.38":
+    resolution:
+      {
+        integrity: sha512-Bm6kkVEI5FocNHl++iyprMd+LmWu9uEm3dxzgRJt5abFX9ZGmjtRX5wRSOyqgYKklL5z6Ylvl0J6v31NOgbKuw==,
+      }
+    engines: { dsh: ">=0.2.1-rc.2 <0.3.0-0" }
+
+snapshots:
+  "@plannotator/dsh@0.28.38": {}
