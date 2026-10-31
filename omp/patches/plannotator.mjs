@@ -1,36 +1,3 @@
-/**
- * Plannotator extension patches.
- *
- * `@plannotator/pi-extension/index.ts` notifies on every session_start that
- * project-local config is disabled when the Pi runtime predates
- * `ctx.isProjectTrusted` (a 0.79.1+ API). That banner is noise on this host;
- * suppress the notify while keeping the (const-false) projectTrusted behavior
- * unchanged.
- */
-export function patchPlannotatorVersionWarning(content, { replaceAny }) {
-  let out = content;
-  const r = replaceAny(
-    out,
-    [
-      `\t\tif (typeof trustFn !== "function") {
-\t\t\tctx.ui.notify(
-\t\t\t\t"Plannotator requires Pi 0.79.1 or newer. Update Pi; project-local config is disabled on this host.",
-\t\t\t\t"warning",
-\t\t\t);
-\t\t}`,
-      `\t\tif (typeof trustFn !== "function") {
-\t\t\tctx.ui.notify(PROJECT_TRUST_CAPABILITY_WARNING, "warning");
-\t\t}`,
-    ],
-    `\t\tif (typeof trustFn !== "function") {
-\t\t\t// version-gated banner suppressed by monkey patch
-\t\t}`,
-    "suppress Plannotator version warning",
-  );
-  out = r.content;
-  return out;
-}
-
 export function patchPlannotatorBrowserNotification(content, { replaceAny }) {
   const current = `\tconst failedLocally = !notOpening && !isRemoteSession() && !browserResult.opened;\n\tif (!announcedInTurn) {\n\t\tconst suffix = notOpening\n\t\t\t? \` — \${notOpening}\`\n\t\t\t: failedLocally ? " (could not open a browser automatically; open this URL)" : "";\n\t\tctx.ui.notify(\`Plannotator session ready: \${serverUrl}\${suffix}\`, "info");\n\t} else if (failedLocally) {\n\t\tctx.ui.notify(\`Could not open a browser automatically. Open \${serverUrl} to review.\`, "info");\n\t}`;
   const patched = `\tconst failedLocally = !notOpening && !isRemoteSession() && !browserResult.opened;\n\tif (!announcedInTurn || isRemoteSession()) {\n\t\tconst suffix = notOpening\n\t\t\t? \` — \${notOpening}\`\n\t\t\t: failedLocally ? " (could not open a browser automatically; open this URL)" : "";\n\t\tctx.ui.notify(\`Plannotator session ready: \${serverUrl}\${suffix}\`, "info");\n\t} else if (failedLocally) {\n\t\tctx.ui.notify(\`Could not open a browser automatically. Open \${serverUrl} to review.\`, "info");\n\t}`;

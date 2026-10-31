@@ -53,7 +53,6 @@ import {
   patchPlannotatorNotifications,
   patchPlannotatorPlanTailnet,
   patchPlannotatorReviewTailnet,
-  patchPlannotatorVersionWarning,
 } from "./patches/plannotator.mjs";
 import { patchBrowserRelayOnly } from "./patches/browser-policy.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
@@ -409,7 +408,6 @@ try {
       ...patches,
       patchPlannotatorBrowserNotification,
       patchPlannotatorFeedbackDelivery,
-      patchPlannotatorVersionWarning,
       patchPlannotatorAnnouncement,
       patchPlannotatorBrowserOpen,
       patchPlannotatorGuard,
