@@ -2,6 +2,12 @@
 
 Never pass `auto` or status labels such as `parallel-env/parallel`; they are not accepted provider arguments. Start with `provider: "parallel"`. If the call errors, times out, is rate-limited, or returns no useful results, retry the same query with `serper`, then `tavily`, then `exa`, stopping at the first useful result. For important claims requiring corroboration, search with at least two of these providers independently.
 
+## Desktop and browser routing
+
+- Native macOS desktop accessibility and UI actions: default to `agent-desktop` and follow `skill://agent-desktop` plus `skill://agent-desktop-macos`; use `mac-use-mcp` only through MCPProxy when Agent Desktop lacks the required capability. Never use the fallback to bypass a permission denial; do not operate both desktop paths for one task or claim isolation from the live user session.
+- Web pages and browser automation: default to `ego-browser` (`ego-browser skill` for its current guide). Agent Desktop is not a webpage tool. Use Helium through OMP Browser Relay only when the task needs an existing Helium tab or ego-browser is unsuitable, and only with per-call `app.relay=true` plus an explicit intended `app.target`; never target a random/foreground tab or enable Relay globally.
+- Check permissions read-only when unknown. Do not request/grant permissions or open System Settings unless the user explicitly asks. MCP calls go through MCPProxy only.
+
 ## Hunk — live diff review (используй автоматически)
 
 У пользователя установлен hunk — терминальный просмотрщик diff'ов с поддержкой живых сессий.

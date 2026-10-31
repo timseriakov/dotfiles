@@ -74,7 +74,7 @@ Never edit configs in-place inside application directories — always edit insid
 
 ## Browser automation
 
-Use either `ego-browser` (first read `skill://ego-browser`, then run `ego-browser skill` and follow its complete installed guide) or Helium through OMP Browser Relay for browser eyes and hands; choose the route that fits the task. Relay requires per-call `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally.
+Use `ego-browser` by default for webpage/browser automation (first read `skill://ego-browser`, then run `ego-browser skill` and follow its current guide). Helium through OMP Browser Relay is only an alternative when the task needs an existing Helium tab or ego-browser is unsuitable; Relay requires per-call `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally. Agent Desktop is for native desktop UI, not webpage automation.
 
 ## Dual-Yazi tmux Kitty Image Preview
 

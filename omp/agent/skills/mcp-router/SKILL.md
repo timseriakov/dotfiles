@@ -37,7 +37,9 @@ Avoid vague queries like `use tool`, `do it`, `open thing`.
 
 ## Browser automation
 
-Use either the installed `ego-browser` skill (run `ego-browser skill` and follow that version's complete guide) or Helium through OMP Browser Relay for browser eyes and hands; choose the route that fits the task. Relay requires per-call `app.relay=true` and an explicit `app.target` naming the intended Helium tab/window. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally.
+Use `ego-browser` by default for webpage/browser automation (run `ego-browser skill` and follow its version-matched guide). Agent Desktop is for native desktop UI, not webpages. Use Helium through OMP Browser Relay only when the task needs an existing Helium tab or ego-browser is unsuitable; every Relay call requires per-call `app.relay=true` and an explicit intended `app.target`. Never adopt a foreground/random user tab, switch targets implicitly, or enable Relay globally.
+
+For native macOS desktop tasks, follow `skill://mac-use-router`: Agent Desktop is the default; `mac-use-mcp` is a capability-based fallback only. Never use the fallback to bypass a permission denial. Route all MCP access through MCPProxy.
 
 ## Desktop safety
 
@@ -51,11 +53,15 @@ For `mac-use-mcp` / computer-use tasks:
 ## Examples
 
 ```text
-Need to inspect the current macOS desktop screen. Search intent: mac desktop screenshot screen.
+Need native macOS UI state from an app. Follow skill://mac-use-router; default to `agent-desktop snapshot` and consult `skill://agent-desktop`.
 ```
 
 ```text
-Need to click a menu item in Finder. Search intent: mac desktop menu click Finder.
+Need a macOS capability Agent Desktop does not support. Search MCPProxy intent: mac desktop <specific action> <target>; use mac-use-mcp only as a capability fallback, never to bypass denied permissions.
+```
+
+```text
+Need webpage content or controls. Use `ego-browser` and its current guide; use OMP Browser Relay only for an existing Helium tab with per-call `app.relay=true` and explicit `app.target`.
 ```
 
 ```text
