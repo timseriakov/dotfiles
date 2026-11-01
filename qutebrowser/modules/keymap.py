@@ -2,13 +2,9 @@ import re
 from collections import defaultdict
 from collections.abc import MutableMapping
 from dataclasses import dataclass
-from typing import Callable, Protocol
-from collections import defaultdict
-from collections.abc import MutableMapping
-from typing import Callable, Protocol
+from typing import Any, Callable, Protocol
 
 from modules.base import en
-
 
 LETTER_MAP: dict[str, str] = {
     "q": "й",
@@ -165,3 +161,27 @@ def run_generator(config: BindingConfig, c: any, specs: list[BindingSpec]) -> No
 
     for mode, keys in full_blacklist.items():
         c.keyhint.blacklist.extend(keys)
+
+
+class DefaultBindingConfig(BindingConfig, Protocol):
+    def get(self, name: str) -> Any: ...
+
+
+def run_default_generator(config: DefaultBindingConfig) -> None:
+    """Add normal-mode layout twins without touching special or configured keys."""
+    defaults = config.get("bindings.default") or {}
+    normal = defaults.get("normal") or {}
+    configured = (config.get("bindings.commands") or {}).get("normal") or {}
+    configured_keys = {str(key) for key in configured}
+    default_keys = {str(key) for key in normal}
+    generated: set[str] = set()
+
+    for key, command in normal.items():
+        key = str(key)
+        if key in configured_keys or "<" in key or ">" in key:
+            continue
+        ru_key = translate_keychain(key)
+        if ru_key == key or ru_key in configured_keys or ru_key in default_keys or ru_key in generated:
+            continue
+        config.bind(ru_key, en(str(command)))
+        generated.add(ru_key)

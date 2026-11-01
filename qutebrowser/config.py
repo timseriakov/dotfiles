@@ -27,3 +27,7 @@ config.source("modules/bindings.py")
 config.source("modules/locale.py")
 config.source("modules/session_autosave.py")
 config.source("modules/live_tabs.py")
+
+from modules.keymap import run_default_generator
+
+run_default_generator(config)
