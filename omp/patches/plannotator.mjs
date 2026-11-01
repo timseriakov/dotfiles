@@ -9,44 +9,6 @@ export function patchPlannotatorBrowserNotification(content, { replaceAny }) {
   ).content;
 }
 
-export function patchPlannotatorFeedbackDelivery(content) {
-  const oldText = `{ deliverAs: "followUp" }`;
-  const newText = `{ deliverAs: "aside" }`;
-  const planText = `pi.sendUserMessage(text, { deliverAs: "followUp" });`;
-  const followUpCount = content.split(oldText).length - 1;
-  const hasPlanDelivery = content.includes(planText);
-  const feedbackFollowUpCount = followUpCount - (hasPlanDelivery ? 1 : 0);
-  const asideCount = content.split(newText).length - 1;
-  const expectedFeedbackCount = hasPlanDelivery ? 6 : 4;
-
-  if (feedbackFollowUpCount === 0) {
-    if (asideCount === expectedFeedbackCount) return content;
-    throw new Error(
-      `Patch 'start Plannotator feedback turns' expected ${expectedFeedbackCount} feedback callsites or an already patched source, found ${asideCount} aside callsites.`,
-    );
-  }
-  if (feedbackFollowUpCount !== expectedFeedbackCount) {
-    throw new Error(
-      `Patch 'start Plannotator feedback turns' expected ${expectedFeedbackCount} feedback callsites, found ${feedbackFollowUpCount}. Upstream source changed.`,
-    );
-  }
-
-  const sentinel = "__PLANNOTATOR_PLAN_FOLLOWUP__";
-  const protectedPlan = hasPlanDelivery
-    ? content.replace(
-        planText,
-        `pi.sendUserMessage(text, { deliverAs: "${sentinel}" });`,
-      )
-    : content;
-  return protectedPlan
-    .split(oldText)
-    .join(newText)
-    .replace(
-      `pi.sendUserMessage(text, { deliverAs: "${sentinel}" });`,
-      planText,
-    );
-}
-
 function patchTailnetServer(content, { replaceAny }) {
   const replace = (old, updated, label) => {
     content = replaceAny(content, [old], updated, label).content;

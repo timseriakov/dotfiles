@@ -47,7 +47,6 @@ import {
   patchPlannotatorAnnouncement,
   patchPlannotatorBrowserNotification,
   patchPlannotatorBrowserOpen,
-  patchPlannotatorFeedbackDelivery,
   patchPlannotatorGuard,
   patchPlannotatorLoopbackPort,
   patchPlannotatorNotifications,
@@ -407,7 +406,6 @@ try {
     patches: {
       ...patches,
       patchPlannotatorBrowserNotification,
-      patchPlannotatorFeedbackDelivery,
       patchPlannotatorAnnouncement,
       patchPlannotatorBrowserOpen,
       patchPlannotatorGuard,

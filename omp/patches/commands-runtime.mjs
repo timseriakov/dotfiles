@@ -143,20 +143,6 @@ export function createCommandRuntimePatches(ctx) {
       "disable startup prepaint composer",
     ).content;
   }
-  function patchPonytailStartupNotify(content) {
-    const current = `    if (!getQuietStartup()) {
-      ctx?.ui?.notify?.(\`Ponytail loaded: \${currentMode}\`, "info");
-    }`;
-    const patched = `    if (false && !getQuietStartup()) {
-      ctx?.ui?.notify?.(\`Ponytail loaded: \${currentMode}\`, "info");
-    }`;
-    return replaceAny(
-      content,
-      [current, patched],
-      patched,
-      "suppress Ponytail startup loaded notification",
-    ).content;
-  }
   function patchGoalTool(content) {
     return replaceAny(
       content,
@@ -435,6 +421,5 @@ export function createCommandRuntimePatches(ctx) {
     patchExtensionUiController,
     patchTuiOverlayFocus,
     patchCliStartupPrepaint,
-    patchPonytailStartupNotify,
   };
 }

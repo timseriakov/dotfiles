@@ -281,87 +281,6 @@ export function createInstalledAiPlannotatorPatches(ctx) {
     return out;
   }
 
-  function patchPlannotatorBrowserRuntime(content) {
-    let out = content;
-
-    if (!out.includes(`import { homedir } from "node:os";`)) {
-      out = replaceOnce(
-        out,
-        `import { fileURLToPath } from "node:url";`,
-        `import { fileURLToPath } from "node:url";
-import { homedir } from "node:os";`,
-        "plannotator browser homedir import",
-      ).content;
-    }
-
-    // Already patched: the asset directory constant is the marker.
-    if (out.includes(`const pluginAssetDirectory`)) return out;
-
-    const reviewHtmlPathLine = `const reviewHtmlPath = resolve(moduleDirectory, "review-editor.html");`;
-    out = replaceOnce(
-      out,
-      reviewHtmlPathLine,
-      `${reviewHtmlPathLine}
-const pluginAssetDirectory = resolve(homedir(), ".omp/plugins/node_modules/@plannotator/pi-extension");`,
-      "plannotator browser asset directory",
-    ).content;
-
-    out = replaceAny(
-      out,
-      [
-        `function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
-	if (cachedContent) return true;
-	try {
-		const stats = statSync(path);
-		return stats.isFile() && stats.size > 0;
-	} catch {
-		return false;
-	}
-}
-
-function readBrowserAsset(path: string, cachedContent: string | undefined): string {
-	if (cachedContent !== undefined) return cachedContent;
-	try {
-		return readFileSync(path, "utf-8");
-	} catch {
-		return "";
-	}
-}`,
-      ],
-      `function assetCandidates(path: string): string[] {
-	return [path, resolve(pluginAssetDirectory, path.slice(moduleDirectory.length + 1))];
-}
-
-function hasReadableAsset(path: string, cachedContent: string | undefined): boolean {
-	if (cachedContent) return true;
-	for (const candidate of assetCandidates(path)) {
-		try {
-			const stats = statSync(candidate);
-			if (stats.isFile() && stats.size > 0) return true;
-		} catch {
-			// try the next candidate
-		}
-	}
-	return false;
-}
-
-function readBrowserAsset(path: string, cachedContent: string | undefined): string {
-	if (cachedContent !== undefined) return cachedContent;
-	for (const candidate of assetCandidates(path)) {
-		try {
-			return readFileSync(candidate, "utf-8");
-		} catch {
-			// try the next candidate
-		}
-	}
-	return "";
-}`,
-      "plannotator browser asset fallback",
-    ).content;
-
-    return out;
-  }
-
   return {
     patchPiAiOpenAICompletions,
     patchTurnRecovery,
@@ -369,6 +288,5 @@ function readBrowserAsset(path: string, cachedContent: string | undefined): stri
     patchPiAiTypes,
     patchModelControlsLunaPriority,
     patchModelRegistryCatalog,
-    patchPlannotatorBrowserRuntime,
   };
 }
