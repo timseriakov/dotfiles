@@ -374,6 +374,18 @@ export function createUiComponentPatches(ctx) {
 \t\tthis.#cachedLines = lines;
 \t\treturn lines;
 \t}`,
+        `\trender(width: number): readonly string[] {
+\t\tconst label = typeof this.#label === "function" ? this.#label() : this.#label;
+\t\tif (this.#cachedLines && this.#cachedWidth === width && this.#cachedLabel === label) {
+\t\t\treturn this.#cachedLines;
+\t\t}
+\t\tconst horizontal = typeof theme === "undefined" ? "─" : theme.boxRound.horizontal;
+\t\tconst lines = [this.#rule(horizontal, Math.max(1, width), label)];
+\t\tthis.#cachedWidth = width;
+\t\tthis.#cachedLabel = label;
+\t\tthis.#cachedLines = lines;
+\t\treturn lines;
+\t}`,
         `\trender(_width: number): readonly string[] {
 \t\treturn [];
 \t}`,
