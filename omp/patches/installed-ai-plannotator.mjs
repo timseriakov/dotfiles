@@ -115,35 +115,6 @@ export function createInstalledAiPlannotatorPatches(ctx) {
     ).content;
   }
 
-  function patchPiAiSchemaNormalize(content) {
-    let out = content;
-    let r;
-
-    r = replaceAny(
-      out,
-      [
-        `const OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
-        `const UNSUPPORTED_OPENAI_REGEX_TOKENS = /\\(\\?[=!<]/;\n\nconst OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
-      ],
-      `const UNSUPPORTED_OPENAI_REGEX_TOKENS = /\\(\\?[=!<]/;\n\nconst OPENAI_RESPONSES_SCHEMA_VALUE_KEYS = new Set([\n\t"items",`,
-      "pi-ai openai schema unsupported regex constant",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [
-        `\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
-        `\t\tif (key === "pattern" && typeof value.pattern === "string" && UNSUPPORTED_OPENAI_REGEX_TOKENS.test(value.pattern)) {\n\t\t\tchanged = true;\n\t\t\tcontinue;\n\t\t}\n\n\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
-      ],
-      `\t\tif (key === "pattern" && typeof value.pattern === "string" && UNSUPPORTED_OPENAI_REGEX_TOKENS.test(value.pattern)) {\n\t\t\tchanged = true;\n\t\t\tcontinue;\n\t\t}\n\n\t\tconst child = value[key];\n\t\tlet next: unknown = child;`,
-      "pi-ai openai schema strip lookaround patterns",
-    );
-    out = r.content;
-
-    return out;
-  }
-
   function patchPiAiTypes(content) {
     const current = `export function serviceTierFamily(model: ServiceTierModel): ServiceTierFamily | undefined {
 	const provider = model.provider;
@@ -284,7 +255,6 @@ export function createInstalledAiPlannotatorPatches(ctx) {
   return {
     patchPiAiOpenAICompletions,
     patchTurnRecovery,
-    patchPiAiSchemaNormalize,
     patchPiAiTypes,
     patchModelControlsLunaPriority,
     patchModelRegistryCatalog,

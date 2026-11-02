@@ -89,7 +89,6 @@ export function runPatchRoutes(ctx) {
   for (const [target, patch] of tuiRoutes) patchTuiFile(target, patch);
 
   const piAiRoutes = [
-    ["utils/schema/normalize.ts", patches.patchPiAiSchemaNormalize],
     ["types.ts", patches.patchPiAiTypes],
     ["providers/openai-completions.ts", patches.patchPiAiOpenAICompletions],
   ];

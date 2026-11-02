@@ -17,8 +17,6 @@
  * - editor prompt gutter width: reserve 1 cell even if the glyph measures as width 0
  * - welcome screen: replace the full logo/tips/recent-sessions box with only `Welcome from Oh My Pi`
  * - session name: right status segment is muted, truncated to 48 terminal cells, and padded right
- * - OpenAI-compatible wire schemas: strip regex `pattern` keywords containing lookaround, because
- *   OpenAI rejects them in tool schemas even though JavaScript accepts them
  * - OpenAI-completions tools: sanitize non-strict tool schemas too (OMNiRoute uses this path)
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
  * - Kitty image graphics: wrap APC sequences in tmux passthrough, including Unicode placeholder placement
