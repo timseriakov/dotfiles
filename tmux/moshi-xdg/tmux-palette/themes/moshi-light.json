@@ -1,0 +1,9 @@
+{
+  "bg": "transparent",
+  "panel": "transparent",
+  "selected": "#d8dee9",
+  "fg": "#414858",
+  "muted": "#4c566a",
+  "accent": "#81a1c1",
+  "selectedFg": "#414858"
+}

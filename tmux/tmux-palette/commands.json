@@ -72,6 +72,30 @@
     }
   },
   {
+    "icon": "󰔟",
+    "title": "Theme: Toggle",
+    "category": "Theme",
+    "action": {
+      "tmux": "run-shell -b -t '#{client_name}' \"TMUX_SOCKET='#{socket_path},#{server_pid},#{session_id}' /Users/tim/dev/dotfiles/tmux/theme-session.sh toggle '#{client_name}' moshi-light\""
+    }
+  },
+  {
+    "icon": "󰔟",
+    "title": "Dark On",
+    "category": "Theme",
+    "action": {
+      "tmux": "run-shell -b -t '#{client_name}' \"TMUX_SOCKET='#{socket_path},#{server_pid},#{session_id}' /Users/tim/dev/dotfiles/tmux/theme-session.sh dark '#{client_name}' moshi-light\""
+    }
+  },
+  {
+    "icon": "󰔟",
+    "title": "Light On",
+    "category": "Theme",
+    "action": {
+      "tmux": "run-shell -b -t '#{client_name}' \"TMUX_SOCKET='#{socket_path},#{server_pid},#{session_id}' /Users/tim/dev/dotfiles/tmux/theme-session.sh light '#{client_name}' moshi-light\""
+    }
+  },
+  {
     "icon": "",
     "title": "Persistent Popup",
     "category": "Shell",

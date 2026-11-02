@@ -19,6 +19,7 @@ startup:
   setupWizard: false
 theme:
   dark: starship-nord
+  light: starship-nord-light
 colorBlindMode: false
 showHardwareCursor: false
 images:
@@ -45,6 +46,7 @@ statusLine:
   preset: custom
   separator: none
   contextLine: "off"
+  transparent: true
   leftSegments:
     - path
     - git
