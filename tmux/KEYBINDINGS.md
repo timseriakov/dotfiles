@@ -28,6 +28,13 @@
 | `cmd+h` / `cmd+р`  | предыдущая session, кроме popup/alacritty/monitor → `Ctrl-a (`                                                  |
 | `cmd+l` / `cmd+д`  | следующая session, кроме popup/alacritty/monitor → `Ctrl-a )`                                                   |
 
+## Moshi volume buttons
+
+В Moshi назначить Volume Up → Advanced binding `S-F11`, Volume Down → `S-F12`.
+Оба сочетания работают без leader: `S-F11` — следующая session с пропуском
+popup/alacritty/monitor, `S-F12` — следующее окно. Обычные `F11`/`F12` остаются
+за поиском.
+
 ## Layout and moving things
 
 | Key                         | Action                                    |
