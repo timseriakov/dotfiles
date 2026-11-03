@@ -104,7 +104,8 @@
       "excluded_calendars": [],
       "remind": true,
       "lead_minutes": 1
-    }
+    },
+    "retention": "week"
   },
   "capture": {
     "enabled": true,
@@ -202,46 +203,58 @@
       "term": "OpenAI"
     },
     {
-      "term": "Gemini."
+      "term": "Gemini.",
+      "sounds_like": ["джемини"]
     },
     {
-      "term": "Claude"
+      "term": "Claude",
+      "sounds_like": ["клод"]
     },
     {
-      "term": "OmniRoute"
+      "term": "OmniRoute",
+      "sounds_like": ["омнироут"]
     },
     {
-      "term": "Codex"
+      "term": "Codex",
+      "sounds_like": ["кодекс"]
     },
     {
       "term": "opencode"
     },
     {
-      "term": "Yazi"
+      "term": "Yazi",
+      "sounds_like": ["язи"]
     },
     {
-      "term": "dotfiles"
+      "term": "dotfiles",
+      "sounds_like": ["дотфайлс"]
     },
     {
-      "term": "model"
+      "term": "model",
+      "sounds_like": ["модел"]
     },
     {
-      "term": "provider"
+      "term": "provider",
+      "sounds_like": ["провайдер"]
     },
     {
-      "term": "endpoint"
+      "term": "endpoint",
+      "sounds_like": ["эндпоинт"]
     },
     {
-      "term": "TUI"
+      "term": "TUI",
+      "sounds_like": ["тэюай"]
     },
     {
-      "term": "SDK"
+      "term": "SDK",
+      "sounds_like": ["сдикей"]
     },
     {
       "term": "CLI"
     },
     {
-      "term": "API"
+      "term": "API",
+      "sounds_like": ["апи"]
     },
     {
       "term": "JSONC"
@@ -256,28 +269,36 @@
       "term": "MCP"
     },
     {
-      "term": "TMUX"
+      "term": "TMUX",
+      "sounds_like": ["тмакс"]
     },
     {
-      "term": "nvim"
+      "term": "nvim",
+      "sounds_like": ["энвим"]
     },
     {
-      "term": "Neovide"
+      "term": "Neovide",
+      "sounds_like": ["неовайд"]
     },
     {
-      "term": "Neovim"
+      "term": "Neovim",
+      "sounds_like": ["неовим"]
     },
     {
-      "term": "qutebrowser"
+      "term": "qutebrowser",
+      "sounds_like": ["кьюте браузер"]
     },
     {
-      "term": "Payload"
+      "term": "Payload",
+      "sounds_like": ["пэйлоад"]
     },
     {
-      "term": "CMS"
+      "term": "CMS",
+      "sounds_like": ["цмс"]
     },
     {
-      "term": "CRM"
+      "term": "CRM",
+      "sounds_like": ["црм"]
     }
   ],
   "vocabulary_boost": "normal",
