@@ -56,3 +56,7 @@ If you have a `plannotator_inbox` tool or a `plannotator-inbox` MCP server, use 
 Their reply comes back to this session by itself where your agent supports that; otherwise read the thread later with `read_thread`. When they are here, ask in this chat instead.
 
 <!-- plannotator-inbox:end -->
+
+## Plannotator links — Tailscale first
+
+The user often opens links from a phone over Tailscale. Every user-facing Plannotator link, including Inbox thread links, MUST use the available tailnet HTTPS URL, never localhost/127.0.0.1. For Inbox, obtain `tailnet_url` from `plannotator inbox status --json` and preserve the original path, query, and `#thread=...` fragment. Tool responses may expose localhost as `url` even when `tailnet_url` is available: do not copy that local URL. Never guess a hostname or port. If no tailnet URL is available, report that blocker explicitly rather than presenting localhost as a remotely usable link. Keep loopback addresses for internal API calls and health checks.
