@@ -54,6 +54,6 @@ function fish_user_key_bindings
 
 
     # Execute 'f' immediately on space
-    bind -M insert ' ' 'if commandline | string match -q -- "f"; commandline -f execute; else; commandline -f expand-abbr; commandline -i " "; end'
+    bind -M insert ' ' 'if commandline | string match -q -- "f"; commandline -f execute; else; set -l token (commandline -ct); set -l before (commandline); commandline -f expand-abbr; if not contains -- "$token" oa oar; or test "$before" = (commandline); commandline -i " "; end; end'
 
 end
