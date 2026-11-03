@@ -35,6 +35,14 @@ export function runPatchRoutes(ctx) {
       (content) =>
         patches.patchExpandedBtwDispatch(patches.patchInputController(content)),
     ],
+    [
+      "modes/controllers/input-controller.ts",
+      patches.patchFocusedSubagentAdvisorController,
+    ],
+    [
+      "slash-commands/builtin-collaboration.ts",
+      patches.patchFocusedSubagentAdvisorCommand,
+    ],
     ["predict/client.ts", patches.patchPredictClientSuffix],
     ["session/session-manager.ts", patches.patchSessionManager],
     ["session/session-paths.ts", patches.patchSessionPaths],

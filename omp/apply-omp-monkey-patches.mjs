@@ -21,6 +21,7 @@
  * - OSC 99 terminal capability probe: skip it inside tmux; passthrough replies leak as typed text
  * - Kitty image graphics: wrap APC sequences in tmux passthrough, including Unicode placeholder placement
  * - Goal tool: ignore model-provided `token_budget` so goals stay unbounded while still counting usage
+ * - temporary focused-subagent Advisor controls: `/advisor on|off` and toggle target the worker selected in Agent Hub; see upstream PR #15171
  *
  * Note: prompt/editor gutter glyph is also set by the dotfiles extension:
  *   ~/dev/dotfiles/omp/agent/extensions/starship-minimal-editor.ts
@@ -40,6 +41,7 @@ import { createUiComponentPatches } from "./patches/ui-components.mjs";
 import { createInputSessionPatches } from "./patches/input-session.mjs";
 import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mjs";
 import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
+import { createFocusedSubagentAdvisorPatch } from "./patches/focused-subagent-advisor.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
 import {
   patchPlannotatorAnnouncement,
@@ -386,6 +388,7 @@ const patches = {
   ...createTuiEditorTerminalPatches(patchHelpers),
   ...createCommandRuntimePatches(patchHelpers),
   patchBrowserRelayOnly,
+  ...createFocusedSubagentAdvisorPatch(patchHelpers),
   ...createGitTuiPatches(patchHelpers),
 };
 try {
