@@ -14,18 +14,24 @@ export function createUiComponentPatches(ctx) {
         `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi")];\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
         `\t#renderLines(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
         `\trender(_termWidth: number): string[] {\n\t\treturn [theme.bold("Welcome from Oh My Pi"), ""]\n\n\t\t// Box dimensions - responsive with max width and small-terminal support`,
+        `\t#renderLines(termWidth: number): string[] {\n\t\t// Content keeps a column clear on each side; everything centers in the full width.`,
       ],
       alreadyPatched,
       "welcome minimal text only",
     ).content;
     const describeCurrent = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\tconst body: NativeChild[] = [lockupNode(this.version)];\n\t\tif (tip) {\n\t\t\tconst isNew = NEW_TIP_MARKER.test(tip);\n\t\t\tconst tipText = compactText(tipSpans(expandTipKeys(isNew ? tip.replace(NEW_TIP_MARKER, "") : tip)));\n\t\t\tconst tipRow: NativeChild[] = [\n\t\t\t\tnode("icon", { name: "lightbulb", role: "omp.welcome.tip-icon" }),\n\t\t\t\ttext(tipText, { wrap: "word", role: "omp.welcome.tip-text" }),\n\t\t\t];\n\t\t\tif (isNew) tipRow.push(node("shimmer", { text: "New", role: "omp.welcome.new" }));\n\t\t\tbody.push(node("row", { gap: "sm", align: "start", role: "omp.welcome.tip" }, tipRow, "tip"));\n\t\t}\n\t\t// No head row or chevron: the card is the hero; the version sits under the wordmark.\n\t\tconst described = card({ role: "omp.welcome" }, body);\n\t\tthis.#native = { tip, node: described };\n\t\treturn described;\n\t}`;
     const nativeMinimal = `\t\tconst cardNode = text([span("Welcome from Oh My Pi", "strong")], { wrap: "none", role: "omp.welcome.wordmark" });\n\t\tthis.#native = { tip, node: cardNode };\n\t\treturn cardNode;`;
+    const describeCurrentV18_17 = describeCurrent.replace(
+      "lockupNode(this.version)",
+      "lockupNode(this.version, this.#versionUpdate)",
+    );
     const describePatched = `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n${nativeMinimal}\n\t}`;
     out = replaceAny(
       out,
       [
         `\tdescribe(_cx: DescribeContext): NativeNode {\n\t\tconst tip = this.tip;\n\t\tif (this.#native && this.#native.tip === tip) return this.#native.node;\n\t\t// Brand lines are short and fixed; never wrap or truncate them.\n\t\tconst cardNode = text([span("Welcome from Oh My Pi", "strong")], { wrap: "none", role: "omp.welcome.wordmark" });\n\t\tthis.#native = { tip, node: cardNode };\n\t\treturn cardNode;\n\t}`,
         describeCurrent,
+        describeCurrentV18_17,
         describePatched,
       ],
       describePatched,
@@ -279,20 +285,6 @@ export function createUiComponentPatches(ctx) {
       ],
       `\t\t\t\tplayWelcomeIntro: !startupQuiet && !options.suppressWelcomeIntro,`,
       "interactive quiet skips welcome intro animation",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [
-        `\t\t\tif (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
-        `\t\t\tif (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
-        `\t\tif (this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
-        `\t\tif (!startupQuiet && this.#startupChangelog && settings.get("startup.changelogMode") !== "hidden") {`,
-        `\t\tif (!startupQuiet && this.#startupChangelog && cfgStartupChangelogMode.get(settings) !== "hidden") {`,
-      ],
-      `\t\tif (!startupQuiet && this.#startupChangelog && cfgStartupChangelogMode.get(settings) !== "hidden") {`,
-      "interactive quiet suppresses changelog noise",
     );
     out = r.content;
 

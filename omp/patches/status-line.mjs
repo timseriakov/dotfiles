@@ -275,6 +275,7 @@ export function createStatusLinePatches(ctx) {
         `import { TERMINAL } from "@oh-my-pi/pi-tui";`,
         `import { SPINNER_ADVANCE_MS, TERMINAL } from "@oh-my-pi/pi-tui";`,
         `import { TERMINAL, truncateToWidth, visibleWidth } from "@oh-my-pi/pi-tui";`,
+        `import { sharedSpinnerFrame, TERMINAL } from "../index";`,
       ],
       `import { SPINNER_ADVANCE_MS, TERMINAL, visibleWidth } from "../index";`,
       "segments width helpers import",
@@ -743,11 +744,30 @@ export function createStatusLinePatches(ctx) {
         `\t\treturn { content: accentFg(ctx, "accent", display), visible: true };`,
         `\t\treturn { content: theme.fg("muted", display), visible: true };`,
       );
+    const upstreamSessionName18_17 = `const sessionNameSegment: StatusLineSegment = {
+	id: "session_name",
+	render(ctx) {
+		const sessionManager = ctx.session.sessionManager;
+		const name = sessionManager?.getSessionName() || ctx.previewTitle;
+		if (!name) return { content: "", visible: false };
+
+		const title = sanitizeStatusText(name);
+		const content = ctx.isPinned ? withIcon(theme.icon.pin, title) : title;
+		return { content: accentFg(ctx, "accent", content), visible: true };
+	},
+	describe(ctx) {
+		const name = ctx.session.sessionManager?.getSessionName() || ctx.previewTitle;
+		const content = name ? sanitizeStatusText(name) : "";
+		// Plain: the terminal styles the title by its role.
+		return content ? segView([span(content)], ctx.isPinned ? "pin" : undefined) : null;
+	},
+};`;
     if (
       out.includes(upstreamSessionName18_4_4) ||
       out.includes(fixedWidthSessionName18_4_4) ||
       out.includes(legacyFixedWidthSessionName18_4_4) ||
-      out.includes(patchedSessionName18_4_4)
+      out.includes(patchedSessionName18_4_4) ||
+      out.includes(upstreamSessionName18_17)
     ) {
       r = replaceAny(
         out,
@@ -755,6 +775,16 @@ export function createStatusLinePatches(ctx) {
           upstreamSessionName18_4_4,
           fixedWidthSessionName18_4_4,
           legacyFixedWidthSessionName18_4_4,
+          upstreamSessionName18_17,
+          upstreamSessionName18_17
+            .replace(
+              `\t\tconst title = sanitizeStatusText(name);\n\t\tconst content = ctx.isPinned ? withIcon(theme.icon.pin, title) : title;\n\t\treturn { content: accentFg(ctx, "accent", content), visible: true };`,
+              `\t\tconst title = sanitizeStatusText(name);\n\t\tconst display = visibleWidth(title) > 24 ? truncateToWidth(title, 24) : title;\n\t\tconst content = ctx.isPinned ? withIcon(theme.icon.pin, display) : display;\n\t\treturn { content: accentFg(ctx, "accent", content), visible: true };`,
+            )
+            .replace(
+              `\t\tconst content = name ? sanitizeStatusText(name) : "";`,
+              `\t\tconst cleanName = name ? sanitizeStatusText(name) : "";\n\t\tconst content = visibleWidth(cleanName) > 24 ? truncateToWidth(cleanName, 24) : cleanName;`,
+            ),
         ],
         patchedSessionName18_4_4,
         "segments session name uses available status-line width",

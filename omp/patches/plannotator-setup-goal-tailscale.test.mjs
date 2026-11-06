@@ -7,8 +7,10 @@ import {
   ARCHIVE_SHA256,
   CACHE,
   VERSION,
+  isOlderVersion,
   sha256,
   verifiedPatch,
+  verifyExecutable,
 } from "../build-plannotator-setup-goal.mjs";
 import { patchSetupGoalTailnetSources } from "./plannotator-setup-goal-tailscale.mjs";
 
@@ -57,6 +59,24 @@ test("patch is pinned to verified upstream bytes and reuses native lifecycle", (
       result.goalSetup.includes(invariant),
       goalSetup.includes(invariant),
     );
+});
+
+test("installed executable verification requires the pinned version and patch behavior", () => {
+  const executable = path.join(CACHE, "plannotator-setup-goal-darwin-arm64");
+  assert.match(
+    verifyExecutable(executable),
+    new RegExp(`plannotator ${VERSION}`),
+  );
+  assert.throws(() => verifyExecutable(process.execPath), /version mismatch/);
+});
+
+test("builder only upgrades valid lower stable versions to its pin", () => {
+  assert.equal(isOlderVersion("0.28.46", VERSION), true);
+  assert.equal(isOlderVersion("0.28.48", VERSION), true);
+  assert.equal(isOlderVersion("0.28.49", VERSION), true);
+  assert.equal(isOlderVersion("0.28.50", VERSION), false);
+  assert.equal(isOlderVersion("0.29.0", VERSION), false);
+  assert.equal(isOlderVersion("0.28.48-beta.1", VERSION), false);
 });
 
 test("reapplying the patch is idempotent", () => {

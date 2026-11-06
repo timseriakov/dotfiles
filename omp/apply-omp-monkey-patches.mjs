@@ -391,6 +391,24 @@ const patches = {
   ...createFocusedSubagentAdvisorPatch(patchHelpers),
   ...createGitTuiPatches(patchHelpers),
 };
+function disablePlannotatorAutoUpdate() {
+  const configPath = path.join(home, ".plannotator/config.json");
+  let config = {};
+  if (fs.existsSync(configPath)) {
+    config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    if (!config || typeof config !== "object" || Array.isArray(config))
+      throw new Error(`Invalid Plannotator config at ${configPath}`);
+  }
+  if (config.autoUpdate !== false) {
+    config.autoUpdate = false;
+    fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+    console.log(
+      "Disabled Plannotator background auto-update in ~/.plannotator/config.json.",
+    );
+  }
+}
+
+disablePlannotatorAutoUpdate();
 try {
   runPatchRoutes({
     home,

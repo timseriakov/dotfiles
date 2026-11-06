@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import {
   chmod,
   copyFile,
@@ -14,13 +14,13 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { patchSetupGoalTailnetSources } from "./patches/plannotator-setup-goal-tailscale.mjs";
 
-export const VERSION = "0.28.46";
-export const SOURCE_COMMIT = "d818bac80d972fbf3010b3d28ade459e23d04f69";
+export const VERSION = "0.28.50";
+export const SOURCE_COMMIT = "d7fc32acb775951324460bdf862dc04e4eeef4f3";
 export const ARCHIVE_SHA256 =
-  "f2dd9904dd8a9499382ce58bd5d6962578b4fe55925eb46a2f1654bcb17b6377";
+  "39ab011073eaf2866ecfa8ca395143bdfeb5d29fa5c464a20c2633e4163f57bc";
 export const SOURCE_HASHES = {
   "apps/hook/server/index.ts":
-    "b9ccf7fb6a681f70a766056328c7e9dfcdc6af0d719767ede8dab5f7ad942fba",
+    "3fa9804e79ad71523fbbb6ff78b09e7899809d1b6e0285328477e0220589115e",
   "packages/server/goal-setup.ts":
     "cc638fe6916dc9b93bbec1044973bf2147ebacbad108bc01cbd5c5b320af9a2e",
 };
@@ -38,6 +38,52 @@ export const sha256 = (bytes) =>
 const sourceRoot = path.join(CACHE, "src");
 const run = (args, cwd = sourceRoot, env = process.env) =>
   execFileSync(args[0], args.slice(1), { cwd, env, stdio: "inherit" });
+
+export function verifyExecutable(executable) {
+  const version = execFileSync(executable, ["--version"], {
+    encoding: "utf8",
+  }).trim();
+  if (version !== `plannotator ${VERSION}`)
+    throw new Error(
+      `${executable} version mismatch: expected plannotator ${VERSION}, got ${version}`,
+    );
+  const probe = spawnSync(
+    executable,
+    [
+      "setup-goal",
+      "interview",
+      path.join(os.tmpdir(), `missing-plannotator-bundle-${process.pid}.json`),
+      "--tailscale",
+    ],
+    { encoding: "utf8" },
+  );
+  const output = `${probe.stdout ?? ""}\n${probe.stderr ?? ""}`;
+  if (
+    probe.error ||
+    probe.status !== 1 ||
+    !output.includes("Failed to load goal setup bundle:") ||
+    output.includes("--tailscale is only supported with:")
+  )
+    throw new Error(
+      `${executable} is missing the setup-goal --tailscale patch: ${output.trim() || probe.error?.message || `exit ${probe.status}`}`,
+    );
+  return `Verified plannotator ${VERSION} setup-goal --tailscale: ${executable}`;
+}
+
+export function isOlderVersion(installed, target) {
+  const versions = [installed, target].map((version) =>
+    /^\d+\.\d+\.\d+$/.test(version) ? version.split(".").map(Number) : null,
+  );
+  if (versions.some((version) => !version)) return false;
+  for (let i = 0; i < 3; i++) {
+    if (versions[0][i] !== versions[1][i])
+      return versions[0][i] < versions[1][i];
+  }
+  return false;
+}
+async function verifyInstalled(executable) {
+  console.log(verifyExecutable(executable));
+}
 
 export function verifiedPatch(cli, goalSetup) {
   for (const [name, current] of Object.entries({
@@ -137,6 +183,7 @@ async function build() {
     "--outfile",
     CANDIDATE,
   ]);
+  console.log(verifyExecutable(CANDIDATE));
   console.log(`Candidate only, not installed: ${CANDIDATE}`);
 }
 
@@ -149,19 +196,20 @@ async function install(expectedHash) {
   const target = path.join(os.homedir(), ".local/bin/plannotator");
   const old = await readFile(target);
   if (sha256(old) === expectedHash) {
+    console.log(verifyExecutable(target));
     console.log("Already installed; unchanged.");
     return;
   }
+  const currentVersion = /^plannotator (\d+\.\d+\.\d+)$/.exec(
+    execFileSync(target, ["--version"], { encoding: "utf8" }).trim(),
+  )?.[1];
   if (
-    execFileSync(target, ["--version"], { encoding: "utf8" }).trim() !==
-    `plannotator ${VERSION}`
+    currentVersion !== VERSION &&
+    (!currentVersion || !isOlderVersion(currentVersion, VERSION))
   )
-    throw new Error("Installed CLI version drift; refusing replacement.");
-  if (
-    execFileSync(CANDIDATE, ["--version"], { encoding: "utf8" }).trim() !==
-    `plannotator ${VERSION}`
-  )
-    throw new Error("Candidate version mismatch.");
+    throw new Error(
+      `Installed CLI version drift (${currentVersion ?? "unknown"}); refusing replacement with ${VERSION}.`,
+    );
   const backup = `${target}.before-setup-goal-${sha256(old).slice(0, 12)}`;
   try {
     await writeFile(backup, old, { flag: "wx", mode: 0o755 });
@@ -176,6 +224,7 @@ async function install(expectedHash) {
   await copyFile(CANDIDATE, temporary);
   await chmod(temporary, 0o755);
   await rename(temporary, target);
+  console.log(verifyExecutable(target));
   console.log(`Installed ${expectedHash}; rollback binary: ${backup}`);
 }
 
@@ -187,9 +236,15 @@ if (
     if (process.argv[2] === "prepare") await prepare();
     else if (process.argv[2] === "build") await build();
     else if (process.argv[2] === "install") await install(process.argv[3]);
-    else
+    else if (process.argv[2] === "verify") {
+      if (!process.argv[3])
+        throw new Error(
+          "Verify requires the executable resolved by command -v.",
+        );
+      await verifyInstalled(process.argv[3]);
+    } else
       throw new Error(
-        `Usage: node ${fileURLToPath(import.meta.url)} prepare|build|install <verified-sha256>`,
+        `Usage: node ${fileURLToPath(import.meta.url)} prepare|build|install <verified-sha256>|verify <resolved-executable>`,
       );
   } catch (error) {
     console.error(error.message);

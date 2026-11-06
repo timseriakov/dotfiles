@@ -95,6 +95,22 @@ omp --version
 fish -lc 'timeout 45s omp --no-session -p "ok"'
 ```
 
+Standalone Plannotator CLI (separate from the npm extensions):
+
+```fish
+# The repository patch orchestrator also persists autoUpdate=false in ~/.plannotator/config.json.
+node apply-omp-monkey-patches.mjs
+set -l plannotator_cli (command -v plannotator)
+node build-plannotator-setup-goal.mjs verify $plannotator_cli
+# Future releases: inspect native equivalence, advance pinned version/commit/archive/source hashes, then:
+node build-plannotator-setup-goal.mjs prepare
+node build-plannotator-setup-goal.mjs build
+shasum -a 256 ~/.cache/plannotator-source/<pinned-version>/plannotator-setup-goal-darwin-arm64
+node build-plannotator-setup-goal.mjs install <verified-sha256>
+node build-plannotator-setup-goal.mjs verify (command -v plannotator)
+```
+
+Do not run `plannotator update` for this standalone binary: native auto-update and the manual updater install the upstream executable without the local `setup-goal --tailscale` patch. The builder is intentionally pinned and rejects source drift; update the pin only after verifying upstream behavior, then build, hash-check, install through the backup/atomic-replace path, and verify the resolved CLI version plus patched behavior.
 After source patches, verify bundled markers in `~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js` when visual behavior matters.
 
 - On each OMP/Plannotator update, check release notes, docs, and implementation for native equivalents to every relevant local monkey-patch. Migrate only with evidence of behavioral equivalence; remove obsolete patches, routes, and markers and update checks. Keep protective patches when equivalence is unclear, and report replacements, remaining patches with reasons, and any patches with no native equivalent.

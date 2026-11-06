@@ -144,47 +144,43 @@ export function createInstalledAiPlannotatorPatches(ctx) {
   }
 
   function patchModelControlsLunaPriority(content) {
-    const current = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
-\t\tif (model.provider === "fireworks") {
-\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
-\t\t\t\t? "priority"
-\t\t\t\t: undefined;
-\t\t}
-\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-5.6-luna") return "priority";
-\t\treturn resolveModelServiceTier(tiers, model);
-\t}`;
-    const previous = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
-\t\tif (model.provider === "fireworks") {
-\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
-\t\t\t\t? "priority"
-\t\t\t\t: undefined;
-\t\t}
-\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
-\t\treturn resolveModelServiceTier(tiers, model);
-\t}`;
-    const patched = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
-\t\tif (model.provider === "fireworks") {
-\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
-\t\t\t\t? "priority"
-\t\t\t\t: undefined;
-\t\t}
-\t\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";
-\t\treturn resolveModelServiceTier(tiers, model);
-\t}`;
-    const currentV18_12_2 = `\t#serviceTierFor(model: Model, tiers: ServiceTierByFamily): ServiceTier | undefined {
-\t\tif (model.provider === "fireworks") {
-\t\t\treturn cfgProvidersFireworksTier.get(this.#host.settings) === "priority" && !isFireworksFastModelId(model.id)
-\t\t\t\t? "priority"
-\t\t\t\t: undefined;
-\t\t}
-\t\treturn resolveModelServiceTier(tiers, model);
-\t}`;
-    return replaceAny(
-      content,
-      [current, previous, currentV18_12_2],
-      patched,
-      "Luna always uses priority service tier",
-    ).content;
+    const currentV18_17_0 =
+      `/**
+ * Effective wire service tier for a request to ` +
+      "`model`" +
+      ` under the per-family
+ * ` +
+      "`tiers`" +
+      `. Fireworks models take the Priority serving path only when the
+ * Providers › Fireworks Tier setting is ` +
+      '`"priority"`' +
+      ` (and never for ` +
+      "`-fast`" +
+      `
+ * variants, whose Fast serving path is mutually exclusive with Priority).
+ */
+export function serviceTierForModel(
+\tsettings: Settings,
+\tmodel: Model,
+\ttiers: ServiceTierByFamily,
+): ServiceTier | undefined {
+\tif (model.provider === "fireworks") {
+\t\treturn cfgProvidersFireworksTier.get(settings) === "priority" && !isFireworksFastModelId(model.id)
+\t\t\t? "priority"
+\t\t\t: undefined;
+\t}
+\treturn resolveModelServiceTier(tiers, model);
+}`;
+    const patchedV18_17_0 = currentV18_17_0.replace(
+      "\treturn resolveModelServiceTier(tiers, model);",
+      '\tif (model.provider === "omniroute" && model.id === "cx/gpt-6-luna") return "priority";\n\treturn resolveModelServiceTier(tiers, model);',
+    );
+    if (content.includes(patchedV18_17_0)) return content;
+    if (content.includes(currentV18_17_0))
+      return content.replace(currentV18_17_0, patchedV18_17_0);
+    throw new Error(
+      "Luna always uses priority service tier: unknown upstream shape",
+    );
   }
 
   function patchModelRegistryCatalog(content) {
