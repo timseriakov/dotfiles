@@ -74,7 +74,8 @@ test("builder only upgrades valid lower stable versions to its pin", () => {
   assert.equal(isOlderVersion("0.28.46", VERSION), true);
   assert.equal(isOlderVersion("0.28.48", VERSION), true);
   assert.equal(isOlderVersion("0.28.49", VERSION), true);
-  assert.equal(isOlderVersion("0.28.50", VERSION), false);
+  assert.equal(isOlderVersion("0.28.50", VERSION), true);
+  assert.equal(isOlderVersion("0.28.51", VERSION), false);
   assert.equal(isOlderVersion("0.29.0", VERSION), false);
   assert.equal(isOlderVersion("0.28.48-beta.1", VERSION), false);
 });
