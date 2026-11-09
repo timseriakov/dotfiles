@@ -250,7 +250,7 @@ providers:
       - id: opencode-go/deepseek-v4.1-flash
         name: V4.1 Flash
         reasoning: true
-        input: [text]
+        input: [text, image]
         supportsTools: true
         contextWindow: 1000000
         maxTokens: 384000
@@ -305,7 +305,7 @@ providers:
       - id: opencode-go/deepseek-v4.1-flash
         name: V4.1 Flash
         reasoning: true
-        input: [text]
+        input: [text, image]
         supportsTools: true
         contextWindow: 1000000
         maxTokens: 384000
