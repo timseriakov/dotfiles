@@ -36,29 +36,10 @@ return {
             },
           },
         },
-        lualine_x = {
-          -- 🧠 Codeium статус — теперь САМАЯ ЛЕВАЯ часть в правом блоке
-          function()
-            local status = require("codeium.virtual_text").status()
-            if status.state == "waiting" then
-              return "󰑕"
-            end
-            if status.state == "completions" and status.total > 0 then
-              return string.format(" %d/%d", status.current, status.total)
-            end
-            return ""
-          end,
-          "diff",
-          "branch",
-        },
+        lualine_x = { "diff", "branch" },
         lualine_y = { "location" },
         lualine_z = { "progress" },
       },
     })
-
-    -- Обновляем статусбар при смене состояния Codeium
-    require("codeium.virtual_text").set_statusbar_refresh(function()
-      require("lualine").refresh()
-    end)
   end,
 }
