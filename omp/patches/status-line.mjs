@@ -763,6 +763,23 @@ export function createStatusLinePatches(ctx) {
 	},
 };`;
     if (
+      out.includes(
+        `const styledTitle = accentFg(ctx, "accent", sanitizeStatusText(name));`,
+      ) ||
+      out.includes(
+        `const styledTitle = theme.fg("muted", sanitizeStatusText(name));`,
+      )
+    ) {
+      r = replaceAny(
+        out,
+        [
+          `const styledTitle = accentFg(ctx, "accent", sanitizeStatusText(name));`,
+        ],
+        `const styledTitle = theme.fg("muted", sanitizeStatusText(name));`,
+        "muted session title",
+      );
+      out = r.content;
+    } else if (
       out.includes(upstreamSessionName18_4_4) ||
       out.includes(fixedWidthSessionName18_4_4) ||
       out.includes(legacyFixedWidthSessionName18_4_4) ||

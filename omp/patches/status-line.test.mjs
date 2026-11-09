@@ -62,6 +62,19 @@ test("migrates the existing upm-only patch and stays idempotent", () => {
   assert.ok(patched.includes(aliases));
   assert.equal(patchSegments(patched), patched);
 });
+
+test("session title uses muted color and patch is idempotent", () => {
+  const input =
+    source(pathHeader) +
+    '\nconst styledTitle = accentFg(ctx, "accent", sanitizeStatusText(name));';
+  const patched = patchSegments(input);
+  assert.ok(
+    patched.includes(
+      'const styledTitle = theme.fg("muted", sanitizeStatusText(name));',
+    ),
+  );
+  assert.equal(patchSegments(patched), patched);
+});
 test("session title expands with available width and never overlaps left segments", () => {
   initThemeSync();
   const title =
