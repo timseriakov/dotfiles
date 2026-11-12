@@ -4,7 +4,7 @@ description: Open the Plannotator Inbox in the browser, show its address, and le
 
 Run `plannotator inbox --open` with Bash. It opens the Plannotator Inbox in the browser, starting it in the background when it is not running, prints the address and returns at once.
 
-Run `plannotator inbox status --json` and tell the user its `tailnet_url` in one sentence, not the local `url`: the user often connects from a phone over Tailscale. Preserve the path, query, and `#thread=...` fragment in thread links. Never guess the hostname or port. If the tailnet URL is unavailable, report that explicitly rather than presenting localhost as a remotely usable link. If it fails, tell the user what it says; `Unknown inbox option: --open` means their Plannotator is older than this command (update with `plannotator update`, or run `plannotator inbox` in a terminal).
+Tell the user the address in one sentence; when it also says no browser opened (a remote session), pass on how it says to reach the Inbox. If it fails, tell the user what it says; `Unknown inbox option: --open` means their Plannotator is older than this command (update with `plannotator update`, or run `plannotator inbox` in a terminal).
 
 Do not ask the user to run the command themselves.
 
@@ -12,7 +12,7 @@ Do not ask the user to run the command themselves.
 
 The Plannotator Inbox is one window on this computer where you leave the person messages, `:::question` blocks they answer with a click, and files. They answer when they can. Nothing blocks: you send, then keep working or end your turn.
 
-- Use it for a decision only they can make (a :::question block; go on with other work), finished long work (a short summary, files in `attachments`), or when they ask.
+- Use it for a decision only they can make (a :::question block; go on with other work), finished long work (a short summary with its pictures inline, files in `attachments`), or when they ask.
 - One thread per work stream, unless the person says otherwise.
 - Send with a `plannotator_inbox` tool when you have one (it can be listed with a prefix and may need loading through tool search first): `action` `send_message`, with a markdown `body`. Otherwise call `send_message` on the Inbox's MCP server, `plannotator inbox mcp`.
 - send_message's result says whether the person's reply arrives in this session by itself. When it does, do not wait or poll for it: end your turn or go on with other work. When it does not, go on with your work and read the thread later with read_thread.

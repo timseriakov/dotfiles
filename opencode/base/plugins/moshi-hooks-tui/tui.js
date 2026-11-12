@@ -52,7 +52,7 @@ function send(envelope) {
 }
 
 // Variables the daemon's mux drivers detect panes from (internal/mux).
-const MUX_ENV_KEYS = ["TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
+const MUX_ENV_KEYS = ["HC_SESSION","HC_TERMINAL_ID","HC_TERMINAL_SOCKET","REX_BLOCK","REX_SERVER","REX_SESSION","TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
 
 // Same detection order as the server plugin's resolveTerminalContext.
 // Mux-driver panes (tern, TUIOS, …) travel as muxEnv and are detected by the

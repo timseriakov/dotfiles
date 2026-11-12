@@ -13,7 +13,7 @@ const helperBinary = "/Users/tim/.local/bin/moshi-hook"
 
 // Variables the daemon's mux drivers detect panes from; rendered by the
 // installer from internal/mux's registry.
-const muxEnvKeys: string[] = ["TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
+const muxEnvKeys: string[] = ["HC_SESSION","HC_TERMINAL_ID","HC_TERMINAL_SOCKET","REX_BLOCK","REX_SERVER","REX_SESSION","TERN_PANE","TERN_PANE_SOCKET","TERN_WINDOW_KEY","TUIOS_ENV","TUIOS_PANE_ID","TUIOS_SESSION","TUIOS_SOCKET","TUIOS_WINDOW_ID"]
 
 // Mirrors internal/config.SocketPath. The MOSHI_SOCKET_PATH override wins
 // over the per-platform default so tests and dev daemons can point us at a
@@ -188,13 +188,18 @@ let modelLimitsReady: Promise<void> = Promise.resolve()
 // loopback relay that forwards the gateway's read-only requests through
 // that fetch. A real bound server (opencode --port / serve / web) reports
 // its actual URL, which we pass through untouched.
+//
+// Any local process can find the relay's port, so its URL carries a random
+// path token only the daemon learns, and every request is pinned to this
+// instance's own directory: OpenCode picks the project from ?directory= or
+// x-opencode-directory and loads that project's plugins.
 let moshiServerUrl = ""
 const OPENCODE_UNBOUND_SERVER_URL = "http://localhost:4096"
 
-function resolveMoshiServerUrl(sdk: unknown, given: unknown): string {
+function resolveMoshiServerUrl(sdk: unknown, given: unknown, directory: string): string {
   const base = (given ? String(given) : "").replace(/\/+$/, "")
   if (base && base !== OPENCODE_UNBOUND_SERVER_URL) return base
-  return startOpenCodeRelay(sdk)
+  return startOpenCodeRelay(sdk, directory)
 }
 
 function relayPathAllowed(pathname: string): boolean {
@@ -216,9 +221,10 @@ function inProcessFetchFromClient(sdk: unknown): ((req: Request) => Promise<Resp
   }
 }
 
-function startOpenCodeRelay(sdk: unknown): string {
+function startOpenCodeRelay(sdk: unknown, directory: string): string {
   const inner = inProcessFetchFromClient(sdk)
-  if (!inner) return ""
+  if (!inner || !directory) return ""
+  const prefix = "/" + crypto.randomUUID().replace(/-/g, "")
   try {
     const bun = (globalThis as Record<string, unknown>).Bun as
       | { serve?: (opts: unknown) => { port: number } }
@@ -231,14 +237,25 @@ function startOpenCodeRelay(sdk: unknown): string {
       idleTimeout: 0,
       fetch(req: Request): Promise<Response> | Response {
         const url = new URL(req.url)
-        if (req.method !== "GET" || !relayPathAllowed(url.pathname)) {
+        if (!url.pathname.startsWith(prefix + "/")) {
           return new Response("forbidden", { status: 403 })
         }
-        const target = new URL(url.pathname + url.search, OPENCODE_UNBOUND_SERVER_URL)
-        return inner(new Request(target.toString(), req))
+        const pathname = url.pathname.slice(prefix.length)
+        if (req.method !== "GET" || !relayPathAllowed(pathname)) {
+          return new Response("forbidden", { status: 403 })
+        }
+        const target = new URL(pathname + url.search, OPENCODE_UNBOUND_SERVER_URL)
+        target.searchParams.delete("directory")
+        target.searchParams.delete("workspace")
+        // OpenCode decodes the directory once more after parsing the query.
+        target.searchParams.set("directory", encodeURIComponent(directory))
+        const headers = new Headers(req.headers)
+        headers.delete("x-opencode-directory")
+        headers.delete("x-opencode-workspace")
+        return inner(new Request(target.toString(), { method: "GET", headers, signal: req.signal }))
       },
     })
-    return "http://127.0.0.1:" + relay.port
+    return "http://127.0.0.1:" + relay.port + prefix
   } catch {
     return ""
   }
@@ -703,9 +720,23 @@ function summarizeQuestion(props: Record<string, unknown>): string {
 }
 
 function sendTerminalInputRequired(eventName: string, props: Record<string, unknown>, directory: string, title: string, fallbackMessage: string): void {
+  sendAttentionUpdate(eventName, props, directory, "approval_required", title, "Answer in terminal", summarizeQuestion(props) || fallbackMessage)
+}
+
+// OpenCode's session.error carries { sessionID?, error?: { name, data: { message } } }.
+// An abort is the user pressing Esc, not a failure worth a push.
+function sendSessionError(props: Record<string, unknown>, directory: string): void {
+  const error = props.error && typeof props.error === "object" ? props.error as Record<string, unknown> : {}
+  const name = stringProp(error, "name")
+  if (name === "MessageAbortedError") return
+  const data = error.data && typeof error.data === "object" ? error.data as Record<string, unknown> : {}
+  const message = stringProp(data, "message") || stringProp(error, "message") || name || "OpenCode reported an error"
+  sendAttentionUpdate("session.error", props, directory, "error", "OpenCode error", "", message)
+}
+
+function sendAttentionUpdate(eventName: string, props: Record<string, unknown>, directory: string, category: string, title: string, subtitle: string, message: string): void {
   const cwd = directoryFromProperties(props, directory)
   const sessionID = sessionIDFromProperties(props)
-  const message = summarizeQuestion(props) || fallbackMessage
   void modelLimitsReady.finally(() => {
     void sendEnvelope(
       withContextRemaining({
@@ -713,7 +744,7 @@ function sendTerminalInputRequired(eventName: string, props: Record<string, unkn
         source: "opencode",
         sessionId: sessionID || newSessionID(),
         eventName,
-        category: "approval_required",
+        category,
         cwd,
         projectName: projectNameForCwd(cwd),
         terminalKind: terminalContext.terminalKind,
@@ -731,7 +762,7 @@ function sendTerminalInputRequired(eventName: string, props: Record<string, unkn
         herdrTabId: terminalContext.herdrTabId,
         herdrTab: terminalContext.herdrTab,
         title,
-        subtitle: "Answer in terminal",
+        subtitle: subtitle || undefined,
         message,
         requestedAt: new Date().toISOString(),
       }, sessionID),
@@ -832,7 +863,7 @@ async function replyToOpenCodePermission(
 }
 
 const server: Plugin = async ({ directory, client, serverUrl }) => {
-  moshiServerUrl = resolveMoshiServerUrl(client, serverUrl)
+  moshiServerUrl = resolveMoshiServerUrl(client, serverUrl, directory)
   modelLimitsReady = refreshOpenCodeModelLimits(client as unknown as Record<string, unknown>, directory)
   return ({
   "chat.message": async (input, output) => {
@@ -925,7 +956,7 @@ const server: Plugin = async ({ directory, client, serverUrl }) => {
         sendSessionUpdate(event.type, sessionIDFromProperties(props), directory)
         break
       case "session.error":
-        sendTerminalInputRequired("session.error", props, directory, "OpenCode blocked", "OpenCode reported an error")
+        sendSessionError(props, directory)
         break
       default:
         break

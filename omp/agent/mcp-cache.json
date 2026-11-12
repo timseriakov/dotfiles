@@ -23,9 +23,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "content"
-            ]
+            "required": ["content"]
           }
         },
         {
@@ -124,9 +122,7 @@
                 "type": "number"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         },
         {
@@ -160,10 +156,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "judgment_id",
-              "relation"
-            ]
+            "required": ["judgment_id", "relation"]
           }
         },
         {
@@ -177,9 +170,7 @@
                 "type": "number"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         },
         {
@@ -209,9 +200,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "action"
-            ]
+            "required": ["action"]
           }
         },
         {
@@ -265,9 +254,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "title"
-            ]
+            "required": ["title"]
           }
         },
         {
@@ -297,9 +284,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "content"
-            ]
+            "required": ["content"]
           }
         },
         {
@@ -337,9 +322,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "query"
-            ]
+            "required": ["query"]
           }
         },
         {
@@ -357,9 +340,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         },
         {
@@ -377,9 +358,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         },
         {
@@ -409,9 +388,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "content"
-            ]
+            "required": ["content"]
           }
         },
         {
@@ -447,9 +424,7 @@
                 "type": "number"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         },
         {
@@ -483,9 +458,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "id"
-            ]
+            "required": ["id"]
           }
         }
       ],
@@ -512,10 +485,7 @@
                 "description": "Start day, YYYY-MM-DD."
               }
             },
-            "required": [
-              "from",
-              "to"
-            ]
+            "required": ["from", "to"]
           }
         },
         {
@@ -543,9 +513,7 @@
                 "type": "integer"
               }
             },
-            "required": [
-              "record_id"
-            ]
+            "required": ["record_id"]
           }
         },
         {
@@ -558,9 +526,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "query"
-            ]
+            "required": ["query"]
           }
         },
         {
@@ -627,9 +593,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name"
-            ]
+            "required": ["name"]
           }
         },
         {
@@ -652,9 +616,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name"
-            ]
+            "required": ["name"]
           }
         },
         {
@@ -667,9 +629,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "name"
-            ]
+            "required": ["name"]
           }
         },
         {
@@ -688,9 +648,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "record_id"
-            ]
+            "required": ["record_id"]
           }
         },
         {
@@ -703,9 +661,7 @@
                 "type": "integer"
               }
             },
-            "required": [
-              "record_id"
-            ]
+            "required": ["record_id"]
           }
         },
         {
@@ -737,9 +693,7 @@
                 "description": "Day as YYYY-MM-DD. Omit for the current Dayflow day (days start at 4 AM)."
               }
             },
-            "required": [
-              "focus_minutes"
-            ]
+            "required": ["focus_minutes"]
           }
         }
       ],
@@ -769,9 +723,7 @@
                 "description": "Page size (default 100, max 100)"
               }
             },
-            "required": [
-              "query"
-            ]
+            "required": ["query"]
           }
         },
         {
@@ -801,10 +753,7 @@
                 "description": "Page size (default 100, max 100)"
               }
             },
-            "required": [
-              "query",
-              "registries"
-            ]
+            "required": ["query", "registries"]
           }
         }
       ],
@@ -834,9 +783,7 @@
                 "description": "Maximum number of ranked results to return. Defaults to 5; clamped to 1–25."
               }
             },
-            "required": [
-              "query"
-            ]
+            "required": ["query"]
           }
         },
         {
@@ -863,12 +810,7 @@
               },
               "status": {
                 "type": "string",
-                "enum": [
-                  "required",
-                  "recommended",
-                  "optional",
-                  "avoid"
-                ],
+                "enum": ["required", "recommended", "optional", "avoid"],
                 "description": "Filter by spec status tier. `required` = the web-platform contract breaks or a clear class of users is harmed without it. `recommended` = a modern site should do it. `optional` = context-dependent. `avoid` = outdated, harmful, or superseded. Omit to include all four tiers. Example: `required`."
               },
               "limit": {
@@ -892,9 +834,7 @@
                 "description": "Kebab-case slug, as listed by `list_topics` or `search`. Matched case-insensitively, with close-match suggestions on miss. Examples: `content-security-policy`, `meta-robots`, `llms-txt`."
               }
             },
-            "required": [
-              "slug"
-            ]
+            "required": ["slug"]
           }
         },
         {
@@ -921,12 +861,7 @@
               },
               "status": {
                 "type": "string",
-                "enum": [
-                  "required",
-                  "recommended",
-                  "optional",
-                  "avoid"
-                ],
+                "enum": ["required", "recommended", "optional", "avoid"],
                 "description": "Filter by spec status tier. `required` = the web-platform contract breaks or a clear class of users is harmed without it. `recommended` = a modern site should do it. `optional` = context-dependent. `avoid` = outdated, harmful, or superseded. Omit to include all four tiers. Example: `required`."
               }
             }
@@ -952,12 +887,7 @@
               },
               "type": {
                 "type": "string",
-                "enum": [
-                  "added",
-                  "changed",
-                  "status",
-                  "removed"
-                ],
+                "enum": ["added", "changed", "status", "removed"],
                 "description": "Filter to one kind of change. `added` = a new spec page or category. `status` = a topic promoted or downgraded between tiers. `changed` = a substantive rewrite of an existing page. `removed` = a page that was live and has been deleted. Omit to include all four kinds."
               },
               "limit": {
@@ -1011,9 +941,7 @@
                 "type": "number"
               }
             },
-            "required": [
-              "code"
-            ],
+            "required": ["code"],
             "$schema": "http://json-schema.org/draft-07/schema#"
           }
         },

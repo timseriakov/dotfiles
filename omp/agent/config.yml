@@ -87,7 +87,7 @@ modelRoles:
   web: web/parallel
 task:
   agentAdvisor:
-    security-reviewer: omniroute/cx/gpt-6-luna:medium
+    security-reviewer: omniroute/opencode-go/glm-5.3-flash:max
 tier:
   openai: none
   subagent: inherit
@@ -175,6 +175,7 @@ extensions:
   - /Users/tim/.omp/agent/extensions/dcg-guard.ts
   - /Users/tim/.omp/agent/extensions/atuin.ts
   - /Users/tim/.omp/agent/extensions/terminal-theme.ts
+  - /Users/tim/dev/my/urban-prime-mono/.agents/extensions/plannotator-board/index.ts
 hideThinkingBlock: true
 setupVersion: 2
 dev:
