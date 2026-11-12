@@ -80,51 +80,8 @@ export function createInputSessionPatches(ctx) {
     ).content;
   }
 
-  function patchInputControllerBase(content) {
-    const newHandler = `\thandleCtrlZ(): void {
-\t\tif (process.platform === "win32" || !process.stdout.isTTY) {
-\t\t\tthis.ctx.showStatus("Suspend (Ctrl+Z) is not supported on this platform");
-\t\t\treturn;
-\t\t}
-
-\t\t// Set up handler to restore TUI when resumed.
-\t\tconst onResume = (): void => {
-\t\t\tthis.ctx.ui.start();
-\t\t\tthis.ctx.ui.requestRender(true);
-\t\t};
-\t\tprocess.once("SIGCONT", onResume);
-
-\t\t// Stop the TUI (restore terminal to normal mode) before suspending only OMP.
-\t\tthis.ctx.ui.stop();
-
-\t\ttry {
-\t\t\t// Keep shell job-control flow intact: suspend OMP itself, not the whole process group.
-\t\t\tprocess.kill(process.pid, "SIGTSTP");
-\t\t} catch (err) {
-\t\t\tprocess.removeListener("SIGCONT", onResume);
-\t\t\tthis.ctx.ui.start();
-\t\t\tthis.ctx.ui.requestRender(true);
-\t\t\tconst reason = err instanceof Error ? err.message : String(err);
-\t\t\tthis.ctx.showError(\`Failed to suspend: \${reason}\`);
-\t\t}
-\t}`;
-
-    if (content.includes(newHandler)) return content;
-
-    const start = content.indexOf("\thandleCtrlZ(): void {");
-    const endAnchor = "\n\n\thandleDequeue(): void {";
-    const end = start === -1 ? -1 : content.indexOf(endAnchor, start);
-    if (start === -1 || end === -1) {
-      throw new Error(
-        "Patch 'input-controller ctrl-z suspends only omp process' could not find handleCtrlZ block. Upstream source changed.",
-      );
-    }
-
-    return `${content.slice(0, start)}${newHandler}${content.slice(end)}`;
-  }
-
   function patchInputController(content) {
-    let out = patchInputControllerBase(content);
+    let out = content;
     const smolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => {\n\t\t\t\tconst role = this.ctx.viewSession.sessionManager.getLastModelChangeRole();\n\t\t\t\tconst model = this.ctx.viewSession.model;\n\t\t\t\tconst legacySmolModel = role === "temporary" && model && model.provider === "opencode-go" && ["deepseek-v4-flash", "deepseek-v4.1-flash", "glm-5.3-flash"].includes(model.id);\n\t\t\t\tif ((role === "smol" && model?.id !== "cx/gpt-6-luna") || legacySmolModel) void this.cycleSmolModel();\n\t\t\t\telse this.cycleThinkingLevel();\n\t\t\t});\n\t\t}\n`;
     const smolHandler = `\tasync cycleSmolModel(): Promise<void> {
 \t\tif (this.ctx.focusedAgentId) {
@@ -284,7 +241,6 @@ export function createInputSessionPatches(ctx) {
 
   return {
     patchKeybindingsConfig,
-    patchInputControllerBase,
     patchInputController,
     patchSessionManager,
     patchPredictClientSuffix,

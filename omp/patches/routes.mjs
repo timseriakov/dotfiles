@@ -92,7 +92,6 @@ export function runPatchRoutes(ctx) {
     ["vim.ts", patches.patchVimRuLayout],
     ["vim.ts", patches.patchVimCutRegisters],
     ["kitty-graphics.ts", patches.patchTuiKittyGraphics],
-    ["terminal-capabilities.ts", patches.patchTuiTerminalCapabilities],
   ];
   for (const [target, patch] of tuiRoutes) patchTuiFile(target, patch);
 
