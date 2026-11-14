@@ -151,3 +151,4 @@ handy/settings_store.json
 /agent/
 
 cliamp/playlists/audio/*.mp3
+mcpproxy/instance-id

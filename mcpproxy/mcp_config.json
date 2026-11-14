@@ -192,6 +192,8 @@
   "activity_max_size_mb": 256,
   "activity_max_response_size": 65536,
   "activity_cleanup_interval_min": 60,
+  "tool_call_max_response_size": 65536,
+  "tool_call_max_records_per_server": 1000,
   "intent_declaration": {
     "strict_server_validation": true
   },
