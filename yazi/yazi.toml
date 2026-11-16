@@ -118,6 +118,7 @@ prepend_preloaders = [
 ]
 
 prepend_previewers = [
+  { url = "*.{stl,STL,Stl,3mf,3MF,3Mf}", run = "model3d" },
   { mime = "application/openxmlformats-officedocument.*", run = "office" },
   { mime = "application/oasis.opendocument.*", run = "office" },
   { mime = "application/ms-*", run = "office" },
