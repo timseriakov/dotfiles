@@ -149,15 +149,6 @@ tags = "dnb,drum & bass,drum 'n' bass,drum and bass,drum n bass,drum&bass,drum'n
 homepage = "https://dnbradio.com/"
 
 [[station]]
-name = "Sub.fm"
-url = "http://subfm.radioca.st/Sub.FM"
-country = "The United Kingdom Of Great Britain And Northern Ireland"
-state = "England"
-bitrate = 192
-codec = "MP3"
-homepage = "https://www.sub.fm/"
-
-[[station]]
 name = "Brokenbeats"
 url = "https://brokenbeats.net/stream/aac"
 country = "Ukraine"
@@ -165,3 +156,12 @@ bitrate = 320
 codec = "AAC"
 tags = "drum & bass,drum 'n' bass,drum and bass"
 homepage = "https://brokenbeats.net/"
+
+[[station]]
+name = "Sub.fm"
+url = "http://subfm.radioca.st/Sub.FM"
+country = "The United Kingdom Of Great Britain And Northern Ireland"
+state = "England"
+bitrate = 192
+codec = "MP3"
+homepage = "https://www.sub.fm/"
