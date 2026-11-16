@@ -27,5 +27,12 @@ if ! /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" >/dev/null 
   exit 1
 fi
 
-sleep "$split_delay"
-printf '%s\n' 'open -w about:blank' >>"$QUTE_FIFO"
+for ((attempt = 0; attempt < 50; attempt++)); do
+  [[ -f "$active_file" ]] && break
+  sleep "$split_delay"
+done
+if [[ ! -f "$active_file" ]]; then
+  printf "%s\n" "message-error 'Hammerspoon did not prepare temporary split'" >>"$QUTE_FIFO"
+  exit 1
+fi
+printf '%s\n' 'open -w' >>"$QUTE_FIFO"

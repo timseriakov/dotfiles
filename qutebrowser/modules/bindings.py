@@ -305,6 +305,16 @@ BINDING_SPECS: list[BindingSpec] = [
         wrap_ru_with_en=False,
     ),
     BindingSpec("<Cmd-s>", "mode-leave", mode="command", wrap_ru_with_en=False),
+    BindingSpec(
+        "<Ctrl-d>",
+        "completion-half-page",
+        mode="command", wrap_ru_with_en=False,
+    ),
+    BindingSpec(
+        "<Ctrl-u>",
+        "completion-half-page --upwards",
+        mode="command", wrap_ru_with_en=False,
+    ),
     BindingSpec("ge", en("cmd-set-text -s :open {url}"), wrap_ru_with_en=False),
     BindingSpec(
         leader + "ss",

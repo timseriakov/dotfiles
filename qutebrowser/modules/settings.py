@@ -19,7 +19,8 @@ c.statusbar.position = "top"
 c.tabs.show = "always"  # multiple # never
 c.tabs.last_close = "blank"
 c.tabs.position = "top"
-c.completion.height = "66%"
+c.completion.height = "100%"
+c.completion.shrink = True
 # c.tabs.new_position.related = "last"
 # Open new tabs in background (e.g., middle-click on links)
 c.tabs.background = True

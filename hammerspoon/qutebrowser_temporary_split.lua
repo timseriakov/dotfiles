@@ -249,7 +249,9 @@ local function isStandardWindow(win)
 	if not ok then
 		return true
 	end
+	local frame = win:frame()
 	return standard == true
+		or (win:role() == "AXWindow" and win:subrole() == "AXDialog" and frame.w > 0 and frame.h > 0)
 end
 
 local function getFocusedQutebrowserWindow()
@@ -532,6 +534,28 @@ local function startWatcher()
 		end
 	end)
 
+	-- Qt AXDialog windows can miss windowCreated/windowDestroyed notifications.
+	temporarySplit.windowPoller = hs.timer.doEvery(0.25, function()
+		local session = temporarySplit.session
+		if not session then return end
+		if session.state == "awaiting_window" then
+			local app = getQutebrowserApplication()
+			for _, win in ipairs(app and app:allWindows() or {}) do
+				if win:id() ~= session.leftWindowId and not temporarySplit.existingWindowIds[win:id()] then
+					pairRightWindow(win)
+					break
+				end
+			end
+		elseif session.state == "active" then
+			for _, id in ipairs({ session.leftWindowId, session.rightWindowId }) do
+				if not getWindowById(id) then
+					handleTrackedWindowClosed(id)
+					break
+				end
+			end
+		end
+	end)
+
 	temporarySplit.watchersStarted = true
 end
 
@@ -563,6 +587,10 @@ function temporarySplit.handleStart()
 		lastAction = "session_started",
 	}
 
+	temporarySplit.existingWindowIds = {}
+	for _, win in ipairs(sourceWindow:application():allWindows()) do
+		temporarySplit.existingWindowIds[win:id()] = true
+	end
 	if not persistSession(sessionState) then
 		alertAndLog("Temporary split failed: unable to persist session state")
 		clearSessionFiles("state_write_failed", sessionState)

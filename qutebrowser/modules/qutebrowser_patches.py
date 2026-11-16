@@ -49,6 +49,35 @@ from qutebrowser.qt.widgets import QApplication, QLabel, QSizePolicy, QStyle, QT
 from qutebrowser.browser.webengine import webview
 from qutebrowser.utils import objreg, qtutils, usertypes
 from qutebrowser.keyinput import modeman
+from qutebrowser.api import cmdutils
+from qutebrowser.misc import objects
+
+objects.commands.pop("completion-half-page", None)
+
+
+@cmdutils.register(modes=[usertypes.KeyMode.command])
+@cmdutils.argument("win_id", value=cmdutils.Value.win_id)
+def completion_half_page(win_id: int, upwards: bool = False):
+    """Move the selected completion half a viewport, stopping at the ends."""
+    view = objreg.get("completion", scope="window", window=win_id, from_command=True)
+    if not view.isVisible() or view.model() is None:
+        return
+    index = view.currentIndex()
+    if not index.isValid():
+        view.completion_item_focus("prev" if upwards else "next")
+        index = view.currentIndex()
+    if not index.isValid():
+        return
+    row_height = max(1, view.visualRect(index).height())
+    steps = max(1, view.viewport().height() // row_height // 2)
+    for _ in range(steps):
+        candidate = view.indexAbove(index) if upwards else view.indexBelow(index)
+        if not candidate.isValid():
+            break
+        index = candidate
+    if index.parent().isValid():
+        view.setCurrentIndex(index)
+        view.scrollTo(index)
 
 
 
@@ -468,7 +497,7 @@ def _place_status_below_tabs(window):
 
 def _below_tab_status_height(tabwidget, status):
     tabbar = tabwidget.tabBar()
-    return tabbar.height() if tabbar.isVisible() else status.sizeHint().height()
+    return tabbar.sizeHint().height()
 
 
 class _BelowTabStatusRelayoutFilter(QObject):
@@ -564,6 +593,8 @@ def _update_overlay_geometry_with_reparented_status(self, widget, centered, padd
         width = min(size_hint.width(), self.width() - 2 * padding)
         height = size_hint.height()
         left = (self.width() - width) // 2 if centered else 0
+    if "completion" in type(widget).__module__:
+        height += 3
 
     top = self.status.mapTo(self, self.status.rect().bottomLeft()).y() + 1
     bottom = qtutils.check_overflow(top + height, "int", fatal=False)
@@ -573,6 +604,16 @@ def _update_overlay_geometry_with_reparented_status(self, widget, centered, padd
     )
     if rect.isValid():
         widget.setGeometry(rect)
+        if "completion" in type(widget).__module__:
+            line = getattr(widget, "_dotfiles_bottom_separator", None)
+            if line is None:
+                line = QLabel(widget)
+                line.setStyleSheet("background-color: #2E3440;")
+                widget._dotfiles_bottom_separator = line
+            widget.setViewportMargins(0, 0, 0, 3)
+            line.setGeometry(0, widget.height() - 3, widget.width(), 3)
+            line.show()
+            line.raise_()
 
 
 mainwindow.MainWindow._update_overlay_geometry = _update_overlay_geometry_with_reparented_status
