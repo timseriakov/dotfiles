@@ -305,6 +305,7 @@ BINDING_SPECS: list[BindingSpec] = [
         wrap_ru_with_en=False,
     ),
     BindingSpec("<Cmd-s>", "mode-leave", mode="command", wrap_ru_with_en=False),
+    BindingSpec("<Ctrl-x>", "completion-item-del", mode="command", wrap_ru_with_en=False),
     BindingSpec(
         "<Ctrl-d>",
         "completion-half-page",

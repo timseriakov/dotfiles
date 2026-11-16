@@ -21,7 +21,7 @@ if [[ -f "$active_file" ]]; then
   exit 0
 fi
 
-if ! /usr/bin/open "hammerspoon://qutebrowser-temporary-split-start" >/dev/null 2>&1; then
+if ! /Applications/Hammerspoon.app/Contents/Frameworks/hs/hs -t 2 -c 'require("qutebrowser_temporary_split").handleStart()' >/dev/null 2>&1; then
   clear_state
   printf "%s\n" "message-error 'Failed to contact Hammerspoon for temporary split'" >>"$QUTE_FIFO"
   exit 1

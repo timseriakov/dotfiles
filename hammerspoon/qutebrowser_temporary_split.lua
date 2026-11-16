@@ -333,7 +333,8 @@ end
 local function focusWindow(windowId)
 	local win = getWindowById(windowId)
 	if win then
-		win:focus()
+		win:raise()
+		win:application():activate()
 	end
 end
 
@@ -342,7 +343,8 @@ local function restoreSurvivor(windowId, lastAction, previous)
 	local targetScreen = getScreenByName(previous and previous.screenName or "")
 	if survivor then
 		setWindowLayout(survivor, temporarySplit.layouts.full, targetScreen or survivor:screen())
-		survivor:focus()
+		survivor:raise()
+		survivor:application():activate()
 	end
 	clearSessionFiles(lastAction, previous)
 end
@@ -374,7 +376,7 @@ local function focusRightWindowForOpen(rightWindowId)
 			return
 		end
 
-		rightWindow:focus()
+		rightWindow:raise()
 		local app = rightWindow:application()
 		if app then
 			hs.eventtap.keyStroke({}, "o", 0, app)
