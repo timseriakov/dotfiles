@@ -55,6 +55,7 @@
 | <kbd>u</kbd>                  | scroll-page 0 -0.5                                 |
 | <kbd>t</kbd>                  | cmd-set-text -s :open -t                           |
 | <kbd>x</kbd>                  | tab-close                                          |
+| <kbd>Ctrl</kbd> <kbd>x</kbd>  | tab-close (в любом режиме)                         |
 | <kbd><</kbd>                  | tab-move -                                         |
 | <kbd>></kbd>                  | tab-move +                                         |
 | <kbd>H</kbd>                  | back                                               |

@@ -336,7 +336,6 @@ BINDING_SPECS: list[BindingSpec] = [
         wrap_ru_with_en=False,
     ),
     BindingSpec("<Cmd-s>", "mode-leave", mode="command", wrap_ru_with_en=False),
-    BindingSpec("<Ctrl-x>", "completion-item-del", mode="command", wrap_ru_with_en=False),
     BindingSpec(
         "<Ctrl-d>",
         "completion-half-page",
@@ -383,6 +382,27 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec("cS", en("cmd-set-text -s :set -t"), hide_ru_in_keyhint=True, wrap_ru_with_en=False),
     BindingSpec("cc", "spawn --userscript qute-translate", hide_ru_in_keyhint=True),
 ]
+
+for _mode in (
+    "normal",
+    "insert",
+    "hint",
+    "passthrough",
+    "command",
+    "prompt",
+    "yesno",
+    "caret",
+    "register",
+):
+    BINDING_SPECS.append(
+        BindingSpec(
+            "<Ctrl-x>",
+            "tab-close",
+            mode=_mode,
+            duplicate_ru=False,
+            wrap_ru_with_en=False,
+        )
+    )
 
 run_generator(config, c, BINDING_SPECS)
 

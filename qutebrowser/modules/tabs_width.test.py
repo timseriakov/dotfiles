@@ -85,10 +85,33 @@ class BindingTest(unittest.TestCase):
         try:
             from modules import bindings
 
+            cls.bindings = bindings
             cls.specs = {spec.key: spec.command for spec in bindings.BINDING_SPECS}
         finally:
             del builtins.config
             del builtins.c
+
+    def test_ctrl_x_closes_tab_in_every_mode(self):
+        specs = [
+            spec
+            for spec in self.bindings.BINDING_SPECS
+            if spec.key == "<Ctrl-x>"
+        ]
+        self.assertEqual(
+            {spec.mode for spec in specs},
+            {
+                "normal",
+                "insert",
+                "hint",
+                "passthrough",
+                "command",
+                "prompt",
+                "yesno",
+                "caret",
+                "register",
+            },
+        )
+        self.assertTrue(all(spec.command == "tab-close" for spec in specs))
 
     def test_vertical_tab_bindings(self):
         expected = {
