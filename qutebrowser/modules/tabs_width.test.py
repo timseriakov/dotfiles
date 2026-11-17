@@ -91,27 +91,31 @@ class BindingTest(unittest.TestCase):
             del builtins.config
             del builtins.c
 
-    def test_ctrl_x_closes_tab_in_every_mode(self):
+    def test_ctrl_x_closes_tab_except_command_mode(self):
         specs = [
             spec
             for spec in self.bindings.BINDING_SPECS
             if spec.key == "<Ctrl-x>"
         ]
+        close_specs = [spec for spec in specs if spec.mode != "command"]
         self.assertEqual(
-            {spec.mode for spec in specs},
+            {spec.mode for spec in close_specs},
             {
                 "normal",
                 "insert",
                 "hint",
                 "passthrough",
-                "command",
                 "prompt",
                 "yesno",
                 "caret",
                 "register",
             },
         )
-        self.assertTrue(all(spec.command == "tab-close" for spec in specs))
+        self.assertTrue(all(spec.command == "tab-close" for spec in close_specs))
+        self.assertEqual(
+            [spec.command for spec in specs if spec.mode == "command"],
+            ["completion-item-del"],
+        )
 
     def test_vertical_tab_bindings(self):
         expected = {
