@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import ast
+import os
 import sys
+import tempfile
 import types
 import unittest
 from pathlib import Path
@@ -224,6 +226,216 @@ class GoogleContextMenuTest(unittest.TestCase):
         view = _FakeView(_FakeRequest("cats"))
         self.assertIsNone(self.helpers["_google_context_menu"](view))
         self.assertEqual(self.opened, [])
+
+
+
+class TabPositionLayoutTest(unittest.TestCase):
+    """Real offscreen Qt layout check for the below-tab status."""
+
+    LAYOUT_HELPERS = {
+        "_below_tab_status_enabled",
+        "_BelowTabStatusStyle",
+        "_ensure_below_tab_style",
+        "_place_status_below_tabs",
+        "_below_tab_status_height",
+        "_BelowTabStatusRelayoutFilter",
+        "_install_below_tab_relayout_filter",
+        "_add_widgets_with_below_tab_status",
+        "_TabPositionRelayout",
+        "_align_existing_status_urls",
+    }
+
+    def test_page_and_status_geometry_across_tab_positions(self):
+        try:
+            from qutebrowser.qt.core import QEvent, QObject, QPoint, QRect, QTimer
+            from qutebrowser.qt.widgets import (
+                QApplication, QSizePolicy, QStyle, QTabWidget, QVBoxLayout,
+                QWidget)
+        except ImportError as exc:
+            self.skipTest(f"qutebrowser Qt unavailable: {exc}")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ.update(
+                QT_QPA_PLATFORM="offscreen",
+                XDG_CONFIG_HOME=f"{tmp}/config",
+                XDG_DATA_HOME=f"{tmp}/data",
+                XDG_CACHE_HOME=f"{tmp}/cache",
+            )
+            app = QApplication.instance() or QApplication([])
+            from qutebrowser.config import (
+                config, configcache, configdata, configfiles)
+            from qutebrowser.mainwindow import tabwidget
+            from qutebrowser.utils import standarddir
+
+            standarddir.init(None)
+            configdata.init()
+            config.instance = config.Config(yaml_config=configfiles.YamlConfig())
+            config.val = config.ConfigContainer(config.instance)
+            config.key_instance = config.KeyConfig(config.instance)
+            config.cache = configcache.ConfigCache()
+            config.instance.set_obj("statusbar.position", "top")
+            config.instance.set_obj("tabs.position", "top")
+
+            tree = ast.parse(SOURCE.read_text())
+            module = ast.Module(
+                body=[
+                    node for node in tree.body
+                    if isinstance(node, (ast.FunctionDef, ast.ClassDef))
+                    and node.name in self.LAYOUT_HELPERS
+                ],
+                type_ignores=[],
+            )
+            ast.fix_missing_locations(module)
+            ns = {
+                "config": config,
+                "QApplication": QApplication,
+                "QTabWidget": QTabWidget,
+                "QStyle": QStyle,
+                "QObject": QObject,
+                "QEvent": QEvent,
+                "QTimer": QTimer,
+                "QSizePolicy": QSizePolicy,
+                "tabwidget": tabwidget,
+                "_install_bottom_mode_line": lambda window: None,
+                "_place_bottom_mode_line": lambda window: None,
+                "_disable_hover_url_status": lambda window: None,
+            }
+            exec(compile(module, str(SOURCE), "exec"), ns)
+
+            def upstream_add_widgets(window):
+                window._vbox.removeWidget(window.tabbed_browser.widget)
+                window._vbox.removeWidget(window._downloadview)
+                window._vbox.removeWidget(window.status)
+                widgets = [window.tabbed_browser.widget, window._downloadview]
+                if config.val.statusbar.position == "top":
+                    widgets.insert(0, window.status)
+                else:
+                    widgets.append(window.status)
+                for widget in widgets:
+                    window._vbox.addWidget(widget)
+
+            ns["_orig_add_widgets"] = upstream_add_widgets
+
+            class Window(QWidget):
+                def __init__(self):
+                    super().__init__()
+                    self._vbox = QVBoxLayout(self)
+                    self._vbox.setContentsMargins(0, 0, 0, 0)
+                    self._vbox.setSpacing(0)
+                    self._downloadview = QWidget(self)
+                    self._downloadview.hide()
+                    self.status = QWidget(self)
+                    self.status.setFixedHeight(20)
+                    self.status.show()
+                    self.tabbed_browser = types.SimpleNamespace(widget=QTabWidget())
+                    self.tabbed_browser.widget.setParent(self)
+
+            window = Window()
+            tabwidget_ = window.tabbed_browser.widget
+            for index in range(40):
+                tabwidget_.addTab(QWidget(), f"tab {index}")
+            page = tabwidget_.widget(0)
+
+            def on_config_changed(option):
+                if option == "tabs.position":
+                    tabwidget_.setTabPosition(
+                        QTabWidget.TabPosition(config.val.tabs.position))
+
+            config.instance.changed.connect(on_config_changed)
+            # The patch is sourced while the window already exists: its
+            # __init__ slot cannot be replaced, only a new connection can react.
+            ns["_add_widgets_with_below_tab_status"](window)
+            window.resize(900, 600)
+            window.show()
+            app.processEvents()
+
+            def switch(position):
+                config.instance.set_obj("tabs.position", position)
+                app.processEvents()
+                app.processEvents()
+
+            def assert_content_visible():
+                self.assertGreater(page.width(), 100, "page has no width")
+                self.assertGreater(page.height(), 100, "page has no height")
+                self.assertTrue(window.status.isVisible(), "status hidden")
+
+            # Horizontal tabs: status sits below the tab bar in the tab widget.
+            self.assertIs(window.status.parent(), tabwidget_)
+            self.assertGreater(page.height(), 100)
+            self.assertEqual(
+                window.status.geometry().y(),
+                tabwidget_.tabBar().geometry().bottom() + 1,
+            )
+            self.assertGreaterEqual(
+                page.mapTo(tabwidget_, page.rect().topLeft()).y(),
+                window.status.geometry().bottom(),
+            )
+
+            def assert_status_row_flush():
+                rect = QRect(
+                    window.status.mapTo(window, QPoint(0, 0)),
+                    window.status.size())
+                self.assertEqual(rect.top(), 0, "status is not at y=0")
+                self.assertEqual(rect.left(), 0)
+                self.assertEqual(rect.width(), window.width(),
+                                 "status is not full width")
+                self.assertFalse(
+                    rect.intersects(QRect(
+                        tabwidget_.mapTo(window, QPoint(0, 0)),
+                        tabwidget_.size())),
+                    "status overlaps the sidebar/page",
+                )
+                for part in (tabwidget_.tabBar(), page):
+                    self.assertLessEqual(
+                        rect.bottom(),
+                        part.mapTo(window, QPoint(0, 0)).y(),
+                        "content starts inside the status row",
+                    )
+
+            for position in ("left", "right"):
+                with self.subTest(position=position):
+                    switch(position)
+                    self.assertIs(window.status.parent(), window)
+                    assert_content_visible()
+                    # Status is a normal vbox row above the tab widget, not an
+                    # overlay across the sidebar.
+                    assert_status_row_flush()
+
+            with self.subTest(position="top"):
+                switch("top")
+                self.assertIs(window.status.parent(), tabwidget_)
+                assert_content_visible()
+                self.assertEqual(
+                    window.status.geometry().y(),
+                    tabwidget_.tabBar().geometry().bottom() + 1,
+                )
+                self.assertGreaterEqual(
+                    page.mapTo(tabwidget_, page.rect().topLeft()).y(),
+                    window.status.geometry().bottom(),
+                )
+
+            with self.subTest(position="left", config_source=True):
+                switch("left")
+                # Pre-fix state: the config was sourced while the tabs were
+                # already vertical, leaving the status a wide tab widget child
+                # with no further signal to repair it.
+                window._vbox.removeWidget(window.status)
+                window.status.setParent(tabwidget_)
+                window.status.setGeometry(0, 25, tabwidget_.width(), 20)
+                window.status.show()
+                app.processEvents()
+                self.assertIs(window.status.parent(), tabwidget_)
+
+                ns["_align_existing_status_urls"]()
+                app.processEvents()
+                window._vbox.activate()
+
+                self.assertIs(window.status.parent(), window)
+                assert_content_visible()
+                assert_status_row_flush()
+
+            config.instance.changed.disconnect(on_config_changed)
+            window.close()
 
 
 if __name__ == "__main__":
