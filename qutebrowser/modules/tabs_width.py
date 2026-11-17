@@ -6,7 +6,7 @@ from pathlib import Path
 MIN_PERCENT = 5
 MAX_PERCENT = 50
 DEFAULT_PERCENT = 20
-STEP = 2
+STEP = 5
 CONFIG_DIR = Path(__file__).resolve().parent.parent
 
 

@@ -17,14 +17,14 @@ from modules import tabs_width
 
 class WidthTest(unittest.TestCase):
     def test_percentage_steps_clamp_and_reset(self):
-        self.assertEqual(tabs_width.next_width("15%", 1000, 1), "17%")
+        self.assertEqual(tabs_width.next_width("15%", 1000, 1), "20%")
         self.assertEqual(tabs_width.next_width("49%", 1000, 1), "50%")
         self.assertEqual(tabs_width.next_width("5%", 1000, -1), "5%")
         self.assertEqual(tabs_width.next_width("34%", 1000, 0), "20%")
 
     def test_pixel_width_uses_window_width(self):
-        self.assertEqual(tabs_width.next_width(200, 1000, 1), "22%")
-        self.assertEqual(tabs_width.next_width(200, 1000, -1), "18%")
+        self.assertEqual(tabs_width.next_width(200, 1000, 1), "25%")
+        self.assertEqual(tabs_width.next_width(200, 1000, -1), "15%")
 
     def test_horizontal_tab_bar_is_noop(self):
         for position in ("top", "bottom"):
@@ -62,7 +62,7 @@ class WidthTest(unittest.TestCase):
             tabs_width.resize(1)
 
         fake.set_obj.assert_called_once_with(
-            "tabs.width", "17%", save_yaml=False
+            "tabs.width", "20%", save_yaml=False
         )
         info.assert_not_called()
 
