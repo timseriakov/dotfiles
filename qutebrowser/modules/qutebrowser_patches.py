@@ -462,6 +462,11 @@ class _BelowTabStatusStyle(tabwidget.TabBarStyle):
         ):
             return rect
 
+        # Vertical tab bars span the full height; using their bottom as an
+        # offset would leave no room for the page.
+        if widget.tabPosition() != QTabWidget.TabPosition.North:
+            return rect
+
         status = getattr(widget, "_dotfiles_below_tab_status", None)
         if status is None or status.parent() is not widget or not status.isVisible():
             return rect
@@ -542,11 +547,31 @@ _orig_add_widgets = getattr(
 mainwindow.MainWindow._dotfiles_orig_add_widgets = _orig_add_widgets
 
 
+class _TabPositionRelayout(QObject):
+    # Windows already bound _on_config_changed in __init__, so listen per
+    # window instead of replacing that slot.
+    def __init__(self, window):
+        super().__init__(window)
+        self._window = window
+
+    def config_changed(self, option):
+        if option == "tabs.position":
+            _add_widgets_with_below_tab_status(self._window)
+
+
 def _add_widgets_with_below_tab_status(self):
+    if getattr(self, "_dotfiles_tab_position_relayout", None) is None:
+        relayout = _TabPositionRelayout(self)
+        config.instance.changed.connect(relayout.config_changed)
+        self._dotfiles_tab_position_relayout = relayout
+
     if not _below_tab_status_enabled(self):
         if self.status.parent() is not self:
             self.status.setParent(self)
         _orig_add_widgets(self)
+        # setParent() hides the widget; adding it back to the layout does not
+        # show it again.
+        self.status.show()
         return
 
     _orig_add_widgets(self)
@@ -639,6 +664,9 @@ def _align_existing_status_urls():
         if getattr(widget, "status", None) is not None and getattr(widget, "tabbed_browser", None) is not None:
             _disable_hover_url_status(widget)
             _install_bottom_mode_line(widget)
+            # A config-source can land while the status is still parented to
+            # the tabwidget; re-add it so tabs.position is honoured now.
+            _add_widgets_with_below_tab_status(widget)
 
 
 _align_existing_status_urls()
