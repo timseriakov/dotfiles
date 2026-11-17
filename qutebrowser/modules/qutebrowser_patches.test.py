@@ -20,6 +20,8 @@ HELPERS = {
     "_insert_current_site_action",
     "_augment_context_menu",
     "_google_context_menu",
+    "_should_close_temp_window",
+    "_install_temp_window_close_patch",
 }
 
 
@@ -36,6 +38,89 @@ def load_helpers():
     exec(compile(module, str(SOURCE), "exec"), namespace)
     return namespace
 
+
+class TempWindowCloseTest(unittest.TestCase):
+    def test_closes_marked_single_tab_window(self):
+        helper = load_helpers()["_should_close_temp_window"]
+        browser = types.SimpleNamespace(
+            _dotfiles_close_on_last_tab=True,
+            widget=types.SimpleNamespace(count=lambda: 1),
+        )
+        self.assertTrue(helper(browser))
+        self.assertFalse(helper(browser, transfer=True))
+
+    def test_patch_closes_marked_window_once(self):
+        class Recorder:
+            def __init__(self):
+                self.calls = []
+
+            def __call__(self, *args, **kwargs):
+                self.calls.append((args, kwargs))
+
+        class Emitter:
+            def __init__(self):
+                self.emitted = False
+
+            def emit(self):
+                self.emitted = True
+
+        class FakeBrowser:
+            def __init__(self):
+                self.delegated = Recorder()
+
+            def close_tab(
+                self, tab, *, add_undo=True, new_undo=True, transfer=False
+            ):
+                self.delegated(tab, add_undo, new_undo, transfer)
+
+        fake_module = types.ModuleType(
+            "qutebrowser.mainwindow.tabbedbrowser"
+        )
+        fake_module.TabbedBrowser = FakeBrowser
+        installer = load_helpers()["_install_temp_window_close_patch"]
+        previous = sys.modules.get("qutebrowser.mainwindow.tabbedbrowser")
+        sys.modules["qutebrowser.mainwindow.tabbedbrowser"] = fake_module
+        try:
+            installer()
+            installer()
+        finally:
+            if previous is None:
+                del sys.modules["qutebrowser.mainwindow.tabbedbrowser"]
+            else:
+                sys.modules["qutebrowser.mainwindow.tabbedbrowser"] = previous
+
+        marked = FakeBrowser()
+        marked._dotfiles_close_on_last_tab = True
+        marked.widget = types.SimpleNamespace(count=lambda: 1)
+        marked._remove_tab = Recorder()
+        marked.close_window = Emitter()
+        marked.close_tab("tab")
+        self.assertEqual(
+            marked._remove_tab.calls,
+            [(("tab",), {"add_undo": True, "new_undo": True})],
+        )
+        self.assertTrue(marked.close_window.emitted)
+        self.assertEqual(marked.delegated.calls, [])
+
+        normal = FakeBrowser()
+        normal.widget = types.SimpleNamespace(count=lambda: 1)
+        normal.close_tab("tab")
+        self.assertEqual(
+            normal.delegated.calls,
+            [(("tab", True, True, False), {})],
+        )
+
+    def test_leaves_other_windows_and_tabs_alone(self):
+        helper = load_helpers()["_should_close_temp_window"]
+        marked_two_tabs = types.SimpleNamespace(
+            _dotfiles_close_on_last_tab=True,
+            widget=types.SimpleNamespace(count=lambda: 2),
+        )
+        unmarked_one_tab = types.SimpleNamespace(
+            widget=types.SimpleNamespace(count=lambda: 1),
+        )
+        self.assertFalse(helper(marked_two_tabs))
+        self.assertFalse(helper(unmarked_one_tab))
 
 class SearchUrlTest(unittest.TestCase):
     def test_search_text_is_encoded_as_query(self):
@@ -299,6 +384,7 @@ class TabPositionLayoutTest(unittest.TestCase):
                 "_install_bottom_mode_line": lambda window: None,
                 "_place_bottom_mode_line": lambda window: None,
                 "_disable_hover_url_status": lambda window: None,
+                "_install_temp_window_close_patch": lambda: None,
             }
             exec(compile(module, str(SOURCE), "exec"), ns)
 

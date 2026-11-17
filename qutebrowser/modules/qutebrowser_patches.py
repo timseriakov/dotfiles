@@ -52,6 +52,50 @@ from qutebrowser.keyinput import modeman
 from qutebrowser.api import cmdutils
 from qutebrowser.misc import objects
 
+def _should_close_temp_window(tabbed_browser, *, transfer=False):
+    return (
+        getattr(tabbed_browser, "_dotfiles_close_on_last_tab", False)
+        and not transfer
+        and tabbed_browser.widget.count() == 1
+    )
+
+
+def _install_temp_window_close_patch():
+    """Close marked windows when their last tab closes, despite global blank."""
+    from qutebrowser.mainwindow import tabbedbrowser as runtime_tabbedbrowser
+
+    base = runtime_tabbedbrowser.TabbedBrowser
+    if getattr(base, "_dotfiles_temp_window_close", False):
+        return
+
+    original = base.close_tab
+
+    def close_tab(self, tab, *, add_undo=True, new_undo=True, transfer=False):
+        if _should_close_temp_window(self, transfer=transfer):
+            self._remove_tab(tab, add_undo=add_undo, new_undo=new_undo)
+            self.close_window.emit()
+            return
+        original(self, tab, add_undo=add_undo, new_undo=new_undo, transfer=transfer)
+
+    base.close_tab = close_tab
+    base._dotfiles_orig_close_tab = original
+    base._dotfiles_temp_window_close = True
+
+
+@cmdutils.register()
+@cmdutils.argument("win_id", value=cmdutils.Value.win_id)
+def open_temp_window(win_id: int) -> None:
+    """Open a new window which closes after its last tab."""
+    from qutebrowser.mainwindow import mainwindow as runtime_mainwindow
+
+    source = objreg.get("tabbed-browser", scope="window", window=win_id)
+    window = runtime_mainwindow.MainWindow(private=source.is_private)
+    tabbed_browser = window.tabbed_browser
+    tabbed_browser._dotfiles_close_on_last_tab = True
+    tabbed_browser.tabopen(QUrl(config.val.url.default_page))
+    window.show()
+
+
 objects.commands.pop("completion-half-page", None)
 
 
@@ -560,6 +604,7 @@ class _TabPositionRelayout(QObject):
 
 
 def _add_widgets_with_below_tab_status(self):
+    _install_temp_window_close_patch()
     if getattr(self, "_dotfiles_tab_position_relayout", None) is None:
         relayout = _TabPositionRelayout(self)
         config.instance.changed.connect(relayout.config_changed)

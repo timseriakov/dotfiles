@@ -35,4 +35,4 @@ if [[ ! -f "$active_file" ]]; then
   printf "%s\n" "message-error 'Hammerspoon did not prepare temporary split'" >>"$QUTE_FIFO"
   exit 1
 fi
-printf '%s\n' 'open -w' >>"$QUTE_FIFO"
+printf '%s\n' 'open-temp-window' >>"$QUTE_FIFO"
