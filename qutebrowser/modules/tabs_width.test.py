@@ -37,8 +37,16 @@ class WidthTest(unittest.TestCase):
                 tabs_width.resize(1)
             fake.set_obj.assert_not_called()
 
+    def test_vertical_position_accepts_qt_enum(self):
+        self.assertTrue(tabs_width.is_vertical(SimpleNamespace(name="West")))
+        self.assertFalse(tabs_width.is_vertical(SimpleNamespace(name="North")))
+        self.assertTrue(tabs_width.is_vertical("left"))
+
     def test_vertical_tab_bar_width_change_is_temporary(self):
-        values = {"tabs.position": "left", "tabs.width": "15%"}
+        values = {
+            "tabs.position": SimpleNamespace(name="West"),
+            "tabs.width": "15%",
+        }
         fake = SimpleNamespace(
             get=lambda name: values[name],
             set_obj=mock.Mock(

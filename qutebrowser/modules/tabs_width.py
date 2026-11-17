@@ -27,8 +27,9 @@ def _percent(current: int | str, window_width: int) -> int:
     return round(current * 100 / window_width)
 
 
-def is_vertical(position: str) -> bool:
-    return position in ("left", "right")
+def is_vertical(position) -> bool:
+    name = getattr(position, "name", position)
+    return str(name).lower() in ("left", "west", "right", "east")
 
 
 def resize(direction: int) -> None:
