@@ -1,6 +1,7 @@
 config = config
 c = c
 
+from modules import tabs_width
 from modules.base import en, homepage, leader, ss_dir, terminal, timestamp
 from modules.keymap import BindingSpec, run_generator
 
@@ -175,6 +176,36 @@ BINDING_SPECS: list[BindingSpec] = [
     BindingSpec(
         leader + "uf",
         ":set content.autoplay false ;; message-info 'Autoplay disabled'",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "ut",
+        "set -t tabs.position top",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "ul",
+        "set -t tabs.position left",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "ur",
+        "set -t tabs.position right",
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "u+",
+        tabs_width.command(1),
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "u-",
+        tabs_width.command(-1),
+        hide_ru_in_keyhint=True,
+    ),
+    BindingSpec(
+        leader + "u=",
+        tabs_width.command(0),
         hide_ru_in_keyhint=True,
     ),
     BindingSpec("D", "spawn --userscript toggle-darkmode"),
