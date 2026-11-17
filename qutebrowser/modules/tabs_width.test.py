@@ -20,7 +20,7 @@ class WidthTest(unittest.TestCase):
         self.assertEqual(tabs_width.next_width("15%", 1000, 1), "17%")
         self.assertEqual(tabs_width.next_width("49%", 1000, 1), "50%")
         self.assertEqual(tabs_width.next_width("5%", 1000, -1), "5%")
-        self.assertEqual(tabs_width.next_width("34%", 1000, 0), "15%")
+        self.assertEqual(tabs_width.next_width("34%", 1000, 0), "20%")
 
     def test_pixel_width_uses_window_width(self):
         self.assertEqual(tabs_width.next_width(200, 1000, 1), "22%")
@@ -93,8 +93,8 @@ class BindingTest(unittest.TestCase):
     def test_vertical_tab_bindings(self):
         expected = {
             " ut": "set -t tabs.position top",
-            " ul": "set -t tabs.position left",
-            " ur": "set -t tabs.position right",
+            " ul": "set -t tabs.position left ;; set -t tabs.width 20%",
+            " ur": "set -t tabs.position right ;; set -t tabs.width 20%",
             " u+": tabs_width.command(1),
             " u-": tabs_width.command(-1),
             " u=": tabs_width.command(0),

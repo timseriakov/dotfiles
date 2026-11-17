@@ -151,9 +151,12 @@ Session manager: `ss` opens the picker immediately; `sL` opens the command promp
 | <kbd>Leader</kbd> <kbd>ut</kbd> | move tabs to top (temporary)                                    |
 | <kbd>Leader</kbd> <kbd>ul</kbd> | move tabs to left (temporary)                                   |
 | <kbd>Leader</kbd> <kbd>ur</kbd> | move tabs to right (temporary)                                  |
+| <kbd>Leader</kbd> <kbd>ul</kbd> | move tabs to left (temporary, width 20%)                        |
+| <kbd>Leader</kbd> <kbd>ur</kbd> | move tabs to right (temporary, width 20%)                       |
 | <kbd>Leader</kbd> <kbd>u+</kbd> | widen vertical tab bar by 2% (5–50%)                            |
 | <kbd>Leader</kbd> <kbd>u-</kbd> | narrow vertical tab bar by 2% (5–50%)                           |
 | <kbd>Leader</kbd> <kbd>u=</kbd> | reset vertical tab bar width to 15%                             |
+| <kbd>Leader</kbd> <kbd>u=</kbd> | reset vertical tab bar width to 20%                             |
 | <kbd>Leader</kbd> <kbd>ui</kbd> | toggle webpage theme (atomic light/dark pair)                   |
 | <kbd>Leader</kbd> <kbd>ua</kbd> | :set content.autoplay true ;; message-info 'Autoplay enabled'   |
 | <kbd>Leader</kbd> <kbd>uf</kbd> | :set content.autoplay false ;; message-info 'Autoplay disabled' |

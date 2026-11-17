@@ -185,12 +185,12 @@ BINDING_SPECS: list[BindingSpec] = [
     ),
     BindingSpec(
         leader + "ul",
-        "set -t tabs.position left",
+        "set -t tabs.position left ;; set -t tabs.width 20%",
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
         leader + "ur",
-        "set -t tabs.position right",
+        "set -t tabs.position right ;; set -t tabs.width 20%",
         hide_ru_in_keyhint=True,
     ),
     BindingSpec(
