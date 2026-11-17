@@ -46,7 +46,6 @@ def resize(direction: int) -> None:
         config.instance.get("tabs.width"), window.width(), direction
     )
     config.instance.set_obj("tabs.width", width, save_yaml=False)
-    message.info(f"Tab bar width: {width}")
 
 
 def command(direction: int) -> str:

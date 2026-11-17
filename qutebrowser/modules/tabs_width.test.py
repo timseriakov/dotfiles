@@ -58,12 +58,13 @@ class WidthTest(unittest.TestCase):
         window = SimpleNamespace(width=lambda: 1000)
         with mock.patch("qutebrowser.config.config.instance", fake), mock.patch(
             "qutebrowser.utils.objreg.last_focused_window", return_value=window
-        ), mock.patch("qutebrowser.utils.message.info"):
+        ), mock.patch("qutebrowser.utils.message.info") as info:
             tabs_width.resize(1)
 
         fake.set_obj.assert_called_once_with(
             "tabs.width", "17%", save_yaml=False
         )
+        info.assert_not_called()
 
 
 class BindingTest(unittest.TestCase):
