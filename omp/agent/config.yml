@@ -76,14 +76,14 @@ statusLine:
 modelRoles:
   judge: omniroute/cx/gpt-6-luna:off
   smol: omniroute/opencode-go/deepseek-v4.1-flash:max
-  plan: omniroute/cx/gpt-6.2-sol:medium
+  plan: omniroute/cx/gpt-6.1-sol:medium
   task: omniroute/opencode-go/deepseek-v4.1-flash:max
   vision: omniroute/cx/gpt-6-luna:max
   tiny: omniroute/opencode-go/deepseek-v4.1-flash:off
-  advisor: omniroute/cx/gpt-6.2-sol:low
+  advisor: omniroute/cx/gpt-6.1-sol:low
   commit: omniroute/opencode-go/glm-5.3-flash:max
   default: omniroute/cx/gpt-6.1-terra:medium
-  slow: omniroute/cx/gpt-6.2-sol:low
+  slow: omniroute/cx/gpt-6.1-sol:low
   web: web/parallel
 task:
   agentAdvisor:
