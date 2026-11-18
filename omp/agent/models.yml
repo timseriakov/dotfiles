@@ -13,41 +13,6 @@ providers:
       supportsUsageInStreaming: true
       supportsToolChoice: true
     models:
-      - id: cx/gpt-5.5
-        name: "5.5"
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1050000
-        maxTokens: 128000
-      - id: cx/gpt-5.5-low
-        name: "5.5 Low"
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1050000
-        maxTokens: 128000
-      - id: cx/gpt-5.5-medium
-        name: "5.5 Medium"
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1050000
-        maxTokens: 128000
-      - id: cx/gpt-5.5-high
-        name: "5.5 High"
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1050000
-        maxTokens: 128000
-      - id: cx/gpt-5.5-xhigh
-        name: "5.5 Xhigh"
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        contextWindow: 1050000
-        maxTokens: 128000
       - id: cx/gpt-5.6-luna
         name: "5.6 Luna"
         reasoning: true
@@ -131,6 +96,20 @@ providers:
         input: [text, image]
         supportsTools: true
         contextWindow: 1050000
+        maxTokens: 128000
+      - id: cx/gpt-6.2-sol
+        name: "6.2 Sol"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 872000
+        maxTokens: 128000
+      - id: cx/gpt-6.2-astra
+        name: "6.2 Astra"
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        contextWindow: 872000
         maxTokens: 128000
       - id: cx/gpt-6.1-sol
         name: "6.1 Sol"
@@ -268,10 +247,10 @@ providers:
       - id: opencode-go/glm-5.3-flash
         name: GLM-5.3 Flash
         reasoning: true
-        input: [text]
+        input: [text, image]
         supportsTools: true
-        contextWindow: 202752
-        maxTokens: 128000
+        contextWindow: 1000000
+        maxTokens: 131072
         headers:
           x-opencode-session: omp-omniroute
 
@@ -291,17 +270,17 @@ providers:
       - id: opencode-go/glm-5.3-flash
         name: GLM-5.3 Flash
         reasoning: true
-        input: [text]
+        input: [text, image]
         supportsTools: true
-        contextWindow: 202752
-        maxTokens: 128000
+        contextWindow: 1000000
+        maxTokens: 131072
       - id: opencode-go/glm-5.3
         name: GLM-5.3
         reasoning: true
         input: [text]
         supportsTools: true
-        contextWindow: 202752
-        maxTokens: 128000
+        contextWindow: 1000000
+        maxTokens: 131072
       - id: opencode-go/deepseek-v4.1-flash
         name: V4.1 Flash
         reasoning: true
