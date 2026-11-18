@@ -82,6 +82,9 @@ def _install_temp_window_close_patch():
     base._dotfiles_temp_window_close = True
 
 
+objects.commands.pop("open-temp-window", None)
+
+
 @cmdutils.register()
 @cmdutils.argument("win_id", value=cmdutils.Value.win_id)
 def open_temp_window(win_id: int) -> None:
