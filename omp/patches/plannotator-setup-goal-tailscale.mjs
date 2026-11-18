@@ -1,4 +1,4 @@
-function replaceExactlyOnce(source, before, after, label) {
+export function replaceExactlyOnce(source, before, after, label) {
   const count = (text, needle) => text.split(needle).length - 1;
   const afterCount = count(source, after);
   if (afterCount === 1 && !source.replace(after, "").includes(before))

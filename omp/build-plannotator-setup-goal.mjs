@@ -17,6 +17,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { patchSetupGoalTailnetSources } from "./patches/plannotator-setup-goal-tailscale.mjs";
+import { patchInboxSidebarRestart } from "./patches/plannotator-inbox-sidebar-restart.mjs";
 
 export const VERSION = "0.29.0";
 export const SOURCE_COMMIT = "55e6bbd2b16580b23b5926b235a314a17591d12a";
@@ -27,6 +28,8 @@ export const SOURCE_HASHES = {
     "1ea1fa526944912b35a57df440773d4f506fb04b53747fa94cbcc706fc8a1e28",
   "packages/server/goal-setup.ts":
     "1939c3500d772f126bdb8abdabefc4612ab03c72234fe841a5d6152b5f880af3",
+  "packages/inbox/components/Sidebar.tsx":
+    "eb3660bad4fbf8a95fc9b61bee43cca3d6273e774b418651c21e778f6223bb82",
 };
 export const CACHE = path.join(
   os.homedir(),
@@ -89,16 +92,22 @@ async function verifyInstalled(executable) {
   console.log(verifyExecutable(executable));
 }
 
-export function verifiedPatch(cli, goalSetup) {
+export function verifiedPatch(cli, goalSetup, sidebar) {
   for (const [name, current] of Object.entries({
     "apps/hook/server/index.ts": cli,
     "packages/server/goal-setup.ts": goalSetup,
+    ...(sidebar === undefined
+      ? {}
+      : { "packages/inbox/components/Sidebar.tsx": sidebar }),
   })) {
     if (sha256(current) !== SOURCE_HASHES[name]) {
       throw new Error(`Source drift at ${name}; refusing to build.`);
     }
   }
-  return patchSetupGoalTailnetSources({ cli, goalSetup });
+  const result = patchSetupGoalTailnetSources({ cli, goalSetup });
+  return sidebar === undefined
+    ? result
+    : { ...result, sidebar: patchInboxSidebarRestart(sidebar) };
 }
 
 async function prepare() {
@@ -135,16 +144,22 @@ async function prepare() {
     throw new Error("Source version drift.");
   const cliPath = path.join(sourceRoot, "apps/hook/server/index.ts");
   const goalPath = path.join(sourceRoot, "packages/server/goal-setup.ts");
+  const sidebarPath = path.join(
+    sourceRoot,
+    "packages/inbox/components/Sidebar.tsx",
+  );
   const original = (name) =>
     execFileSync("tar", ["-xOf", archive, `plannotator-${VERSION}/${name}`], {
       encoding: "utf8",
     });
   const pristineCli = original("apps/hook/server/index.ts");
   const pristineGoal = original("packages/server/goal-setup.ts");
-  const result = verifiedPatch(pristineCli, pristineGoal);
+  const pristineSidebar = original("packages/inbox/components/Sidebar.tsx");
+  const result = verifiedPatch(pristineCli, pristineGoal, pristineSidebar);
   for (const [file, before, after] of [
     [cliPath, pristineCli, result.cli],
     [goalPath, pristineGoal, result.goalSetup],
+    [sidebarPath, pristineSidebar, result.sidebar],
   ]) {
     const current = await readFile(file, "utf8");
     if (current !== before && current !== after)
@@ -152,6 +167,7 @@ async function prepare() {
   }
   await writeFile(cliPath, result.cli);
   await writeFile(goalPath, result.goalSetup);
+  await writeFile(sidebarPath, result.sidebar);
   console.log(
     `Prepared Plannotator ${VERSION} (${SOURCE_COMMIT}) in ${sourceRoot}`,
   );

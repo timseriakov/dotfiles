@@ -143,6 +143,7 @@ After source patches, verify bundled markers in `~/.bun/install/global/node_modu
 - `patches/routes.mjs` — maps patch functions to installed OMP, TUI, AI, and plugin file targets.
 - `patches/status-line.mjs` — Starship-like status-line path/git/model/session segment patches.
 - `patches/installed-ai-plannotator.mjs` and `patches/plannotator.mjs` — Plannotator/runtime compatibility patches.
+- `patches/plannotator-inbox-sidebar-restart.mjs` — hides the Inbox sidebar's restart row; `build-plannotator-setup-goal.mjs` pins the pristine `Sidebar.tsx` hash and applies it on every build.
 - `apply-backpass-omp-patches.mjs` — installed Backpass compatibility patcher.
 
 ## Runtime/Tooling Preferences
