@@ -51,7 +51,6 @@ export function runPatchRoutes(ctx) {
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
     ["modes/settings.ts", patches.patchSettingsSchemaAttachmentPreview],
     ["modes/interactive-mode.ts", patches.patchAttachmentChipsGeometry],
-    ["config/model-registry.ts", patches.patchModelRegistryCatalog],
     ["modes/magic-keywords.ts", patches.patchMagicKeywords],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
     ["slash-commands/builtin-lifecycle.ts", patches.patchBtwAliases],

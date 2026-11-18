@@ -18,13 +18,13 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { patchSetupGoalTailnetSources } from "./patches/plannotator-setup-goal-tailscale.mjs";
 
-export const VERSION = "0.28.67";
-export const SOURCE_COMMIT = "969084882013ac7634283ebca06f3118e766d30d";
+export const VERSION = "0.29.0";
+export const SOURCE_COMMIT = "55e6bbd2b16580b23b5926b235a314a17591d12a";
 export const ARCHIVE_SHA256 =
-  "f6a4069e35e168c1c2543f69fbe80e6d5e62ecb5d3f5a9e5e8204412ddb05f9e";
+  "5e004a4bc9db9c4cb2e04fa32fd7d414ec42f373dd4d1720c13ad8859a2d247c";
 export const SOURCE_HASHES = {
   "apps/hook/server/index.ts":
-    "8a369131dfd8c6e091074102fead3a6564cb83367a1d451e75ad7ba802423cc7",
+    "1ea1fa526944912b35a57df440773d4f506fb04b53747fa94cbcc706fc8a1e28",
   "packages/server/goal-setup.ts":
     "1939c3500d772f126bdb8abdabefc4612ab03c72234fe841a5d6152b5f880af3",
 };

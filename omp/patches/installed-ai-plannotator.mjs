@@ -183,76 +183,10 @@ export function serviceTierForModel(
     );
   }
 
-  function patchModelRegistryCatalog(content) {
-    let out = content;
-    let r;
-
-    // OMP 18.8.7 removed the older catalog/composition helpers. Its resolved-model
-    // merge helper is the remaining stable choke point for cached and discovered rows.
-    const currentMerge = `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\treturn mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst contextWindow = replacementModel.contextWindow ?? existing.contextWindow;\n\t\t\tconst maxTokens = replacementModel.maxTokens ?? existing.maxTokens;\n\t\t\tconst omitMaxOutputTokens = replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\tif (\n\t\t\t\tcontextWindow === replacementModel.contextWindow &&\n\t\t\t\tmaxTokens === replacementModel.maxTokens &&\n\t\t\t\tomitMaxOutputTokens === replacementModel.omitMaxOutputTokens &&\n\t\t\t\tsupportsTools === replacementModel.supportsTools\n\t\t\t) {\n\t\t\t\treturn replacementModel;\n\t\t\t}\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow,\n\t\t\t\tmaxTokens,\n\t\t\t\tomitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t}`;
-    const patchedMerge = `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\tconst merged = mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst contextWindow = replacementModel.contextWindow ?? existing.contextWindow;\n\t\t\tconst maxTokens = replacementModel.maxTokens ?? existing.maxTokens;\n\t\t\tconst omitMaxOutputTokens = replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\tif (\n\t\t\t\tcontextWindow === replacementModel.contextWindow &&\n\t\t\t\tmaxTokens === replacementModel.maxTokens &&\n\t\t\t\tomitMaxOutputTokens === replacementModel.omitMaxOutputTokens &&\n\t\t\t\tsupportsTools === replacementModel.supportsTools\n\t\t\t) {\n\t\t\t\treturn replacementModel;\n\t\t\t}\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow,\n\t\t\t\tmaxTokens,\n\t\t\t\tomitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t\treturn merged.filter(model => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"));\n\t}`;
-    if (out.includes(currentMerge) || out.includes(patchedMerge)) {
-      return replaceAny(
-        out,
-        [currentMerge, patchedMerge],
-        patchedMerge,
-        "drop retired openrouter :free from current model merge",
-      ).content;
-    }
-
-    // OpenRouter retired its free DeepSeek tier: the bundled catalog still lists
-    // `deepseek/deepseek-v4-flash:free`, which 404s on every call. Filter it at
-    // the catalog-load boundary (bundled models) AND at the final registry
-    // composition (covers the 24h model cache merge, which also carries it).
-    r = replaceAny(
-      out,
-      [
-        `\t\t\tconst models = getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[];`,
-      ],
-      `\t\t\tlet models = getBundledModels(provider as Parameters<typeof getBundledModels>[0]) as Model<Api>[];\n\t\t\t// OpenRouter no longer serves deepseek/deepseek-v4-flash:free (404).\n\t\t\tif (provider === "openrouter") {\n\t\t\t\tmodels = models.filter(m => m.id !== "deepseek/deepseek-v4-flash:free");\n\t\t\t}`,
-      "drop retired openrouter :free catalog models",
-    );
-    out = r.content;
-
-    r = replaceAny(
-      out,
-      [
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withModelOverrides));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderGuardrails));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderGuardrails));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withModelOverrides.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltModelVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(withProviderBedrock));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderGuardrails = this.#applyProviderGuardrailOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderGuardrails.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyLlamaCppModelFixups(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(withProviderBedrock));\n\t}`,
-        `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderBedrock.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
-      ],
-      `\t\tconst withModelOverrides = this.#applyModelOverrides(collapseBuiltVariants(combined), this.#modelOverrides);\n\t\tconst withProviderBedrock = this.#applyProviderBedrockOverrides(withModelOverrides);\n\t\t// Drop the stale bundled deepseek/deepseek-v4-flash:free model from the\n\t\t// final composition (the 24h model cache merge also carries it).\n\t\tconst pruned = withProviderBedrock.filter(\n\t\t\tmodel => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"),\n\t\t);\n\t\treturn this.#applyDiscoveryPolicies(this.#applyRuntimeProviderOverrides(pruned));\n\t}`,
-      "drop retired openrouter :free from composed registry",
-    );
-    out = r.content;
-
-    // Every model-merge path (static compose, 24h model cache, discovery refresh)
-    // funnels through this helper, so prune the retired :free entry here as the
-    // single choke point for paths that rebuild the snapshot outside compose.
-    r = replaceAny(
-      out,
-      [
-        `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\treturn mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow: replacementModel.contextWindow ?? existing.contextWindow,\n\t\t\t\tmaxTokens: replacementModel.maxTokens ?? existing.maxTokens,\n\t\t\t\tomitMaxOutputTokens: replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t}`,
-      ],
-      `\t#mergeResolvedModels(baseModels: Model<Api>[], replacementModels: Model<Api>[]): Model<Api>[] {\n\t\t// OpenRouter retired its free DeepSeek tier; drop the stale bundled\n\t\t// deepseek/deepseek-v4-flash:free entry from every merge path.\n\t\tconst merged = mergeByModelKey(baseModels, replacementModels, (existing, replacementModel) => {\n\t\t\tif (!existing) return replacementModel;\n\t\t\tconst supportsTools = replacementModel.supportsTools ?? existing.supportsTools;\n\t\t\treturn {\n\t\t\t\t...replacementModel,\n\t\t\t\tcontextWindow: replacementModel.contextWindow ?? existing.contextWindow,\n\t\t\t\tmaxTokens: replacementModel.maxTokens ?? existing.maxTokens,\n\t\t\t\tomitMaxOutputTokens: replacementModel.omitMaxOutputTokens ?? existing.omitMaxOutputTokens,\n\t\t\t\t...(supportsTools !== undefined ? { supportsTools } : {}),\n\t\t\t};\n\t\t});\n\t\treturn merged.filter(model => !(model.provider === "openrouter" && model.id === "deepseek/deepseek-v4-flash:free"));\n\t}`,
-      "drop retired openrouter :free from every model merge",
-    );
-    out = r.content;
-
-    return out;
-  }
-
   return {
     patchPiAiOpenAICompletions,
     patchTurnRecovery,
     patchPiAiTypes,
     patchModelControlsLunaPriority,
-    patchModelRegistryCatalog,
   };
 }
