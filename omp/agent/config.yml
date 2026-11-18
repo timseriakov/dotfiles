@@ -216,7 +216,7 @@ retry:
       - web/mojeek
       - web/public
       - google-antigravity/gemini-2.5-flash
-      - openai-codex/gpt-5.6
+      - openai-codex/gpt-5.6-sol
       - xai-oauth/grok-4.5
       - web/ollama
     default:
