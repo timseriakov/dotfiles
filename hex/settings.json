@@ -51,8 +51,19 @@
       }
     ]
   },
+  "cancel_hotkey": {
+    "keys": [
+      {
+        "code": 53,
+        "label": "Esc"
+      }
+    ]
+  },
   "raw_dictation_hotkey": null,
+  "typed_text_hotkey": null,
   "second_dictation_hotkey": null,
+  "extra_dictation_hotkeys": [],
+  "terminal_paste_hotkey": null,
   "show_dock_icon": true,
   "transcription": {
     "model": "nemotron_3_5_asr",
@@ -94,8 +105,7 @@
   "meetings": {
     "enabled": true,
     "output_folder": null,
-    "summarize_with_apple_intelligence": false,
-    "summarize_with_opencode": true,
+    "summaries": "opencode",
     "show_recording_indicator": true,
     "recording_indicator_corner": "top_right",
     "providers": [],
@@ -133,6 +143,7 @@
         }
       ]
     },
+    "replay_hotkey": null,
     "transcriber": "parakeet",
     "folder": null,
     "media_days": 7,
@@ -165,7 +176,9 @@
   },
   "labs": {
     "live_text": true,
-    "live_chapters": false,
+    "failure_notices": false,
+    "live_typing": false,
+    "live_chapters": true,
     "playground": false,
     "vocabulary_biasing": true,
     "mouse_shortcuts": false,
@@ -174,20 +187,88 @@
     "restore_shortcut_default": false,
     "keep_on_clipboard": true,
     "copy_only": false,
+    "return_to_app": false,
     "spoken_formatting": true,
     "filler_words": false,
     "subtitle_export": true,
     "second_dictation_shortcut": false,
+    "more_dictation_shortcuts": false,
+    "terminal_paste_shortcut": false,
     "smart_spacing": true,
-    "spoken_symbols": false,
+    "spoken_symbols": true,
     "picker_sort_filter": false,
     "sided_modifier_chords": false,
     "tap_or_hold": false,
+    "double_tap_modifiers": false,
     "benchmark_details": false,
     "parakeet_ultra": true,
     "standalone_special_keys": false,
     "history_stats": true,
-    "recent_dictations": false
+    "recent_dictations": false,
+    "skip_pauses": false,
+    "stop_when_call_ends": true,
+    "output_fixes": false,
+    "picker_active_first": false,
+    "model_in_place": false,
+    "picker_downloaded": false,
+    "section_key_alone": false,
+    "keep_recordings": false,
+    "settings_search": true,
+    "release_notes_link": true,
+    "hide_menu_bar_icon": true,
+    "quit_closes_window": true,
+    "caps_lock_dictation": false,
+    "caps_lock_light": "steady",
+    "appearance": false,
+    "appearance_theme": "system",
+    "movable_meeting_capsules": true,
+    "gnome_clipboard_restore": false,
+    "typed_text": false,
+    "meeting_notes_vocabulary": false,
+    "notch_indicator": false,
+    "meeting_finished_event": true,
+    "gnome_meeting_capsules": false,
+    "gnome_annotate": false,
+    "screenshots": false,
+    "follow_live_transcript": true,
+    "meeting_import": false,
+    "meeting_descriptive_filenames": true,
+    "meeting_notes_file": false,
+    "expire_meeting_audio": false,
+    "annotate_replay": false,
+    "more_call_apps": true,
+    "opencode_in_wsl": false,
+    "transcribe_files": false,
+    "api_processing": false,
+    "api_timestamps": false,
+    "speakers_only": false,
+    "app_model_switching": false,
+    "pause_menu": false,
+    "groups": {
+      "dictation": true,
+      "output": true,
+      "shortcuts": true
+    }
+  },
+  "screenshots": {
+    "hotkey": {
+      "keys": [
+        {
+          "modifier": "shift",
+          "side": "any"
+        },
+        {
+          "modifier": "command",
+          "side": "any"
+        },
+        {
+          "code": 21,
+          "label": "4"
+        }
+      ]
+    },
+    "record_hotkey": null,
+    "folder": null
   },
   "enable_on_launch": true,
   "paste_with_shift": false,
@@ -199,9 +280,7 @@
     "channel": "stable"
   },
   "vocabulary": [
-    {
-      "term": "OpenAI"
-    },
+    "OpenAI",
     {
       "term": "Gemini.",
       "sounds_like": ["джемини"]
@@ -218,9 +297,7 @@
       "term": "Codex",
       "sounds_like": ["кодекс"]
     },
-    {
-      "term": "opencode"
-    },
+    "opencode",
     {
       "term": "Yazi",
       "sounds_like": ["язи"]
@@ -249,25 +326,15 @@
       "term": "SDK",
       "sounds_like": ["сдикей"]
     },
-    {
-      "term": "CLI"
-    },
+    "CLI",
     {
       "term": "API",
       "sounds_like": ["апи"]
     },
-    {
-      "term": "JSONC"
-    },
-    {
-      "term": "JSON"
-    },
-    {
-      "term": "MCPProxy"
-    },
-    {
-      "term": "MCP"
-    },
+    "JSONC",
+    "JSON",
+    "MCPProxy",
+    "MCP",
     {
       "term": "TMUX",
       "sounds_like": ["тмакс"]
@@ -308,6 +375,7 @@
     "anomaly-hex-identity",
     "meeting-retention-default",
     "scrawl-capture-settings",
-    "scrawl-routing-settings"
+    "scrawl-routing-settings",
+    "meeting-summaries-choice"
   ]
 }
