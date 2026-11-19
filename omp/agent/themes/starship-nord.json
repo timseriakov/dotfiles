@@ -6,7 +6,6 @@
     "nord1": "#3b4252",
     "nord2": "#434c5e",
     "nord3": "#4c566a",
-    "nord3Bright": "#7b88a1",
     "nord4": "#d8dee9",
     "nord5": "#e5e9f0",
     "nord6": "#eceff4",
@@ -35,8 +34,8 @@
     "success": "nord14",
     "error": "nord11",
     "warning": "nord13",
-    "muted": "nord3Bright",
-    "dim": "nord3Bright",
+    "muted": "nord3",
+    "dim": "nord3",
     "text": "nord4",
     "thinkingText": "nord5",
 
