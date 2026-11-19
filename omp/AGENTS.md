@@ -95,6 +95,17 @@ omp --version
 fish -lc 'timeout 45s omp --no-session -p "ok"'
 ```
 
+Since 19.0.0 `omp update` can replace the launcher with a standalone binary at `~/.bun/bin/omp`. That binary bundles its own source, so `apply-omp-monkey-patches.mjs` still patches the old npm package while the running `omp` ignores every local patch. After such an update, move the binary aside, install the matching npm package, and point the launcher back at it before reapplying patches:
+
+```fish
+mv ~/.bun/bin/omp ~/.bun/bin/omp.standalone-<version>
+bun add -g @oh-my-pi/pi-coding-agent@<version>
+ln -sfn ../install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js ~/.bun/bin/omp
+node apply-omp-monkey-patches.mjs
+```
+
+Custom themes are validated strictly: when a required `colors.*` token is missing, OMP silently falls back to the built-in default theme (bright palette, Nerd Font folder icon) while `omp theme list` still names the theme. When colors look wrong after an update, import `validateThemeJson` from `@oh-my-pi/pi-tui/src/theme/schema-validation.ts` and validate both `starship-nord*.json` files before blaming the patches.
+
 Standalone Plannotator CLI (separate from the npm extensions):
 
 ```fish

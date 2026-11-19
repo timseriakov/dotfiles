@@ -21,6 +21,7 @@
   },
   "colors": {
     "accent": "nord8",
+    "btwMode": "nord8",
     "border": "nord3",
     "borderAccent": "nord8",
     "borderMuted": "nord3",

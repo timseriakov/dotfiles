@@ -30,6 +30,7 @@
   },
   "colors": {
     "accent": "greenReadable",
+    "btwMode": "greenReadable",
     "border": "blueReadable",
     "borderAccent": "blueReadable",
     "borderMuted": "#d8dee9",
