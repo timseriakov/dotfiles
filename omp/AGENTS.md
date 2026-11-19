@@ -236,3 +236,9 @@ git -C /Users/tim/dev/dotfiles diff --stat -- omp
 ```
 
 Do not include unrelated parent-repo changes such as other dotfile areas unless the user explicitly asks.
+
+## Cleanup
+
+Delete what you no longer need instead of leaving it around: `/tmp` build copies and extraction trees, downloaded tarballs, superseded candidate binaries, and one-off verification directories. `bun pm cache rm` is safe — the next install re-downloads.
+
+Keep the Plannotator rollback contract: `~/.cache/plannotator-source` holds the current and previous pinned versions, and `~/.local/bin/plannotator.before-setup-goal-*` keeps the two newest rollback binaries.

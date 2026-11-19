@@ -66,3 +66,7 @@ Always include the actual clickable Tailscale HTTPS link in the chat when handin
 ## Browser-based human-in-the-loop — all tools
 
 The same clickable Tailscale HTTPS handoff rule applies to EVERY locally hosted browser-based request for human input, approval, review, forms, decisions, or interaction, regardless of tool or framework, not only Plannotator. Before asking the user to open a local browser surface, obtain and verify its actual published tailnet URL, preserve its path/query/fragment, and include it as a clickable Markdown link in chat. Never hand over localhost, 127.0.0.1, 0.0.0.0, a LAN IP, or an unpublished local port as the user-facing URL. If no working tailnet route exists, report the blocker instead of claiming the handoff is ready; do not invent a route or weaken authentication/access controls to make it reachable. Public external services retain their real HTTPS URL; internal API calls and health checks may still use loopback. This policy applies equally to local and remote use.
+
+## Cleanup
+
+Delete what you no longer need once it is verified: `/tmp` build copies and extraction trees, downloaded tarballs, superseded binaries, and one-off verification directories. Caches are disposable — `bun pm cache rm` re-downloads on the next install. Never delete user data, session history, or the rollback artifacts a documented contract keeps.
