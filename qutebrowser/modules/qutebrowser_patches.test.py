@@ -314,6 +314,95 @@ class GoogleContextMenuTest(unittest.TestCase):
 
 
 
+class CaretColorTest(unittest.TestCase):
+    def test_modern_css_colors_have_safe_fallbacks(self):
+        import subprocess
+        from qutebrowser.utils import resources
+
+        tree = ast.parse(SOURCE.read_text())
+        assignments = ast.Module(body=[node for node in tree.body
+            if isinstance(node, ast.Assign) and any(
+                isinstance(target, ast.Name) and target.id in
+                {"_caret_colors", "_safe_caret_colors"} for target in node.targets)],
+            type_ignores=[])
+        ns = {}
+        exec(compile(assignments, str(SOURCE), "exec"), ns)
+        original = resources.read_file("javascript/caret.js")
+        patched = original.replace(ns["_caret_colors"], ns["_safe_caret_colors"])
+        self.assertNotEqual(original, patched)
+        colors = patched[patched.index("    axs.color.Color ="):patched.index("    /**\n     * A class to represent a cursor")]
+        script = "const axs = {color: {}, utils: {}};\n" + colors
+        script += "\nconst elem = {}; const style = {backgroundColor: 'oklch(0.2 0 0)', color: 'oklch(0.9 0 0)', opacity: 1};\n"
+        script += ns["_safe_caret_colors"]
+        script += "\nif (axs.color.colorToString(bg) !== '#ffffff' || axs.color.colorToString(fg) !== '#000000') throw Error('invalid fallback');"
+        subprocess.run(["node", "-e", script], check=True)
+
+
+class ModeOverlayTest(unittest.TestCase):
+    def test_overlay_modes_clear_native_status_color(self):
+        tree = ast.parse(SOURCE.read_text())
+        names = {"_set_mode_active_with_current_stretch",
+                 "_on_caret_selection_toggled_with_bottom_line"}
+        module = ast.Module(body=[node for node in tree.body
+            if isinstance(node, ast.FunctionDef) and node.name in names],
+            type_ignores=[])
+        calls = []
+        modes = types.SimpleNamespace(insert="insert", caret="caret",
+            passthrough="passthrough", command="command", prompt="prompt", yesno="yesno")
+        ns = {
+            "usertypes": types.SimpleNamespace(KeyMode=modes),
+            "_orig_set_mode_active": lambda status, mode, active: calls.append((mode, active)),
+            "_orig_caret_selection_toggled": lambda status, state: None,
+            "_set_bottom_mode_line": lambda *args: None,
+            "_stretch_status_url": lambda status: None,
+        }
+        exec(compile(module, str(SOURCE), "exec"), ns)
+        status = types.SimpleNamespace(txt=types.SimpleNamespace(setText=lambda text: None))
+        for mode in (modes.insert, modes.caret, modes.passthrough):
+            for active in (True, False):
+                ns["_set_mode_active_with_current_stretch"](status, mode, active)
+                self.assertEqual(calls[-1], (mode, False))
+        ns["_on_caret_selection_toggled_with_bottom_line"](status, "selection")
+        self.assertEqual(calls[-1], (modes.caret, False))
+
+    def test_compact_overlay_does_not_reserve_page_space(self):
+        os.environ["QT_QPA_PLATFORM"] = "offscreen"
+        from qutebrowser.qt.widgets import QApplication, QLabel, QVBoxLayout, QWidget
+
+        app = QApplication.instance() or QApplication([])
+        tree = ast.parse(SOURCE.read_text())
+        module = ast.Module(body=[
+            node for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == "_place_bottom_mode_line"
+        ], type_ignores=[])
+        ns = {"_bottom_mode_line_height": lambda window: 24}
+        exec(compile(module, str(SOURCE), "exec"), ns)
+        window = QWidget()
+        layout = QVBoxLayout(window)
+        layout.setContentsMargins(0, 0, 0, 0)
+        page = QWidget(window)
+        layout.addWidget(page)
+        label = QLabel(window)
+        label.setStyleSheet("background: green; padding: 0 6px;")
+        window._dotfiles_bottom_mode_line = label
+        window.resize(800, 600)
+        window.show()
+        for text in ("-- INSERT MODE --", "-- CARET MODE --", "-- VISUAL MODE --",
+                     "-- PASSTHROUGH MODE --"):
+            with self.subTest(mode=text):
+                label.setText(text)
+                ns["_place_bottom_mode_line"](window)
+                label.show()
+                app.processEvents()
+                self.assertEqual(label.width(), label.sizeHint().width())
+                self.assertLess(label.width(), window.width())
+                self.assertEqual(label.geometry().bottom(), window.rect().bottom())
+                self.assertEqual(page.geometry().bottom(), window.rect().bottom())
+                self.assertEqual(layout.count(), 1)
+        window.close()
+
+
 class TabPositionLayoutTest(unittest.TestCase):
     """Real offscreen Qt layout check for the below-tab status."""
 

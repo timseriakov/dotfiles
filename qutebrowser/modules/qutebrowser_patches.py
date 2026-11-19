@@ -12,6 +12,19 @@ _safe = """        if (elem.selectionStart !== null) {
 assert _unsafe in _webelem_js or _safe in _webelem_js
 resources._cache["javascript/webelem.js"] = _webelem_js.replace(_unsafe, _safe)
 
+# The upstream caret color parser cannot read modern CSS colors (e.g. oklch).
+_caret_js = resources._cache["javascript/caret.js"]
+_caret_colors = """            const bg = axs.utils.getBgColor(style, elem);
+            const fg = axs.utils.getFgColor(style, elem, bg);"""
+_safe_caret_colors = """            const bg = axs.utils.getBgColor(style, elem) ||
+                new axs.color.Color(255, 255, 255, 1);
+            const fg = axs.utils.getFgColor(style, elem, bg) ||
+                new axs.color.Color(0, 0, 0, 1);"""
+assert _caret_colors in _caret_js or _safe_caret_colors in _caret_js
+resources._cache["javascript/caret.js"] = _caret_js.replace(
+    _caret_colors, _safe_caret_colors)
+
+
 # qutebrowser's default completion columns are 30/70/0; session names are the
 # only useful column, so give it the whole popup width.
 from qutebrowser.completion.models import completionmodel, listcategory, miscmodels
@@ -206,10 +219,13 @@ def _bottom_mode_style(mode):
     elif mode == usertypes.KeyMode.passthrough:
         bg = config.val.colors.statusbar.passthrough.bg
         fg = config.val.colors.statusbar.passthrough.fg
+    elif mode == usertypes.KeyMode.caret:
+        bg = config.val.colors.statusbar.caret.bg
+        fg = config.val.colors.statusbar.caret.fg
     else:
         bg = config.val.colors.statusbar.normal.bg
         fg = config.val.colors.statusbar.normal.fg
-    return f"font: {config.val.fonts.statusbar}; background-color: {bg}; color: {fg}; padding-left: 6px;"
+    return f"font: {config.val.fonts.statusbar}; background-color: {bg}; color: {fg}; padding: 0 6px;"
 
 
 def _ensure_bottom_mode_line(window):
@@ -241,7 +257,8 @@ def _place_bottom_mode_line(window):
     if line is None:
         return
     height = _bottom_mode_line_height(window)
-    line.setGeometry(0, max(0, window.height() - height), window.width(), height)
+    width = min(window.width(), line.sizeHint().width())
+    line.setGeometry(0, max(0, window.height() - height), width, height)
     line.raise_()
 
 
@@ -439,6 +456,7 @@ bar.StatusBar._dotfiles_orig_set_mode_active = _orig_set_mode_active
 
 def _set_mode_active_with_current_stretch(self, mode, val):
     if mode in (usertypes.KeyMode.insert, usertypes.KeyMode.caret, usertypes.KeyMode.passthrough):
+        _orig_set_mode_active(self, mode, False)
         _set_bottom_mode_line(self, mode, val)
         self.txt.setText("")
         _stretch_status_url(self)
@@ -460,6 +478,7 @@ bar.StatusBar._dotfiles_orig_caret_selection_toggled = _orig_caret_selection_tog
 
 def _on_caret_selection_toggled_with_bottom_line(self, selection_state):
     _orig_caret_selection_toggled(self, selection_state)
+    _orig_set_mode_active(self, usertypes.KeyMode.caret, False)
     _set_bottom_mode_line(self, usertypes.KeyMode.caret, True)
     self.txt.setText("")
     _stretch_status_url(self)
