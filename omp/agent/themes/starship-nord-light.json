@@ -31,6 +31,12 @@
   "colors": {
     "accent": "greenReadable",
     "btwMode": "greenReadable",
+    "subagent1": "#8f6f9e",
+    "subagent2": "#3f6f6e",
+    "subagent3": "#5d7044",
+    "subagent4": "#946a3f",
+    "subagent5": "#41638f",
+    "subagent6": "#7d5a4f",
     "border": "blueReadable",
     "borderAccent": "blueReadable",
     "borderMuted": "#d8dee9",

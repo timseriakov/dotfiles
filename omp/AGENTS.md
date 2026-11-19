@@ -104,7 +104,7 @@ ln -sfn ../install/global/node_modules/@oh-my-pi/pi-coding-agent/dist/cli.js ~/.
 node apply-omp-monkey-patches.mjs
 ```
 
-Custom themes are validated strictly: when a required `colors.*` token is missing, OMP silently falls back to the built-in default theme (bright palette, Nerd Font folder icon) while `omp theme list` still names the theme. When colors look wrong after an update, import `validateThemeJson` from `@oh-my-pi/pi-tui/src/theme/schema-validation.ts` and validate both `starship-nord*.json` files before blaming the patches.
+Custom themes are validated strictly: when a required `colors.*` token is missing, OMP silently falls back to the built-in default theme (bright palette, Nerd Font folder icon) while `omp theme list` still names the theme. 19.0.0 also derives subagent name colours from ANSI slots and the accent hue unless the theme declares `subagent1`–`subagent6`; declare them for a controlled palette. When colors look wrong after an update, import `validateThemeJson` from `@oh-my-pi/pi-tui/src/theme/schema-validation.ts` and validate both `starship-nord*.json` files before blaming the patches.
 
 Standalone Plannotator CLI (separate from the npm extensions):
 
