@@ -91,9 +91,7 @@ c.colors.statusbar.normal.bg = nord0
 c.colors.statusbar.normal.fg = "#8B95A7"
 c.colors.statusbar.command.bg = nord0
 c.colors.statusbar.command.fg = white
-c.colors.statusbar.insert.bg = (
-    "#009668"  # "#5E81AC"  # "#A3BE8C" #  "#00BAC7" # "#3D6164" # "#00754a"
-)
+c.colors.statusbar.insert.bg = nord14
 c.colors.statusbar.insert.fg = black
 c.colors.statusbar.passthrough.bg = (
     nord3  # темно-серый вместо фиолетового для лучшей видимости URL
