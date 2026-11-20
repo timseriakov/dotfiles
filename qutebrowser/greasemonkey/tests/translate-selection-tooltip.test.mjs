@@ -499,6 +499,35 @@ test("does not dispatch on another 127.0.0.1 5* port", async () => {
   dom.window.close();
 });
 
+test("does not dispatch inside the Plannotator Inbox", async () => {
+  const dom = createDom({
+    url: "https://plannotator.example/thread",
+    testMode: false,
+  });
+  let calls = 0;
+  const window = loadScript(dom, {
+    GM_xmlhttpRequest: () => {
+      calls += 1;
+      return { abort() {} };
+    },
+  });
+  window.document.documentElement.setAttribute("data-pn-inbox", "");
+
+  const target = window.document.getElementById("root");
+  stubSelection(window, { text: "Hello world", target });
+  target.dispatchEvent(
+    new window.MouseEvent("mouseup", {
+      bubbles: true,
+      clientX: 40,
+      clientY: 40,
+    }),
+  );
+  await wait(380);
+
+  assert.equal(calls, 0);
+  dom.window.close();
+});
+
 test("does not send already-Russian selections to backend at runtime", async () => {
   const dom = createDom({ url: "https://example.com/", testMode: false });
   let calls = 0;

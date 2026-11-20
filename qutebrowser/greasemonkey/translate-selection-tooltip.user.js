@@ -292,7 +292,8 @@
     }
 
     const locationDenied = !TEST_MODE
-      ? isLocationDenied(location.host, location.pathname)
+      ? isLocationDenied(location.host, location.pathname) ||
+        isPlannotatorInbox()
       : false;
     if (locationDenied) {
       hideTooltip("denied");
@@ -1628,6 +1629,19 @@
     }
     const hay = `${host}${path}`;
     return DENY_SUBSTRINGS.some((s) => hay.includes(s));
+  }
+
+  // Plannotator Inbox marks <html> and <body> with data-pn-inbox (pageMarks.ts);
+  // its translation tooltip would cover the thread's action bar.
+  function isPlannotatorInbox() {
+    const doc = document;
+    const html = doc.documentElement;
+    const body = doc.body;
+    return Boolean(
+      (html && html.hasAttribute("data-pn-inbox")) ||
+      (body && body.hasAttribute("data-pn-inbox")) ||
+      doc.querySelector(".pn-inbox"),
+    );
   }
 
   function isHttpOrHttps(protocol) {
