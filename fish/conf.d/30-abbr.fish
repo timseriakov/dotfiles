@@ -302,6 +302,7 @@ abbr -a yt-subs yt-dlp --skip-download --write-auto-subs --write-subs --sub-lang
 abbr -a who-lock-input "ioreg -l -w 0 | grep -o 'kCGSSessionSecureInputPID\"=[0-9]*' | grep -o '[0-9]*' | head -1 | xargs ps -o pid,comm -p"
 
 abbr -a tb toggle-default-browser
+abbr -a fix-ssh "set -e SSH_CONNECTION SSH_CLIENT SSH_TTY"
 
 # Disabled OpenCode abbreviations
 # abbr -a oc omo

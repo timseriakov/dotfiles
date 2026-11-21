@@ -165,3 +165,23 @@ state = "England"
 bitrate = 192
 codec = "MP3"
 homepage = "https://www.sub.fm/"
+
+[[station]]
+name = ".977 80s"
+url = "http://29318.live.streamtheworld.com/977_80_SC"
+country = "The United States Of America"
+state = "Florida"
+bitrate = 128
+codec = "MP3"
+tags = "80s"
+homepage = "http://www.977music.com/"
+
+[[station]]
+name = "Ambient Sleeping Pill"
+url = "http://radio.stereoscenic.com/asp-h"
+country = "The United States Of America"
+state = "Ohio"
+bitrate = 256
+codec = "MP3"
+tags = "ambient,meditation,sleep"
+homepage = "http://ambientsleepingpill.com/"
