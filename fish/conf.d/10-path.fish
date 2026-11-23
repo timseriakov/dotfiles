@@ -84,5 +84,8 @@ fish_add_path $HOME/.lmstudio/bin
 fish_add_path $HOME/.rustel/bin
 # fish_add_path /opt/homebrew/share/google-cloud-sdk/bin
 
+# Inherited PATH from tmux/kitty can carry stale duplicates; keep first occurrence.
+set -gx PATH (string split : (string join : $PATH) | awk '!seen[$0]++')
+
 # Ensure success status for IDEs
 true
