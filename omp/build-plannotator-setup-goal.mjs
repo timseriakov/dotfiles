@@ -19,15 +19,15 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { patchSetupGoalTailnetSources } from "./patches/plannotator-setup-goal-tailscale.mjs";
 import { patchInboxSidebarRestart } from "./patches/plannotator-inbox-sidebar-restart.mjs";
 
-export const VERSION = "0.29.1";
-export const SOURCE_COMMIT = "e44c3b93590f97bf4365915ddbbfff487c11c6ec";
+export const VERSION = "0.29.3";
+export const SOURCE_COMMIT = "71f2cdf9ca72c196d47833d564690fd1cb8efc6c";
 export const ARCHIVE_SHA256 =
-  "880043982afec53d1c7f3d308fbce95af515bca856c79b2ddd299ba38142900b";
+  "71ae8a752967724cb6959529f7d781cf2eed96cc0bfa990ded1e7a7c68b7c7c6";
 export const SOURCE_HASHES = {
   "apps/hook/server/index.ts":
-    "3f8693b96735088639a0de93f687f0d0761ac8c15bc5022c282997819690197a",
+    "809ade2e0ae9dce2870c6134c9cecfe86b3db02164ad99923217dec4251dacad",
   "packages/server/goal-setup.ts":
-    "1939c3500d772f126bdb8abdabefc4612ab03c72234fe841a5d6152b5f880af3",
+    "aad7778995cc17bdfc74b2aa2056e5aee0081246bd31d8aa13b57392cbf82459",
   "packages/inbox/components/Sidebar.tsx":
     "eb3660bad4fbf8a95fc9b61bee43cca3d6273e774b418651c21e778f6223bb82",
 };

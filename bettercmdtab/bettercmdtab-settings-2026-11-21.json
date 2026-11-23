@@ -1,0 +1,29 @@
+{
+  "appExceptions": [
+    {
+      "bundleID": "com.apple.finder",
+      "hide": "whenNoWindows",
+      "ignore": "never"
+    }
+  ],
+  "applicationsOnly": true,
+  "currentSpaceOnly": true,
+  "experimentalInstantSpaceSwitch": true,
+  "experimentalUnreadBadges": false,
+  "fuzzySearchEnabled": false,
+  "hoverActionsEnabled": false,
+  "instantSpaceSwitch": true,
+  "nextScopedShortcutID": 0,
+  "scopedShortcutList": [],
+  "scrollToSwitch": false,
+  "searchDismissMode": "stayOpen",
+  "searchIncludesLaunchableApps": false,
+  "showHiddenApps": false,
+  "showMinimizedWindows": false,
+  "showUnreadBadges": false,
+  "showWindowlessApps": false,
+  "spaceScope": "currentSpace",
+  "stayOpenOnRelease": true,
+  "tabDrillEnabled": false,
+  "vimNavigationEnabled": true
+}
