@@ -43,6 +43,7 @@ import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mj
 import { createCommandRuntimePatches } from "./patches/commands-runtime.mjs";
 import { createFocusedSubagentAdvisorPatch } from "./patches/focused-subagent-advisor.mjs";
 import { createGitTuiPatches } from "./patches/git-tui.mjs";
+import { createRewindTmuxForkPatches } from "./patches/rewind-tmux-fork.mjs";
 import {
   patchPlannotatorAnnouncement,
   patchPlannotatorBrowserNotification,
@@ -390,6 +391,7 @@ const patches = {
   patchBrowserRelayOnly,
   ...createFocusedSubagentAdvisorPatch(patchHelpers),
   ...createGitTuiPatches(patchHelpers),
+  ...createRewindTmuxForkPatches(patchHelpers),
 };
 function disablePlannotatorAutoUpdate() {
   const configPath = path.join(home, ".plannotator/config.json");
