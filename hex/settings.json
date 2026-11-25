@@ -76,6 +76,14 @@
       "language": "en"
     },
     {
+      "model": "gigaam_v3",
+      "language": "ru"
+    },
+    {
+      "model": "whisper_large_v3_turbo",
+      "language": "ru"
+    },
+    {
       "model": "nemotron_3_5_asr",
       "language": "ru"
     }
@@ -283,53 +291,77 @@
     "OpenAI",
     {
       "term": "Gemini.",
-      "sounds_like": ["джемини"]
+      "sounds_like": [
+        "джемини"
+      ]
     },
     {
       "term": "Claude",
-      "sounds_like": ["клод"]
+      "sounds_like": [
+        "клод"
+      ]
     },
     {
       "term": "OmniRoute",
-      "sounds_like": ["омнироут"]
+      "sounds_like": [
+        "омнироут"
+      ]
     },
     {
       "term": "Codex",
-      "sounds_like": ["кодекс"]
+      "sounds_like": [
+        "кодекс"
+      ]
     },
     "opencode",
     {
       "term": "Yazi",
-      "sounds_like": ["язи"]
+      "sounds_like": [
+        "язи"
+      ]
     },
     {
       "term": "dotfiles",
-      "sounds_like": ["дотфайлс"]
+      "sounds_like": [
+        "дотфайлс"
+      ]
     },
     {
       "term": "model",
-      "sounds_like": ["модел"]
+      "sounds_like": [
+        "модел"
+      ]
     },
     {
       "term": "provider",
-      "sounds_like": ["провайдер"]
+      "sounds_like": [
+        "провайдер"
+      ]
     },
     {
       "term": "endpoint",
-      "sounds_like": ["эндпоинт"]
+      "sounds_like": [
+        "эндпоинт"
+      ]
     },
     {
       "term": "TUI",
-      "sounds_like": ["тэюай"]
+      "sounds_like": [
+        "тэюай"
+      ]
     },
     {
       "term": "SDK",
-      "sounds_like": ["сдикей"]
+      "sounds_like": [
+        "сдикей"
+      ]
     },
     "CLI",
     {
       "term": "API",
-      "sounds_like": ["апи"]
+      "sounds_like": [
+        "апи"
+      ]
     },
     "JSONC",
     "JSON",
@@ -337,35 +369,51 @@
     "MCP",
     {
       "term": "TMUX",
-      "sounds_like": ["тмакс"]
+      "sounds_like": [
+        "тмакс"
+      ]
     },
     {
       "term": "nvim",
-      "sounds_like": ["энвим"]
+      "sounds_like": [
+        "энвим"
+      ]
     },
     {
       "term": "Neovide",
-      "sounds_like": ["неовайд"]
+      "sounds_like": [
+        "неовайд"
+      ]
     },
     {
       "term": "Neovim",
-      "sounds_like": ["неовим"]
+      "sounds_like": [
+        "неовим"
+      ]
     },
     {
       "term": "qutebrowser",
-      "sounds_like": ["кьюте браузер"]
+      "sounds_like": [
+        "кьюте браузер"
+      ]
     },
     {
       "term": "Payload",
-      "sounds_like": ["пэйлоад"]
+      "sounds_like": [
+        "пэйлоад"
+      ]
     },
     {
       "term": "CMS",
-      "sounds_like": ["цмс"]
+      "sounds_like": [
+        "цмс"
+      ]
     },
     {
       "term": "CRM",
-      "sounds_like": ["црм"]
+      "sounds_like": [
+        "црм"
+      ]
     }
   ],
   "vocabulary_boost": "normal",
