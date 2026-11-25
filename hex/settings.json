@@ -414,6 +414,12 @@
       "sounds_like": [
         "црм"
       ]
+    },
+    {
+      "term": "ssh",
+      "sounds_like": [
+        "эсэсаш"
+      ]
     }
   ],
   "vocabulary_boost": "normal",
