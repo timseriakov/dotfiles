@@ -113,7 +113,7 @@ test("band keeps session, draws no caps, and leaves a plain gap", () => {
   assert.doesNotMatch(once, /session_name/);
   assert.match(
     once,
-    /" "\.repeat\(Math\.max\(1, width - fit\.leftWidth - fit\.rightWidth\)\)/,
+    /" "\.repeat\(Math\.max\(1, width - visibleWidth\(leftRow\) - visibleWidth\(rightRow\)\)\)/,
   );
   assert.match(once, /band \? `\$\{bg\}\$\{fg\}\$\{texts\.join/);
   assert.equal(patch.patchStatusTop(once), once);
@@ -130,4 +130,31 @@ test("band prompt uses the green starship gutter", () => {
   assert.match(once, /gutter: " ",/);
   assert.match(once, /cx\.theme\.fg\("success", cx\.gutter\)/);
   assert.equal(patch.patchComposerShapes(once), once);
+});
+
+test("quiet welcome startup and session color patch idempotently", () => {
+  const startup =
+    "if (cfgStartupQuiet.get(settings)) this.#frame.hideWelcome();\n\t\telse this.#frame.showWelcome();";
+  const once = patch.patchQuietWelcomeStartup(startup);
+  assert.equal(
+    once,
+    "this.#frame.showWelcome(); // Keep the minimal welcome in quiet mode.",
+  );
+  assert.equal(patch.patchQuietWelcomeStartup(once), once);
+  const color =
+    'pieces.push({ t: name, s: lookAccent(input, "accent") });\n\t\t\treturn view(input, [span(name)], pieces, facts.pinned ? "pin" : undefined);';
+  const muted = patch.patchSessionNameColor(color);
+  assert.match(muted, /span\(name, "muted"\)/);
+  assert.equal(patch.patchSessionNameColor(muted), muted);
+});
+
+test("working row does not duplicate the status title", () => {
+  const source =
+    '\t#workingTitleTrailer(): string | undefined {\n\t\tif (cfgComposerShape.get(settings) !== "band") return undefined;';
+  const once = patch.patchWorkingTitle(source);
+  assert.match(
+    once,
+    /return undefined; \/\/ The session title lives in the status line only/,
+  );
+  assert.equal(patch.patchWorkingTitle(once), once);
 });

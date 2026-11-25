@@ -63,10 +63,14 @@ export function createStatusBandPatches(ctx) {
       "\tlet segs = look.segs; // Keep the session title in the band too.",
       "status band keeps session",
     ).content;
+    out = out.replace(
+      '" ".repeat(Math.max(1, width - fit.leftWidth - fit.rightWidth))',
+      '" ".repeat(Math.max(1, width - visibleWidth(leftRow) - visibleWidth(rightRow)))',
+    );
     out = replaceOnce(
       out,
       "\telse row = leftRow + gauge(look, Math.max(1, width - fit.leftWidth - fit.rightWidth), embedded, cx) + rightRow;",
-      '\telse\n\t\trow =\n\t\t\tleftRow +\n\t\t\t(band\n\t\t\t\t? " ".repeat(Math.max(1, width - fit.leftWidth - fit.rightWidth))\n\t\t\t\t: gauge(look, Math.max(1, width - fit.leftWidth - fit.rightWidth), embedded, cx)) +\n\t\t\trightRow;',
+      '\telse\n\t\trow =\n\t\t\tleftRow +\n\t\t\t(band\n\t\t\t\t? " ".repeat(Math.max(1, width - visibleWidth(leftRow) - visibleWidth(rightRow)))\n\t\t\t\t: gauge(look, Math.max(1, width - fit.leftWidth - fit.rightWidth), embedded, cx)) +\n\t\t\trightRow;',
       "status band plain gap",
     ).content;
     out = replaceOnce(
@@ -95,7 +99,66 @@ export function createStatusBandPatches(ctx) {
     return out;
   }
 
+  function patchWelcomeFrame(content) {
+    let out = content;
+    for (const [before, after, label] of [
+      [
+        "if (!options.quiet) this.showWelcome();",
+        "this.showWelcome(); // Minimal welcome also in quiet mode.",
+        "quiet startup welcome",
+      ],
+      [
+        "if (this.welcomeBlock || this.#quiet()) return;",
+        "if (this.welcomeBlock) return; // Quiet keeps the minimal welcome.",
+        "quiet welcome guard",
+      ],
+      [
+        "if (quiet) this.hideWelcome();\n\t\telse this.showWelcome();",
+        "this.showWelcome(); // Keep quiet welcome visible.",
+        "quiet welcome sync",
+      ],
+      [
+        "\t\t\t\t// The intro repaints the card",
+        '\t\t\t\tif (this.#quiet()) return <text style="strong">Welcome from Oh My Pi</text>;\n\t\t\t\t// The intro repaints the card',
+        "minimal quiet welcome",
+      ],
+    ])
+      out = replaceOnce(out, before, after, label).content;
+    return out;
+  }
+
+  function patchWorkingTitle(content) {
+    return replaceOnce(
+      content,
+      '\t#workingTitleTrailer(): string | undefined {\n\t\tif (cfgComposerShape.get(settings) !== "band") return undefined;',
+      '\t#workingTitleTrailer(): string | undefined {\n\t\treturn undefined; // The session title lives in the status line only.\n\t\tif (cfgComposerShape.get(settings) !== "band") return undefined;',
+      "single status session title",
+    ).content;
+  }
+
+  function patchQuietWelcomeStartup(content) {
+    return replaceOnce(
+      content,
+      "if (cfgStartupQuiet.get(settings)) this.#frame.hideWelcome();\n\t\telse this.#frame.showWelcome();",
+      "this.#frame.showWelcome(); // Keep the minimal welcome in quiet mode.",
+      "quiet startup keeps minimal welcome",
+    ).content;
+  }
+
+  function patchSessionNameColor(content) {
+    return replaceOnce(
+      content,
+      'pieces.push({ t: name, s: lookAccent(input, "accent") });\n\t\t\treturn view(input, [span(name)], pieces, facts.pinned ? "pin" : undefined);',
+      'pieces.push({ t: name, s: "muted" });\n\t\t\treturn view(input, [span(name, "muted")], pieces, facts.pinned ? "pin" : undefined);',
+      "muted session name",
+    ).content;
+  }
+
   return {
+    patchWorkingTitle,
+    patchQuietWelcomeStartup,
+    patchWelcomeFrame,
+    patchSessionNameColor,
     patchStatusLineTypes,
     patchStatusSegments,
     patchStatusTop,

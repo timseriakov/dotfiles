@@ -55,8 +55,16 @@ export function runPatchRoutes(ctx) {
     ["ui/composer/vim.ts", patches.patchVimRuLayout],
     ["modes/view-model/status-line/types.ts", patches.patchStatusLineTypes],
     ["ui/status/segments.ts", patches.patchStatusSegments],
+    ["ui/status/status-line.tsx", patches.patchStatusLineSubagentBadge],
+    ["ui/status/composer-facts.tsx", patches.patchComposerFactsSubagentBadge],
+    ["ui/status/segments.ts", patches.patchSessionNameColor],
+    ["modes/interactive/frame.tsx", patches.patchWelcomeFrame],
+    ["modes/interactive-mode.ts", patches.patchQuietWelcomeStartup],
+    ["modes/interactive-mode.ts", patches.patchWorkingTitle],
     ["ui/styles/status/top.ts", patches.patchStatusTop],
     ["ui/styles/composer/shapes.ts", patches.patchComposerShapes],
+    ["ui/composer/chips.tsx", patches.patchComposerChipsPreviewSize],
+    ["ui/styles/composer/chips.ts", patches.patchComposerChipsPreviewStyle],
     ["modes/interactive-mode.ts", patches.patchAttachmentChipsGeometry],
     ["modes/magic-keywords.ts", patches.patchMagicKeywords],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
@@ -77,6 +85,7 @@ export function runPatchRoutes(ctx) {
 
   // 19.2 rewrote @oh-my-pi/pi-tui and moved the terminal renderers into this
   // package; the old pi-tui source routes have no target here (see AGENTS.md).
+  patchTuiFile("term/painters/editor.ts", patches.patchEditorGhostGap);
   const piAiRoutes = [
     ["types.ts", patches.patchPiAiTypes],
     ["providers/openai-completions.ts", patches.patchPiAiOpenAICompletions],
