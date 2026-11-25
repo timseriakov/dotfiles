@@ -82,7 +82,6 @@ export function createInputSessionPatches(ctx) {
 
   function patchInputController(content) {
     let out = content;
-    const smolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => {\n\t\t\t\tconst role = this.ctx.viewSession.sessionManager.getLastModelChangeRole();\n\t\t\t\tconst model = this.ctx.viewSession.model;\n\t\t\t\tconst legacySmolModel = role === "temporary" && model && model.provider === "opencode-go" && ["deepseek-v4-flash", "deepseek-v4.1-flash", "glm-5.3-flash"].includes(model.id);\n\t\t\t\tif ((role === "smol" && model?.id !== "cx/gpt-6-luna") || legacySmolModel) void this.cycleSmolModel();\n\t\t\t\telse this.cycleThinkingLevel();\n\t\t\t});\n\t\t}\n`;
     const smolHandler = `\tasync cycleSmolModel(): Promise<void> {
 \t\tif (this.ctx.focusedAgentId) {
 \t\t\tthis.ctx.showStatus("Model changes apply to the main session — press ←← to return first");
@@ -104,7 +103,7 @@ export function createInputSessionPatches(ctx) {
 \t\tconst next = models[(index + 1) % models.length]!;
 \t\ttry {
 \t\t\tawait this.ctx.session.setModel(next, "smol");
-\t\t\tthis.ctx.statusLine.invalidate();
+\t\t\tthis.ctx.statusLine.refresh();
 \t\t\tthis.ctx.updateEditorBorderColor();
 \t\t\tthis.ctx.showStatus(\`Smol model: \${next.name}\`);
 \t\t} catch (error) {
@@ -113,46 +112,28 @@ export function createInputSessionPatches(ctx) {
 \t}
 
 `;
-    if (!out.includes(smolRegistration)) {
-      const legacySmolRegistration = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.smol.cycle")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.cycleSmolModel());\n\t\t}\n`;
-      out = out.split(legacySmolRegistration).join("");
+    if (!out.includes(smolHandler)) {
+      out = insertBefore(
+        out,
+        `\tcycleThinkingLevel(): void {\n`,
+        smolHandler,
+        "input-controller smol model cycle",
+      ).content;
     }
-    out = out.split(smolRegistration).join("");
-    const smolStart = out.indexOf("\tasync cycleSmolModel(): Promise<void> {");
-    const thinkingStart = out.indexOf(
-      "\tcycleThinkingLevel(): void {",
-      smolStart,
-    );
-    if (smolStart !== -1 && thinkingStart !== -1)
-      out = out.slice(0, smolStart) + out.slice(thinkingStart);
-    out = insertAfter(
-      out,
-      `\t\tthis.ctx.editor.clearCustomKeyHandlers();\n`,
-      smolRegistration,
-      "input-controller smol cycle key handler",
-    ).content;
-    out = insertBefore(
-      out,
-      `\tcycleThinkingLevel(): void {\n`,
-      smolHandler,
-      "input-controller smol model cycle",
-    ).content;
-
-    const gitHandler = `\n\t\tfor (const key of this.ctx.keybindings.getKeys("app.git.open")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => this.ctx.showGitUi());\n\t\t}\n`;
-    if (out.includes(gitHandler)) return out;
-    const compactHandler = `\t\tfor (const key of this.ctx.keybindings.getKeys("app.session.compact")) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handleCompactCommand());\n\t\t}\n`;
-    const planHandler = `\t\tconst planModeKeys = this.ctx.keybindings.getKeys("app.plan.toggle");\n\t\tfor (const key of planModeKeys) {\n\t\t\tthis.ctx.editor.setCustomKeyHandler(key, () => void this.ctx.handlePlanModeCommand());\n\t\t}\n`;
-    if (out.includes(compactHandler))
-      return out.replace(compactHandler, compactHandler + gitHandler);
-    if (!out.includes(planHandler)) {
-      throw new Error(
-        "Patch 'input-controller app.git.open handler' could not find plan or compact handler. Upstream source changed.",
-      );
+    const entries = [
+      `\t\t\t["app.smol.cycle", () => {\n\t\t\t\tconst role = this.ctx.viewSession.sessionManager.getLastModelChangeRole();\n\t\t\t\tconst model = this.ctx.session.model;\n\t\t\t\tconst legacySmolModel = role === "temporary" && model && model.provider === "opencode-go" && ["deepseek-v4-flash", "deepseek-v4.1-flash", "glm-5.3-flash"].includes(model.id);\n\t\t\t\tif ((role === "smol" && model?.id !== "cx/gpt-6-luna") || legacySmolModel) void this.cycleSmolModel();\n\t\t\t\telse this.cycleThinkingLevel();\n\t\t\t}],\n`,
+      `\t\t\t["app.git.open", () => this.ctx.showGitUi()],\n`,
+      `\t\t\t["app.session.compact", () => void this.ctx.handleCompactCommand()],\n`,
+    ].filter((entry) => !out.includes(entry));
+    if (entries.length > 0) {
+      out = insertAfter(
+        out,
+        `["app.session.observe", () => this.ctx.showAgentHub()],\n`,
+        entries.join(""),
+        "input-controller app key handlers",
+      ).content;
     }
-    return out.replace(
-      planHandler,
-      planHandler + "\n" + compactHandler + gitHandler,
-    );
+    return out;
   }
 
   function patchSessionManager(content) {

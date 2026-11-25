@@ -37,6 +37,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createInstalledAiPlannotatorPatches } from "./patches/installed-ai-plannotator.mjs";
 import { createStatusLinePatches } from "./patches/status-line.mjs";
+import { createStatusBandPatches } from "./patches/status-band.mjs";
 import { createUiComponentPatches } from "./patches/ui-components.mjs";
 import { createInputSessionPatches } from "./patches/input-session.mjs";
 import { createTuiEditorTerminalPatches } from "./patches/tui-editor-terminal.mjs";
@@ -51,16 +52,12 @@ import {
   patchPlannotatorGuard,
   patchPlannotatorLoopbackPort,
   patchPlannotatorNotifications,
+  patchPlannotatorPiTuiCompat,
   patchPlannotatorPlanTailnet,
   patchPlannotatorReviewTailnet,
 } from "./patches/plannotator.mjs";
 import { patchBrowserRelayOnly } from "./patches/browser-policy.mjs";
 import { runPatchRoutes } from "./patches/routes.mjs";
-import {
-  patchPiSideChatIndex,
-  patchPiSideChatOverlay,
-  SIDE_CHAT_CONFIG,
-} from "./patches/side-chat.mjs";
 
 const home = os.homedir();
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -384,6 +381,7 @@ const patchHelpers = { replaceOnce, replaceAny, insertAfter, insertBefore };
 const patches = {
   ...createInstalledAiPlannotatorPatches(patchHelpers),
   ...createStatusLinePatches(patchHelpers),
+  ...createStatusBandPatches(patchHelpers),
   ...createUiComponentPatches(patchHelpers),
   ...createInputSessionPatches(patchHelpers),
   ...createTuiEditorTerminalPatches(patchHelpers),
@@ -434,8 +432,7 @@ try {
       patchPlannotatorNotifications,
       patchPlannotatorPlanTailnet,
       patchPlannotatorReviewTailnet,
-      patchPiSideChatOverlay,
-      patchPiSideChatIndex,
+      patchPlannotatorPiTuiCompat,
     },
   });
   console.log("OMP monkey patches applied.");

@@ -189,7 +189,7 @@ browser:
   relay: false
   cmux: false
 composer:
-  shape: box
+  shape: band
 retry:
   fallbackChains:
     web:

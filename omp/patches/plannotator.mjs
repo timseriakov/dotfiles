@@ -225,3 +225,14 @@ export function patchPlannotatorNotifications(content, { replaceAny }) {
   }
   return content;
 }
+
+export function patchPlannotatorPiTuiCompat(content) {
+  // 19.2 dropped old pi-tui packages; the extension only needed Key for one shortcut.
+  let out = content.replace(
+    'import { Key } from "@earendil-works/pi-tui";\n',
+    "",
+  );
+  if (out.includes('Key.ctrlAlt("p")'))
+    out = out.replaceAll('Key.ctrlAlt("p")', '"ctrl+alt+p"');
+  return out;
+}

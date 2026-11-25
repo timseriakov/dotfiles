@@ -88,9 +88,11 @@ function collectEntries() {
       .split("/")
       .at(-1)
       .replace(/(^|[-_])(.)/g, (_, _prefix, c) => c.toUpperCase());
-    const rootSpecifier = rootShim
+    const shimPath = rootShim
       ? path.join(packageRoot, "src/extensibility", rootShim)
-      : name;
+      : null;
+    // 19.2 removed the pi-tui legacy shim: extensions now get the host package.
+    const rootSpecifier = shimPath && fs.existsSync(shimPath) ? shimPath : name;
     add(name, `bundled${identifier}`, rootSpecifier);
 
     for (const exportKey of Object.keys(exportsField)) {

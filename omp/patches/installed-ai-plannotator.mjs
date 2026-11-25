@@ -8,6 +8,7 @@ export function createInstalledAiPlannotatorPatches(ctx) {
     const currentImports = hasExtendedSchemaHelpers
       ? [
           `import {\n\tadaptSchemaForStrict,\n\tfindStrictToolSchemaViolation,\n\tflattenExclusiveRequiredRootUnion,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,
+          `import {\n\tadaptSchemaForStrict,\n\tfindStrictToolSchemaViolation,\n\tflattenExclusiveRequiredRootUnion,\n\tNO_STRICT,\n\tnormalizeSchemaForGoogle,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,
         ]
       : [
           `import {\n\tadaptSchemaForStrict,\n\tNO_STRICT,\n\tnormalizeSchemaForMoonshot,\n\tsanitizeSchemaForGrammar,\n\ttoolWireSchema,\n} from "../utils/schema";`,

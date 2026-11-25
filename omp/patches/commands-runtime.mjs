@@ -136,9 +136,23 @@ export function createCommandRuntimePatches(ctx) {
 \t\tbeginStartupComposer({ version: VERSION });
 \t\tstopStartupComposer = stopPendingStartupComposer;
 \t}`;
+    const blockWithSafeArgv = `\tlet stopStartupComposer: (() => void) | undefined;
+\tif (
+\t\t!process.env.PI_TIMING &&
+\t\tprocess.stdin.isTTY === true &&
+\t\tprocess.stdout.isTTY === true &&
+\t\tisPrepaintSafeArgv(resolvedArgv)
+\t) {
+\t\t// Intentional exception to the static-import convention: this latency boundary
+\t\t// keeps the TUI graph out of worker, subcommand, help, and version launches.
+\t\t// Loading it statically would erase the measured cold-start improvement.
+\t\tconst { beginStartupComposer, stopPendingStartupComposer } = await import("./modes/startup-composer");
+\t\tbeginStartupComposer({ version: VERSION });
+\t\tstopStartupComposer = stopPendingStartupComposer;
+\t}`;
     return replaceAny(
       content,
-      [block, blockWithSafeFlags],
+      [block, blockWithSafeFlags, blockWithSafeArgv],
       patched,
       "disable startup prepaint composer",
     ).content;
@@ -304,86 +318,6 @@ export function createCommandRuntimePatches(ctx) {
     ).content;
   }
 
-  function patchExtensionUiController(content) {
-    const currentOverlay = `			if (options?.overlay) {
-				const overlayConfig = options as {
-					overlayOptions?: Record<string, unknown>;
-					onHandle?: (handle: OverlayHandle) => void;
-				};
-				overlayHandle = this.ctx.ui.showOverlay(component, {
-					anchor: "bottom-center",
-					width: "100%",
-					maxHeight: "100%",
-					margin: 0,
-					...(overlayConfig.overlayOptions ?? {}),
-				});
-				overlayConfig.onHandle?.(overlayHandle);
-				return;
-			}`;
-    const currentOverlayModern = `			if (options?.overlay) {
-				const overlayOptions =
-					typeof options.overlayOptions === "function" ? options.overlayOptions() : options.overlayOptions;
-				overlayHandle = this.ctx.ui.showOverlay(
-					component,
-					overlayOptions ?? {
-						anchor: "bottom-center",
-						width: "100%",
-						maxHeight: "100%",
-						margin: 0,
-					},
-				);
-				options.onHandle?.(overlayHandle);
-				return;
-			}`;
-    const currentOverlayLatest = `				if (options?.overlay) {
-					const overlayOptions =
-						typeof options.overlayOptions === "function" ? options.overlayOptions() : options.overlayOptions;
-					overlayHandle = this.ctx.ui.showOverlay(
-						component,
-						overlayOptions ?? {
-							anchor: "bottom-center",
-							width: "100%",
-							maxHeight: "100%",
-							margin: 0,
-						},
-					);
-					options.onHandle?.(overlayHandle);
-					return;
-				}`;
-    const patchedOverlay = `			if (options?.overlay) {
-				const overlayConfig = options as {
-					overlayOptions?: Record<string, unknown>;
-					onHandle?: (handle: OverlayHandle) => void;
-				};
-				const previousFocus = this.ctx.ui.getFocused();
-				const nativeOverlayHandle = this.ctx.ui.showOverlay(component, {
-					anchor: "bottom-center",
-					width: "100%",
-					maxHeight: "100%",
-					margin: 0,
-					...(overlayConfig.overlayOptions ?? {}),
-				});
-				overlayHandle = {
-					...nativeOverlayHandle,
-					focus: () => this.ctx.ui.setFocus(component),
-					unfocus: () => this.ctx.ui.setFocus(previousFocus),
-					isFocused: () => this.ctx.ui.getFocused() === component,
-				} as OverlayHandle;
-				overlayConfig.onHandle?.(overlayHandle);
-				return;
-			}`;
-    return replaceAny(
-      content,
-      [
-        currentOverlay,
-        currentOverlayModern,
-        currentOverlayLatest,
-        patchedOverlay,
-      ],
-      patchedOverlay,
-      "custom overlay options and focus handle",
-    ).content;
-  }
   function patchTuiOverlayFocus(content) {
     const current = `		if (topVisibleOverlay && !isOverlayFocusTarget(topVisibleOverlay.component, component)) {
 			const currentFocus = this.#focusedComponent;
@@ -418,7 +352,6 @@ export function createCommandRuntimePatches(ctx) {
     patchDiscoveryHelpers,
     patchLegacyModelRuntime,
     patchSessionTools,
-    patchExtensionUiController,
     patchTuiOverlayFocus,
     patchCliStartupPrepaint,
   };

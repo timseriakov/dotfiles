@@ -13,7 +13,6 @@ export function runPatchRoutes(ctx) {
     patchAbsoluteFile,
     setupRuntimeStateLinks,
     rebuildBundledCli,
-    SIDE_CHAT_CONFIG,
     patches,
   } = ctx;
 
@@ -26,10 +25,6 @@ export function runPatchRoutes(ctx) {
     ],
     ["cli.ts", patches.patchCliStartupPrepaint],
     ["modes/interactive-mode.ts", patches.patchInteractiveMode],
-    [
-      "modes/controllers/extension-ui-controller.ts",
-      patches.patchExtensionUiController,
-    ],
     [
       "modes/controllers/input-controller.ts",
       (content) =>
@@ -56,6 +51,12 @@ export function runPatchRoutes(ctx) {
     ["session/turn-recovery.ts", patches.patchTurnRecovery],
     ["session/model-controls.ts", patches.patchModelControlsLunaPriority],
     ["modes/settings.ts", patches.patchSettingsSchemaAttachmentPreview],
+    ["config/keybindings/app-keybindings.ts", patches.patchKeybindingsConfig],
+    ["ui/composer/vim.ts", patches.patchVimRuLayout],
+    ["modes/view-model/status-line/types.ts", patches.patchStatusLineTypes],
+    ["ui/status/segments.ts", patches.patchStatusSegments],
+    ["ui/styles/status/top.ts", patches.patchStatusTop],
+    ["ui/styles/composer/shapes.ts", patches.patchComposerShapes],
     ["modes/interactive-mode.ts", patches.patchAttachmentChipsGeometry],
     ["modes/magic-keywords.ts", patches.patchMagicKeywords],
     ["goals/tools/goal-tool.ts", patches.patchGoalTool],
@@ -74,33 +75,8 @@ export function runPatchRoutes(ctx) {
     else patchFile(target, patch);
   }
 
-  const tuiRoutes = [
-    ["tui.ts", patches.patchTuiOverlayFocus],
-    ["prompt/composer.ts", patches.patchComposer],
-    ["status-line/component.ts", patches.patchStatusLineTs],
-    ["status-line/types.ts", patches.patchStatusTypes],
-    ["status-line/segments.ts", patches.patchSegments],
-    ["prompt/welcome.ts", patches.patchWelcome],
-    ["chat/assistant-message.ts", patches.patchAssistantMessage],
-    ["overlays/usage-row.ts", patches.patchUsageRow],
-    ["chat/user-message.ts", patches.patchUserMessage],
-    ["chrome/dynamic-border.ts", patches.patchDynamicBorder],
-    ["app-keybindings.ts", patches.patchKeybindingsConfig],
-    ["prompt/custom-editor.ts", patches.patchCustomEditor],
-    ["prompt/macos-spelling.ts", patches.patchSpellingUnderline],
-    ["prompt/attachment-chips.ts", patches.patchAttachmentChips],
-    ["overlays/rewind-selector.ts", patches.patchRewindTmuxFork],
-    ["apps/git/colors.ts", patches.patchGitTuiColors],
-    ["apps/git/git-tui.ts", patches.patchGitTuiLayout],
-    ["components/editor.ts", patches.patchEditorGhostCursorGap],
-    ["components/editor.ts", patches.patchEditorGutterWidth],
-    ["components/editor.ts", patches.patchEditorVimKillRing],
-    ["vim.ts", patches.patchVimRuLayout],
-    ["vim.ts", patches.patchVimCutRegisters],
-    ["kitty-graphics.ts", patches.patchTuiKittyGraphics],
-  ];
-  for (const [target, patch] of tuiRoutes) patchTuiFile(target, patch);
-
+  // 19.2 rewrote @oh-my-pi/pi-tui and moved the terminal renderers into this
+  // package; the old pi-tui source routes have no target here (see AGENTS.md).
   const piAiRoutes = [
     ["types.ts", patches.patchPiAiTypes],
     ["providers/openai-completions.ts", patches.patchPiAiOpenAICompletions],
@@ -125,6 +101,22 @@ export function runPatchRoutes(ctx) {
     [
       path.join(
         home,
+        ".omp/plugins/node_modules/@plannotator/pi-extension/index.ts",
+      ),
+      "Plannotator extension uses host pi-tui shortcuts",
+      (content) => patches.patchPlannotatorPiTuiCompat(content),
+    ],
+    [
+      path.join(
+        home,
+        ".omp/agent/npm/node_modules/@plannotator/pi-extension/index.ts",
+      ),
+      "Plannotator npm-tree copy uses host pi-tui shortcuts",
+      (content) => patches.patchPlannotatorPiTuiCompat(content),
+    ],
+    [
+      path.join(
+        home,
         ".omp/plugins/node_modules/@plannotator/pi-extension/plannotator-browser.ts",
       ),
       "open Plannotator in system browser and retain access metadata",
@@ -133,19 +125,6 @@ export function runPatchRoutes(ctx) {
           patches.patchPlannotatorBrowserNotification(content, { replaceAny }),
           { replaceAny },
         ),
-    ],
-    [
-      path.join(
-        home,
-        ".omp/plugins/node_modules/pi-side-chat/side-chat-overlay.ts",
-      ),
-      "pi-side-chat canonical editor and Nord frame",
-      (content) => patches.patchPiSideChatOverlay(content, { replaceAny }),
-    ],
-    [
-      path.join(home, ".omp/plugins/node_modules/pi-side-chat/index.ts"),
-      "pi-side-chat tmux popup geometry and shortcuts",
-      (content) => patches.patchPiSideChatIndex(content, { replaceAny }),
     ],
     [
       path.join(
@@ -210,10 +189,5 @@ export function runPatchRoutes(ctx) {
   ];
   for (const [target, label, patch] of pluginRoutes)
     patchAbsoluteFile(target, label, patch);
-
-  write(
-    path.join(home, ".omp/plugins/node_modules/pi-side-chat/config.json"),
-    `${JSON.stringify(SIDE_CHAT_CONFIG, null, 2)}\n`,
-  );
   rebuildBundledCli();
 }
