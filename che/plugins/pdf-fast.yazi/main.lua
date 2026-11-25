@@ -1,0 +1,58 @@
+local M = {}
+
+function M:peek(job)
+	local cache = ya.file_cache(job)
+	if not cache then
+		return
+	end
+
+	local ok, err, bound = self:preload(job)
+	if bound and bound > 0 then
+		return ya.emit("peek", { bound - 1, only_if = job.file.url, upper_bound = true, scope = job.scope })
+	elseif not ok or err then
+		return ya.preview_widget(job, err)
+	end
+
+	local _, image_err = ya.image_show(cache, job.area)
+	ya.preview_widget(job, image_err)
+end
+
+function M:seek(job)
+	local h = cx.tab.current.hovered
+	if h and h.url == job.file.url then
+		local step = ya.clamp(-1, job.units, 1)
+		ya.emit("peek", { math.max(0, cx.tab.preview.skip + step), only_if = job.file.url, scope = job.scope })
+	end
+end
+
+function M:preload(job)
+	local cache = ya.file_cache(job)
+	if not cache then
+		return true
+	end
+	local cha = fs.cha(cache)
+	if cha and cha.len > 0 then
+		return true
+	end
+
+	local output, err = Command("pdftoppm")
+		:arg({
+			"-f", job.skip + 1,
+			"-l", job.skip + 1,
+			"-singlefile", "-scale-to", "1600",
+			"-jpeg", "-jpegopt", "quality=" .. rt.preview.image_quality,
+			tostring(job.file.path), tostring(cache),
+		})
+		:output()
+
+	if not output then
+		return true, Err("Failed to start `pdftoppm`, error: %s", err)
+	elseif not output.status.success then
+		local pages = job.skip > 0 and tonumber(output.stderr:match("the last page %((%d+)%)"))
+		return true, Err("Failed to convert PDF to image, stderr: %s", output.stderr), pages
+	end
+
+	return ya.image_precache(Url(cache .. ".jpg"), cache)
+end
+
+return M
