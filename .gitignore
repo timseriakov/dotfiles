@@ -153,3 +153,4 @@ handy/settings_store.json
 
 cliamp/playlists/audio/*.mp3
 mcpproxy/instance-id
+/omp/agent/skill-descriptions.db.lock

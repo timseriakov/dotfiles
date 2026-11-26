@@ -143,8 +143,6 @@ keymap = [
 	{ on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
 	{ on = "z",         run = "plugin fzf",                  desc = "Jump to a file/directory via fzf" },
 	{ on = "я",         run = [ "plugin abc", "plugin fzf" ], desc = "Jump to a file/directory via fzf" },
-	{ on = "F",         run = "plugin zoxide",               desc = "Jump to a directory via zoxide" },
-	{ on = "А",         run = [ "plugin abc", "plugin zoxide" ], desc = "Jump to a directory via zoxide" },
 
 	# Linemode
 	{ on = [ "m", "s" ], run = "linemode size",        desc = "Linemode: size" },
@@ -262,6 +260,8 @@ keymap = [
 ]
 
 prepend_keymap = [
+  { on = "F", run = "plugin zoxide-che", desc = "Jump to a directory via zoxide" },
+  { on = "А", run = [ "plugin abc", "plugin zoxide-che" ], desc = "Jump to a directory via zoxide" },
   # glow.yazi
   { on = [ "<S-j>", ], run = "seek 5" },
   { on = [ "<S-k>", ], run = "seek -5" },
