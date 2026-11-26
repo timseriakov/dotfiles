@@ -44,6 +44,10 @@ export function runPatchRoutes(ctx) {
     ],
     ["session/agent-session.ts", patches.patchSessionForkFile],
     ["predict/client.ts", patches.patchPredictClientSuffix],
+    [
+      "modes/controllers/composer-prediction-controller.ts",
+      patches.patchComposerPredictionSlashGate,
+    ],
     ["session/session-manager.ts", patches.patchSessionManager],
     ["session/session-manager.ts", patches.patchSessionForkLeaf],
     ["session/session-paths.ts", patches.patchSessionPaths],
@@ -59,6 +63,7 @@ export function runPatchRoutes(ctx) {
     ["ui/status/composer-facts.tsx", patches.patchComposerFactsSubagentBadge],
     ["ui/status/segments.ts", patches.patchSessionNameColor],
     ["modes/interactive/frame.tsx", patches.patchWelcomeFrame],
+    ["modes/interactive/frame.tsx", patches.patchWorkingBandGap],
     ["modes/interactive-mode.ts", patches.patchQuietWelcomeStartup],
     ["modes/interactive-mode.ts", patches.patchWorkingTitle],
     ["ui/styles/status/top.ts", patches.patchStatusTop],

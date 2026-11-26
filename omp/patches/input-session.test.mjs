@@ -41,6 +41,22 @@ const inputControllerSource = `class InputController {
 \t\t}
 \t}
 
+\t#onComposerKey(key: KeyEvent): boolean {
+\t\tconst km = this.ctx.keybindings;
+\t\tconst empty = this.ctx.composer.text().trim() === "";
+\t\tif (km.matches(key, "app.model.cycleForward")) {
+\t\t\tvoid this.cycleRoleModel("forward");
+\t\t\treturn true;
+\t\t}
+\t\treturn false;
+\t}
+
+\t#customKeyHandler(): void {
+\t\tconst actions = [
+\t\t\t["app.session.observe", () => this.ctx.showAgentHub()],
+\t\t];
+\t}
+
 \thandleCtrlZ(): void {}
 
 \thandleDequeue(): void {}
@@ -51,7 +67,7 @@ const inputControllerSource = `class InputController {
 
 function dispatchCtrlT(patched, role, modelId) {
   const handlerBody = patched.match(
-    /setCustomKeyHandler\(key, \(\) => \{([\s\S]*?)\n\t\t\t\}\);/,
+    /\["app\.smol\.cycle", \(\) => \{([\s\S]*?)\n\t\t\t\}\],/,
   )?.[1];
   assert.ok(handlerBody);
   let action;
@@ -59,6 +75,8 @@ function dispatchCtrlT(patched, role, modelId) {
     ctx: {
       viewSession: {
         sessionManager: { getLastModelChangeRole: () => role },
+      },
+      session: {
         model: modelId
           ? {
               provider: modelId.split("/")[0],
@@ -102,6 +120,35 @@ test("Ctrl+T routes the smol role to model cycling and other roles to thinking",
   );
 });
 
+test("Tab falls through to completion unless the composer is empty", () => {
+  const patched = patchInputController(inputControllerSource);
+  const guard = patched.match(
+    /if \(km\.matches\(key, "app\.model\.cycleForward"\)( && [^\n]+)\) \{/,
+  )?.[1];
+  assert.ok(guard, "forward model cycling must be guarded");
+
+  const dispatch = (key, text) => {
+    const empty = text.trim() === "";
+    const km = {
+      matches: (pressed, action) =>
+        action === "app.model.cycleForward" &&
+        (pressed.id === "tab" || pressed.id === "ctrl+p"),
+    };
+    return new Function(
+      "km",
+      "key",
+      "empty",
+      `if (km.matches(key, "app.model.cycleForward")${guard}) return "cycle"; return "fallthrough";`,
+    )(km, key, empty);
+  };
+
+  assert.equal(dispatch({ id: "tab" }, ""), "cycle");
+  assert.equal(dispatch({ id: "tab" }, "/mod"), "fallthrough");
+  assert.equal(dispatch({ id: "tab" }, "@src/input"), "fallthrough");
+  assert.equal(dispatch({ id: "ctrl+p" }, "/mod"), "cycle");
+  assert.equal(dispatch({ id: "ctrl+p" }, ""), "cycle");
+});
+
 test("smol cycling restores the three-model order and keeps the smol role", () => {
   const patched = patchInputController(inputControllerSource);
   const idsBlock = patched.match(/const ids = \[([\s\S]*?)\n\t\t\];/)?.[1];
@@ -132,4 +179,91 @@ test("smol config uses DeepSeek v4.1 Flash max", () => {
 test("input controller patch remains idempotent", () => {
   const once = patchInputController(inputControllerSource);
   assert.equal(patchInputController(once), once);
+});
+
+const slashGatePatches = createInputSessionPatches({
+  replaceOnce,
+  replaceAny: (content, alternatives, newText) => {
+    for (const oldText of alternatives) {
+      if (content.split(oldText).length - 1 === 1)
+        return replaceOnce(content, oldText, newText);
+    }
+    return { content, changed: false, already: false };
+  },
+  insertAfter: (content, anchor, text) =>
+    replaceOnce(content, anchor, anchor + text),
+  insertBefore: (content, anchor, text) =>
+    replaceOnce(content, anchor, text + anchor),
+});
+
+const predictionControllerSource = `function predictionAnchor(session: AgentViewSession): AgentMessage | undefined {
+\tconst messages = session.messages;
+\tfor (let i = messages.length - 1; i >= 0; i--) {
+\t\tconst message = messages[i];
+\t\tif (isAdvisorCard(message) || isExcludedFromContext(message)) continue;
+\t\treturn message;
+\t}
+\treturn undefined;
+}
+
+export class ComposerPredictionController {
+\treadonly #ctx: PredictionContext;
+
+\tconstructor(ctx: PredictionContext, options: { deadlineMs?: number; meterProvider?: MeterProvider } = {}) {
+\t\tthis.#ctx = ctx;
+\t\tthis.#deadlineMs = options.deadlineMs ?? PREDICTION_DEADLINE_MS;
+\t}
+
+\tget choices(): readonly string[] | undefined {
+\t\tconst prediction = this.#prediction();
+\t\tif (!prediction || !this.#isCurrent(prediction.source)) return undefined;
+\t\treturn prediction.choices;
+\t}
+
+\t#offer(source: PredictionSource, abort: AbortController, choices: string[] | undefined): PredictionOutcome {
+\t\tif (this.#abort !== abort) return "cancelled";
+\t\tif (!this.#isCurrent(source)) return "stale";
+\t\tif (!choices) return "skipped";
+\t\treturn "offered";
+\t}
+}`;
+
+test("composer predictions stay off slash-command and path drafts", () => {
+  const patched = slashGatePatches.patchComposerPredictionSlashGate(
+    predictionControllerSource,
+  );
+  assert.match(
+    patched,
+    /function isSlashCommandDraft\(text: string\): boolean \{\n\treturn text\.trimStart\(\)\.startsWith\("\/"\);\n\}/,
+  );
+  assert.match(
+    patched,
+    /get choices\(\): readonly string\[\] \| undefined \{\n\t\tif \(isSlashCommandDraft\(this\.#ctx\.composer\.text\(\)\)\) return undefined;\n\t\tconst prediction/,
+  );
+  assert.match(
+    patched,
+    /#offer\(source: PredictionSource, abort: AbortController, choices: string\[\] \| undefined\): PredictionOutcome \{\n\t\tif \(this\.#abort !== abort\) return "cancelled";\n\t\tif \(!this\.#isCurrent\(source\)\) return "stale";\n\t\tif \(isSlashCommandDraft\(this\.#ctx\.composer\.text\(\)\)\) return "cancelled";/,
+  );
+  assert.match(
+    patched,
+    /addEditListener\(\(_edit, composer\) => \{\n\t\t\tif \(isSlashCommandDraft\(composer\.text\(\)\)\) this\.cancel\(\);/,
+  );
+
+  const helper = patched.match(
+    /function isSlashCommandDraft\(text: string\): boolean \{[\s\S]*?\n\}/,
+  )?.[0];
+  assert.ok(helper);
+  const isSlashCommandDraft = new Function(
+    `${helper.replace("(text: string): boolean", "(text)")}; return isSlashCommandDraft;`,
+  )();
+  assert.equal(isSlashCommandDraft("/model gpt-6"), true);
+  assert.equal(isSlashCommandDraft("  /add-dir /Users/tim/dev"), true);
+  assert.equal(isSlashCommandDraft("/Users/tim/dev"), true);
+  assert.equal(isSlashCommandDraft("Please run the tests"), false);
+  assert.equal(isSlashCommandDraft(""), false);
+
+  assert.equal(
+    slashGatePatches.patchComposerPredictionSlashGate(patched),
+    patched,
+  );
 });

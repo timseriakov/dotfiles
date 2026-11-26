@@ -37,6 +37,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createInstalledAiPlannotatorPatches } from "./patches/installed-ai-plannotator.mjs";
 import { createStatusLinePatches } from "./patches/status-line.mjs";
+import { createWorkingSpacingPatches } from "./patches/working-spacing.mjs";
 import { createComposerDetailsPatches } from "./patches/composer-details.mjs";
 import { createAttachmentPreviewPatches } from "./patches/attachment-preview.mjs";
 import { createStatusBandPatches } from "./patches/status-band.mjs";
@@ -386,6 +387,7 @@ const patches = {
   ...createStatusBandPatches(patchHelpers),
   ...createAttachmentPreviewPatches(patchHelpers),
   ...createComposerDetailsPatches(patchHelpers),
+  ...createWorkingSpacingPatches(patchHelpers),
   ...createUiComponentPatches(patchHelpers),
   ...createInputSessionPatches(patchHelpers),
   ...createTuiEditorTerminalPatches(patchHelpers),

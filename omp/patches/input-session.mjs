@@ -82,6 +82,13 @@ export function createInputSessionPatches(ctx) {
 
   function patchInputController(content) {
     let out = content;
+    // Tab completes the draft (slash commands, @paths); only an empty composer cycles models.
+    out = replaceOnce(
+      out,
+      `\t\tif (km.matches(key, "app.model.cycleForward")) {\n\t\t\tvoid this.cycleRoleModel("forward");\n\t\t\treturn true;\n\t\t}`,
+      `\t\t// Tab completes a non-empty draft (slash commands, paths); only an empty composer cycles models.\n\t\tif (km.matches(key, "app.model.cycleForward") && (empty || key.id !== "tab")) {\n\t\t\tvoid this.cycleRoleModel("forward");\n\t\t\treturn true;\n\t\t}`,
+      "input-controller tab completes before model cycle",
+    ).content;
     const smolHandler = `\tasync cycleSmolModel(): Promise<void> {
 \t\tif (this.ctx.focusedAgentId) {
 \t\t\tthis.ctx.showStatus("Model changes apply to the main session — press ←← to return first");
@@ -220,11 +227,42 @@ export function createInputSessionPatches(ctx) {
     ).content;
   }
 
+  function patchComposerPredictionSlashGate(content) {
+    let out = insertAfter(
+      content,
+      `function predictionAnchor(session: AgentViewSession): AgentMessage | undefined {\n\tconst messages = session.messages;\n\tfor (let i = messages.length - 1; i >= 0; i--) {\n\t\tconst message = messages[i];\n\t\tif (isAdvisorCard(message) || isExcludedFromContext(message)) continue;\n\t\treturn message;\n\t}\n\treturn undefined;\n}\n`,
+      `\n/** Slash-command input (its arguments and paths included) never shows a model prediction. */\nfunction isSlashCommandDraft(text: string): boolean {\n\treturn text.trimStart().startsWith("/");\n}\n`,
+      "composer prediction slash draft helper",
+    ).content;
+
+    out = insertAfter(
+      out,
+      `\tconstructor(ctx: PredictionContext, options: { deadlineMs?: number; meterProvider?: MeterProvider } = {}) {\n\t\tthis.#ctx = ctx;\n`,
+      `\t\tctx.composer.addEditListener((_edit, composer) => {\n\t\t\tif (isSlashCommandDraft(composer.text())) this.cancel();\n\t\t});\n`,
+      "composer prediction cancels on slash draft",
+    ).content;
+
+    out = insertAfter(
+      out,
+      `\tget choices(): readonly string[] | undefined {\n`,
+      `\t\tif (isSlashCommandDraft(this.#ctx.composer.text())) return undefined;\n`,
+      "composer prediction hides on slash draft",
+    ).content;
+
+    return insertAfter(
+      out,
+      `\t\tif (!this.#isCurrent(source)) return "stale";\n`,
+      `\t\tif (isSlashCommandDraft(this.#ctx.composer.text())) return "cancelled";\n`,
+      "composer prediction declines slash draft",
+    ).content;
+  }
+
   return {
     patchKeybindingsConfig,
     patchInputController,
     patchSessionManager,
     patchPredictClientSuffix,
+    patchComposerPredictionSlashGate,
     patchSessionPaths,
   };
 }
